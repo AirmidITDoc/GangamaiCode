@@ -13,70 +13,34 @@ import { TemplatemasterService } from "../templatemaster.service";
 export class PathologyTemplateFormComponent implements OnInit {
     msg: any;
 
-    // editorConfig: AngularEditorConfig = {
-    //     editable: true,
-    //     spellcheck: true,
-    //     height: "auto",
-    //     minHeight: "0",
-    //     maxHeight: "auto",
-    //     width: "auto",
-    //     minWidth: "0",
-    //     translate: "yes",
-    //     enableToolbar: true,
-    //     showToolbar: true,
-    //     placeholder: "Enter text here...",
-    //     defaultParagraphSeparator: "",
-    //     defaultFontName: "",
-    //     defaultFontSize: "",
-    //     fonts: [
-    //         { class: "arial", name: "Arial" },
-    //         { class: "times-new-roman", name: "Times New Roman" },
-    //         { class: "calibri", name: "Calibri" },
-    //         { class: "comic-sans-ms", name: "Comic Sans MS" },
-    //     ],
-    //     customClasses: [
-    //         {
-    //             name: "quote",
-    //             class: "quote",
-    //         },
-    //         {
-    //             name: "redText",
-    //             class: "redText",
-    //         },
-    //         {
-    //             name: "titleText",
-    //             class: "titleText",
-    //             tag: "h1",
-    //         },
-    //     ],
-    //     uploadUrl: "v1/image",
-    //     uploadWithCredentials: false,
-    //     sanitize: true,
-    //     toolbarPosition: "top",
-    //     toolbarHiddenButtons: [["bold", "italic"], ["fontSize"]],
-    // };
+    
     constructor(
         public _templateService: TemplatemasterService,
-
         public dialogRef: MatDialogRef<PathologyTemplateFormComponent>
     ) {}
 
     ngOnInit(): void {
-        // this.editor = new Editor();
+        
     }
+      // In your component.ts file
+   inputFontStyle: string = 'initialFontStyle'; // Set the initial font style here
+
+   changeFontStyle() {
+   this.inputFontStyle = 'newFontStyle'; // Change the font style here
+  }
 
     onSubmit() {
-        if (this._templateService.myform.valid) {
-            if (!this._templateService.myform.get("TemplateId").value) {
+        if (this._templateService.newTemplateFrom.valid) {
+            if (!this._templateService.newTemplateFrom.get("TemplateId").value) {
                 var m_data = {
                     insertPathologyTemplateMaster: {
-                        TestId: this._templateService.myform.get("TestId")
-                            .value,
-                        TemplateId:
-                            this._templateService.myform.get("TemplateId")
-                                .value,
+                        TemplateName: this._templateService.newTemplateFrom.get("TemplateName").value,
+                        TemplateDesc:this._templateService.newTemplateFrom.get("TemplateDetails").value,
+                        IsDeleted:this._templateService.newTemplateFrom.get("IsDeleted").value,
+                        AddedBy:1
                     },
                 };
+                console.log(m_data)
 
                 this._templateService
                     .insertTemplateMaster(m_data)
@@ -120,7 +84,7 @@ export class PathologyTemplateFormComponent implements OnInit {
     }
 
     onClose() {
-        this._templateService.myform.reset();
+       this._templateService.myform.reset();
         this.dialogRef.close();
     }
 }

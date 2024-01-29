@@ -1,10 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
-import {
-    ParametermasterComponent,
-    PathDescriptiveMaster,
-    PathParaRangeMaster,
-} from "../parametermaster.component";
 import { Router } from "@angular/router";
 import { FormBuilder, FormControl } from "@angular/forms";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
@@ -16,6 +11,7 @@ import { MatSort } from "@angular/material/sort";
 import { takeUntil } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { ParametermasterComponent } from "../parametermaster.component";
 
 @Component({
     selector: "app-parameter-form-master",
@@ -25,33 +21,44 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class ParameterFormMasterComponent implements OnInit {
+    displayedColumns: string[] = [
+        "GenderName",
+        "MinAge",
+        "MaxAge",
+        "MinValue",
+        "Maxvalue",
+    ];
     submitted = false;
     isLoading = true;
     isHidden: boolean = true;
     UnitcmbList: any = [];
     Parametercmb: any = [];
     GendercmbList: any = [];
-    Parametercmblist: any = [];
-
+    chargeslist: any = [];
+    vMinAge: any;
+    vMaxAge: any;
+    vMinValue: any;
+    vMaxvalue: any;
     msg: any;
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     // uitname filter
-    public unitnameFilterCtrl: FormControl = new FormControl();
-    public filteredUnitname: ReplaySubject<any> = new ReplaySubject<any>(1);
+    // public unitnameFilterCtrl: FormControl = new FormControl();
+    // public filteredUnitname: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-    // prefix filter
-    public parameternameFilterCtrl: FormControl = new FormControl();
-    public filteredParametername: ReplaySubject<any> = new ReplaySubject<any>(
-        1
-    );
+    // // prefix filter
+    // public parameternameFilterCtrl: FormControl = new FormControl();
+    // public filteredParametername: ReplaySubject<any> = new ReplaySubject<any>(
+    //     1
+    // );
 
-    private _onDestroy = new Subject<void>();
+    // private _onDestroy = new Subject<void>();
 
     dataSource = new MatTableDataSource<PathDescriptiveMaster>();
-    dataSource1 = new MatTableDataSource<PathParaRangeMaster>();
+    dsParameterAgeList = new MatTableDataSource<PathParaRangeAgeMaster>();
+
 
     constructor(
         public _ParameterService: ParametermasterService,
@@ -59,81 +66,43 @@ export class ParameterFormMasterComponent implements OnInit {
         public dialogRef: MatDialogRef<ParametermasterComponent>,
         public _matDialog: MatDialog,
         private formBuilder: FormBuilder,
-        public toastr : ToastrService,
+        public toastr: ToastrService,
         private router: Router
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         // debugger;
-        this.getParameterNameCombobox();
+       // this.getParameterNameCombobox();
         this.getUnitNameCombobox();
-        this.getParameterName1Combobox();
-        //  this.getParameteragewiseMasterList();
         this.getGenderNameCombobox();
         this.getDscriptiveMasterList();
-        this.getParameterNameCombobox();
+        //this.getParameterNameCombobox();
 
-        this.unitnameFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterUnitname();
-            });
+        // this.unitnameFilterCtrl.valueChanges
+        //     .pipe(takeUntil(this._onDestroy))
+        //     .subscribe(() => {
+        //         this.filterUnitname();
+        //     });
     }
-
-    // unitname filter
-    private filterUnitname() {
-        if (!this.UnitcmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.unitnameFilterCtrl.value;
-        if (!search) {
-            this.filteredUnitname.next(this.UnitcmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredUnitname.next(
-            this.UnitcmbList.filter(
-                (bank) => bank.UnitName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
-
-    get f() {
-        return this._ParameterService.myform.controls;
-    }
-
-    getUnitNameCombobox() {
-        // this._ParameterService.getUnitMasterCombo().subscribe(data => this.UnitcmbList =data);
-
-        this._ParameterService.getUnitMasterCombo().subscribe((data) => {
-            this.UnitcmbList = data;
-            this.filteredUnitname.next(this.UnitcmbList.slice());
+    getGenderNameCombobox() {
+        this._ParameterService.getGenderMasterCombo().subscribe(data => {
+            this.GendercmbList = data;
+            console.log(this.GendercmbList);
         });
     }
-
-    getParameterNameCombobox() {
-        this._ParameterService
-            .getParameterMasterCombo()
-            .subscribe((data) => (this.Parametercmb = data));
+    getUnitNameCombobox() {
+ 
+        this._ParameterService.getUnitMasterCombo().subscribe((data) => {
+            this.UnitcmbList = data;
+            //this.filteredUnitname.next(this.UnitcmbList.slice());
+            // if (this.data) {
+            //     const toSelectSexId = this.UnitcmbList.find(c => c.GenderName == this.registerObj.GenderName);
+            //     this._ParameterService.myform.get('SexId').setValue(toSelectSexId);
+            //    //console.log(toSelectGSTType);  
+            //   console.log(this.registerObj); 
+            //    } 
+        });
     }
-
-    getGenderNameCombobox() {
-        this._ParameterService
-            .getGenderMasterCombo()
-            .subscribe((data) => (this.GendercmbList = data));
-    }
-
-    getParameterName1Combobox() {
-        this._ParameterService
-            .getParameterMasterCombo()
-            .subscribe((data) => (this.Parametercmblist = data));
-    }
-
-    //Descriptive master
-
     getDscriptiveMasterList() {
         this._ParameterService.getDescriptiveMasterList().subscribe((Menu) => {
             this.dataSource.data = Menu as PathDescriptiveMaster[];
@@ -141,6 +110,91 @@ export class ParameterFormMasterComponent implements OnInit {
             this.dataSource.paginator = this.paginator;
         });
     }
+    onClear() {
+        this._ParameterService.myform.reset();
+    }
+    onClose() {
+        this._ParameterService.myform.reset();
+        this.dialogRef.close();
+    }
+
+    public show: boolean = false; //numeric
+    public show1: boolean = false; ///descriptive
+
+    toggle() {
+        if (this.show=true) {
+            this.show = true;
+        }
+        this.show1 = false;
+    }
+
+    toggle1() {
+        if (this.show1=true) {
+            this.show1 = true;
+        }
+        this.show = false;
+    }
+
+    onAdd(event) {
+        this.dsParameterAgeList.data = [];
+        this.chargeslist = this.dsParameterAgeList.data;
+        this.chargeslist.push(
+            {
+                GenderName: this._ParameterService.myform.get('SexID').value.GenderName || "",
+                MinAge: this.vMinAge || 0,
+                MaxAge: this.vMaxAge || 0,
+                MinValue: this.vMinValue || 0,
+                Maxvalue: this.vMaxvalue || 0,
+
+            });
+        this.dsParameterAgeList.data = this.chargeslist
+        console.log(this.chargeslist);
+    }
+
+    // unitname filter
+    // private filterUnitname() {
+    //     if (!this.UnitcmbList) {
+    //         return;
+    //     }
+    //     // get the search keyword
+    //     let search = this.unitnameFilterCtrl.value;
+    //     if (!search) {
+    //         this.filteredUnitname.next(this.UnitcmbList.slice());
+    //         return;
+    //     } else {
+    //         search = search.toLowerCase();
+    //     }
+    //     // filter the banks
+    //     this.filteredUnitname.next(
+    //         this.UnitcmbList.filter(
+    //             (bank) => bank.UnitName.toLowerCase().indexOf(search) > -1
+    //         )
+    //     );
+    // }
+
+    get f() {
+        return this._ParameterService.myform.controls;
+    }
+
+ 
+
+    // getParameterNameCombobox() {
+    //     this._ParameterService
+    //         .getParameterMasterCombo()
+    //         .subscribe((data) => (this.Parametercmb = data));
+    // }
+
+ 
+
+    // getParameterName1Combobox() {
+    //     this._ParameterService
+    //         .getParameterMasterCombo()
+    //         .subscribe((data) => (this.Parametercmblist = data));
+    // }
+
+    //Descriptive master
+
+   
 
     onSubmit() {
         debugger;
@@ -232,25 +286,17 @@ export class ParameterFormMasterComponent implements OnInit {
                         if (data) {
                             this.toastr.success('Record Saved Successfully.', 'Saved !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
+                            });
                         } else {
                             this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
-                              });
+                            });
                         }
-                    },error => {
+                    }, error => {
                         this.toastr.error('Parameter-Form not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    });
             } else {
                 if (this._ParameterService.myform.get("IsNumeric").value == 2) {
                     var data3 = [];
@@ -346,25 +392,17 @@ export class ParameterFormMasterComponent implements OnInit {
                         if (data) {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
+                            });
                         } else {
                             this.toastr.error('Parameter-Form Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
-                              });
+                            });
                         }
-                    },error => {
+                    }, error => {
                         this.toastr.error('Parameter-Form not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    });
             }
             this.onClear();
         }
@@ -386,39 +424,13 @@ export class ParameterFormMasterComponent implements OnInit {
         };
     }
 
-    onClear() {
-        this._ParameterService.myform.reset();
-    }
-    onClose() {
-        this._ParameterService.myform.reset();
-        this.dialogRef.close();
-    }
-
-    public show: boolean = false;
-    public show1: boolean = false;
-
-    toggle() {
-        if (this.show1 == false) {
-            this.show1 = true;
-            this.toggle1();
-        }
-        this.show = !this.show;
-    }
-
-    toggle1() {
-        if (this.show == false) {
-            this.show = true;
-            this.toggle();
-        }
-        this.show1 = !this.show1;
-    }
+  
 
     currentval = "";
     AddData1(val) {
         console.warn(val);
         this.currentval = this.currentval + "  " + val;
     }
-
     //for list
     selectedToAdd: any;
     groupsArray: any = [];
@@ -428,5 +440,55 @@ export class ParameterFormMasterComponent implements OnInit {
         console.log(txt);
         this.selectedItems = this.selectedItems.concat(txt);
         this.selectedToAdd = [];
+    }
+}
+export class PathParaRangeAgeMaster {
+    PathparaRangeId: any;
+    ParaId: any;
+    GenderName: any;
+    MinValue: any;
+    Maxvalue: any;
+    MinAge: any;
+    MaxAge: any;
+    /**
+     * Constructor
+     *
+     * @param PathParaRangeAgeMaster
+     */
+    constructor(PathParaRangeAgeMaster) {
+        {
+            this.PathparaRangeId = PathParaRangeAgeMaster.PathparaRangeId || 0;
+            this.ParaId = PathParaRangeAgeMaster.ParaId || 0;
+            this.GenderName = PathParaRangeAgeMaster.GenderName || "";
+            this.MinValue = PathParaRangeAgeMaster.MinValue || 0;
+            this.Maxvalue = PathParaRangeAgeMaster.Maxvalue || 0;
+            this.MinAge = PathParaRangeAgeMaster.MinAge || 0;
+            this.MaxAge = PathParaRangeAgeMaster.MaxAge || 0;
+        }
+    }
+}
+export class PathDescriptiveMaster {
+    DescriptiveID: number;
+    ParameterId: number;
+    ParameterValues: String;
+    IsDefaultValue: boolean;
+    AddedBy: number;
+    UpdatedBy: number;
+    DefaultValue: String;
+    /**
+     * Constructor
+     *
+     * @param PathDescriptiveMaster
+     */
+    constructor(PathDescriptiveMaster) {
+        {
+            this.DescriptiveID = PathDescriptiveMaster.DescriptiveID || "";
+            this.ParameterId = PathDescriptiveMaster.ParameterId || "";
+            this.ParameterValues = PathDescriptiveMaster.ParameterValues || "";
+            this.IsDefaultValue = PathDescriptiveMaster.IsDefaultValue || "";
+            this.AddedBy = PathDescriptiveMaster.AddedBy || "";
+            this.UpdatedBy = PathDescriptiveMaster.UpdatedBy || "";
+            this.DefaultValue = PathDescriptiveMaster.DefaultValue || "";
+        }
     }
 }

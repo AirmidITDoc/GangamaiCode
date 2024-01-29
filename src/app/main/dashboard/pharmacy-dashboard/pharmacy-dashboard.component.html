@@ -20,7 +20,7 @@
 
                 <mat-form-field appearance="outline" fxFlex="270px">
                     <mat-label style="color: white;">Select Store</mat-label>
-                    <mat-select formControlName="StoreId" name="StoreId" (selectionChange)="fetchStaticData()">
+                    <mat-select formControlName="StoreId" name="StoreId" (selectionChange)="onChangeStore()">
                         <mat-option></mat-option>
                         <mat-option *ngFor="let m of PharmStoreList" [value]="m">
                             {{m.StoreName}}

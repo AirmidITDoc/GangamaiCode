@@ -6,6 +6,8 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
     selector: "app-unitmaster",
@@ -15,25 +17,28 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class UnitmasterComponent implements OnInit {
-    PrefixMasterList: any;
-    GendercmbList: any = [];
-    msg: any;
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
     displayedColumns: string[] = [
         "UnitId",
         "UnitName",
-        "AddedBy",
+       // "AddedBy",
         "IsDeleted",
         "action",
     ];
 
-    DSUnitmasterList = new MatTableDataSource<PathunitMaster>();
+    PrefixMasterList: any;
+    GendercmbList: any = [];
+    msg: any;
 
-    constructor(public _unitmasterService: UnitmasterService,
-        public toastr : ToastrService,) {}
+    DSUnitmasterList = new MatTableDataSource<PathunitMaster>();
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
+    constructor(
+        public _unitmasterService: UnitmasterService,
+        public toastr: ToastrService,
+        public _matDialog: MatDialog,
+    ) { }
 
     ngOnInit(): void {
         this.getUnitMasterList();
@@ -47,12 +52,16 @@ export class UnitmasterComponent implements OnInit {
             UnitNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getUnitMasterList();
     }
 
     getUnitMasterList() {
-        var param = { UnitName: "%" };
+        var param = {
+            UnitName: this._unitmasterService.myformSearch.get('UnitNameSearch').value + "%" || "%",
+        };
         this._unitmasterService.getUnitMasterList(param).subscribe((Menu) => {
             this.DSUnitmasterList.data = Menu as PathunitMaster[];
+            console.log( this.DSUnitmasterList)
             this.DSUnitmasterList.sort = this.sort;
             this.DSUnitmasterList.paginator = this.paginator;
         });
@@ -88,28 +97,19 @@ export class UnitmasterComponent implements OnInit {
                         if (data) {
                             this.toastr.success('Record Saved Successfully.', 'Saved !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
+                            });
                             this.getUnitMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getUnitMasterList();
-                            //     }
-                            // });
                         } else {
                             this.toastr.error('Unit Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
-                              });
+                            });
                         }
                         this.getUnitMasterList();
-                    },error => {
+                    }, error => {
                         this.toastr.error('Unit not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    });
             } else {
                 var m_dataUpdate = {
                     updateUnitMaster: {
@@ -134,31 +134,47 @@ export class UnitmasterComponent implements OnInit {
                         if (data) {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
+                            });
                             this.getUnitMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getUnitMasterList();
-                            //     }
-                            // });
                         } else {
                             this.toastr.error('Unit Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
-                              });
+                            });
                         }
                         this.getUnitMasterList();
-                    },error => {
+                    }, error => {
                         this.toastr.error('Unit not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    });
             }
             this.onClear();
         }
+    }
+    onDeactive(UnitId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                let Query =
+                "Update M_PathUnitMaster set Isdeleted=1 where UnitId=" +
+                UnitId;
+                    
+                console.log(Query);
+                this._unitmasterService.deactivateTheStatus(Query)
+                    .subscribe((data) => (this.msg = data));
+                this.getUnitMasterList();
+            }
+            this.confirmDialogRef = null;
+            
+        });
+        this.getUnitMasterList();
     }
     onEdit(row) {
         var m_data = {

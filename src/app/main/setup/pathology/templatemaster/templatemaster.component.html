@@ -1,67 +1,84 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
-
-        <!-- APP TITLE -->
+   
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Radiology Template Master
-                </span>
-            </div>
+
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Pathology Template Master
+            </span>
+            
         </div>
-        <!-- / APP TITLE -->
-        <!-- SEARCH -->
-        <!-- / SEARCH -->
+        <div fxLayout="row" fxLayoutAlign="start end">
+            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">
+                <mat-icon color="Primary" title=" Add New Template ">add</mat-icon>Add
+            </button>
+        </div>
+    </mat-toolbar>
 
-    </div>
-    <!-- / HEADER -->
-
-    <!-- CONTENT -->
-    <div class="content">
-
-        <!-- SIDEBAR -->
-        <!-- / SIDEBAR -->
-
-        <!-- CENTER -->
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <!-- CONTENT -->
+    <div class="content"> 
+        <div class="center p-24 pb-56" fusePerfectScrollbar> 
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="80%" fxFlex>
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style=" background-color: white;
+                             padding: 5px 10px 5px 10px;">
+                           <form [formGroup]="_templateService.myformSearch">
+                               <div class="dialog-content-wrapper">
+                                   <mat-form-field class="mr-sm-12" fxFlex>
+                                       <input matInput placeholder="Search --> Template Name" autocomplete="off"
+                                           name="TemplateNameSearch" formControlName="TemplateNameSearch" />
+                                       <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                           (click)="onSearchClear()" (keyup)="onSearch()">
+                                           <mat-icon>close</mat-icon>
+                                       </button>
+                                   </mat-form-field>
 
-                        <div class="example-loading-shade" *ngIf="isLoading || isRateLimitReached">
-                            <mat-spinner [diameter]="60" color="primary" *ngIf="isLoading"></mat-spinner>
-                            <div class="example-rate-limit-reached" *ngIf="isRateLimitReached"></div>
-                        </div>
+                                   <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                       fxLayoutAlign="center center">
+                                       <mat-radio-button value="2">All</mat-radio-button>
+                                       <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                       <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                   </mat-radio-group>
 
+                                   <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                       <mat-icon>search</mat-icon>
+                                       Search
+                                   </button>
+                               </div>
+                           </form>
+                       </div> 
                         <div style="width: 100%;">
-                            <mat-table #table matSort [dataSource]="DSTemplateMasterList"
-                                [@animateStagger]="{value:'50'}" class="mat-elevation-z8" style="overflow:auto">
-                                <ng-container matColumnDef="PTemplateId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.PTemplateId}}
-                                    </mat-cell>
-                                </ng-container>
-
-
-                                <ng-container matColumnDef="TestName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> TestName </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.TestName}}
-                                    </mat-cell>
-                                </ng-container>
+                            <mat-table #table class="table" matSort [dataSource]="DSTemplateMasterList"
+                                [@animateStagger]="{value:'50'}"  style="overflow:auto; width: 100%;">
 
                                 <ng-container matColumnDef="TemplateId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> TemplateId </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.TemplateId}}
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Template Id
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                         {{element.TemplateId}}
                                     </mat-cell>
                                 </ng-container>
 
 
+                                <ng-container matColumnDef="TemplateName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> TemplateName </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> 
+                                        {{element.TemplateName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="TemplateDesc">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> TemplateDesc </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> 
+                                        {{element.TemplateDesc}}
+                                    </mat-cell>
+                                </ng-container>
 
                                 <ng-container matColumnDef="IsDeleted">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
@@ -74,9 +91,15 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="AddedByName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
+                                <ng-container matColumnDef="AddedBy">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> AddedBy</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="UpdatedBy">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> UpdatedBy</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.UpdatedBy}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -115,19 +138,14 @@
                                 <mat-footer-row *matFooterRowDef="['noData']"
                                     [ngClass]="{'hide':!(DSTemplateMasterList!=null && DSTemplateMasterList.data.length == 0)}"></mat-footer-row>
                             </mat-table>
-                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="12" showFirstLastButtons>
+                            <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="12" showFirstLastButtons>
                             </mat-paginator>
 
                         </div>
                     </div>
-                    <div fxFlex.gt-sm="20%" fxFlex style="background-color: white;">
-                        <button mat-raised-button color="primary" (click)="onAdd()">Add</button>
-                    </div>
+                   
                 </div>
-            </div>
-            <!-- / CONTENT -->
-        </div>
-        <!-- / CENTER -->
-    </div>
-    <!-- / CONTENT-->
+            </div> 
+        </div> 
+    </div> 
 </div>
