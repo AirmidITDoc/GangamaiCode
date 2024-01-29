@@ -14,7 +14,7 @@
                 Pathology Template Master"}}
             </span>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-            style="margin-left: 770px;">
+            style="margin-left: 750px;">
                 <mat-icon>close</mat-icon>
               </button>
 
@@ -38,7 +38,7 @@
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Template Details</mat-label>
                                             <textarea matInput placeholder="Template Details" #TemplateDetails
-                                                formControlName="TemplateDetails" required
+                                                formControlName="TemplateDetails" required [style.fontFamily]="inputFontStyle" 
                                                 style="height: 400px;"></textarea>
                                         </mat-form-field>
                                     </div>
@@ -50,7 +50,7 @@
                                         <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
                                     
                                     </mat-radio-group>
-                                    <button mat-raised-button  color="accent" 
+                                    <button mat-raised-button  color="accent" (click)="changeFontStyle()"
                                     style="width: 100px;height: 35px; ">Text Font</button>
                                     <button mat-raised-button color="accent" m 
                                     style="width: 100px;height: 35px;">Text Color</button>

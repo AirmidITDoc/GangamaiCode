@@ -46,7 +46,7 @@ export class CategorymasterService {
     }
 
     public updatePathologyCategoryMaster(param) {
-        return this._httpClient.post("PathologyMaster/PathologyCategoryMasterSave",param);
+        return this._httpClient.post("PathologyMaster/PathologyCategoryMasterUpdate",param);
     }
     public deactivateTheStatus(m_data) {
         return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});

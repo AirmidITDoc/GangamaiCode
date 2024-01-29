@@ -1,56 +1,40 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
-
-        <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="start center">
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     Parameter Master
                 </span>
-                <button mat-raised-button color="pine"  style="margin-left: 1300px;" (click)="onAdd()">Add
+                <button mat-raised-button color="pine" style="margin-left: 1280px;" (click)="onAdd()">Add
                     <mat-icon>add_to_photos</mat-icon>
 
                 </button>
             </div>
         </div>
-        <!-- / APP TITLE -->
-        <!-- SEARCH -->
-        <!-- / SEARCH -->
-
     </div>
-    <!-- / HEADER -->
 
-    <!-- CONTENT -->
+
     <div class="content">
-
-        <!-- SIDEBAR -->
-        <!-- / SIDEBAR -->
-
-        <!-- CENTER -->
         <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <!-- CONTENT -->
             <div class="content-card">
-
-
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
 
-
-                        <div fxlayout="row" style="
-                                background-color: white;
-                                padding: 5px 10px 5px 10px;
-                            ">
+                        <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
                             <form [formGroup]="_ParameterService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Parameter Name" autocomplete="off"
                                             name="ParameterNameSearch" formControlName="ParameterNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
+                                            (click)="onSearchClear()" (keyup)=" onSearch()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -73,12 +57,17 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                    class="backgroundBlur">
+                                    <div class="spinner-border text-danger" style="margin-left: 100px;"></div>
+                                </div>
 
-                                <mat-table class="table" matSort [dataSource]="DSParameterList"
+                                <mat-table class="table1" matSort [dataSource]="DSParameterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
 
                                     <ng-container matColumnDef="ParameterID">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                            fxShow.gt-sm>ParameterID
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ParameterID}}
                                         </mat-cell>
@@ -124,20 +113,8 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="MethodName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> MethodName
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MethodName}}
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="ParaMultipleRange">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ParaMultipleRange
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ParaMultipleRange}}
-                                        </mat-cell>
-                                    </ng-container>
                                     <ng-container matColumnDef="AddedBy">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> AddedBy</mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
@@ -153,23 +130,21 @@
                                         </mat-cell>
                                     </ng-container>
 
-
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef class="table-actions"> Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                     title="Edit Menu">launch</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(row.SupplierId)"
+                                            <button mat-icon-button (click)="onDeactive(row.ParameterID)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
 
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="loading">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            loading data...
-                                        </mat-footer-cell>
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="noData">
@@ -178,43 +153,28 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-
-
                                     <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-                             -->
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+
                                 </mat-table>
 
-                                <mat-card *ngIf="isLoading"
-                                    style="display: flex; justify-content: center; align-items: center; background: white;">
-                                    <mat-progress-spinner color="primary" mode="indeterminate">
-                                    </mat-progress-spinner>
-                                </mat-card>
-
-
+                                <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                    showFirstLastButtons></mat-paginator>
                             </div>
-                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                                showFirstLastButtons></mat-paginator>
+
                         </div>
                     </div>
 
-                    <!-- <div fxFlex.gt-sm="20%" fxFlex style="background-color: white;">
-                        <button mat-raised-button color="pine" (click)="onAdd()">Add
-                            <mat-icon>add_to_photos</mat-icon>
 
-                        </button>
-
-                    </div> -->
 
                 </div>
             </div>
-            <!-- / CONTENT -->
         </div>
-        <!-- / CENTER -->
     </div>
-    <!-- / CONTENT-->
 </div>

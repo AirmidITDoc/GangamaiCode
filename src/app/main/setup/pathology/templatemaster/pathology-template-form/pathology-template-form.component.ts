@@ -22,6 +22,12 @@ export class PathologyTemplateFormComponent implements OnInit {
     ngOnInit(): void {
         
     }
+      // In your component.ts file
+   inputFontStyle: string = 'initialFontStyle'; // Set the initial font style here
+
+   changeFontStyle() {
+   this.inputFontStyle = 'newFontStyle'; // Change the font style here
+  }
 
     onSubmit() {
         if (this._templateService.newTemplateFrom.valid) {

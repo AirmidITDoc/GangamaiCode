@@ -52,7 +52,8 @@ export class TemplatemasterComponent implements OnInit {
         this.getTemplateMasterList();
         // this.getTestNameCombobox();
     }
-   
+ 
+
     onSearch() {
         this.getTemplateMasterList();
     }
@@ -104,7 +105,7 @@ export class TemplatemasterComponent implements OnInit {
         this.confirmDialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 let Query =
-                    "Update M_PathParameterMaster set IsDeleted=1 where PTemplateId=" +
+                    "Update M_PathParameterMaster set IsDeleted=0 where TemplateId=" +
                     PTemplateId;
                 console.log(Query);
                 this._templateService
@@ -113,6 +114,30 @@ export class TemplatemasterComponent implements OnInit {
                 this.getTemplateMasterList();
             }
             this.confirmDialogRef = null;
+        });
+    } 
+    onEdit(row) {
+        console.log(row);
+        var m_data = {
+            TemplateId: row.TemplateId,
+            TemplateName: row.TemplateName,
+            TemplateDetails: row.TemplateDesc,
+            IsDeleted: JSON.stringify(row.IsDeleted),
+            UpdatedBy: row.UpdatedBy,
+        };
+
+        console.log(m_data);
+        this._templateService.populateForm(m_data);
+
+        const dialogRef = this._matDialog.open(PathologyTemplateFormComponent, {
+            maxWidth: "80vw",
+            maxHeight: "95vh",
+            width: "100%",
+            height: "100%",
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            this.getTemplateMasterList();
         });
     }
     onAdd() {

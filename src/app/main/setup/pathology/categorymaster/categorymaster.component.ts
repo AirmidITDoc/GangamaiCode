@@ -100,28 +100,17 @@ export class CategorymasterComponent implements OnInit {
                         });
                     });
             } else {
+                
                 var m_dataUpdate = {
                     updatePathologyCategoryMaster: {
-                        categoryId:
-                            this._categorymasterService.myform.get("CategoryId")
-                                .value,
-                        categoryName:
-                            this._categorymasterService.myform.get(
-                                "CategoryName"
-                            ).value,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._categorymasterService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
+                        categoryId:this._categorymasterService.myform.get("CategoryId").value,
+                        categoryName: this._categorymasterService.myform.get("CategoryName").value,
+                        isDeleted: Boolean(JSON.parse(this._categorymasterService.myform.get("IsDeleted").value)),
                         updatedBy: 1,
                     },
                 };
-
-                this._categorymasterService
-                    .updatePathologyCategoryMaster(m_dataUpdate)
+                console.log(m_dataUpdate)
+                this._categorymasterService.updatePathologyCategoryMaster(m_dataUpdate)
                     .subscribe((data) => {
                         this.msg = data;
                         if (data) {

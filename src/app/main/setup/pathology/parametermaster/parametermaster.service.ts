@@ -38,7 +38,7 @@ export class ParametermasterService {
             UnitId: [""],
             UnitName: [""],
             IsNumeric: [""],
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             IsPrintDisSummary: ["false"],
@@ -47,12 +47,15 @@ export class ParametermasterService {
             PathparaRangeId: [""],
             ParaId: [""],
             SexId: [""],
-            MinValue: [""],
-            Maxvalue: [""],
             IsDescriptive: [""],
             DefaultValue: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
             parameterValues: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
             IsDefaultValue: [""],
+            SexID:[""],
+            MinAge:[""],
+            MaxAge: [""],
+            MinValue: [""],
+            Maxvalue: [""],
         });
     }
 
@@ -68,27 +71,30 @@ export class ParametermasterService {
     }
 
     //parameter detail
-    public getParameterMasterList(m_data) {
+    public getParameterMasterList(m_data) { 
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathParameterMaster_by_Name",
+            m_data);
+    }
+     // Unit Master Combobox List
+     public getUnitMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_PathParameterMaster_by_Name",
-            m_data
+            "Generic/GetByProc?procName=Retrieve_UnitMasterForCombo",{});
+    }
+     // Gender Master Combobox List
+     public getGenderMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",{}
         );
     }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.post(
-            "Generic/ExecByQueryStatement?query=" + m_data,
-            {}
-        );
+            "Generic/ExecByQueryStatement?query=" + m_data, {});
     }
 
-    // Unit Master Combobox List
-    public getUnitMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_UnitMasterForCombo",
-            {}
-        );
-    }
+
+
+   
 
     public insertParameterMaster(param) {
         return this._httpClient.post("PathologyMaster/ParameterSave", param);
@@ -115,13 +121,7 @@ export class ParametermasterService {
         );
     }
 
-    // Gender Master Combobox List
-    public getGenderMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",
-            {}
-        );
-    }
+   
 
     public deleteAssignParameterToRange(param) {
         return this._httpClient.post("Pathology/ParameterUpdate", param);
