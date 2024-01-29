@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewPrescriptionComponent } from './new-prescription/new-prescription.component';
 import { Subscription } from 'rxjs';
 import { Validators } from '@angular/forms';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-prescription',
@@ -21,7 +22,7 @@ import { Validators } from '@angular/forms';
 export class PrescriptionComponent implements OnInit {
 
   hasSelectedContacts: boolean;
-
+  SpinLoading:boolean=false;
   displayedColumns: string[] = [
     'action',
     'RegNo',
@@ -49,6 +50,7 @@ export class PrescriptionComponent implements OnInit {
     public _PrescriptionService:PrescriptionService,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    public _matDialog: MatDialog,
     private dialog:MatDialog
   ) { }
 
@@ -112,6 +114,41 @@ export class PrescriptionComponent implements OnInit {
   reportPrintObjTax: PrescriptionList;
   subscriptionArr: Subscription[] = [];
   @ViewChild('PrescriptionTemplate') PrescriptionTemplate:ElementRef;
+
+
+
+
+
+  viewgetIpprescriptionReportPdf(row) {
+    debugger
+    setTimeout(() => {
+      this.SpinLoading =true;
+    //  this.AdList=true;
+    this._PrescriptionService.getIpPrescriptionview(
+      row.OP_IP_ID,0
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Prescription Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
 
 
   getPrint(){

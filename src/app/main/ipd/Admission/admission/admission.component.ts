@@ -1517,6 +1517,39 @@ debugger
    
     },100);
 
+
+   
+  }
+
+
+  
+  getAdmittedPatientCasepaperview(row) {
+    debugger
+    setTimeout(() => {
+      this.SpinLoading =true;
+     this.AdList=true;
+    this._AdmissionService.getAdmittedPatientCasepaaperView(
+    row.AdmissionID
+      ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Admission Paper  Viewer"
+          }
+        });
+
+        matDialog.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+
    
 
    
@@ -1581,7 +1614,7 @@ debugger
       });
     }
     if (m == "View Admission") {
-      this.getViewbAdmission(contact);
+      this.getAdmittedPatientCasepaperview(contact);
     }
     else if (m == "Update MLC Information") {
       let xx = {

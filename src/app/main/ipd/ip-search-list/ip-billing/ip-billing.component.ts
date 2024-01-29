@@ -763,6 +763,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   SaveBill() {
+    debugger
     let InterimOrFinal = 1;
     if (this.dataSource.data.length > 0 && (this.vNetBillAmount > 0)) {
       this.isLoading = 'submit';
@@ -782,7 +783,7 @@ export class IPBillingComponent implements OnInit {
           height: '740px',
           width: '100%',
           data: {
-            advanceObj: PatientHeaderObj,
+            vPatientHeaderObj: PatientHeaderObj,
             FromName: "IP-Bill"
           }
         });
@@ -814,6 +815,7 @@ export class IPBillingComponent implements OnInit {
         // }
 
         // this.CompDisamount = this.AdminDiscamt + this.concessionAmtOfNetAmt;
+        debugger
         this.flagSubmit = result.IsSubmitFlag
         //
         let InsertBillUpdateBillNoObj = {};
@@ -904,7 +906,7 @@ export class IPBillingComponent implements OnInit {
             UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
             UpdateAdvanceHeaderObj['BalanceAmount'] = 0
         }
-
+        debugger
         if (this.flagSubmit == true) {
           let submitData = {
             "InsertBillUpdateBillNo": InsertBillUpdateBillNo,
@@ -917,7 +919,7 @@ export class IPBillingComponent implements OnInit {
             "ipAdvanceHeaderUpdate": UpdateAdvanceHeaderObj
 
           };
-
+          console.log(submitData)
           this._IpSearchListService.InsertIPBilling(submitData).subscribe(response => {
             if (response) {
               debugger

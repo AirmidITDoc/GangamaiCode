@@ -38,4 +38,8 @@ export class IPBrowseRefundofBillService {
     public getIPRefundBILLBrowsePrint(RefundId) {
       return this._httpClient.post("Generic/GetByProc?procName=rptIPRefundofBillPrint", RefundId)
     }    
+
+    public getRefundofbillview(RefundId){
+      return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
+    }
 }

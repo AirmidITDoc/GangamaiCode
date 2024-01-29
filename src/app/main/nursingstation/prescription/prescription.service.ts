@@ -60,6 +60,9 @@ export class PrescriptionService {
     return this._httpClient.post("InPatient/InsertIPPrescription", employee);
   }
    
- 
 
+
+  public getIpPrescriptionview(OP_IP_ID,PatientType){
+    return this._httpClient.get("InPatient/view-IP_Prescription?OP_IP_ID=" + OP_IP_ID+"&PatientType="+PatientType);
+  }
 }

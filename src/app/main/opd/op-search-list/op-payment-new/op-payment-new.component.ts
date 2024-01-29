@@ -137,6 +137,7 @@ export class OpPaymentNewComponent implements OnInit {
     }
     if (this.PatientHeaderObj.FromName == "SETTLEMENT") {
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayAmount;
+      this.amount1= parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.cashAmt = parseInt(this.advanceData.NetPayAmount);
       this.paidAmt = parseInt(this.advanceData.NetPayAmount);
       this.billNo = parseInt(this.advanceData.BillId);
@@ -1086,7 +1087,7 @@ export class OpPaymentNewComponent implements OnInit {
     if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
       this.Paymentobj['NEFTPayAmount'] = this.amount5;
       this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo5").value || 0 ;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName5").value || '';
+      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName5").value.BankName || '';
       this.Paymentobj['NEFTDate'] =this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       return;
     }

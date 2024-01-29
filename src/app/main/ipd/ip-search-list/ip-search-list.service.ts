@@ -950,6 +950,10 @@ public getpreviousbilldetail(Id){
 public getAdvancedetail(Id){
   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPAdvanceDetails",Id);
 }
+
+public getRefundofAdvanceview(RefundId){
+  return this._httpClient.get("InPatient/view-IP-ReturnOfAdvanceReceipt?RefundId=" + RefundId);
+}
 }
 
 // ultra viewer id 67229924 Password :- Airmid@123

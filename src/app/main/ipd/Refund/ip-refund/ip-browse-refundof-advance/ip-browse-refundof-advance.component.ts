@@ -13,6 +13,7 @@ import { IPBrowseRefundofAdvanceService } from './ip-browse-refundof-advance.ser
 import { fuseAnimations } from '@fuse/animations';
 
 import * as converter from 'number-to-words';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-ip-browse-refundof-advance',
@@ -37,6 +38,8 @@ export class IPBrowseRefundofAdvanceComponent implements OnInit {
   reportPrintObj: BrowseIpdreturnadvanceReceipt;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
+  SpinLoading:boolean=false;
+
   displayedColumns = [
     // 'checkbox',
     'RegNo',
@@ -64,8 +67,10 @@ export class IPBrowseRefundofAdvanceComponent implements OnInit {
   constructor( private _fuseSidebarService: FuseSidebarService,
     public _IpReturnadvanceReceiptService:IPBrowseRefundofAdvanceService,
     private matDialog: MatDialog,
+    private _matDialog: MatDialog,
+    
     public datePipe: DatePipe,
-    private advanceDataStored: AdvanceDataStored,) { }
+        private advanceDataStored: AdvanceDataStored,) { }
 
   ngOnInit(): void {
     this.GetIpdreturnAdvancepaymentreceipt(); 
@@ -184,6 +189,38 @@ onExport(exprtType){
   //     window.open(URL.createObjectURL(doc.output("blob")))
   //   }
   // }
+}
+
+
+
+viewgetRefundofbillReportPdf(row) {
+  setTimeout(() => {
+    this.SpinLoading =true;
+  //  this.AdList=true;
+  this._IpReturnadvanceReceiptService.getRefundofAdvanceview(
+    row.RefundId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Refund Of Bill  Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+  });
+ 
+  },100);
 }
 
 getRecord(el,i) {

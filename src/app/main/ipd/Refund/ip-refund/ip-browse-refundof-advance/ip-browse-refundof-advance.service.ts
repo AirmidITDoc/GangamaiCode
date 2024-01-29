@@ -44,4 +44,9 @@ export class IPBrowseRefundofAdvanceService {
     public getAdvanceRefundReceiptPrint(RefundId){
       return this._httpClient.post("Generic/GetByProc?procName=rptIPRefundofAdvancePrint", RefundId)
     }
+    
+
+    public getRefundofAdvanceview(RefundId){
+      return this._httpClient.get("InPatient/view-IP-ReturnOfAdvanceReceipt?RefundId=" + RefundId);
+    }
 }

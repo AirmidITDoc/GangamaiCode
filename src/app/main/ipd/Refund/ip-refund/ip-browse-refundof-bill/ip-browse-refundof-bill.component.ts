@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { IPBrowseRefundofBillService } from './ip-browse-refundof-bill.service';
 import { ViewIPReunfofBillComponent } from './view-ip-reunfof-bill/view-ip-reunfof-bill.component';
 import * as converter from 'number-to-words';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 @Component({
   selector: 'app-ip-browse-refundof-bill',
   templateUrl: './ip-browse-refundof-bill.component.html',
@@ -25,7 +26,8 @@ export class IPBrowseRefundofBillComponent implements OnInit {
   BrowseIPDRefundBillsList:any;
   msg:any;
   sIsLoading: string = '';
-  
+  SpinLoading:boolean=false;
+
 reportPrintObj: BrowseIpdreturnadvanceReceipt;
 subscriptionArr: Subscription[] = [];
 printTemplate: any;
@@ -62,6 +64,7 @@ printTemplate: any;
   constructor( private _fuseSidebarService: FuseSidebarService,
      public _IPBrowseRefundofBillService:IPBrowseRefundofBillService,
      private matDialog: MatDialog,
+     public _matDialog: MatDialog,
      private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe) { }
 
@@ -111,6 +114,39 @@ getBrowseIPDRefundbillList(){
       });
   }, 50);
 
+}
+
+
+
+
+viewgetRefundofbillReportPdf(row) {
+  setTimeout(() => {
+    this.SpinLoading =true;
+  //  this.AdList=true;
+  this._IPBrowseRefundofBillService.getRefundofbillview(
+    row.RefundId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Refund Of Bill Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+  });
+ 
+  },100);
 }
 
 

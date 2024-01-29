@@ -71,6 +71,9 @@ export class RequestforlabtestService {
     return this._httpClient.post("PaymentGetway/OnlinePaymentCancel",emp);
   }
  
+  public getLabrequestview(RequestId){
+    return this._httpClient.get("InPatient/IPLabRequestChangesInsert?RequestId=" + RequestId);
+  }
 }
 
 
