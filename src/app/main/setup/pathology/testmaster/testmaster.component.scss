@@ -1,23 +1,26 @@
 app-testmaster {
     .mat-header-row {
-        width: 2500px;
-        max-width: 2500px;
-        min-width: 2500px;
+        width: 1740px;
+        max-width: 1740px;
+        min-width: 1740px;
         font-weight: bold;
     }
     .mat-row {
-        width: 2500px;
-        max-width: 2500px;
-        min-width: 2500px;
+        width: 1740px;
+        max-width: 1740px;
+        min-width: 1740px;
         height: 50px;
     }
-
+.table{
+    width: 100%;
+    height: 550px;
+    min-height: 550px;
+    max-height: 550px;
     .mat-column-TestId {
         width: 90px;
         max-width: 90px;
         min-width: 90px;
     }
-
     .mat-column-TestName {
         width: 200px;
         max-width: 200px;
@@ -49,9 +52,9 @@ app-testmaster {
         margin-top: 20px;
     }
     .mat-column-CategoryName {
-        width: 170px;
-        max-width: 170px;
-        min-width: 170px;
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
         text-align: left;
         justify-content: left;
         white-space: nowrap;
@@ -69,20 +72,39 @@ app-testmaster {
         min-width: 70px;
     }
     .mat-column-TechniqueName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 16px;
     }
     .mat-column-MachineName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 20px;
+        margin-top: 16px;
     }
-
     .mat-column-SuggestionNote {
-        width: 300px;
-        max-width: 300px;
-        min-width: 300px;
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
         text-align: left;
         justify-content: left;
         white-space: nowrap;
@@ -99,8 +121,17 @@ app-testmaster {
         width: 150px;
         max-width: 150px;
         min-width: 150px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline;
+        margin-right: 10px;
+        margin-top: 16px;
     }
-
     .mat-column-ServiceName {
         width: 170px;
         max-width: 170px;
@@ -127,19 +158,16 @@ app-testmaster {
         max-width: 140px;
         min-width: 140px;
     }
-
     .mat-column-IsPrintTestName {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
     }
-
     .mat-column-AddedBy {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
+        width:90px;
+        max-width: 90px;
+        min-width: 90px;
     }
-
     .mat-column-IsDeleted {
         width: 70px;
         max-width: 70px;
@@ -147,15 +175,15 @@ app-testmaster {
         text-align: left;
         justify-content: left;
     }
-
     .mat-column-action {
         // color: white !important;
         width: 100px;
         max-width: 100px;
         min-width: 100px;
-        text-align: right;
-        justify-content: right;
+        text-align:  center;
+        justify-content: center;
     }
+}
     .mat-icon-button {
         padding: 0;
         min-width: 0;

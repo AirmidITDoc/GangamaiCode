@@ -8,7 +8,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { ParamteragewiseService } from "./paramteragewise.service";
 import { ParamteragewiseformComponent } from "./paramteragewiseform/paramteragewiseform.component";
-
+ 
 @Component({
     selector: "app-paramteragewise",
     templateUrl: "./paramteragewise.component.html",
@@ -16,11 +16,28 @@ import { ParamteragewiseformComponent } from "./paramteragewiseform/paramteragew
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
+ 
 export class ParamteragewiseComponent implements OnInit {
+    displayedColumns: string[] = [
+        "ParameterID",
+        "ParameterName",
+        "ParameterShortName",
+        "PrintParameterName",
+        "UnitName",
+        "IsNumeric",
+        "IsPrintDisSummary",
+        // "MethodName",
+        //"ParaMultipleRange",
+        "AddedBy",
+        "IsDeleted",
+        "action",
+    ];
+
     isLoading = true;
+    sIsLoading: string = '';
     msg: any;
     step = 0;
-    AgetypeSearch: string;
+    SearchName: string;
 
     setStep(index: number) {
         this.step = index;
@@ -30,70 +47,56 @@ export class ParamteragewiseComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatAccordion) accordion: MatAccordion;
 
-    displayedColumns: string[] = [
-        "PathparaRangeId",
-        "ParaId",
-        "GenderName",
-        "MinAge",
-        "MaxAge",
-        "AgeType",
-        "MinValue",
-        "MaxValue",
-        "IsDeleted",
-        "AddedBy",
-        "action",
-    ];
+
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
-    DSParameterAgewiseMasterList =
-        new MatTableDataSource<PathparameterAgeWiseMaster>();
+    DSParameterList = new MatTableDataSource<PathparameterMaster>();
 
     constructor(
         public _ParameterageService: ParamteragewiseService,
-
         public _matDialog: MatDialog
-    ) {}
+    ) { }
 
     ngOnInit(): void {
-        this.getParameterAgeMasterList();
+        this.getParameterMasterList();
     }
 
     onSearchClear() {
         this._ParameterageService.myformSearch.reset({
-            ParameterIdSearch: "",
+            ParameterNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getParameterMasterList();
     }
-
+    onSearch() {
+        this.getParameterMasterList();
+    }
     onClear() {
         this._ParameterageService.myform.reset({ IsDeleted: "false" });
         this._ParameterageService.initializeFormGroup();
     }
 
-    onSearch() {
-        this.getParameterAgeMasterList();
-    }
-
-    getParameterAgeMasterList() {
+    getParameterMasterList() {
+        this.sIsLoading = 'loading-data';
         var m_data = {
-            ParameterId:
-                this._ParameterageService.myformSearch.get("ParameterIdSearch")
-                    .value || 1,
+            ParameterName:
+                this._ParameterageService.myformSearch.get("ParameterNameSearch").value.trim() + "%" || "%",
         };
-        this._ParameterageService.getParameterAgeMasterList(m_data).subscribe(
-            (Menu) => {
-                this.DSParameterAgewiseMasterList.data =
-                    Menu as PathparameterAgeWiseMaster[];
-                this.isLoading = false;
-                this.DSParameterAgewiseMasterList.sort = this.sort;
-                this.DSParameterAgewiseMasterList.paginator = this.paginator;
-            },
-            (error) => (this.isLoading = false)
-        );
+        this._ParameterageService.getParameterMasterList(m_data).subscribe((Menu) => {
+            this.DSParameterList.data = Menu as PathparameterMaster[];
+            this.isLoading = false;
+            this.DSParameterList.sort = this.sort;
+            this.DSParameterList.paginator = this.paginator;
+            this.sIsLoading = '';
+            console.log(this.DSParameterList);
+        },
+            error => {
+                this.sIsLoading = '';
+            });
     }
 
-    onDeactive(ParaId) {
+
+    onDeactive(ParameterID) {
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
             {
@@ -105,96 +108,101 @@ export class ParamteragewiseComponent implements OnInit {
         this.confirmDialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 let Query =
-                    "Update M_PathParaRangeWithAgeMaster set IsDeleted=1 where PathparaRangeId=" +
-                    ParaId;
+                "Update M_PathParameterMaster set Isdeleted=0 where ParameterID=" +
+                    ParameterID;
                 console.log(Query);
-                this._ParameterageService
-                    .deactivateTheStatus(Query)
+                this._ParameterageService.deactivateTheStatus(Query)
                     .subscribe((data) => (this.msg = data));
-                this.getParameterAgeMasterList();
+                this.getParameterMasterList();
             }
             this.confirmDialogRef = null;
         });
+        this.getParameterMasterList();
     }
 
     onEdit(row) {
-        console.log(row);
         var m_data = {
-            PathparaRangeId: row.PathparaRangeId,
-            ParaId: row.ParaId,
-            SexId: row.SexId,
-            MinAge: row.MinAge,
-            MaxAge: row.MaxAge,
-            MinValue: row.MinValue.trim(),
-            MaxValue: row.MaxValue.trim(),
-            AgeType: row.AgeType.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            ParameterID: row.ParameterID,
+            ParameterShortName: row.ParameterShortName.trim(),
+            ParameterName: row.ParameterName.trim(),
+            PrintParameterName: row.PrintParameterName.trim(),
+            UnitId: row.UnitId,
+            IsNumeric: row.IsNumericParameter,
+            IsDeleted: JSON.stringify(row.Isdeleted),
             UpdatedBy: row.UpdatedBy,
+            IsPrintDisSummary: JSON.stringify(row.IsPrintDisSummary),
+            MethodName: row.MethodName,
+            ParaMultipleRange: row.ParaMultipleRange,
         };
+        console.log(row)
+        
 
-        console.log(m_data);
         this._ParameterageService.populateForm(m_data);
 
         const dialogRef = this._matDialog.open(ParamteragewiseformComponent, {
-            maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxWidth: "70vw",
+            maxHeight: "90vh",
             width: "100%",
             height: "100%",
+            data : {
+                registerObj : row,
+              }
         });
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-            this.getParameterAgeMasterList();
+            this.getParameterMasterList();
         });
     }
 
     onAdd() {
         const dialogRef = this._matDialog.open(ParamteragewiseformComponent, {
-            maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxWidth: "70vw",
+            maxHeight: "90vh",
             width: "100%",
             height: "100%",
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-            this.getParameterAgeMasterList();
+            this.getParameterMasterList();
         });
     }
 }
 
-export class PathparameterAgeWiseMaster {
-    PathparaRangeId: Number;
-    ParaId: Number;
-    SexId: Number;
-    MinAge: Number;
-    MaxAge: Number;
-    AgeType: Number;
-    MinValue: String;
-    MaxValue: String;
+export class PathparameterMaster {
+    ParameterID: number;
+    ParameterShortName: string;
+    ParameterName: string;
+    PrintParameterName: string;
+    UnitId: number;
+    IsNumeric: Number;
     IsDeleted: boolean;
-    Addedby: Number;
-    Updatedby: Number;
+    AddedBy: number;
+    UpdatedBy: number;
+    IsPrintDisSummary: boolean;
+    MethodName: string;
+    ParaMultipleRange: string;
 
+    IsDeletedSearch: number;
     /**
      * Constructor
      *
-     * @param PathparameterAgeWiseMaster
+     * @param PathparameterMaster
      */
-    constructor(PathparameterAgeWiseMaster) {
+    constructor(PathparameterMaster) {
         {
-            this.PathparaRangeId =
-                PathparameterAgeWiseMaster.PathparaRangeId || "";
-            this.ParaId = PathparameterAgeWiseMaster.ParaId || "";
-            this.SexId = PathparameterAgeWiseMaster.SexId || "";
-            this.MinAge = PathparameterAgeWiseMaster.MinAge || "";
-            this.MaxAge = PathparameterAgeWiseMaster.MaxAge || "";
-            this.AgeType = PathparameterAgeWiseMaster.AgeType || "";
-            this.MinValue = PathparameterAgeWiseMaster.MinValue || "";
-            this.MaxValue = PathparameterAgeWiseMaster.MaxValue || "";
-            this.AgeType = PathparameterAgeWiseMaster.AgeType || "";
-            this.IsDeleted = PathparameterAgeWiseMaster.IsDeleted || "false";
-            this.Addedby = PathparameterAgeWiseMaster.AddedBy || "";
-            this.Updatedby = PathparameterAgeWiseMaster.UpdatedBy || "";
+            this.ParameterID = PathparameterMaster.ParameterID || "";
+            this.ParameterShortName = PathparameterMaster.ParameterShortName || "";
+            this.ParameterName = PathparameterMaster.ParameterName || "";
+            this.PrintParameterName =PathparameterMaster.PrintParameterName || "";
+            this.UnitId = PathparameterMaster.UnitId || "";
+            this.IsNumeric = PathparameterMaster.IsNumeric || "false";
+            this.IsDeleted = PathparameterMaster.IsDeleted || "false";
+            this.AddedBy = PathparameterMaster.AddedBy || "";
+            this.UpdatedBy = PathparameterMaster.UpdatedBy || "";
+            this.IsPrintDisSummary = PathparameterMaster.IsPrintDisSummary || "false";
+            this.ParaMultipleRange =PathparameterMaster.ParaMultipleRange || "";
+            this.IsDeletedSearch = PathparameterMaster.IsDeletedSearch || "";
         }
     }
 }

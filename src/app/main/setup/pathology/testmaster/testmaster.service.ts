@@ -19,12 +19,12 @@ export class TestmasterService {
 
     createPathtestForm(): FormGroup {
         return this._formBuilder.group({
+           
             TestId: [""],
             TestName: [""],
             PrintTestName: [""],
             CategoryId: [""],
             CategoryName: [""],
-            IsSubTest: [""],
             TechniqueName: [""],
             MachineName: [""],
             SuggestionNote: [""],
@@ -42,7 +42,7 @@ export class TestmasterService {
             AddedBy: [""],
             action: [""],
             parametertxt: [""],
-            PTemplateId: [""],
+            PTemplateId: [""], 
         });
     }
 
@@ -50,6 +50,7 @@ export class TestmasterService {
         return this._formBuilder.group({
             TestNameSearch: [""],
             IsDeletedSearch: ["2"],
+            IsSubTest:[" "],
         });
     }
 
@@ -59,8 +60,13 @@ export class TestmasterService {
 
     // get Test Master list
     public getTestMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_PathologyTestList",
+        return this._httpClient.post( "Generic/GetByProc?procName=Retrieve_PathologyTestList",
+            param
+        );
+    }
+      // get sub Test Master list
+      public getSubTestMasterList(param) {
+        return this._httpClient.post( "Generic/GetByProc?procName=Retrieve_PathologySubTestList",
             param
         );
     }

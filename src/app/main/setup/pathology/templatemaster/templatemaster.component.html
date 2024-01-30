@@ -16,7 +16,7 @@
         </div>
         <div fxLayout="row" fxLayoutAlign="start end">
             <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">
-                <mat-icon color="Primary" title=" Add New Template ">add</mat-icon>Add
+                add<mat-icon color="Primary" title=" Add New Template ">add_to_photos</mat-icon>
             </button>
         </div>
     </mat-toolbar>
@@ -54,7 +54,7 @@
                            </form>
                        </div> 
                         <div style="width: 100%;">
-                            <mat-table #table class="table" matSort [dataSource]="DSTemplateMasterList"
+                            <mat-table #table class="table2" matSort [dataSource]="DSTemplateMasterList"
                                 [@animateStagger]="{value:'50'}"  style="overflow:auto; width: 100%;">
 
                                 <ng-container matColumnDef="TemplateId">

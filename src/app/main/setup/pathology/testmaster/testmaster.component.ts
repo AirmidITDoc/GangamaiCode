@@ -17,10 +17,29 @@ import { MatAccordion } from "@angular/material/expansion";
     animations: fuseAnimations,
 })
 export class TestmasterComponent implements OnInit {
-    isLoading = true;
+    displayedColumns: string[] = [
+        "TestId",
+        "TestName",
+        "PrintTestName",
+        "CategoryName",
+        "TechniqueName",
+        "MachineName",
+        "SuggestionNote",
+        "FootNote",
+       // "ServiceName",
+        "AddedBy",
+        "IsTemplateTest",
+       // "IsCategoryPrint",
+       // "IsPrintTestName",
+        "IsDeleted",
+        "action",
+    ];
+
     msg: any;
     step = 0;
     SearchName: string;
+    isLoading = true;
+    sIsLoading: string = '';
 
     setStep(index: number) {
         this.step = index;
@@ -31,24 +50,6 @@ export class TestmasterComponent implements OnInit {
     @ViewChild(MatAccordion) accordion: MatAccordion;
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
-    displayedColumns: string[] = [
-        "TestId",
-        "TestName",
-        "PrintTestName",
-        "CategoryName",
-        "TechniqueName",
-        "MachineName",
-        "SuggestionNote",
-        "FootNote",
-        "ServiceName",
-        "AddedBy",
-        "IsTemplateTest",
-        "IsCategoryPrint",
-        "IsPrintTestName",
-        "IsDeleted",
-        "action",
-    ];
 
     DSTestMasterList = new MatTableDataSource<TestMaster>();
 
@@ -67,28 +68,45 @@ export class TestmasterComponent implements OnInit {
             TestNameSearch: "",
             IsDeletedSearch: "2",
         });
+        this.getTestMasterList();
     }
-
-    onClear() {
-        this._TestService.myform.reset({ IsDeleted: "false" });
-        this._TestService.initializeFormGroup();
-    }
-
     onSearch() {
         this.getTestMasterList();
     }
 
     getTestMasterList() {
+        this.sIsLoading = 'loading-data';
         var m_data = {
-            ServiceName: "%",
+            ServiceName:this._TestService.myformSearch.get('TestNameSearch').value + "%" || "%"
         };
         this._TestService.getTestMasterList(m_data).subscribe((Menu) => {
             this.DSTestMasterList.data = Menu as TestMaster[];
+           // console.log(this.DSTestMasterList)
+            this.sIsLoading = '';
             this.DSTestMasterList.sort = this.sort;
             this.DSTestMasterList.paginator = this.paginator;
+        },
+        error => {
+          this.sIsLoading = '';
         });
     }
-
+    getSubTestMasterList() {
+        this.sIsLoading = 'loading-data';
+        var m_data = {
+            ServiceName:this._TestService.myformSearch.get('TestNameSearch').value + "%" || "%"
+        };
+        this._TestService.getSubTestMasterList(m_data).subscribe((Menu) => {
+            this.DSTestMasterList.data = Menu as TestMaster[];
+            console.log(this.DSTestMasterList)
+            this.sIsLoading = '';
+            this.DSTestMasterList.sort = this.sort;
+            this.DSTestMasterList.paginator = this.paginator;
+        },
+        error => {
+          this.sIsLoading = '';
+        });
+    }
+ 
     onDeactive(TestId) {
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
@@ -283,6 +301,10 @@ export class TestmasterComponent implements OnInit {
             console.log("The dialog was closed - Insert Action", result);
             this.getTestMasterList();
         });
+    }
+    onClear() {
+        this._TestService.myform.reset({ IsDeleted: "false" });
+        this._TestService.initializeFormGroup();
     }
 }
 

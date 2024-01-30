@@ -1,53 +1,40 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
-
-        <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="start center">
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Parameter Age Wise Master
+                    Parameter Wise Age Master
                 </span>
+                <button mat-raised-button color="pine" style="margin-left: 1280px;" (click)="onAdd()">Add
+                    <mat-icon>add_to_photos</mat-icon>
+
+                </button>
             </div>
         </div>
-        <!-- / APP TITLE -->
-        <!-- SEARCH -->
-        <!-- / SEARCH -->
-
     </div>
-    <!-- / HEADER -->
 
-    <!-- CONTENT -->
+
     <div class="content">
-
-        <!-- SIDEBAR -->
-        <!-- / SIDEBAR -->
-
-        <!-- CENTER -->
         <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <!-- CONTENT -->
             <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
 
-
-                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="10px">
-
-                    <div fxFlex.gt-sm="90%" fxFlex>
-
-
-                        <div fxlayout="row" style="
-                                background-color: white;
-                                padding: 5px 10px 5px 10px;
-                            ">
+                        <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
                             <form [formGroup]="_ParameterageService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Parameter Id" autocomplete="off"
-                                            name="ParameterIdSearch" formControlName="ParameterIdSearch" />
+                                        <input matInput placeholder="Search --> Parameter Name" autocomplete="off"
+                                            name="ParameterNameSearch" formControlName="ParameterNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
+                                            (click)="onSearchClear()" (keyup)=" onSearch()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -66,62 +53,71 @@
                                 </div>
                             </form>
                         </div>
+
+
                         <div fxlayout="row">
                             <div style="width: 100%;">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                    class="backgroundBlur">
+                                    <div class="spinner-border text-danger" style="margin-left: 150px;"></div>
+                                </div>
 
-                                <mat-table #table matSort [dataSource]="DSParameterAgewiseMasterList"
+                                <mat-table class="table3" matSort [dataSource]="DSParameterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
 
-                                    <ng-container matColumnDef="PathparaRangeId">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
+                                    <ng-container matColumnDef="ParameterID">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                            fxShow.gt-sm>ParameterID
                                         </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ParameterID}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ParameterName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ParameterName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ParameterName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ParameterShortName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>ShortName </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ParameterShortName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="PrintParameterName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                            fxShow.gt-sm>PrintParameterName </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.PathparaRangeId}} </mat-cell>
+                                            {{element.PrintParameterName}} </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="UnitName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> UnitName </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.UnitName}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                    <ng-container matColumnDef="ParaId">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Parameter Id
+                                    <ng-container matColumnDef="IsNumeric">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> IsNumeric </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsNumericParameter}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IsPrintDisSummary">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> IsPrintDisSummary
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ParaId}}
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="GenderName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>GenderName </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.GenderName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsPrintDisSummary}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="MinAge">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>MinAge
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.MinAge}}
+                                    <ng-container matColumnDef="AddedBy">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> AddedBy</mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
-
-                                    <ng-container matColumnDef="MaxAge">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> MaxAge </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MaxAge}} </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="AgeType">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> AgeType </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AgeType}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="MinValue">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> MinValue </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MinValue}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="MaxValue">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> MaxValue </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MaxValue}}
-                                        </mat-cell>
-                                    </ng-container>
-
 
                                     <ng-container matColumnDef="IsDeleted">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
@@ -134,28 +130,21 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedBy">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Addedby}}
-                                        </mat-cell>
-                                    </ng-container>
-
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef class="table-actions"> Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                     title="Edit Menu">launch</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(row.PathparaRangeId)"
+                                            <button mat-icon-button (click)="onDeactive(row.ParameterID)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
 
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="loading">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            loading data...
-                                        </mat-footer-cell>
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="noData">
@@ -164,42 +153,28 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-
-
                                     <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
 
                                 </mat-table>
 
-
-                                <mat-card *ngIf="isLoading"
-                                    style="display: flex; justify-content: center; align-items: center; background: white;">
-                                    <mat-progress-spinner color="primary" mode="indeterminate">
-                                    </mat-progress-spinner>
-                                </mat-card>
-
-
+                                <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                    showFirstLastButtons></mat-paginator>
                             </div>
-                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                                showFirstLastButtons></mat-paginator>
+
                         </div>
                     </div>
 
-                    <div fxFlex.gt-sm="20%" fxFlex style="background-color: white;">
-                        <button mat-raised-button color="pine" (click)="onAdd()">Add
-                            <mat-icon>add_to_photos</mat-icon>
 
-                        </button>
-
-                    </div>
 
                 </div>
             </div>
-            <!-- / CONTENT -->
         </div>
-        <!-- / CENTER -->
     </div>
-    <!-- / CONTENT-->
 </div>
