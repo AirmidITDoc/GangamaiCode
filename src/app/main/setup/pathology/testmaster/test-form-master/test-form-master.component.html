@@ -1,4 +1,116 @@
-<div class="dialog-content-wrapper">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                {{_TestService.myform.controls.TestId.value?"Modify Test Master":"New
+                Test Master"}}
+            </span>
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+                style="margin-left: 750px;">
+                <mat-icon>close</mat-icon>
+            </button>
+
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style=" background-color: white;
+                             padding: 5px 10px 5px 10px;">
+                            <form [formGroup]="_TestService.myform">
+                                <div class="dialog-content-wrapper">
+                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+                                        <div fxLayout="row">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
+                                                <input name="TestName" formControlName="TestName"
+                                                    placeholder="Select Test Name" matInput required>
+                                                <mat-error>Please enter TestName </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Category Name</mat-label>
+                                                <mat-select formControlName="CategoryId" placeholder="Bank"
+                                                    #singleSelect required>
+                                                    <mat-option>
+                                                        <ngx-mat-select-search [formControl]="categoryFilterCtrl"
+                                                            [placeholderLabel]="'Search'"
+                                                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let element of filteredCategory | async"
+                                                        [value]="element">
+                                                        {{element.CategoryName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxLayout="row">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
+                                                <input name="PrintTestName" formControlName="PrintTestName"
+                                                    placeholder="Select PrintTestName" matInput required>
+                                                <mat-error>Please enter PrintTestName </mat-error>
+                                            </mat-form-field>
+
+                                            <section class="example-section" style="padding: 20px;">
+
+                                                <mat-checkbox formControlName="IsSubTest" class="example-margin"
+                                                    style="margin-left: 15px;"> IsSubTest </mat-checkbox>
+
+                                                <mat-checkbox formControlName="IsTemplateTest" value='false'
+                                                    class="example-margin" style="margin-left: 35px;">Template Formate</mat-checkbox>
+                                            </section>
+
+                                        </div>
+                                        <div fxLayout="row">
+                                            <div fxLayout="column">
+                                                <div fxLayout="row">
+                                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
+                                                        <mat-label>Parameter Name</mat-label>
+                                                        <input name="ParameterName" formControlName="ParameterName" placeholder="Select Parameter Name" matInput required>
+                                                        <mat-error>Please enter TestName </mat-error>
+                                                    </mat-form-field>
+
+                                                    <mat-checkbox formControlName="IsSubTest" class="example-margin"
+                                                    style="margin-left: 15px;padding: 10px;"> IsSubTest </mat-checkbox>
+
+                                                    <div matTooltip="Select All Value to enable this button!!">
+                                                        <button mat-raised-button style="background-color: blue; color: white; width: 70px;
+                                                          margin-left: 20px; margin-top: 10px;"
+                                                            (click)="onAddDescriptive($event)"
+                                                            [disabled]="_TestService.myform.invalid">
+                                                            <mat-icon> add </mat-icon>Add
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- <div class="dialog-content-wrapper">
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
             <h3>{{_TestService.myform.controls.TestId.value?"Modify Test Master":"New
@@ -180,4 +292,4 @@
 
     </div>
 </div>
-<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>
+<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div> -->

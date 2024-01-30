@@ -35,22 +35,27 @@
                                             <input matInput placeholder="Template Name" #TemplateName
                                                 formControlName="TemplateName" required>
                                         </mat-form-field>
+                                        <div>
+                                            <!-- <angular-editor [placeholder]="'Enter text here...'" ></angular-editor> -->
+                                              
+                                        </div>
+                                        
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Template Details</mat-label>
                                             <textarea matInput placeholder="Template Details" #TemplateDetails
-                                                formControlName="TemplateDetails" required [style.fontFamily]="inputFontStyle" 
+                                                formControlName="TemplateDetails" required  
                                                 style="height: 400px;"></textarea>
                                         </mat-form-field>
                                     </div>
 
 
                                 </div>
-                                <div fxLayout="row" fxLayoutGap="6px" style="margin-left: 630px;">
+                                <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end center">
                                     <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
                                         <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
                                     
                                     </mat-radio-group>
-                                    <button mat-raised-button  color="accent" (click)="changeFontStyle()"
+                                    <!-- <button mat-raised-button  color="accent" (click)="changeFontStyle()"
                                     style="width: 100px;height: 35px; ">Text Font</button>
                                     <button mat-raised-button color="accent" m 
                                     style="width: 100px;height: 35px;">Text Color</button>
@@ -59,7 +64,7 @@
                                     <button mat-raised-button color="accent"   
                                     style="width: 10px;height: 35px; ">I</button>
                                     <button mat-raised-button color="accent"  
-                                     style="width: 10px;height: 35px; ">U</button>
+                                     style="width: 10px;height: 35px; ">U</button> -->
 
 
                                 </div>
