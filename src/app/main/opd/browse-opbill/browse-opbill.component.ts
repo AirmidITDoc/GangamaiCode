@@ -317,7 +317,7 @@ viewgetOPBillReportPdf(contact) {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Pharma Sales Summary Viewer"
+          title: "OP BILL Viewer"
         }
       });
       matDialog.afterClosed().subscribe(result => {

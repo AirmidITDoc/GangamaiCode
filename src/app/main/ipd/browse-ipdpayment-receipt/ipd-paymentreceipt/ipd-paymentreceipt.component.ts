@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 import { ViewBrowseIPDPaymentComponent } from '../view-browse-ipdpayment/view-browse-ipdpayment.component';
 import * as converter from 'number-to-words';
 import { fuseAnimations } from '@fuse/animations';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -66,6 +67,8 @@ constructor(private _fuseSidebarService: FuseSidebarService,
   public _BrowseIPDPaymentReceiptService: PaymentReceiptService,
   public datePipe: DatePipe,
   private matDialog: MatDialog,
+  private _matDialog: MatDialog,
+  
   private advanceDataStored: AdvanceDataStored,) { }
 
 ngOnInit(): void {
@@ -148,6 +151,36 @@ getBrowseIPDPaymentReceiptList() {
 
 }
 
+SpinLoading:boolean=false;
+getIpPaymentReceiptview(row) {
+  debugger
+  setTimeout(() => {
+    this.SpinLoading =true;
+  //  this.AdList=true;
+  this._BrowseIPDPaymentReceiptService.getIpPaymentReceiptView(
+  row.PaymentId
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "IP Payment Receipt Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+  });
+ 
+  },100);
+
+ 
+}
 
 getViewbill(contact)
 {

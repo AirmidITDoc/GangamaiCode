@@ -9,6 +9,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
 import { Subscription } from 'rxjs';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-requestforlabtest',
@@ -20,7 +21,7 @@ import { Subscription } from 'rxjs';
 export class RequestforlabtestComponent implements OnInit {
 
   hasSelectedContacts: boolean;
- 
+  SpinLoading:boolean=false;
   displayedColumns: string[] = [
     'action',
     'RegNo',
@@ -54,7 +55,8 @@ export class RequestforlabtestComponent implements OnInit {
   
   constructor(public _RequestforlabtestService:RequestforlabtestService,
     public datePipe: DatePipe,
-  
+    
+    private _matDialog:MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     private dialog:MatDialog
     
@@ -107,6 +109,38 @@ export class RequestforlabtestComponent implements OnInit {
   //   console.log(Parama.RequestId);
   //   this.getRequestdetList(Parama.RequestId)
   // }
+
+
+  viewgetLabrequestReportPdf(row) {
+    setTimeout(() => {
+      this.SpinLoading =true;
+    //  this.AdList=true;
+    this._RequestforlabtestService.getLabrequestview(
+      row.RequestId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Lab Request Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+
   
   reportPrintObjList: RequestList[] = [];
   printTemplate: any;

@@ -40,4 +40,10 @@ export class PaymentReceiptService {
     public getBrowseIPDPaymentReceiptPrint(employee) {
       return this._httpClient.post("Generic/GetByProc?procName=rptIPDPaymentReceiptPrint", employee)
     } 
+
+    
+  public getIpPaymentReceiptView(PaymentId){
+  
+    return this._httpClient.get("InPatient/view-IP-SettlementReceipt?PaymentId=" + PaymentId);
+  }
 }

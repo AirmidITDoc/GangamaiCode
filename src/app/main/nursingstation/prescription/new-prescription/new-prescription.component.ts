@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { PrescriptionList } from '../prescription.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-prescription',
@@ -25,7 +26,7 @@ export class NewPrescriptionComponent implements OnInit {
   vItemName: any;
   vQty: any;
   vRemark: any;
-
+  SpinLoading:boolean=false;
   myForm: FormGroup;
   searchFormGroup: FormGroup;
   saveForm:FormGroup;
@@ -261,6 +262,37 @@ this.WardId=obj.RoomId;
 
   }
 
+  
+  viewgetIpprescriptionReportPdf(OP_IP_ID) {
+    setTimeout(() => {
+      this.SpinLoading =true;
+    //  this.AdList=true;
+    this._PrescriptionService.getIpPrescriptionview(
+      OP_IP_ID,0
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Prescription Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+  
   onAdd() {
     // debugger
 
@@ -465,7 +497,8 @@ this.WardId=obj.RoomId;
         if (response) {
           Swal.fire('Congratulations !', 'New Prescription Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
-              this._matDialog.closeAll();
+              // this._matDialog.closeAll();
+              this.viewgetIpprescriptionReportPdf(response);
             }   
           });
         } else {

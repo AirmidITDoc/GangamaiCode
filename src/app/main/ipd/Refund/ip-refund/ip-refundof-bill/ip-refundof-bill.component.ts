@@ -14,6 +14,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import Swal from 'sweetalert2';
 import { IPRefundService } from '../ip-refund.service';
 import { IPAdvancePaymentComponent } from 'app/main/ipd/ip-search-list/ip-advance-payment/ip-advance-payment.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 type NewType = Observable<any[]>;
 @Component({
   selector: 'app-ip-refundof-bill',
@@ -21,7 +22,7 @@ type NewType = Observable<any[]>;
   styleUrls: ['./ip-refundof-bill.component.scss']
 })
 export class IPRefundofBillComponent implements OnInit {
-
+  SpinLoading:boolean=false;
   screenFromString = 'app-op-refund-bill';
   RefundOfBillFormGroup: FormGroup;
   myRefundBillForm: FormGroup;
@@ -255,6 +256,40 @@ export class IPRefundofBillComponent implements OnInit {
 //     });
 //   }
 
+
+
+
+viewgetRefundofbillReportPdf(RefundId) {
+  setTimeout(() => {
+    this.SpinLoading =true;
+  //  this.AdList=true;
+  this._IPRefundService.getRefundofbillview(
+    RefundId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Refund Of Bill  Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+  });
+ 
+  },100);
+}
+
+
   getserviceetailList() {
     var m_data = {
       "BillNo": this.BillNo
@@ -477,8 +512,8 @@ export class IPRefundofBillComponent implements OnInit {
             if (result.isConfirmed) {
               
             let m=response
-            this.getPrint(m);
-
+            // this.getPrint(m);
+              this.viewgetRefundofbillReportPdf(response);
               // this.getBilldetailList();
               this.dialogRef.close();
             }

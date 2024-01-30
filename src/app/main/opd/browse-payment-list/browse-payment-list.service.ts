@@ -53,4 +53,9 @@ export class BrowsePaymentListService {
   public getHospital() {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Hospital", {})
   }  
+
+  
+  public getOpPaymentview(PaymentId){
+    return this._httpClient.get("OutPatient/view-OP-PaymentReceipt?PaymentId=" + PaymentId);
+  }
 }

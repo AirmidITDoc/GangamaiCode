@@ -59,4 +59,9 @@ public getRefundofBillIPDList(employee){
   return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundofBillIPD_List",employee)
   }
 
+
+  
+  public getRefundofbillview(RefundId){
+    return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
+  }
 }

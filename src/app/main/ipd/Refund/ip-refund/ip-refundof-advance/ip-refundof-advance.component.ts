@@ -14,6 +14,7 @@ import { BrowseIpdreturnadvanceReceipt } from '../ip-refund.component';
 import { IPAdvancePaymentComponent } from 'app/main/ipd/ip-search-list/ip-advance-payment/ip-advance-payment.component';
 import * as converter from 'number-to-words';
 import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -48,7 +49,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   pay_balance_Data: any;
   advDetailId:any;
   AdvanceDetailID: any;
-  
+  SpinLoading:boolean=false;
   printTemplate: any;
   reportPrintObj: BrowseIpdreturnadvanceReceipt;
   subscriptionArr: Subscription[] = [];
@@ -87,6 +88,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     public datePipe: DatePipe,
+    private matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     private dialogRef: MatDialogRef<IPRefundofAdvanceComponent>,
     private formBuilder: FormBuilder) { 
@@ -177,6 +179,38 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.BalanceAdvance=  this.BalanceAmount-this.NewRefundAmount;
 
   }
+
+
+  viewgetRefundofadvanceReportPdf(row) {
+    setTimeout(() => {
+      this.SpinLoading =true;
+    //  this.AdList=true;
+    this._IpSearchListService.getRefundofAdvanceview(
+      row.RefundId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Refund Of Bill  Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+  
 
   onEdit(row){
 
@@ -289,7 +323,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
               this.getRefundofAdvanceList();
             this.getReturndetails();
             let m=response;
-          this.getPrint(m);
+          // this.getPrint(m);
+          this.viewgetRefundofadvanceReportPdf(response);
           this.dialogRef.close();
             }
           });

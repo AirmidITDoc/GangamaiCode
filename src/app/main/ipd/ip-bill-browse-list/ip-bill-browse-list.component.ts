@@ -76,7 +76,7 @@ export class IPBillBrowseListComponent implements OnInit {
   displayedColumns = [
 
     'SelfOrCompany',
-    //'InterimOrFinal',
+    'InterimOrFinal',
     'BalanceAmt',
     'BillDate',
     'PBillNo',
@@ -151,15 +151,18 @@ export class IPBillBrowseListComponent implements OnInit {
   getRecord(contact, m): void {
     if (m == "Print Final Bill") {
     //  this.getPrint(contact);
+    if(contact.InterimOrFinal)
     this.viewgetBillReportPdf(contact.BillNo)
+   else
+   this.viewgetInterimBillReportPdf(contact.BillNo)
     }
   
-    else if (m == "Print FinalBill Datewise") {
-      this.getPrintDatewise(contact);
-    }
-    else if (m == "Print FinalBill WardWise") {
-      this.getPrintWardWise(contact);
-    }
+    // else if (m == "Print FinalBill Datewise") {
+    //   this.getPrintDatewise(contact);
+    // }
+    // else if (m == "Print FinalBill WardWise") {
+    //   this.getPrintWardWise(contact);
+    // }
        
   }
 
@@ -556,6 +559,33 @@ export class IPBillBrowseListComponent implements OnInit {
    
     },100);
   }
+
+  viewgetInterimBillReportPdf(BillNo) {
+    setTimeout(() => {
+      this.SpinLoading =true;
+     this.AdList=true;
+    this._IpBillBrowseListService.getIpInterimBillReceipt(
+    BillNo
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Interim Bill  Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+  
 
   // GET DATA FROM DATABASE 
   getPrint(el) {

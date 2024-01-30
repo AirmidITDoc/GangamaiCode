@@ -22,6 +22,7 @@ import { IPpaymentWithadvanceComponent } from './ippayment-withadvance/ippayment
 import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
 import * as converter from 'number-to-words';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -90,6 +91,7 @@ export class IPSettlementComponent implements OnInit {
   hasSelectedContacts: boolean;
   constructor(public _IpSearchListService: IPSettlementService,
     private accountService: AuthenticationService,
+    
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
     // @Inject(MAT_DIALOG_DATA) public data: any,
@@ -183,6 +185,42 @@ export class IPSettlementComponent implements OnInit {
 
    
   }
+
+  SpinLoading:boolean=false;
+
+
+
+  
+  viewgetSettlementReportPdf(PaymentId) {
+    setTimeout(() => {
+      this.SpinLoading =true;
+    //  this.AdList=true;
+    this._IpSearchListService.getSettlementview(
+      PaymentId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Settlement Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+
   getPaidBillDetails() {
 
     this.sIsLoading = 'loading-data';
@@ -258,15 +296,15 @@ export class IPSettlementComponent implements OnInit {
     PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.RegId;
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;//this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
-
-    const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
+debugger
+    const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
         maxWidth: "95vw",
         height: '640px',
         width: '100%',
         data: {
-          advanceObj: PatientHeaderObj,
-          FromName: "IP-Payment"
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "SETTLEMENT"
         }
       });
 
@@ -328,8 +366,8 @@ export class IPSettlementComponent implements OnInit {
           if (response) {
             Swal.fire('Payment Done  !', 'Ip Settlemet Done Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
-                let m = response;
-                this.getPrint(m);
+               debugger
+                this.viewgetSettlementReportPdf(response);
                 this._matDialog.closeAll();
               }
             });

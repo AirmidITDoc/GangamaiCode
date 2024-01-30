@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
  
  
 @Component({
@@ -37,7 +38,7 @@ export class NewRequestforlabComponent implements OnInit {
   isLoading: String = '';
   sIsLoading: string = "";
   matDialogRef: any;
-  
+  SpinLoading:boolean=false;
  
  
  
@@ -68,6 +69,7 @@ export class NewRequestforlabComponent implements OnInit {
  
   constructor(private _FormBuilder: FormBuilder,
     private dialogRef: MatDialogRef<NewRequestforlabComponent>,
+    private _matDialog:MatDialog,
     public _RequestforlabtestService: RequestforlabtestService,
     private _loggedService: AuthenticationService) { }
 
@@ -184,6 +186,35 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
 
+  viewgetLabrequestReportPdf(RequestId) {
+    setTimeout(() => {
+      this.SpinLoading =true;
+    //  this.AdList=true;
+    this._RequestforlabtestService.getLabrequestview(
+      RequestId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Prescription Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
   
   getServiceListdata() {
     debugger
@@ -299,7 +330,8 @@ export class NewRequestforlabComponent implements OnInit {
       if (response) {
         Swal.fire('Congratulations !', 'New Lab Request Saved Successfully  !', 'success').then((result) => {
           if (result) {
-            this.dialogRef.close();
+            // this.dialogRef.close();
+this.viewgetLabrequestReportPdf(response);
           }
         });
       } else {

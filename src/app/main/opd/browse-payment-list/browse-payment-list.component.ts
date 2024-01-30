@@ -15,6 +15,7 @@ import * as converter from 'number-to-words';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
 import { HeaderComponent } from 'app/main/shared/componets/header/header.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -144,6 +145,38 @@ ngOnChanges(changes: SimpleChanges) {
   this.dataSource.paginator=this.paginator;
 }
 
+
+SpinLoading:boolean=false;
+viewgetOPPayemntPdf(row) {
+  debugger
+  setTimeout(() => {
+    this.SpinLoading =true;
+  //  this.AdList=true;
+  this._BrowseOpdPaymentReceiptService.getOpPaymentview(
+    row.PaymentId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Op Payment Receipt Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+  });
+ 
+  },100);
+}
 
 
   getRecord(el,i) {

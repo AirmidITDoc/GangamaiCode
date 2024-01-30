@@ -457,4 +457,19 @@ public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
     return this._httpClient.get("InPatient/view-Admitted_PatientList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
   }
 
+
+  public getAdmittedPatientCasepaaperView(AdmissionId){
+  
+    return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+  }
+
+
+  
 }
+
+
+// exec rptIPRefundofBillPrint 10268 
+// exec rptIPRefundofAdvancePrint 10043
+// exec rptIPDPaymentReceiptPrint 156754
+
+// exec rptAdmissionPrint1 10694

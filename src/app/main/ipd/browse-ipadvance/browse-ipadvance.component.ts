@@ -103,8 +103,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
     var D_data= {
       "F_Name":this._advanceService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name":this._advanceService.myFilterform.get("LastName").value + '%' || "%",
-      "From_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM/dd/yyyy") || "01/01/1900",
-      "To_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM/dd/yyyy") || "01/01/1900",
+      "From_Dt" :"2022-01-26 00:00:00.000",// this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM/dd/yyyy") || "01/01/1900",
+      "To_Dt" :"2022-10-26 00:00:00.000",// this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM/dd/yyyy") || "01/01/1900",
       "Reg_No":this._advanceService.myFilterform.get("RegNo").value || 0,
       "PBillNo":this._advanceService.myFilterform.get("PBillNo").value || 0
     }
@@ -199,12 +199,12 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
   
 viewgetIPAdvanceReportPdf(contact) {
-
+debugger
   setTimeout(() => {
     this.SpinLoading =true;
    this.AdList=true;
    
-  this._advanceService.getIPAdvanceReceipt(
+  this._advanceService.getViewAdvanceReceipt(
  contact.AdvanceDetailID
   ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -214,7 +214,7 @@ viewgetIPAdvanceReportPdf(contact) {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Pharma Sales Summary Viewer"
+          title: "Ip advance Viewer"
         }
       });
       matDialog.afterClosed().subscribe(result => {
