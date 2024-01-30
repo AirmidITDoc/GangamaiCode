@@ -1,13 +1,13 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-          <!-- <h3>Registration </h3> -->
-          <h3>New Supplier Master </h3>
-          <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
-            <mat-icon>close</mat-icon>
-          </button>
+            <!-- <h3>Registration </h3> -->
+            <h3>New Supplier Master </h3>
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
         </mat-toolbar-row>
-      </mat-toolbar>
+    </mat-toolbar>
 
     <div>
         <form [formGroup]="_supplierService.myform" style="padding: 20px;">
@@ -24,7 +24,8 @@
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Supplier Type</mat-label>
                     <input matAutocompletePosition="below" type="text" placeholder="Select SupplierType" matInput
-                        formControlName="SupplierType" [matAutocomplete]="autoSupplierType" required (keydown)="onEnterSuppliertype($event)" #suppliertype>
+                        formControlName="SupplierType" [matAutocomplete]="autoSupplierType" required
+                        (keydown)="onEnterSuppliertype($event)" #suppliertype>
                     <span matSuffix style="display: flex;">
                         <mat-icon class="mat-icon-close"
                             (click)="_supplierService.myform.get('SupplierType').setValue(''); isSuppliertypeSelected = false;">close</mat-icon>
@@ -43,7 +44,7 @@
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput
-                    (keydown)="onEnterAddress($event)" #Address >
+                        (keydown)="onEnterAddress($event)" #Address required>
                     <mat-error>Please enter Address </mat-error>
                 </mat-form-field>
 
@@ -53,16 +54,17 @@
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <input name="Pincode" placeholder="Enter Pincode No." (keydown)="onEnterPincode($event)" #Pincode
                         [ngClass]="{ 'is-invalid': submitted && f.Pincode.errors }" formControlName="Pincode" matInput
-                        required  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,6);">
+                        required
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,6);">
                     <span class="error" *ngIf="f.Pincode.invalid && f.Pincode.touched">Pincode required only
                         Digits</span>
                 </mat-form-field>
 
 
 
-                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex style="margin-right:10px;"> 
+                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex style="margin-right:10px;">
                     <input name="ContactPerson" placeholder="Enter ContactPerson" formControlName="ContactPerson"
-                        matInput  (keydown)="onEnterContactperson($event)" #Contactperson>
+                        matInput (keydown)="onEnterContactperson($event)" #Contactperson>
                     <span class="error" *ngIf="f.ContactPerson.invalid && f.ContactPerson.touched">ContactPerson
                         required only
                         Alphabets</span>
@@ -70,45 +72,44 @@
 
 
 
-              
-                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-right:10px;">
+
+                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                    style="margin-right:10px;">
                     <mat-label>Mobile Number</mat-label>
                     <input name="Mobile" formControlName="Mobile" placeholder="Mobile Number" matInput required
-                      [(ngModel)]="registerObj.Mobile" #mobile
-                      (keydown)="onEntermobile($event)"  #mobile
-                    
-                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                      type="number" value="Mobile.length">
+                        [(ngModel)]="registerObj.Mobile" #mobile (keydown)="onEntermobile($event)" #mobile
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                        type="number" value="Mobile.length">
                     <mat-error class="error"
-                      *ngIf="_supplierService.myform.get('Mobile').invalid && _supplierService.myform.get('Mobile').touched">10
-                      digits Mobile number is
-                      required</mat-error>
-                  </mat-form-field>
+                        *ngIf="_supplierService.myform.get('Mobile').invalid && _supplierService.myform.get('Mobile').touched">10
+                        digits Mobile number is
+                        required</mat-error>
+                </mat-form-field>
 
 
-                  <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-right:10px;">
+                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                    style="margin-right:10px;">
                     <mat-label>Phone Number</mat-label>
                     <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput #phone
-                      (keydown)="onEnterphone($event)" [(ngModel)]="registerObj.Phone"   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                      type="number"  value="9876658688">
-                  </mat-form-field>
+                        (keydown)="onEnterphone($event)" [(ngModel)]="registerObj.Phone"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                        type="number" value="9876658688">
+                </mat-form-field>
 
-              
+
             </div>
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                    <input name="Taluka" placeholder="Enter Taluka"
-                       formControlName="Taluka" matInput (keydown)="onEnterTaluka($event)" #Taluka
-                        required>
+                    <input name="Taluka" placeholder="Enter Taluka" formControlName="Taluka" matInput
+                        (keydown)="onEnterTaluka($event)" #Taluka required>
                     <span class="error" *ngIf="f.Taluka.invalid && f.Taluka.touched">Taluka required only Digits</span>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 10px;">
                     <mat-label>City</mat-label>
                     <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput #city
-                        formControlName="CityId" [matAutocomplete]="autoCity" required
-                        (keydown)="onEnterCity($event)">
+                        formControlName="CityId" [matAutocomplete]="autoCity" required (keydown)="onEnterCity($event)">
                     <span matSuffix style="display: flex;">
                         <mat-icon class="mat-icon-close"
                             (click)="_supplierService.myform.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
@@ -151,14 +152,14 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                    <input name="Fax" placeholder="Select Fax"
-                        formControlName="Fax" matInput  (keydown)="onEnterfax($event)" #Fax oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,15);">
+                    <input name="Fax" placeholder="Select Fax" formControlName="Fax" matInput
+                        (keydown)="onEnterfax($event)" #Fax
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,15);">
                     <span class="error" *ngIf="f.Fax.invalid && f.Fax.touched">Fax required only Digits</span>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                    <input name="Email" placeholder="Enter Email"
-                        formControlName="Email" matInput
+                    <input name="Email" placeholder="Enter Email" formControlName="Email" matInput required
                         (keydown)="onEnterEmail($event)" #Email>
                     <span class="error" *ngIf="f.Email.invalid && f.Email.touched">Email required in Format</span>
                 </mat-form-field>
@@ -228,35 +229,36 @@
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <input name="GSTNo" placeholder="Enter GSTNo" formControlName="GSTNo" matInput
-                    (keydown)="onEnterGst($event)" #Gst>
+                        (keydown)="onEnterGst($event)" #Gst required>
                     <!-- <span class="error" *ngIf="f.GSTNo.invalid && f.GSTNo.touched">GSTNo Enter only in Format</span> -->
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <input name="PanNo" placeholder="Enter PanNo" formControlName="PanNo" matInput
-                    (keydown)="onEnterPan($event)" #Pan>
+                        (keydown)="onEnterPan($event)" #Pan>
                     <!-- <span class="error" *ngIf="f.PanNo.invalid && f.PanNo.touched">PanNo Enter only Format</span> -->
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                    <input name="LicNo" placeholder="Enter LicNo" formControlName="LicNo" matInput  (keydown)="onEnterLicno($event)" #Licno>
+                    <input name="LicNo" placeholder="Enter LicNo" formControlName="LicNo" matInput
+                        (keydown)="onEnterLicno($event)" #Licno>
                     <!-- <span class="error" *ngIf="f.GSTNo.invalid && f.GSTNo.touched">GSTNo Enter only in Format</span> -->
                 </mat-form-field>
 
 
-                
+
                 <mat-form-field appearance="outline" fxFlex style="margin-right: 10px;">
                     <mat-label>Exp date</mat-label>
                     <input name="ExpDate" matInput [matDatepicker]="picker" formControllName="ExpDate"
-                      [value]="registerObj.ExpDate" [readonly]="true" (keydown)="onEnterexpdate($event)" #Expdate>
+                        [value]="registerObj.ExpDate" [readonly]="true" (keydown)="onEnterexpdate($event)" #Expdate>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
-      
-                  </mat-form-field>
+
+                </mat-form-field>
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <input name="DlNo" placeholder="Enter DL No" formControlName="DlNo" matInput maxlength="20"
-                    (keydown)="onEnterDlno($event)" #Dlno>
-                    <!-- <span class="error" *ngIf="f.PanNo.invalid && f.PanNo.touched">PanNo Enter only Format</span> -->
+                        (keydown)="onEnterDlno($event)" #Dlno required>
+                    <!-- <span class="error" *ngIf="f.DlNo.invalid && f.DlNo.touched">DlNo Enter only Format</span> -->
                 </mat-form-field>
 
             </div>
@@ -282,7 +284,7 @@
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex style="margin-right: 10px;">
                     <input name="BanlBranch" placeholder="Enter BanlBranch" formControlName="BanlBranch" matInput
-                    (keydown)="onEnterBankbranch($event)" #Bankbranch>
+                        (keydown)="onEnterBankbranch($event)" #Bankbranch required>
                     <!-- <span class="error" *ngIf="f.PanNo.invalid && f.PanNo.touched">PanNo Enter only Format</span> -->
                 </mat-form-field>
 
@@ -290,13 +292,13 @@
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex style="margin-right: 10px;">
                     <input name="BankNo" placeholder="Enter BankNo" formControlName="BankNo" matInput
-                    (keydown)="onEnterBankno($event)" #Bankno>
+                        (keydown)="onEnterBankno($event)" #Bankno required>
                     <!-- <span class="error" *ngIf="f.PanNo.invalid && f.PanNo.touched">PanNo Enter only Format</span> -->
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <input name="IFSCcode" placeholder="Enter IFSCcode" formControlName="IFSCcode" matInput
-                    (keydown)="onEnterIfsc($event)" #IFSC>
+                        (keydown)="onEnterIfsc($event)" #IFSC required>
                     <!-- <span class="error" *ngIf="f.PanNo.invalid && f.PanNo.touched">PanNo Enter only Format</span> -->
                 </mat-form-field>
 
@@ -308,13 +310,28 @@
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <mat-select placeholder="Select StoreName" #txt formControlName="StoreId" multiple
-                    (keydown)="onEnterStore($event)" #Store>
+                        (keydown)="onEnterStore($event)" #Store>
                         <mat-option *ngFor="let M of StorecmbList" [value]="M.StoreId">
                             {{M.StoreName}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
 
+                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <mat-select placeholder="Select Vender Type" #txt formControlName="VenderTypeId" 
+                        (keydown)="onEnterVender($event)" #VenderTypeId>
+                        <mat-option *ngFor="let M of VendercmbList" [value]="M.VenderTypeId">
+                            {{M.VenderTypeName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+
+                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <input name="OpeningBal" placeholder="Enter OpeningBal" formControlName="OpeningBal" matInput
+                        (keydown)="onEnterOpeningBal($event)" #OpeningBal>
+                    <!-- <span class="error" *ngIf="f.PanNo.invalid && f.PanNo.touched">PanNo Enter only Format</span> -->
+                </mat-form-field>
             </div>
 
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -322,13 +339,12 @@
                     <mat-radio-button value='false' class="mr-sm-12" fxFlex>MSM NO</mat-radio-button>
                </mat-radio-group> -->
                 <mat-checkbox aria-label="Msm" formControlName="MsmNo" (checked)=true (change)="onChangeMsm($event)"
-                style="font-weight: bold;margin-right: 20px;">MSM
+                    style="font-weight: bold;margin-right: 20px;">MSME
                 </mat-checkbox>
 
-               
+
                 <mat-form-field appearance="outline" class="mr-sm-12" style="width:150px;" *ngIf="msmflag">
-                    <input name="MSMNo" placeholder="Select MSMNo" 
-                        formControlName="MSMNo" matInput>
+                    <input name="MSMNo" placeholder="Select MSMNo" formControlName="MSMNo" matInput>
                     <span class="error" *ngIf="f.MSMNo.invalid && f.MSMNo.touched">MSMNo required only Digits</span>
                 </mat-form-field>
 
@@ -343,11 +359,14 @@
     <!-- [disabled]="_supplierService.myform.invalid" -->
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
         <div class="button-row">
+            <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true (change)="onChangeMode($event)"
+            style="font-weight: bold;margin-right: 20px;">Create / Approval
+        </mat-checkbox>
             <button class="footer-btn" (click)="onClose()">Close</button>
             <button class="next-btn" color="accent" type="submit" (click)="onSubmit()" style="border-radius: 16px;"
-            [disabled]=!save>Save</button>
+                [disabled]=!save>Save</button>
 
-           
+
         </div>
     </div>
     <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>

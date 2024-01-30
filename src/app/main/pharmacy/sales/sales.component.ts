@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { difference, parseInt } from 'lodash';
+import { difference, forEach, parseInt } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { SalePopupComponent } from './sale-popup/sale-popup.component';
@@ -136,6 +136,8 @@ export class SalesComponent implements OnInit {
   Filepath:any;
   reportItemPrintObj: Printsal;
   reportPrintObjItemList: Printsal[] = [];
+
+  repeatItemList: IndentList[] = [];
   DiscOld: any = 0.0;
   GSTAmount: any;
   QtyBalchk: any = 0;
@@ -240,6 +242,8 @@ v_PaidbacktoPatient:any=0;
 loadingRow: number | null = null
 IsLoading:boolean=false;
 showTable: boolean = false
+
+
 
   displayedColumns = [
     'FromStoreId',
@@ -1067,6 +1071,8 @@ showTable: boolean = false
     this._salesService.getTopSalesDetails(vdata).subscribe((data: any) => {
       if (data && data.length > 0) {
         this.reportPrintObjItemList = data as Printsal[];
+        this.repeatItemList = data;
+        console.log(data)
         this.reportItemPrintObj = data[0] as Printsal;
 
         this.PatientName = data[0].ExternalPatientName;
@@ -1373,6 +1379,61 @@ loadingarry:any=[];
     //   this.ItemSubform.get('ConcessionId').enable();
     //   this.ItemSubform.updateValueAndValidity();
     // }
+  }
+
+  Addrepeat(row){
+    debugger
+    
+   this.repeatItemList = row.value;
+
+    this.Itemchargeslist=[];
+
+    this.repeatItemList.forEach((element) => {
+      let Qty = parseInt(element.Qty.toString())
+      // this.LandedRateandedTotal = (parseInt(element.Qty) * (element.LandedRate)).toFixed(2);
+      // this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
+      // this.PurTotAmt = (parseInt(element.Qty) * (this.PurchaseRate)).toFixed(2);
+      let GSTAmount = (((element.UnitMRP) * (this.GSTPer) / 100) * (Qty)).toFixed(2);
+      let CGSTAmt = (((element.UnitMRP) * (this.CgstPer) / 100) * (Qty)).toFixed(2);
+      let SGSTAmt = (((element.UnitMRP) * (this.SgstPer) / 100) * (Qty)).toFixed(2);
+      let IGSTAmt = (((element.UnitMRP) * (this.IgstPer) / 100) * (Qty)).toFixed(2);
+
+
+  this.Itemchargeslist.push(
+    {
+      ItemId: element.ItemId,
+      ItemName: element.ItemShortName,
+      BatchNo: element.BatchNo,
+      BatchExpDate: this.datePipe.transform(element.BatchExpDate , 'DD/MM/YYYY'),
+      Qty: element.Qty,
+      UnitMRP: element.UnitMRP,
+      TotalMRP: element.TotalAmount,
+      GSTPer: row.GSTPer || 0,
+      GSTAmount: row.GSTAmount || 0,
+      DiscPer: this._salesService.IndentSearchGroup.get('DiscPer').value || 0,
+      DiscAmt: this._salesService.IndentSearchGroup.get('DiscAmt').value || 0,
+      NetAmt: this.NetAmt,
+      RoundNetAmt:Math.round(this.NetAmt),
+      StockId: this.StockId,
+      VatPer: this.VatPer,
+      VatAmount: this.GSTAmount,
+      LandedRate: this.LandedRate,
+      LandedRateandedTotal: this.LandedRateandedTotal,
+      CgstPer: this.CgstPer,
+      CGSTAmt: this.CGSTAmt,
+      SgstPer: this.SgstPer,
+      SGSTAmt: this.SGSTAmt,
+      IgstPer: this.IgstPer,
+      IGSTAmt: this.IGSTAmt,
+      PurchaseRate: this.PurchaseRate,
+      PurTotAmt: this.PurTotAmt,
+      MarginAmt: this.v_marginamt,
+      BalanceQty:this.BalQty,
+      SalesDraftId:1
+    });
+  });
+  this.sIsLoading = '';
+  this.saleSelectedDatasource.data = this.Itemchargeslist;
   }
 
   onAdd() {
@@ -3026,6 +3087,7 @@ export class IndentList {
   SalesNo: any
   ItemId: any;
   ItemName: string;
+  ItemShortName:any;
   BatchNo: string;
   BatchExpDate: any;
   BalanceQty: any;
@@ -3074,6 +3136,7 @@ export class IndentList {
       this.SalesNo = IndentList.SalesNo || 0;
       this.ItemId = IndentList.ItemId || 0;
       this.ItemName = IndentList.ItemName || "";
+      this.ItemShortName=IndentList.ItemShortName || "";
       this.BatchNo = IndentList.BatchNo || "";
       this.BatchExpDate = IndentList.BatchExpDate || "";
       this.UnitMRP = IndentList.UnitMRP || "";

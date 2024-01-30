@@ -74,7 +74,8 @@ export class ItemMasterService {
             CompanyId:[""],
             DrugType:[""],
             ItemColorcode:[""],
-            MaxDisc:[""]
+            MaxDisc:[""],
+            CreateApproval:["true"],
             // Verify:[""]
         });
     }

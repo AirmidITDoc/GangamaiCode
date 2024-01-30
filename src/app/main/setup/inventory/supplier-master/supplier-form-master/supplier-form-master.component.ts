@@ -24,6 +24,7 @@ export class SupplierFormMasterComponent implements OnInit {
     StatecmbList: any = [];
     CitycmbList: any = [];
     StorecmbList: any = [];
+    VendercmbList: any = [];
     BankNameList1: any = [];
     registerObj = new SupplierMaster({});
 
@@ -49,6 +50,7 @@ export class SupplierFormMasterComponent implements OnInit {
     filteredOptionsModeofpayment: Observable<string[]>;
     filteredOptionsCity: Observable<string[]>;
      filteredOptionsStore: Observable<string[]>;
+     filteredOptionsVender: Observable<string[]>;
      filteredOptionsSuppliertype: Observable<string[]>;
      filteredOptionsTermofpayment: Observable<string[]>;
 
@@ -87,6 +89,7 @@ export class SupplierFormMasterComponent implements OnInit {
     this.getBankNameList1();
     this.getCityNameCombobox();
     this.getStoreNameCombobox();
+    this.getVenderNameCombobox();
     if (this.data) {
       this.registerObj = this.data.registerObj;
       console.log(this.registerObj);
@@ -366,6 +369,18 @@ var m = {
 
     }
     
+    private _filterVender(value: any): string[] {
+      if (value) {
+          const filterValue = value && value.VenderTypeName ? value.VenderTypeName.toLowerCase() : value.toLowerCase();
+          //   this.isDoctorSelected = false;
+          return this.optionsStore.filter(option => option.VenderTypeName.toLowerCase().includes(filterValue));
+      }
+
+  }
+  
+    
+
+
     getStoreNameCombobox() {
 
         this._supplierService.getStoreMasterCombo().subscribe(data => {
@@ -379,6 +394,20 @@ var m = {
         });
 
     }
+
+    getVenderNameCombobox() {
+
+      this._supplierService.getVenderMasterCombo().subscribe(data => {
+          this.VendercmbList = data;
+          this.VendercmbList = this.VendercmbList.slice();
+          this.filteredOptionsVender = this._supplierService.myform.get('VenderTypeId').valueChanges.pipe(
+              startWith(''),
+              map(value => value ? this._filterVender(value) : this.VendercmbList.slice()),
+          );
+
+      });
+
+  }
     getOptionTextStore(option) {
 
         return option && option.StoreName ? option.StoreName : '';
@@ -591,6 +620,9 @@ var m = {
      this.msmflag=false;
     }
 
+    onChangeMode(event){
+
+    }
 
     @ViewChild('suppliername') suppliername: ElementRef;
   @ViewChild('suppliertype') suppliertype: ElementRef;
@@ -620,6 +652,8 @@ var m = {
   @ViewChild('Store') Store: MatSelect;
   @ViewChild('MSM') MSM: ElementRef;
   @ViewChild('Taluka') Taluka: ElementRef;
+  @ViewChild('VenderTypeId') VenderTypeId: MatSelect;
+  @ViewChild('OpeningBal') OpeningBal: ElementRef;
  
 
   public onEnterSuppliername(event): void {
@@ -760,6 +794,21 @@ if (event.which === 13) {
   this.save=true;
 }
 }
+
+public onEnterVender(event): void {
+  if (event.which === 13) {
+    this.OpeningBal.nativeElement.focus();
+  }
+  }
+
+
+  public onEnterOpeningBal(event): void {
+    if (event.which === 13) {
+      
+      // if (this.Store) this.Store.focus();
+      
+    }
+    }
 save:boolean=false;
 public onEnterStore(event): void {
   debugger

@@ -366,25 +366,31 @@
 
           </div>
           <div>
+          
             <mat-radio-group name="IsDeleted" formControlName="IsDeleted">
                 <mat-radio-button value='true' class="mr-sm-12" fxFlex value='false'>IsActive</mat-radio-button>
             </mat-radio-group>
         </div>
 
         </div>
+
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+          <div class="button-row">
+            <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true (change)="onChangeMode($event)"
+            style="font-weight: bold;margin-right: 20px;">Create / Approval
+            </mat-checkbox>
+            <button class="footer-btn" (click)="onClose()">Close</button>
+            <button class="next-btn" color="accent" type="submit" #addbutton (click)="onSubmit()"
+              style="border-radius: 16px;" [disabled]=!save>Save</button>
+    
+            <!-- <button mat-raised-button #addbutton class="next-btn" [disabled]="!save" (click)="onSubmit()">
+             Save
+          </button> -->
+    
+          </div>
+        </div>
       </form>
     </div>
-    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-      <div class="button-row">
-        <button class="footer-btn" (click)="onClose()">Close</button>
-        <button class="next-btn" color="accent" type="submit" #addbutton (click)="onSubmit()"
-          style="border-radius: 16px;" [disabled]=!save>Save</button>
-
-        <!-- <button mat-raised-button #addbutton class="next-btn" [disabled]="!save" (click)="onSubmit()">
-         Save
-      </button> -->
-
-      </div>
-    </div>
+  
   </div>
 </div>

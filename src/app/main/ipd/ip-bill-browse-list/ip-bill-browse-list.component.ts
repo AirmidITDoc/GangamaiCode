@@ -157,12 +157,12 @@ export class IPBillBrowseListComponent implements OnInit {
    this.viewgetInterimBillReportPdf(contact.BillNo)
     }
   
-    // else if (m == "Print FinalBill Datewise") {
-    //   this.getPrintDatewise(contact);
-    // }
-    // else if (m == "Print FinalBill WardWise") {
-    //   this.getPrintWardWise(contact);
-    // }
+    else if (m == "Print FinalBill Datewise") {
+      this.viewgetBillReportDatewisePdf(contact);
+    }
+    else if (m == "Print FinalBill WardWise") {
+      this.viewgetBillReportwardwisePdf(contact);
+    }
        
   }
 
@@ -549,6 +549,59 @@ export class IPBillBrowseListComponent implements OnInit {
           data: {
             base64: res["base64"] as string,
             title: "IP Bill  Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+
+  viewgetBillReportDatewisePdf(BillNo) {
+    setTimeout(() => {
+      this.SpinLoading =true;
+     this.AdList=true;
+    this._IpBillBrowseListService.getIPBILLdatewisePrint(
+    BillNo
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Bill Datewise Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+
+
+  viewgetBillReportwardwisePdf(BillNo) {
+    setTimeout(() => {
+      this.SpinLoading =true;
+     this.AdList=true;
+    this._IpBillBrowseListService.getIpFinalBillwardwiseReceipt(
+    BillNo
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Bill Ward wise Viewer"
           }
         });
         dialogRef.afterClosed().subscribe(result => {

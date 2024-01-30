@@ -107,7 +107,7 @@ export class ItemFormMasterComponent implements OnInit {
         this.getCurrencyNameMasterCombo();
         this.getCompanyList();
         this.getDrugTypeList();
-
+            this.setDropdownObjs1();
       
     }
 
@@ -192,6 +192,7 @@ getitemtypeNameMasterCombo() {
 
     this._itemService.getitemtypeMasterCombo().subscribe(data => {
         this.ItemTypecmbList = data;
+        console.log(this.ItemTypecmbList )
         if (this.data) {
             
             const ddValue = this.ItemTypecmbList.filter(c => c.ItemTypeId == this.data.registerObj.ItemTypeID);
@@ -943,6 +944,10 @@ save:boolean=false;
         };
 
         this._itemService.populateForm(m_data);
+    }
+
+    onChangeMode(event){
+
     }
 
     onClear() {

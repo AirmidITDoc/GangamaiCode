@@ -32,7 +32,7 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 
     <ng-container matColumnDef="BatchExpDate">
         <mat-header-cell *matHeaderCellDef> Exp Date </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.BatchExpDate | date: 'MM/yyyy'}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.BatchExpDate | date: 'dd/MM/yyyy'}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="BalanceQty">
@@ -71,10 +71,11 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
             <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
         </mat-footer-cell>
     </ng-container>
-
-    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <!-- [ngClass]="row.BatchExpDate > minDate ? 'make-green' : 'cyan'" -->
+    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"
+   ></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
-        [ngClass]="{'highlight': selectedRowIndex == row.position}"
+    [ngClass]="(minDate - row.BatchExpDate) >= 1 ? 'pink' : 'cyan'" 
         (click)="selectedRow('', row)"
         tabindex="999"
         (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)"

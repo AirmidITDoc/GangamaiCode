@@ -66,9 +66,9 @@ export class SupplierMasterService {
             IsDeleted: ["false"],
             UpdatedBy: [""],
             SupplierType:[""],
-            LicNo:[""],
+            LicNo: [""],
             ExpDate:[{ value: this.registerObj.ExpDate }],
-            DlNo:[""],
+            DlNo:["",Validators.pattern("^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$")],
             MsmNo:[0],
             MSMNo:[0],
             Apprval:[""],
@@ -77,7 +77,10 @@ export class SupplierMasterService {
             BankName:[""],
             BankNo:[""],
             BanlBranch:[""],
-            IFSCcode:[""]
+            IFSCcode:[""],
+            VenderTypeId:[""],
+            OpeningBal:[""],
+            CreateApproval:["true"],
         });
     }
 
@@ -129,6 +132,14 @@ export class SupplierMasterService {
     public getStoreMasterCombo() {
         return this._httpClient.post(
             "Generic/GetByProc?procName=Retrieve_StoreNameForCombo",
+            {}
+        );
+    }
+
+
+    public getVenderMasterCombo() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=M_Rtrv_M_VenderTypeMaster",
             {}
         );
     }

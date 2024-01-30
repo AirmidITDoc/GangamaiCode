@@ -64,4 +64,12 @@ public getIPBILLBrowsedatewisePrint(BillNo) {
  public getIpInterimBillReceipt (BillNo){
   return this._httpClient.get("InPatient/view-IP-InterimBillReceipt?BillNo=" + BillNo)
  }
+
+ getIPBILLdatewisePrint(BillNo){
+  return this._httpClient.get("InPatient/view-IP-BillDatewiseReceipt?BillNo=" + BillNo)
+ }
+
+ getIpFinalBillwardwiseReceipt(BillNo){
+  return this._httpClient.get("InPatient/view-IP-BillDatewiseReceipt?BillNo=" + BillNo)
+ }
 }
