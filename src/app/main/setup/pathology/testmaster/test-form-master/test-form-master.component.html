@@ -14,7 +14,7 @@
                 Test Master"}}
             </span>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                style="margin-left: 750px;">
+                style="margin-left: 870px;">
                 <mat-icon>close</mat-icon>
             </button>
 
@@ -67,38 +67,178 @@
                                                     style="margin-left: 15px;"> IsSubTest </mat-checkbox>
 
                                                 <mat-checkbox formControlName="IsTemplateTest" value='false'
-                                                    class="example-margin" style="margin-left: 35px;">Template Formate</mat-checkbox>
+                                                    class="example-margin" style="margin-left: 35px;">Template
+                                                    Formate</mat-checkbox>
                                             </section>
 
                                         </div>
-                                        <div fxLayout="row">
-                                            <div fxLayout="column">
-                                                <div fxLayout="row">
-                                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
-                                                        <mat-label>Parameter Name</mat-label>
-                                                        <input name="ParameterName" formControlName="ParameterName" placeholder="Select Parameter Name" matInput required>
-                                                        <mat-error>Please enter TestName </mat-error>
-                                                    </mat-form-field>
+                                        <mat-divider inset style="margin: 0px;padding: 5px;"></mat-divider>
 
-                                                    <mat-checkbox formControlName="IsSubTest" class="example-margin"
-                                                    style="margin-left: 15px;padding: 10px;"> IsSubTest </mat-checkbox>
 
-                                                    <div matTooltip="Select All Value to enable this button!!">
-                                                        <button mat-raised-button style="background-color: blue; color: white; width: 70px;
-                                                          margin-left: 20px; margin-top: 10px;"
-                                                            
-                                                            [disabled]="_TestService.myform.invalid">
-                                                            <mat-icon> add </mat-icon>Add
-                                                        </button>
+
+                                        <div fxLayout="row" fxFlex="100%" fxLayoutAlign="6px">
+
+                                            <div fxLayout="column" fxFlex="60%">
+                                                <form [formGroup]="_TestService.AddParameterFrom">
+                                                    <div fxLayout="row">
+
+
+                                                        <mat-form-field appearance="outline" fxFlex="50%" >
+                                                            <mat-label>Parameter Name</mat-label>
+                                                            <mat-select formControlName="ParameterName"
+                                                                placeholder="Bank" #singleSelect required>
+                                                                <mat-option>
+                                                                    <ngx-mat-select-search
+                                                                        [formControl]="parameternameFilterCtrl"
+                                                                        [placeholderLabel]="'Search'"
+                                                                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                                                </mat-option>
+                                                                <mat-option
+                                                                    *ngFor="let element of filteredParametername | async"
+                                                                    [value]="element">
+                                                                    {{element.ParameterName}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+
+                                                        <mat-checkbox formControlName="IsSubTest" class="example-margin"
+                                                            style="margin-left: 25px;padding: 15px;"> IsSubTest
+                                                        </mat-checkbox>
+
+                                                        <div matTooltip="Select All Value to enable this button!!">
+                                                            <button mat-raised-button style="background-color: blue; color: white; width: 70px;
+                                                          margin-left: 20px; margin-top: 10px;" (click)="OnAdd($event)"
+                                                                [disabled]="_TestService.AddParameterFrom.invalid">
+                                                                <mat-icon> add </mat-icon>Add
+                                                            </button>
+                                                        </div>
+
+
                                                     </div>
+                                                    <mat-card style="height:400px;width: 690px;">
+                                                        <mat-table #table class="table1" matSort
+                                                            [dataSource]="DSTestList" [@animateStagger]="{value:'50'}"
+                                                            style="overflow:auto; width: 100%;">
 
-                                                </div>
+                                                            <ng-container matColumnDef="ParameterName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Parameter Name
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                    {{element.ParameterName}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+
+                                                            <ng-container matColumnDef="loading">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                                                </mat-footer-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="noData">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                    no data found...
+                                                                </mat-footer-cell>
+                                                            </ng-container>
+
+                                                            <mat-header-row class="accent"
+                                                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                                            <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                                                class="element"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                                                            <mat-footer-row *matFooterRowDef="['loading']"
+                                                                [ngClass]="{'hide':DSTestList!=null}"></mat-footer-row>
+                                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                                [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row>
+
+                                                        </mat-table>
+                                                    </mat-card>
+                                                </form>
+                                            </div>
+
+                                            <mat-divider vertical style="margin: 0px;padding: 5px;"></mat-divider>
+
+                                            <div fxLayout="column" fxFlex="40%" style="padding-left: 10px;">
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Technique Name</mat-label>
+                                                    <input name="TechniqueName" formControlName="TechniqueName"
+                                                        placeholder="Technique Name" matInput>
+                                                    <mat-error>Please enter TechniqueName </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Machine Name</mat-label>
+                                                    <input name="MachineName" formControlName="MachineName"
+                                                        placeholder="Machine Name" matInput>
+                                                    <mat-error>Please enter MachineName </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Foot Note</mat-label>
+                                                    <textarea name="FootNote" formControlName="FootNote"
+                                                        style="height: 50px;" placeholder="Foot Note"
+                                                        matInput></textarea>
+                                                    <mat-error>Please enter FootNote </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Suggestion Note</mat-label>
+                                                    <textarea name="SuggestionNote" formControlName="SuggestionNote"
+                                                        style="height: 50px;" placeholder="Suggestion Note"
+                                                        matInput></textarea>
+                                                    <mat-error>Please enter Suggestion Note </mat-error>
+                                                </mat-form-field>
+
+                                                 
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Service Name</mat-label>
+                                                    <mat-select formControlName="ServiceName"
+                                                        placeholder="Bank" #singleSelect required>
+                                                        <mat-option>
+                                                            <ngx-mat-select-search
+                                                                [formControl]="serviceFilterCtrl"
+                                                                [placeholderLabel]="'Search'"
+                                                                [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                                        </mat-option>
+                                                        <mat-option
+                                                            *ngFor="let element of filteredService | async"
+                                                            [value]="element">
+                                                            {{element.ServiceName}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+
+                                                <section class="example-section" style="padding: 20px;">
+
+                                                    <mat-checkbox formControlName="IsPrintTestName"
+                                                        class="example-margin" style="margin-left: 35px;">
+                                                        IsPrintTestName </mat-checkbox>
+
+                                                    <mat-checkbox formControlName="IsDeleted" value='true'
+                                                        class="example-margin" style="margin-left: 35px;">IsActive
+                                                    </mat-checkbox>
+                                                </section>
                                             </div>
 
                                         </div>
 
                                     </div>
                                 </div>
+                                <hr>
+                                <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="end center">
+                                    <div class="button-row">
+                                        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
+                                            style="border-radius: 16px;width: 80px; height:40px;"
+                                            [disabled]="_TestService.myform.invalid">Save</button>
+                                        <button mat-raised-button color="warn" (click)="onClear()"
+                                            style="border-radius: 16px;width: 80px; height:40px;">Clear</button>
+                                    </div>
+                                </div>
+
+
                             </form>
                         </div>
                     </div>
@@ -108,6 +248,7 @@
     </div>
 
 </div>
+
 
 
 <!-- <div class="dialog-content-wrapper">

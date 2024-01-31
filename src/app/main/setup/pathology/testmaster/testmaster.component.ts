@@ -279,7 +279,7 @@ export class TestmasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(TestFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "108vh",
             width: "100%",
             height: "100%",
         });
@@ -293,7 +293,7 @@ export class TestmasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(TestFormMasterComponent, {
             maxWidth: "80vw",
-            maxHeight: "95vh",
+            maxHeight: "108vh",
             width: "100%",
             height: "100%",
         });

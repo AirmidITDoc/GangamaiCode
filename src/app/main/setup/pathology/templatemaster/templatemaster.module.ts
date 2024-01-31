@@ -46,6 +46,7 @@ const routes: Routes = [
     ],
     imports: [
         RouterModule.forChild(routes),
+       // AngularEditorModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,

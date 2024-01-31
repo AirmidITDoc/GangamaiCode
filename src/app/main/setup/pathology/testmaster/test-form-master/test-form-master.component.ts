@@ -7,6 +7,7 @@ import { TestmasterService } from "../testmaster.service";
 import { ReplaySubject, Subject } from "rxjs";
 import { FormControl } from "@angular/forms";
 import Swal from "sweetalert2";
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
     selector: "app-test-form-master",
@@ -16,20 +17,23 @@ import Swal from "sweetalert2";
     animations: fuseAnimations,
 })
 export class TestFormMasterComponent implements OnInit {
+    displayedColumns: string[] = [
+     "ParameterName"    
+    ];
     Parametercmb: any = [];
     paraselect: any = ["new"];
-
-    // paraselect = new parameterselect({});
     CategorycmbList: any = [];
     TemplatecmbList: any = [];
     ServicecmbList: any = [];
     msg: any;
+    ChargeList:any=[];
+
+    DSTestList = new MatTableDataSource<TestList>();
+    dsTemparoryList = new MatTableDataSource<TestList>();
 
     //parametername filter
     public parameternameFilterCtrl: FormControl = new FormControl();
-    public filteredParametername: ReplaySubject<any> = new ReplaySubject<any>(
-        1
-    );
+    public filteredParametername: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     //category filter
     public categoryFilterCtrl: FormControl = new FormControl();
@@ -102,6 +106,11 @@ export class TestFormMasterComponent implements OnInit {
             )
         );
     }
+    getParameterNameCombobox() {
+        this._TestService.getParameterMasterCombo()
+            .subscribe((data) => (this.Parametercmb = data));
+           // console.log(this.Parametercmb);
+    }
 
     // categoryname filter
     private filterCategoryname() {
@@ -122,6 +131,15 @@ export class TestFormMasterComponent implements OnInit {
                 (bank) => bank.CategoryName.toLowerCase().indexOf(search) > -1
             )
         );
+    }
+    getCategoryNameCombobox() {
+        // this._TestService.getCategoryMasterCombo().subscribe(data =>this.CategorycmbList =data);
+        this._TestService.getCategoryMasterCombo().subscribe((data) => {
+            this.CategorycmbList = data;
+            this._TestService.myform
+                .get("CategoryId")
+                .setValue(this.CategorycmbList[0]);
+        });
     }
 
     // Service name filter
@@ -144,6 +162,15 @@ export class TestFormMasterComponent implements OnInit {
             )
         );
     }
+    getServiceNameCombobox() {
+        // this._TestService.getServiceMasterCombo().subscribe(data =>this.ServicecmbList =data);
+
+        this._TestService.getServiceMasterCombo().subscribe((data) => {
+            this.ServicecmbList = data;
+            this._TestService.myform.get("ServiceID")
+                .setValue(this.ServicecmbList[0]);
+        });
+    }
 
     // Service name filter
     private filterTemplate() {
@@ -165,39 +192,13 @@ export class TestFormMasterComponent implements OnInit {
             )
         );
     }
-
-    getCategoryNameCombobox() {
-        // this._TestService.getCategoryMasterCombo().subscribe(data =>this.CategorycmbList =data);
-        this._TestService.getCategoryMasterCombo().subscribe((data) => {
-            this.CategorycmbList = data;
-            this._TestService.myform
-                .get("CategoryId")
-                .setValue(this.CategorycmbList[0]);
-        });
-    }
-
-    getServiceNameCombobox() {
-        // this._TestService.getServiceMasterCombo().subscribe(data =>this.ServicecmbList =data);
-
-        this._TestService.getServiceMasterCombo().subscribe((data) => {
-            this.ServicecmbList = data;
-            this._TestService.myform
-                .get("ServiceID")
-                .setValue(this.ServicecmbList[0]);
-        });
-    }
-
     getTemplateNameCombobox() {
         this._TestService
             .getTemplateMasterCombo()
             .subscribe((data) => (this.TemplatecmbList = data));
     }
 
-    getParameterNameCombobox() {
-        this._TestService
-            .getParameterMasterCombo()
-            .subscribe((data) => (this.Parametercmb = data));
-    }
+ 
 
     addSelectedOption(selectedElements, keyName) {
         // debugger;
@@ -212,6 +213,19 @@ export class TestFormMasterComponent implements OnInit {
                     .setValue(addedElement);
             }
         }
+    }
+   
+    OnAdd(event) {
+        this.DSTestList.data = [];
+        this.ChargeList = this.dsTemparoryList.data;
+        this.ChargeList.push(
+            {
+                ParameterName : this._TestService.AddParameterFrom.get('ParameterName').value.ParameterName || "",
+            });
+        this.DSTestList.data = this.ChargeList
+       // console.log(this.ChargeList);
+      // this._TestService.AddParameterFrom.get('ParameterName').setValue("");
+        this._TestService.AddParameterFrom.reset();   
     }
 
     onSubmit() {
@@ -502,5 +516,18 @@ export class TestFormMasterComponent implements OnInit {
             return this.TemplatecmbList.indexOf(selectedData1) < 0;
         });
         this.selectedToRemove1 = [];
+    }
+}
+export class TestList {
+    ParameterName: any; 
+    /**
+     * Constructor
+     *
+     * @param TestList
+     */
+    constructor(TestList) {
+        {
+            this.ParameterName = TestList.ParameterName || "";
+        }
     }
 }

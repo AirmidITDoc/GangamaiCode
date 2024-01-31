@@ -22,27 +22,7 @@ export class PathologyTemplateFormComponent implements OnInit {
     ngOnInit(): void {
         
     }
-    selectedFont: string = 'Arial';
-    isBold: boolean = false;
-    isItalic: boolean = false;
-    selectedColor: string = '#000000'; // Default color
-    
-    changeFont(font: string) {
-      this.selectedFont = font;
-    }
-    
-    toggleBold() {
-      this.isBold = !this.isBold;
-    }
-    
-    toggleItalic() {
-      this.isItalic = !this.isItalic;
-    }
-    
-    changeColor(color: string) {
-      this.selectedColor = color;
-    }
-     
+   
 
     onSubmit() {
         if (this._templateService.newTemplateFrom.valid) {

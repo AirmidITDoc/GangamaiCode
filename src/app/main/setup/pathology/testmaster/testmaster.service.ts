@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 export class TestmasterService {
     myformSearch: FormGroup;
     myform: FormGroup;
+    AddParameterFrom:FormGroup;
 
     constructor(
         private _httpClient: HttpClient,
@@ -15,6 +16,7 @@ export class TestmasterService {
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createPathtestForm();
+        this.AddParameterFrom =this.createAddparaFrom();
     }
 
     createPathtestForm(): FormGroup {
@@ -37,12 +39,13 @@ export class TestmasterService {
             ParameterId: [""],
             ParaId: [""],
             ParameterName: [""],
-            IsDeleted: [""],
+            IsDeleted: ["true"],
             UpdatedBy: [""],
             AddedBy: [""],
             action: [""],
             parametertxt: [""],
             PTemplateId: [""], 
+            IsSubTest: [" "],
         });
     }
 
@@ -50,7 +53,13 @@ export class TestmasterService {
         return this._formBuilder.group({
             TestNameSearch: [""],
             IsDeletedSearch: ["2"],
-            IsSubTest:[" "],
+            IsSubTest:["false"],
+        });
+    }
+    createAddparaFrom(): FormGroup {
+        return this._formBuilder.group({
+            ParameterName: [""],
+            IsSubTest: [" "],
         });
     }
 
@@ -86,7 +95,13 @@ export class TestmasterService {
             {}
         );
     }
-
+  // Parameter Master Combobox List
+  public getParameterMasterCombo() {
+    return this._httpClient.post(
+        "Generic/GetByProc?procName=Rtrv_PathParameterList_by_Name",
+        {}
+    );
+}
     // Template Master Combobox List
     public getTemplateMasterCombo() {
         return this._httpClient.post(
@@ -103,13 +118,7 @@ export class TestmasterService {
         );
     }
 
-    // Template Master Combobox List
-    public getParameterMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=ps_Cmb_ParameterListForCombo",
-            {}
-        );
-    }
+  
 
     // Insert Perfix Master
     public insertPathologyTestMaster(param) {
