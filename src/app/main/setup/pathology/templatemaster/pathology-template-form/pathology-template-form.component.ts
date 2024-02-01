@@ -29,10 +29,16 @@ export class PathologyTemplateFormComponent implements OnInit {
             if (!this._templateService.newTemplateFrom.get("TemplateId").value) {
                 var m_data = {
                     insertPathologyTemplateMaster: {
-                        TemplateName: this._templateService.newTemplateFrom.get("TemplateName").value,
-                        TemplateDesc:this._templateService.newTemplateFrom.get("TemplateDetails").value,
-                        IsDeleted:this._templateService.newTemplateFrom.get("IsDeleted").value,
-                        AddedBy:1
+                        // TemplateName: this._templateService.newTemplateFrom.get("TemplateName").value,
+                        // TemplateDesc:this._templateService.newTemplateFrom.get("TemplateDetails").value,
+                        // IsDeleted:this._templateService.newTemplateFrom.get("IsDeleted").value,
+                        // AddedBy:1
+
+                        TestId: this._templateService.myform.get("TestId")
+                        .value,
+                    TemplateId:
+                        this._templateService.myform.get("TemplateId")
+                            .value,
                     },
                 };
                 console.log(m_data)

@@ -214,20 +214,20 @@ export class ParamteragewiseformComponent implements OnInit {
                             .value,
                         minValue: this._ParameterageService.myform
                             .get("MinValue")
-                            .value.trim(),
+                            .value,
                         maxValue: this._ParameterageService.myform
                             .get("MaxValue")
-                            .value.trim(),
+                            .value,
                         addedBy: 1,
-                        minAge:
-                            this._ParameterageService.myform.get("MinAge")
-                                .value || "0",
-                        maxAge:
-                            this._ParameterageService.myform.get("MaxAge")
-                                .value || "0",
-                        ageType: this._ParameterageService.myform
-                            .get("AgeType")
-                            .value.trim(),
+                        // minAge:
+                        //     this._ParameterageService.myform.get("MinAge")
+                        //         .value || "0",
+                        // maxAge:
+                        //     this._ParameterageService.myform.get("MaxAge")
+                        //         .value || "0",
+                        // ageType: this._ParameterageService.myform
+                        //     .get("AgeType")
+                        //     .value.trim(),
                         // IsDeleted: Boolean(
                         //     JSON.parse(
                         //         this._ParameterageService.myform.get(
@@ -275,15 +275,15 @@ export class ParamteragewiseformComponent implements OnInit {
                             .get("MaxValue")
                             .value.trim(),
                         updatedby: 1,
-                        minAge:
-                            this._ParameterageService.myform.get("MinAge")
-                                .value || "0",
-                        maxAge:
-                            this._ParameterageService.myform.get("MaxAge")
-                                .value || "0",
-                        ageType: this._ParameterageService.myform
-                            .get("AgeType")
-                            .value.trim(),
+                        // minAge:
+                        //     this._ParameterageService.myform.get("MinAge")
+                        //         .value || "0",
+                        // maxAge:
+                        //     this._ParameterageService.myform.get("MaxAge")
+                        //         .value || "0",
+                        // ageType: this._ParameterageService.myform
+                        //     .get("AgeType")
+                        //     .value.trim(),
                         // IsDeleted: Boolean(
                         //     JSON.parse(
                         //         this._ParameterageService.myform.get(
