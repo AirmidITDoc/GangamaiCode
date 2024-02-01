@@ -5,6 +5,8 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
     selector: "app-category-master",
@@ -25,13 +27,15 @@ export class CategoryMasterComponent implements OnInit {
         "CategoryId",
         "CategoryName",
         "AddedByName",
+        "UpdatedBy",
         "IsDeleted",
         "action",
     ];
 
     DSCategoryMasterList = new MatTableDataSource<CategoryMaster>();
-
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     constructor(public _categoryService: CategoryMasterService,
+        public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
@@ -46,8 +50,8 @@ export class CategoryMasterComponent implements OnInit {
         this._categoryService.myformSearch.reset({
             CategoryNameSearch: "",
             IsDeletedSearch: "2",
-        });
-    }
+        }); this.getCategoryMasterList();
+    } 
     getCategoryMasterList() {
         var m ={
             CategoryName: this._categoryService.myformSearch.get('CategoryNameSearch').value + '%' || '%'
@@ -70,15 +74,9 @@ export class CategoryMasterComponent implements OnInit {
             if (!this._categoryService.myform.get("CategoryId").value) {
                 var m_data = {
                     insertCategoryMaster: {
-                        CategoryName: this._categoryService.myform
-                            .get("CategoryName")
-                            .value.trim(),
-                        IsDeleted: Boolean(
-                            JSON.parse(
-                                this._categoryService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
+                        categoryName: this._categoryService.myform
+                            .get("CategoryName").value.trim(),
+                            addedBy: 1,
                     },
                 };
                 // console.log(m_data);
@@ -108,17 +106,10 @@ export class CategoryMasterComponent implements OnInit {
                 var m_dataUpdate = {
                     updateCategoryMaster: {
                         CategoryId:
-                            this._categoryService.myform.get("CategoryId")
-                                .value,
+                            this._categoryService.myform.get("CategoryId").value,
                         CategoryName:
-                            this._categoryService.myform.get("CategoryName")
-                                .value,
-                        IsDeleted: Boolean(
-                            JSON.parse(
-                                this._categoryService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
+                            this._categoryService.myform.get("CategoryName").value,
+                        updatedBy:1
                     },
                 };
                 this._categoryService
@@ -153,6 +144,30 @@ export class CategoryMasterComponent implements OnInit {
             UpdatedBy: row.UpdatedBy,
         };
         this._categoryService.populateForm(m_data);
+    }
+    onDeactive(CategoryId) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                let Query =
+                "Update M_Radiology_CategoryMaster set Isdeleted=1 where CategoryId=" +
+                    CategoryId;
+                    
+                console.log(Query);
+                this._categoryService.deactivateTheStatus(Query)
+                    .subscribe((data) => (this.msg = data));
+                this.getCategoryMasterList();
+            }
+            this.confirmDialogRef = null;
+            this.getCategoryMasterList();
+        });
     }
 }
 export class CategoryMaster {

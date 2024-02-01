@@ -45,7 +45,7 @@ export class TestmasterService {
             action: [""],
             parametertxt: [""],
             PTemplateId: [""], 
-            IsSubTest: [" "],
+            IsSubTest: ["true"],
         });
     }
 

@@ -135,6 +135,7 @@ export class ParamteragewiseComponent implements OnInit {
             ParaMultipleRange: row.ParaMultipleRange,
         };
         console.log(row)
+        console.log(m_data)
         
 
         this._ParameterageService.populateForm(m_data);

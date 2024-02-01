@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -16,6 +16,7 @@ import { TemplateReportComponent } from './template-report/template-report.compo
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { RadioPatientList } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-radiology-template-master',
@@ -54,7 +55,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
    
   // dataSource = new MatTableDataSource<RadiologytemplateMaster>();
 
-
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
   constructor(public _radiologytemplateService: RadiologyTemplateMasterService,
     private accountService: AuthenticationService,
     public notification: NotificationServiceService,
@@ -75,19 +76,29 @@ export class RadiologyTemplateMasterComponent implements OnInit {
 
   }
 
-  //Rtrv_Radiology_TemplateMaster_by_Name
+  onSearch() {
+    this.getRadiologytemplateMasterList();
+}
+onSearchClear(){
+    this._radiologytemplateService.myformSearch.reset({
+        TemplateNameSearch: "",
+        IsDeletedSearch: "2",
+    });
+    this.getRadiologytemplateMasterList();  
+}
 
 
   getRadiologytemplateMasterList() {
    
     this.sIsLoading = 'loading-data';
      var m_data={
-      "TemplateName":'%',// this._radiologytemplateService.myformSearch.get("TemplateName").value +'%' || '%',
+      "TemplateName":this._radiologytemplateService.myformSearch.get("TemplateNameSearch").value +'%' || '%',
            
      }
     console.log(m_data);
     this._radiologytemplateService.getRadiologytemplateMasterList1(m_data).subscribe(Menu => {
       this.dataSource.data = Menu as RadioPatientList[];
+      console.log(this.dataSource)
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
@@ -140,6 +151,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     }
   }
   onEdit(row) {
+    console.log(row)
     var m_data = {
       "TemplateId": row.TemplateId,
       "TemplateName": row.TemplateName.trim(),
@@ -176,7 +188,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
       // this.getRadiologytemplateMasterList();
     });
   }
-
+ 
 
   getRecord(contact, m):void{
     ;
@@ -207,9 +219,30 @@ export class RadiologyTemplateMasterComponent implements OnInit {
      }
 }
 
-  onDeactive() {
-
-  }
+onDeactive(TemplateId) {
+  this.confirmDialogRef = this._matDialog.open(
+      FuseConfirmDialogComponent,
+      {
+          disableClose: false,
+      }
+  );
+  this.confirmDialogRef.componentInstance.confirmMessage =
+      "Are you sure you want to deactive?";
+  this.confirmDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+          let Query =
+          "Update M_Radiology_TemplateMaster set IsDeleted=1 where TemplateId=" +
+          TemplateId;
+              
+          console.log(Query);
+          this._radiologytemplateService.deactivateTheStatus(Query)
+              .subscribe((data) => (this.msg = data));
+          this.getRadiologytemplateMasterList();
+      }
+      this.confirmDialogRef = null;
+      this.getRadiologytemplateMasterList();
+  });
+}
 
   OnPrintPop(TemplateId) {
 

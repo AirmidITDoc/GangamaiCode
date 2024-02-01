@@ -37,7 +37,7 @@ export class TemplatemasterService {
         return this._formBuilder.group({
             TemplateId:[""],
             TemplateName:[""],
-            TemplateDetails:[""],
+            TemplateDesc:[""],
             IsDeleted:['false']
 
         })

@@ -30,11 +30,14 @@
                             <form [formGroup]="_templateService.newTemplateFrom">
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Template Name</mat-label>
-                                            <input matInput placeholder="Template Name" #TemplateName
-                                                formControlName="TemplateName" required>
+                                            <input matInput placeholder="Template Name" [(ngModel)]="registerObj.TemplateName"
+                                            name="TemplateName" formControlName="TemplateName" required>
+                                            <mat-error>Please enter TestName </mat-error>
                                         </mat-form-field>
+                                       
                                         <div>
                                          <!-- <angular-editor [placeholder]="'Enter text here...'" ></angular-editor>  -->
                                               
@@ -42,9 +45,9 @@
                                         
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Template Details</mat-label>
-                                            <textarea matInput placeholder="Template Details" #TemplateDetails
-                                                formControlName="TemplateDetails" required  
-                                                style="height: 400px;"></textarea>
+                                            <textarea matInput placeholder="Template Description" #TemplateDesc
+                                            name="TemplateDesc"  formControlName="TemplateDesc" required  
+                                                style="height: 400px;" [(ngModel)]="registerObj.TemplateDesc"></textarea>
                                         </mat-form-field>
                                     </div>
 

@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { MatDialogRef } from "@angular/material/dialog";
+import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { TemplatemasterService } from "../templatemaster.service";
 
@@ -12,15 +12,18 @@ import { TemplatemasterService } from "../templatemaster.service";
 })
 export class PathologyTemplateFormComponent implements OnInit {
     msg: any;
-
+    registerObj:any;
     
     constructor(
         public _templateService: TemplatemasterService,
+        @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<PathologyTemplateFormComponent>
     ) {}
 
     ngOnInit(): void {
-        
+        if (this.data) {
+            this.registerObj = this.data.registerObj; 
+        }
     }
    
 
@@ -29,16 +32,13 @@ export class PathologyTemplateFormComponent implements OnInit {
             if (!this._templateService.newTemplateFrom.get("TemplateId").value) {
                 var m_data = {
                     insertPathologyTemplateMaster: {
-                        TemplateName: this._templateService.newTemplateFrom.get("TemplateName").value,
-                        TemplateDesc:this._templateService.newTemplateFrom.get("TemplateDetails").value,
-                        IsDeleted:this._templateService.newTemplateFrom.get("IsDeleted").value,
-                        AddedBy:1
+                        testId: 0,
+                        templateId:this._templateService.newTemplateFrom.get("TemplateId").value,
                     },
                 };
                 console.log(m_data)
 
-                this._templateService
-                    .insertTemplateMaster(m_data)
+                this._templateService.insertTemplateMaster(m_data)
                     .subscribe((data) => {
                         this.msg = data;
                     });
@@ -48,9 +48,9 @@ export class PathologyTemplateFormComponent implements OnInit {
                         PTemplateId:
                             this._templateService.myform.get("PTemplateId")
                                 .value,
-                        TestId: this._templateService.myform.get("TestId")
+                        testId: this._templateService.myform.get("TestId")
                             .value,
-                        TemplateId:
+                        templateId:
                             this._templateService.myform.get("TemplateId")
                                 .value,
                     },
@@ -65,14 +65,14 @@ export class PathologyTemplateFormComponent implements OnInit {
             this.onClose();
         }
     }
-    onEdit(row) {
-        var m_data = {
-            TemplateId: row.TemplateId,
-            TestId: row.TestId,
-            PTemplateId: row.PTemplateId,
-        };
-        this._templateService.populateForm(m_data);
-    }
+    // onEdit(row) {
+    //     var m_data = {
+    //         TemplateId: row.TemplateId,
+    //         TestId: row.TestId,
+    //         PTemplateId: row.PTemplateId,
+    //     };
+    //     this._templateService.populateForm(m_data);
+    // }
 
     onClear() {
         this._templateService.myform.reset();

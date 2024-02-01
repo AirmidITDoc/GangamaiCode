@@ -12,27 +12,45 @@
                Radiology Test Master
             </span>
         </div>
-    </div>
-    <!-- / APP TITLE -->
-    <!-- SEARCH -->
-    <!-- / SEARCH -->
+    </div> 
 
-</div>
-<!-- / HEADER -->
-
-<!-- CONTENT -->
-  <div class="content">
-
-    <!-- SIDEBAR -->
-    <!-- / SIDEBAR -->
-
-    <!-- CENTER -->
-    <div class="center p-24 pb-56" fusePerfectScrollbar>
-        <!-- CONTENT -->
+</div> 
+  <div class="content"> 
+    <div class="center p-24 pb-56" fusePerfectScrollbar> 
         <div class="content-card">
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                 <div fxFlex.gt-sm="65%" fxFlex >
+                    <div fxlayout="row" style=" background-color: white;
+                    padding: 5px 10px 5px 10px;">
+                        <form [formGroup]="_radiologytestService.myformSearch">
+                            <div class="dialog-content-wrapper">
+                                <mat-form-field class="mr-sm-12" fxFlex>
+                                    <input matInput placeholder="Search --> Test Name" autocomplete="off"
+                                        name="TestNameSearch" formControlName="TestNameSearch" />
+                                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="onSearchClear()" (keyup)="onSearch()">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                    fxLayoutAlign="center center">
+                                    <mat-radio-button value="2">All</mat-radio-button>
+                                    <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                </mat-radio-group>
+
+                                <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                    <mat-icon>search</mat-icon>
+                                    Search
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                     <div style="width: 100%;">
+
+
+
                         <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow:auto">
                             <ng-container matColumnDef="TestId">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code </mat-header-cell>

@@ -60,6 +60,7 @@ private _onDestroy = new Subject<void>();
     this.getRadiologytestMasterList();
     this.getCategoryNameCombobox();
     this.getServiceNameCombobox();
+    this.getCategoryMasterList();
 
     this.categoryFilterCtrl.valueChanges
     .pipe(takeUntil(this._onDestroy))
@@ -117,18 +118,40 @@ private _onDestroy = new Subject<void>();
     );
   }
 
+  onSearch() {
+    this.getRadiologytestMasterList();
+}
 
+onSearchClear() {
+    this._radiologytestService.myformSearch.reset({
+        TestNameSearch: "",
+        IsDeletedSearch: "2",
+    }); this.getRadiologytestMasterList();
+} 
+ 
   getRadiologytestMasterList() {
-    var m={
-      // ServiceName:this._radiologytestService.myform.get('').value
-    };
-
-    this._radiologytestService.getRadiologytestMasterList().subscribe(Menu => {
-      this.dataSource.data = Menu as RadiologytestMaster[];
-      this.dataSource.sort= this.sort;
-      this.dataSource.paginator=this.paginator;
-    })
+    // var vdata={
+    //   ServiceName: this._radiologytestService.myformSearch.get('TestNameSearch').value + '%' || '%'
+    // };
+    //   console.log(vdata)
+    //  this._radiologytestService.getRadiologyList(vdata).subscribe(Menu => {
+    //   this.dataSource.data = Menu as RadiologytestMaster[];
+    //   console.log(this.dataSource)
+    //   this.dataSource.sort= this.sort;
+    //   this.dataSource.paginator=this.paginator;
+    // });
   }
+  getCategoryMasterList() {
+    var m ={
+      "serviceName": this._radiologytestService.myformSearch.get('TestNameSearch').value + '%' || '%'
+    };
+    this._radiologytestService.getRadiologyList(m).subscribe((Menu) => {
+        this.dataSource.data = Menu as RadiologytestMaster[];
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        console.log(this.dataSource );
+    });
+}
 
   getServiceNameCombobox(){
        

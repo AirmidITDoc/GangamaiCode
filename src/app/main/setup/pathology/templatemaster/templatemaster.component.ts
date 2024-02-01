@@ -120,8 +120,8 @@ export class TemplatemasterComponent implements OnInit {
         console.log(row);
         var m_data = {
             TemplateId: row.TemplateId,
-            TemplateName: row.TemplateName,
-            TemplateDetails: row.TemplateDesc,
+            TemplateName: row.TemplateName.trim(),
+            TemplateDesc:row.TemplateDesc.trim(),
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
@@ -134,6 +134,9 @@ export class TemplatemasterComponent implements OnInit {
             maxHeight: "95vh",
             width: "100%",
             height: "100%",
+            data : {
+                registerObj : row,
+              }
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);

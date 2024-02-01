@@ -81,7 +81,7 @@ export class TestmasterComponent implements OnInit {
         };
         this._TestService.getTestMasterList(m_data).subscribe((Menu) => {
             this.DSTestMasterList.data = Menu as TestMaster[];
-           // console.log(this.DSTestMasterList)
+            console.log(this.DSTestMasterList)
             this.sIsLoading = '';
             this.DSTestMasterList.sort = this.sort;
             this.DSTestMasterList.paginator = this.paginator;
@@ -262,19 +262,20 @@ export class TestmasterComponent implements OnInit {
             TestName: row.TestName.trim(),
             PrintTestName: row.PrintTestName.trim(),
             CategoryId: row.CategoryId,
+            CategoryName:row.CategoryName,
             IsSubTest: JSON.stringify(row.IsSubTest),
             TechniqueName: row.TechniqueName.trim(),
             MachineName: row.MachineName.trim(),
             SuggestionNote: row.SuggestionNote.trim(),
             FootNote: row.FootNote.trim(),
-            ServiceName: row.ServiceName.trim(),
+            ServiceName: row.ServiceName,
             IsTemplateTest: row.IsTemplateTest,
             IsCategoryPrint: JSON.stringify(row.IsCategoryPrint),
             IsPrintTestName: JSON.stringify(row.IsPrintTestName),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.Isdeleted),
             UpdatedBy: row.UpdatedBy,
         };
-
+        console.log(row)
         this._TestService.populateForm(m_data);
 
         const dialogRef = this._matDialog.open(TestFormMasterComponent, {
@@ -282,6 +283,9 @@ export class TestmasterComponent implements OnInit {
             maxHeight: "108vh",
             width: "100%",
             height: "100%",
+            data : {
+                registerObj : row,
+              }
         });
 
         dialogRef.afterClosed().subscribe((result) => {

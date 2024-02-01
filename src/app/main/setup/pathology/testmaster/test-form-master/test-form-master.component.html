@@ -40,7 +40,7 @@
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Category Name</mat-label>
-                                                <mat-select formControlName="CategoryId" placeholder="Bank"
+                                                <mat-select formControlName="CategoryId" placeholder="Bank" [(ngModel)]="registerObj.CategoryName"
                                                     #singleSelect required>
                                                     <mat-option>
                                                         <ngx-mat-select-search [formControl]="categoryFilterCtrl"
@@ -64,7 +64,7 @@
                                             <section class="example-section" style="padding: 20px;">
 
                                                 <mat-checkbox formControlName="IsSubTest" class="example-margin"
-                                                    style="margin-left: 15px;"> IsSubTest </mat-checkbox>
+                                                    style="margin-left: 15px;" value="true"> IsSubTest </mat-checkbox>
 
                                                 <mat-checkbox formControlName="IsTemplateTest" value='false'
                                                     class="example-margin" style="margin-left: 35px;">Template
