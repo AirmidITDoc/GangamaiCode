@@ -13,6 +13,8 @@ import { TemplatemasterService } from "../templatemaster.service";
 export class PathologyTemplateFormComponent implements OnInit {
     msg: any;
     registerObj:any;
+    vTemplateName:any;
+    vTemplateDesc:any;
     
     constructor(
         public _templateService: TemplatemasterService,
@@ -23,6 +25,8 @@ export class PathologyTemplateFormComponent implements OnInit {
     ngOnInit(): void {
         if (this.data) {
             this.registerObj = this.data.registerObj; 
+           this.vTemplateName = this.registerObj.TemplateName;
+            this.vTemplateDesc = this.registerObj.TemplateDesc;
         }
     }
    

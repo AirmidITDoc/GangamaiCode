@@ -14,12 +14,13 @@
                 Pathology Template Master"}}
             </span>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-            style="margin-left: 750px;">
+            style="margin-left: 960px;">
                 <mat-icon>close</mat-icon>
               </button>
 
         </div>
     </mat-toolbar>
+ 
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
@@ -33,7 +34,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Template Name</mat-label>
-                                            <input matInput placeholder="Template Name" [(ngModel)]="registerObj.TemplateName"
+                                            <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
                                             name="TemplateName" formControlName="TemplateName" required>
                                             <mat-error>Please enter TestName </mat-error>
                                         </mat-form-field>
@@ -47,7 +48,7 @@
                                             <mat-label>Template Details</mat-label>
                                             <textarea matInput placeholder="Template Description" #TemplateDesc
                                             name="TemplateDesc"  formControlName="TemplateDesc" required  
-                                                style="height: 400px;" [(ngModel)]="registerObj.TemplateDesc"></textarea>
+                                                style="height: 400px;" [(ngModel)]="vTemplateDesc"></textarea>
                                         </mat-form-field>
                                     </div>
 

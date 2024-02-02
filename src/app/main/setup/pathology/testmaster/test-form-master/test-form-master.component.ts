@@ -64,11 +64,7 @@ export class TestFormMasterComponent implements OnInit {
             console.log(this.registerObj);
             this.vCategoryId = this.registerObj.CategoryName;
             this.registerObj.CategoryName = this.data.registerObj.CategoryName;
-            //this.registerObj.Phone = this.data.registerObj.Phone.trim();
-          
-          
-            // this.CityId = this.data.registerObj.CityId;
-            // this.setDropdownObjs1();
+           
           }
         this.getCategoryNameCombobox();
         this.getServiceNameCombobox();
@@ -182,8 +178,6 @@ export class TestFormMasterComponent implements OnInit {
         );
     }
     getServiceNameCombobox() {
-        // this._TestService.getServiceMasterCombo().subscribe(data =>this.ServicecmbList =data);
-
         this._TestService.getServiceMasterCombo().subscribe((data) => {
             this.ServicecmbList = data;
             this._TestService.myform.get("ServiceID").setValue(this.ServicecmbList[0]);
@@ -220,24 +214,13 @@ export class TestFormMasterComponent implements OnInit {
     //     this._TestService.getTemplateMasterCombo()
     //         .subscribe((data) => (this.TemplatecmbList = data));
     // }
-
  
-
-    // addSelectedOption(selectedElements, keyName) {
-    //     // debugger;
-    //     let addedElement = "";
-    //     if (selectedElements) {
-    //         selectedElements.forEach((element) => {
-    //             addedElement += element[keyName] + ",\n";
-    //         });
-    //         if (keyName == "parameterlist") {
-    //             this._TestService.myform
-    //                 .get("parametertxt")
-    //                 .setValue(addedElement);
-    //         }
-    //     }
-    // }
-   
+    getSubTestMasterList() {  
+        this._TestService.getNewSubTestMasterList().subscribe((Menu) => {
+            this.DSTestList.data = Menu as TestList[];
+            console.log(this.DSTestList) 
+        });
+    }
     OnAdd(event) {
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;

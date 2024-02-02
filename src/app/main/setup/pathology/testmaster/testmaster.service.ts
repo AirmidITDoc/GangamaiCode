@@ -59,7 +59,7 @@ export class TestmasterService {
     createAddparaFrom(): FormGroup {
         return this._formBuilder.group({
             ParameterName: [""],
-            IsSubTest: [" "],
+            NewIsSubTest: [" "],
         });
     }
 
@@ -99,6 +99,12 @@ export class TestmasterService {
   public getParameterMasterCombo() {
     return this._httpClient.post(
         "Generic/GetByProc?procName=Rtrv_PathParameterList_by_Name",
+        {}
+    );
+}
+ // get new sub Test Master list
+ public getNewSubTestMasterList( ) {
+    return this._httpClient.post( "Generic/GetByProc?procName=Retrieve_PathSubTestListForCombo",
         {}
     );
 }

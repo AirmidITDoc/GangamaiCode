@@ -279,10 +279,9 @@ export class TestmasterComponent implements OnInit {
         this._TestService.populateForm(m_data);
 
         const dialogRef = this._matDialog.open(TestFormMasterComponent, {
-            maxWidth: "80vw",
-            maxHeight: "108vh",
-            width: "100%",
-            height: "100%",
+            maxWidth: "100%",
+            height: '90%',
+            width: '90%',
             data : {
                 registerObj : row,
               }
@@ -296,10 +295,10 @@ export class TestmasterComponent implements OnInit {
 
     onAdd() {
         const dialogRef = this._matDialog.open(TestFormMasterComponent, {
-            maxWidth: "80vw",
-            maxHeight: "108vh",
-            width: "100%",
-            height: "100%",
+
+            maxWidth: "100%",
+            height: '90%',
+            width: '90%',
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);

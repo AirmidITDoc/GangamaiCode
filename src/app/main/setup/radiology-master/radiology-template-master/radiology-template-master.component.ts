@@ -161,12 +161,14 @@ onSearchClear(){
     }
     console.log(m_data);
     this._radiologytemplateService.populateForm(m_data);
-    const dialogRef = this._matDialog.open(EditorComponent,
+    const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
       {
-        // maxWidth: "80vw",
-        // maxHeight: "90vh", 
-        width: '100%',
-        height: "95%"
+        maxWidth: "80%", 
+        width: "80%",
+        height: "85%",
+        data : {
+          registerObj : m_data,
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -176,12 +178,11 @@ onSearchClear(){
 
   onAdd() {
     this.onClear();
-    const dialogRef = this._matDialog.open(EditorComponent,
+    const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
       {
-        maxWidth: "90vw",
-        maxHeight: "95vh",
-        width: '100%',
-        height: "95%"
+          maxWidth: "80%", 
+            width: "80%",
+            height: "85%",
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
