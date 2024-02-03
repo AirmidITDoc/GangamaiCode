@@ -17,6 +17,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { RadioPatientList } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-radiology-template-master',
@@ -36,6 +37,8 @@ export class RadiologyTemplateMasterComponent implements OnInit {
   hasSelectedContacts: boolean;
   menuActions:Array<string> = [];
   screenFromString = 'opd-casepaper';
+  vTemplateName:any;
+  vTemplateDesc:any;
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -48,13 +51,9 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     'TemplateName',
     'TemplateDesc',
     'IsDeleted',
-    
     'action'
-    
   ];
    
-  // dataSource = new MatTableDataSource<RadiologytemplateMaster>();
-
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
   constructor(public _radiologytemplateService: RadiologyTemplateMasterService,
     private accountService: AuthenticationService,
@@ -150,44 +149,60 @@ onSearchClear(){
       this.onClear();
     }
   }
-  onEdit(row) {
+
+  @ViewChild('tabGroup') tabGroup: MatTabGroup;
+  openTab(row, tabGroup: MatTabGroup): void {
+    this.vTemplateName = row.TemplateName;
+    this.vTemplateDesc = row.TemplateDesc;
+     const tabIndex = row === 'tab1' ? 0 : 1;  
+    tabGroup.selectedIndex = tabIndex;
     console.log(row)
-    var m_data = {
-      "TemplateId": row.TemplateId,
-      "TemplateName": row.TemplateName.trim(),
-      "TemplateDesc": row.TemplateDesc.trim(),
-      "IsDeleted": JSON.stringify(row.IsDeleted),
-      "UpdatedBy": row.UpdatedBy,
-    }
-    console.log(m_data);
-    this._radiologytemplateService.populateForm(m_data);
-    const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
-      {
-        maxWidth: "80%", 
-        width: "80%",
-        height: "85%",
-        data : {
-          registerObj : m_data,
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getRadiologytemplateMasterList();
-    });
+    this.getRadiologytemplateMasterList();
   }
 
-  onAdd() {
+  // onEdit(row) {
+  //   console.log(row)
+   
+  //   var m_data = {
+  //     "TemplateId": row.TemplateId,
+  //     "TemplateName": row.TemplateName.trim(),
+  //     "TemplateDesc": row.TemplateDesc.trim(),
+  //     "IsDeleted": JSON.stringify(row.IsDeleted),
+  //     "UpdatedBy": row.UpdatedBy,
+  //   }
+  //   console.log(m_data);
+  //   this._radiologytemplateService.populateForm(m_data);
+  //   const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
+  //     {
+  //       maxWidth: "80%", 
+  //       width: "80%",
+  //       height: "85%",
+  //       data : {
+  //         registerObj : m_data,
+  //       }
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed - Insert Action', result);
+  //     this.getRadiologytemplateMasterList();
+  //   });
+  // }
+
+  onAdd(tabName: string, tabGroup: MatTabGroup) {
+    const tabIndex = tabName === 'tab1' ? 0 : 1;  
+    tabGroup.selectedIndex = tabIndex;
+   // console.log(row)
+    this.getRadiologytemplateMasterList();
     this.onClear();
-    const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
-      {
-          maxWidth: "80%", 
-            width: "80%",
-            height: "85%",
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      // this.getRadiologytemplateMasterList();
-    });
+    // const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
+    //   {
+    //       maxWidth: "80%", 
+    //         width: "80%",
+    //         height: "85%",
+    //   });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed - Insert Action', result);
+    //   // this.getRadiologytemplateMasterList();
+    // });
   }
  
 

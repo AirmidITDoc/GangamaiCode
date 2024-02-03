@@ -1,4 +1,11 @@
 app-testmaster {
+  
+.table{
+
+    width: 100%;
+    height: 520px;
+    min-height: 520px;
+    max-height: 520px;
     .mat-header-row {
         width: 1740px;
         max-width: 1740px;
@@ -11,11 +18,6 @@ app-testmaster {
         min-width: 1740px;
         height: 50px;
     }
-.table{
-    width: 100%;
-    height: 550px;
-    min-height: 550px;
-    max-height: 550px;
     .mat-column-TestId {
         width: 90px;
         max-width: 90px;
@@ -183,6 +185,22 @@ app-testmaster {
         text-align:  center;
         justify-content: center;
     }
+}
+
+.table1{
+     
+    width: 100%;
+    height: 250px;
+    min-height: 250px;
+    max-height: 250px;  
+}
+button:disabled {
+    color: white;
+   background-color: #7bd3ff  !important;
+   //background-color: #b7e6fd ;
+    border-radius: 2px;
+   // border: 1px solid #CCCCCC;
+   border: 1px solid  #b7e6fd ;
 }
     .mat-icon-button {
         padding: 0;

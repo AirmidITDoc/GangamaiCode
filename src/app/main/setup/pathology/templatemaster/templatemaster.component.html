@@ -1,3 +1,5 @@
+<mat-tab-group style="width: 100%;" #tabGroup>
+    <mat-tab label="Pathology Template List">
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
    
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
@@ -15,7 +17,7 @@
             
         </div>
         <div fxLayout="row" fxLayoutAlign="start end">
-            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">
+            <button mat-raised-button color="pine" (click)="onAdd('row', tabGroup)" fxLayoutAlign="center center">
                 Add &nbsp;<mat-icon color="Primary" title=" Add New Template ">add_to_photos</mat-icon>
             </button>
         </div>
@@ -106,7 +108,7 @@
                                 <ng-container matColumnDef="action" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
                                     <mat-cell *matCellDef="let row">
-                                        <button mat-icon-button (click)="onEdit(row)">
+                                        <button mat-icon-button (click)="openTab(row, tabGroup)">
                                             <mat-icon title="Edit Menu">edit</mat-icon>
                                         </button>
                                         <button mat-icon-button (click)="onDeactive(row.TemplateId)" color="warn">
@@ -149,3 +151,87 @@
         </div> 
     </div> 
 </div>
+</mat-tab>
+<mat-tab label=" Add New Template"> 
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+            <div fxLayout="row" fxLayoutAlign="start center">
+    
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{_templateService.myform.controls.TemplateId.value?"Modify Pathology Template Master":"New
+                    Pathology Template Master"}}
+                </span>
+                <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+                style="margin-left: 960px;">
+                    <mat-icon>close</mat-icon>
+                  </button> -->
+    
+            </div>
+        </mat-toolbar>
+     
+        <div class="content">
+            <div class="center p-24 pb-56" fusePerfectScrollbar>
+                <div class="content-card">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <div fxlayout="row" style=" background-color: white;
+                                 padding: 5px 10px 5px 10px;">
+                                <form [formGroup]="_templateService.myform">
+                                    <div class="dialog-content-wrapper">
+                                        <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+    
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Template Name</mat-label>
+                                                <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
+                                                name="TemplateName" formControlName="TemplateName" required>
+                                                <mat-error>Please enter TestName </mat-error>
+                                            </mat-form-field>
+                                           
+                                            <div>
+                                             <!-- <angular-editor [placeholder]="'Enter text here...'" ></angular-editor>  -->
+                                                  
+                                            </div>
+                                            
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Template Details</mat-label>
+                                                <textarea matInput placeholder="Template Description" #TemplateDesc
+                                                name="TemplateDesc"  formControlName="TemplateDesc" required  
+                                                    style="height: 400px;" [(ngModel)]="vTemplateDesc"></textarea>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end center">
+                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
+                                            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>                                        
+                                        </mat-radio-group>
+                                    </div>
+                                    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+                                        <div class="button-row">
+                                            <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
+                                                style="border-radius: 16px;width: 80px; height:40px;"
+                                                [disabled]="_templateService.myform.invalid">Save</button>
+                                            <button mat-raised-button color="warn" (click)="onClear()"
+                                                style="border-radius: 16px;width: 80px; height:40px;">Clear</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div> 
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</mat-tab>
+</mat-tab-group>

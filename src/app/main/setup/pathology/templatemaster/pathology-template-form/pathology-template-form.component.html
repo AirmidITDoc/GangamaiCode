@@ -28,7 +28,7 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row" style=" background-color: white;
                              padding: 5px 10px 5px 10px;">
-                            <form [formGroup]="_templateService.newTemplateFrom">
+                            <form [formGroup]="_templateService.myform">
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
@@ -76,7 +76,7 @@
                                     <div class="button-row">
                                         <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
                                             style="border-radius: 16px;width: 80px; height:40px;"
-                                            [disabled]="_templateService.newTemplateFrom.invalid">Save</button>
+                                            [disabled]="_templateService.myform.invalid">Save</button>
                                         <button mat-raised-button color="warn" (click)="onClear()"
                                             style="border-radius: 16px;width: 80px; height:40px;">Clear</button>
                                     </div>

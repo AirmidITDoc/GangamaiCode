@@ -35,6 +35,7 @@ import { RadiologyTemplateMasterComponent } from './radiology-template-master.co
 import { RadiologyTemplateMasterService } from './radiology-template-master.service';
 import { TemplateReportComponent } from './template-report/template-report.component';
 import { SharedModule } from 'app/main/shared/shared.module';
+import {MatTabsModule} from '@angular/material/tabs';
 // import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 
 
@@ -62,6 +63,7 @@ const routes: Routes = [
 
     RouterModule.forChild(routes),
     CommonModule,
+    MatTabsModule,
     MatButtonModule,
     MatCheckboxModule,
     MatDatepickerModule,

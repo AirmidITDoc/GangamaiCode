@@ -6,14 +6,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class RadiologyTestMasterService {
-
-  
   myform: FormGroup;
   myformSearch: FormGroup;
+  AddParameterFrom:FormGroup;
 
   constructor(private _httpClient: HttpClient,private _formBuilder: FormBuilder) {
     this.myform=this.createRadiologytestForm();
     this.myformSearch = this.createSearchForm();
+    this.AddParameterFrom =this.createAddparaFrom();
   }
 
   createRadiologytestForm(): FormGroup {
@@ -23,6 +23,7 @@ export class RadiologyTestMasterService {
       PrintTestName: [''],
       CategoryId:[''],
       CategoryName:[''],
+      TemplateName:[''],
       ServiceId:[''],
       ServiceID:[''],
       IsDeleted: ['false'],
@@ -36,6 +37,12 @@ export class RadiologyTestMasterService {
         TestNameSearch: [""],
         IsDeletedSearch: ["2"],
     });
+}
+createAddparaFrom(): FormGroup {
+  return this._formBuilder.group({
+      ParameterName: [""],
+      NewIsSubTest: [" "],
+  });
 }
 
   initializeFormGroup() {

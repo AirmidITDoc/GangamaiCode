@@ -26,7 +26,6 @@ export class TestmasterService {
             TestName: [""],
             PrintTestName: [""],
             CategoryId: [""],
-            CategoryName: [""],
             TechniqueName: [""],
             MachineName: [""],
             SuggestionNote: [""],
@@ -53,7 +52,7 @@ export class TestmasterService {
         return this._formBuilder.group({
             TestNameSearch: [""],
             IsDeletedSearch: ["2"],
-            IsSubTest:["false"],
+            IsSubTest:[" "],
         });
     }
     createAddparaFrom(): FormGroup {
@@ -92,6 +91,13 @@ export class TestmasterService {
     public getCategoryMasterCombo() {
         return this._httpClient.post(
             "Generic/GetByProc?procName=Retrieve_PathCategoryMasterForCombo",
+            {}
+        );
+    }
+      // new Subtest list  Master Combobox List
+      public getNewSubTestList() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_PathSubTestListForCombo",
             {}
         );
     }

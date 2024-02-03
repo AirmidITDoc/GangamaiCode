@@ -10,6 +10,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RadiologyTestMasterService } from './radiology-test-master.service';
 import { ToastrService } from 'ngx-toastr';
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-radiology-test-master',
@@ -19,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
   animations: fuseAnimations
 })
 export class RadiologyTestMasterComponent implements OnInit {
-
+  ChargeList:any=[];
   RadiologytestMasterList: any;
   CategorycmbList:any=[];
   ServicecmbList:any=[];
@@ -38,9 +39,13 @@ export class RadiologyTestMasterComponent implements OnInit {
     'IsDeleted',
     'action'
   ];
+  displayedColumns1: string[] = [
+    "ParameterName"
+ ];
 
   dataSource = new MatTableDataSource<RadiologytestMaster>();
-  
+  DSTestList = new MatTableDataSource<TestList>();
+  dsTemparoryList = new MatTableDataSource<TestList>();
   // category filter
 public categoryFilterCtrl: FormControl = new FormControl();
 public filteredCategory: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -60,7 +65,7 @@ private _onDestroy = new Subject<void>();
     this.getRadiologytestMasterList();
     this.getCategoryNameCombobox();
     this.getServiceNameCombobox();
-    this.getCategoryMasterList();
+    
 
     this.categoryFilterCtrl.valueChanges
     .pipe(takeUntil(this._onDestroy))
@@ -130,28 +135,18 @@ onSearchClear() {
 } 
  
   getRadiologytestMasterList() {
-    // var vdata={
-    //   ServiceName: this._radiologytestService.myformSearch.get('TestNameSearch').value + '%' || '%'
-    // };
-    //   console.log(vdata)
-    //  this._radiologytestService.getRadiologyList(vdata).subscribe(Menu => {
-    //   this.dataSource.data = Menu as RadiologytestMaster[];
-    //   console.log(this.dataSource)
-    //   this.dataSource.sort= this.sort;
-    //   this.dataSource.paginator=this.paginator;
-    // });
-  }
-  getCategoryMasterList() {
-    var m ={
-      "serviceName": this._radiologytestService.myformSearch.get('TestNameSearch').value + '%' || '%'
+    var vdata={
+      ServiceName: this._radiologytestService.myformSearch.get('TestNameSearch').value + '%' || '%'
     };
-    this._radiologytestService.getRadiologyList(m).subscribe((Menu) => {
-        this.dataSource.data = Menu as RadiologytestMaster[];
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        console.log(this.dataSource );
+      console.log(vdata)
+     this._radiologytestService.getRadiologyList(vdata).subscribe(Menu => {
+      this.dataSource.data = Menu as RadiologytestMaster[];
+      console.log(this.dataSource)
+      this.dataSource.sort= this.sort;
+      this.dataSource.paginator=this.paginator;
     });
-}
+  }
+ 
 
   getServiceNameCombobox(){
        
@@ -171,6 +166,18 @@ onSearchClear() {
     
     });
   }
+  OnAdd(event) {
+    this.DSTestList.data = [];
+    this.ChargeList = this.dsTemparoryList.data;
+    this.ChargeList.push(
+        {
+            ParameterName: this._radiologytestService.AddParameterFrom.get('ParameterName').value.ParameterName || "",
+        });
+    this.DSTestList.data = this.ChargeList
+    // console.log(this.ChargeList);
+    // this._TestService.AddParameterFrom.get('ParameterName').setValue("");
+    this._radiologytestService.AddParameterFrom.reset();
+}
   onClear(){
     this._radiologytestService.myform.reset({IsDeleted:'false'});
     this._radiologytestService.initializeFormGroup();
@@ -245,6 +252,14 @@ onSearchClear() {
       this.onClear();
     }
   }
+  @ViewChild('tabGroup') tabGroup: MatTabGroup;
+  onAdd(tabName: string, tabGroup: MatTabGroup) {
+    const tabIndex = tabName === 'tab1' ? 0 : 1;
+    tabGroup.selectedIndex = tabIndex;
+    // console.log(row)
+    this.getRadiologytestMasterList();
+    this.onClear();
+}
   onEdit(row) {
     var m_data ={"TestId":row.TestId,"TestName":row.TestName.trim(),
     "PrintTestName":row.PrintTestName.trim(),
@@ -257,7 +272,20 @@ onSearchClear() {
 }
 
 
-
+export class TestList {
+  TemplateName: any;
+  ParameterID: number;
+  /**
+   * Constructor
+   *
+   * @param TestList
+   */
+  constructor(TestList) {
+      {
+          this.TemplateName = TestList.TemplateName || "";
+      }
+  }
+}
 export class RadiologytestMaster {
   TestId: number;
   TestName: string;

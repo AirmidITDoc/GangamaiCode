@@ -32,12 +32,12 @@ export class PathologyTemplateFormComponent implements OnInit {
    
 
     onSubmit() {
-        if (this._templateService.newTemplateFrom.valid) {
-            if (!this._templateService.newTemplateFrom.get("TemplateId").value) {
+        if (this._templateService.myform.valid) {
+            if (!this._templateService.myform.get("TemplateId").value) {
                 var m_data = {
                     insertPathologyTemplateMaster: {
                         testId: 0,
-                        templateId:this._templateService.newTemplateFrom.get("TemplateId").value,
+                        templateId:this._templateService.myform.get("TemplateId").value,
                     },
                 };
                 console.log(m_data)

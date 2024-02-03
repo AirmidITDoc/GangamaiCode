@@ -22,21 +22,10 @@ export class RadiologyTemplateMasterService {
 
       TemplateName:[''],
       TemplateId:[''],
-      TemplateDesc:[''],
-      RadReportID: [''],
-      ReportDate:[(new Date()).toISOString()],
-      ReportTime:[(new Date()).toISOString()],
+      TemplateDesc:[''], 
       IsCompleted: ['false'],
-      IsPrinted: ['flase'],
-      RadResultDr1: [''],
-      RadResultDr2: [''],
-      RadResultDr3: [''],
-      SuggestionNotes: [''],
-      AdmVisitDoctorID: [''],
-      RefDoctorID: [''],
-      ResultEntry: [''],
-      Suggatationnote:[''],
-      DoctorId:['']
+      IsPrinted: ['flase'], 
+      IsDeleted:['true']
         });
   }
   createSearchForm(): FormGroup {
