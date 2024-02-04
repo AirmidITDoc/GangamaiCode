@@ -12,38 +12,53 @@ app-category-master{
         min-width: 800px;
     }
 
-    .mat-column-CategoryId {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
-    }
-
-    .mat-column-CategoryName {
-        width: 450px;
-        max-width: 450px;
-        min-width: 450px;
-    }
-    .mat-column-AddedByName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-
-    .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
-        text-align: right;
-        justify-content: right;
+    .table{
+     
+        .mat-column-CategoryId {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            text-align: left;
+            justify-content: left;
+        }
+    
+        .mat-column-CategoryName {
+            width: 250px;
+            max-width: 250px;
+            min-width: 250px;
+            text-align: left;
+            justify-content: left;
+        }
+    
+        .mat-column-AddedBy {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            text-align: left;
+            justify-content: left;
+        }
+        .mat-column-UpdatedBy {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            text-align: left;
+            justify-content: left;
+        }
+    
+        .mat-column-IsDeleted {
+            width: 90px;
+            max-width: 90px;
+            min-width: 90px;
+            text-align: center;
+            justify-content: center;
+        }
+        .mat-column-action {
+            width: 170px;
+            max-width: 170px;
+            min-width: 170px;
+            text-align: center;
+            justify-content:  center;
+        }
     }
     .mat-icon-button {
         padding: 0;

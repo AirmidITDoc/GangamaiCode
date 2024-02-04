@@ -40,13 +40,16 @@ export class CategoryMasterService {
         return this._httpClient.post(
             "Generic/GetByProc?procName=Rtrv_Radiology_CategoryMaster_by_Name",emp);
     }
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+    }
 
     public insertCategoryMaster(employee) {
-        return this._httpClient.post("Radiology/CategorySave", employee);
+        return this._httpClient.post("RadiologyMaster/CategorySave", employee);
     }
 
     public updateCategoryMaster(employee) {
-        return this._httpClient.post("Radiology/CategoryUpdate", employee);
+        return this._httpClient.post("RadiologyMaster/CategorySave", employee);
     }
 
     populateForm(employee) {

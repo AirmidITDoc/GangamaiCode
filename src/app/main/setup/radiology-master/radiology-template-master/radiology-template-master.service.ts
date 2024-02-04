@@ -12,7 +12,7 @@ export class RadiologyTemplateMasterService {
   
   constructor(private _httpClient: HttpClient,private _formBuilder: FormBuilder) {
     this.myform=this.createRadiologytemplateForm();
-    this.myformSearch=this.filterForm();
+    this.myformSearch=this.createSearchForm();
   }
  
   
@@ -21,50 +21,45 @@ export class RadiologyTemplateMasterService {
     return this._formBuilder.group({
 
       TemplateName:[''],
-      
       TemplateId:[''],
-      TemplateDesc:[''],
-      RadReportID: [''],
-      ReportDate:[(new Date()).toISOString()],
-      ReportTime:[(new Date()).toISOString()],
+      TemplateDesc:[''], 
       IsCompleted: ['false'],
-      IsPrinted: ['flase'],
-      RadResultDr1: [''],
-      RadResultDr2: [''],
-      RadResultDr3: [''],
-      SuggestionNotes: [''],
-      AdmVisitDoctorID: [''],
-      RefDoctorID: [''],
-      ResultEntry: [''],
-      Suggatationnote:[''],
-      DoctorId:['']
+      IsPrinted: ['flase'], 
+      IsDeleted:['true']
         });
   }
-
-  filterForm(): FormGroup {
+  createSearchForm(): FormGroup {
     return this._formBuilder.group({
-    RegNoSearch:[0],
-    FirstNameSearch:[''],
-    LastNameSearch:[''],
-    PatientTypeSearch:['1'],
-    StatusSearch: ['0'],
-    CategoryId:[''],
-     start: [new Date().toISOString()],
-     end: [new Date().toISOString()],
+        TemplateNameSearch: [""],
+        IsDeletedSearch: ["2"],
     });
-  }
+}
+  // filterForm(): FormGroup {
+  //   return this._formBuilder.group({
+  //   RegNoSearch:[0],
+  //   FirstNameSearch:[''],
+  //   LastNameSearch:[''],
+  //   PatientTypeSearch:['1'],
+  //   StatusSearch: ['0'],
+  //   CategoryId:[''],
+  //    start: [new Date().toISOString()],
+  //    end: [new Date().toISOString()],
+  //   });
+  // }
 
 
   initializeFormGroup() {
     this.createRadiologytemplateForm();
-    this.filterForm();
+    this.createSearchForm();
   }
 
  
   public getRadiologytemplateMasterList() {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_Radiology_TemplateMaster_by_Name", {TemplateName:"%"})
   }
-  
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+}
   public getRadiologytemplateMasterList1(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Radiology_TemplateMaster_by_Name", employee)
   }

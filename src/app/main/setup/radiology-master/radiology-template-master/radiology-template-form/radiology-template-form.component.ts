@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -34,6 +34,9 @@ export class RadiologyTemplateFormComponent implements OnInit {
   reportdata: any = [];
   dataArray= {};
   sIsLoading: string = '';
+  vTemplateName:any;
+  vTemplateDesc:any;
+  registerObj:any;
   
   
   @ViewChild(MatSort) sort: MatSort;
@@ -104,14 +107,18 @@ export class RadiologyTemplateFormComponent implements OnInit {
     public notification:NotificationServiceService,
     public dialogRef: MatDialogRef<RadiologyTemplateFormComponent>,
     public _matDialog: MatDialog,
-    // public datePipe: DatePipe,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private advanceDataStored: AdvanceDataStored,
     private _fuseSidebarService: FuseSidebarService,
     ) { }
 
     
   ngOnInit(): void {
-    // this.editor = new Editor();
+    if (this.data) {
+      this.registerObj = this.data.registerObj; 
+     this.vTemplateName = this.registerObj.TemplateName;
+      this.vTemplateDesc = this.registerObj.TemplateDesc;
+  }
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;

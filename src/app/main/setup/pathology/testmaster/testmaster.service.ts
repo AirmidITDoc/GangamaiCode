@@ -26,7 +26,6 @@ export class TestmasterService {
             TestName: [""],
             PrintTestName: [""],
             CategoryId: [""],
-            CategoryName: [""],
             TechniqueName: [""],
             MachineName: [""],
             SuggestionNote: [""],
@@ -45,7 +44,7 @@ export class TestmasterService {
             action: [""],
             parametertxt: [""],
             PTemplateId: [""], 
-            IsSubTest: [" "],
+            IsSubTest: ["true"],
         });
     }
 
@@ -53,13 +52,13 @@ export class TestmasterService {
         return this._formBuilder.group({
             TestNameSearch: [""],
             IsDeletedSearch: ["2"],
-            IsSubTest:["false"],
+            IsSubTest:[" "],
         });
     }
     createAddparaFrom(): FormGroup {
         return this._formBuilder.group({
             ParameterName: [""],
-            IsSubTest: [" "],
+            NewIsSubTest: [" "],
         });
     }
 
@@ -95,10 +94,23 @@ export class TestmasterService {
             {}
         );
     }
+      // new Subtest list  Master Combobox List
+      public getNewSubTestList() {
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Retrieve_PathSubTestListForCombo",
+            {}
+        );
+    }
   // Parameter Master Combobox List
   public getParameterMasterCombo() {
     return this._httpClient.post(
         "Generic/GetByProc?procName=Rtrv_PathParameterList_by_Name",
+        {}
+    );
+}
+ // get new sub Test Master list
+ public getNewSubTestMasterList( ) {
+    return this._httpClient.post( "Generic/GetByProc?procName=Retrieve_PathSubTestListForCombo",
         {}
     );
 }

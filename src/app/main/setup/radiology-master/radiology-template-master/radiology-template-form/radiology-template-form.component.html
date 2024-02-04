@@ -1,96 +1,80 @@
-<div class="dialog-content-wrapper">
-    <mat-toolbar matDialogTitle class="mat-accent m-0">
-        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <h3>{{_radiologytemplateService.myform.controls.TemplateId.value?"Modify Radiology Template Master":"New
-                Radiology Template Master"}}</h3>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
             </button>
-        </mat-toolbar-row>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                {{_radiologytemplateService.myform.controls.TemplateId.value?"Modify Radiology Template Master":"New
+                Radiology Template Master"}}
+            </span>
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+            style="margin-left: 960px;">
+                <mat-icon>close</mat-icon>
+              </button>
+
+        </div>
     </mat-toolbar>
-</div>
-<div class="content-card">
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-        <form  style="width: 100%;">
-            <div fxFlex.gt-sm="100%" fxFlex>
-                <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                    <!-- ================================ LABEL HEADER  -->
-                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                            <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
-                            </h3>
-                        </div>
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
-                        style="align-items: baseline;">
 
-                        <span class="label" style="font-weight: bold;" >Reg No :</span>
-                        <span class="data_input" >{{selectedAdvanceObj.RegNo}}</span> 
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style=" background-color: white;
+                             padding: 5px 10px 5px 10px;">
+                            <form [formGroup]="_radiologytemplateService.myform">
+                                <div class="dialog-content-wrapper">
+                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
-                        <span class="label" style="font-weight: bold;" > Patient Name : </span>
-                        <span class="data_input">{{selectedAdvanceObj.PatientName}}</span>
-
-                        <span class="label" style="font-weight: bold;" >Doctor Name : </span>
-                        <span class="data_input">{{selectedAdvanceObj.Doctorname}}</span>
-
-                         <span class="label" style="font-weight: bold;" >Age(Y) :</span>
-                        <span class="data_input">{{selectedAdvanceObj.AgeYear}}
-                        </span>
-
-                        <span class="label" style="font-weight: bold;" >Admitted Date : </span> 
-                        <span class="data_input">{{selectedAdvanceObj.AdmDateTime}} 
-                         
-                         </span>
-
-                        <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-                        </app-common-date> -->
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Template Name</mat-label>
+                                            <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
+                                            name="TemplateName" formControlName="TemplateName" required>
+                                            <mat-error>Please enter TestName </mat-error>
+                                        </mat-form-field>
+                                       
+                                        <div>
+                                         <!-- <angular-editor [placeholder]="'Enter text here...'" ></angular-editor>  -->
+                                              
+                                        </div>
+                                        
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Template Details</mat-label>
+                                            <textarea matInput placeholder="Template Description" #TemplateDesc
+                                            name="TemplateDesc"  formControlName="TemplateDesc" required  
+                                                style="height: 400px;" [(ngModel)]="vTemplateDesc"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end center">
+                                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
+                                    
+                                    </mat-radio-group>
+                                </div>
+                                <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+                                    <div class="button-row">
+                                        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
+                                            style="border-radius: 16px;width: 80px; height:40px;"
+                                            [disabled]="_radiologytemplateService.myform.invalid">Save</button>
+                                        <button mat-raised-button color="warn" (click)="onClear()"
+                                            style="border-radius: 16px;width: 80px; height:40px;">Clear</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div> 
                     </div>
-                    </mat-card>
-                    <!-- ================================ LABEL HEADER  -->
+
                 </div>
-
             </div>
-        </form>
-    </div>
-</div>
-<div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar  style="margin-left: 12px;">
-    <form [formGroup]="_radiologytemplateService.myform" style="margin-left: 15px;">
-        <input type="hidden" name="TemplateId" formControlName="TemplateId">
-
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="margin-left: 15px;">
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                <mat-label>Template Name</mat-label>
-                <input name="TemplateName" formControlName="TemplateName" matInput required>
-                <mat-error>Please enter Template Name </mat-error>
-            </mat-form-field>
-        </div>
-
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="margin-left: 15px;">
-            <div class="editor">
-                <angular-editor  name="editor" placeholder="'Enter text here...'" formControlName="TemplateDesc"></angular-editor>
-                <!-- <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
-                <ngx-editor height="320px" minHeight="150px" [editor]="editor" formControlName="TemplateDesc"></ngx-editor> -->
-            </div>
-        </div>
-
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="margin-left: 15px;">
-            <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
-                <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsDeactive</mat-radio-button>
-            </mat-radio-group>
-            <!-- <section class="example-section">
-                <mat-slide-toggle class="example-margin" name="IsDeleted" formControlName="IsDeleted">
-                    IsAcitive
-                </mat-slide-toggle>
-            </section> -->
-        </div>
-    </form>
-
-    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center" style="margin-left: 15px;">
-        <div class="button-row">
-            <button mat-raised-button color="primary" (click)="onClear()">Print</button>
-            <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                [disabled]="_radiologytemplateService.myform.invalid">Save</button>
-            <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
         </div>
     </div>
 </div>
+
+    

@@ -91,7 +91,7 @@ export class ParamteragewiseformComponent implements OnInit {
     getGenderNameCombobox() {
         this._ParameterageService.getGenderMasterCombo().subscribe(data => {
             this.GendercmbList = data;
-           // console.log(this.GendercmbList);
+           console.log(this.GendercmbList);
         });
     }
     getAgeTypeList() {
@@ -198,26 +198,23 @@ export class ParamteragewiseformComponent implements OnInit {
         this.show = false;
     }
 
-    
+ 
 
     onSubmit() {
         if (this._ParameterageService.myform.valid) {
             if (
                 !this._ParameterageService.myform.get("PathparaRangeId").value
-            ) {
+            ) {  
                 var m_data = {
                     insertParameterMasterAgeWise: {
-                        PathparaRangeId: "0", // this._ParameterageService.myform.get("PathparaRangeId").value,
-                        paraId: this._ParameterageService.myform.get("ParaId")
-                            .value,
-                        sexId: this._ParameterageService.myform.get("SexId")
-                            .value,
-                        minValue: this._ParameterageService.myform
-                            .get("MinValue")
-                            .value,
-                        maxValue: this._ParameterageService.myform
-                            .get("MaxValue")
-                            .value,
+                       // PathparaRangeId: "0",  this._ParameterageService.myform.get("PathparaRangeId").value,
+                        paraId: 0,//this._ParameterageService.myform.get("ParaId").value,
+                        sexId: this._ParameterageService.myIsNumericform.get("SexID")
+                            .value.GenderId,
+                        minValue: this._ParameterageService.myIsNumericform
+                            .get("MinValue").value,
+                        maxValue: this._ParameterageService.myIsNumericform
+                            .get("Maxvalue").value,
                         addedBy: 1,
                         // minAge:
                         //     this._ParameterageService.myform.get("MinAge")

@@ -6,12 +6,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class RadiologyTestMasterService {
-
-  
   myform: FormGroup;
+  myformSearch: FormGroup;
+  AddParameterFrom:FormGroup;
 
   constructor(private _httpClient: HttpClient,private _formBuilder: FormBuilder) {
     this.myform=this.createRadiologytestForm();
+    this.myformSearch = this.createSearchForm();
+    this.AddParameterFrom =this.createAddparaFrom();
   }
 
   createRadiologytestForm(): FormGroup {
@@ -21,6 +23,7 @@ export class RadiologyTestMasterService {
       PrintTestName: [''],
       CategoryId:[''],
       CategoryName:[''],
+      TemplateName:[''],
       ServiceId:[''],
       ServiceID:[''],
       IsDeleted: ['false'],
@@ -29,14 +32,30 @@ export class RadiologyTestMasterService {
       AddedByName: ['']
     });
   }
+  createSearchForm(): FormGroup {
+    return this._formBuilder.group({
+        TestNameSearch: [""],
+        IsDeletedSearch: ["2"],
+    });
+}
+createAddparaFrom(): FormGroup {
+  return this._formBuilder.group({
+      ParameterName: [""],
+      NewIsSubTest: [" "],
+  });
+}
 
   initializeFormGroup() {
     this.createRadiologytestForm();
+    this.createSearchForm();
   }
-
-  public getRadiologytestMasterList() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyTestList", {ServiceName:"%"})
-  }
+  // get Test Master list
+  public getRadiologyList(param) {
+    return this._httpClient.post( "Generic/GetByProc?procName=Retrieve_RadiologyTestList",
+        param
+    );
+}
+  
 
   // Category Master Combobox List
   public getCategoryMasterCombo() {

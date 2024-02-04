@@ -14,7 +14,7 @@
                 Test Master"}}
             </span>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                style="margin-left: 870px;">
+                style="margin-left: 1300px;">
                 <mat-icon>close</mat-icon>
             </button>
 
@@ -64,7 +64,7 @@
                                             <section class="example-section" style="padding: 20px;">
 
                                                 <mat-checkbox formControlName="IsSubTest" class="example-margin"
-                                                    style="margin-left: 15px;"> IsSubTest </mat-checkbox>
+                                                    style="margin-left: 15px;" value="true"> IsSubTest </mat-checkbox>
 
                                                 <mat-checkbox formControlName="IsTemplateTest" value='false'
                                                     class="example-margin" style="margin-left: 35px;">Template
@@ -100,9 +100,9 @@
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
-
-                                                        <mat-checkbox formControlName="IsSubTest" class="example-margin"
-                                                            style="margin-left: 25px;padding: 15px;"> IsSubTest
+                                                        
+                                                        <mat-checkbox formControlName="NewIsSubTest" name="IsSubTest" value="true"
+                                                            style="margin-left: 25px;padding: 15px;"  > IsSubTest
                                                         </mat-checkbox>
 
                                                         <div matTooltip="Select All Value to enable this button!!">
@@ -115,7 +115,7 @@
 
 
                                                     </div>
-                                                    <mat-card style="height:400px;width: 690px;">
+                                                    <mat-card style="height:400px;width: 750px;">
                                                         <mat-table #table class="table1" matSort
                                                             [dataSource]="DSTestList" [@animateStagger]="{value:'50'}"
                                                             style="overflow:auto; width: 100%;">

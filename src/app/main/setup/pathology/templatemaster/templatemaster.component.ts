@@ -9,7 +9,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatAccordion } from "@angular/material/expansion";
 import { MatSort } from "@angular/material/sort";
-import { ResultEntryOneComponent } from "app/main/pathology/result-entry/result-entry-one/result-entry-one.component";
+import { MatTabGroup } from "@angular/material/tabs";
 
 @Component({
     selector: "app-templatemaster",
@@ -34,6 +34,8 @@ export class TemplatemasterComponent implements OnInit {
     isRateLimitReached = false;
     msg: any;
     Testcmblist: any = [];
+    vTemplateName:any;
+    vTemplateDesc:any;
 
    
 
@@ -80,20 +82,11 @@ export class TemplatemasterComponent implements OnInit {
             (error) => (this.isLoading = false)
         );
     }
-
-    // getTestNameCombobox() {
-    //     this._templateService
-    //         .getTestMasterCombo()
-    //         .subscribe((data) => (this.Testcmblist = data));
-    // }
-
+ 
     onClear() {
         this._templateService.myform.reset();
         this._templateService.initializeFormGroup();
     }
-
-    
-
     onDeactive(PTemplateId) {
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
@@ -117,42 +110,98 @@ export class TemplatemasterComponent implements OnInit {
             this.confirmDialogRef = null;
         });
     } 
-    onEdit(row) {
-        console.log(row);
-        var m_data = {
-            TemplateId: row.TemplateId,
-            TemplateName: row.TemplateName,
-            TemplateDetails: row.TemplateDesc,
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
 
-        console.log(m_data);
-        this._templateService.populateForm(m_data);
-
-        const dialogRef = this._matDialog.open(PathologyTemplateFormComponent, {
-            maxWidth: "80vw",
-            maxHeight: "95vh",
-            width: "100%",
-            height: "100%",
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            this.getTemplateMasterList();
-        });
+    UpdatedBy:any;
+    IsDeleted:any;
+    @ViewChild('tabGroup') tabGroup: MatTabGroup;
+    openTab(row, tabGroup: MatTabGroup): void {
+      this.vTemplateName = row.TemplateName;
+      this.vTemplateDesc = row.TemplateDesc;
+      this.IsDeleted = JSON.stringify(row.IsDeleted),
+      this.UpdatedBy + row.UpdatedBy;
+      const tabIndex = row === 'tab1' ? 0 : 1;  
+      tabGroup.selectedIndex = tabIndex;
+     // console.log(row)
+      this.getTemplateMasterList();
     }
-    onAdd() {
+
+    // onEdit(row) {
+    //     console.log(row);
+    //     var m_data = {
+    //         TemplateId: row.TemplateId,
+    //         TemplateName: row.TemplateName.trim(),
+    //         TemplateDesc:row.TemplateDesc.trim(),
+    //         IsDeleted: JSON.stringify(row.IsDeleted),
+    //         UpdatedBy: row.UpdatedBy,
+    //     };
+    //     console.log(m_data);
+    //     this._templateService.populateForm(m_data);
+    //     const dialogRef = this._matDialog.open(PathologyTemplateFormComponent, {
+    //         maxWidth: "80%", 
+    //         width: "80%",
+    //         height: "85%",
+    //         data : {
+    //             registerObj : m_data,
+    //           }
+    //     });
+    //     dialogRef.afterClosed().subscribe((result) => {
+    //         console.log("The dialog was closed - Insert Action", result);
+    //         this.getTemplateMasterList();
+    //     });
+    // }
+    onAdd(tabName: string, tabGroup: MatTabGroup) {
+        const tabIndex = tabName === 'tab1' ? 0 : 1;  
+        tabGroup.selectedIndex = tabIndex;
+       // console.log(row)
+        this.getTemplateMasterList();
         this.onClear();
-        const dialogRef = this._matDialog.open(ResultEntryOneComponent, {
-            maxWidth: "80vw",
-            maxHeight: "95vh",
-            width: "100%",
-            height: "100%",
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            this.getTemplateMasterList();
-        });
+        // const dialogRef = this._matDialog.open(PathologyTemplateFormComponent, {
+        //     maxWidth: "80%", 
+        //     width: "80%",
+        //     height: "85%",
+        // });
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log("The dialog was closed - Insert Action", result);
+        //     this.getTemplateMasterList();
+        // });
+    }
+    onSubmit() {
+        if (this._templateService.myform.valid) {
+            if (!this._templateService.myform.get("TemplateId").value) {
+                var m_data = {
+                    insertPathologyTemplateMaster: {
+                        testId: 0,
+                        templateId:this._templateService.myform.get("TemplateId").value,
+                    },
+                };
+                console.log(m_data)
+
+                this._templateService.insertTemplateMaster(m_data)
+                    .subscribe((data) => {
+                        this.msg = data;
+                    });
+            } else {
+                var m_dataUpdate = {
+                    updatePathologyTemplateMaster: {
+                        PTemplateId:
+                            this._templateService.myform.get("PTemplateId")
+                                .value,
+                        testId: this._templateService.myform.get("TestId")
+                            .value,
+                        templateId:
+                            this._templateService.myform.get("TemplateId")
+                                .value,
+                    },
+                };
+
+                this._templateService
+                    .updateTemplateMaster(m_dataUpdate)
+                    .subscribe((data) => {
+                        this.msg = data;
+                    });
+            }
+           
+        }
     }
 
     OnPrint(TemplateId) {

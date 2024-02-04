@@ -63,7 +63,7 @@
                                 </div>
 
                                 <mat-table class="table3" matSort [dataSource]="DSParameterList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; height: 550px;">
 
                                     <ng-container matColumnDef="ParameterID">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -135,7 +135,7 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                    title="Edit Menu">launch</mat-icon></button>
+                                                    title="Edit Menu">edit</mat-icon></button>
                                             <button mat-icon-button (click)="onDeactive(row.ParameterID)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
 

@@ -8,22 +8,22 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 export class TemplatemasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
-    newTemplateFrom : FormGroup;
-    constructor(
+     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createTemplateForm();
         this.myformSearch = this.createSearchForm();
-        this.newTemplateFrom = this.createnewtemplte();
-    }
+     }
 
     createTemplateForm(): FormGroup {
         return this._formBuilder.group({
             PTemplateId: [""],
-            TestId: [""],
-            TestName: [""],
-            TemplateId: [""],
+            TestId: [""], 
+            TemplateId:[""],
+            TemplateName:[""],
+            TemplateDesc:[""],
+            IsDeleted:['true']
         });
     }
     
@@ -33,15 +33,7 @@ export class TemplatemasterService {
             IsDeletedSearch: ["2"],
         });
     }
-    createnewtemplte(){
-        return this._formBuilder.group({
-            TemplateId:[""],
-            TemplateName:[""],
-            TemplateDetails:[""],
-            IsDeleted:['false']
-
-        })
-    }
+   
     initializeFormGroup() {
         this.createTemplateForm();
     }
