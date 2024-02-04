@@ -9,6 +9,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatAccordion } from "@angular/material/expansion";
 import { MatSort } from "@angular/material/sort";
+import { ResultEntryOneComponent } from "app/main/pathology/result-entry/result-entry-one/result-entry-one.component";
 
 @Component({
     selector: "app-templatemaster",
@@ -142,7 +143,7 @@ export class TemplatemasterComponent implements OnInit {
     }
     onAdd() {
         this.onClear();
-        const dialogRef = this._matDialog.open(PathologyTemplateFormComponent, {
+        const dialogRef = this._matDialog.open(ResultEntryOneComponent, {
             maxWidth: "80vw",
             maxHeight: "95vh",
             width: "100%",

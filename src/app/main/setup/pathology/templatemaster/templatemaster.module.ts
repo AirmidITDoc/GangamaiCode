@@ -28,7 +28,10 @@ import { MatCardModule } from "@angular/material/card";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { TemplateReportComponent } from "./template-report/template-report.component";
-//import { AngularEditorModule } from '@kolkov/angular-editor';
+import { HtmlEditorService, ImageService, LinkService, RichTextEditorModule, TableService, ToolbarService } from "@syncfusion/ej2-angular-richtexteditor";
+import { HttpClientModule } from "@angular/common/http";
+// import { NgxEditorModule } from 'ngx-editor';
+// import { DialogModule } from '@syncfusion/ej2-angular-popups';
 
 const routes: Routes = [
     {
@@ -86,10 +89,19 @@ const routes: Routes = [
         FuseConfirmDialogModule,
         FuseSidebarModule,
         MatProgressSpinnerModule,
-        //AngularEditorModule,
+        // AngularEditorModule,
         FuseSharedModule,
+        // DialogModule,
+      MatProgressSpinnerModule,
+    //   RichTextEditorAllModule
+    RichTextEditorModule,
+    
+     HttpClientModule,
+    //  CodeEditorModule.forRoot()
+ 
     ],
     providers: [TemplatemasterService],
+    // providers: [TemplatemasterService,ToolbarService, LinkService, ImageService, HtmlEditorService,TableService],
     entryComponents: [TemplatemasterComponent],
 })
 export class TemplatemasterModule {}

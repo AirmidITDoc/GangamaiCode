@@ -44,9 +44,9 @@
                              
                             </span>-->
 
-                                <app-common-date [screenFrom]="screenFromString"
+                                <!-- <app-common-date [screenFrom]="screenFromString"
                                     (dateTimeEventEmitter)="getDateTime($event)">
-                                </app-common-date>
+                                </app-common-date> -->
                             </div>
                         </mat-card>
                         <!-- ================================ LABEL HEADER  -->
@@ -186,7 +186,7 @@
                                                 <mat-error>Please enter Suggestion </mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Pathology Name</mat-label>
                                                 <mat-select formControlName="PathResultDoctorId" placeholder="Bank"
                                                     #singleSelect>
@@ -201,12 +201,31 @@
                                                         {{element.Doctorname}}
                                                     </mat-option>
                                                 </mat-select>
-                                                <!-- <mat-error
-                                                    *ngIf="otherForm.get('PathResultDoctorId').invalid && otherForm.get('PathResultDoctorId').touched">
-                                                    Pathology Name is required</mat-error> -->
-                                            </mat-form-field>
+                                               
+                                            </mat-form-field> -->
 
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-label>Result Doctor Name</mat-label>
+                                                <input matAutocompletePosition="below" type="text" placeholder="Select PathResultDoctorId" matInput #dept
+                                                  (keydown)="onEnterresultdr($event)" formControlName="PathResultDoctorId" [matAutocomplete]="autoResult"
+                                                  required>
+                                                <span matSuffix style="display: flex;">
+                                                  <mat-icon class="mat-icon-close"
+                                                    (click)="otherForm.get('PathResultDoctorId').setValue(''); isresultdrSelected = false;">close</mat-icon>
+                                                  <mat-icon class="mat-icon-close"
+                                                    (click)="otherForm.get('PathResultDoctorId').setValue(''); isresultdrSelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #autoResult="matAutocomplete" [displayWith]="getOptionTextresultdr">
+                                                  <mat-option *ngFor="let option of filteredresultdr | async" [value]="option"
+                                                   >
+                                                    {{option.Doctorname}}
+                                                  </mat-option>
+                                                </mat-autocomplete>
+                                              </mat-form-field>
+
+
+
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Pathology Name</mat-label>
                                                 <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect>
                                                     <mat-option>
@@ -220,9 +239,28 @@
                                                         {{element.Doctorname}}
                                                     </mat-option>
                                                 </mat-select>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
 
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-label>Doctor Name</mat-label>
+                                                <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId" matInput #dept
+                                                  (keydown)="onEnterresultdr($event)" formControlName="DoctorId" [matAutocomplete]="autoDoctor"
+                                                  required>
+                                                <span matSuffix style="display: flex;">
+                                                  <mat-icon class="mat-icon-close"
+                                                    (click)="otherForm.get('DoctorId').setValue(''); isresultdrSelected = false;">close</mat-icon>
+                                                  <mat-icon class="mat-icon-close"
+                                                    (click)="otherForm.get('DoctorId').setValue(''); isresultdrSelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextpath">
+                                                  <mat-option *ngFor="let option of filteredpathdr | async" [value]="option"
+                                                   >
+                                                    {{option.DoctorName}}
+                                                  </mat-option>
+                                                </mat-autocomplete>
+                                              </mat-form-field>
+
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Doctor Name</mat-label>
                                                 <mat-select formControlName="AdmDoctorID" placeholder="Bank"
                                                     #singleSelect>
@@ -237,9 +275,9 @@
                                                         {{element.DoctorName}}
                                                     </mat-option>
                                                 </mat-select>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
 
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label> Ref Doctor Name</mat-label>
                                                 <mat-select formControlName="RefDoctorID" placeholder="Bank"
                                                     #singleSelect>
@@ -254,9 +292,28 @@
                                                         {{element.DoctorName}}
                                                     </mat-option>
                                                 </mat-select>
-                                                <!-- <mat-error *ngIf="otherForm.get('RefDoctorID').invalid && otherForm.get('RefDoctorID').touched">
-                                       Ref Doctor Name is required</mat-error> -->
-                                            </mat-form-field>
+                                              
+                                            </mat-form-field> -->
+
+
+                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-label>Doctor Name</mat-label>
+                                                <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId" matInput #dept
+                                                  (keydown)="onEnterresultdr($event)" formControlName="RefDoctorID" [matAutocomplete]="autoRefdr"
+                                                  required>
+                                                <span matSuffix style="display: flex;">
+                                                  <mat-icon class="mat-icon-close"
+                                                    (click)="otherForm.get('RefDoctorID').setValue(''); isresultdrSelected = false;">close</mat-icon>
+                                                  <mat-icon class="mat-icon-close"
+                                                    (click)="otherForm.get('RefDoctorID').setValue(''); isresultdrSelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #autoRefdr="matAutocomplete" [displayWith]="getOptionTextRefdr">
+                                                  <mat-option *ngFor="let option of filteredrefdr | async" [value]="option"
+                                                   >
+                                                    {{option.DoctorName}}
+                                                  </mat-option>
+                                                </mat-autocomplete>
+                                              </mat-form-field>
 
                                         </div>
 

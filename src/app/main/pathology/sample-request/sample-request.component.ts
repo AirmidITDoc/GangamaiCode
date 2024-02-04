@@ -112,8 +112,8 @@ export class SampleRequestComponent implements OnInit {
       "FromDate": this.datePipe.transform(this._PathologyService.myformSearch.get("start").value, "MM-dd-yyyy"),
       "ToDate": this.datePipe.transform(this._PathologyService.myformSearch.get("end").value, "MM-dd-yyyy"),
       "Reg_No": (this._PathologyService.myformSearch.get("Reg_No").value) || 0,
-      "Istype": (this._PathologyService.myformSearch.get("Istype").value) || 1,
-      // "IsCompleted":1
+      "Istype": parseInt(this._PathologyService.myformSearch.get("Istype").value) || 1,
+      "IsCompleted":1
 
     }
     console.log(m_data);

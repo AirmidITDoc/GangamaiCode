@@ -23,9 +23,9 @@ export class SampleDetailComponent implements OnInit {
   msg: any;
   displayedColumns: string[] = [
     'checkbox',
-    // 'VADate',
+    'VADate',
     'ServiceName',
-    // 'IsSampleCollection',
+    'IsSampleCollection',
     'SampleCollectionTime',
     //'PathReportID',
     // 'action'
@@ -116,7 +116,7 @@ export class SampleDetailComponent implements OnInit {
   // this.datePipe.transform(row.DOA,'yyyy-MM-dd')
 
   getSampledetailList() {
-    //  debugger;
+     debugger;
     let OPIP
     if (this.advanceData.OP_IP_Type == "IP") {
       OPIP = 1;
@@ -131,9 +131,10 @@ export class SampleDetailComponent implements OnInit {
       "BillDate": this.datePipe.transform(this.advanceData.From_dt, "yyyy-MM-dd"),
       "OP_IP_Type": OPIP,//this.advanceData.OP_IP_Type,
     }
-    //  console.log(m_data);
+     console.log(m_data);
     this._SampleService.getSampleDetailsList(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as SampleList[];
+      console.log(Visit);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
@@ -145,7 +146,7 @@ export class SampleDetailComponent implements OnInit {
     console.log(this.dataSource.data);
   }
 
-
+  OnSave(){}
 
 
 

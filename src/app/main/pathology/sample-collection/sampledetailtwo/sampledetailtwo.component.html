@@ -13,7 +13,9 @@
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="font-size: 20px;width: 82%; font-weight: 400;">
                 Sample Detail Collection2
             </span>
-          
+            <span style="float: right;">
+            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+            </app-common-date></span>
             <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog" >
                 <mat-icon>close</mat-icon>
             </button> 
@@ -61,8 +63,6 @@
                             </span>--> 
                           
                             
-                            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-                            </app-common-date>
                         </div>
                         </mat-card>
                         <!-- ================================ LABEL HEADER  -->
@@ -193,8 +193,8 @@
           <div   fxLayout="column"   fxFlex.gt-sm="95%" fxFlex  style="background-color:#ffffff;overflow: auto;">
       
             <form [formGroup]="_SampleService.sampldetailform" >
-                <h3>Sample Collection Date / Time </h3>
-                <div   style="width:100%;">
+                <span style="color: rgb(5, 72, 110);">Sample Collection Date / Time </span>
+                <div>
 
                     <!-- <input id="ej2-datetimepicker_0_input" name="ej2-datetimepicker_0" #ejDateTimePicker formControlName="Sampledate" name="datetimepicker" class="e-input e-lib e-keyboard e-datetimepicker" placeholder="Select a date and time" aria-placeholder="Select a date and time" aria-live="assertive" aria-atomic="true" aria-haspopup="true" aria-activedescendant="null" aria-owns="ej2-datetimepicker_0_options" aria-expanded="true" role="combobox" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="true" aria-invalid="false" aria-disabled="false" tabindex="0" value=""> -->
                     <!-- <div class="innerwrap">
@@ -206,7 +206,7 @@
                      <!-- <ejs-datetimepicker #ejDateTimePicker formControlName="Sampledate" name="datetimepicker"  floatLabelType='Auto' style="border-color: firebrick 1px solid ;" >
                      </ejs-datetimepicker>  -->
 
-                     <mat-form-field >
+                     <mat-form-field style="width: 80%;">
                         <input matInput type="datetime-local" placeholder="Sample date" formControlName="SampleDateTime">
                       </mat-form-field>
 
@@ -227,9 +227,9 @@
       
           </div>
 
-          <div   fxLayout="row"  style="text-align: right;width: 100%;margin-top: 200px;margin-left:210px;">
+          <div   fxLayout="row"  style="text-align: right;width: 100%;margin-top:350px;margin-left:210px;">
 
-            <button class="footer-btn" mat-raised-button fxLayoutAlign="center center" (click)="onLABSave()" style="border-radius: 16px;width: fit-content;" >Send Data To LAB</button>
+            <!-- <button class="footer-btn" mat-raised-button fxLayoutAlign="center center" (click)="onLABSave()" style="border-radius: 16px;width: fit-content;" >Send Data To LAB</button> -->
           
             <button  type="submit" mat-raised-button fxLayoutAlign="center center" class="next-btn" (click)=" onSave()" style="border-radius: 16px;" >Save</button>
             <button class="footer-btn" mat-raised-button fxLayoutAlign="center center" (click)="onClose()" style="border-radius: 16px;" >Close</button>

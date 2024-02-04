@@ -32,7 +32,7 @@ export class PrescriptionService {
     return this._httpClient.post("Generic/GetByProc?procName=rptIPDPrecriptionPrint",Param)
   }
 
-  public getPrecriptionlist(Param){
+  public getPrecriptionlistmain(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PrescriptionListFromWard",Param)
   }
 
@@ -55,6 +55,10 @@ export class PrescriptionService {
 
   public getRegistrationList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
+  }
+
+  public getAdmittedpatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=M_Retrieve_OPIPPatientList", employee)
   }
   public presciptionSave(employee) {
     return this._httpClient.post("InPatient/InsertIPPrescription", employee);

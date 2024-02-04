@@ -72,7 +72,7 @@ export class RequestforlabtestService {
   }
  
   public getLabrequestview(RequestId){
-    return this._httpClient.get("InPatient/IPLabRequestChangesInsert?RequestId=" + RequestId);
+    return this._httpClient.get("InPatient/view-IP-Labrequest?RequestId=" + RequestId);
   }
 }
 

@@ -10,8 +10,8 @@ import { DatePipe } from '@angular/common';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ConfigService } from 'app/core/services/config.service';
-import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
 
@@ -51,15 +51,31 @@ export class ResultEntryOneComponent implements OnInit {
   dataSource = new MatTableDataSource<Pthologyresult>();
   configDoc:any;
   sIsLoading: string = '';
+
+  filteredresultdr: Observable<string[]>;
+  filteredpathdr: Observable<string[]>;
+  filteredrefdr: Observable<string[]>;
+  filteredresultdr3: Observable<string[]>;
+
+  optionsDoc1: any[] = [];
+  optionsDoc2: any[] = [];
+  optionsDoc3: any[] = [];
+  optionsDoc4: any[] = [];
+  currentDate: Date = new Date();
+
+  isresultdrSelected: boolean = false;
+  isReligionSelected: boolean = false;
+  isMaritalSelected: boolean = false;
+  
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private formBuilder: FormBuilder,
-    public _matDialog: MatDialog,
+    // public _matDialog: MatDialog,
     public _SampleService: ResultEntryService,
     public datePipe: DatePipe,
     private dialogRef: MatDialogRef<ResultEntryOneComponent>,
-    public dialog: MatDialog,
+    // public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private advanceDataStored: AdvanceDataStored,
     private configService: ConfigService,
@@ -69,18 +85,18 @@ export class ResultEntryOneComponent implements OnInit {
     // console.log(this.advanceData);
   }
 
-  //doctorone filter
-  public pathodoctorFilterCtrl: FormControl = new FormControl();
-  public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
+  // //doctorone filter
+  // public pathodoctorFilterCtrl: FormControl = new FormControl();
+  // public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  //doctorone filter
-  public refDoctorFilterCtrl: FormControl = new FormControl();
-  public filteredRefDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
+  // //doctorone filter
+  // public refDoctorFilterCtrl: FormControl = new FormControl();
+  // public filteredRefDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
-  //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
+  // //doctorone filter
+  // public doctorFilterCtrl: FormControl = new FormControl();
+  // public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
 
@@ -96,11 +112,12 @@ export class ResultEntryOneComponent implements OnInit {
   // console.log(this.configService.getConfigParam());
   //  console.log(this.configService.getConfigParam().IsPathologistDr);
   //   this.configDoc= this.configService.getConfigParam().IsPathologistDr;
-
-    this.getDoctor1List();
+    this.getPathresultDoctorList();
     this.getDoctorList();
+    this.getRefDoctorList();
+    
 
-    this.getPathologyDoctorList();
+   
    
     this.setDropdownObjs();
 debugger;
@@ -126,25 +143,7 @@ debugger;
       this.getResultList();
     }
 
-    this.refDoctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctorone();
-      });
-
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
-
-
-    this.pathodoctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterPathologyDoctor();
-      });
-
+    
       setTimeout(function () {
         let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
         element.click();
@@ -171,68 +170,7 @@ debugger;
         // const toSelect2 = this.DoctorList.find(c => c.DoctorID == this.selectedAdvanceObj.AdmDocId);
         // this.otherForm.get('DoctorId').setValue(toSelect1);
   }
-  private filterPathologyDoctor() {
-
-    if (!this.PathologyDoctorList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.pathodoctorFilterCtrl.value;
-    if (!search) {
-      this.filteredPathDoctor.next(this.PathologyDoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredPathDoctor.next(
-      this.PathologyDoctorList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-
-  // doctorone filter code  
-  private filterDoctor() {
-
-    if (!this.DoctorList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.DoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  // doctorone filter code  
-  private filterDoctorone() {
-
-    if (!this.Doctor1List) {
-      return;
-    }
-    // get the search keyword
-    let search = this.refDoctorFilterCtrl.value;
-    if (!search) {
-      this.filteredRefDoctorone.next(this.Doctor1List.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredRefDoctorone.next(
-      this.Doctor1List.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
+  
 
   getResultList() {
     debugger;
@@ -258,6 +196,21 @@ debugger;
   //   })
   // }
 
+
+
+  getOptionTextresultdr(option) {
+    return option && option.Doctorname ? option.Doctorname : '';
+  }
+  getOptionTextpath(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
+  getOptionTextRefdr(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
+
+  onEnterresultdr($event){
+    
+  }
   onSave() {
     debugger;
     let pathologyDeleteObj = {};
@@ -294,8 +247,8 @@ debugger;
 debugger;
     let pathologyUpdateReportObj = {};
     pathologyUpdateReportObj['PathReportID'] = this.selectedAdvanceObj.PathReportID;
-    pathologyUpdateReportObj['ReportDate'] = this.dateTimeObj.date;
-    pathologyUpdateReportObj['ReportTime'] = this.dateTimeObj.time;
+    pathologyUpdateReportObj['ReportDate'] =this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+    pathologyUpdateReportObj['ReportTime'] =this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
     pathologyUpdateReportObj['IsCompleted'] = true;
     pathologyUpdateReportObj['IsPrinted'] = true;
     pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value.DoctorId || 0;
@@ -309,12 +262,12 @@ debugger;
     const pathologyDelete = new PthologyresulDelt(pathologyDeleteObj);
     const pathologyUpdateObj = new PthologyresulUp(pathologyUpdateReportObj);
 
-    let PatientHeaderObj = {};
+    // let PatientHeaderObj = {};
 
-    PatientHeaderObj['ReportDate'] = this.dateTimeObj.date;
-    PatientHeaderObj['ReportTime'] = this.dateTimeObj.time;
-    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-    PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.RegNo;
+    // PatientHeaderObj['ReportDate'] = this.dateTimeObj.date;
+    // PatientHeaderObj['ReportTime'] = this.dateTimeObj.time;
+    // PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+    // PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.RegNo;
 
     // this.dialogRef.afterClosed().subscribe(result => {
     console.log('==============================  PathologyResult ===========');
@@ -328,7 +281,7 @@ debugger;
       if (response) {
         Swal.fire('Congratulations !', 'Pathology Resulentry data saved Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
-            this._matDialog.closeAll();
+            this.dialogRef.close();
           }
         });
       } else {
@@ -342,30 +295,94 @@ debugger;
 
 
 
-  getPathologyDoctorList() {
-    debugger;
+  // getPathologyDoctorList() {
+  //   debugger;
    
+  //   this._SampleService.getPathologyDoctorCombo().subscribe(data => {
+  //     this.PathologyDoctorList = data;
+  //    this.filteredPathDoctor.next(this.PathologyDoctorList.slice());
+  //     // this.otherForm.get('PathResultDoctorId').setValue(this.PathologyDoctorList[this.configDoc]);
+  //   })
+  //   //console.log(this.PathologyDoctorList);
+  // }
+
+   
+  getPathresultDoctorList() {
     this._SampleService.getPathologyDoctorCombo().subscribe(data => {
       this.PathologyDoctorList = data;
-     this.filteredPathDoctor.next(this.PathologyDoctorList.slice());
-      // this.otherForm.get('PathResultDoctorId').setValue(this.PathologyDoctorList[this.configDoc]);
-    })
-    //console.log(this.PathologyDoctorList);
+      this.optionsDoc3 = this.PathologyDoctorList.slice();
+      this.filteredresultdr = this.otherForm.get('PathResultDoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterdoc3(value) : this.PathologyDoctorList.slice()),
+      );
+      
+    });
   }
 
+  private _filterdoc3(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.optionsDoc3.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  // getDoctorList() {
+  //   this._SampleService.getDoctorMaster1Combo().subscribe(data => {
+  //     this.DoctorList = data;
+  //     this.filteredDoctor.next(this.DoctorList.slice());
+  //   })
+  // }
+
+  
   getDoctorList() {
     this._SampleService.getDoctorMaster1Combo().subscribe(data => {
       this.DoctorList = data;
-      this.filteredDoctor.next(this.DoctorList.slice());
-    })
+      this.optionsDoc2 = this.DoctorList.slice();
+      this.filteredpathdr = this.otherForm.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterdoc2(value) : this.DoctorList.slice()),
+      );
+      
+    });
   }
 
-  getDoctor1List() {
+  private _filterdoc2(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsDoc2.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+
+  // getDoctor1List() {
+  //   this._SampleService.getDoctorMaster1Combo().subscribe(data => {
+  //     this.Doctor1List = data;
+  //     this.filteredRefDoctorone.next(this.Doctor1List.slice());
+  //   })
+  // }
+
+  getRefDoctorList() {
     this._SampleService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor1List = data;
-      this.filteredRefDoctorone.next(this.Doctor1List.slice());
-    })
+      this.optionsDoc1 = this.Doctor1List.slice();
+      this.filteredrefdr = this.otherForm.get('RefDoctorID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
+      );
+      
+    });
   }
+
+  private _filterdoc1(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsDoc1.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
 
   getResultListIP() {
     debugger;
@@ -408,7 +425,7 @@ debugger;
   }
 
   onClose() {
-    this.dialogRef.close();
+    // this.dialogRef.close();
   }
 
 
