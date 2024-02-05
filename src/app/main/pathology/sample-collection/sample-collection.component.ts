@@ -155,8 +155,8 @@ export class SampleCollectionComponent implements OnInit {
       "Reg_No": (this._SampleService.myformSearch.get("RegNoSearch").value) || 0,
       "From_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       "To_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "IsCompleted": (this._SampleService.myformSearch.get("StatusSearch").value) || 0,
-      "OP_IP_Type": (this._SampleService.myformSearch.get("PatientTypeSearch").value) || 1,
+      "IsCompleted": parseInt(this._SampleService.myformSearch.get("StatusSearch").value) || 0,
+      "OP_IP_Type": parseInt(this._SampleService.myformSearch.get("PatientTypeSearch").value) || 1,
 
     }
     console.log(m_data);
@@ -192,7 +192,7 @@ export class SampleCollectionComponent implements OnInit {
     else {
       OPIP = 0;
     }
-
+debugger
     var m_data = {
       "BillNo": row.BillNo,
       "BillDate": row.PathDate,//this.datePipe.transform(this._SampleService.myformSearch.get("From_dt").value, "yyyy-MM-dd"),

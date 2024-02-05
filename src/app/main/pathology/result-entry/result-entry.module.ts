@@ -42,6 +42,7 @@ import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.compo
 import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.component';
 import { PathTemplateViewComponent } from './path-template-view/path-template-view.component';
 import { SharedModule } from 'app/main/shared/shared.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 const routes: Routes = [
@@ -98,6 +99,7 @@ const routes: Routes = [
       //  NgMultiSelectDropDownModule.forRoot(),
        MatTooltipModule,
       //  DateTimePickerModule ,
+      MatAutocompleteModule,
             
 
   ],

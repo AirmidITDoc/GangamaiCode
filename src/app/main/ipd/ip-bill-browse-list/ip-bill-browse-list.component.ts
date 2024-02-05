@@ -560,12 +560,12 @@ export class IPBillBrowseListComponent implements OnInit {
     },100);
   }
 
-  viewgetBillReportDatewisePdf(BillNo) {
+  viewgetBillReportDatewisePdf(row) {
     setTimeout(() => {
       this.SpinLoading =true;
      this.AdList=true;
     this._IpBillBrowseListService.getIPBILLdatewisePrint(
-    BillNo
+    row.BillNo
       ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
@@ -587,12 +587,12 @@ export class IPBillBrowseListComponent implements OnInit {
   }
 
 
-  viewgetBillReportwardwisePdf(BillNo) {
+  viewgetBillReportwardwisePdf(row) {
     setTimeout(() => {
       this.SpinLoading =true;
      this.AdList=true;
     this._IpBillBrowseListService.getIpFinalBillwardwiseReceipt(
-    BillNo
+    row.BillNo
       ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {

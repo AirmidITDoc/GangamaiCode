@@ -4,7 +4,11 @@
         <div>
             <span>Sample Detail Collection</span>
         </div>
+        <app-common-date [screenFrom]="screenFromString"
+        (dateTimeEventEmitter)="getDateTime($event)">
+        </app-common-date>
         <div class="close">
+           
             <span class="material-icons" style="cursor: pointer;" (click)="onClose()">
                 close
             </span>
@@ -45,9 +49,7 @@
                              
                             </span>-->
 
-                                <app-common-date [screenFrom]="screenFromString"
-                                    (dateTimeEventEmitter)="getDateTime($event)">
-                                </app-common-date>
+                               
                             </div>
                         </mat-card>
                         <!-- ================================ LABEL HEADER  -->
@@ -68,14 +70,14 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
 
                         <div fxlayout="row">
-                            <div style="width: 100%;height: auto;">
+                            <div style="width: 100%;">
                                 <!-- <button mat-mini-fab fxLayoutAlign="center end" (click)="addNewAdmission()"> 
                                     <mat-icon>add</mat-icon>
                                 </button> -->
                                 <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                     style="overflow:auto" style="width: 100%;">
 
-                                    <ng-container matColumnDef="checkbox" sticky>
+                                    <!-- <ng-container matColumnDef="checkbox" >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
 
                                         </mat-header-cell>
@@ -84,10 +86,21 @@
                                                 (change)="onEdit($event,contact)" >
                                             </mat-checkbox>
                                         </mat-cell>
+                                    </ng-container> -->
+
+                                    <ng-container matColumnDef="checkbox" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            <span class="material-icons" (click)="getChargesList()">
+                                                cached
+                                            </span>
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <mat-checkbox aria-label="Checked" (change)="onEdit($event, contact)">
+                                            </mat-checkbox>
+                                        </mat-cell>
                                     </ng-container>
-
-
-                                    <ng-container matColumnDef="VADate" sticky>
+                                    
+                                    <ng-container matColumnDef="VADate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
@@ -132,7 +145,7 @@
 
                                         </mat-cell>
                                     </ng-container>
-                                    <ng-container matColumnDef="PathReportID" sticky>
+                                    <!-- <ng-container matColumnDef="PathReportID" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                             fxShow.gt-md>PathReportID
                                         </mat-header-cell>
@@ -140,7 +153,7 @@
                                             {{contact.PathReportID}}
 
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <!-- 
                                     <ng-container matColumnDef="action">
@@ -208,13 +221,18 @@
                  </ejs-datetimepicker>  -->
             </div>
 
-            <div>
-               
+            <div style="margin-left: 1000px;;">
+               <!-- <button mat-raised-button color="primary" type="submit">Save</button>
 
-                <button mat-raised-button color="primary" type="submit">Save</button>
+                <button mat-raised-button color="warn" (click)="onClose()">Close</button> -->
 
-                <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+
+                <button class="next-btn" color="accent" style="border-radius: 16px; width: 80px;"
+                    (click)="OnSave()">Save</button>
+                <button class="footer-btn" id="btncancel" (click)="onClose()">Close</button>
             </div>
+
+
 
         </form>
     </div>

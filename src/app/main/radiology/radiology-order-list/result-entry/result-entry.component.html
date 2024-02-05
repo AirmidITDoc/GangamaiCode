@@ -12,7 +12,9 @@
                 {{_radiologytemplateService.myform.controls.TemplateId.value?"Modify Radiology Template Master":"New
                 Radiology Template Master"}}
             </span>
-
+            <!-- <app-common-date [screenFrom]="screenFromString"
+            (dateTimeEventEmitter)="getDateTime($event)">
+        </app-common-date> -->
             <button mat-icon-button [mat-dialog-close]="true" (click)="onClose()" tabIndex="-1"
                 aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
@@ -65,9 +67,7 @@
                          
                         </span>-->
 
-                            <app-common-date [screenFrom]="screenFromString"
-                                (dateTimeEventEmitter)="getDateTime($event)">
-                            </app-common-date>
+                           
                         </div>
                     </mat-card>
                     <!-- ================================ LABEL HEADER  -->
@@ -114,7 +114,7 @@
 
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-            <div class="editor" style="overflow: auto;height:650px !important;">
+            <div class="editor" style="overflow: auto;height:450px !important;">
                 <!-- <angular-editor  name="editor" placeholder="'Enter text here...'" formControlName="TemplateDesc"></angular-editor> -->
                 <!-- <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
                 <ngx-editor height="320px" minHeight="150px" [editor]="editor" formControlName="TemplateDesc"></ngx-editor> -->
@@ -146,7 +146,7 @@
             </mat-form-field>
 
 
-            <mat-form-field appearance="outline" style="width:25%;margin-left:20px;">
+            <!-- <mat-form-field appearance="outline" style="width:25%;margin-left:20px;">
                 <mat-label>Doctor Name</mat-label>
                 <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect>
                     <mat-option>
@@ -157,7 +157,27 @@
                         {{element.Doctorname}}
                     </mat-option>
                 </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
+
+
+            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <mat-label>Doctor Name</mat-label>
+                <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId" matInput #dept
+                   formControlName="DoctorId" [matAutocomplete]="autoRefdr"
+                  required>
+                <span matSuffix style="display: flex;">
+                  <mat-icon class="mat-icon-close"
+                    (click)="_radiologytemplateService.myform.get('DoctorId').setValue(''); isresultdrSelected = false;">close</mat-icon>
+                  <mat-icon class="mat-icon-close"
+                    (click)="_radiologytemplateService.myform.get('DoctorId').setValue(''); isresultdrSelected = false;">search</mat-icon>
+                </span>
+                <mat-autocomplete #autoRefdr="matAutocomplete" [displayWith]="getOptionTextRefdr">
+                  <mat-option *ngFor="let option of filteredrefdr | async" [value]="option"
+                   >
+                    {{option.Doctorname}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
 
         </div>
 

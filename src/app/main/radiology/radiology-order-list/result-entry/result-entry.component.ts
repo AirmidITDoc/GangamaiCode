@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { RadiologyPrint } from '../radiology-order-list.component';
-import { ReplaySubject, Subject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { RadioloyOrderlistService } from '../radioloy-orderlist.service';
@@ -9,7 +9,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 // import { Editor } from 'ngx-editor';
@@ -24,8 +24,8 @@ import { fuseAnimations } from '@fuse/animations';
 export class ResultEntryComponent implements OnInit {
   // editor: Editor;
   // html: '';
-
-
+  filteredrefdr: Observable<string[]>;
+  optionsDoc1: any[] = [];
   msg: any;
   selectedAdvanceObj: RadiologyPrint;
   public iframe: object = { enable: true };
@@ -73,13 +73,13 @@ export class ResultEntryComponent implements OnInit {
   constructor(
     public _radiologytemplateService: RadioloyOrderlistService,
     private accountService: AuthenticationService,
-    public notification: NotificationServiceService,
-    public _matDialog: MatDialog,
-    public datePipe: DatePipe,
+    // public notification: NotificationServiceService,
+    // public _matDialog: MatDialog,
+    // public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
-    public dialogRef: MatDialogRef<ResultEntryComponent>,
+    // public dialogRef: MatDialogRef<ResultEntryComponent>,
   ) {
-    dialogRef.disableClose = true;
+    // dialogRef.disableClose = true;
   }
 
   ngOnInit(): void {
@@ -111,44 +111,43 @@ export class ResultEntryComponent implements OnInit {
       });
     }
 
-    this.DoctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
-
+  
   }
 
-
-  // doctor filter code
-  private filterDoctor() {
-
-    if (!this.Doctorlist) {
-      return;
-    }
-    // get the search keyword
-    let search = this.DoctorFilterCtrl.value;
-    if (!search) {
-      this.filtereddoctor.next(this.Doctorlist.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filtereddoctor.next(
-      this.Doctorlist.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
-    );
-  }
 
 
   // doctorlist
+  // getDoctorList() {
+  //   this._radiologytemplateService.getdoctorCombo().subscribe(data => {
+  //     this.Doctorlist = data;
+  //     this.filtereddoctor.next(this.Doctorlist.slice());
+  //   });
+  // }
+
   getDoctorList() {
     this._radiologytemplateService.getdoctorCombo().subscribe(data => {
       this.Doctorlist = data;
-      this.filtereddoctor.next(this.Doctorlist.slice());
+      this.optionsDoc1 = this.Doctorlist.slice();
+      this.filteredrefdr = this._radiologytemplateService.myform.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterdoc1(value) : this.Doctorlist.slice()),
+      );
+      
     });
   }
+
+  private _filterdoc1(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.optionsDoc1.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  getOptionTextRefdr(option) {
+    return option && option.Doctorname ? option.Doctorname : '';
+  }
+
 
   getTemplateList() {
     let Id = 1;
@@ -210,7 +209,7 @@ export class ResultEntryComponent implements OnInit {
           if (data) {
             Swal.fire('Congratulations !', 'Radiology Template Updated Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
-                this._matDialog.closeAll();
+                // this._matDialog.closeAll();
                 this._radiologytemplateService.myform.get('TemplateDesc').reset();
                 this.getPrint(this.selectedAdvanceObj.RadReportId);
               }
@@ -260,18 +259,18 @@ this.subscriptionArr.push(
           this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
         }
         this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+        // this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
         setTimeout(() => {
           this.print();
         }, 1000);
     });
   }
   
-  transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-    return value;
-  }
+  // transform2(value: string) {
+  //   var datePipe = new DatePipe("en-US");
+  //   value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
+  //   return value;
+  // }
   
   
 
@@ -355,7 +354,7 @@ this.subscriptionArr.push(
 
   onClose() {
     this._radiologytemplateService.myform.reset();
-    this.dialogRef.close();
+    // this.dialogRef.close();
   }
 
 }

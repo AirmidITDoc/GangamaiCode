@@ -11,6 +11,10 @@ import { NewPrescriptionComponent } from './new-prescription/new-prescription.co
 import { Subscription } from 'rxjs';
 import { Validators } from '@angular/forms';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { SampleRequestComponent } from 'app/main/pathology/sample-request/sample-request.component';
+import { SampleCollectionComponent } from 'app/main/pathology/sample-collection/sample-collection.component';
+import { ResultEntryComponent } from 'app/main/pathology/result-entry/result-entry.component';
+import { RadiologyOrderListComponent } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
 
 @Component({
   selector: 'app-prescription',
@@ -68,10 +72,13 @@ export class PrescriptionComponent implements OnInit {
 
   //window
   OpenNewPrescription(){
-    this.dialog.open(NewPrescriptionComponent,{
-      width:'98%',
-      height:'750px'
+    this.dialog.open(RadiologyOrderListComponent,{
+      // width:'98%',
+      // height:'750px'
       
+
+      width:'110%',
+      height:'950px'
     })
   }
 
@@ -82,7 +89,7 @@ export class PrescriptionComponent implements OnInit {
       Reg_No: this._PrescriptionService.mysearchform.get('RegNo').value || 0
     }
     // console.log(vdata);
-    this._PrescriptionService.getPrecriptionlist(vdata).subscribe(data =>{
+    this._PrescriptionService.getPrecriptionlistmain(vdata).subscribe(data =>{
         this.dsprescritionList.data = data as PrescriptionList[];
         this.dsprescritionList.sort = this.sort;
         this.dsprescritionList.paginator = this.paginator;
@@ -125,7 +132,7 @@ export class PrescriptionComponent implements OnInit {
       this.SpinLoading =true;
     //  this.AdList=true;
     this._PrescriptionService.getIpPrescriptionview(
-      row.OP_IP_ID,0
+      row.OP_IP_ID,1
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {

@@ -72,7 +72,7 @@ export class ParameterFormMasterComponent implements OnInit {
 
     ngOnInit(): void {
         // debugger;
-       // this.getParameterNameCombobox();
+        // this.getParameterNameCombobox();
         this.getUnitNameCombobox();
         this.getGenderNameCombobox();
         this.getDscriptiveMasterList();
@@ -91,7 +91,7 @@ export class ParameterFormMasterComponent implements OnInit {
         });
     }
     getUnitNameCombobox() {
- 
+
         this._ParameterService.getUnitMasterCombo().subscribe((data) => {
             this.UnitcmbList = data;
             //this.filteredUnitname.next(this.UnitcmbList.slice());
@@ -122,14 +122,14 @@ export class ParameterFormMasterComponent implements OnInit {
     public show1: boolean = false; ///descriptive
 
     toggle() {
-        if (this.show=true) {
+        if (this.show = true) {
             this.show = true;
         }
         this.show1 = false;
     }
 
     toggle1() {
-        if (this.show1=true) {
+        if (this.show1 = true) {
             this.show1 = true;
         }
         this.show = false;
@@ -176,7 +176,7 @@ export class ParameterFormMasterComponent implements OnInit {
         return this._ParameterService.myform.controls;
     }
 
- 
+
 
     // getParameterNameCombobox() {
     //     this._ParameterService
@@ -184,7 +184,7 @@ export class ParameterFormMasterComponent implements OnInit {
     //         .subscribe((data) => (this.Parametercmb = data));
     // }
 
- 
+
 
     // getParameterName1Combobox() {
     //     this._ParameterService
@@ -194,7 +194,7 @@ export class ParameterFormMasterComponent implements OnInit {
 
     //Descriptive master
 
-   
+
 
     onSubmit() {
         debugger;
@@ -237,7 +237,7 @@ export class ParameterFormMasterComponent implements OnInit {
                                 .value.trim() || "%",
                         unitId:
                             this._ParameterService.myform.get("UnitId").value ||
-                            "0",
+                            1,
                         isNumeric:
                             this._ParameterService.myform.get("IsNumeric")
                                 .value,
@@ -255,8 +255,8 @@ export class ParameterFormMasterComponent implements OnInit {
                                 ).value
                             )
                         ),
-                        methodName: " ", // (this._ParameterService.myform.get("MethodName").value).trim(),
-                        paraMultipleRange: " ", // this._ParameterService.myform.get("ParaMultipleRange").value,
+                        // methodName: " ", // (this._ParameterService.myform.get("MethodName").value).trim(),
+                        // paraMultipleRange: " ", // this._ParameterService.myform.get("ParaMultipleRange").value,
                         parameterID: 0, // this._ParameterService.myform.get("ParameterID").value,
                     },
                     insertParameterMasterRangeWise: {
@@ -273,7 +273,7 @@ export class ParameterFormMasterComponent implements OnInit {
                             this._ParameterService.myform
                                 .get("Maxvalue")
                                 .value.trim() || "%",
-                        isDeleted: 0, // Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
+                        // isDeleted: 0, // Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
                         addedby: 218, // this.accountService.currentUserValue.user.id ,
                     },
                     insertAssignParameterToDescriptives: data2,
@@ -320,7 +320,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 }
                 var m_dataUpdate = {
                     updateParameterMaster: {
-                        parameterID:
+                        parameterId:
                             this._ParameterService.myform.get("ParameterID")
                                 .value,
                         parameterShortName:
@@ -354,8 +354,8 @@ export class ParameterFormMasterComponent implements OnInit {
                                 ).value
                             )
                         ),
-                        paraMultipleRange: "", // this._ParameterService.myform.get("ParaMultipleRange").value || "0",
-                        methodName: " ", // (this._ParameterService.myform.get("MethodName").value).trim() || "%",
+                        // paraMultipleRange: "", // this._ParameterService.myform.get("ParaMultipleRange").value || "0",
+                        // methodName: " ", // (this._ParameterService.myform.get("MethodName").value).trim() || "%",
                     },
                     deleteAssignParameterToRange: {
                         paraId: this._ParameterService.myform.get("ParameterID")
@@ -424,7 +424,7 @@ export class ParameterFormMasterComponent implements OnInit {
         };
     }
 
-  
+
 
     currentval = "";
     AddData1(val) {
@@ -437,6 +437,7 @@ export class ParameterFormMasterComponent implements OnInit {
     selectedItems: any = [];
 
     AddData(txt) {
+        debugger
         console.log(txt);
         this.selectedItems = this.selectedItems.concat(txt);
         this.selectedToAdd = [];

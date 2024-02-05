@@ -208,7 +208,7 @@ this.WardId=obj.RoomId;
       Reg_No: this._PrescriptionService.mysearchform.get('RegNo').value || 0
     }
     // console.log(vdata);
-    this._PrescriptionService.getPrecriptionlist(vdata).subscribe(data =>{
+    this._PrescriptionService.getPrecriptionlistmain(vdata).subscribe(data =>{
         this.dsPrePresList.data = data as PrescriptionList[];
         // this.dsPrePresList.sort = this.sort;
         // this.dsPrePresList.paginator = this.paginator;
@@ -268,7 +268,7 @@ this.WardId=obj.RoomId;
       this.SpinLoading =true;
     //  this.AdList=true;
     this._PrescriptionService.getIpPrescriptionview(
-      OP_IP_ID,0
+      OP_IP_ID,1
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {

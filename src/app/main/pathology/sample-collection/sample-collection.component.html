@@ -262,15 +262,15 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="buttons" stickyEnd>
+                                        <ng-container matColumnDef="buttons" stickyEnd >
                                             <mat-header-cell *matHeaderCellDef class="table-actions"
                                                 style="color: white;">
                                                 Action
                                             </mat-header-cell>
 
                                             <mat-cell *matCellDef="let contact">
-                                                <!-- <button mat-icon-button  (click)="getRecord(contact)"><mat-icon title="Edit Menu">launch</mat-icon></button> -->
-                                                <button mat-icon-button matTooltip="Print">
+                                                <button mat-icon-button  (click)="getRecord(contact)" style="color: brown;"><mat-icon title="Edit Menu">launch</mat-icon></button>
+                                                <button mat-icon-button matTooltip="Print" (click)="getSampleRecords(contact)" style="color: brown;">
                                                     <mat-icon title="New form">launch</mat-icon>
                                                 </button>
                                             </mat-cell>

@@ -1,6 +1,6 @@
 @import "src/@fuse/scss/fuse";
 
-app-sample-detail {
+app-sample-detail{
     display: flex;
     flex: 1 1 auto;
     width: 80%;
@@ -72,29 +72,29 @@ app-sample-detail {
     }
     
     .mat-header-row {
-        width: 100%;
-        // max-width: 1200px;
-        // min-width: 1200px;  
+        // width: 100%;
+        max-width: 1200px;
+        min-width: 1200px;  
         min-height: 20px;     
     }
     
     .mat-row {
-        width: 100%;
-        // max-width: 1200px;
-        // min-width: 1200px;    
+        // width: 100%;
+        max-width: 1200px;
+        min-width: 1200px;    
         min-height: 20px;           
     }
 
     .mat-column-checkbox {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-        text-align: left;
-    }
-    .mat-column-VADate {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
+        text-align: left;
+    }
+    .mat-column-VADate {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
         text-align: left;
     }
     .mat-column-PathTestID {
@@ -105,18 +105,18 @@ app-sample-detail {
        
     }
     .mat-column-ServiceName {
-        // width:300px;
-        // max-width:300px;
-        // min-width:300px;
+        width:500px;
+        max-width:500px;
+        min-width:500px;
         text-align: left;
         justify-content:left;
         white-space: nowrap; 
         overflow: hidden;
         text-overflow: ellipsis; 
         overflow: hidden !important;
-        display: inline-block;
-        margin-top: 7px;
-        margin-right: 10px;   
+        // display: inline-block;
+        // margin-top: 7px;
+        // margin-right: 10px;   
     }
     .mat-column-IsSampleCollection {
         width:150px;
@@ -125,17 +125,10 @@ app-sample-detail {
         text-align: left;
     }
     .mat-column-SampleCollectionTime {
-        // width: 380px;
-        // max-width: 380px;
-        // min-width: 380px;
-        //text-align: right;
-       // justify-content:center;
-        white-space: nowrap; 
-        overflow: hidden;
-        text-overflow: ellipsis; 
-        overflow: hidden !important;
-        display: inline-block;
-        margin-top: 7px;
+        width:250px;
+        max-width: 250px;
+        min-width: 250px;
+        text-align: left;
         
     }
     .mat-column-PathReportID {

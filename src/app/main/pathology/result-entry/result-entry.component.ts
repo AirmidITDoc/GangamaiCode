@@ -248,8 +248,8 @@ export class ResultEntryComponent implements OnInit {
       "Reg_No": (this._SampleService.myformSearch.get("RegNoSearch").value) || 0,
       "From_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("start").value, "yyyy-MM-dd ") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("end").value, "yyyy-MM-dd") || '01/01/1900',
-      "IsCompleted": (this._SampleService.myformSearch.get("StatusSearch").value) || 0,
-      "OP_IP_Type": (this._SampleService.myformSearch.get("PatientTypeSearch").value) || 0,
+      "IsCompleted": parseInt(this._SampleService.myformSearch.get("StatusSearch").value) || 0,
+      "OP_IP_Type": parseInt(this._SampleService.myformSearch.get("PatientTypeSearch").value) || 0,
     }
     
     this._SampleService.getPatientList(m_data).subscribe(Visit => {
@@ -282,26 +282,22 @@ export class ResultEntryComponent implements OnInit {
     this.SBillNo=m.BillNo;
     this.SOPIPtype=m.OPD_IPD_Type;
     this.SFromDate=this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
-    console.log(m.PathDate);
-    console.log(this.SFromDate);
+    // console.log(m.PathDate);
+    // console.log(this.SFromDate);
 
-    console.log(this.SBillNo + this.SOPIPtype + this.SFromDate);
+    // console.log(this.SBillNo + this.SOPIPtype + this.SFromDate);
 
-
+debugger
     var m_data = {
       "BillNo": m.BillNo,
       "OP_IP_Type": m.OPD_IPD_Type,
-      // "From_Dt": this.datePipe.transform(m.PathDate, "yyyy-MM-dd"),
+      "From_Dt": this.datePipe.transform(m.PathDate, "yyyy-MM-dd"),
     }
     console.log(m_data);
     //  setTimeout(() => {
     this._SampleService.getSampleList(m_data).subscribe(Visit => {
       this.dataSource1.data = Visit as SampleList[];
       console.log(this.dataSource1.data);
-
-      // if (this.dataSource1.data[0].IsCompleted) {
-
-      // }
 
       this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator;

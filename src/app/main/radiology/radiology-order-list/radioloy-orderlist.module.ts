@@ -40,6 +40,7 @@ import { RadiologyTemplateReportComponent } from './radiology-template-report/ra
 import { ResultEntryComponent } from './result-entry/result-entry.component';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { RadioloyOrderlistService } from './radioloy-orderlist.service';
+import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 const routes: Routes = [
@@ -92,6 +93,7 @@ const routes: Routes = [
       NgxMatSelectSearchModule,
       MatBadgeModule,
       MatSelectModule,
+      MatAutocompleteModule
       // NgxEditorModule ,
       // NgxEditorModule,
       // AngularEditorModule,

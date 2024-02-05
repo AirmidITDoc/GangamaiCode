@@ -94,8 +94,9 @@ export class RequestforlabtestComponent implements OnInit {
   }
 
   getRequestdetList(Param){
+    debugger
     var vdata={
-      RequestId: Param
+      RequestId: Param.RequestId
     }
     this._RequestforlabtestService.getRequestdetList(vdata).subscribe(data =>{
       this.dsrequestdetList.data = data as RequestdetList[];
@@ -112,6 +113,7 @@ export class RequestforlabtestComponent implements OnInit {
 
 
   viewgetLabrequestReportPdf(row) {
+    debugger
     setTimeout(() => {
       this.SpinLoading =true;
     //  this.AdList=true;

@@ -210,24 +210,117 @@ export class ParamteragewiseformComponent implements OnInit {
     insertParameterMasterAgeWiseObj.push(insertParameterMasterAgeWise);
     });
 
-    let submitData = {
-        "insertParameterMasterAgeWise": insertParameterMasterAgeWiseObj,
-      };
-  
-      console.log(submitData);
-  
-      this._ParameterageService.insertParameterMasterAgeWise(submitData).subscribe(response => {
-        if (response) {
-          this.toastr.success('Record Saved Successfully.', 'Saved !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this._matDialog.closeAll();
-          this.onClear();
-          
-        } else {
-          this.toastr.error('New Parameter Wise Age Data not saved !, Please check API error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
+    onSubmit() {
+        if (this._ParameterageService.myform.valid) {
+            if (
+                !this._ParameterageService.myform.get("PathparaRangeId").value
+            ) {  
+                var m_data = {
+                    insertParameterMasterAgeWise: {
+                       // PathparaRangeId: "0",  this._ParameterageService.myform.get("PathparaRangeId").value,
+                        paraId: 0,//this._ParameterageService.myform.get("ParaId").value,
+                        sexId: this._ParameterageService.myIsNumericform.get("SexID")
+                            .value.GenderId,
+                        minValue: this._ParameterageService.myIsNumericform
+                            .get("MinValue").value,
+                        maxValue: this._ParameterageService.myIsNumericform
+                            .get("Maxvalue").value,
+                        addedBy: 1,
+                        // minAge:
+                        //     this._ParameterageService.myform.get("MinAge")
+                        //         .value || "0",
+                        // maxAge:
+                        //     this._ParameterageService.myform.get("MaxAge")
+                        //         .value || "0",
+                        // ageType: this._ParameterageService.myform
+                        //     .get("AgeType")
+                        //     .value.trim(),
+                        // IsDeleted: Boolean(
+                        //     JSON.parse(
+                        //         this._ParameterageService.myform.get(
+                        //             "IsDeleted"
+                        //         ).value
+                        //     )
+                        // ),
+                    },
+                };
+                console.log(m_data);
+                this._ParameterageService
+                    .insertParameterMasterAgeWise(m_data)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        if (data) {
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                        } else {
+                            this.toastr.error('Parameter-Age-Wise-Form Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
+                        }
+                    },error => {
+                        this.toastr.error('Parameter-Age-Wise-Form not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
+            } else {
+                var m_dataUpdate = {
+                    updateParameterMasterAgeWise: {
+                        pathparaRangeId:
+                            this._ParameterageService.myform.get(
+                                "PathparaRangeId"
+                            ).value,
+                        paraId: this._ParameterageService.myform.get("ParaId")
+                            .value,
+                        sexId: this._ParameterageService.myform.get("SexId")
+                            .value,
+
+                        minValue: this._ParameterageService.myform
+                            .get("MinValue")
+                            .value.trim(),
+                        maxValue: this._ParameterageService.myform
+                            .get("MaxValue")
+                            .value.trim(),
+                        updatedby: 1,
+                        // minAge:
+                        //     this._ParameterageService.myform.get("MinAge")
+                        //         .value || "0",
+                        // maxAge:
+                        //     this._ParameterageService.myform.get("MaxAge")
+                        //         .value || "0",
+                        // ageType: this._ParameterageService.myform
+                        //     .get("AgeType")
+                        //     .value.trim(),
+                        // IsDeleted: Boolean(
+                        //     JSON.parse(
+                        //         this._ParameterageService.myform.get(
+                        //             "IsDeleted"
+                        //         ).value
+                        //     )
+                        // ),
+                    },
+                };
+                console.log(m_dataUpdate);
+                this._ParameterageService
+                    .updateParameterMasterAgeWise(m_dataUpdate)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        if (data) {
+                            this.toastr.success('Record updated Successfully.', 'updated !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                        } else {
+                            this.toastr.error('Parameter-Age-Wise-Form Master Data not updated !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
+                        }
+                    },error => {
+                        this.toastr.error('Parameter-Age-Wise-Form not updated !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
+            }
+            this.onClear();
         }
       }, error => {
         this.toastr.error('New Parameter Wise Age  Data not saved !, Please check API error..', 'Error !', {
