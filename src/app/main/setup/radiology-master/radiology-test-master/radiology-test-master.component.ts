@@ -24,6 +24,7 @@ export class RadiologyTestMasterComponent implements OnInit {
   RadiologytestMasterList: any;
   CategorycmbList:any=[];
   ServicecmbList:any=[];
+  TemplatecmbList:any=[];
   msg:any;
 
   @ViewChild(MatSort) sort:MatSort;
@@ -54,6 +55,10 @@ public filteredCategory: ReplaySubject<any> = new ReplaySubject<any>(1);
 public serviceFilterCtrl: FormControl = new FormControl();
 public filteredService: ReplaySubject<any> = new ReplaySubject<any>(1);
 
+//Template filter
+public templateFilterCtrl: FormControl = new FormControl();
+public filteredTemplate: ReplaySubject<any> = new ReplaySubject<any>(1);
+
 private _onDestroy = new Subject<void>();
 
   constructor(public _radiologytestService: RadiologyTestMasterService,
@@ -65,6 +70,7 @@ private _onDestroy = new Subject<void>();
     this.getRadiologytestMasterList();
     this.getCategoryNameCombobox();
     this.getServiceNameCombobox();
+    this.getTemplateNameCombobox();
     
 
     this.categoryFilterCtrl.valueChanges
@@ -73,11 +79,15 @@ private _onDestroy = new Subject<void>();
       this.filterCategoryname();
     });
 
-
     this.serviceFilterCtrl.valueChanges
     .pipe(takeUntil(this._onDestroy))
     .subscribe(() => {
       this.filterServicename();
+    });
+    this.serviceFilterCtrl.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.filterTemplatename();
     });
   }
 
@@ -122,6 +132,25 @@ private _onDestroy = new Subject<void>();
       this.ServicecmbList.filter(bank => bank.ServiceName.toLowerCase().indexOf(search) > -1)
     );
   }
+    // Template name filter
+    private filterTemplatename() {
+      if (!this.TemplatecmbList) {
+  
+        return;
+      }
+      // get the search keyword
+      let search = this.templateFilterCtrl.value;
+      if (!search) {
+        this.filteredTemplate.next(this.TemplatecmbList.slice());
+        return;
+      } else {
+        search = search.toLowerCase();
+      }
+      // filter the banks
+      this.filteredTemplate.next(
+        this.TemplatecmbList.filter(bank => bank.TemplateName.toLowerCase().indexOf(search) > -1)
+      );
+    }
 
   onSearch() {
     this.getRadiologytestMasterList();
@@ -148,13 +177,22 @@ onSearchClear() {
   }
  
 
-  getServiceNameCombobox(){
-       
+  getServiceNameCombobox(){     
     this._radiologytestService.getServiceMasterCombo().subscribe(data => {
       this.ServicecmbList = data;
       this.filteredService.next(this.ServicecmbList.slice());
       this._radiologytestService.myform.get('ServiceId').setValue(this.ServicecmbList[0]);
     });
+  }
+  getTemplateNameCombobox(){
+     var vdata={
+      "id": 1
+     }  
+    this._radiologytestService.gettemplateMasterCombo(vdata).subscribe(data => {
+      this.TemplatecmbList = data;
+      console.log(this.TemplatecmbList);
+      this.filteredTemplate.next(this.TemplatecmbList.slice());
+     });
   }
 
   getCategoryNameCombobox(){

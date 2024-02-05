@@ -10,6 +10,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatAccordion } from "@angular/material/expansion";
 import { MatSort } from "@angular/material/sort";
 import { MatTabGroup } from "@angular/material/tabs";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "app-templatemaster",
@@ -28,7 +29,7 @@ export class TemplatemasterComponent implements OnInit {
         "UpdatedBy",
         "action"
     ];
-
+ 
     isLoadingResults = true;
     isLoading = true;
     isRateLimitReached = false;
@@ -47,7 +48,7 @@ export class TemplatemasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     constructor(
         public _templateService: TemplatemasterService,
-
+        public toastr: ToastrService,
         public _matDialog: MatDialog
     ) {}
 
@@ -121,8 +122,9 @@ export class TemplatemasterComponent implements OnInit {
       this.UpdatedBy + row.UpdatedBy;
       const tabIndex = row === 'tab1' ? 0 : 1;  
       tabGroup.selectedIndex = tabIndex;
-     // console.log(row)
+      console.log(row)
       this.getTemplateMasterList();
+     // this.onSubmit(row);
     }
 
     // onEdit(row) {
@@ -165,40 +167,62 @@ export class TemplatemasterComponent implements OnInit {
         //     this.getTemplateMasterList();
         // });
     }
-    onSubmit() {
+    onSubmit( ) {
         if (this._templateService.myform.valid) {
             if (!this._templateService.myform.get("TemplateId").value) {
-                var m_data = {
-                    insertPathologyTemplateMaster: {
-                        testId: 0,
-                        templateId:this._templateService.myform.get("TemplateId").value,
-                    },
-                };
-                console.log(m_data)
+                let insertPathologyTemplateMaster ={};
+                insertPathologyTemplateMaster['testId'] = 0;
+                insertPathologyTemplateMaster['templateId'] =0 //s this._templateService.myform.get("TemplateId").value;
 
-                this._templateService.insertTemplateMaster(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                    });
-            } else {
-                var m_dataUpdate = {
-                    updatePathologyTemplateMaster: {
-                        PTemplateId:
-                            this._templateService.myform.get("PTemplateId")
-                                .value,
-                        testId: this._templateService.myform.get("TestId")
-                            .value,
-                        templateId:
-                            this._templateService.myform.get("TemplateId")
-                                .value,
-                    },
-                };
+                let submitData={};
+                submitData['insertPathologyTemplateMaster'] = insertPathologyTemplateMaster;
+                console.log(submitData)
+                    this._templateService.insertTemplateMaster(submitData).subscribe(response => {
+                        if (response) {
+                          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                          });
+                          
+                          this.onClear();
+                          
+                        } else {
+                          this.toastr.error('New Template Data not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                          });
+                        }
+                      }, error => {
+                        this.toastr.error('New Template Data not saved !, Please check API error..', 'Error !', {
+                          toastClass: 'tostr-tost custom-toast-error',
+                        });
+                      });
+            }
+            else {
+                let updatePathologyTemplateMaster ={};
+                updatePathologyTemplateMaster['pTemplateId'] = 0;
+                updatePathologyTemplateMaster['testId'] = 0;
+                updatePathologyTemplateMaster['templateId'] = 0;
 
-                this._templateService
-                    .updateTemplateMaster(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                    });
+                let submitData={};
+                submitData['updatePathologyTemplateMaster'] = updatePathologyTemplateMaster;
+                console.log(submitData)
+                    this._templateService.insertTemplateMaster(submitData).subscribe(response => {
+                        if (response) {
+                          this.toastr.success('Record Updated Successfully.', 'Saved !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                          });
+                          
+                          this.onClear();
+                          
+                        } else {
+                          this.toastr.error('New Template Data not Updated !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                          });
+                        }
+                      }, error => {
+                        this.toastr.error('New Template Data not Updated !, Please check API error..', 'Error !', {
+                          toastClass: 'tostr-tost custom-toast-error',
+                        });
+                      });
             }
            
         }

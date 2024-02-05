@@ -105,10 +105,8 @@ export class CategoryMasterComponent implements OnInit {
             } else {
                 var m_dataUpdate = {
                     updateCategoryMaster: {
-                        CategoryId:
-                            this._categoryService.myform.get("CategoryId").value,
-                        CategoryName:
-                            this._categoryService.myform.get("CategoryName").value,
+                        CategoryId: this._categoryService.myform.get("CategoryId").value,
+                        CategoryName: this._categoryService.myform.get("CategoryName").value,
                         updatedBy:1
                     },
                 };
@@ -140,7 +138,7 @@ export class CategoryMasterComponent implements OnInit {
         var m_data = {
             CategoryId: row.CategoryId,
             CategoryName: row.CategoryName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.Isdeleted),
             UpdatedBy: row.UpdatedBy,
         };
         this._categoryService.populateForm(m_data);

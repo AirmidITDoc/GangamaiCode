@@ -71,12 +71,12 @@ export class RadiologyTemplateMasterService {
   {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo",{});
   }
-  public insertRadiologyTemplateMaster(employee) {
-    return this._httpClient.post("Radiology/RadiologyTemplateMasterSave", employee);
+  public insertRadiologyTemplateMaster(employee) { 
+    return this._httpClient.post("RadiologyMaster/RadiologyTemplateMasterSave", employee);
   }
   
   public updateRadiologyTemplateMaster(employee) {
-    return this._httpClient.post("Radiology/RadiologyTemplateMasterUpdate", employee);
+    return this._httpClient.post("RadiologyMaster/RadiologyTemplateMasterUpdate", employee);
   }
 
   populateForm(employee) {
