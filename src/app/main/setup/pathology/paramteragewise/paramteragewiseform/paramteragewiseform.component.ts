@@ -198,17 +198,17 @@ export class ParamteragewiseformComponent implements OnInit {
         this.show = false;
     }
  
- onSubmit(){
-    let insertParameterMasterAgeWiseObj = [];
-    this.dsParameterAgeList.data.forEach((element) => {
-    let insertParameterMasterAgeWise = {};
-    insertParameterMasterAgeWise['paraId'] = 0;
-    insertParameterMasterAgeWise['sexId'] = element.GenderName;//this._ParameterageService.myIsNumericform.get('SexID').value.GenderName;
-    insertParameterMasterAgeWise['minValue'] = element.MinValue;//this._ParameterageService.myIsNumericform.get("MinValue").value;
-    insertParameterMasterAgeWise['maxvalue'] = element.Maxvalue;//this._ParameterageService.myIsNumericform.get("Maxvalue").value;
-    insertParameterMasterAgeWise['addedby'] = 1;
-    insertParameterMasterAgeWiseObj.push(insertParameterMasterAgeWise);
-    });
+//  onSubmit(){
+//     let insertParameterMasterAgeWiseObj = [];
+//     this.dsParameterAgeList.data.forEach((element) => {
+//     let insertParameterMasterAgeWise = {};
+//     insertParameterMasterAgeWise['paraId'] = 0;
+//     insertParameterMasterAgeWise['sexId'] = element.GenderName;//this._ParameterageService.myIsNumericform.get('SexID').value.GenderName;
+//     insertParameterMasterAgeWise['minValue'] = element.MinValue;//this._ParameterageService.myIsNumericform.get("MinValue").value;
+//     insertParameterMasterAgeWise['maxvalue'] = element.Maxvalue;//this._ParameterageService.myIsNumericform.get("Maxvalue").value;
+//     insertParameterMasterAgeWise['addedby'] = 1;
+//     insertParameterMasterAgeWiseObj.push(insertParameterMasterAgeWise);
+//     });
 
     onSubmit() {
         if (this._ParameterageService.myform.valid) {
@@ -225,23 +225,7 @@ export class ParamteragewiseformComponent implements OnInit {
                             .get("MinValue").value,
                         maxValue: this._ParameterageService.myIsNumericform
                             .get("Maxvalue").value,
-                        addedBy: 1,
-                        // minAge:
-                        //     this._ParameterageService.myform.get("MinAge")
-                        //         .value || "0",
-                        // maxAge:
-                        //     this._ParameterageService.myform.get("MaxAge")
-                        //         .value || "0",
-                        // ageType: this._ParameterageService.myform
-                        //     .get("AgeType")
-                        //     .value.trim(),
-                        // IsDeleted: Boolean(
-                        //     JSON.parse(
-                        //         this._ParameterageService.myform.get(
-                        //             "IsDeleted"
-                        //         ).value
-                        //     )
-                        // ),
+                        addedBy: 1, 
                     },
                 };
                 console.log(m_data);
@@ -282,22 +266,7 @@ export class ParamteragewiseformComponent implements OnInit {
                             .get("MaxValue")
                             .value.trim(),
                         updatedby: 1,
-                        // minAge:
-                        //     this._ParameterageService.myform.get("MinAge")
-                        //         .value || "0",
-                        // maxAge:
-                        //     this._ParameterageService.myform.get("MaxAge")
-                        //         .value || "0",
-                        // ageType: this._ParameterageService.myform
-                        //     .get("AgeType")
-                        //     .value.trim(),
-                        // IsDeleted: Boolean(
-                        //     JSON.parse(
-                        //         this._ParameterageService.myform.get(
-                        //             "IsDeleted"
-                        //         ).value
-                        //     )
-                        // ),
+                        
                     },
                 };
                 console.log(m_dataUpdate);
@@ -322,12 +291,8 @@ export class ParamteragewiseformComponent implements OnInit {
             }
             this.onClear();
         }
-      }, error => {
-        this.toastr.error('New Parameter Wise Age  Data not saved !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      });
- }
+      }
+ 
 
     // onSubmit() {
     //     if (this._ParameterageService.myform.valid) {
@@ -420,20 +385,20 @@ export class ParamteragewiseformComponent implements OnInit {
     //         this.onClear();
     //     }
     // }
-    onEdit(row) {
-        var m_data = {
-            PathparaRangeId: row.PathparaRangeId,
-            ParaId: row.ParaId,
-            SexId: row.SexId,
-            MinAge: row.MinAge,
-            MaxAge: row.MaxAge,
-            AgeType: row.IsNumeric,
-            MinValue: row.MinValue.trim(),
-            MaxValue: row.MaxValue.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-    }
+    // onEdit(row) {
+    //     var m_data = {
+    //         PathparaRangeId: row.PathparaRangeId,
+    //         ParaId: row.ParaId,
+    //         SexId: row.SexId,
+    //         MinAge: row.MinAge,
+    //         MaxAge: row.MaxAge,
+    //         AgeType: row.IsNumeric,
+    //         MinValue: row.MinValue.trim(),
+    //         MaxValue: row.MaxValue.trim(),
+    //         IsDeleted: JSON.stringify(row.IsDeleted),
+    //         UpdatedBy: row.UpdatedBy,
+    //     };
+    // }
 
    // parameter filter
     // private filterParametername() {
