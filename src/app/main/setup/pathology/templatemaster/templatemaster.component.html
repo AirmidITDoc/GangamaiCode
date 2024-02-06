@@ -196,8 +196,8 @@
                                            
                                             <div>
                                                 <mat-label>Template Details</mat-label>
-                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height: 400px;" [(ngModel)]="vTemplateDesc" required></angular-editor>
-                                                  
+                                                <div [ngxSummernote]="config"></div>
+  
                                             </div>
                                             
                                             <!-- <mat-form-field appearance="outline" fxFlex>
