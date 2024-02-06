@@ -477,6 +477,27 @@ export class AppointmentComponent implements OnInit {
       startWith(''),
       map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
     );
+
+    
+    // this.OnChangeDoctorList();
+   
+
+    if (this.configService.configParams.DoctorId) {
+      debugger
+      this._opappointmentService.getDoctorMasterCombo(this.configService.configParams.DepartmentId).subscribe(
+        data => {
+          this.DoctorList = data;
+        })
+      const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
+      this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
+    }
+     
+     
+    debugger
+    this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+    );
   }
 
   public handleKeyboardEvent(event: MatAutocompleteSelectedEvent): void {
@@ -966,7 +987,7 @@ export class AppointmentComponent implements OnInit {
       //   map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
       // );
       if (this.configService.configParams.DepartmentId) {
-        debugger
+        
         const ddValue = this.DepartmentList.filter(c => c.Departmentid == this.configService.configParams.DepartmentId);
         this.VisitFormGroup.get('Departmentid').setValue(ddValue[0]);
         this.OnChangeDoctorList(ddValue[0]);
@@ -2343,7 +2364,7 @@ export class AppointmentComponent implements OnInit {
     }
   }
 
-  OnChangeDoctorList(departmentObj) {
+  OnChangeDoctorList1(departmentObj) {
     
     this.isDepartmentSelected = true;
     this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
@@ -2357,13 +2378,30 @@ export class AppointmentComponent implements OnInit {
       })
 
 
-    if (this.VisitFlag == 1 || this.configService.configParams.DepartmentId) {
-      
-      this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
-        data => {
-          this.DoctorList = data;
-        })
-      const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.DoctorId);
+  }
+
+  OnChangeDoctorList(departmentObj) {
+    debugger
+    this.isDepartmentSelected = true;
+    this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+      data => {
+        this.DoctorList = data;
+        this.optionsDoc = this.DoctorList.slice();
+        this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+        );
+      })
+
+
+    if (this.configService.configParams.DoctorId) {
+      debugger
+      // this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
+      //   data => {
+      //     this.DoctorList = data;
+      //   }) 
+      this.configService.configParams.DoctorId=335;
+      const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
       this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
     }
 

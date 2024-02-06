@@ -72,7 +72,7 @@ export class PrescriptionComponent implements OnInit {
 
   //window
   OpenNewPrescription(){
-    this.dialog.open(RadiologyOrderListComponent,{
+    this.dialog.open(NewPrescriptionComponent,{
       // width:'98%',
       // height:'750px'
       
