@@ -34,7 +34,7 @@ export class ResultEntryComponent implements OnInit {
   regobj: RadiologyPatienInsert;
 
   screenFromString = 'opd-casepaper';
-
+  isresultdrSelected: boolean = false;
   templatelist: any = [];
   Doctorlist: any = [];
   currentDate = new Date();

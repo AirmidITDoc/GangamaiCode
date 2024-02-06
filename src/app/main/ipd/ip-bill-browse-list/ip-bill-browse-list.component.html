@@ -164,13 +164,13 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="InterimOrFinal">
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;"> </mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Final </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
                                             <!-- {{contact.IsBillGenerated}}  -->
                                             <mat-icon
-                                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                style="font-size: 70px;width: 20px !important; height:20px !important;border-radius:100% ;"
                                                 *ngIf="contact.InterimOrFinal=='1'" matTooltip="Bill Generated"
-                                                class=" red-600 s-16">circle</mat-icon>
+                                                style="background-color: #f55f5a;">circle</mat-icon>
                                         </mat-cell>
                                     </ng-container>
 
