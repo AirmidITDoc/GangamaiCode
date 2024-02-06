@@ -195,16 +195,18 @@
                                             </mat-form-field>
                                            
                                             <div>
-                                             <!-- <angular-editor [placeholder]="'Enter text here...'" ></angular-editor>  -->
+                                                <mat-label>Template Details</mat-label>
+                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height: 400px;" [(ngModel)]="vTemplateDesc" required></angular-editor>
                                                   
                                             </div>
                                             
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Template Details</mat-label>
                                                 <textarea matInput placeholder="Template Description" #TemplateDesc
                                                 name="TemplateDesc"  formControlName="TemplateDesc" required  
                                                     style="height: 400px;" [(ngModel)]="vTemplateDesc"></textarea>
-                                            </mat-form-field>
+                                       
+                                            </mat-form-field> -->
                                         </div>
                                     </div>
                                      
