@@ -133,20 +133,11 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <!-- <ng-container matColumnDef="ServiceName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-sm>ServiceName </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ServiceName}}
-                                </mat-cell>
-                            </ng-container> -->
-
                                         <ng-container matColumnDef="AddedBy">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>AddedBy</mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
                                             </mat-cell>
                                         </ng-container>
-
-
 
                                         <ng-container matColumnDef="IsTemplateTest">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> IsTemplateTest
@@ -154,22 +145,6 @@
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsTemplateTest}}
                                             </mat-cell>
                                         </ng-container>
-
-                                        <!-- <ng-container matColumnDef="IsCategoryPrint">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header> IsCategoryPrint
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsCategoryPrint}}
-                                </mat-cell>
-                            </ng-container> -->
-
-                                        <!-- <ng-container matColumnDef="IsPrintTestName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header> IsPrintTestName
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IsPrintTestName}}
-                                </mat-cell>
-                            </ng-container> -->
-
-
 
                                         <ng-container matColumnDef="IsDeleted">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -268,6 +243,7 @@
                                             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
                                                 <div fxLayout="row">
                                                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
+                                                        <mat-label>TestName</mat-label>
                                                         <input name="TestName" formControlName="TestName"
                                                             placeholder="Select Test Name" matInput required>
                                                         <mat-error>Please enter TestName </mat-error>
@@ -276,7 +252,7 @@
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Category Name</mat-label>
                                                         <mat-select formControlName="CategoryId" placeholder="Bank"
-                                                            #singleSelect required>
+                                                            #singleSelect required name="CategoryId" #CategoryId>
                                                             <mat-option>
                                                                 <ngx-mat-select-search
                                                                     [formControl]="categoryFilterCtrl"
@@ -292,6 +268,7 @@
                                                 </div>
                                                 <div fxLayout="row">
                                                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
+                                                        <mat-label>PrintTestName</mat-label>
                                                         <input name="PrintTestName" formControlName="PrintTestName"
                                                             placeholder="Select PrintTestName" matInput required>
                                                         <mat-error>Please enter PrintTestName </mat-error>
@@ -318,40 +295,65 @@
                                                     <div fxLayout="column" fxFlex="60%">
                                                         <form [formGroup]="_TestService.AddParameterFrom">
                                                             <div fxLayout="row">
-                                                                
+
+                                                                <ng-container *ngIf="showDropdown1; else dropdown2">
+                                                                    <!-- Dropdown 1 content goes here -->
                                                                     <mat-form-field appearance="outline" fxFlex="50%">
-                                                                        <mat-label>Parameter Name</mat-label>
+                                                                        <mat-label>Subtest Name</mat-label>
                                                                         <mat-select formControlName="ParameterName"
                                                                             placeholder="Bank" #singleSelect required>
                                                                             <mat-option>
                                                                                 <ngx-mat-select-search
-                                                                                    [formControl]="parameternameFilterCtrl"
+                                                                                    [formControl]="subtestFilterCtrl"
                                                                                     [placeholderLabel]="'Search'"
                                                                                     [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
                                                                             </mat-option>
                                                                             <mat-option
-                                                                                *ngFor="let element of filteredParametername | async"
+                                                                                *ngFor="let element of filteredSubtest | async"
                                                                                 [value]="element">
-                                                                                {{element.ParameterName}}
+                                                                                {{element.TestName}}
                                                                             </mat-option>
                                                                         </mat-select>
                                                                     </mat-form-field>
+                                                                </ng-container>
+                                                                
+                                                                <ng-template #dropdown2>
+                                                                <mat-form-field appearance="outline" fxFlex="50%">
+                                                                    <mat-label>Parameter Name</mat-label>
+                                                                    <mat-select formControlName="ParameterName"
+                                                                        placeholder="Bank" #singleSelect required>
+                                                                        <mat-option>
+                                                                            <ngx-mat-select-search
+                                                                                [formControl]="parameternameFilterCtrl"
+                                                                                [placeholderLabel]="'Search'"
+                                                                                [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                                                        </mat-option>
+                                                                        <mat-option
+                                                                            *ngFor="let element of filteredParametername | async"
+                                                                            [value]="element">
+                                                                            {{element.TestName}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                                </ng-template>
 
-                                                                    <mat-checkbox formControlName="NewIsSubTest"
-                                                                        name="IsSubTest" value="true"
-                                                                        style="margin-left: 25px;padding: 15px;"
-                                                                        [(ngModel)]="isCheckednew" (click)="toggle()"> IsSubTest
-                                                                    </mat-checkbox>
+                                                                <mat-checkbox formControlName="NewIsSubTest"
+                                                                    name="IsSubTest" value="true"
+                                                                    style="margin-left: 25px;padding: 15px;"
+                                                                    [(ngModel)]="isCheckednew"
+                                                                    (change)="onCheckboxChange($event)"> IsSubTest
+                                                                </mat-checkbox>
 
-                                                                    <div
-                                                                        matTooltip="Select All Value to enable this button!!">
-                                                                        <button mat-raised-button style="background-color: blue; color: white; width: 70px;
-                                                                          margin-left: 20px; margin-top: 10px;" (click)="OnAdd($event)"
-                                                                            [disabled]="_TestService.AddParameterFrom.invalid">
-                                                                            <mat-icon> add </mat-icon>Add
-                                                                        </button>
-                                                                    </div>
-                                                               
+                                                                <div
+                                                                    matTooltip="Select All Value to enable this button!!">
+                                                                    <button mat-raised-button style="background-color: blue; color: white; width: 70px;
+                                                                          margin-left: 20px; margin-top: 10px;"
+                                                                        (click)="OnAdd($event)"
+                                                                        [disabled]="_TestService.AddParameterFrom.invalid">
+                                                                        <mat-icon> add </mat-icon>Add
+                                                                    </button>
+                                                                </div>
+
                                                                 <!-- <ng-container *ngIf="show1">
                                                                     <mat-form-field appearance="outline" fxFlex="60%">
                                                                         <mat-label>Parameter Name</mat-label>
@@ -390,6 +392,7 @@
 
                                                             </div>
                                                             <mat-card style="height:400px;width: 750px;">
+                                                                
                                                                 <mat-table #table class="table1" matSort
                                                                     [dataSource]="DSTestList"
                                                                     [@animateStagger]="{value:'50'}"
@@ -402,7 +405,7 @@
                                                                         </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element"
                                                                             fxShow.gt-sm>
-                                                                            {{element.ParameterName}}
+                                                                            {{element.TestName}}
                                                                         </mat-cell>
                                                                     </ng-container>
 
@@ -432,6 +435,9 @@
                                                                         [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row>
 
                                                                 </mat-table>
+                                                                <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                                                showFirstLastButtons>
+                                                            </mat-paginator>
                                                             </mat-card>
                                                         </form>
                                                     </div>

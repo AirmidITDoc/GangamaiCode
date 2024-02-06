@@ -70,6 +70,11 @@ createAddparaFrom(): FormGroup {
   public getServiceMasterCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ServiceMasterForCombo", {})
   }
+    
+  // TemplateMaster Combobox List
+  public gettemplateMasterCombo(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadTemplateMasterForCombo", param)
+  }
 
   public updateRadiologyTestMaster(employee) {
     return this._httpClient.post("Radiology/RadiologyTestMasterUpdate", employee);

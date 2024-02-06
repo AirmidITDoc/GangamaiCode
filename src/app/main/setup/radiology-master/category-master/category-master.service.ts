@@ -44,12 +44,12 @@ export class CategoryMasterService {
         return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
     }
 
-    public insertCategoryMaster(employee) {
+    public insertCategoryMaster(employee) { 
         return this._httpClient.post("RadiologyMaster/CategorySave", employee);
     }
 
     public updateCategoryMaster(employee) {
-        return this._httpClient.post("RadiologyMaster/CategorySave", employee);
+        return this._httpClient.post("RadiologyMaster/CategoryUpdate", employee);
     }
 
     populateForm(employee) {

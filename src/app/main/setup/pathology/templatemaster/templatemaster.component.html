@@ -195,23 +195,27 @@
                                             </mat-form-field>
                                            
                                             <div>
-                                             <!-- <angular-editor [placeholder]="'Enter text here...'" ></angular-editor>  -->
+                                                <mat-label>Template Details</mat-label>
+                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height: 400px;" [(ngModel)]="vTemplateDesc" required></angular-editor>
                                                   
                                             </div>
                                             
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Template Details</mat-label>
                                                 <textarea matInput placeholder="Template Description" #TemplateDesc
                                                 name="TemplateDesc"  formControlName="TemplateDesc" required  
                                                     style="height: 400px;" [(ngModel)]="vTemplateDesc"></textarea>
-                                            </mat-form-field>
+                                       
+                                            </mat-form-field> -->
                                         </div>
                                     </div>
-                                    <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end center">
-                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
-                                            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>                                        
-                                        </mat-radio-group>
-                                    </div>
+                                     
+                                        <div fxLayoutAlign="end">
+                                            <mat-radio-button value='true' [checked]="true"
+                                            name="IsDeleted" formControlName="IsDeleted">IsActive</mat-radio-button>                                        
+                                        </div> 
+                                         
+                                  
                                     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
                                         <div class="button-row">
                                             <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"

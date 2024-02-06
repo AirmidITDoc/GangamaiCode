@@ -28,8 +28,9 @@ import { MatCardModule } from "@angular/material/card";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { TemplateReportComponent } from "./template-report/template-report.component";
-// import { HtmlEditorService, ImageService, LinkService, RichTextEditorModule, TableService, ToolbarService } from "@syncfusion/ej2-angular-richtexteditor";
+//import { HtmlEditorService, ImageService, LinkService, RichTextEditorModule, TableService, ToolbarService } from "@syncfusion/ej2-angular-richtexteditor";
 import { HttpClientModule } from "@angular/common/http";
+// import { AngularEditorComponent, AngularEditorModule } from '@kolkov/angular-editor';
 // import { NgxEditorModule } from 'ngx-editor';
 // import { DialogModule } from '@syncfusion/ej2-angular-popups';
 
@@ -45,11 +46,11 @@ const routes: Routes = [
         TemplatemasterComponent,
         PathologyTemplateFormComponent,
         PrintLayoutComponent,
-        TemplateReportComponent,
+        TemplateReportComponent
     ],
     imports: [
         RouterModule.forChild(routes),
-       // AngularEditorModule,
+        // AngularEditorModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
