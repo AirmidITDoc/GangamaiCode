@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -17,7 +17,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { RadioPatientList } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
-import { MatTabGroup } from '@angular/material/tabs';
+import { MAT_TAB_GROUP, MatTabGroup } from '@angular/material/tabs';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -60,19 +60,17 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     private accountService: AuthenticationService,
     public notification: NotificationServiceService,
     public _matDialog: MatDialog,
+     
     private _ActRoute: Router,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
   ) { }
-
+  registerObj:any;
   ngOnInit(): void {
     this.getRadiologytemplateMasterList();
-
     if (this._ActRoute.url == '/radiology/radiology-order-list') {
       this.menuActions.push('Template Details');
-
     }
-
   }
 
   onSearch() {
@@ -94,10 +92,10 @@ export class RadiologyTemplateMasterComponent implements OnInit {
       "TemplateName": this._radiologytemplateService.myformSearch.get("TemplateNameSearch").value + '%' || '%',
 
     }
-    console.log(m_data);
+    //console.log(m_data);
     this._radiologytemplateService.getRadiologytemplateMasterList1(m_data).subscribe(Menu => {
       this.dataSource.data = Menu as RadioPatientList[];
-      console.log(this.dataSource)
+      //console.log(this.dataSource)
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
@@ -244,7 +242,9 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     this.vTemplateDesc = row.TemplateDesc;
     const tabIndex = row === 'tab1' ? 0 : 1;
     tabGroup.selectedIndex = tabIndex;
+    data : row;
     console.log(row)
+
     this.getRadiologytemplateMasterList();
     // this.Onupdate(row);
   }

@@ -186,7 +186,7 @@ onSearchClear() {
   }
   getTemplateNameCombobox(){
      var vdata={
-      "id": 1
+      "id":  this._radiologytestService.myform.get('ServiceId').value.ServiceId 
      }  
     this._radiologytestService.gettemplateMasterCombo(vdata).subscribe(data => {
       this.TemplatecmbList = data;
