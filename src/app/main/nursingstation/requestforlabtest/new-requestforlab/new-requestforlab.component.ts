@@ -330,7 +330,7 @@ export class NewRequestforlabComponent implements OnInit {
       if (response) {
         Swal.fire('Congratulations !', 'New Lab Request Saved Successfully  !', 'success').then((result) => {
           if (result) {
-            // this.dialogRef.close();
+            this.dialogRef.close();
 this.viewgetLabrequestReportPdf(response);
           }
         });

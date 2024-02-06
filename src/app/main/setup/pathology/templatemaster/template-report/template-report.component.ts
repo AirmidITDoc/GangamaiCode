@@ -9,11 +9,11 @@ import { HtmlEditorService, ImageService, LinkService, TableService, ToolbarServ
 @Component({
     selector: "app-template-report",
     templateUrl: "./template-report.component.html",
-    // styleUrls: ["./template-report.component.scss"]
-    // encapsulation: ViewEncapsulation.None,
-    // animations: fuseAnimations,
+    styleUrls: ["./template-report.component.scss"],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
     // template:`<ejs-richtexteditor id='iframeRTE' [(value)]='value' [toolbarSettings]='tools'></ejs-richtexteditor>`,
-    providers: [ToolbarService, LinkService, ImageService, HtmlEditorService, TableService]
+    // providers: [ToolbarService, LinkService, ImageService, HtmlEditorService, TableService]
 })
 export class TemplateReportComponent implements OnInit {
   // editor: Editor;

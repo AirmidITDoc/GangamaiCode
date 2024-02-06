@@ -325,11 +325,6 @@ export class RadiologyOrderListComponent implements OnInit {
     this._SampleService.getRadioTestDetails(m_data).subscribe(Visit => {
       this.dataSource1.data = Visit as RadioPatientList[];
       console.log(this.dataSource1.data);
-
-      // if (this.dataSource1.data[0].IsCompleted) {
-
-      // }
-
       this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator;
       this.sIsLoading = '';

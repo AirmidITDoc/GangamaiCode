@@ -156,8 +156,9 @@
                                 </ngx-mat-select-search>
                             </mat-option>
                             <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
-                                {{element.Doctorname }} <b>|</b> {{element.DepartmentName }} <b>|</b>
-                                {{element.DoctorId }}
+                                {{element.DoctorName }} 
+                                <!-- <b>|</b> {{element.DepartmentName }} <b>|</b>
+                                {{element.DoctorId }} -->
                             </mat-option>
 
                         </mat-select>

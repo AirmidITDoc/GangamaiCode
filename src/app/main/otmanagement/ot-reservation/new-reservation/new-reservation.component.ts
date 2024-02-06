@@ -453,7 +453,7 @@ Otnote(){
   const dialogRef = this._matDialog.open(OTNoteComponent,
       {
         maxWidth: "85%",
-        height: "430px !important ", width: '100%',
+        height: "630px !important ", width: '100%',
       });
 
     dialogRef.afterClosed().subscribe(result => {

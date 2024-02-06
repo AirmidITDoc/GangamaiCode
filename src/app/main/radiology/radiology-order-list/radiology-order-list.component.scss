@@ -110,9 +110,9 @@ app-radiology-order-list{
 
     .table1{
 
-        height: 650px;
-        max-height: 650px;
-        min-height: 650px;
+        height: 350px;
+        max-height: 350px;
+        min-height: 350px;
 button:disabled {
     color: #FFFFFF !important;
     background-color: #CCCCCC !important;
@@ -179,10 +179,7 @@ button:disabled {
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-flex;
-    display:inline;
-    margin-top: 7px;
-    margin-right: 10px;   
+      
 }
 
 .mat-column-PatientType {
@@ -220,9 +217,7 @@ button:disabled {
     overflow: hidden;
     text-overflow: ellipsis; 
     overflow: hidden !important;
-    display: inline-flex;
-    display:inline;
-    margin-top: 7px;
+   
 }
 
 // .mat-column-CategoryName {
