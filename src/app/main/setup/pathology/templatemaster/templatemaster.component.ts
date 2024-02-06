@@ -11,6 +11,8 @@ import { MatAccordion } from "@angular/material/expansion";
 import { MatSort } from "@angular/material/sort";
 import { MatTabGroup } from "@angular/material/tabs";
 import { ToastrService } from "ngx-toastr";
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+
 
 @Component({
     selector: "app-templatemaster",
@@ -20,6 +22,13 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class TemplatemasterComponent implements OnInit {
+    editorConfig: AngularEditorConfig = {
+      editable: true,
+      spellcheck: true,
+      height: '15rem',
+      minHeight: '5rem',
+      placeholder: 'Enter text here...',
+    };
     displayedColumns: string[] = [
         "TemplateId",
         "TemplateName",
@@ -167,13 +176,17 @@ export class TemplatemasterComponent implements OnInit {
         //     this.getTemplateMasterList();
         // });
     }
+    onBlur(e:any){
+      this.vTemplateDesc=e.target.innerHTML;
+    }
     onSubmit( ) {
+      debugger
         if (this._templateService.myform.valid) {
             if (!this._templateService.myform.get("TemplateId").value) {
                 let insertPathologyTemplateMaster ={};
                 insertPathologyTemplateMaster['testId'] = 0;
                 insertPathologyTemplateMaster['templateId'] =0 //s this._templateService.myform.get("TemplateId").value;
-
+                insertPathologyTemplateMaster['Desc']=this.vTemplateDesc;
                 let submitData={};
                 submitData['insertPathologyTemplateMaster'] = insertPathologyTemplateMaster;
                 console.log(submitData)
