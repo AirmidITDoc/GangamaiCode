@@ -114,8 +114,8 @@ export class TestmasterService {
     }
     // Parameter Master Combobox List
     public getParameterMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_PathParameterListForCombo",
+        return this._httpClient.post(//Retrieve_PathParameterListForCombo
+            "Generic/GetByProc?procName=Rtrv_PathParameterList_by_Name",
             {}
         );
     }
@@ -140,7 +140,7 @@ export class TestmasterService {
             {}
         );
     }
-
+    
 
 
     // Insert Perfix Master
