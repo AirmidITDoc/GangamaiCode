@@ -3,7 +3,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { TemplatemasterService } from "../templatemaster.service";
 import { PrintServiceService } from "app/core/services/print-service.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { HtmlEditorService, ImageService, LinkService, TableService, ToolbarService } from "@syncfusion/ej2-angular-richtexteditor";
+//import { HtmlEditorService, ImageService, LinkService, TableService, ToolbarService } from "@syncfusion/ej2-angular-richtexteditor";
 // import { HtmlEditorService, ImageService, LinkService, TableService, ToolbarService } from "@syncfusion/ej2-angular-richtexteditor";
 // import { Editor } from 'ngx-editor';
 @Component({
@@ -13,7 +13,7 @@ import { HtmlEditorService, ImageService, LinkService, TableService, ToolbarServ
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
     // template:`<ejs-richtexteditor id='iframeRTE' [(value)]='value' [toolbarSettings]='tools'></ejs-richtexteditor>`,
-    // providers: [ToolbarService, LinkService, ImageService, HtmlEditorService, TableService]
+   // providers: [ToolbarService, LinkService, ImageService, HtmlEditorService, TableService]
 })
 export class TemplateReportComponent implements OnInit {
   // editor: Editor;

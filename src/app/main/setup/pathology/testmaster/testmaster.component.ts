@@ -46,6 +46,7 @@ export class TestmasterComponent implements OnInit {
     TemplatecmbList: any = [];
     ServicecmbList: any = [];
     ChargeList: any = [];
+    Subtestcmb: any = [];
     DSTestList = new MatTableDataSource<TestList>();
     dsTemparoryList = new MatTableDataSource<TestList>();
     vCategoryId: any;
@@ -75,8 +76,8 @@ export class TestmasterComponent implements OnInit {
     public filteredService: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     // Template filter
-    public templateFilterCtrl: FormControl = new FormControl();
-    public filteredTemplate: ReplaySubject<any> = new ReplaySubject<any>(1);
+    public subtestFilterCtrl: FormControl = new FormControl();
+    public filteredSubtest: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     private _onDestroy = new Subject<void>();
 
@@ -107,10 +108,17 @@ export class TestmasterComponent implements OnInit {
             .subscribe(() => {
                 this.filterServicename();
             });
+
+            this.subtestFilterCtrl.valueChanges
+            .pipe(takeUntil(this._onDestroy))
+            .subscribe(() => {
+                this.filterSubtestname();
+            });
         this.getCategoryNameCombobox();
         this.getServiceNameCombobox();
         this.getParameterNameCombobox();
         this.getTestMasterList();
+        this.getNewSubTestList();
     }
 
     onSearchClear() {
@@ -182,29 +190,43 @@ export class TestmasterComponent implements OnInit {
     }
 
     //Tab-2
-  
-    public show1: boolean = false; ///descriptive
-
-    toggle() {
-        if (this.show1= this.isCheckednew) {
-            this.show1 = true;
-        }
-    }
-
-  
-    getNewSubTestList() { 
-        this._TestService.getNewSubTestList().subscribe((Menu) => {
+ 
+    getSubTestList(el) {
+        var m_data = {
+            TestId:el.TestId
+        };
+        console.log(m_data)
+        this._TestService.getSubTestList(m_data).subscribe((Menu) => {
             this.DSTestList.data = Menu as TestList[];
             console.log(this.DSTestList)
+            this.DSTestList.sort = this.sort;
+            this.DSTestList.paginator = this.paginator;
         });
     }
-
+    getParameterTestList(el) {
+        var m_data = {
+            TestId:el.TestId
+        };
+        console.log(m_data)
+        this._TestService.getParameterTestList(m_data).subscribe((Menu) => {
+            this.DSTestList.data = Menu as TestList[];
+            console.log(this.DSTestList)
+            this.DSTestList.sort = this.sort;
+            this.DSTestList.paginator = this.paginator;
+        });
+    }
+  
+    showDropdown1: boolean = false; // Initially set to false
+    onCheckboxChange(event: any) {
+        this.showDropdown1 = event.checked;
+      }
+  
     OnAdd(event) {
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
         this.ChargeList.push(
             {
-                ParameterName: this._TestService.AddParameterFrom.get('ParameterName').value.ParameterName || "",
+                TestName: this._TestService.AddParameterFrom.get('ParameterName').value.TestName || "",
             });
         this.DSTestList.data = this.ChargeList
         // console.log(this.ChargeList);
@@ -258,14 +280,43 @@ export class TestmasterComponent implements OnInit {
         // filter the banks
         this.filteredParametername.next(
             this.Parametercmb.filter(
-                (bank) => bank.ParameterName.toLowerCase().indexOf(search) > -1
+                (bank) => bank.TestName.toLowerCase().indexOf(search) > -1
             )
         );
     }
     getParameterNameCombobox() {
         this._TestService.getParameterMasterCombo()
             .subscribe((data) => (this.Parametercmb = data));
+            this.filteredParametername.next(this.Parametercmb.slice());
         // console.log(this.Parametercmb);
+    }
+
+     // subtest filter
+     private filterSubtestname() {
+        if (!this.Subtestcmb) {
+            return;
+        }
+        // get the search keyword
+        let search = this.subtestFilterCtrl.value;
+        if (!search) {
+            this.filteredSubtest.next(this.Subtestcmb.slice());
+            return;
+        } else {
+            search = search.toLowerCase();
+        }
+        // filter the banks
+        this.filteredSubtest.next(
+            this.Subtestcmb.filter(
+                (bank) => bank.TestName.toLowerCase().indexOf(search) > -1
+            )
+        );
+    }
+    getNewSubTestList() { 
+        this._TestService.getNewSubTestList().subscribe((data) => {
+            this.Subtestcmb = data ;
+           // console.log(this.Subtestcmb)
+            this.filteredSubtest.next(this.Subtestcmb.slice());
+        });
     }
     // Service name filter
     private filterServicename() {
@@ -290,6 +341,7 @@ export class TestmasterComponent implements OnInit {
     getServiceNameCombobox() {
         this._TestService.getServiceMasterCombo().subscribe((data) => {
             this.ServicecmbList = data;
+            console.log(this.ServicecmbList)
             this.filteredService.next(this.ServicecmbList.slice());
             this._TestService.myform.get("ServiceName").setValue(this.ServicecmbList[0]);
         });
@@ -412,34 +464,40 @@ export class TestmasterComponent implements OnInit {
         // const selectedService = this.ServicecmbList.filter(c => c.ServiceName == row.ServiceName);
         // this._TestService.myform.get('ServiceName').setValue(selectedService);
     }
+    selectedValue: string = '';
     @ViewChild('tabGroup') tabGroup: MatTabGroup;
     openTab(row, tabGroup: MatTabGroup): void {
+        debugger
         var m_data = {
             TestId: row.TestId,
             TestName: row.TestName.trim(),
             PrintTestName: row.PrintTestName.trim(),
-            CategoryId: row.CategoryName,
+            CategoryId: row.CategoryId,
             CategoryName: row.CategoryName,
             IsSubTest: JSON.stringify(row.IsSubTest),
             TechniqueName: row.TechniqueName.trim(),
             MachineName: row.MachineName.trim(),
             SuggestionNote: row.SuggestionNote.trim(),
             FootNote: row.FootNote.trim(),
-            ServiceName: row.ServiceName,
+            ServiceName: row.ServiceID,
             IsTemplateTest: row.IsTemplateTest,
             IsCategoryPrint: JSON.stringify(row.IsCategoryPrint),
             IsPrintTestName: JSON.stringify(row.IsPrintTestName),
             IsDeleted: JSON.stringify(row.Isdeleted),
             UpdatedBy: row.UpdatedBy,
         };
-        const selectedService = this.ServicecmbList.filter(c => c.ServiceID == row.ServiceID);
-        this._TestService.myform.get('ServiceName').setValue(selectedService);
+        const selectedService = this.ServicecmbList.filter(c => c.ServiceName == row.TestName);
+        this._TestService.myform.get('ServiceName').setValue(this.selectedValue);
+        this.selectedValue = row.CategoryName;
+        console.log(this.selectedValue);
         console.log(row.ServiceID)
         console.log(row.CategoryName)
         this._TestService.populateForm(m_data);
         const tabIndex = row === 'tab1' ? 0 : 1;
         tabGroup.selectedIndex = tabIndex;
          console.log(row)
+         this.getSubTestList(row) ;
+         this.getParameterTestList(row);
         this.getTestMasterList();
     }
     // onEdit(row) {
@@ -499,6 +557,7 @@ export class TestmasterComponent implements OnInit {
     onClear() {
         this._TestService.myform.reset({ IsDeleted: "false" });
         this._TestService.initializeFormGroup();
+        this.DSTestList.data = [];
     }
 }
 

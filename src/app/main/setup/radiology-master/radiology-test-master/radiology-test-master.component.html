@@ -260,6 +260,7 @@
                                             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
                                                 <div fxLayout="row">
                                                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
+                                                        <mat-label>Test Name</mat-label>
                                                         <input name="TestName" formControlName="TestName"
                                                             placeholder="Select Test Name" matInput required>
                                                         <mat-error>Please enter TestName </mat-error>
@@ -280,6 +281,7 @@
                                                 </div>
                                                 <div fxLayout="row">
                                                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
+                                                        <mat-label>PrintTestName</mat-label>
                                                         <input name="PrintTestName" formControlName="PrintTestName"
                                                             placeholder="Select PrintTestName" matInput required>
                                                         <mat-error>Please enter PrintTestName </mat-error>
@@ -309,17 +311,17 @@
                                                                     <mat-label>Template Name</mat-label>
                                                                     <mat-select formControlName="TemplateName"
                                                                         placeholder="Bank" #singleSelect required>
-                                                                        <!-- <mat-option>
+                                                                        <mat-option>
                                                                             <ngx-mat-select-search
-                                                                                [formControl]="parameternameFilterCtrl"
+                                                                                [formControl]="templateFilterCtrl"
                                                                                 [placeholderLabel]="'Search'"
                                                                                 [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
                                                                         </mat-option>
                                                                         <mat-option
-                                                                            *ngFor="let element of filteredParametername | async"
+                                                                            *ngFor="let element of filteredTemplate | async"
                                                                             [value]="element">
                                                                             {{element.TemplateName}}
-                                                                        </mat-option> -->
+                                                                        </mat-option>
                                                                     </mat-select>
                                                                 </mat-form-field>
 
