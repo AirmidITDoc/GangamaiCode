@@ -67,7 +67,7 @@ export class TestmasterService {
     }
 
     // get Test Master list
-    public getTestMasterList(param) {
+    public getTestMasterList(param) {//Retrieve_PathologyTestList
         return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologyTestList",
             param
         );

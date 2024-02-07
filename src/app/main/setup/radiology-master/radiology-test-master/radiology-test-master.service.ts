@@ -22,26 +22,21 @@ export class RadiologyTestMasterService {
       TestName: [''],
       PrintTestName: [''],
       CategoryId:[''],
-      CategoryName:[''],
-      TemplateName:[''],
+      //TemplateName:[''],
       ServiceId:[''],
-      ServiceID:[''],
       IsDeleted: ['false'],
-      AddedBy: ['0'],
-      UpdatedBy: ['0'],
-      AddedByName: ['']
+     
     });
   }
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
-        TestNameSearch: [""],
-        IsDeletedSearch: ["2"],
+      TestNameSearch: [""],
+      IsDeletedSearch: ["2"],
     });
 }
 createAddparaFrom(): FormGroup {
   return this._formBuilder.group({
-      ParameterName: [""],
-      NewIsSubTest: [" "],
+    TemplateName: [""]
   });
 }
 
@@ -50,7 +45,7 @@ createAddparaFrom(): FormGroup {
     this.createSearchForm();
   }
   // get Test Master list
-  public getRadiologyList(param) {
+  public getRadiologyList(param) { 
     return this._httpClient.post( "Generic/GetByProc?procName=Retrieve_RadiologyTestList",
         param
     );
@@ -62,22 +57,22 @@ createAddparaFrom(): FormGroup {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyCategoryMasterForCombo", {})
   }
 
-  public insertRadiologyTestMaster(employee) {
-    return this._httpClient.post("Radiology/RadiologyTestMasterSave", employee);
+  public insertRadiologyTestMaster(employee) { 
+    return this._httpClient.post("RadiologyMaster/RadiologyTestMasterSave", employee);
   }
   
   // Service Master Combobox List
   public getServiceMasterCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ServiceMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RathTestListForCombo", {})
   }
     
   // TemplateMaster Combobox List
-  public gettemplateMasterCombo(param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadTemplateMasterForCombo", param)
+  public gettemplateMasterCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyTemplateMasterForComboMaster", {})
   }
 
   public updateRadiologyTestMaster(employee) {
-    return this._httpClient.post("Radiology/RadiologyTestMasterUpdate", employee);
+    return this._httpClient.post("RadiologyMaster/RadiologyTestMasterUpdate", employee);
   }
 
   populateForm(employee) {
