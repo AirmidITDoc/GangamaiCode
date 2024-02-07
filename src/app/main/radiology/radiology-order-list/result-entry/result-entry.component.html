@@ -12,9 +12,10 @@
                 {{_radiologytemplateService.myform.controls.TemplateId.value?"Modify Radiology Template Master":"New
                 Radiology Template Master"}}
             </span>
-            <!-- <app-common-date [screenFrom]="screenFromString"
+            <span style="margin-left: 600px;">
+            <app-common-date [screenFrom]="screenFromString"
             (dateTimeEventEmitter)="getDateTime($event)">
-        </app-common-date> -->
+            </app-common-date></span>
             <button mat-icon-button [mat-dialog-close]="true" (click)="onClose()" tabIndex="-1"
                 aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
@@ -115,26 +116,20 @@
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
             <div class="editor" style="overflow: auto;height:450px !important;">
-                <!-- <angular-editor  name="editor" placeholder="'Enter text here...'" formControlName="TemplateDesc"></angular-editor> -->
-                <!-- <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
-                <ngx-editor height="320px" minHeight="150px" [editor]="editor" formControlName="TemplateDesc"></ngx-editor> -->
-                <!-- [iframeSettings]='iframe' -->
-           
-           <!-- Editor -->
-                <!-- <ejs-richtexteditor id='iframeRTE' [toolbarSettings]='tools'
-                    style="height:650px !important ;overflow:auto;" formControlName="ResultEntry"
-                    [(ngModel)]="ResultEntry">
-                    <ng-template #valueTemplate>
-                        <p></p>
-
-                    </ng-template>
-                </ejs-richtexteditor>`
-            -->
-<!-- 
-            <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
-            <ngx-editor [editor]="editor" [ngModel]="html" [disabled]="false" [placeholder]="'Type here...'"></ngx-editor>
-            -->
-           
+               
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                        <div class="editor">
+                          
+                            <div>
+                                <mat-label>Template Details</mat-label>
+                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:300px;" [(ngModel)]="vTemplateDesc" required
+                                formControlName="ResultEntry"></angular-editor>
+                                  
+                            </div>
+                        </div>
+                    </div>
+    
+                
             </div>
         </div>
         <div fxLayout.gt-xs="row" fxLayoutGap="5px">

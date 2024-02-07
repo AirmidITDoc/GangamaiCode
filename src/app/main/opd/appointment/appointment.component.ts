@@ -482,15 +482,15 @@ export class AppointmentComponent implements OnInit {
     // this.OnChangeDoctorList();
    
 
-    if (this.configService.configParams.DoctorId) {
-      debugger
-      this._opappointmentService.getDoctorMasterCombo(this.configService.configParams.DepartmentId).subscribe(
-        data => {
-          this.DoctorList = data;
-        })
-      const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
-      this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
-    }
+    // if (this.configService.configParams.DoctorId) {
+    //   debugger
+    //   this._opappointmentService.getDoctorMasterCombo(this.configService.configParams.DepartmentId).subscribe(
+    //     data => {
+    //       this.DoctorList = data;
+    //     })
+    //   const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
+    //   this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
+    // }
      
      
     debugger

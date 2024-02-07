@@ -14,6 +14,7 @@ import { RadioloyOrderlistService } from './radioloy-orderlist.service';
 import { ResultEntryComponent } from './result-entry/result-entry.component';
 import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
 import { fuseAnimations } from '@fuse/animations';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-radiology-order-list',
@@ -414,6 +415,24 @@ export class RadiologyOrderListComponent implements OnInit {
   }
 
 
+  viewgetPathologyTemplateReportPdf(obj) {
+    
+    this._RadiologyOrderListService.getRadiologyTempReport(
+      1,1
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Radiology Template  Viewer"
+          }
+        });
+    });
+  }
+  
 
 
   print() {

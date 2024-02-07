@@ -134,6 +134,7 @@ export class ParamteragewiseformComponent implements OnInit {
         this.chargeslist = this.dsTempList.data;
         this.chargeslist.push(
             {
+                GenderId: this._ParameterageService.myIsNumericform.get('SexID').value.GenderId || 0,
                 GenderName: this._ParameterageService.myIsNumericform.get('SexID').value.GenderName || "",
                 MinAge: this.vMinAge || 0,
                 MaxAge: this.vMaxAge || 0,

@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-result-entrytwo',
@@ -18,7 +19,20 @@ import Swal from 'sweetalert2';
   animations: fuseAnimations
 })
 export class ResultEntrytwoComponent implements OnInit {
+  editorConfig: AngularEditorConfig = {
+    // color:true,
+    editable: true,
+    spellcheck: true,
+    height: '20rem',
+    minHeight: '20rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+    
+  };
 
+  
   isLoading: string = '';
   msg: any;
   selectedAdvanceObj: SampleDetailObj;
@@ -31,24 +45,12 @@ export class ResultEntrytwoComponent implements OnInit {
   reportPrintObjList: SampleDetailObj[] = [];
   reportPrintObjs: SampleDetailObj ;
 
-
-  public tools: object = {
-    type: 'MultiRow',
-    items: ['Undo', 'Redo', '|',
-      'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
-      'FontName', 'FontSize', 'FontColor', 'BackgroundColor', '|',
-      'SubScript', 'SuperScript', '|',
-      'LowerCase', 'UpperCase', '|',
-      'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
-      'CreateTable', '|',
-      'CreateLink', 'Image', '|',
-      'Indent', 'Outdent', '|',
-      'ClearFormat', '|', 'FullScreen',
-      // 'SourceCode',
-    ]
-  };
+  
+  // public iframe: object = { enable: true };
+TemplateDesc:any;
   otherForm: FormGroup;
   private _matDialog: any;
+  vTemplateDesc:any="";
   constructor(
     public _SampleService: ResultEntryService,
     private accountService: AuthenticationService,
@@ -71,7 +73,7 @@ export class ResultEntrytwoComponent implements OnInit {
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-
+      this.vTemplateDesc= this.selectedAdvanceObj.TemplateDesc;
     }
   }
 
@@ -113,9 +115,9 @@ export class ResultEntrytwoComponent implements OnInit {
   //   }
   // }
   onSubmit() {
-    // debugger;
+    debugger;
     let pathologyTemplateDeleteObj = {};
-    pathologyTemplateDeleteObj['pathReportId'] = this.selectedAdvanceObj.PathReportID;
+    pathologyTemplateDeleteObj['pathReportID'] = this.selectedAdvanceObj.PathReportID;
 
     this.isLoading = 'submit';
     let Billdetsarr = [];
@@ -124,10 +126,10 @@ export class ResultEntrytwoComponent implements OnInit {
      {
     let pathologyTemplateInsertObj = {};
         
-    pathologyTemplateInsertObj['PathReportId'] = this.selectedAdvanceObj.PathReportID;
-    pathologyTemplateInsertObj['PathTemplateId']= 111;
+    pathologyTemplateInsertObj['PathReportId'] = this.selectedAdvanceObj.PathReportID ;
+    pathologyTemplateInsertObj['PathTemplateId']= this.selectedAdvanceObj.PathTemplateId || 9;
     pathologyTemplateInsertObj['PathTemplateDetailsResult']= this.otherForm.get("TemplateDesc").value,
-    pathologyTemplateInsertObj['TestId'] = 30;
+    pathologyTemplateInsertObj['TestId'] = this.selectedAdvanceObj.PathTestID || 11;
     Billdetsarr.push(pathologyTemplateInsertObj);
     }
     let pathologyTemplateUpdateObj = {};
@@ -168,7 +170,7 @@ export class ResultEntrytwoComponent implements OnInit {
             if (response) {
               Swal.fire('Congratulations !', 'Pathology Template data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
-                 this._matDialog.closeAll();
+                 this.dialogRef.close();
                // this.getPrint();
                 }
               });
@@ -180,7 +182,9 @@ export class ResultEntrytwoComponent implements OnInit {
         
    // });
   }
-
+  onBlur(e:any){
+    this.vTemplateDesc=e.target.innerHTML;
+  }
   onEdit(row) {
     var m_data = {
       "TemplateId": row.TemplateId,

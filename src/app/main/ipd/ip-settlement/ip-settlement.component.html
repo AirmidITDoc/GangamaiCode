@@ -1,5 +1,4 @@
-<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px"
-    style="background-color: #F5F5F5;">
+<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" style="background-color: #F5F5F5;">
 
 
     <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
@@ -36,7 +35,7 @@
                     <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
 
                         <div class="redio-container">
-                         
+
                             <mat-form-field appearance="outline" style="width:50%;margin-left:15px;"
                                 disabled="isRegSearchDisabled">
                                 <input type="text" name="RegId" formControlName="RegId"
@@ -71,7 +70,7 @@
                                 </mat-select>
                             </mat-form-field> -->
 
-                         
+
 
                         </div>
 
@@ -176,16 +175,18 @@
                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
                                                     Action</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact">
-                                                    <button mat-icon-button
-                                                        (click)="getViewbill1(contact)"><mat-icon>how_to_reg</mat-icon></button>
-                                                    <button mat-icon-button (click)="viewgetSettlementReportPdf(contact)"
-                                                        matTooltip="Print" matTooltip="Bill Print">
+                                                    <button mat-icon-button style="width: 50px;"
+                                                        (click)="addpayment(contact)"><mat-icon>how_to_reg</mat-icon></button>
+
+                                                    <button mat-icon-button  style="width: 50px;"
+                                                        (click)="viewgetSettlementReportPdf(contact)" matTooltip="Print"
+                                                        matTooltip="Settlement Print">
                                                         <mat-icon>print</mat-icon>
                                                     </button>
-                                                    <button mat-icon-button (click)="getPrintreceipt(contact)"
+                                                    <!-- <button mat-icon-button (click)="getPrintreceipt(contact)"
                                                         matTooltip="ReceiptPrint" matTooltip="Receipt Print">
                                                         <mat-icon>print</mat-icon>
-                                                    </button>
+                                                    </button> -->
                                                 </mat-cell>
                                             </ng-container>
 
@@ -199,12 +200,12 @@
                                                     no data found...
                                                 </mat-footer-cell>
                                             </ng-container>
-
+                                            <!-- (click)="addpayment(contact)" -->
                                             <mat-header-row class="accent"
                                                 *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                             <mat-row *matRowDef="let contact; columns: displayedColumns;"
                                                 class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                (click)="addpayment(contact)">
+                                                >
                                             </mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
                                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">

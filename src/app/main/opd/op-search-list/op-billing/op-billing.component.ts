@@ -662,7 +662,9 @@ export class OPBillingComponent implements OnInit {
     this.onClearServiceAddList();
     this.getTotalNetAmount();
     this.isDoctor = false;
+
     this.add = false;
+  
   }
 
   onScroll() {
@@ -966,6 +968,7 @@ export class OPBillingComponent implements OnInit {
   @ViewChild('discamt') discamt: ElementRef;
   @ViewChild('doctorname') doctorname: ElementRef;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  @ViewChild('netamt') netamt: ElementRef;
   
   
   onEnterservice(event): void {
@@ -976,16 +979,16 @@ export class OPBillingComponent implements OnInit {
   }
 
   public onEnterqty(event): void {
-    debugger
+    
     if (event.which === 13) {
       this.disper.nativeElement.focus();
       // this.calculateTotalAmt()
     }
   }
   public onEnterdiscper(event): void {
-    debugger
+    
     if (event.which === 13) {
-      this.discamt.nativeElement.focus();
+      this.disamt.nativeElement.focus();
       // this.addbutton.focus();
     }
   }
@@ -993,11 +996,21 @@ export class OPBillingComponent implements OnInit {
   public onEnterdiscAmount(event): void {
     debugger
     if (event.which === 13) {
+      this.netamt.nativeElement.focus();
+    }
+  }
+
+  public onEnternetAmount(event): void {
+    debugger
+    if (event.which === 13) {
+    
       this.add=true;
       this.addbutton.focus();
     }
   }
 
+
+ 
   public onEnterDoctorname(event): void {
     if (event.which === 13) {
       // this.address.nativeElement.focus();

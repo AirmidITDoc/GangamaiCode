@@ -151,8 +151,8 @@
 
                                             <mat-form-field appearance="outline" style="width:100px;">
                                                 <mat-label>NetAmount</mat-label>
-                                                <input matInput [(ngModel)]="b_netAmount" name="b_netAmount" readonly
-                                                    formControlName="netAmount" required>
+                                                <input matInput [(ngModel)]="b_netAmount" name="b_netAmount" readonly (keydown)="onEnternetAmount($event)"
+                                                    formControlName="netAmount" required #netamt >
                                                 <mat-error
                                                     *ngIf="registeredForm.get('netAmount').invalid && registeredForm.get('netAmount').touched">
                                                     NetAmount is required</mat-error>
@@ -161,17 +161,17 @@
                                             <div matTooltip="Select doctor name to enable this button!!"
                                                 [matTooltipDisabled]="!registeredForm.invalid"
                                                 [matTooltipPosition]="'above'">
-                                                <!-- <button mat-raised-button fxLayoutAlign="center center"
-                                                    (click)="onAddCharges()" [disabled]="registeredForm.invalid"
-                                                    style="background-color: blue; color: white; width: 70px;margin-left: 20px; "
-                                                    (keydown.enter)="focusNextService()">
-                                                    <mat-icon> add </mat-icon> &nbsp;Add
-                                                </button>-->
                                                 <button mat-raised-button fxLayoutAlign="center center" #addbutton
+                                                        class="add-btn" [disabled]="!add" (click)="onAddCharges()">
+                                                        <mat-icon> add </mat-icon>
+                                                        Add
+                                                    </button>
+
+                                                <!-- <button mat-raised-button fxLayoutAlign="center center" #addbutton
                                                     class="add-btn" [disabled]="!add" (click)="onAddCharges()">
                                                     <mat-icon> add </mat-icon>
                                                     Add
-                                                </button>
+                                                </button> -->
 
 
 

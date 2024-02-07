@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { RadioloyOrderlistService } from '../radioloy-orderlist.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-radiology-template-report',
@@ -55,6 +56,27 @@ export class RadiologyTemplateReportComponent implements OnInit {
     console.log(this.reportPrintObj);
    });
  }
+
+
+ 
+ viewgetPathologyTemplateReportPdf(obj) {
+    
+  this._radiologyorderListService.getRadiologyTempReport(
+    1,1
+    ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Radiology Template  Viewer"
+        }
+      });
+  });
+}
+
 
 
  onClose() {
