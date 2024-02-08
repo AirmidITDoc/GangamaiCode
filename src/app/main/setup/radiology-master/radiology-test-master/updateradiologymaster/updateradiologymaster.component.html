@@ -1,0 +1,193 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                {{_radiologytestService.myform.controls.TestId.value?"Modify Radiology Test Master":
+                "New Radiology Test Master"}}
+            </span>
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+                style="margin-left: 1000px;">
+                <mat-icon>close</mat-icon>
+            </button>
+
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style=" background-color: white;
+                                 padding: 5px 10px 5px 10px;">
+                            <form [formGroup]="_radiologytestService.myform">
+                                <div class="dialog-content-wrapper">
+                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+                                        <div fxLayout="row">
+
+                                            <input type="hidden" name="TestId" formControlName="TestId">
+
+                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
+                                                <mat-label>Test Name</mat-label>
+                                                <input name="TestName" formControlName="TestName"
+                                                    placeholder="Select Test Name" matInput required>
+                                                <mat-error>Please enter TestName </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Category Name</mat-label>
+                                                <mat-select formControlName="CategoryId" placeholder="Bank"
+                                                    #singleSelect>
+                                                    <mat-option>
+                                                        <ngx-mat-select-search [formControl]="categoryFilterCtrl"
+                                                            [placeholderLabel]="'Search'"
+                                                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let element of filteredCategory | async"
+                                                        [value]="element">
+                                                        {{element.CategoryName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxLayout="row">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
+                                                <mat-label>PrintTestName</mat-label>
+                                                <input name="PrintTestName" formControlName="PrintTestName"
+                                                    placeholder="Select PrintTestName" matInput required>
+                                                <mat-error>Please enter PrintTestName </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Service Name</mat-label>
+                                                <mat-select formControlName="ServiceId" placeholder="Bank" #singleSelect
+                                                    required>
+                                                    <mat-option>
+
+                                                        <ngx-mat-select-search [formControl]="serviceFilterCtrl"
+                                                            [placeholderLabel]="'Search'"></ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let element of filteredService | async"
+                                                        [value]="element">
+                                                        {{element.ServiceName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                        </div>
+                                        <mat-divider inset style="margin: 0px;padding: 5px;"></mat-divider>
+                                        <div fxLayout="column">
+                                            <form [formGroup]="_radiologytestService.AddParameterFrom">
+                                                <div fxLayout="row">
+                                                    <input type="hidden" name="TestId" formControlName="TestId">
+
+                                                    <mat-form-field appearance="outline" fxFlex="50%">
+                                                        <mat-label>Template Name</mat-label>
+                                                        <mat-select formControlName="TemplateName" placeholder="Bank"
+                                                            #singleSelect required>
+                                                            <mat-option>
+                                                                <ngx-mat-select-search
+                                                                    [formControl]="templateFilterCtrl"
+                                                                    [placeholderLabel]="'Search'"
+                                                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                                            </mat-option>
+                                                            <mat-option *ngFor="let element of filteredTemplate | async"
+                                                                [value]="element">
+                                                                {{element.TemplateName}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+
+                                                    <div matTooltip="Select All Value to enable this button!!">
+                                                        <button mat-raised-button style="background-color: blue; color: white; width: 70px;
+                                                              margin-left: 20px; margin-top: 10px;"
+                                                            (click)="OnAdd($event)"
+                                                            [disabled]="_radiologytestService.AddParameterFrom.invalid">
+                                                            <mat-icon> add </mat-icon>Add
+                                                        </button>
+                                                    </div>
+
+
+                                                </div>
+                                                <mat-card style="height:330px;width:100%;">
+                                                    <mat-table #table class="table1" matSort [dataSource]="DSTestList"
+                                                        [@animateStagger]="{value:'50'}"
+                                                        style="overflow:auto; width: 100%;">
+
+                                                        <ng-container matColumnDef="ParameterName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                Template Name
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                {{element.TemplateName}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+
+                                                        <ng-container matColumnDef="loading">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                no data found...
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+
+                                                        <mat-header-row class="accent"
+                                                            *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedColumns1;"
+                                                            class="element"
+                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                                            [ngClass]="{'hide':DSTestList!=null}"></mat-footer-row>
+                                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                                            [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row>
+
+                                                    </mat-table>
+                                                </mat-card>
+
+                                            </form>
+                                            <div fxLayoutAlign="end ">
+
+                                                <mat-radio-button value='true' name="IsDeleted" [checked]="true"
+                                                    formControlName="IsDeleted">IsActive</mat-radio-button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="end center">
+                                    <div class="button-row">
+                                        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
+                                            style="border-radius: 16px;width: 80px; height:40px;"
+                                            [disabled]="_radiologytestService.myform.invalid">Save</button>
+                                        <button mat-raised-button color="warn" (click)="onClear()"
+                                            style="border-radius: 16px;width: 80px; height:40px;">Reset</button>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

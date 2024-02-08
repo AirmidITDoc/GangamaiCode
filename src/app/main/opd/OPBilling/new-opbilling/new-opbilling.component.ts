@@ -307,19 +307,47 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   getSelectedObj(obj) {
-    debugger
+
     console.log('obj==', obj);
 
 
     if (this.dataSource.data.length > 0) {
-    this.dataSource.data.forEach((element) => {
-    if (obj.ServiceId == element.ServiceId) {
-      // Swal.fire('Selected Item already added in the list');
-      this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
+      this.dataSource.data.forEach((element) => {
+        if (obj.ServiceId == element.ServiceId) {
+          debugger
+          Swal.fire('Selected Item already added in the list ');
+          // this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+          //   toastClass: 'tostr-tost custom-toast-warning',
+
+
+          // });
+          this.onClearServiceAddList();
+        }
+        // else {
+
+        //   this.SrvcName = obj.ServiceName;
+        //   this.b_price = obj.Price;
+        //   this.b_totalAmount = obj.Price;
+        //   this.b_netAmount = obj.Price;
+        //   this.serviceId = obj.ServiceId;
+        //   this.b_isPath = obj.IsPathology;
+        //   this.b_isRad = obj.IsRadiology;
+        //   this.b_CreditedtoDoctor = obj.CreditedtoDoctor;
+        //   if (obj.CreditedtoDoctor) {
+        //     this.isDoctor = true;
+        //     this.registeredForm.get('DoctorID').reset();
+        //     this.registeredForm.get('DoctorID').setValidators([Validators.required]);
+        //     this.registeredForm.get('DoctorID').enable();
+
+        //   } else {
+        //     this.isDoctor = false;
+        //     this.registeredForm.get('DoctorID').reset();
+        //     this.registeredForm.get('DoctorID').clearValidators();
+        //     this.registeredForm.get('DoctorID').updateValueAndValidity();
+        //     this.registeredForm.get('DoctorID').disable();
+        //   }
+        // }
       });
-      this.onClearServiceAddList();
-    } else {
 
       this.SrvcName = obj.ServiceName;
       this.b_price = obj.Price;
@@ -343,34 +371,34 @@ export class NewOPBillingComponent implements OnInit {
         this.registeredForm.get('DoctorID').disable();
       }
     }
-  });
-    }
-  
-      else {
 
-        this.SrvcName = obj.ServiceName;
-        this.b_price = obj.Price;
-        this.b_totalAmount = obj.Price;
-        this.b_netAmount = obj.Price;
-        this.serviceId = obj.ServiceId;
-        this.b_isPath = obj.IsPathology;
-        this.b_isRad = obj.IsRadiology;
-        this.b_CreditedtoDoctor = obj.CreditedtoDoctor;
-        if (obj.CreditedtoDoctor) {
-          this.isDoctor = true;
-          this.registeredForm.get('DoctorID').reset();
-          this.registeredForm.get('DoctorID').setValidators([Validators.required]);
-          this.registeredForm.get('DoctorID').enable();
-  
-        } else {
-          this.isDoctor = false;
-          this.registeredForm.get('DoctorID').reset();
-          this.registeredForm.get('DoctorID').clearValidators();
-          this.registeredForm.get('DoctorID').updateValueAndValidity();
-          this.registeredForm.get('DoctorID').disable();
-        }
+
+
+    else {
+
+      this.SrvcName = obj.ServiceName;
+      this.b_price = obj.Price;
+      this.b_totalAmount = obj.Price;
+      this.b_netAmount = obj.Price;
+      this.serviceId = obj.ServiceId;
+      this.b_isPath = obj.IsPathology;
+      this.b_isRad = obj.IsRadiology;
+      this.b_CreditedtoDoctor = obj.CreditedtoDoctor;
+      if (obj.CreditedtoDoctor) {
+        this.isDoctor = true;
+        this.registeredForm.get('DoctorID').reset();
+        this.registeredForm.get('DoctorID').setValidators([Validators.required]);
+        this.registeredForm.get('DoctorID').enable();
+
+      } else {
+        this.isDoctor = false;
+        this.registeredForm.get('DoctorID').reset();
+        this.registeredForm.get('DoctorID').clearValidators();
+        this.registeredForm.get('DoctorID').updateValueAndValidity();
+        this.registeredForm.get('DoctorID').disable();
       }
-    
+    }
+
 
   }
 
@@ -724,6 +752,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   onClearServiceAddList() {
+    debugger
     this.registeredForm.get('SrvcName').reset();
     this.registeredForm.get('price').reset(0);
     this.registeredForm.get('qty').reset('1');

@@ -24,7 +24,7 @@ export class RadiologyTestMasterService {
       CategoryId:[''],
       //TemplateName:[''],
       ServiceId:[''],
-      IsDeleted: ['false'],
+      IsDeleted: ['true'],
      
     });
   }
@@ -36,6 +36,7 @@ export class RadiologyTestMasterService {
 }
 createAddparaFrom(): FormGroup {
   return this._formBuilder.group({
+    TestId:[''],
     TemplateName: [""]
   });
 }
@@ -66,11 +67,15 @@ createAddparaFrom(): FormGroup {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RathTestListForCombo", {})
   }
     
-  // TemplateMaster Combobox List
+  // TemplateMaster Combobox List dropdown
   public gettemplateMasterCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyTemplateMasterForComboMaster", {})
   }
-
+    
+  // TemplateMaster Combobox List
+  public gettemplateMasterComboList(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyTemplateMasterForComboMasterList", param)
+  }
   public updateRadiologyTestMaster(employee) {
     return this._httpClient.post("RadiologyMaster/RadiologyTestMasterUpdate", employee);
   }

@@ -1,146 +1,151 @@
-<mat-tab-group style="width: 100%;" #tabGroup>
-    <mat-tab label="Radiology Test List">
+<!-- <mat-tab-group style="width: 100%;" #tabGroup>
+    <mat-tab label="Radiology Test List"> -->
 
-        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-            <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-                <div fxLayout="row" fxLayoutAlign="start center">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
 
-                    <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                        <mat-icon>menu</mat-icon>
-                    </button>
-                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                        style="color: white;">account_box
-                    </mat-icon>
-                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                        Radiology Test Master
-                    </span>
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Radiology Test Master
+            </span>
 
-                </div>
-                <div fxLayout="row" fxLayoutAlign="start end">
-                    <button mat-raised-button color="pine" (click)="onAdd('row', tabGroup)"
-                        fxLayoutAlign="center center">
-                        Add &nbsp;<mat-icon color="Primary" title=" Add New Template ">add_to_photos</mat-icon>
-                    </button>
-                </div>
-            </mat-toolbar>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start end">
+            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">
+                Add &nbsp;<mat-icon color="Primary" title=" Add New Template ">add_to_photos</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
 
-            <div class="content">
-                <div class="center p-24 pb-56" fusePerfectScrollbar>
-                    <div class="content-card">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                            <div fxFlex.gt-sm="100%" fxFlex>
-                                <div fxlayout="row" style=" background-color: white;
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style=" background-color: white;
                                 padding: 5px 10px 5px 10px;">
-                                    <form [formGroup]="_radiologytestService.myformSearch">
-                                        <div class="dialog-content-wrapper">
-                                            <mat-form-field class="mr-sm-12" fxFlex>
-                                                <input matInput placeholder="Search --> Test Name" autocomplete="off"
-                                                    name="TestNameSearch" formControlName="TestNameSearch" />
-                                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                                    (click)="onSearchClear()" (keyup)="onSearch()">
-                                                    <mat-icon>close</mat-icon>
-                                                </button>
-                                            </mat-form-field>
-            
-                                            <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                                fxLayoutAlign="center center">
-                                                <mat-radio-button value="2">All</mat-radio-button>
-                                                <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                                <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                            </mat-radio-group>
-            
-                                            <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                                <mat-icon>search</mat-icon>
-                                                Search
-                                            </button>
-                                        </div>
-                                    </form>
+                            <form [formGroup]="_radiologytestService.myformSearch">
+                                <div class="dialog-content-wrapper">
+                                    <mat-form-field class="mr-sm-12" fxFlex>
+                                        <input matInput placeholder="Search --> Test Name" autocomplete="off"
+                                            name="TestNameSearch" formControlName="TestNameSearch" />
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="onSearchClear()" (keyup)="onSearch()">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                        fxLayoutAlign="center center">
+                                        <mat-radio-button value="2">All</mat-radio-button>
+                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                    </mat-radio-group>
+
+                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                        <mat-icon>search</mat-icon>
+                                        Search
+                                    </button>
                                 </div>
-                                <div style="width: 100%;">
-            
-                                    <mat-table #table class="table" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                        style="overflow:auto">
-                                        <ng-container matColumnDef="TestId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.TestId}} </mat-cell>
-                                        </ng-container>
-            
-                                        <ng-container matColumnDef="TestName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> TestName Name </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.TestName}} </mat-cell>
-                                        </ng-container>
-            
-                                        <ng-container matColumnDef="PrintTestName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> PrintTest Name </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.PrintTestName}} </mat-cell>
-                                        </ng-container>
-            
-                                        <ng-container matColumnDef="CategoryName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> Category Name </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CategoryName}} </mat-cell>
-                                        </ng-container>
-            
-                                        <ng-container matColumnDef="ServiceId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> ServiceId Name </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ServiceId}} </mat-cell>
-                                        </ng-container>
-            
-                                        <ng-container matColumnDef="AddedByName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}} </mat-cell>
-                                        </ng-container>
-            
-            
-                                        <ng-container matColumnDef="IsDeleted">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <mat-icon *ngIf="!element.Isdeleted"
-                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="element.Isdeleted"
-                                                    class="active-icon red-500 s-16">close</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-            
-                                        <ng-container matColumnDef="action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
-                                            <mat-cell *matCellDef="let row">
-                                                <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                        title="Edit Menu">edit</mat-icon></button>
-                                                <button mat-icon-button (click)="onDeactive(row.TestId)"
-                                                    color="warn"><mat-icon>delete_outline</mat-icon></button>
-                                            </mat-cell>
-                                        </ng-container>
-            
-                                        <ng-container matColumnDef="loading">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                loading data...
-                                            </mat-footer-cell>
-                                        </ng-container>
-            
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-            
-                                        <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-                                    </mat-table>
-            
-                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                                        showFirstLastButtons></mat-paginator>
-                                </div>
-                            </div>
-                            <!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
+                            </form>
+                        </div>
+                        <div style="width: 100%;">
+
+                            <mat-table #table class="table" matSort [dataSource]="dataSource"
+                                [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                <ng-container matColumnDef="TestId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.TestId}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="TestName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> TestName Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.TestName}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="PrintTestName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> PrintTest Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.PrintTestName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CategoryName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Category Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CategoryName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ServiceId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> ServiceId Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ServiceName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="AddedByName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Addedby}} </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="IsDeleted">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        <mat-icon *ngIf="!element.Isdeleted"
+                                            class="active-icon green-600 s-16">check_circle</mat-icon>
+                                        <mat-icon *ngIf="element.Isdeleted"
+                                            class="active-icon red-500 s-16">close</mat-icon>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                        <button mat-icon-button (click)="onEdit(row)"><mat-icon
+                                                title="Edit Menu">edit</mat-icon></button>
+                                        <button mat-icon-button (click)="onDeactive(row.TestId)"
+                                            color="warn"><mat-icon>delete_outline</mat-icon></button>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        loading data...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                            </mat-table>
+
+                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                showFirstLastButtons></mat-paginator>
+                        </div>
+                    </div>
+                    <!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                                 <div class="dialog-content-wrapper">
                                     <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
                                         <form [formGroup]="_radiologytestService.myform">
@@ -217,14 +222,14 @@
                                     </div>
                                 </div>
                             </div> -->
-            
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
-    </mat-tab>
-    <mat-tab label="Add New Test">
+    </div>
+</div>
+<!-- </mat-tab>  -->
+<!-- <mat-tab label="Add New Test">
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
     
             <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
@@ -240,10 +245,10 @@
                         {{_radiologytestService.myform.controls.TestId.value?"Modify Radiology Test Master":
                         "New Radiology Test Master"}}
                     </span>
-                    <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+                    <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
                         style="margin-left: 1300px;">
                         <mat-icon>close</mat-icon>
-                    </button> -->
+                    </button>
         
                 </div>
             </mat-toolbar>
@@ -259,6 +264,8 @@
                                         <div class="dialog-content-wrapper">
                                             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
                                                 <div fxLayout="row">
+
+                                                    <input type="hidden" name="TestId" formControlName="TestId">
 
                                                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
                                                         <mat-label>Test Name</mat-label>
@@ -382,15 +389,9 @@
                                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="end">
                                                             <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
                                                                 <mat-radio-button value='false' class="p-8" fxFlex>IsActive</mat-radio-button>
-                                                                <!-- <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsDeactive</mat-radio-button> -->
-                                                            </mat-radio-group>
+                                                             </mat-radio-group>
                                                         </div>
                                                     </div>
-        
-                                               
-        
-
-                                                
         
                                             </div>
                                         </div>
@@ -416,4 +417,4 @@
         
         </div>
     </mat-tab>
-</mat-tab-group>
+</mat-tab-group> -->
