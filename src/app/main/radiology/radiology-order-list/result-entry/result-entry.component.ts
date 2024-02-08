@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 // import { Editor } from 'ngx-editor';
 
 @Component({
@@ -24,6 +25,18 @@ import { fuseAnimations } from '@fuse/animations';
 export class ResultEntryComponent implements OnInit {
   // editor: Editor;
   // html: '';
+  editorConfig: AngularEditorConfig = {
+    // color:true,
+    editable: true,
+    spellcheck: true,
+    height: '20rem',
+    minHeight: '20rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+    
+  };
   filteredrefdr: Observable<string[]>;
   optionsDoc1: any[] = [];
   msg: any;
@@ -32,7 +45,7 @@ export class ResultEntryComponent implements OnInit {
   public height: number = 410;
   reportPrintObj: RadiologyPrint;
   regobj: RadiologyPatienInsert;
-
+  vTemplateDesc:any="";
   screenFromString = 'opd-casepaper';
   isresultdrSelected: boolean = false;
   templatelist: any = [];
@@ -74,10 +87,10 @@ export class ResultEntryComponent implements OnInit {
     public _radiologytemplateService: RadioloyOrderlistService,
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
-    // public _matDialog: MatDialog,
+    public _matDialog: MatDialog,
     // public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
-    // public dialogRef: MatDialogRef<ResultEntryComponent>,
+    public dialogRef: MatDialogRef<ResultEntryComponent>,
   ) {
     // dialogRef.disableClose = true;
   }
@@ -114,7 +127,9 @@ export class ResultEntryComponent implements OnInit {
   
   }
 
-
+  onBlur(e:any){
+    this.vTemplateDesc=e.target.innerHTML;
+  }
 
   // doctorlist
   // getDoctorList() {
@@ -156,31 +171,43 @@ export class ResultEntryComponent implements OnInit {
 
   onSubmit() {
    debugger;
-    if (this._radiologytemplateService.myform.valid) {
+  
       if (!this.selectedAdvanceObj.RadReportId) {
-      //   var m_data = {
-      //     insertRadiologyTemplateMaster: {
-      //       "RadReportID":0,// this._radiologytemplateService.myform.get("RadReportID").value || 1,
-      //       "ReportDate": this._radiologytemplateService.myform.get("ReportDate").value || '11/01/2022',
-      //       "ReportTime": this._radiologytemplateService.myform.get("ReportTime").value || '11/01/2022',
-      //       "IsCompleted":'true',// (this._radiologytemplateService.myform.get("IsCompleted").value).trim(),
-      //       "IsPrinted":'true',//Boolean(JSON.parse(this._radiologytemplateService.myform.get("IsPrinted").value)),
-      //       "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId ,
-      //       "RadResultDr2":0,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
-      //       "RadResultDr3":0,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
-      //       "SuggestionNotes": this._radiologytemplateService.myform.get("Suggatationnote").value || '',
-      //       "AdmVisitDoctorID":0,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
-      //       "RefDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
-      //       "ResultEntry": this._radiologytemplateService.myform.get("ResultEntry").value.trim() || '',
+        var m_data = {
+          insertRadiologyTemplateMaster: {
+            "RadReportID":0,// this._radiologytemplateService.myform.get("RadReportID").value || 1,
+            "ReportDate": this._radiologytemplateService.myform.get("ReportDate").value || '11/01/2022',
+            "ReportTime": this._radiologytemplateService.myform.get("ReportTime").value || '11/01/2022',
+            "IsCompleted":'true',// (this._radiologytemplateService.myform.get("IsCompleted").value).trim(),
+            "IsPrinted":'true',//Boolean(JSON.parse(this._radiologytemplateService.myform.get("IsPrinted").value)),
+            "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId ,
+            "RadResultDr2":0,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+            "RadResultDr3":0,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+            "SuggestionNotes": this._radiologytemplateService.myform.get("Suggatationnote").value || '',
+            "AdmVisitDoctorID":0,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+            "RefDoctorID": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
+            "ResultEntry": this._radiologytemplateService.myform.get("ResultEntry").value || '',
 
 
-      //     }
-      //   }
-      //   // console.log(m_data);
-      //   this._radiologytemplateService.insertRadiologyTemplateMaster(m_data).subscribe(data => {
-      //     this.msg = data;
-      //   });
-      //   this.notification.success('Record added successfully')
+          }
+        }
+        // console.log(m_data);
+        this._radiologytemplateService.insertRadiologyTemplateMaster(m_data).subscribe(data => {
+          this.msg = data;
+          if (data) {
+            Swal.fire('Congratulations !', 'Radiology Template Inserted Successfully !', 'success').then((result) => {
+              if (result.isConfirmed) {
+                this._radiologytemplateService.myform.get('TemplateDesc').reset();
+                this.dialogRef.close();
+                // this.getPrint(this.selectedAdvanceObj.RadReportId);
+              }
+
+            });
+          } else {
+            Swal.fire('Error !', 'Appoinment not saved', 'error');
+          }
+        });
+        // this.notification.success('Record added successfully')
       
        }
        
@@ -194,11 +221,11 @@ export class ResultEntryComponent implements OnInit {
             "IsCompleted": true,// (this._radiologytemplateService.myform.get("IsCompleted").value).trim(),
             "IsPrinted": true,//Boolean(JSON.parse(this._radiologytemplateService.myform.get("IsPrinted").value)),
             "RadResultDr1": this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 0,
-            "RadResultDr2": 0,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
-            "RadResultDr3": 0,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+            "RadResultDr2": 10,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+            "RadResultDr3": 20,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
             "SuggestionNotes": this._radiologytemplateService.myform.get("SuggestionNotes").value || '',
-            "AdmVisitDoctorID": 0,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
-            "RefDoctorID": 0,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
+            "AdmVisitDoctorID": 20,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId,
+            "RefDoctorID": 10,// this._radiologytemplateService.myform.get("DoctorId").value.DoctorId || 1,
             "ResultEntry": this._radiologytemplateService.myform.get("ResultEntry").value || '',
 
           }
@@ -209,9 +236,9 @@ export class ResultEntryComponent implements OnInit {
           if (data) {
             Swal.fire('Congratulations !', 'Radiology Template Updated Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
-                // this._matDialog.closeAll();
+                this.dialogRef.close();
                 this._radiologytemplateService.myform.get('TemplateDesc').reset();
-                this.getPrint(this.selectedAdvanceObj.RadReportId);
+                // this.getPrint(this.selectedAdvanceObj.RadReportId);
               }
 
             });
@@ -222,7 +249,7 @@ export class ResultEntryComponent implements OnInit {
         });
       }
 
-    }
+    
   }
 
   getPrint(el) {

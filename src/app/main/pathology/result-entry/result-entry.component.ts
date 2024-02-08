@@ -15,6 +15,8 @@ import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.com
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { PathTemplateViewComponent } from './path-template-view/path-template-view.component';
+import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-result-entry',
@@ -87,6 +89,7 @@ export class ResultEntryComponent implements OnInit {
 
   displayedColumns1: string[] = [
     'checkbox',
+    'IsTemplateTest',
     'TestName',
     'IsCompleted',
     'Age',
@@ -270,7 +273,7 @@ export class ResultEntryComponent implements OnInit {
   }
 
   // for sampledetails tablemyformSearch
-  onEdit(row,m) {
+  onEdit(m) {
 
     console.log(m);
 
@@ -282,11 +285,7 @@ export class ResultEntryComponent implements OnInit {
     this.SBillNo=m.BillNo;
     this.SOPIPtype=m.OPD_IPD_Type;
     this.SFromDate=this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
-    // console.log(m.PathDate);
-    // console.log(this.SFromDate);
-
-    // console.log(this.SBillNo + this.SOPIPtype + this.SFromDate);
-
+  
 debugger
     var m_data = {
       "BillNo": m.BillNo,
@@ -311,7 +310,7 @@ debugger
   }
 
   SearchTest($event){
-    debugger;
+  
     var m_data = {
       "BillNo":this.SBillNo,
       "OP_IP_Type": this.SOPIPtype,
@@ -339,8 +338,8 @@ debugger
   }
 
   // for sample detail table to resultentry page
-  onresultentry(row, m) {
-    console.log(row, m);
+  onresultentry(m) {
+    console.log(m);
     let xx = {
       RegNo: m.RegNo,
       AdmissionID: m.VisitId,
@@ -367,9 +366,10 @@ debugger
     this.advanceDataStored.storage = new SampleDetailObj(xx);
     // this.ServiceIdList.push(m.ServiceId);
     console.log(m);
+    debugger
     if (m.IsTemplateTest == 1) {
       this.advanceDataStored.storage = new SampleDetailObj(xx);
-      const dialogRef = this._matDialog.open(PathTemplateViewComponent,
+      const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
         {
           maxWidth: "90%",
           height: '95%',
@@ -384,7 +384,9 @@ debugger
             "PathTemplateId": m.PathTemplateId,
             "CategoryID": m.CategoryID,
             "SampleDetailObj": m.SampleDetailObj,
-            "DoctorId": m.PathResultDr1
+            "DoctorId": m.PathResultDr1,
+            "PathTestID":m.PathTestID,
+            "TemplateDesc":m.TemplateDesc
           }
         });
 
@@ -441,32 +443,33 @@ debugger
   }
 
   getPrint(el) {
-    debugger;
+  debugger
     console.log(el);
     if (el.IsTemplateTest == 1) {
 
-      var D_data = {
-        "PathReportId": el.PathReportID,
-        "OP_IP_Type": el.OPD_IPD_Type
-      }
-      console.log(el);
-      let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-      this.subscriptionArr.push(
-        this._SampleService.getPathTemplatePrint(D_data).subscribe(res => {
-          if (res) {
-            this.reportPrintObj = res[0] as Templateprintdetail;
-            console.log(this.reportPrintObj);
-          }
+      // var D_data = {
+      //   "PathReportId": el.PathReportID,
+      //   "OP_IP_Type": el.OPD_IPD_Type
+      // }
+      // console.log(el);
+      // let printContents;
+      // this.subscriptionArr.push(
+      //   this._SampleService.getPathTemplatePrint(D_data).subscribe(res => {
+      //     if (res) {
+      //       this.reportPrintObj = res[0] as Templateprintdetail;
+      //       console.log(this.reportPrintObj);
+      //     }
 
-          console.log(this.reportPrintObj);
-          this.getTemplate();
-          // console.log(res);
+      //     console.log(this.reportPrintObj);
+      //     this.getTemplate();
+         
+      //   })
+      // );
 
-        })
-      );
+      this.viewgetPathologyTemplateReportPdf(el);
     }
     else {
-      this.getPrintPathologyReport(el);
+      this.viewgetPathologyTestReportPdf(el);
     }
   }
 
@@ -496,7 +499,7 @@ debugger
   // PathologyReportPrintMultiple
 
   getTemplateMultiple() {
-    debugger;
+  
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=15';
     this._SampleService.getTemplate(query).subscribe((resData: any) => {
       console.log(resData);
@@ -603,9 +606,49 @@ debugger;
     return value;
   }
 
+  
+
+  viewgetPathologyTemplateReportPdf(obj) {
+    
+    this._SampleService.getPathTempReport(
+      53473,1
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Pathology Template  Viewer"
+          }
+        });
+    });
+  }
+
+
+  
+  viewgetPathologyTestReportPdf(obj) {
+    
+    this._SampleService.getPathTestReport(
+    2
+      ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "pathology Test  Viewer"
+          }
+        });
+    });
+  }
+
 
   getPrintPathologyReport(el) {
-    debugger;
+  
     var D_data = {
       "OP_IP_Type": 1,// el.OPD_IPD_Type
 
@@ -910,6 +953,7 @@ export class SampleDetailObj {
   PathDate:any;
   PathTime:any;
 PathResultDr1:any;
+PathTestID:any;
 
   /**
   * Constructor
@@ -951,6 +995,7 @@ PathResultDr1:any;
       this.RoomName = SampleDetailObj.RoomName || '';
       this.PathDate = SampleDetailObj.PathDate || '';
       this.PathTime = SampleDetailObj.PathTime || '';
+      this.PathTestID=SampleDetailObj.PathTestID || 0;
     }
   }
 }

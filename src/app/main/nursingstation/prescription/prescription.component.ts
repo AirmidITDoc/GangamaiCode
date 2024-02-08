@@ -77,8 +77,8 @@ export class PrescriptionComponent implements OnInit {
       // height:'750px'
       
 
-      width:'110%',
-      height:'950px'
+      width:'900px;',
+      height:'950px;'
     })
   }
 

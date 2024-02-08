@@ -176,14 +176,21 @@ export class TemplatemasterComponent implements OnInit {
     }
     onSubmit( ) {
       debugger
-        if (this._templateService.myform.valid) {
+        
             if (!this._templateService.myform.get("TemplateId").value) {
                 let insertPathologyTemplateMaster ={};
-                insertPathologyTemplateMaster['testId'] = 0;
+                insertPathologyTemplateMaster['testId'] = 110;
                 insertPathologyTemplateMaster['templateId'] =0 //s this._templateService.myform.get("TemplateId").value;
-                insertPathologyTemplateMaster['Desc']=this.vTemplateDesc;
-                let submitData={};
-                submitData['insertPathologyTemplateMaster'] = insertPathologyTemplateMaster;
+                // insertPathologyTemplateMaster['Desc']=this.vTemplateDesc;
+                // let submitData={};
+                // submitData['insertPathologyTemplateMaster'] = insertPathologyTemplateMaster;
+             
+                let submitData = {
+                  "insertPathologyTemplateMaster": insertPathologyTemplateMaster
+                 
+              };
+  
+             
                 console.log(submitData)
                     this._templateService.insertTemplateMaster(submitData).subscribe(response => {
                         if (response) {
@@ -233,7 +240,7 @@ export class TemplatemasterComponent implements OnInit {
                       });
             }
            
-        }
+        
     }
 
     OnPrint(TemplateId) {

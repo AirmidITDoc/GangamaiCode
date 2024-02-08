@@ -43,6 +43,7 @@ import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.com
 import { PathTemplateViewComponent } from './path-template-view/path-template-view.component';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 const routes: Routes = [
@@ -100,7 +101,7 @@ const routes: Routes = [
        MatTooltipModule,
       //  DateTimePickerModule ,
       MatAutocompleteModule,
-            
+      AngularEditorModule,
 
   ],
   providers: [

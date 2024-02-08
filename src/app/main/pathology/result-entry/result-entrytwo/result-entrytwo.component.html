@@ -3,6 +3,10 @@
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
             <h3>{{_SampleService.myform.controls.TemplateId.value?" Pathology Template ":"
                 Pathology Template"}}</h3>
+                <span style="margin-left:900px;">
+                <app-common-date [screenFrom]="screenFromString"
+                (dateTimeEventEmitter)="getDateTime($event)">
+            </app-common-date></span>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
@@ -42,9 +46,7 @@
                              
                             </span>-->
 
-                                <app-common-date [screenFrom]="screenFromString"
-                                    (dateTimeEventEmitter)="getDateTime($event)">
-                                </app-common-date>
+                               
                             </div>
                         </mat-card>
                         <!-- ================================ LABEL HEADER  -->
@@ -77,17 +79,20 @@
             <div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div class="editor">
-                        <angular-editor name="editor" placeholder="'Enter text here...'" formControlName="TemplateDesc">
-                        </angular-editor>
-                        <!-- <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
-                <ngx-editor height="320px" minHeight="150px" [editor]="editor" formControlName="TemplateDesc"></ngx-editor> -->
+                      
+                        <div>
+                            <mat-label>Template Details</mat-label>
+                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:200px;" [(ngModel)]="vTemplateDesc" required
+                            formControlName="TemplateDesc"></angular-editor>
+                              
+                        </div>
                     </div>
                 </div>
 
             </div>
 
 
-            <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 10px;">
+            <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 10px;margin-left: 1000px;">
 
                 <div class="button-row" fxLayout="row">
                     <button mat-raised-button color="primary" style="margin: 5px;border-radius: 16px;"

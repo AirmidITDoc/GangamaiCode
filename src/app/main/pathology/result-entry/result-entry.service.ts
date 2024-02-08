@@ -102,6 +102,17 @@ export class ResultEntryService {
   public PathTemplateResultentryInsert(employee) {
     return this._httpClient.post("Pathology/PathologyTemplateResult", employee);
   }
+
+  public getPathTempReport(PathReportId,OP_IP_Type){
+    return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type=" + OP_IP_Type);
+  }
+
+
+
+  public getPathTestReport(BillNo){
+    return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo=" + BillNo);
+  }
+
   populateForm(employee) {
     this.myform.patchValue(employee);
   }

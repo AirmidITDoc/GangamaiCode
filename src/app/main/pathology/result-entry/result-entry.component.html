@@ -318,7 +318,7 @@
                                         <mat-header-row class="accent"
                                             *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit($event,contact)">
+                                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit(contact)">
                                         </mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -387,8 +387,19 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-checkbox aria-label="Checked"
-                                                    (change)="onresultentry($event,contact)">
+                                                    (change)="onresultentry(contact)">
                                                 </mat-checkbox>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IsTemplateTest">
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">IsTemplate</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact">
+                                                <!-- {{contact.IsBillGenerated}}  -->
+                                                <mat-icon
+                                                    style="font-size:50px;width: 10px !important; height:10px !important;border-radius:100% ;"
+                                                    *ngIf="contact.IsTemplateTest=='1'" matTooltip="IsTemplateTest"
+                                                    style="background-color: #f55f5a;">circle</mat-icon>
                                             </mat-cell>
                                         </ng-container>
 
@@ -457,7 +468,7 @@
                                                 </button> -->
 
                                                 <button mat-icon-button class="material-icons"
-                                                    (click)="onresultentry($event,contact)" matTooltip="Result Entry">
+                                                    (click)="onresultentry(contact)" matTooltip="Result Entry">
                                                     <mat-icon title="Result Entry">description</mat-icon>
                                                 </button>
 
@@ -465,10 +476,10 @@
                                                     (click)="getRecord(contact,'EMAIL')" matTooltip="Cancel Result">
                                                     <mat-icon title="Cancel Result">delete_forever</mat-icon>
                                                 </button>
-                                                <button mat-icon-button (click)="getView(contact)"
+                                                <!-- <button mat-icon-button (click)="getView(contact)"
                                                     matTooltip="how_to_reg">
                                                     <mat-icon>how_to_reg</mat-icon>
-                                                </button>
+                                                </button> -->
                                                 <button mat-icon-button (click)="getPrint(contact)" matTooltip="Print">
                                                     <mat-icon>print</mat-icon>
                                                 </button>
@@ -498,7 +509,7 @@
                                             *matHeaderRowDef="displayedColumns1; sticky: true">
                                         </mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumns1;"
-                                            [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
+                                            [ngClass]="{'row-yellow': contact.IsTemplateTest == 1}"
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':dataSource1!=null}">

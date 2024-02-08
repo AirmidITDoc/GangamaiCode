@@ -356,6 +356,8 @@ export class TestmasterComponent implements OnInit {
         });
     }
     onSubmit() {
+
+        debugger
         if (!this._TestService.myform.get("TestId").value) {
 
             let insertPathologyTestMaster = {};
@@ -363,7 +365,7 @@ export class TestmasterComponent implements OnInit {
             insertPathologyTestMaster['testName'] = this._TestService.myform.get('TestName').value || "";
             insertPathologyTestMaster['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
             insertPathologyTestMaster['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
-            insertPathologyTestMaster['isSubTest'] = this._TestService.myform.get('IsSubTest').value;
+            insertPathologyTestMaster['isSubTest'] = this._TestService.myform.get('IsSubTest').value ||1;
             insertPathologyTestMaster['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
             insertPathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
             insertPathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
@@ -377,9 +379,10 @@ export class TestmasterComponent implements OnInit {
             let pathTestDetailMaster = []
             this.DSTestList.data.forEach((element) => {
                 let PathDetailsObj = {};
-                PathDetailsObj['testId'] =  0;
-                PathDetailsObj['subTestID'] = 0;
-                PathDetailsObj['parameterID'] = element.ParameterID;
+                PathDetailsObj['testId'] = 0;
+                PathDetailsObj['subTestID'] = 10;
+                PathDetailsObj['parameterID'] = element.ParameterID || 0;
+               
                 pathTestDetailMaster.push(PathDetailsObj);
             }); 
 

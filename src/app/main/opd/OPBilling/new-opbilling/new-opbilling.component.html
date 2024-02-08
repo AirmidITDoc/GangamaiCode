@@ -177,7 +177,8 @@
                                             <mat-form-field appearance="outline" style="width:100px;">
                                                 <mat-label>NetAmount</mat-label>
                                                 <input matInput [(ngModel)]="b_netAmount" name="b_netAmount" readonly
-                                                    formControlName="netAmount" required>
+                                                    formControlName="netAmount" required (keydown)="onEnternetAmount($event)" 
+                                                    #netamt>
                                                 <mat-error
                                                     *ngIf="registeredForm.get('netAmount').invalid && registeredForm.get('netAmount').touched">
                                                     NetAmount is required</mat-error>

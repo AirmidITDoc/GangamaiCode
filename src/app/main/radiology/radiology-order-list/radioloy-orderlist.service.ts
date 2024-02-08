@@ -132,5 +132,10 @@ export class RadioloyOrderlistService {
     public getTestList(employee){
       return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathResultEntryList_Test_Dtls1", employee)
     }
+
+    public getRadiologyTempReport(RadReportId,OP_IP_Type){
+      return this._httpClient.get("Radiology/view-RadiologyTemplateReport?RadReportId=" + RadReportId + "&OP_IP_Type=" + OP_IP_Type)
+          
+    }
     
 }
