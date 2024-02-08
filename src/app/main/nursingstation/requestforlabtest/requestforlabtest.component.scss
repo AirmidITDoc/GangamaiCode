@@ -1,3 +1,17 @@
+.mat-header-row {
+    width: 100%;
+    min-width: 1500px;  
+    min-height: 30px; 
+      
+}
+
+.mat-row {
+    width: 100%;
+    min-width: 1500px;      
+    min-height: 30px;  
+   
+}
+
 .Tab1 {
     .mat-column-RegNo {
         width: 100px;
@@ -53,6 +67,12 @@
         min-width: 120px;
         align-items: left;
     }
+    .mat-column-AddedBy {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        align-items: left;
+    }
     .mat-column-CompanyName {
         width: 200px;
         max-width: 200px;
@@ -63,10 +83,7 @@
          overflow: hidden;
          text-overflow: ellipsis;
          overflow: hidden !important;
-         display: inline-flex;
-         display: inline;
-         margin-right: 20px;
-         padding-top: 8px;
+       
     }
     .mat-column-action{
         width: 100px;

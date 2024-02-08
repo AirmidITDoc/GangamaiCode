@@ -306,8 +306,11 @@ this.WardId=obj.RoomId;
         Remark: this.vRemark || ''
       });
     this.dsPresList.data = this.PresItemlist
-    this.myForm.reset();
+    // this.myForm.reset();
     this.myForm.get('ItemId').reset('');
+    this.myForm.get('Qty').reset('');
+    this.myForm.get('Remark').reset('');
+    this.itemid.nativeElement.focus();
     this.add=false;
   }
   
@@ -422,9 +425,12 @@ this.WardId=obj.RoomId;
     debugger
     if (event.which === 13) {
       // this.discamt.nativeElement.focus();
+      // setTimeout(() => {
       this.add=true;
       this.addbutton.focus();
+    // },20);
     }
+    
   }
 
   // public onEnterdiscAmount(event): void {
@@ -497,7 +503,7 @@ this.WardId=obj.RoomId;
         if (response) {
           Swal.fire('Congratulations !', 'New Prescription Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
-              // this._matDialog.closeAll();
+              this._matDialog.closeAll();
               this.viewgetIpprescriptionReportPdf(response);
             }   
           });

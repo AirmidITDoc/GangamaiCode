@@ -21,6 +21,7 @@ export class PrescriptionService {
     return this._formBuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
+      PrescriptionStatus:['Pending'],
       RegNo:''
      
       

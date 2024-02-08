@@ -219,7 +219,7 @@ export class NewRequestforlabComponent implements OnInit {
   getServiceListdata() {
     debugger
     var Param = {
-      "ServiceName": 'c%',
+      "ServiceName":`${this.myFormGroup.get('ServiceId').value}%` ||'%',
       "IsPathRad":parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
       "ClassId":1,
       "TariffId":1
@@ -238,7 +238,9 @@ export class NewRequestforlabComponent implements OnInit {
   }
  
 
-  getServiceListItem(){}
+  getServiceListItem(){
+
+  }
 
   onSaveEntry(row) {
     this.isLoading = 'save';

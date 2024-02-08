@@ -19,6 +19,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { RegInsert } from '../../appointment/appointment.component';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-opbilling',
@@ -30,7 +31,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewOPBillingComponent implements OnInit {
 
- 
+
   saveclick: boolean = false;
   hasSelectedContacts: boolean;
 
@@ -65,7 +66,7 @@ export class NewOPBillingComponent implements OnInit {
     'ChargeDoctorName',
     'ClassName',
     'ChargesAddedName'
-   
+
   ];
 
   tableColumns = [
@@ -169,6 +170,7 @@ export class NewOPBillingComponent implements OnInit {
     private accountService: AuthenticationService,
     // private dialogRef: MatDialogRef<NewOPBillingComponent>,
     public _httpClient: HttpClient,
+    public toastr: ToastrService,
     private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
@@ -245,7 +247,7 @@ export class NewOPBillingComponent implements OnInit {
       BillRemark: [''],
       FinalAmt: ['', Validators.required],
       cashpay: ['1'],
-      CashCounterId:['']// ['', Validators.required]
+      CashCounterId: ['']// ['', Validators.required]
       // TotalAmount: [Validators.pattern("^[0-9]*$")],
     });
   }
@@ -274,7 +276,7 @@ export class NewOPBillingComponent implements OnInit {
     var m_data = {
       SrvcName: `${this.registeredForm.get('SrvcName').value}%`,
       TariffId: 1,//this.selectedAdvanceObj.TariffId,
-      ClassId:1,// this.selectedAdvanceObj.ClassId || 1
+      ClassId: 1,// this.selectedAdvanceObj.ClassId || 1
     };
     if (this.registeredForm.get('SrvcName').value.length >= 1) {
       this._oPSearhlistService.getBillingServiceList(m_data).subscribe(data => {
@@ -305,30 +307,72 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   getSelectedObj(obj) {
+    debugger
     console.log('obj==', obj);
-    this.SrvcName = obj.ServiceName;
-    this.b_price = obj.Price;
-    this.b_totalAmount = obj.Price;
-    this.b_netAmount = obj.Price;
-    this.serviceId = obj.ServiceId;
-    this.b_isPath = obj.IsPathology;
-    this.b_isRad = obj.IsRadiology;
-    this.b_CreditedtoDoctor = obj.CreditedtoDoctor;
-    if (obj.CreditedtoDoctor) {
-      this.isDoctor = true;
-      this.registeredForm.get('DoctorID').reset();
-      this.registeredForm.get('DoctorID').setValidators([Validators.required]);
-      this.registeredForm.get('DoctorID').enable();
 
+
+    if (this.dataSource.data.length > 0) {
+    this.dataSource.data.forEach((element) => {
+    if (obj.ServiceId == element.ServiceId) {
+      // Swal.fire('Selected Item already added in the list');
+      this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      this.onClearServiceAddList();
     } else {
-      this.isDoctor = false;
-      this.registeredForm.get('DoctorID').reset();
-      this.registeredForm.get('DoctorID').clearValidators();
-      this.registeredForm.get('DoctorID').updateValueAndValidity();
-      this.registeredForm.get('DoctorID').disable();
-    }
 
+      this.SrvcName = obj.ServiceName;
+      this.b_price = obj.Price;
+      this.b_totalAmount = obj.Price;
+      this.b_netAmount = obj.Price;
+      this.serviceId = obj.ServiceId;
+      this.b_isPath = obj.IsPathology;
+      this.b_isRad = obj.IsRadiology;
+      this.b_CreditedtoDoctor = obj.CreditedtoDoctor;
+      if (obj.CreditedtoDoctor) {
+        this.isDoctor = true;
+        this.registeredForm.get('DoctorID').reset();
+        this.registeredForm.get('DoctorID').setValidators([Validators.required]);
+        this.registeredForm.get('DoctorID').enable();
+
+      } else {
+        this.isDoctor = false;
+        this.registeredForm.get('DoctorID').reset();
+        this.registeredForm.get('DoctorID').clearValidators();
+        this.registeredForm.get('DoctorID').updateValueAndValidity();
+        this.registeredForm.get('DoctorID').disable();
       }
+    }
+  });
+    }
+  
+      else {
+
+        this.SrvcName = obj.ServiceName;
+        this.b_price = obj.Price;
+        this.b_totalAmount = obj.Price;
+        this.b_netAmount = obj.Price;
+        this.serviceId = obj.ServiceId;
+        this.b_isPath = obj.IsPathology;
+        this.b_isRad = obj.IsRadiology;
+        this.b_CreditedtoDoctor = obj.CreditedtoDoctor;
+        if (obj.CreditedtoDoctor) {
+          this.isDoctor = true;
+          this.registeredForm.get('DoctorID').reset();
+          this.registeredForm.get('DoctorID').setValidators([Validators.required]);
+          this.registeredForm.get('DoctorID').enable();
+  
+        } else {
+          this.isDoctor = false;
+          this.registeredForm.get('DoctorID').reset();
+          this.registeredForm.get('DoctorID').clearValidators();
+          this.registeredForm.get('DoctorID').updateValueAndValidity();
+          this.registeredForm.get('DoctorID').disable();
+        }
+      }
+    
+
+  }
 
   getNetAmtSum(element) {
     let netAmt;
@@ -384,12 +428,12 @@ export class NewOPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['PaidAmt'] = 0; //this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
-    InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
-    InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
+    InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
     InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
       InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-      InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
-    InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId; //this.BillingForm.get('ConcessionId').value.ConcessionId || 0;
+      InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId; //this.BillingForm.get('ConcessionId').value.ConcessionId || 0;
     InsertBillUpdateBillNoObj['IsSettled'] = 0;
     InsertBillUpdateBillNoObj['IsPrinted'] = 0;
     InsertBillUpdateBillNoObj['IsFree'] = 0;
@@ -402,7 +446,7 @@ export class NewOPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['TaxPer'] = 0;
     InsertBillUpdateBillNoObj['TaxAmount'] = 0;
     InsertBillUpdateBillNoObj['CashCounterId'] = 2,// this.BillingForm.get('CashCounterId').value.CashCounterId || 0;
-    InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
+      InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
 
     let Billdetsarr = [];
     this.dataSource.data.forEach((element) => {
@@ -454,8 +498,8 @@ export class NewOPBillingComponent implements OnInit {
 
     let PatientHeaderObj = {};
 
-    PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
-    PatientHeaderObj['PatientName'] = this.PatientName;
+    PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
     PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
@@ -513,16 +557,16 @@ export class NewOPBillingComponent implements OnInit {
           });
         }
         else {
-        
+
           Swal.fire({
-            title:'Do you want to generate Credit Bill',
+            title: 'Do you want to generate Credit Bill',
             // showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'OK',
-  
+
           }).then((flag) => {
 
-          
+
             if (flag.isConfirmed) {
 
               const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
@@ -557,18 +601,18 @@ export class NewOPBillingComponent implements OnInit {
       let Paymentobj = {};
       Paymentobj['BillNo'] = 0;
       Paymentobj['ReceiptNo'] = "";
-      Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
-      Paymentobj['PaymentTime'] =  this.dateTimeObj.time || '01/01/1900',
-      Paymentobj['CashPayAmount'] = this.BillingForm.get('FinalAmt').value || 0;
+      Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
+        Paymentobj['CashPayAmount'] = this.BillingForm.get('FinalAmt').value || 0;
       Paymentobj['ChequePayAmount'] = 0;
       Paymentobj['ChequeNo'] = 0;
       Paymentobj['BankName'] = "";
-      Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
-      Paymentobj['CardPayAmount'] = 0;
+      Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['CardPayAmount'] = 0;
       Paymentobj['CardNo'] = 0;
       Paymentobj['CardBankName'] = "";
-      Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
-      Paymentobj['AdvanceUsedAmount'] = 0;
+      Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['AdvanceUsedAmount'] = 0;
       Paymentobj['AdvanceId'] = 0;
       Paymentobj['RefundId'] = 0;
       Paymentobj['TransactionType'] = 0;
@@ -576,16 +620,16 @@ export class NewOPBillingComponent implements OnInit {
       Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
         Paymentobj['IsCancelled'] = 0;
       Paymentobj['IsCancelledBy'] = 0;
-      Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
-      Paymentobj['CashCounterId'] = 0;
+      Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['CashCounterId'] = 0;
       Paymentobj['NEFTPayAmount'] = 0;
       Paymentobj['NEFTNo'] = 0;
       Paymentobj['NEFTBankMaster'] = "";
-      Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
-      Paymentobj['PayTMAmount'] = 0;
+      Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['PayTMAmount'] = 0;
       Paymentobj['PayTMTranNo'] = 0;
-      Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
-      Paymentobj['PaidAmt'] = this.BillingForm.get('FinalAmt').value || 0;
+      Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['PaidAmt'] = this.BillingForm.get('FinalAmt').value || 0;
       Paymentobj['BalanceAmt'] = 0;
 
       const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
@@ -644,13 +688,13 @@ export class NewOPBillingComponent implements OnInit {
           ConcessionPercentage: this.v_ChargeDiscPer || 0,
           DiscAmt: this.b_ChargeDisAmount || 0,
           NetAmount: this.b_netAmount || 0,
-          ClassId:1,//this.selectedAdvanceObj.ClassId || 0,
+          ClassId: 1,//this.selectedAdvanceObj.ClassId || 0,
           DoctorId: this.DoctornewId,// (this.registeredForm.get("DoctorID").value.DoctorName).toString() || '',
           DoctorName: this.ChargesDoctorname,
-          ChargesDate:  this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy')|| '01/01/1900',
+          ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
           IsPathology: this.b_isPath,
           IsRadiology: this.b_isRad,
-          ClassName:'c1',// this.selectedAdvanceObj.ClassName || '',
+          ClassName: 'c1',// this.selectedAdvanceObj.ClassName || '',
           ChargesAddedName: this.accountService.currentUserValue.user.id || 1,
 
         });
@@ -664,8 +708,8 @@ export class NewOPBillingComponent implements OnInit {
 
     setTimeout(() => {
       this.add = false;
-    },400);
-    
+    }, 400);
+
   }
 
   onScroll() {
@@ -821,7 +865,7 @@ export class NewOPBillingComponent implements OnInit {
       "BillNo": el,
     }
 
-    let printContents; 
+    let printContents;
     this.subscriptionArr.push(
       this._oPSearhlistService.getBillPrint(D_data).subscribe(res => {
 
@@ -916,9 +960,9 @@ export class NewOPBillingComponent implements OnInit {
   }
   // PRINT 
   print() {
-    
+
     let popupWin, printContents;
-    
+
     popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
     // popupWin.document.open();
     popupWin.document.write(` <html>
@@ -947,7 +991,7 @@ export class NewOPBillingComponent implements OnInit {
   onClose() {
     // this.dialogRef.close();
     this.registeredForm.reset();
-    this.dataSource.data=[];
+    this.dataSource.data = [];
   }
 
   showNewPaymnet() {
@@ -972,7 +1016,7 @@ export class NewOPBillingComponent implements OnInit {
   @ViewChild('doctorname') doctorname: ElementRef;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
   @ViewChild('netamt') netamt: ElementRef;
-  
+
   onEnterservice(event): void {
     if (event.which === 13) {
       this.qty.nativeElement.focus();
@@ -981,32 +1025,32 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   public onEnterqty(event): void {
-    
+
     if (event.which === 13) {
       this.disper.nativeElement.focus();
       // this.calculateTotalAmt()
     }
   }
   public onEnterdiscper(event): void {
-    
+
     if (event.which === 13) {
       this.discamt.nativeElement.focus();
-      
+
     }
   }
 
   public onEnterdiscAmount(event): void {
-    
+
     if (event.which === 13) {
-     this.netamt.nativeElement.focus();
+      this.netamt.nativeElement.focus();
     }
   }
 
   public onEnternetAmount(event): void {
     debugger
     if (event.which === 13) {
-    
-      this.add=true;
+
+      this.add = true;
       this.addbutton.focus();
     }
   }
@@ -1019,10 +1063,10 @@ export class NewOPBillingComponent implements OnInit {
 
 
   viewgetBillReportPdf(BillNo) {
-    
+
     this._oPSearhlistService.getOpBillReceipt(
-    BillNo
-      ).subscribe(res => {
+      BillNo
+    ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
           maxWidth: "85vw",
@@ -1040,12 +1084,12 @@ export class NewOPBillingComponent implements OnInit {
   PatientListfilteredOptions: any;
   isRegIdSelected: boolean = false;
   registerObj = new RegInsert({});
-  PatientName:any ="";
-  RegId:any;
+  PatientName: any = "";
+  RegId: any;
   searchFormGroup: FormGroup;
   Regflag: boolean = false;
-  RegDate:any;
-  City:any;
+  RegDate: any;
+  City: any;
   getSearchList() {
 
     var m_data = {
@@ -1064,12 +1108,12 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   getSelectedObj1(obj) {
-   
+
     this.registerObj = obj;
-    this.PatientName = obj.FirstName + " "+ obj.MiddleName+ " "+ obj.LastName;
+    this.PatientName = obj.FirstName + " " + obj.MiddleName + " " + obj.LastName;
     this.RegId = obj.RegId;
-    this.City=obj.City;
-    this.RegDate=this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    this.City = obj.City;
+    this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
     // this.setDropdownObjs();
 
     // this.getregisterList();

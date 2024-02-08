@@ -27,19 +27,36 @@ export class PrescriptionComponent implements OnInit {
 
   hasSelectedContacts: boolean;
   SpinLoading:boolean=false;
+  PType:any;
   displayedColumns: string[] = [
+    // 'action',
+    // 'RegNo',
+    // 'PatientName',
+    // 'Vst_Adm_Date',
+    
+    // 'StoreName',
+    // 'PreNo',
+    // 'PTime',
+    // 'Date',
+
+
     'action',
     'RegNo',
     'PatientName',
-    'Vst_Adm_Date',
+    // 'DoctorName',
     'Date',
-    'StoreName',
-    'PreNo'
+    'OPD_IPD_Type',
+    'PTime',
+    'CompanyName',
+    // 'WardName'
+    'AddedBy'
+    
   ]
 
   dscPrescriptionDetList:string[] = [
     'ItemName',
-    'Qty'
+    'Qty',
+    // 'TotalQty'
   ]
 
    
@@ -73,13 +90,21 @@ export class PrescriptionComponent implements OnInit {
   //window
   OpenNewPrescription(){
     this.dialog.open(NewPrescriptionComponent,{
-      // width:'98%',
-      // height:'750px'
-      
-
-      width:'900px;',
-      height:'950px;'
+      maxWidth: "90%",
+      height: '695px !important',
     })
+  }
+
+
+  onChangePrescriptionType(event) {
+    if (event.value == 'Pending') {
+      this.PType = 0;
+      this.getPrescriptionList();
+    }
+    else{
+      this.PType = 1;
+      this.getPrescriptionList();
+    }
   }
 
   getPrescriptionList(){
@@ -87,6 +112,7 @@ export class PrescriptionComponent implements OnInit {
       FromDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
       ToDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
       Reg_No: this._PrescriptionService.mysearchform.get('RegNo').value || 0
+      // Type:this.PType || 0
     }
     // console.log(vdata);
     this._PrescriptionService.getPrecriptionlistmain(vdata).subscribe(data =>{
@@ -136,8 +162,8 @@ export class PrescriptionComponent implements OnInit {
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
-          maxWidth: "85vw",
-          height: '750px',
+          maxWidth: "95vw",
+          height: '850px',
           width: '100%',
           data: {
             base64: res["base64"] as string,
