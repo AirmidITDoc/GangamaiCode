@@ -39,6 +39,7 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatTreeModule } from "@angular/material/tree";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { UpdateradiologymasterComponent } from './updateradiologymaster/updateradiologymaster.component';
 
 
 const routes: Routes = [
@@ -49,7 +50,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [RadiologyTestMasterComponent],
+    declarations: [RadiologyTestMasterComponent, UpdateradiologymasterComponent],
     imports: [
         RouterModule.forChild(routes),
 

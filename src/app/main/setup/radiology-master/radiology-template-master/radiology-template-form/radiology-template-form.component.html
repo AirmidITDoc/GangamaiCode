@@ -32,35 +32,35 @@
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
+                                        <input type="hidden" name="TemplateId" formControlName="TemplateId" [(ngModel)]="vTemplateId">
+                                       
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Template Name</mat-label>
-                                            <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
-                                            name="TemplateName" formControlName="TemplateName" required>
+                                            <input matInput placeholder="Template Name"
+                                                [(ngModel)]="vTemplateName" name="TemplateName"
+                                                formControlName="TemplateName" required>
                                             <mat-error>Please enter TestName </mat-error>
                                         </mat-form-field>
-                                       
+
                                         <div>
-                                         <!-- <angular-editor [placeholder]="'Enter text here...'" ></angular-editor>  -->
+                                            <mat-label>Template Details</mat-label>
+                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:200px;" [(ngModel)]="vTemplateDesc" required
+                                            formControlName="TemplateDesc"></angular-editor>
                                               
                                         </div>
-                                        
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Template Details</mat-label>
-                                            <textarea matInput placeholder="Template Description" #TemplateDesc
-                                            name="TemplateDesc"  formControlName="TemplateDesc" required  
-                                                style="height: 400px;" [(ngModel)]="vTemplateDesc"></textarea>
-                                        </mat-form-field>
                                     </div>
                                 </div>
-                                <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end center">
-                                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
-                                    
-                                    </mat-radio-group>
+                                <div fxLayoutAlign="end ">
+
+                                    <mat-radio-button value='true' class="p-12" name="IsDeleted" [checked]="true"
+                                        formControlName="IsDeleted">IsActive</mat-radio-button>
+
                                 </div>
-                                <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+                                <div mat-dialog-actions class="m-0 p-16" fxLayout="row"
+                                    fxLayoutAlign="end center">
                                     <div class="button-row">
-                                        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
+                                        <button mat-raised-button color="accent" type="submit"
+                                            (click)="onSubmit()"
                                             style="border-radius: 16px;width: 80px; height:40px;"
                                             [disabled]="_radiologytemplateService.myform.invalid">Save</button>
                                         <button mat-raised-button color="warn" (click)="onClear()"

@@ -1,0 +1,15 @@
+.table1{
+     
+    width: 100%;
+    height: 250px;
+    min-height: 250px;
+    max-height: 250px;  
+}
+button:disabled {
+    color: white;
+   background-color: #7bd3ff  !important;
+   //background-color: #b7e6fd ;
+    border-radius: 2px;
+   // border: 1px solid #CCCCCC;
+   border: 1px solid  #b7e6fd ;
+}
