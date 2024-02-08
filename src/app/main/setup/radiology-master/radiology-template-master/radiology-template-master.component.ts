@@ -304,7 +304,9 @@ export class RadiologyTemplateMasterComponent implements OnInit {
       this.getRadiologytemplateMasterList();
     });
   }
-
+  onBlur(e:any){
+    this.vTemplateDesc=e.target.innerHTML;
+  }
   OnPrintPop(TemplateId) {
 
     var m_data = { "TemplateId": TemplateId, }
