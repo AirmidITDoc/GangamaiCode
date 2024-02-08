@@ -11,7 +11,6 @@ import { MatAccordion } from "@angular/material/expansion";
 import { MatSort } from "@angular/material/sort";
 import { MatTabGroup } from "@angular/material/tabs";
 import { ToastrService } from "ngx-toastr";
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 
 @Component({
@@ -22,13 +21,12 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
     animations: fuseAnimations,
 })
 export class TemplatemasterComponent implements OnInit {
-    editorConfig: AngularEditorConfig = {
-      editable: true,
-      spellcheck: true,
-      height: '15rem',
-      minHeight: '5rem',
-      placeholder: 'Enter text here...',
-    };
+  config = {
+    placeholder: '',
+    tabsize: 2,
+    height: '400px',
+  }
+
     displayedColumns: string[] = [
         "TemplateId",
         "TemplateName",
@@ -175,9 +173,6 @@ export class TemplatemasterComponent implements OnInit {
         //     console.log("The dialog was closed - Insert Action", result);
         //     this.getTemplateMasterList();
         // });
-    }
-    onBlur(e:any){
-      this.vTemplateDesc=e.target.innerHTML;
     }
     onSubmit( ) {
       debugger

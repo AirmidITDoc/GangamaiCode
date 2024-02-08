@@ -33,6 +33,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { AngularEditorComponent, AngularEditorModule } from '@kolkov/angular-editor';
 // import { NgxEditorModule } from 'ngx-editor';
 // import { DialogModule } from '@syncfusion/ej2-angular-popups';
+import { NgxSummernoteModule } from 'ngx-summernote';
+
 
 const routes: Routes = [
     {
@@ -51,6 +53,7 @@ const routes: Routes = [
     imports: [
         RouterModule.forChild(routes),
         AngularEditorModule,
+        NgxSummernoteModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,

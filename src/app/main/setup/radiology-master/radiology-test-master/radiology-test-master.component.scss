@@ -1,7 +1,4 @@
-  .p-sm-24 {
-      padding: 10px !important;
-  }
-
+ 
   app-radiology-test-master {
 
       .table {
@@ -10,15 +7,15 @@
         min-height: 520px;
         max-height: 520px;
           .mat-header-row {
-              width: 1800px;
-              max-width: 1800px;
-              min-width: 1800px;
+              width: 1680px;
+              max-width: 1680px;
+              min-width: 1680px;
               font-weight: bold;
           }
           .mat-row {
-              width: 1800px;
-              max-width: 1800px;
-              min-width: 1800px;
+              width: 1680px;
+              max-width: 1680px;
+              min-width: 1680px;
           }
           .mat-column-TestId {
               width: 100px;
@@ -74,15 +71,15 @@
           }
 
           .mat-column-ServiceId {
-              width: 120px;
-              max-width: 120px;
-              min-width: 120px;
+              width: 150px;
+              max-width: 150px;
+              min-width: 150px;
           }
 
           .mat-column-AddedByName {
-              width: 100px;
-              max-width: 100px;
-              min-width: 100px;
+              width: 150px;
+              max-width: 150px;
+              min-width: 150px;
           }
 
           .mat-column-IsDeleted {
@@ -130,10 +127,4 @@
     }
   }
 
-  // .button-row button{
-  //     margin: 5px;
-  // }
-  // .mat-radio-group{
-  //     margin: 7px;
-  //     margin-bottom: 10px;
-  // }
+ 

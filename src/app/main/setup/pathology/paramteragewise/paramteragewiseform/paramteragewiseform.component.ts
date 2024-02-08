@@ -1,16 +1,17 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import { ReplaySubject, Subject } from "rxjs";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ParamteragewiseService } from "../paramteragewise.service";
 import { takeUntil } from "rxjs/operators";
 import { MatTableDataSource } from "@angular/material/table";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { ParamteragewiseComponent } from "../paramteragewise.component";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-paramteragewiseform",
@@ -64,25 +65,30 @@ export class ParamteragewiseformComponent implements OnInit {
 
     constructor(
         public _ParameterageService: ParamteragewiseService,
-
+        private accountService: AuthenticationService,
         public dialogRef: MatDialogRef<ParamteragewiseComponent>,
-        public _matDialog: MatDialog, 
-        public toastr: ToastrService, 
+        public _matDialog: MatDialog,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService,
     ) { }
-
+    registerObj:any;
     ngOnInit(): void {
+        if(this.data){
+            this.registerObj=this.data;
+        }
+
         //this.getParameterNameCombobox();
         // this.parameternameFilterCtrl.valueChanges
         //     .pipe(takeUntil(this._onDestroy))
         //     .subscribe(() => {
         //         this.filterParametername();
         //     });
- 
+
         this.getUnitNameCombobox();
         this.getGenderNameCombobox();
         this.getAgeTypeList();
-    //    this.getDscriptiveMasterList();
-    //    this.getNumericMasterList();
+        //    this.getDscriptiveMasterList();
+        //    this.getNumericMasterList();
     }
 
     get f() {
@@ -91,29 +97,29 @@ export class ParamteragewiseformComponent implements OnInit {
     getGenderNameCombobox() {
         this._ParameterageService.getGenderMasterCombo().subscribe(data => {
             this.GendercmbList = data;
-           console.log(this.GendercmbList);
+            console.log(this.GendercmbList);
         });
     }
     getAgeTypeList() {
         this._ParameterageService.getAgeTypeList().subscribe(data => {
             this.AgeTypeList = data;
-           // console.log(this.AgeTypeList);
+            // console.log(this.AgeTypeList);
         });
     }
     getUnitNameCombobox() {
- 
+
         this._ParameterageService.getUnitMasterCombo().subscribe((data) => {
             this.UnitcmbList = data;
-            //this.filteredUnitname.next(this.UnitcmbList.slice());
-            // if (this.data) {
-            //     const toSelectSexId = this.UnitcmbList.find(c => c.GenderName == this.registerObj.GenderName);
-            //     this._ParameterService.myform.get('SexId').setValue(toSelectSexId);
-            //    //console.log(toSelectGSTType);  
-            //   console.log(this.registerObj); 
-            //    } 
+           console.log(this.UnitcmbList)
+            if (this.data) {
+                const toSelectUnitId = this.UnitcmbList.find(c => c.UnitId == this.registerObj.UnitId);
+                this._ParameterageService.myform.get('UnitId').setValue(toSelectUnitId);
+               console.log(toSelectUnitId);  
+              console.log(this.registerObj.UnitId); 
+               } 
         });
     }
-   
+
 
     // getNumericMasterList() {
     //     var vadata={
@@ -138,7 +144,7 @@ export class ParamteragewiseformComponent implements OnInit {
                 GenderName: this._ParameterageService.myIsNumericform.get('SexID').value.GenderName || "",
                 MinAge: this.vMinAge || 0,
                 MaxAge: this.vMaxAge || 0,
-                AgeType:this._ParameterageService.myIsNumericform.get('AgeTypeId').value.AgeTypeName || "",
+                AgeType: this._ParameterageService.myIsNumericform.get('AgeTypeId').value.AgeTypeName || "",
                 MinValue: this.vMinValue || 0,
                 Maxvalue: this.vMaxvalue || 0,
 
@@ -171,7 +177,7 @@ export class ParamteragewiseformComponent implements OnInit {
         this.dsParaDescriptiveList.data = this.Descriptivelist
         console.log(this.Descriptivelist);
         this._ParameterageService.myIsDescriptiveform.get('Value').setValue("");
-        
+
     }
 
     onClear() {
@@ -186,50 +192,47 @@ export class ParamteragewiseformComponent implements OnInit {
     public show1: boolean = false; ///descriptive
 
     toggle() {
-        if (this.show=true) {
+        if (this.show = true) {
             this.show = true;
         }
         this.show1 = false;
     }
 
     toggle1() {
-        if (this.show1=true) {
+        if (this.show1 = true) {
             this.show1 = true;
         }
         this.show = false;
     }
- 
-//  onSubmit(){
-//     let insertParameterMasterAgeWiseObj = [];
-//     this.dsParameterAgeList.data.forEach((element) => {
-//     let insertParameterMasterAgeWise = {};
-//     insertParameterMasterAgeWise['paraId'] = 0;
-//     insertParameterMasterAgeWise['sexId'] = element.GenderName;//this._ParameterageService.myIsNumericform.get('SexID').value.GenderName;
-//     insertParameterMasterAgeWise['minValue'] = element.MinValue;//this._ParameterageService.myIsNumericform.get("MinValue").value;
-//     insertParameterMasterAgeWise['maxvalue'] = element.Maxvalue;//this._ParameterageService.myIsNumericform.get("Maxvalue").value;
-//     insertParameterMasterAgeWise['addedby'] = 1;
-//     insertParameterMasterAgeWiseObj.push(insertParameterMasterAgeWise);
-//     });
 
     onSubmit() {
+        debugger;
         if (this._ParameterageService.myform.valid) {
-            if (
-                !this._ParameterageService.myform.get("PathparaRangeId").value
-            ) {  
+            if (!this._ParameterageService.myform.get("ParameterID").value) {
+              
+
                 var m_data = {
-                    insertParameterMasterAgeWise: {
-                       // PathparaRangeId: "0",  this._ParameterageService.myform.get("PathparaRangeId").value,
-                        paraId: 0,//this._ParameterageService.myform.get("ParaId").value,
-                        sexId: this._ParameterageService.myIsNumericform.get("SexID")
-                            .value.GenderId,
-                        minValue: this._ParameterageService.myIsNumericform
-                            .get("MinValue").value,
-                        maxValue: this._ParameterageService.myIsNumericform
-                            .get("Maxvalue").value,
-                        addedBy: 1, 
+                 
+                    insertParameterMasterRangeWise: {
+                        paraId:
+                            "0" ||
+                            this._ParameterageService.myform.get("ParameterID")
+                                .value,
+                        sexId: 1, // this._ParameterService.myIsNumericform.get("SexId").value,
+                        minValue:
+                            this._ParameterageService.myIsNumericform
+                                .get("MinValue")
+                                .value || "%",
+                        maxvalue:
+                            this._ParameterageService.myIsNumericform
+                                .get("Maxvalue")
+                                .value || "%",
+                        // isDeleted: 0, // Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
+                        addedby: 218, // this.accountService.currentUserValue.user.id ,
                     },
+                    
                 };
-                console.log(m_data);
+
                 this._ParameterageService
                     .insertParameterMasterAgeWise(m_data)
                     .subscribe((data) => {
@@ -237,40 +240,39 @@ export class ParamteragewiseformComponent implements OnInit {
                         if (data) {
                             this.toastr.success('Record Saved Successfully.', 'Saved !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
+                            });
                         } else {
-                            this.toastr.error('Parameter-Age-Wise-Form Master Data not saved !, Please check API error..', 'Error !', {
+                            this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
-                              });
+                            });
                         }
-                    },error => {
-                        this.toastr.error('Parameter-Age-Wise-Form not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    }, error => {
+                        this.toastr.error('Parameter-Form not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    });
             } else {
+              
                 var m_dataUpdate = {
-                    updateParameterMasterAgeWise: {
-                        pathparaRangeId:
-                            this._ParameterageService.myform.get(
-                                "PathparaRangeId"
-                            ).value,
-                        paraId: this._ParameterageService.myform.get("ParaId")
+                   
+                    insertParameterMasterRangeWise: {
+                         paraId: this._ParameterageService.myform.get("ParameterID")
                             .value,
-                        sexId: this._ParameterageService.myform.get("SexId")
-                            .value,
-
-                        minValue: this._ParameterageService.myform
-                            .get("MinValue")
-                            .value.trim(),
-                        maxValue: this._ParameterageService.myform
-                            .get("MaxValue")
-                            .value.trim(),
-                        updatedby: 1,
-                        
+                        sexId: 1, // this._ParameterageService.myform.get("SexId").value,
+                        minValue:
+                            this._ParameterageService.myform
+                                .get("MinValue")
+                                .value.trim() || "%",
+                        maxvalue:
+                            this._ParameterageService.myform
+                                .get("Maxvalue")
+                                .value.trim() || "%",
+                        isDeleted: 0, // Boolean(JSON.parse(this._ParameterageService.myform.get("IsDeleted").value)),
+                        addedby: 218, // this.accountService.currentUserValue.user.id ,
                     },
+                   
                 };
-                console.log(m_dataUpdate);
+
                 this._ParameterageService
                     .updateParameterMasterAgeWise(m_dataUpdate)
                     .subscribe((data) => {
@@ -278,22 +280,174 @@ export class ParamteragewiseformComponent implements OnInit {
                         if (data) {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
+                            });
                         } else {
-                            this.toastr.error('Parameter-Age-Wise-Form Master Data not updated !, Please check API error..', 'Error !', {
+                            this.toastr.error('Parameter-Form Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
-                              });
+                            });
                         }
-                    },error => {
-                        this.toastr.error('Parameter-Age-Wise-Form not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    }, error => {
+                        this.toastr.error('Parameter-Form not updated !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    });
             }
             this.onClear();
         }
-      }
- 
+    }
+    // onSubmit() {
+    //     if(!this._ParameterageService.myform.get("PathparaRangeId").value){
+    //     let insertParameterMasterAgeWiseObj = [];
+    //     this.dsParameterAgeList.data.forEach((element) => {
+    //         let insertParameterMasterAgeWise = {};
+    //         insertParameterMasterAgeWise['paraId'] = 0;
+    //         insertParameterMasterAgeWise['sexId'] = element.GenderName;//this._ParameterageService.myIsNumericform.get('SexID').value.GenderName;
+    //         insertParameterMasterAgeWise['minValue'] = element.MinValue;//this._ParameterageService.myIsNumericform.get("MinValue").value;
+    //         insertParameterMasterAgeWise['maxvalue'] = element.Maxvalue;//this._ParameterageService.myIsNumericform.get("Maxvalue").value;
+    //         insertParameterMasterAgeWise['addedby'] = this.accountService.currentUserValue.user.id;
+    //         insertParameterMasterAgeWiseObj.push(insertParameterMasterAgeWise);
+    //     });
+    //     let submitData = {
+    //         "insertParameterMasterAgeWise": insertParameterMasterAgeWiseObj,
+    //     };
+
+    //     console.log(submitData);
+
+    //     this._ParameterageService.insertParameterMasterAgeWise(submitData).subscribe(response => {
+    //         if (response) {
+    //             this.toastr.success('Record Saved Successfully.', 'Saved !', {
+    //                 toastClass: 'tostr-tost custom-toast-success',
+    //             });
+
+    //             this.onClear()
+
+    //         } else {
+    //             this.toastr.error('New Test Master Data not saved !, Please check API error..', 'Error !', {
+    //                 toastClass: 'tostr-tost custom-toast-error',
+    //             });
+    //         }
+    //     }, error => {
+    //         this.toastr.error('New Test Master Data not saved !, Please check API error..', 'Error !', {
+    //             toastClass: 'tostr-tost custom-toast-error',
+    //         });
+    //     });
+    // }
+    // else{
+    //     let updateParameterMasterAgeWiseObj = [];
+    //     this.dsParameterAgeList.data.forEach((element) => {
+    //         let updateParameterMasterAgeWise = {};
+    //         updateParameterMasterAgeWise['paraId'] = 0;
+    //         updateParameterMasterAgeWise['sexId'] = element.GenderName;//this._ParameterageService.myIsNumericform.get('SexID').value.GenderName;
+    //         updateParameterMasterAgeWise['minValue'] = element.MinValue;//this._ParameterageService.myIsNumericform.get("MinValue").value;
+    //         updateParameterMasterAgeWise['maxvalue'] = element.Maxvalue;//this._ParameterageService.myIsNumericform.get("Maxvalue").value;
+    //         updateParameterMasterAgeWise['addedby'] = this.accountService.currentUserValue.user.id;
+    //         updateParameterMasterAgeWiseObj.push(updateParameterMasterAgeWise);
+    //     });
+    //     let submitData = {
+    //         "updateParameterMasterAgeWise": updateParameterMasterAgeWiseObj,
+    //     };
+
+    //     console.log(submitData);
+
+    //     this._ParameterageService.updateParameterMasterAgeWise(submitData).subscribe(response => {
+    //         if (response) {
+    //             this.toastr.success('Record Updated Successfully.', 'Updated !', {
+    //                 toastClass: 'tostr-tost custom-toast-success',
+    //             });
+
+    //             this.onClear()
+
+    //         } else {
+    //             this.toastr.error('New Test Master Data not  Updated !, Please check API error..', 'Error !', {
+    //                 toastClass: 'tostr-tost custom-toast-error',
+    //             });
+    //         }
+    //     }, error => {
+    //         this.toastr.error('New Test Master Data not Updated !, Please check API error..', 'Error !', {
+    //             toastClass: 'tostr-tost custom-toast-error',
+    //         });
+    //     });
+    // }
+    // }
+
+    // onSubmits() {
+    //     if (this._ParameterageService.myform.valid) {
+    //         if (!this._ParameterageService.myform.get("PathparaRangeId").value
+    //         ) {
+    //             var m_data = {
+    //                 insertParameterMasterAgeWise: {
+    //                     paraId: 0,//this._ParameterageService.myform.get("ParaId").value,
+    //                     sexId: this._ParameterageService.myIsNumericform.get("SexID")
+    //                         .value.GenderId,
+    //                     minValue: this._ParameterageService.myIsNumericform.get("MinValue").value,
+    //                     maxValue: this._ParameterageService.myIsNumericform.get("Maxvalue").value,
+    //                     addedBy: this.accountService.currentUserValue.user.id,
+    //                 },
+    //             };
+    //             console.log(m_data);
+    //             this._ParameterageService.insertParameterMasterAgeWise(m_data)
+    //                 .subscribe((data) => {
+    //                     this.msg = data;
+    //                     if (data) {
+    //                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
+    //                             toastClass: 'tostr-tost custom-toast-success',
+    //                         });
+    //                     } else {
+    //                         this.toastr.error('Parameter-Age-Wise-Form Master Data not saved !, Please check API error..', 'Error !', {
+    //                             toastClass: 'tostr-tost custom-toast-error',
+    //                         });
+    //                     }
+    //                 }, error => {
+    //                     this.toastr.error('Parameter-Age-Wise-Form not saved !, Please check API error..', 'Error !', {
+    //                         toastClass: 'tostr-tost custom-toast-error',
+    //                     });
+    //                 });
+    //         } else {
+    //             var m_dataUpdate = {
+    //                 updateParameterMasterAgeWise: {
+    //                     pathparaRangeId:
+    //                         this._ParameterageService.myform.get(
+    //                             "PathparaRangeId"
+    //                         ).value,
+    //                     paraId: this._ParameterageService.myform.get("ParaId")
+    //                         .value,
+    //                     sexId: this._ParameterageService.myform.get("SexId")
+    //                         .value,
+
+    //                     minValue: this._ParameterageService.myform
+    //                         .get("MinValue")
+    //                         .value.trim(),
+    //                     maxValue: this._ParameterageService.myform
+    //                         .get("MaxValue")
+    //                         .value.trim(),
+    //                     updatedby: 1,
+
+    //                 },
+    //             };
+    //             console.log(m_dataUpdate);
+    //             this._ParameterageService
+    //                 .updateParameterMasterAgeWise(m_dataUpdate)
+    //                 .subscribe((data) => {
+    //                     this.msg = data;
+    //                     if (data) {
+    //                         this.toastr.success('Record updated Successfully.', 'updated !', {
+    //                             toastClass: 'tostr-tost custom-toast-success',
+    //                         });
+    //                     } else {
+    //                         this.toastr.error('Parameter-Age-Wise-Form Master Data not updated !, Please check API error..', 'Error !', {
+    //                             toastClass: 'tostr-tost custom-toast-error',
+    //                         });
+    //                     }
+    //                 }, error => {
+    //                     this.toastr.error('Parameter-Age-Wise-Form not updated !, Please check API error..', 'Error !', {
+    //                         toastClass: 'tostr-tost custom-toast-error',
+    //                     });
+    //                 });
+    //         }
+    //         this.onClear();
+    //     }
+    // }
+
 
     // onSubmit() {
     //     if (this._ParameterageService.myform.valid) {
@@ -302,7 +456,7 @@ export class ParamteragewiseformComponent implements OnInit {
     //         ) {  
     //             var m_data = {
     //                 insertParameterMasterAgeWise: {
-                       
+
     //                     paraId: 0,//this._ParameterageService.myform.get("ParaId").value,
     //                     sexId: this._ParameterageService.myIsNumericform.get("SexID")
     //                         .value.GenderId,
@@ -311,7 +465,7 @@ export class ParamteragewiseformComponent implements OnInit {
     //                     maxValue: this._ParameterageService.myIsNumericform
     //                         .get("Maxvalue").value,
     //                     addedBy: 1,
-                        
+
     //                 },
     //             };
     //             console.log(m_data);
@@ -401,7 +555,7 @@ export class ParamteragewiseformComponent implements OnInit {
     //     };
     // }
 
-   // parameter filter
+    // parameter filter
     // private filterParametername() {
     //     if (!this.Parametercmb) {
     //         return;
@@ -422,7 +576,7 @@ export class ParamteragewiseformComponent implements OnInit {
     //     );
     // } 
 
-       // getParameterNameCombobox() {
+    // getParameterNameCombobox() {
     //     this._ParameterageService
     //         .getParameterMasterCombo()
     //         .subscribe((data) => {
@@ -439,7 +593,7 @@ export class PathParaRangeAgeMaster {
     Maxvalue: any;
     MinAge: any;
     MaxAge: any;
-    AgeType:any;
+    AgeType: any;
     /**
      * Constructor
      *

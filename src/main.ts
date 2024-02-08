@@ -28,3 +28,19 @@ else
 {
     bootstrap().catch(err => console.error(err));
 }
+
+function addScript(link) {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = link;
+    document.head.append(script);
+  }
+  function addLink(css) {
+    const link = document.createElement('link');
+    link.href = css;
+    link.rel = 'stylesheet';
+    document.head.append(link);
+  }
+addScript('assets/summernote/jquery-3.4.1.min.js');
+addScript("assets/summernote/summernote-lite.min.js");
+addLink("assets/summernote/summernote-lite.min.css")

@@ -59,7 +59,7 @@
                                 </div>
                                 <div style="width: 100%;">
             
-                                    <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                                    <mat-table #table class="table" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                         style="overflow:auto">
                                         <ng-container matColumnDef="TestId">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
@@ -97,9 +97,9 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <mat-icon *ngIf="!element.IsDeleted"
+                                                <mat-icon *ngIf="!element.Isdeleted"
                                                     class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="element.IsDeleted"
+                                                <mat-icon *ngIf="element.Isdeleted"
                                                     class="active-icon red-500 s-16">close</mat-icon>
                                             </mat-cell>
                                         </ng-container>
@@ -108,7 +108,7 @@
                                             <mat-header-cell *matHeaderCellDef class="table-actions"> Action </mat-header-cell>
                                             <mat-cell *matCellDef="let row">
                                                 <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                        title="Edit Menu">launch</mat-icon></button>
+                                                        title="Edit Menu">edit</mat-icon></button>
                                                 <button mat-icon-button (click)="onDeactive(row.TestId)"
                                                     color="warn"><mat-icon>delete_outline</mat-icon></button>
                                             </mat-cell>
@@ -259,6 +259,7 @@
                                         <div class="dialog-content-wrapper">
                                             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
                                                 <div fxLayout="row">
+
                                                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="60">
                                                         <mat-label>Test Name</mat-label>
                                                         <input name="TestName" formControlName="TestName"
@@ -306,6 +307,7 @@
                                                     <div fxLayout="column">
                                                         <form [formGroup]="_radiologytestService.AddParameterFrom">
                                                             <div fxLayout="row">
+                                                                <input type="hidden" name="TestId" formControlName="TestId">
         
                                                                 <mat-form-field appearance="outline" fxFlex="50%" >
                                                                     <mat-label>Template Name</mat-label>
@@ -342,10 +344,10 @@
         
                                                                     <ng-container matColumnDef="ParameterName">
                                                                         <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                            Parameter Name
+                                                                            Template Name
                                                                         </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                            {{element.ParameterName}}
+                                                                            {{element.TemplateName}}
                                                                         </mat-cell>
                                                                     </ng-container>
         
@@ -375,13 +377,14 @@
         
                                                                 </mat-table>
                                                             </mat-card>
-                                                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="end">
-                                                                <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                                                    <mat-radio-button value='false' class="p-8" fxFlex>IsActive</mat-radio-button>
-                                                                    <!-- <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsDeactive</mat-radio-button> -->
-                                                                </mat-radio-group>
-                                                            </div>
+                                                          
                                                         </form>
+                                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="end">
+                                                            <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
+                                                                <mat-radio-button value='false' class="p-8" fxFlex>IsActive</mat-radio-button>
+                                                                <!-- <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsDeactive</mat-radio-button> -->
+                                                            </mat-radio-group>
+                                                        </div>
                                                     </div>
         
                                                

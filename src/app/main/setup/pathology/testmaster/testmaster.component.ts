@@ -13,6 +13,7 @@ import { ReplaySubject, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { ToastrService } from "ngx-toastr";
 import { MatTabGroup } from "@angular/material/tabs";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-testmaster",
@@ -87,7 +88,8 @@ export class TestmasterComponent implements OnInit {
     constructor(
         public _TestService: TestmasterService,
         public toastr: ToastrService,
-        public _matDialog: MatDialog
+        public _matDialog: MatDialog,
+        private accountService: AuthenticationService,
     ) { }
 
     ngOnInit(): void {
@@ -139,7 +141,7 @@ export class TestmasterComponent implements OnInit {
         };
         this._TestService.getTestMasterList(m_data).subscribe((Menu) => {
             this.DSTestMasterList.data = Menu as TestMaster[];
-           // console.log(this.DSTestMasterList)
+           console.log(this.DSTestMasterList)
             this.sIsLoading = '';
             this.DSTestMasterList.sort = this.sort;
             this.DSTestMasterList.paginator = this.paginator;
@@ -155,7 +157,7 @@ export class TestmasterComponent implements OnInit {
         };
         this._TestService.getSubTestMasterList(m_data).subscribe((Menu) => {
             this.DSTestMasterList.data = Menu as TestMaster[];
-            console.log(this.DSTestMasterList)
+           // console.log(this.DSTestMasterList)
             this.sIsLoading = '';
             this.DSTestMasterList.sort = this.sort;
             this.DSTestMasterList.paginator = this.paginator;
@@ -195,10 +197,10 @@ export class TestmasterComponent implements OnInit {
         var m_data = {
             TestId:el.TestId
         };
-        console.log(m_data)
+        //console.log(m_data)
         this._TestService.getSubTestList(m_data).subscribe((Menu) => {
             this.DSTestList.data = Menu as TestList[];
-            console.log(this.DSTestList)
+            //console.log(this.DSTestList)
             this.DSTestList.sort = this.sort;
             this.DSTestList.paginator = this.paginator;
         });
@@ -207,10 +209,10 @@ export class TestmasterComponent implements OnInit {
         var m_data = {
             TestId:el.TestId
         };
-        console.log(m_data)
+       // console.log(m_data)
         this._TestService.getParameterTestList(m_data).subscribe((Menu) => {
             this.DSTestList.data = Menu as TestList[];
-            console.log(this.DSTestList)
+           // console.log(this.DSTestList)
             this.DSTestList.sort = this.sort;
             this.DSTestList.paginator = this.paginator;
         });
@@ -236,7 +238,6 @@ export class TestmasterComponent implements OnInit {
     // categoryname filter
     private filterCategoryname() {
         if (!this.CategorycmbList) {
-    
           return;
         }
         // get the search keyword
@@ -256,7 +257,7 @@ export class TestmasterComponent implements OnInit {
     
         this._TestService.getCategoryMasterCombo().subscribe(data => {
           this.CategorycmbList = data;
-          console.log(this.CategorycmbList[0])
+          console.log(this.CategorycmbList)
           this.filteredCategory.next(this.CategorycmbList.slice());
           this._TestService.myform.get('CategoryId').setValue(this.CategorycmbList[0]);
         
@@ -285,11 +286,19 @@ export class TestmasterComponent implements OnInit {
         );
     }
     getParameterNameCombobox() {
-        this._TestService.getParameterMasterCombo()
-            .subscribe((data) => (this.Parametercmb = data));
-            this.filteredParametername.next(this.Parametercmb.slice());
-        // console.log(this.Parametercmb);
+        this._TestService.getParameterMasterCombo().subscribe((data) => {
+        this.Parametercmb = data;
+        this.filteredParametername.next(this.Parametercmb.slice());
+        //console.log(this.Parametercmb);
+        });
     }
+    // getParameterNameCombobox() {
+    //     this._TestService.getParameterMasterCombo().subscribe((data) => {
+    //     this.Parametercmb = data;
+    //     this.filteredParametername.next(this.Parametercmb.slice());
+    //     console.log(this.Parametercmb);
+    //     });
+    // }
 
      // subtest filter
      private filterSubtestname() {
@@ -341,7 +350,7 @@ export class TestmasterComponent implements OnInit {
     getServiceNameCombobox() {
         this._TestService.getServiceMasterCombo().subscribe((data) => {
             this.ServicecmbList = data;
-            console.log(this.ServicecmbList)
+           // console.log(this.ServicecmbList)
             this.filteredService.next(this.ServicecmbList.slice());
             this._TestService.myform.get("ServiceName").setValue(this.ServicecmbList[0]);
         });
@@ -362,8 +371,8 @@ export class TestmasterComponent implements OnInit {
             insertPathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
             insertPathologyTestMaster['footNote'] = this._TestService.myform.get('FootNote').value || "";
             insertPathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || "";
-            insertPathologyTestMaster['addedBy'] = 1;
-            insertPathologyTestMaster['serviceId'] = this._TestService.myform.get('ServiceName').value.ServiceID || 0;
+            insertPathologyTestMaster['addedBy'] =  this.accountService.currentUserValue.user.id,
+            insertPathologyTestMaster['serviceId'] = this._TestService.myform.get('ServiceName').value.ServiceId || 0;
             insertPathologyTestMaster['isTemplateTest'] = true;
             insertPathologyTestMaster['testId'] = 0;
 
@@ -373,15 +382,20 @@ export class TestmasterComponent implements OnInit {
                 PathDetailsObj['testId'] = 0;
                 PathDetailsObj['subTestID'] = 10;
                 PathDetailsObj['parameterID'] = element.ParameterID || 0;
+                PathDetailsObj['testId'] =  0;
+                PathDetailsObj['subTestID'] = 0;
+                PathDetailsObj['parameterID'] = element.ParameterID;
                 pathTestDetailMaster.push(PathDetailsObj);
-            });
-            let pathTestDetDelete = {};
-            pathTestDetDelete['testId'] = 0;
+            }); 
 
             let submitData = {
                 "insertPathologyTestMaster": insertPathologyTestMaster,
                 "pathTestDetailMaster": pathTestDetailMaster
+<<<<<<< HEAD
                // "pathTestDetDelete": pathTestDetDelete
+=======
+               
+>>>>>>> b72f09e217e5484c5e8eee8f7459f9a6138a6bf2
             };
 
             console.log(submitData);
@@ -418,7 +432,7 @@ export class TestmasterComponent implements OnInit {
             updatePathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";
             updatePathologyTestMaster['footNote'] = this._TestService.myform.get('FootNote').value || "";
             updatePathologyTestMaster['isDeleted'] = this._TestService.myform.get('IsDeleted').value || "";
-            updatePathologyTestMaster['updatedBy'] = 0;
+            updatePathologyTestMaster['updatedBy'] = this.accountService.currentUserValue.user.id;
             updatePathologyTestMaster['serviceId'] = this._TestService.myform.get('ServiceName').value.ServiceID || 0;
             updatePathologyTestMaster['isTemplateTest'] = true;
             updatePathologyTestMaster['testId'] = 0;
@@ -430,13 +444,10 @@ export class TestmasterComponent implements OnInit {
                 UpdatePathDetailsObj['templateId'] = 0;
                 updatePathologyTemplateTest.push(UpdatePathDetailsObj);
             });
-            let pathTestDetDelete = {};
-            pathTestDetDelete['testId'] = 0;
-
+           
             let submitData = {
                 "updatePathologyTestMaster": updatePathologyTestMaster,
-                "updatePathologyTemplateTest": updatePathologyTemplateTest,
-                "pathTestDetDelete": pathTestDetDelete
+                "updatePathologyTemplateTest": updatePathologyTemplateTest
             };
             console.log(submitData);
 
@@ -483,17 +494,19 @@ export class TestmasterComponent implements OnInit {
             FootNote: row.FootNote.trim(),
             ServiceName: row.ServiceID,
             IsTemplateTest: row.IsTemplateTest,
-            IsCategoryPrint: JSON.stringify(row.IsCategoryPrint),
+            // IsCategoryPrint: JSON.stringify(row.IsCategoryPrint),
             IsPrintTestName: JSON.stringify(row.IsPrintTestName),
             IsDeleted: JSON.stringify(row.Isdeleted),
             UpdatedBy: row.UpdatedBy,
         };
-        const selectedService = this.ServicecmbList.filter(c => c.ServiceName == row.TestName);
-        this._TestService.myform.get('ServiceName').setValue(this.selectedValue);
-        this.selectedValue = row.CategoryName;
-        console.log(this.selectedValue);
-        console.log(row.ServiceID)
+        console.log(m_data)
+        const selectedcstegory = this.CategorycmbList.filter(c => c.CategoryName == row.CategoryName);
+        this._TestService.myform.get('CategoryId').setValue(selectedcstegory);
+         
+        console.log(selectedcstegory);
+        console.log(row.CategoryId)
         console.log(row.CategoryName)
+        
         this._TestService.populateForm(m_data);
         const tabIndex = row === 'tab1' ? 0 : 1;
         tabGroup.selectedIndex = tabIndex;
