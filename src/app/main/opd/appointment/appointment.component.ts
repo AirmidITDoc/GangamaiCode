@@ -462,7 +462,7 @@ export class AppointmentComponent implements OnInit {
     this.getPurposeList();
 
     // this.getSearchList();
-    this.getSearchDocuploadPatientList();
+    // this.getSearchDocuploadPatientList();
 
     this.hospitalFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
