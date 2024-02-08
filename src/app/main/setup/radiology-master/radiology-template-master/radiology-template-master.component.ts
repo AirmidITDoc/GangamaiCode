@@ -19,6 +19,8 @@ import { RadioPatientList } from 'app/main/radiology/radiology-order-list/radiol
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { MAT_TAB_GROUP, MatTabGroup } from '@angular/material/tabs';
 import { ToastrService } from 'ngx-toastr';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-radiology-template-master',
@@ -28,7 +30,21 @@ import { ToastrService } from 'ngx-toastr';
   animations: fuseAnimations
 })
 export class RadiologyTemplateMasterComponent implements OnInit {
+  editorConfig: AngularEditorConfig = {
+    // color:true,
+    editable: true,
+    spellcheck: true,
+    height: '20rem',
+    minHeight: '20rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+    
+  };
 
+
+  
   RadiologytemplateMasterList: any;
   isLoading = true;
   msg: any;
@@ -107,6 +123,8 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     this._radiologytemplateService.myform.reset({ IsDeleted: 'false' });
     this._radiologytemplateService.initializeFormGroup();
   }
+
+
   onSubmit() {
     if (!this._radiologytemplateService.myform.get("TemplateId").value) {
     let insertRadiologyTemp = {};
@@ -234,10 +252,14 @@ export class RadiologyTemplateMasterComponent implements OnInit {
       // this.onClear();
     
   }
- 
+  TemplateId:any;
  row:any;
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   openTab(row, tabGroup: MatTabGroup): void {
+   
+
+    this.TemplateId=row.TemplateId;
+    Swal.fire(this.TemplateId)
     this.vTemplateName = row.TemplateName;
     this.vTemplateDesc = row.TemplateDesc;
     const tabIndex = row === 'tab1' ? 0 : 1;
