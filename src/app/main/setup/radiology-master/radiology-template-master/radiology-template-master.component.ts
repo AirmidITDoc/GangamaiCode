@@ -56,11 +56,11 @@ export class RadiologyTemplateMasterComponent implements OnInit {
   screenFromString = 'opd-casepaper';
   vTemplateName: any;
   vTemplateDesc: any;
-
+  vTemplateId:any;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('reportDiv') reportDiv: ElementRef;
-
+  @ViewChild('tabGroup') tabGroup: MatTabGroup;
   dataSource = new MatTableDataSource<RadioPatientList>();
   displayedColumns: string[] = [
 
@@ -83,6 +83,9 @@ export class RadiologyTemplateMasterComponent implements OnInit {
   ) { }
   registerObj:any;
   ngOnInit(): void {
+
+    
+
     this.getRadiologytemplateMasterList();
     if (this._ActRoute.url == '/radiology/radiology-order-list') {
       this.menuActions.push('Template Details');
@@ -99,7 +102,6 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     });
     this.getRadiologytemplateMasterList();
   }
-
 
   getRadiologytemplateMasterList() {
 
@@ -123,8 +125,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     this._radiologytemplateService.myform.reset({ IsDeleted: 'false' });
     this._radiologytemplateService.initializeFormGroup();
   }
-
-
+ 
   onSubmit() {
     if (!this._radiologytemplateService.myform.get("TemplateId").value) {
     let insertRadiologyTemp = {};
@@ -186,90 +187,8 @@ export class RadiologyTemplateMasterComponent implements OnInit {
    });
   }
   }
-  onSubmits() {
-
-    // if (this._radiologytemplateService.myform.valid) {
-    //   if (!this._radiologytemplateService.myform.get("TemplateId").value) {
-    //     var m_data = {
-    //       insertRadiologyTemplateMaster: {
-    //         "templateName": this._radiologytemplateService.myform.get("TemplateName").value,
-    //         "templateDesc": this._radiologytemplateService.myform.get("TemplateDesc").value,
-    //         "addedBy": this.accountService.currentUserValue.user.id,
-
-    //       }
-    //     }
-    //     console.log(m_data);
-    //     this._radiologytemplateService.insertRadiologyTemplateMaster(m_data).subscribe(data => {
-    //       this.msg = data;
-    //       if (data) {
-    //         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //           toastClass: 'tostr-tost custom-toast-success',
-    //         });
-    //       }
-    //       else {
-    //         this.toastr.error('Template Master Master Data not saved !, Please check API error..', 'Error !', {
-    //           toastClass: 'tostr-tost custom-toast-error',
-    //         });
-    //       } this.getRadiologytemplateMasterList();
-
-    //     }, error => {
-    //       this.toastr.error('Template not saved !, Please check API error..', 'Error !', {
-    //         toastClass: 'tostr-tost custom-toast-error',
-    //       });
-    //     });
-    //   }
-      // else {
-      //   var m_dataUpdate = {
-      //     updateRadiologyTemplateMaster: {
-      //       "templateId": this._radiologytemplateService.myform.get("TemplateId").value,
-      //       "templateName": this._radiologytemplateService.myform.get("TemplateName").value,
-      //       "templateDesc": (this._radiologytemplateService.myform.get("TemplateDesc").value).trim(),
-      //       "updatedBy": this.accountService.currentUserValue.user.id,
-
-      //     }
-      //   }
-      //   this._radiologytemplateService.updateRadiologyTemplateMaster(m_dataUpdate).subscribe(data => {
-      //     this.msg = data;
-      //     if (data) {
-      //       this.toastr.success('Record Updated Successfully.', ' Updated !', {
-      //         toastClass: 'tostr-tost custom-toast-success',
-      //       });
-
-      //       this.getRadiologytemplateMasterList();
-      //     }
-      //     else {
-      //       this.toastr.error('Template Master Master Data not Updated !, Please check API error..', 'Error !', {
-      //         toastClass: 'tostr-tost custom-toast-error',
-      //       });
-      //     } this.getRadiologytemplateMasterList();
-
-      //   }, error => {
-      //     this.toastr.error('Template not Updated !, Please check API error..', 'Error !', {
-      //       toastClass: 'tostr-tost custom-toast-error',
-      //     });
-      //   });
-     // }
-      // this.onClear();
-    
-  }
-  TemplateId:any;
- row:any;
-  @ViewChild('tabGroup') tabGroup: MatTabGroup;
-  openTab(row, tabGroup: MatTabGroup): void {
-   
-
-    this.TemplateId=row.TemplateId;
-    Swal.fire(this.TemplateId)
-    this.vTemplateName = row.TemplateName;
-    this.vTemplateDesc = row.TemplateDesc;
-    const tabIndex = row === 'tab1' ? 0 : 1;
-    tabGroup.selectedIndex = tabIndex;
-    data : row;
-    console.log(row)
-
-    this.getRadiologytemplateMasterList();
-    // this.Onupdate(row);
-  }
+ 
+ 
 
   // onEdit(row) {
   //   console.log(row)
@@ -297,6 +216,20 @@ export class RadiologyTemplateMasterComponent implements OnInit {
   //     this.getRadiologytemplateMasterList();
   //   });
   // }
+  row:any;
+  openTab(row, tabGroup: MatTabGroup): void {
+    this.vTemplateName = row.TemplateName;
+    this.vTemplateDesc = row.TemplateDesc;
+    this.vTemplateId   = row.templateId;
+    
+    const tabIndex = row === 'tab1' ? 0 : 1;
+    tabGroup.selectedIndex = tabIndex;
+     
+    console.log(row)
+
+    this.getRadiologytemplateMasterList();
+  
+  }
 
   onAdd(tabName: string, tabGroup: MatTabGroup) {
     const tabIndex = tabName === 'tab1' ? 0 : 1;

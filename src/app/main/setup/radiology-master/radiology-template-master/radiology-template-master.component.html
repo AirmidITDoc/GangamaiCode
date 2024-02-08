@@ -1,6 +1,6 @@
 <mat-tab-group style="width: 100%;" #tabGroup>
     <mat-tab label="Radiology Template List">
-        
+
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
             <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
@@ -18,7 +18,8 @@
 
                 </div>
                 <div fxLayout="row" fxLayoutAlign="start end">
-                    <button mat-raised-button color="pine" (click)="onAdd('row', tabGroup)" fxLayoutAlign="center center">
+                    <button mat-raised-button color="pine" (click)="onAdd('row', tabGroup)"
+                        fxLayoutAlign="center center">
                         Add &nbsp;<mat-icon color="Primary" title=" Add New Template ">add_to_photos</mat-icon>
                     </button>
                 </div>
@@ -147,12 +148,12 @@
             </div>
         </div>
     </mat-tab>
-    <mat-tab label=" Add New Template"> 
+    <mat-tab label=" Add New Template">
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
             <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
                 <div fxLayout="row" fxLayoutAlign="start center">
-        
+
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                         <mat-icon>menu</mat-icon>
                     </button>
@@ -160,17 +161,18 @@
                         style="color: white;">account_box
                     </mat-icon>
                     <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                        {{_radiologytemplateService.myform.controls.TemplateId.value?"Modify Radiology Template Master":"New
+                        {{_radiologytemplateService.myform.controls.TemplateId.value?"Modify Radiology Template
+                        Master":"New
                         Radiology Template Master"}}
                     </span>
                     <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
                     style="margin-left: 960px;">
                         <mat-icon>close</mat-icon>
                       </button> -->
-        
+
                 </div>
             </mat-toolbar>
-        
+
             <div class="content">
                 <div class="center p-24 pb-56" fusePerfectScrollbar>
                     <div class="content-card">
@@ -181,23 +183,35 @@
                                     <form [formGroup]="_radiologytemplateService.myform">
                                         <div class="dialog-content-wrapper">
                                             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+<<<<<<< HEAD
                                                 <input type="hidden" name="TemplateId" formControlName="TemplateId" [(ngModel)]="TemplateId">
+=======
+
+                                                <input type="hidden" name="TemplateId" [(ngModel)]="vTemplateId"
+                                                    formControlName="TemplateId">
+
+>>>>>>> 5bc7acc05b1899e94af9df0aed8df14448c0dfb1
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Template Name</mat-label>
-                                                    <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
-                                                    name="TemplateName" formControlName="TemplateName" required>
+                                                    <input matInput placeholder="Template Name"
+                                                        [(ngModel)]="vTemplateName" name="TemplateName"
+                                                        formControlName="TemplateName" required>
                                                     <mat-error>Please enter TestName </mat-error>
                                                 </mat-form-field>
-                                               
+
                                                 <div>
-                                                 <!-- <angular-editor [placeholder]="'Enter text here...'" ></angular-editor>  -->
-                                                      
+                                                    <!-- <angular-editor [placeholder]="'Enter text here...'" ></angular-editor>  -->
+
                                                 </div>
+<<<<<<< HEAD
 <!--                                                 
+=======
+
+>>>>>>> 5bc7acc05b1899e94af9df0aed8df14448c0dfb1
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Template Details</mat-label>
                                                     <textarea matInput placeholder="Template Description" #TemplateDesc
-                                                    name="TemplateDesc"  formControlName="TemplateDesc" required  
+                                                        name="TemplateDesc" formControlName="TemplateDesc" required
                                                         style="height: 400px;" [(ngModel)]="vTemplateDesc"></textarea>
                                                 </mat-form-field> -->
 
@@ -209,15 +223,17 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end center">
-                                            <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
-                                                <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
-                                            
-                                            </mat-radio-group>
+                                        <div fxLayoutAlign="end ">
+
+                                            <mat-radio-button value='true' name="IsDeleted" [checked]="true"
+                                                formControlName="IsDeleted">IsActive</mat-radio-button>
+
                                         </div>
-                                        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+                                        <div mat-dialog-actions class="m-0 p-16" fxLayout="row"
+                                            fxLayoutAlign="end center">
                                             <div class="button-row">
-                                                <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
+                                                <button mat-raised-button color="accent" type="submit"
+                                                    (click)="onSubmit()"
                                                     style="border-radius: 16px;width: 80px; height:40px;"
                                                     [disabled]="_radiologytemplateService.myform.invalid">Save</button>
                                                 <button mat-raised-button color="warn" (click)="onClear()"
@@ -225,13 +241,13 @@
                                             </div>
                                         </div>
                                     </form>
-                                </div> 
+                                </div>
                             </div>
-        
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-         </mat-tab>
+    </mat-tab>
 </mat-tab-group>
