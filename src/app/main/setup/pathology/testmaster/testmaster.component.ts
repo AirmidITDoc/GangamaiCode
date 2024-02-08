@@ -382,20 +382,14 @@ export class TestmasterComponent implements OnInit {
                 PathDetailsObj['testId'] = 0;
                 PathDetailsObj['subTestID'] = 10;
                 PathDetailsObj['parameterID'] = element.ParameterID || 0;
-                PathDetailsObj['testId'] =  0;
-                PathDetailsObj['subTestID'] = 0;
-                PathDetailsObj['parameterID'] = element.ParameterID;
+               
                 pathTestDetailMaster.push(PathDetailsObj);
             }); 
 
             let submitData = {
                 "insertPathologyTestMaster": insertPathologyTestMaster,
                 "pathTestDetailMaster": pathTestDetailMaster
-<<<<<<< HEAD
-               // "pathTestDetDelete": pathTestDetDelete
-=======
                
->>>>>>> b72f09e217e5484c5e8eee8f7459f9a6138a6bf2
             };
 
             console.log(submitData);
