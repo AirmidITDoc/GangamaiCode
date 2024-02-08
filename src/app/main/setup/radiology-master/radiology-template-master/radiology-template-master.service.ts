@@ -22,9 +22,7 @@ export class RadiologyTemplateMasterService {
 
       TemplateName:[''],
       TemplateId:[''],
-      TemplateDesc:[''], 
-      IsCompleted: ['false'],
-      IsPrinted: ['flase'], 
+      TemplateDesc:[''] ,
       IsDeleted:['true']
         });
   }
