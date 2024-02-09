@@ -1,14 +1,14 @@
-<div id="dashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
+<div id="dashboard-project" class="page-layout simple right-sidebar bed-occupancy-section" fxLayout="row">
 
     <!-- CENTER -->
     <div class="center">
 
         <!-- HEADER -->
-        <div class="header accent p-12 pb-0" fxLayout="column" fxLayoutAlign="space-between">
+        <div class="header accent p-12 pb-0" fxLayout="row" fxLayoutAlign="space-between">
 
-            <div fxLayout="row" fxLayoutAlign="space-between start">
+            <div class="header-row" fxLayout="row" fxLayoutAlign="space-between center">
 
-                <span class="mat-display-1 my-0 my-sm-12 welcome-message"
+                <span class="mat-display-1 m-0 welcome-message"
                     [@animate]="{value:'*',params:{x:'50px'}}">Bed Occupancy Dashboard
                 </span>
 
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div
-                    [ngClass]="ele.isSelected ? 'ward-details-container ward-orange' : 'ward-details-container ward-white'">
+                    [ngClass]="ele.isSelected ? 'ward-details-container active' : 'ward-details-container '"> <!--ward-white-->
                     <div class="detail-div" fxLayout="column" fxLayoutGap="15px">
                         <div style="text-align: center;">
                             <span class="labels">Ward Charges: </span><span class="ward-value-class">1500/-</span>

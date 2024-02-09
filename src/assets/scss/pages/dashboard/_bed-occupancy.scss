@@ -1,0 +1,28 @@
+.bed-occupancy-section{
+    font-family: $inter;
+    @include font-size(16px);
+    .ward-dashboard {
+        .ward-main-conatiner {
+            .ward-container{
+                font-weight: normal;
+                font-family: $inter-bold;
+            }
+            .ward-details-container{
+                background-color: $primary-25;
+                transition: 0.2s;
+                &:hover,&.active{
+                    background-color: $primary-100;
+                }
+                .detail-div{
+                    .labels {
+
+                    }
+                    .ward-value-class {
+                        font-weight: normal;
+                        font-family: $inter-bold;
+                    }
+                }
+            }
+        }
+    }
+}

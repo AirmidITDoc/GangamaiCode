@@ -1,0 +1,92 @@
+// .form-checkbox {
+//   -webkit-user-select: none;
+//   user-select: none;
+//   .cbx-input {
+//     display: none;
+//     &:checked {
+//       ~ .cbx-label {
+//         span.cbx-box {
+//           background: transparent;
+//           animation: wave 0.4s ease;
+//           border-color: $primary-700;
+//           &::after {
+//             content: "";
+//             position: absolute;
+//             height: 6px;
+//             width: 6px;
+//             background: $primary-700;
+//             // top: 3px;
+//             // left: 3px;
+//             border-radius: 1px;
+//             transform: translateX(50%) translateY(50%);
+//           }
+//           &::before {
+//             transform: scale(3.5);
+//             opacity: 0;
+//             transition: all 0.6s ease;
+//           }
+//         }
+//         &:hover {
+//           span {
+//             border-color: $primary-700;
+//           }
+//         }
+//       }
+//     }
+//     &:disabled {
+//       ~ .cbx-label {
+//         opacity: 0.3;
+//         span.cbx-box {
+//           border-color: $gray-700;
+//           &::after {
+//             background: transparent;
+//           }
+//         }
+//       }
+//     }
+//   }
+//   .cbx-label {
+//     display: inline-flex;
+//     justify-content: center;
+//     align-items: center;
+//     cursor: pointer;
+//     span.cbx-box {
+//       display: block;
+//       transform: translate3d(0, 0, 0);
+//       position: relative;
+//       width: 16px;
+//       height: 16px;
+//       border-radius: 3px;
+//       transform: scale(1);
+//       border: 2px solid $gray-700;
+//       transition: all 0.2s ease;
+//       overflow: hidden;
+//       &::before {
+//         content: "";
+//         position: absolute;
+//         top: 0;
+//         width: 100%;
+//         height: 100%;
+//         background: $primary-700;
+//         display: block;
+//         transform: scale(0);
+//         opacity: 1;
+//         border-radius: 50%;
+//       }
+//     }
+//     &:hover {
+//       span {
+//         border-color: $gray-700;
+//       }
+//     }
+//     span.cbx-title {
+//       margin-left: 1rem;
+//     }
+//   }
+// }
+
+// @keyframes wave {
+//   50% {
+//     transform: scale(0.9);
+//   }
+// }

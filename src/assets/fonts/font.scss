@@ -1,0 +1,45 @@
+@font-face {
+  font-family: "inter";
+  src: url("./inter-regular.ttf");
+}
+@font-face {
+  font-family: "inter-medium";
+  src: url("./inter-medium.ttf");
+}
+@font-face {
+  font-family: "inter-bold";
+  src: url("./inter-bold.ttf");
+}
+@font-face {
+  font-family: "inter-semibold";
+  src: url("./inter-semibold.ttf");
+}
+@font-face {
+  font-family: "inter-light";
+  src: url("./inter-light.ttf");
+}
+@font-face {
+  font-family: "inter-thin";
+  src: url("./inter-thin.ttf");
+}
+@font-face {
+  font-family: "inter-extralight";
+  src: url("./inter-extralight.ttf");
+}
+@font-face {
+  font-family: "inter-extrabold";
+  src: url("./inter-extrabold.ttf");
+}
+@font-face {
+  font-family: "inter-black";
+  src: url("./inter-black.ttf");
+}
+
+
+$inter: "inter", sans-serif;
+$inter-medium: "inter-medium", sans-serif;
+$inter-bold: "inter-bold", sans-serif;
+$inter-semibold: "inter-semibold", sans-serif;
+$inter-light: "inter-light", sans-serif;
+$inter-thin: "inter-thin", sans-serif;
+

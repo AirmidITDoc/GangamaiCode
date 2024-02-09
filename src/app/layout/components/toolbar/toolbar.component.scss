@@ -33,7 +33,7 @@ toolbar {
         min-width: 64px;
         height: 45px;
 
-        @include media-breakpoint('xs') {
+        @include media-breakpoint("xs") {
             height: 56px;
         }
     }
@@ -47,12 +47,14 @@ toolbar {
         height: 45px;
         width: 1px;
 
-        @include media-breakpoint('xs') {
+        @include media-breakpoint("xs") {
             height: 56px;
         }
     }
 
-    .mat-toolbar-row, .mat-toolbar-single-row {
+    .mat-toolbar-row,
+    .mat-toolbar-single-row {
         height: 45px;
     }
 }
+

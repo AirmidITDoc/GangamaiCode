@@ -1,0 +1,61 @@
+@mixin material-placeholder() {
+  &::-moz-placeholder {
+    @content;
+  }
+
+  // Firefox
+  &:-ms-input-placeholder {
+    @content;
+  }
+
+  // Internet Explorer 10+
+  &::-webkit-input-placeholder {
+    @content;
+  }
+
+  // Safari and Chrome
+}
+@mixin placeholder($font: $font-size-base, $family: $inter, $color: $gray-400) {
+  &::placeholder {
+    color: $color;
+    font-family: $family;
+    @include font-size($font);
+  }
+}
+
+@mixin label-static($label-top, $static-font-size, $static-line-height) {
+  // label.control-label {
+  top: $label-top;
+  left: 0;
+  // must repeat because the selector above is more specific than the general label sizing
+  font-size: $static-font-size;
+  line-height: $static-line-height;
+  // transform: translate(0, 0) scale(1);
+  // }
+}
+
+@mixin form-group-validation-state($name, $color) {
+  &.#{$name} {
+    // e.g. has-error
+    .form-control {
+      box-shadow: none;
+    }
+
+    // &.is-fill .form-control {
+    //   // background-image: linear-gradient($color, $color), linear-gradient($input-border-light, $input-border-light);
+    // }
+
+    @if $name== "is-invalid" {
+      & .form-control {
+        // background-image: linear-gradient($color, $color), linear-gradient($input-border-light, $input-border-light);
+        background-size: 100% 2px, 100% 1px;
+        transition-duration: 0.3s;
+      }
+    }
+
+    label.control-label,
+    .help-block {
+      color: $color;
+    }
+  }
+}

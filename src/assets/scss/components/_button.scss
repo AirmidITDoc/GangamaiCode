@@ -1,0 +1,170 @@
+// .btn {
+//   font-family: $inter-semibold;
+//   font-weight: normal;
+//   line-height: normal;
+//   border-radius: 8px;
+//   // padding: 12px 16px;
+//   padding: 15px 24px;
+//   letter-spacing: 0.28px;
+//   @include font-size(14px);
+//   &.btn-xxl {
+//     padding: 21px 40px;
+//     @include font-size(16px);
+//   }
+//   &.btn-xl {
+//     padding: 21px 40px;
+//     @include font-size(16px);
+//     letter-spacing: 0.32px;
+//   }
+//   &.btn-transparent {
+//     // @include button-size(0.8125rem, 0.9375rem, $font-size-base, $border-radius-base);
+//     // @include button-variant($primary-25, $transparent, $transparent, $transparent, #a4a4a4, #a4a4a4, $gray-900);
+//     opacity: 1;
+//   }
+//   &.btn-round {
+//     border-radius: 30px;
+//   }
+//   &.btn-with-icon {
+//     display: flex;
+//     align-items: center;
+//     white-space: nowrap;
+//     span {
+//       display: flex;
+//       align-items: center;
+//       &.btn-icon {
+//         height: 16px;
+//         width: 16px;
+//         margin-right: 8px;
+//       }
+//     }
+//   }
+//   &.btn-dark {
+//   }
+//   &:disabled {
+//     opacity: 0.2;
+//   }
+//   &.btn-primary {
+//   }
+//   &.btn-warning {
+//   }
+//   &.btn-primary-outline {
+//   }
+//   &.btn-group-primary-gradient {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     padding: 0;
+//     border: 1px solid #20233b;
+//     border-radius: 8px;
+//     .btn-name {
+//       padding: 12px 16px;
+//     }
+//     .arrow {
+//       padding: 12px 16px;
+//       border-left: 1px solid #fff;
+//     }
+//   }
+//   &.btn-group-icon {
+//   }
+//   &.btn-primary-gradient {
+//   }
+//   &.btn-secondary {
+//   }
+//   &.btn-secondary-outline {
+//   }
+//   @include themed() {
+//     &.btn-primary {
+//       background: $primary-600;
+//       border-color: $primary-600;
+//     }
+//     &.btn-warning {
+//       background: t($ngt-warning);
+//       border-color: t($ngt-warning);
+//     }
+//     &.btn-primary-outline {
+//       background: transparent;
+//       color: $primary-600;
+//       border-color: $primary-600;
+//     }
+//     &.btn-group-primary-gradient {
+//       background: linear-gradient(273.05deg, #4940c1 -11.82%, #20233b 70.41%);
+//       color: t($ngt-inverse);
+//     }
+//     &.btn-primary-gradient {
+//       background: linear-gradient(273.05deg, #4940c1 -11.82%, #20233b 70.41%);
+//       color: t($ngt-inverse);
+//     }
+//     &.btn-secondary {
+//       background: t($ngt-secondary);
+//       border-color: t($ngt-secondary);
+//     }
+//     &.btn-secondary-outline {
+//       background: transparent;
+//       color: t($ngt-secondary);
+//       border-color: t($ngt-secondary);
+//     }
+//     &.btn-alert {
+//       &-success {
+//         color: t($ngt-inverse);
+//         background: $green-700;
+//         border-color: $green-700;
+//       }
+//       &-error {
+//         color: t($ngt-inverse);
+//         background: $red-700;
+//         border-color: $red-700;
+//       }
+//       &-info {
+//         color: t($ngt-inverse);
+//         background: $blue-700;
+//         border-color: $blue-700;
+//       }
+//       &-warning {
+//         color: t($ngt-inverse);
+//         background: $yellow-700;
+//         border-color: $yellow-700;
+//       }
+//       &-primary {
+//         color: t($ngt-inverse);
+//         background: $primary-700;
+//         border-color: $primary-700;
+//       }
+//     }
+//     &:hover {
+//       box-shadow: 0px 0px 6px $gray-300;
+//     }
+//   }
+// }
+// @include media-breakpoint('xs') {
+//   .btn {
+//     padding: 15px 24px;
+//     // font-family: $inter-medium;
+//     font-family: $inter-semibold;
+//     @include font-size(14px);
+
+//     &.btn-xxl {
+//       padding: 17px 40px;
+//       @include font-size(18px);
+//     }
+//     &.btn-xl {
+//       padding: 15px 24px;
+//       @include font-size(13px);
+//     }
+//     &.btn-xs {
+//       padding: 10px 16px;
+//       @include font-size(12px);
+//     }
+//     &.btn-transparent {
+//     //   @include button-size(0.4125rem, 0.5375rem, $font-size-base, $border-radius-base);
+//     }
+//     &.btn-with-icon {
+//       span {
+//         &.btn-icon {
+//           height: 16px;
+//           width: 16px;
+//           margin-right: 5px;
+//         }
+//       }
+//     }
+//   }
+// }

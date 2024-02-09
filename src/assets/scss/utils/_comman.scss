@@ -1,0 +1,20 @@
+body {
+    //   @include themed {
+    //     color: t($text-color);
+    //     background-color: t($bg-color);
+    //   }
+    // font-family: $inter;
+}
+div,
+input,
+span {
+    @include box-sizing;
+}
+[hidden] {
+    display: none;
+}
+[readonly] {
+    user-select: none !important;
+    width: 0;
+    padding: 0;
+}

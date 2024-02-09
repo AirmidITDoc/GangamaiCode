@@ -32,7 +32,8 @@ vertical-layout-1 {
                 flex: 1 1 0%;
                 flex-direction: column;
                 min-width: 0;
-
+                padding-left: 280px;
+                transition: 150ms;
                 // Container 3 (Scrollable)
                 > .container {
                     position: relative;

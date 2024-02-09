@@ -1,26 +1,25 @@
 <div id="dashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
 
     <!-- CENTER -->
-    <div class="center" fusePerfectScrollbar>
+    <div class="center" fusePerfectScrollbar> <!-- fusePerfectScrollbar -->
 
         <!-- HEADER -->
-        <div class="header accent p-12 pb-0" fxLayout="column" fxLayoutAlign="space-between">
+        <div class="header accent p-12 pb-0" fxLayout="column" fxLayoutAlign="center">
 
             <div fxLayout="row" fxLayoutAlign="space-between start">
 
-                <span class="mat-display-1 my-0 my-sm-12 welcome-message"
-                    [@animate]="{value:'*',params:{x:'50px'}}">Welcome back, {{username}}!
+                <span class="mat-display-1 m-0 welcome-message" [@animate]="{value:'*',params:{x:'50px'}}">Welcome back,
+                    {{username}}!
                 </span>
 
                 <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md>
                     <mat-icon>menu</mat-icon>
                 </button>
             </div>
-
-
         </div>
-        <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="15px grid">
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" (click)="getBedOccupancy()">
+
+        <div class="dashboard-container gap-15" fxLayout="row wrap" fxLayoutGap="0px grid">
+            <div fxFlex="calc(25% - 15px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 15px)" (click)="getBedOccupancy()">
                 <mat-card>
                     <mat-card-content>
                         <div fxLayout="row" fxLayoutAlign="space-between">
@@ -38,7 +37,7 @@
                     </mat-card-content>
                 </mat-card>
             </div>
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="calc(25% - 15px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 15px)">
                 <mat-card>
                     <mat-card-content>
                         <div fxLayout="row" fxLayoutAlign="space-between">
@@ -57,7 +56,7 @@
                     </mat-card-content>
                 </mat-card>
             </div>
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="calc(25% - 15px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 15px)">
                 <mat-card>
                     <mat-card-content>
                         <div fxLayout="row" fxLayoutAlign="space-between">
@@ -75,7 +74,7 @@
                     </mat-card-content>
                 </mat-card>
             </div>
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="calc(25% - 15px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 15px)">
                 <mat-card>
                     <mat-card-content>
                         <div fxLayout="row" fxLayoutAlign="space-between">
@@ -94,15 +93,15 @@
                 </mat-card>
             </div>
         </div>
-        <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="16px grid">
-            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+        <div class="dashboard-container gap-15" fxLayout="row wrap" fxLayoutGap="0px grid">
+            <div fxFlex="calc(50% - 15px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 15px)">
                 <mat-card>
                     <mat-card-content>
                         <canvas id="surveyChart" style="width: 100%;">{{ surveyChart }}</canvas>
                     </mat-card-content>
                 </mat-card>
             </div>
-            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="calc(50% - 15px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 15px)">
                 <mat-card>
                     <mat-card-content>
                         <canvas id="doughnutChart" style="width: 100%;">{{ doughnutChart }}</canvas>

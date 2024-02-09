@@ -175,12 +175,20 @@
 .icon-div {
     padding: 8px;
     border-radius: 5px;
+    height: 45px;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .labels-div {
     text-align: end;
     color: black;
     font-weight: bold;
     font-size: 18px;
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
 }
 .icon-1 {
     background-color: #9661db;
