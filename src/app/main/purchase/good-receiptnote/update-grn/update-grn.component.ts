@@ -207,7 +207,7 @@ export class UpdateGRNComponent implements OnInit {
   ngOnInit(): void {
 
     if (this.data.chkNewGRN == 2) {
-      debugger
+     // debugger
       this.registerObj = this.data.Obj;
       this.InvoiceNo = this.registerObj.InvoiceNo;
       this.GateEntryNo = this.registerObj.GateEntryNo;
@@ -215,7 +215,7 @@ export class UpdateGRNComponent implements OnInit {
       this.StoreId = this.registerObj.StoreId;
       console.log(this.registerObj);
     //  console.log(this.registerObj);
-debugger
+//debugger
       if(this.registerObj.Cash_CreditType)
       this.Cahchecked=1;
      if(!this.registerObj.Cash_CreditType)
@@ -246,7 +246,7 @@ debugger
   maxDate = new Date(2024, 4, 1);
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
 
-    debugger
+    //debugger
     const ctrlValue = this.date.value;
     const currentDate = new Date();
     ctrlValue.month(normalizedMonthAndYear.month());
@@ -351,7 +351,7 @@ debugger
         MRP: this.MRP || 0,
         Rate: this.Rate || 0,
         TotalAmount: this.TotalAmount || 0,
-        DiscPercentage: this.Disc || 0,
+        DiscPercentage: this.Disc || '' ,
         DiscAmount: this.DisAmount || 0,
         VatPercentage: this.GST || 0,
         VatAmount: this.GSTAmount || 0,
@@ -447,10 +447,10 @@ FinalTotalQty:any;
     let freeqty = this._GRNList.userFormGroup.get('FreeQty').value;
     this.FinalTotalQty = (parseInt(Qty) + parseInt(freeqty));
 
-    if (Qty >= 100) {
-      Swal.fire("Enter Qty less than 100");
-      this._GRNList.userFormGroup.get('Qty').setValue('');
-    }
+    // if (Qty >= 100) {
+    //   Swal.fire("Enter Qty less than 100");
+    //   this._GRNList.userFormGroup.get('Qty').setValue('');
+    // }
       if (this.Rate && Qty) {
         this.TotalAmount = (parseFloat(this.Rate) * parseInt(Qty)).toFixed(2);
         this.NetAmount = parseFloat(this.TotalAmount);
@@ -575,8 +575,18 @@ FinalTotalQty:any;
     this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
     this.vFinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+    
     let Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge").value ;
-    let FinalnetAmt =  (parseFloat(FinalRoundAmt) +  parseFloat(Othercharge));
+    FinalRoundAmt =  (parseFloat(FinalRoundAmt) +  parseFloat(Othercharge));
+
+    let DebitAmount = this._GRNList.GRNFinalForm.get("DebitAmount").value ;
+    FinalRoundAmt =  (parseFloat(FinalRoundAmt) +  parseFloat(DebitAmount));
+
+    let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount").value ;
+    FinalRoundAmt =  (parseFloat(FinalRoundAmt) -  parseFloat(CreditAmount));
+    
+    //let  FinalnetAmt =  ((FinalAmt) +(FinalAmt1) +(FinalAmt2));
+    let FinalnetAmt = FinalRoundAmt;
     this.vFinalNetAmount= Math.round(FinalnetAmt).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
 
     this.vDiffNetRoundAmt= (parseFloat(this.vFinalNetAmount) - (FinalnetAmt) ).toFixed(2);
@@ -689,7 +699,7 @@ FinalTotalQty:any;
     //if (this._GRNList.userFormGroup.get('ItemName').value.length >= 1) {
     this._GRNList.getItemNameList(m_data).subscribe(data => {
       this.filteredOptions = data;
-      //console.log(this.filteredOptions)
+     //console.log(this.filteredOptions)
       if (this.filteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {
@@ -768,7 +778,7 @@ FinalTotalQty:any;
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-    debugger
+    //debugger
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;

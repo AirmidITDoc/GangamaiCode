@@ -168,9 +168,9 @@ export class GoodReceiptnoteComponent implements OnInit {
     private accountService: AuthenticationService,
 
   ) { }
-
+   
   ngOnInit(): void {
-
+ 
     // this.OnReset();
     this.getToStoreSearchList();
     // this.getSupplierSearchList();
@@ -189,7 +189,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
 
   onAdd() {
-    debugger
+    //debugger
     this.dsItemNameList.data = [];
     // this.chargeslist=this.chargeslist;
     this.chargeslist.push(
@@ -457,7 +457,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
 
   getGRNItemList() {
-    debugger
+   // debugger
     var m_data = {
       "ItemName": `${this._GRNService.userFormGroup.get('ItemName').value}%`,
       "StoreId": this._GRNService.GRNStoreForm.get('StoreId').value.storeid || 0
@@ -518,7 +518,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   getGrnItemDetailList(Params) {
-    debugger
+    //debugger
     this.sIsLoading = 'loading-data';
     var Param = {
       "GrnId": Params.GRNID
@@ -603,38 +603,48 @@ export class GoodReceiptnoteComponent implements OnInit {
   TotalQty: any = 0;
   TotalRate: any = 0;
   TotalNetAmt: any = 0;
-  TOtalDiscPer: any = 0;
+  TotalDiscPer: any = 0;
+  TotalCGSTPer:any = 0;
+  TotalSGSTPer :any =0;
   TotalGSTAmt: any = 0;
-
+  TotalCGSTAmt:any = 0;
+  TotalSGSTAmt :any =0;
+  TotalNetAmount:any=0;
+  TotalOtherCharge:any=0;
+  finalamt:any=0;
+  
   getPrint(el) {
-
     var m_data = {
       "GRNID": el.GRNID
     }
-    // console.log(m_data);
+     console.log(m_data);
     this._GRNService.getPrintGRNList(m_data).subscribe(data => {
       this.reportPrintObjList = data as GRNList[];
       // debugger
+      console.log(this.reportPrintObjList)
       for (let i = 0; i < 10; i++) {
         this.reportPrintObj = data[0] as GRNList;
+        console.log(this.reportPrintObj)
         this.TotalAmt += data[i].TotalAmount
         this.TotalQty += data[i].ReceiveQty
         this.TotalRate += data[i].Rate
-        this.TOtalDiscPer += data[i].TotalDiscAmount
+        this.TotalDiscPer += data[i].TotalDiscAmount
+        this.TotalCGSTPer += data[i].CGSTPer
+        this.TotalSGSTPer += data[i].SGSTPer
+        this.TotalCGSTAmt += data[i].CGSTAmt
+        this.TotalSGSTAmt += data[i].SGSTAmt
         this.TotalGSTAmt += data[i].TotalVATAmount
+        this.TotalOtherCharge += data[i].OtherCharge
         this.TotalNetAmt += data[i].NetPayble
-
-        // console.log(this.TotalAmt);
-        // console.log(this.reportPrintObjList[i]["Qty"]);
-        //   this.TotalQty=this.TotalQty + parseInt(this.reportPrintObj[i]["Qty"]);
-        //   console.log(this.TotalQty)
-
-        //console.log(this.reportPrintObjList);
-
+        const toword =require('num-words')
+        this.finalamt = toword(this.TotalNetAmt);
+                 
         setTimeout(() => {
           this.print3();
         }, 1000);
       }
+      
+      
     })
 
   }
@@ -696,7 +706,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   OnSavenew() {
-    debugger
+   // debugger
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1151,10 +1161,10 @@ export class GRNList {
   GRNDate: number;
   InvoiceNo: number;
   SupplierName: string;
-  TotalAmount: number;
-  TotalDiscAmount: number;
-  TotalVATAmount: number;
-  NetAmount: number;
+  TotalAmount: any;
+  TotalDiscAmount: any;
+  TotalVATAmount: any;
+  NetAmount: any;
   RoundingAmt: number;
   DebitNote: number;
   CreditNote: number;
@@ -1169,7 +1179,16 @@ export class GRNList {
   Email:any;
   Phone:any;
   PONo:any;
-
+  EwayBillNo: any;
+  EwayBillDate: Date;
+  OtherCharge:any;
+  Rate: any;
+  CGSTPer:any;
+  SGSTPer:any;
+  CGSTAmt:any;
+  SGSTAmt:any;
+  NetPayble:any
+  AddedByName:any;
   /**
    * Constructor
    *
@@ -1318,7 +1337,9 @@ export class ItemNameList {
   tranProcessMode: any;
   EwayBillNo: any;
   TotalQty: any;
-
+  UnitofMeasurementName: number;
+  UnitofMeasurementId: any;
+   
   /**
    * Constructor
    *
@@ -1337,7 +1358,7 @@ export class ItemNameList {
       this.MRP = ItemNameList.MRP || 0;
       this.Rate = ItemNameList.Rate || 0;
       this.TotalAmount = ItemNameList.TotalAmount || 0;
-      this.Disc = ItemNameList.Disc;
+      this.Disc = ItemNameList.Disc || '';
       this.DisAmount = ItemNameList.DisAmount || 0;
       this.GSTNo = ItemNameList.GSTNo || 0;
       this.GSTAmount = ItemNameList.GSTAmount || 0;
