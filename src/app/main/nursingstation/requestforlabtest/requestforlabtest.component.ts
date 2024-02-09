@@ -25,6 +25,7 @@ export class RequestforlabtestComponent implements OnInit {
   SpinLoading:boolean=false;
   displayedColumns: string[] = [
     'action',
+    'RequestId',
     'RegNo',
     'PatientName',
     'Age',
@@ -41,8 +42,8 @@ export class RequestforlabtestComponent implements OnInit {
     'ReqTime',
     'ServiceName',
     'AddedByName',
-    'AddBilingUser',
-    'BillDateTime',
+    'BillingUser',
+    'AddedByDate',
     'IsStatus',
     'PBillNo',
     'IsComplted'
@@ -113,7 +114,7 @@ export class RequestforlabtestComponent implements OnInit {
   //   this.getRequestdetList(Parama.RequestId)
   // }
   PresItemlist:any =[];
-  deleteTableRow(event, element) {
+  deleteTableRow(element) {
     if(!element.IsClosed){
     // if (this.key == "Delete") {
       let index = this.PresItemlist.indexOf(element);
@@ -245,6 +246,7 @@ export class RequestList{
   BillDate:any;
   BillTime:any;
   ReqDate:any;
+  RequestId:any;
 
   constructor(RequestList) {
     this.RegNo=RequestList.RegNo || 0;
@@ -255,6 +257,7 @@ export class RequestList{
     this.RequestType=RequestList.RequestType || '';
     this.TariffName=RequestList.TariffName || '';
     this.CompanyName=RequestList.CompanyName || '';
+    this.RequestId =RequestList.RequestId || 0
   }
 }
 

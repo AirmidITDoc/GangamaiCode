@@ -42,13 +42,13 @@ export class NewRequestforlabComponent implements OnInit {
  
  
  
-  displayedVisitColumns: string[] = [
-    'ServiceName',
+  displayedServiceColumns: string[] = [
+  'ServiceName',
     // 'Price'
    
   ]
 
-  displayedVisitColumns2: string[] = [
+  displayedServiceselected: string[] = [
     'ServiceName',
     'Price',
     'buttons'
@@ -131,7 +131,7 @@ export class NewRequestforlabComponent implements OnInit {
       "Keyword": `${this.searchFormGroup.get('RegID').value}%`
     }
     if (this.searchFormGroup.get('RegID').value.length >= 1) {
-      this._RequestforlabtestService.getRegistrationList(m_data).subscribe(resData => {
+      this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         console.log(resData);
         this.PatientListfilteredOptions = resData;
@@ -166,9 +166,9 @@ export class NewRequestforlabComponent implements OnInit {
     this.getSelectedObj(row);
   }
   getSelectedObj(obj) {
-    
+    debugger
     this.registerObj = obj;
-    this.PatientName = obj.FirstName + '' + obj.FirstName + '' +obj.LastName;
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' +obj.PatientName;
     this.RegId = obj.RegId;
     this.vAdmissionID = obj.AdmissionID;
     this.DoctorName = obj.DoctorName;

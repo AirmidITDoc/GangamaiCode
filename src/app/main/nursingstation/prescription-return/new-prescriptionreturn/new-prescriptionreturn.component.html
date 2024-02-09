@@ -15,6 +15,9 @@
 
                 <app-common-date [screenFrom]="screenFromString" style="margin-left: 500px;"
                     (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
             </div>
         </div>
         <!-- / APP TITLE -->
@@ -219,7 +222,7 @@
 
                                         <mat-table #table matSort [dataSource]="saleSelectedDatasource"
                                             [@animateStagger]="{value:'50'}"
-                                            style="overflow:auto; height: 300px !important;" class="mat-saletable">
+                                            style="overflow:auto; height: 300px !important;">
 
                                             <ng-container matColumnDef="ItemId">
                                                 <mat-header-cell *matHeaderCellDef

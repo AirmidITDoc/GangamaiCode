@@ -141,7 +141,7 @@
                         <span
                             style="margin-left: 30px;font-size: medium;color: rgb(3, 83, 83);font-weight: bold;">Patient
                             Name :{{PatientName}} <span style="margin-left: 20px;">IPNO :{{RegId}}</span><span
-                                style="margin-left: 20px;">Admission Id :{{vAdmissionID}}</span>
+                                style="margin-left: 20px;">Adm No:{{vAdmissionID}}</span>
                                 <span style="margin-left: 20px;">Company Name :{{RegId}}</span>
                                 <span style="margin-left: 20px;">Tariif :{{RegId}}</span></span>
 
@@ -249,9 +249,9 @@
                             </mat-footer-cell>
                         </ng-container>
                         <!-- [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" -->
-                        <mat-header-row class="accent" *matHeaderRowDef="displayedVisitColumns; sticky: true">
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedServiceColumns; sticky: true">
                         </mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: displayedVisitColumns;"
+                        <mat-row *matRowDef="let contact; columns: displayedServiceColumns;"
                             (click)="onSaveEntry(contact)" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                         <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsLabRequest2!=null}">
                         </mat-footer-row>
@@ -289,7 +289,7 @@
                             </mat-cell>
                         </ng-container>
 
-                        <ng-container matColumnDef="buttons" stickyEnd>
+                        <ng-container matColumnDef="buttons">
                             <mat-header-cell *matHeaderCellDef style="color: white;"> Action
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row">
@@ -318,9 +318,9 @@
                             </mat-footer-cell>
                         </ng-container>
                         <!-- [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" -->
-                        <mat-header-row class="accent" *matHeaderRowDef="displayedVisitColumns2; sticky: true">
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedServiceselected; sticky: true">
                         </mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: displayedVisitColumns2;"
+                        <mat-row *matRowDef="let contact; columns: displayedServiceselected;"
                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                         <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dstable1!=null}">
                         </mat-footer-row>

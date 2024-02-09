@@ -20,7 +20,8 @@ export class PrescriptionReturnService {
     return this._FormBuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
-      RegNo:''
+      RegNo:'',
+      PrescriptionStatus:['Pending']
     })
   }
 
@@ -74,12 +75,18 @@ export class PrescriptionReturnService {
   }
 
   public getAdmittedPatientList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientAdmittedListSearch", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
   }
   public getRegistrationList(employee)
 {
   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList",employee)
 }  
+
+
+
+public getIpPrescriptionreturnview(PresReId){
+  return this._httpClient.get("InPatient/view-IP_PrescriptionReturn?PresReId=" + PresReId);
+}
 }
 
 

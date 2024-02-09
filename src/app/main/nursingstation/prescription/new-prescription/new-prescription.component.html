@@ -293,12 +293,14 @@
 
                         <div matTooltip="Select  name to enable this button!!" [matTooltipDisabled]="!myForm.invalid"
                             [matTooltipPosition]="'above'">
-                          
-                            <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                            class="add-btn" [disabled]="!add" (click)="onAdd()">
-                            <mat-icon> add </mat-icon>
-                            Add
-                        </button>
+                        
+
+                        <button mat-raised-button fxLayoutAlign="center center" #addbutton
+                        class="add-btn" [disabled]="!add" (click)="onAdd($event)">
+                        <mat-icon> add </mat-icon>
+                        Add
+                         </button>
+
                             <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
                         </div>
                     </div>
