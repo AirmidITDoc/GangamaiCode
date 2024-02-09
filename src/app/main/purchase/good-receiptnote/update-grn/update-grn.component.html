@@ -160,6 +160,11 @@
                                     </div>
                                 </div>
                                 <div fxLayout="row">
+                                    <mat-form-field appearance="outline" fxFlex="7%">
+                                        <mat-label>HSN Code</mat-label>
+                                        <input matInput [(ngModel)]="HSNCode" name="HSNCode" formControlName="HSNCode"
+                                            id="HSNCode" #hsncode readonly (keydown)="onEnterHSNCode($event)">
+                                    </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" style="width:50%;">
                                         <input type="text" name="ItemName" formControlName="ItemName" #itemid
@@ -189,12 +194,6 @@
                                             formControlName="UOM" readonly>
                                     </mat-form-field>&nbsp;
 
-                                    <mat-form-field appearance="outline" fxFlex="7%">
-                                        <mat-label>HSN Code</mat-label>
-                                        <input matInput [(ngModel)]="HSNCode" name="HSNCode" formControlName="HSNCode"
-                                            id="HSNCode" #hsncode readonly (keydown)="onEnterHSNCode($event)">
-                                    </mat-form-field>&nbsp;
-
                                     <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Packing</mat-label>
                                         <input matInput [(ngModel)]="ConversionFactor" name="ConversionFactor"
@@ -208,7 +207,7 @@
                                             id="BatchNo" #batchno (keydown)="onEnterBatchNo($event)" required>
                                     </mat-form-field>&nbsp;
                                     <!-- [max]="maxDate"  -->
-                                    <mat-form-field appearance="outline" fxFlex="7%">
+                                    <mat-form-field appearance="outline" fxFlex="9%">
                                         <mat-label>Exp date</mat-label>
                                         <input name="ExpDate" matInput [min]="minDate" [matDatepicker]="picker7"
                                             [formControl]="date" (keydown)="onEnterExpDate($event)" #expdate required>
@@ -218,7 +217,7 @@
 
 
 
-                                    <mat-form-field appearance="outline" fxFlex="7%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Qty</mat-label>
                                         <input matInput [(ngModel)]="Qty" name="Qty" required
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
@@ -226,7 +225,7 @@
                                             (keydown)="onEnterQty($event)" #qty>
                                     </mat-form-field>&nbsp;
 
-                                    <mat-form-field appearance="outline" fxFlex="7%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Free Qty </mat-label>
                                         <input matInput [(ngModel)]="FreeQty" name="FreeQty" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
@@ -279,7 +278,7 @@
                                         <input matInput [(ngModel)]="CGST" name="CGST" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                             (keyup)="calculateGSTAmount()" formControlName="CGST" id="CGST"
-                                            (keydown)="onEnterCGST($event)" #cgst required>
+                                            (keydown)="onEnterCGST($event)" #cgst required readonly>
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="8%">
@@ -293,7 +292,7 @@
                                         <input matInput [(ngModel)]="SGST" name="SGST" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                             (keyup)="calculateGSTAmount()" formControlName="SGST" id="SGST"
-                                            (keydown)="onEnterSGST($event)" #sgst required>
+                                            (keydown)="onEnterSGST($event)" #sgst required readonly>
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="8%">
@@ -307,7 +306,7 @@
                                         <input matInput [(ngModel)]="IGST" name="IGST" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                             (keyup)="calculateGSTAmount()" formControlName="IGST" id="IGST"
-                                            (keydown)="onEnterIGST($event)" #igst>
+                                            (keydown)="onEnterIGST($event)" #igst readonly>
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="8%">

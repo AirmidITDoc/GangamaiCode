@@ -106,7 +106,7 @@ export class GoodReceiptnoteService {
       Remark:[''],
       ReceivedBy:[''],
       DebitAmount:[''],
-      CreditAmount:['true'],
+      CreditAmount:[''],
       DiscAmount:[''],
       TotalAmt:[''],
       VatAmount:[''],
