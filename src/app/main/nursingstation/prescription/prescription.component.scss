@@ -2,8 +2,8 @@ app-prescription {
 
     .Tab1 {
         .mat-column-Date {
-            width: 150px;
-            max-width: 150px;
+            width: 100px;
+            max-width: 100px;
             min-width: 100px;
             align-items: left;
         }
@@ -28,9 +28,9 @@ app-prescription {
                   
         }
 
-        .mat-column-Vst_Adm_Date {
-            width: 150px;
-            max-width: 150px;
+        .mat-column-PTime {
+            width: 100px;
+            max-width: 100px;
             min-width: 100px;
             align-items: left;
         }
@@ -41,20 +41,25 @@ app-prescription {
             min-width: 100px;
             align-items: left;
         }
-        .mat-column-StoreName {
+        .mat-column-CompanyName {
             width: 150px;
             max-width: 150px;
             min-width: 100px;
             align-items: left;
         }
-        .mat-column-PreNo {
+        .mat-column-OPD_IPD_Type {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            align-items: left;
+        }
+
+        .mat-column-AddedBy {
             width: 100px;
             max-width: 100px;
             min-width: 100px;
             align-items: left;
         }
-
-
         height: 320px;
         max-height: 320px;
         min-height: 320px;

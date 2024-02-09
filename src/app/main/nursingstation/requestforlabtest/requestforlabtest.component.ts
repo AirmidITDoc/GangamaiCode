@@ -10,6 +10,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
 import { Subscription } from 'rxjs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-requestforlabtest',
@@ -30,8 +31,9 @@ export class RequestforlabtestComponent implements OnInit {
     'Vst_Adm_Date',
     'WardName',
     'RequestType',
-    // 'TariffName',
-    // 'CompanyName'
+    'TariffName',
+    'CompanyName',
+    'AddedBy'
   ]
 
   displayColumns: string[] =[
@@ -110,6 +112,24 @@ export class RequestforlabtestComponent implements OnInit {
   //   console.log(Parama.RequestId);
   //   this.getRequestdetList(Parama.RequestId)
   // }
+  PresItemlist:any =[];
+  deleteTableRow(event, element) {
+    if(!element.IsClosed){
+    // if (this.key == "Delete") {
+      let index = this.PresItemlist.indexOf(element);
+      if (index >= 0) {
+        this.PresItemlist.splice(index, 1);
+        this.dsrequestList.data = [];
+        this.dsrequestList.data = this.PresItemlist;
+      }
+      Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
+
+    }
+    else{
+      Swal.fire('Billed Prescription can not Delete !');
+
+    }
+  }
 
 
   viewgetLabrequestReportPdf(row) {

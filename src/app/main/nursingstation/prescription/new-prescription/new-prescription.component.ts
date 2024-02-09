@@ -135,9 +135,9 @@ export class NewPrescriptionComponent implements OnInit {
       "Keyword": `${this.myForm.get('RegID').value}%`
     }
     if (this.myForm.get('RegID').value.length >= 1) {
-      this._PrescriptionService.getRegistrationList(m_data).subscribe(resData => {
+      this._PrescriptionService.getAdmittedpatientlist(m_data).subscribe(resData => {
         this.filteredOptions = resData;
-        //console.log(resData)
+        console.log(resData)
         this.PatientListfilteredOptions = resData;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
@@ -182,10 +182,9 @@ this.WardId=obj.RoomId;
     debugger
     this.registerObj = obj;
     this.PatientName = obj.FirstName + '' + obj.LastName;
-    this.RegId= obj.RegId;
+    this.RegId= obj.RegID;
     this.vAdmissionID= obj.AdmissionID
-    // console.log( this.PatientName)
-    // this.setDropdownObjs();
+   
     console.log(obj);
   }
 
@@ -306,8 +305,11 @@ this.WardId=obj.RoomId;
         Remark: this.vRemark || ''
       });
     this.dsPresList.data = this.PresItemlist
-    this.myForm.reset();
+    // this.myForm.reset();
     this.myForm.get('ItemId').reset('');
+    this.myForm.get('Qty').reset('');
+    this.myForm.get('Remark').reset('');
+    this.itemid.nativeElement.focus();
     this.add=false;
   }
   
@@ -422,9 +424,12 @@ this.WardId=obj.RoomId;
     debugger
     if (event.which === 13) {
       // this.discamt.nativeElement.focus();
+      // setTimeout(() => {
       this.add=true;
       this.addbutton.focus();
+    // },20);
     }
+    
   }
 
   // public onEnterdiscAmount(event): void {
@@ -454,12 +459,12 @@ this.WardId=obj.RoomId;
     let insertIP_MedicalRecordArray = {};
     let deleteIP_Prescription = {};
     
-    deleteIP_Prescription['oP_IP_ID'] = this.RegId;
+    deleteIP_Prescription['oP_IP_ID'] = this.vAdmissionID;
 
     submissionObj['deleteIP_Prescription'] = deleteIP_Prescription;
 
-    insertIP_MedicalRecordArray['medicalRecoredId'] = 20;
-    insertIP_MedicalRecordArray['admissionId'] = this.RegId;;
+    insertIP_MedicalRecordArray['medicalRecoredId'] = 0;
+    insertIP_MedicalRecordArray['admissionId'] = this.vAdmissionID;
     insertIP_MedicalRecordArray['roundVisitDate'] = this.dateTimeObj.date;
     insertIP_MedicalRecordArray['roundVisitTime'] = this.dateTimeObj.time;
     insertIP_MedicalRecordArray['inHouseFlag'] = 0;
@@ -469,16 +474,16 @@ this.WardId=obj.RoomId;
     this.dsPresList.data.forEach((element) => {
       let insertIP_Prescription = {};
       insertIP_Prescription['ipMedID'] = 0;
-      insertIP_Prescription['oP_IP_ID'] =  this.RegId;;
+      insertIP_Prescription['oP_IP_ID'] =  this.vAdmissionID;
       insertIP_Prescription['opD_IPD_Type'] = 1;
       insertIP_Prescription['pDate'] = this.dateTimeObj.date;
       insertIP_Prescription['pTime'] = this.dateTimeObj.time;
       insertIP_Prescription['classID'] = 1;
-      insertIP_Prescription['genericId'] = 0;
+      insertIP_Prescription['genericId'] = 2;
       insertIP_Prescription['drugId'] = element.ItemId;
-      insertIP_Prescription['doseId'] = 0;
-      insertIP_Prescription['days'] = 0;
-      insertIP_Prescription['qtyPerDay'] = 0;
+      insertIP_Prescription['doseId'] = 10;
+      insertIP_Prescription['days'] = 2;
+      insertIP_Prescription['qtyPerDay'] = 20;
       insertIP_Prescription['totalQty'] = element.Qty;
       insertIP_Prescription['remark'] = element.Remark || '';
       insertIP_Prescription['isClosed'] = false;
@@ -497,7 +502,7 @@ this.WardId=obj.RoomId;
         if (response) {
           Swal.fire('Congratulations !', 'New Prescription Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
-              // this._matDialog.closeAll();
+              this._matDialog.closeAll();
               this.viewgetIpprescriptionReportPdf(response);
             }   
           });
