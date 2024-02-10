@@ -1,4 +1,5 @@
 @import "src/@fuse/scss/fuse";
+$sidebarWidth:280px;
 
 fuse-sidebar {
     display: flex;
@@ -10,9 +11,9 @@ fuse-sidebar {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    width: 280px;
-    min-width: 280px;
-    max-width: 280px;
+    width: $sidebarWidth;
+    min-width: $sidebarWidth;
+    max-width: $sidebarWidth;
     z-index: 1000;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.35);
 
@@ -47,7 +48,7 @@ fuse-sidebar {
         top: 0;
         bottom: 0;
     }
-    &.fixed {
+    &.fixed { //For overriding
         position: fixed !important;
     }
     &.animations-enabled {

@@ -174,7 +174,6 @@ export class FuseSidebarComponent implements OnInit, OnDestroy {
         else {
             // Unfold the sidebar
             this.unfold();
-
             // Remove the folded width
             this._renderer.removeStyle(this._elementRef.nativeElement, 'width');
             this._renderer.removeStyle(this._elementRef.nativeElement, 'min-width');

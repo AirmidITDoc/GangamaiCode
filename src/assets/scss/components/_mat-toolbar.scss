@@ -1,10 +1,9 @@
 .top-nav-toolbar {
     width: 100%;
     .mat-toolbar{
-        height: 50px; // temporary
+        // height: 50px; // temporary
         background: $primary-25;
-        font-size: 16px;
-        font-family: $inter-medium;
+        @include font-size(14px);
         font-weight: normal;
         .top-nav{
             width: 100%;

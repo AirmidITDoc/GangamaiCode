@@ -11,7 +11,7 @@
 </ng-container>
 <!-- / SIDE PANEL -->
 
-<div id="main">
+<div id="main" class="">
 
     <!-- TOOLBAR: Above -->
     <ng-container *ngIf="fuseConfig.layout.toolbar.position === 'above'">
@@ -31,7 +31,7 @@
     </ng-container>
     <!-- / TOOLBAR: Below -->
 
-    <div id="container-1" class="container">
+    <div id="container-1" class="container layout-wrapper">
 
         <!-- NAVBAR: Left -->
         <ng-container>
@@ -39,7 +39,7 @@
         </ng-container>
         <!-- / NAVBAR: Left -->
 
-        <div id="container-2" class="container">
+        <div id="container-2" class="container dashboard-panel">
 
             <div id="container-3" class="container" fusePerfectScrollbar
                  [fusePerfectScrollbarOptions]="{suppressScrollX: true, updateOnRouteChange : true}">
@@ -113,7 +113,7 @@
 
 <!-- LEFT NAVBAR -->
 <ng-template #leftNavbar>
-    <fuse-sidebar name="navbar" class="navbar-fuse-sidebar"
+    <fuse-sidebar name="navbar" class="navbar-fuse-sidebar fixed"
                   [folded]="fuseConfig.layout.navbar.folded"
                   *ngIf="!fuseConfig.layout.navbar.hidden">
         <navbar [variant]="fuseConfig.layout.navbar.variant" class="left-navbar"></navbar>

@@ -162,7 +162,7 @@ mat-footer-row mat-footer-cell {
 html { height: 90% !important; }
 // body { margin: 0; zoom: 0.9; zoom: 90%; }
 // font-family: Roboto, sans-serif !important;
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif !important; } //zoom: 0.8; zoom: 85%;
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif !important; } //zoom: 0.8; zoom: 85%;
 
 
 // Spinner Css
@@ -417,7 +417,7 @@ background: rgba(240, 239, 239, 0.15);
 
 // dropdown search list Text color
 .mat-option-text:hover {
-    background:  rgb(226, 178, 186);
+    // background:  rgb(226, 178, 186); // Hover remove
     // color:black;
   }
 // Body Them Color

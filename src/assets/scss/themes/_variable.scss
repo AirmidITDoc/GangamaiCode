@@ -26,19 +26,19 @@ $primary-75: #eff8ff;
 $primary-50: #f5faff;
 $primary-25: #fff;
 
-// $primary-950: #1f1c45;
-// $primary-900: #1a0b5c;
-// $primary-800: #271282;
-// $primary-700: #3c20b4;
-// $primary-600: #4f37e2;
-// $primary-500: #6053ff;
-// $primary-400: #8b88ff;
-// $primary-300: #b6b9ff;
-// $primary-250: #c2c4ff;
-// $primary-200: #d9dbff;
-// $primary-100: #edefff;
-// $primary-50: #f4f5ff;
-// $primary-25: #ffffff;
+$blue-950: #1f1c45;
+$blue-900: #1a0b5c;
+$blue-800: #271282;
+$blue-700: #3c20b4;
+$blue-600: #4f37e2;
+$blue-500: #6053ff;
+$blue-400: #8b88ff;
+$blue-300: #b6b9ff;
+$blue-250: #c2c4ff;
+$blue-200: #d9dbff;
+$blue-100: #edefff;
+$blue-50: #f4f5ff;
+$blue-25: #ffffff;
 
 $green-900: #054f31;
 $green-800: #05603a;
@@ -63,6 +63,7 @@ $red-200: #fecdca;
 $red-100: #fee4e2;
 $red-50: #fef3f2;
 $red-25: #fffbfa;
+
 $yellow-900: #543306;
 $yellow-800: #73470a;
 $yellow-700: #8e5d19;
@@ -79,7 +80,8 @@ $pink-900: #be18cd;
 
 $transparent: transparent;
 
-$font-size-base: 1rem;
+// $font-size-base: 0.875rem;
+$font-size-base: 13px;
 // @include media-breakpoint-down(sm) {
 //   $font-size-base: 0.8rem;
 // }
