@@ -72,7 +72,7 @@
                                 </mat-radio-group>
 
 
-                                <div style="margin-top: 10px;">
+                                <div style="margin-top: 20px;">
                                     <button mat-raised-button class="clearbutton" matTooltip="close">
                                         <mat-icon class="cleariconbutton">close</mat-icon></button>&nbsp;
                                     <button mat-raised-button class="searchButton" (click)="getPrescriptionList()"
@@ -107,7 +107,7 @@
 
 
 
-                                    <ng-container matColumnDef="action" stickyEnd>
+                                    <ng-container matColumnDef="action">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
@@ -115,6 +115,11 @@
                                                 (click)="viewgetIpprescriptionReportPdf(row)">
                                                 <mat-icon>print</mat-icon>
                                             </button>
+
+                                            <button mat-icon-button (click)="deleteTableRow(row)"
+                                            color="warn">
+                                            <mat-icon>delete_outline</mat-icon>
+                                        </button>
                                         </mat-cell>
                                     </ng-container>
 
@@ -204,14 +209,14 @@
 
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
                                         [@animate]="{value:'*',params:{y:'100%'}}"
-                                        (click)="onSelect(contact)"></mat-row>
-<!-- 
+                                        (click)="onSelect(contact)"></mat-row> -->
+
                                         <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                        [ngClass]="contact.Isclosed == 'true' ? 'self-row' : ''"
-                                        [@animate]="{value:'*',params:{y:'100%'}}">
-                                      </mat-row> -->
+                                        [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect(contact)">
+                                      </mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>

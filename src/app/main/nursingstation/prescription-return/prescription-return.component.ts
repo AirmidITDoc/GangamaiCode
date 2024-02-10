@@ -8,6 +8,8 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
 import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
 import { MatDialog } from '@angular/material/dialog';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-prescription-return',
@@ -19,14 +21,15 @@ import { MatDialog } from '@angular/material/dialog';
 export class PrescriptionReturnComponent implements OnInit {
 
   hasSelectedContacts: boolean;
-
+  SpinLoading:boolean=false;
   displayedColumns: string[] = [
+    'action',
     'Date',
     'RegNo',
     'PatientName',
     'Vst_Adm_Date',
     'StoreName',
-     'IPMedID'
+    'IPMedID'
 
   ]
 
@@ -47,6 +50,7 @@ export class PrescriptionReturnComponent implements OnInit {
   constructor(public _PrescriptionReturnService:PrescriptionReturnService,
     private _fuseSidebarService: FuseSidebarService,
     private dialog:MatDialog,
+    public _matDialog:MatDialog,
     public datePipe: DatePipe,
     ) { }
 
@@ -59,12 +63,27 @@ export class PrescriptionReturnComponent implements OnInit {
       this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-  getPriscriptionretList(){
-    var vdata={
-      FromDate:this.datePipe.transform(this._PrescriptionReturnService.mySearchForm.get('startdate').value,"yyyy-MM-dd 00:00:00.000") || '01/2/2023',
-      ToDate:this.datePipe.transform(this._PrescriptionReturnService.mySearchForm.get('enddate').value,"yyyy-MM-dd 00:00:00.000") || '01/2/2023',
-      Reg_No: this._PrescriptionReturnService.mySearchForm.get('RegNo').value || 0
+  PType:any;
+  onChangePrescriptionType(event) {
+    if (event.value == 'Pending') {
+      this.PType = 0;
+      this.getPriscriptionretList();
     }
+    else{
+      this.PType = 1;
+      this.getPriscriptionretList();
+    }
+  }
+
+  getPriscriptionretList(){
+    debugger
+    var vdata={
+      FromDate:this.datePipe.transform(this._PrescriptionReturnService.mySearchForm.get('startdate').value,"yyyy-dd-MM 00:00:00.000") || '01/2/2023',
+      ToDate:this.datePipe.transform(this._PrescriptionReturnService.mySearchForm.get('enddate').value,"yyyy-dd-MM 00:00:00.000") || '01/2/2023',
+      Reg_No: this._PrescriptionReturnService.mySearchForm.get('RegNo').value || 0,
+      Type :this.PType || 0
+    }
+    console.log(vdata)
     this._PrescriptionReturnService.getPriscriptionretList(vdata).subscribe(data =>{
       this.dsprescritionretList.data = data as PrescriptionretList[];
       this.dsprescritionretList.sort = this.sort;
@@ -98,6 +117,57 @@ export class PrescriptionReturnComponent implements OnInit {
       
     })
   }
+ 
+
+
+  viewgetIpprescriptionreturnReportPdf(row) {
+    debugger
+    setTimeout(() => {
+      this.SpinLoading =true;
+    this._PrescriptionReturnService.getIpPrescriptionreturnview(
+      row.PresReId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Prescription Return Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+
+
+  PresItemlist:any =[];
+  deleteTableRow(element) {
+    if(!element.IsClosed){
+    // if (this.key == "Delete") {
+      let index = this.PresItemlist.indexOf(element);
+      if (index >= 0) {
+        this.PresItemlist.splice(index, 1);
+        this.dsprescritionretList.data = [];
+        this.dsprescritionretList.data = this.PresItemlist;
+      }
+      Swal.fire('Success !', ' Row Deleted Successfully', 'success');
+
+    }
+    else{
+      Swal.fire('Row can not Delete Billed Prescription!');
+
+    }
+  }
+
 }
 
 export class PrescriptionretList{
@@ -107,6 +177,7 @@ export class PrescriptionretList{
   Vst_Adm_Date:any;
   StoreName:any;
   IPMedID:any;
+  IsClosed:any;
 
   constructor(PrescriptionretList) {
     this.RegNo=PrescriptionretList.RegNo || 0;
@@ -115,7 +186,7 @@ export class PrescriptionretList{
     this.Vst_Adm_Date=PrescriptionretList.Vst_Adm_Date || '01/01/1900';
     this.StoreName = PrescriptionretList.StoreName || '';
     this.IPMedID = PrescriptionretList.IPMedID || 0;
- 
+ this.IsClosed = PrescriptionretList.IsClosed || 0;
   }
 }
 

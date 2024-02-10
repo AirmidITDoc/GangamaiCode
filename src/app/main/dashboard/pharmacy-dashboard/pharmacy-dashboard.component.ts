@@ -35,7 +35,7 @@ export class PharmacyDashboardComponent implements OnInit {
     var m_data = {
       "FromDate": this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '12/25/2023',
       "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '12/30/2023',
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value.storeid || 0,
+      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0,
       "Mode": this.selectedStatic || 'CollectionAmount'
     }
     this._DashboardService.getPharDashboardPeichart("m_pharPayModeColSummaryDashboard", m_data).subscribe(data => {
@@ -70,10 +70,10 @@ export class PharmacyDashboardComponent implements OnInit {
     this.ThreeMonSalesConfig.multi = [];
     this.sIsLoading = 'loading-data';
     var m_data = {
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value.storeid || 0,
+      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0,
     }
     this._DashboardService.getPharDashboardBarchart("m_pharlast3MonthSalesSummaryDashboard", m_data).subscribe(data => {
-      if ((this._DashboardService.UseFrom.get("StoreId").value.storeid || 0) > 0) {
+      if ((this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0) > 0) {
         this.ThreeMonSalesConfig.data = data["data"] as any[];
       }
       else {

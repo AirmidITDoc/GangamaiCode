@@ -181,7 +181,8 @@ this.WardId=obj.RoomId;
 
     debugger
     this.registerObj = obj;
-    this.PatientName = obj.FirstName + '' + obj.LastName;
+    // this.PatientName = obj.FirstName + '' + obj.LastName;
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' +obj.PatientName;
     this.RegId= obj.RegID;
     this.vAdmissionID= obj.AdmissionID
    
@@ -292,10 +293,8 @@ this.WardId=obj.RoomId;
     },100);
   }
   
-  onAdd() {
-    // debugger
-
-
+  onAdd(event) {
+   
     this.dsPresList.data = [];
     this.PresItemlist.push(
       {
@@ -408,7 +407,7 @@ this.WardId=obj.RoomId;
   onEnterItem(event): void {
     if (event.which === 13) {
       this.qty.nativeElement.focus();
-      // this.calculateTotalAmt()
+      
     }
   }
 
@@ -416,29 +415,22 @@ this.WardId=obj.RoomId;
     debugger
     if (event.which === 13) {
       this.remark.nativeElement.focus();
-      // this.calculateTotalAmt()
+      
     }
   }
   add:boolean=false;
   public onEnterremark(event): void {
     debugger
     if (event.which === 13) {
-      // this.discamt.nativeElement.focus();
       // setTimeout(() => {
       this.add=true;
       this.addbutton.focus();
-    // },20);
+    // },2);
+    
     }
     
   }
 
-  // public onEnterdiscAmount(event): void {
-  //   debugger
-  //   if (event.which === 13) {
-  //     this.add=true;
-  //     this.addbutton.focus();
-  //   }
-  // }
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -474,7 +466,7 @@ this.WardId=obj.RoomId;
     this.dsPresList.data.forEach((element) => {
       let insertIP_Prescription = {};
       insertIP_Prescription['ipMedID'] = 0;
-      insertIP_Prescription['oP_IP_ID'] =  this.vAdmissionID;
+      insertIP_Prescription['oP_IP_ID'] =  this.RegId;
       insertIP_Prescription['opD_IPD_Type'] = 1;
       insertIP_Prescription['pDate'] = this.dateTimeObj.date;
       insertIP_Prescription['pTime'] = this.dateTimeObj.time;

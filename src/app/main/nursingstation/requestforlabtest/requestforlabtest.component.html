@@ -112,6 +112,15 @@
                                         </button>
                                         </mat-cell>
                                     </ng-container>
+                                    RequestId
+
+                                    <ng-container matColumnDef="RequestId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RequestId
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm >
+                                            {{contact.RequestId}}
+                                        </mat-cell>
+                                    </ng-container>
 
                                     <ng-container matColumnDef="RegNo"   >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
@@ -245,14 +254,14 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="AddedByName"  >
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedByName
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedBy
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.AddedByName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddBilingUser"  >
+                                    <ng-container matColumnDef="BillingUser"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Add Biling User
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -260,7 +269,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="BillDateTime"  >
+                                    <ng-container matColumnDef="AddedByDate"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BillDateTime
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
