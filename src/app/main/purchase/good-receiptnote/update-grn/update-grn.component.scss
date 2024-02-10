@@ -29,9 +29,9 @@ app-update-grn {
     text-align: left;
   }
   .mat-column-ConversionFactor {
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
+    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
     text-align: left;
     margin-right: 5px;
   }
@@ -103,6 +103,18 @@ app-update-grn {
     min-width: 90px;
     text-align: left;
   }
+  .mat-column-Disc2 {
+    width: 60px;
+    max-width: 60px;
+    min-width: 60px;
+    text-align: left;
+  }
+  .mat-column-DisAmount2 {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+    text-align: left;
+  }
   
   .mat-column-GST {
     width: 60px;
@@ -165,16 +177,16 @@ app-update-grn {
     text-align: left;
   }
    .mat-header-row {
-      width:1950px;
-      max-width: 1950px;
-      min-width:1950px;
+      width:2150px;
+      max-width: 2150px;
+      min-width:2150px;
       // min-height: 30px;
       // background-color: blue;
     }
 
     .mat-row {
-    width: 1950px;
-    min-width: 1950px;  
+    width: 2150px;
+    min-width: 2150px;  
     // min-height: 30px; 
     }
     }

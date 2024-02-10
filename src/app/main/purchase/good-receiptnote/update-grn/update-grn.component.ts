@@ -21,6 +21,7 @@ import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { PurchaseorderComponent } from './purchaseorder/purchaseorder.component';
+import { MatSelect } from '@angular/material/select';
 
 const moment = _rollupMoment || _moment;
 
@@ -112,6 +113,8 @@ export class UpdateGRNComponent implements OnInit {
     'TotalAmount',
     'Disc',
     'DisAmount',
+    'Disc2',
+    'DisAmount2',
     "GST",
     'GSTAmount',
     'CGST',
@@ -151,7 +154,9 @@ export class UpdateGRNComponent implements OnInit {
   Rate: any;
   TotalAmount: any;
   Disc: any = 0;
+  vDisc2:any=0;
   DisAmount: any = 0;
+  vDisAmount2:any;
   CGST: any;
   CGSTAmount: any;
   SGST: any;
@@ -353,6 +358,8 @@ export class UpdateGRNComponent implements OnInit {
         TotalAmount: this.TotalAmount || 0,
         DiscPercentage: this.Disc || '' ,
         DiscAmount: this.DisAmount || 0,
+        DiscPercentage2: this.vDisc2 || 0 ,
+        DiscAmount2: this.vDisAmount2 || 0,
         VatPercentage: this.GST || 0,
         VatAmount: this.GSTAmount || 0,
         CGSTPer: this.CGST || 0,
@@ -378,7 +385,7 @@ export class UpdateGRNComponent implements OnInit {
     this.date.setValue(new Date());
     this._GRNList.userFormGroup.get('ItemName').setValue('');
     this.NetAmount = 0;
-    // this.itemname.nativeElement.focus();
+    this.itemid.nativeElement.focus();
   }
   ItemReset(){
    this.ItemName = " ";
@@ -447,20 +454,26 @@ FinalTotalQty:any;
     let freeqty = this._GRNList.userFormGroup.get('FreeQty').value;
     this.FinalTotalQty = (parseInt(Qty) + parseInt(freeqty));
 
-    // if (Qty >= 100) {
-    //   Swal.fire("Enter Qty less than 100");
-    //   this._GRNList.userFormGroup.get('Qty').setValue('');
-    // }
-      if (this.Rate && Qty) {
+    if(Qty > 0 && this.Rate > 0){
+      if (Qty && this.Rate) {
         this.TotalAmount = (parseFloat(this.Rate) * parseInt(Qty)).toFixed(2);
         this.NetAmount = parseFloat(this.TotalAmount);
         this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
     }
+    }else{
+      this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
+      this._GRNList.userFormGroup.get('DisAmount').setValue(0);
+      this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
+      this._GRNList.userFormGroup.get('CGSTAmount').setValue(0);
+      this._GRNList.userFormGroup.get('SGSTAmount').setValue(0);
+      this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
+      this._GRNList.userFormGroup.get('NetAmount').setValue(0);
+    }
     this.calculateGSTAmount();
-     //this.ItemID.nativeElement.focus();
+    this.calculateDiscperAmount();
+   
   }
-
-
+ 
   // calculateTotalAmount() {
 
   //   debugger
@@ -496,7 +509,9 @@ FinalTotalQty:any;
       this.NetAmount = (parseFloat(this.TotalAmount) - parseFloat(this.DisAmount)).toFixed(2);
       //this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
     }
+    
     this.calculateGSTAmount();
+   
     
   }
   calculateGSTAmount() {
@@ -540,8 +555,14 @@ FinalTotalQty:any;
     let mrp = this._GRNList.userFormGroup.get('MRP').value
     if (mrp <= this.Rate) {
       Swal.fire("Enter Purchase Rate Less Than MRP");
-      this._GRNList.userFormGroup.get('Rate').setValue('');
-
+      this._GRNList.userFormGroup.get('Rate').setValue(0);
+      this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
+      this._GRNList.userFormGroup.get('DisAmount').setValue(0);
+      this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
+      this._GRNList.userFormGroup.get('CGSTAmount').setValue(0);
+      this._GRNList.userFormGroup.get('SGSTAmount').setValue(0);
+      this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
+      this._GRNList.userFormGroup.get('NetAmount').setValue(0);
     }
     //this.disc.nativeElement.focus();
   }
@@ -662,7 +683,7 @@ FinalTotalQty:any;
     this.GSTAmount = 0;
     this.MRP = obj.UnitMRP || 0;
     this.Specification = obj.Specification;
-    // }
+    this._GRNList.userFormGroup.get('Disc').setValue('');
     //this.itemname.nativeElement.focus();
     this.getLastThreeItemInfo();
   }
@@ -1021,9 +1042,9 @@ FinalTotalQty:any;
   @ViewChild('InvoiceNo1') InvoiceNo1: ElementRef;
   @ViewChild('DateOfInvoice') DateOfInvoice: ElementRef;
   @ViewChild('GateEntryNo1') GateEntryNo1: ElementRef;
-  @ViewChild('Status2') Status2: ElementRef;
-
-  @ViewChild('itemname') itemname: ElementRef;
+  @ViewChild('GSTType') GSTType: MatSelect;
+  @ViewChild('paymentdate') paymentdate: ElementRef;
+  @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('Uom') Uom: ElementRef;
   @ViewChild('hsncode') hsncode: ElementRef;
   @ViewChild('batchno') batchno: ElementRef;
@@ -1034,6 +1055,7 @@ FinalTotalQty:any;
   @ViewChild('mrp') mrp: ElementRef;
   @ViewChild('rate') rate: ElementRef;
   @ViewChild('disc') disc: ElementRef;
+  @ViewChild('disc2') disc2: ElementRef;
   @ViewChild('gst') gst: ElementRef;
   @ViewChild('cgst') cgst: ElementRef;
   @ViewChild('sgst') sgst: ElementRef;
@@ -1050,15 +1072,39 @@ FinalTotalQty:any;
   @ViewChild('RoundingAmt') RoundingAmt: ElementRef;
   @ViewChild('EwayBillNo') EwayBillNo: ElementRef;
 
+  public onEnterSupplier(event): void {
+    if (event.which === 13) {
+      this.DateOfInvoice.nativeElement.focus()
+    }
+  }
 
+  public onEnterDateOfInvoice(event): void {
+    if (event.which === 13) {
+      this.InvoiceNo1.nativeElement.focus()
+    }
+  }
 
-  // public onEnterItemName(event): void {
-  //   if (event.which === 13) {
-  //     this.hsncode.nativeElement.focus();
-  //   }
-  // }
-
-
+  public onEnterInvoiceNo(event): void {
+    if (event.which === 13) {
+      this.GateEntryNo1.nativeElement.focus()
+    }
+  }
+  public onEnterGateEntryNo(event): void {
+    if (event.which === 13) {
+      if (this.GSTType) this.GSTType.focus();
+      // this.GSTType.nativeElement.focus();
+    }
+  }
+  public onEnterGSTType(event): void {
+    if (event.which === 13) {
+      this.paymentdate.nativeElement.focus();
+    }
+  }
+  public onEnterPaymentDueDate(event): void {
+    if (event.which === 13) {
+      this.itemid.nativeElement.focus();
+    }
+  }
 
   public onEnteritemid(event): void {
     if (event.which === 13) {
@@ -1116,6 +1162,11 @@ FinalTotalQty:any;
 
   public onEnterDisc(event): void {
     if (event.which === 13) {
+      this.disc2.nativeElement.focus();
+    }
+  }
+  public onEnterDisc2(event): void {
+    if (event.which === 13) {
       this.cgst.nativeElement.focus();
     }
   }
@@ -1143,37 +1194,9 @@ FinalTotalQty:any;
       // this.cgst.nativeElement.focus();
       this.add = true;
       this.addbutton.focus();
+      this.itemid.nativeElement.focus();
     }
   }
-
-
-
-  public onEnterSupplier(event): void {
-    if (event.which === 13) {
-      this.DateOfInvoice.nativeElement.focus()
-    }
-  }
-
-  public onEnterDateOfInvoice(event): void {
-    if (event.which === 13) {
-
-      this.InvoiceNo1.nativeElement.focus()
-    }
-  }
-
-  public onEnterInvoiceNo(event): void {
-    if (event.which === 13) {
-      this.GateEntryNo.nativeElement.focus()
-    }
-  }
-
-  public onEnterGateEntryNo(event): void {
-    if (event.which === 13) {
-      this.Status2.nativeElement.focus()
-
-    }
-  }
-
 
   public onEnterRemark(event): void {
     if (event.which === 13) {
