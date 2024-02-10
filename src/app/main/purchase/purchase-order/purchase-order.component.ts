@@ -404,7 +404,7 @@ export class PurchaseOrderComponent implements OnInit {
   TotalNetAmt: any = 0;
   TOtalDiscPer: any = 0;
   TotalGSTAmt: any = 0;
-  finalamt:any=0;
+  finalamt:any;
   getPrint(el) {
 
     var m_data = {
