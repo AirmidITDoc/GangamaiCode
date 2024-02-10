@@ -50,7 +50,7 @@
                         <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
                             <!-- USER -->
                             <!-- <img [src]="user.avatar" class="avatar mr-16" [alt]="user.name" /> -->
-                            <span class="h5" style="font-size: 17px;">Patient Information</span>
+                            <span class="h5" style="font-size: 17px;">Search Information</span>
                             <!-- / USER -->
                         </div>
                         <!-- / SIDEBAR HEADER -->
@@ -78,7 +78,7 @@
 
                                         <div fxLayoutAlign="center center" appearance="outline"
                                             style="margin-bottom: 8px;margin-top: 8px;" fxFlex>
-                                            <mat-label style="padding:7px" fxFlex>Type :</mat-label>
+                                            <mat-label style="padding:1px" fxFlex>Type :</mat-label>
                                             <mat-radio-group name="Istype" formControlName="Istype" value='1' (change)="onShow($event)">
                                                 <mat-radio-button value='1'>Pending</mat-radio-button>
                                                 <mat-radio-button value='0'>Completed</mat-radio-button>
@@ -166,10 +166,10 @@
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                         style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
                                         sticky>
-                                        <span style="font-weight: bold; font-size: 14px; margin: 0 0 0px;">Lab Or Rad
+                                        <span style="font-weight: bold; font-size: 18px;">Lab Or Rad
                                             Details
                                         </span>
-                                        <div style="margin-left:1000px;">
+                                        <div style="margin-left:900px;">
                                             <button mat-raised-button color="accent" style="margin-right:10px;"
                                                 (click)="onExport('Excel')" matTooltip="Export To Excel">
                                                 <mat-icon>save_alt</mat-icon>
@@ -330,10 +330,10 @@
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
                                         style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
                                         sticky>
-                                        <h3 style="font-weight: bold; font-size: 14px; margin: 0 0 0px;">Nursing
+                                        <h3 style="font-weight: bold; font-size: 18px;">Nursing
                                             Pathology Rad Details
                                         </h3>
-                                        <div style="margin-left:900px;">
+                                        <div style="margin-left:700px;">
                                             <button mat-raised-button color="accent" style="margin-right:10px;"
                                                 (click)="onExport1('Excel')" matTooltip="Export To Excel">
                                                 <mat-icon>save_alt</mat-icon>

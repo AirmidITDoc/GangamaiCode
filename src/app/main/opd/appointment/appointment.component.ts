@@ -310,53 +310,121 @@ export class AppointmentComponent implements OnInit {
   }
 
 
+  ngOnInit(): void {
 
-  AddList(m) {
-    // var m_data = {
-    //   "chargeID": 0,
-    //   "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-    //   "opD_IPD_Type": 1,
-    //   "opD_IPD_Id": this.selectedAdvanceObj.AdmissionID,
-    //   "serviceId": m.ServiceId,
-    //   "price": m.price,// this.b_price,
-    //   "qty": m.qty || 1,// this.b_qty,
-    //   "totalAmt": 0,// this.b_totalAmount,
-    //   "concessionPercentage": 0,// this.formDiscPersc || 0,
-    //   "concessionAmount": 0,// this.b_disAmount || 0,
-    //   "netAmount": 0,// this.b_netAmount,
-    //   "doctorId": 0,// this.DoctornewId,// this.Ipbillform.get("doctorId").value || 0,
-    //   "docPercentage": 0,
-    //   "docAmt": 0,
-    //   "hospitalAmt": 0,//this.b_netAmount,
-    //   "isGenerated": 0,
-    //   "addedBy": this.accountService.currentUserValue.user.id,
-    //   "isCancelled": 0,
-    //   "isCancelledBy": 0,
-    //   "isCancelledDate": "01/01/1900",
-    //   "isPathology": 0,//this.b_isPath,
-    //   "isRadiology": 1,//this.b_isRad,
-    //   "isPackage": 0,
-    //   "packageMainChargeID": 0,
-    //   "isSelfOrCompanyService": false,
-    //   "packageId": 0,
-    //   "chargeTime": this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-    //   "classId": this.Serviceform.get("ClassId").value.ClassId
-    // }
-    // this._IpSearchListService.InsertIPAddChargesNew(m_data).subscribe(data => {
-    //   if (data) {
-    //     Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success');
-    //     this.getChargesList();
-    //   }
-    // });
-    // this.onClearServiceAddList()
+    this.personalFormGroup = this.createPesonalForm();
+    // this.personalFormGroup = this.createPesonalForm();
+    this.personalFormGroup.markAsUntouched();
+    this.VisitFormGroup = this.createVisitdetailForm();
+    this.VisitFormGroup.markAsUntouched();
+    this.searchFormGroup = this.createSearchForm();
+    this.searchFormGroup.markAsUntouched();
 
+    if (this._ActRoute.url == "/opd/appointment") {
 
-    // const toSelectDoc = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-    // this.personalFormGroup.get('CityId').setValue(toSelectCity);
+      this.menuActions.push("Update Registration");
+      this.menuActions.push("Update Consultant Doctor");
+      this.menuActions.push("Update Referred Doctor");
+      this.menuActions.push("Upload Documents");
+      this.menuActions.push("Capture Photo");
+      this.menuActions.push("Generate Patient Barcode");
 
-    // this.OnChangeDoctorList(m.DepartmentId);
-    this.isLoading = '';
+    }
+
+    this.getVisitList();
+    this.getDoctorNameCombobox();
+
+    this.getHospitalList1();
+    this.getHospitalList();
+
+    this.getPrefixList();
+    this.getPatientTypeList();
+    this.getTariffList();
+    this.getAreaList();
+    this.getMaritalStatusList();
+    this.getReligionList();
+    this.getcityList1();
+    this.getCompanyList();
+    this.getSubTPACompList();
+    this.getDepartmentList();
+    
+    this.getDoctor1List();
+    this.getDoctor2List();
+    this.getPurposeList();
+    this.OnChangeDoctorList1(this.configService.configParams.DepartmentId);
+    // this.getSearchList();
+    // this.getSearchDocuploadPatientList();
+
+    this.hospitalFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterHospital();
+      });
+
+    this.FirstName.markAsTouched();
+    this.AreaId.markAsTouched();
+
+    this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
+    );
+    
+   
+
+    this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+    );
   }
+
+
+
+  // AddList(m) {
+  //   // var m_data = {
+  //   //   "chargeID": 0,
+  //   //   "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+  //   //   "opD_IPD_Type": 1,
+  //   //   "opD_IPD_Id": this.selectedAdvanceObj.AdmissionID,
+  //   //   "serviceId": m.ServiceId,
+  //   //   "price": m.price,// this.b_price,
+  //   //   "qty": m.qty || 1,// this.b_qty,
+  //   //   "totalAmt": 0,// this.b_totalAmount,
+  //   //   "concessionPercentage": 0,// this.formDiscPersc || 0,
+  //   //   "concessionAmount": 0,// this.b_disAmount || 0,
+  //   //   "netAmount": 0,// this.b_netAmount,
+  //   //   "doctorId": 0,// this.DoctornewId,// this.Ipbillform.get("doctorId").value || 0,
+  //   //   "docPercentage": 0,
+  //   //   "docAmt": 0,
+  //   //   "hospitalAmt": 0,//this.b_netAmount,
+  //   //   "isGenerated": 0,
+  //   //   "addedBy": this.accountService.currentUserValue.user.id,
+  //   //   "isCancelled": 0,
+  //   //   "isCancelledBy": 0,
+  //   //   "isCancelledDate": "01/01/1900",
+  //   //   "isPathology": 0,//this.b_isPath,
+  //   //   "isRadiology": 1,//this.b_isRad,
+  //   //   "isPackage": 0,
+  //   //   "packageMainChargeID": 0,
+  //   //   "isSelfOrCompanyService": false,
+  //   //   "packageId": 0,
+  //   //   "chargeTime": this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+  //   //   "classId": this.Serviceform.get("ClassId").value.ClassId
+  //   // }
+  //   // this._IpSearchListService.InsertIPAddChargesNew(m_data).subscribe(data => {
+  //   //   if (data) {
+  //   //     Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success');
+  //   //     this.getChargesList();
+  //   //   }
+  //   // });
+  //   // this.onClearServiceAddList()
+
+
+  //   // const toSelectDoc = this.cityList.find(c => c.CityId == this.registerObj.CityId);
+  //   // this.personalFormGroup.get('CityId').setValue(toSelectCity);
+
+  //   // this.OnChangeDoctorList(m.DepartmentId);
+  //   this.isLoading = '';
+  // }
 
 
   onImageChange(event) {
@@ -395,7 +463,6 @@ export class AppointmentComponent implements OnInit {
     if (!event.target.files.length) return;
     const file = event.target.files[0];
 
-    
     this._matDialog.open(ImageCropComponent, { data: { file } }).afterClosed().subscribe(
 
       (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64,
@@ -403,9 +470,6 @@ export class AppointmentComponent implements OnInit {
       )
 
     );
-
-
-    
 
     if (Imgflag != " ") {
       let filesAmount = event.target.files.length;
@@ -420,72 +484,7 @@ export class AppointmentComponent implements OnInit {
       this.attachment.nativeElement.value = '';
     }
   }
-  ngOnInit(): void {
-
-    this.personalFormGroup = this.createPesonalForm();
-    // this.personalFormGroup = this.createPesonalForm();
-    this.personalFormGroup.markAsUntouched();
-    this.VisitFormGroup = this.createVisitdetailForm();
-    this.VisitFormGroup.markAsUntouched();
-    this.searchFormGroup = this.createSearchForm();
-    this.searchFormGroup.markAsUntouched();
-
-    if (this._ActRoute.url == "/opd/appointment") {
-
-      this.menuActions.push("Update Registration");
-      this.menuActions.push("Update Consultant Doctor");
-      this.menuActions.push("Update Referred Doctor");
-      this.menuActions.push("Upload Documents");
-      this.menuActions.push("Capture Photo");
-      this.menuActions.push("Generate Patient Barcode");
-
-    }
-
-    this.getVisitList();
-    this.getDoctorNameCombobox();
-
-    this.getHospitalList1();
-    this.getHospitalList();
-
-    this.getPrefixList();
-    this.getPatientTypeList();
-    this.getTariffList();
-    this.getAreaList();
-    this.getMaritalStatusList();
-    this.getReligionList();
-    this.getcityList1();
-    this.getCompanyList();
-    this.getSubTPACompList();
-    this.getDepartmentList();
-    this.getDoctor1List();
-    this.getDoctor2List();
-    this.getPurposeList();
-    this.OnChangeDoctorList1(this.configService.configParams.DepartmentId);
-    // this.getSearchList();
-    // this.getSearchDocuploadPatientList();
-
-    this.hospitalFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterHospital();
-      });
-
-    this.FirstName.markAsTouched();
-    this.AreaId.markAsTouched();
-
-    this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-    );
-    
-    this.OnChangeDoctorList1(this.configService.configParams.DepartmentId);
-    debugger
-
-    this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-    );
-  }
+ 
 
 
 
@@ -972,13 +971,13 @@ export class AppointmentComponent implements OnInit {
     
     this._opappointmentService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
-      // this.optionsDep = this.DepartmentList.slice();
-      // this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
-      //   startWith(''),
-      //   map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-      // );
+      this.optionsDep = this.DepartmentList.slice();
+      this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
+      );
       if (this.configService.configParams.DepartmentId) {
-        
+        debugger
         const ddValue = this.DepartmentList.filter(c => c.Departmentid == this.configService.configParams.DepartmentId);
         this.VisitFormGroup.get('Departmentid').setValue(ddValue[0]);
         this.OnChangeDoctorList(ddValue[0]);
@@ -2371,11 +2370,12 @@ export class AppointmentComponent implements OnInit {
     
       if (this.configService.configParams.DoctorId) {
         debugger
-        this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
-          data => {
-            this.DoctorList = data;
-          }) 
-        this.configService.configParams.DoctorId=335;
+    
+        // this._opappointmentService.getDoctorMasterCombo(this.configService.configParams.DepartmentId).subscribe(
+        //   data => {
+        //     this.DoctorList = data;
+        //   }) 
+        this.configService.configParams.DoctorId=269;
         const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
         this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
       }
@@ -2395,6 +2395,23 @@ export class AppointmentComponent implements OnInit {
         );
       })
 
+      if (this.configService.configParams.DoctorId) {
+        debugger
+        this.configService.configParams.DoctorId=269;
+        // const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
+        // this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
+        this.doctorset();
+      }
+  }
+
+  doctorset(){
+    debugger
+    this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+    );
+    const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
+    this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
   }
 
 

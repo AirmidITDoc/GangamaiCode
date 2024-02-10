@@ -26,10 +26,10 @@ export class NewPrescriptionComponent implements OnInit {
   vItemName: any;
   vQty: any;
   vRemark: any;
-  SpinLoading:boolean=false;
+  SpinLoading: boolean = false;
   myForm: FormGroup;
   searchFormGroup: FormGroup;
-  saveForm:FormGroup;
+  ItemForm: FormGroup;
   screenFromString = 'admission-form';
   ItemId: any;
 
@@ -48,7 +48,7 @@ export class NewPrescriptionComponent implements OnInit {
   Itemlist: any = [];
   PresItemlist: any = [];
   dataArray: any = [];
-  
+
   noOptionFound: boolean = false;
   isRegIdSelected: boolean = false;
   isItemIdSelected: boolean = false;
@@ -70,7 +70,7 @@ export class NewPrescriptionComponent implements OnInit {
   ItemName: any;
   BalanceQty: any;
   matDialogRef: any;
-  
+  add: boolean = false;
 
   filteredOptionsWard: Observable<string[]>;
   optionsWard: any[] = [];
@@ -97,9 +97,19 @@ export class NewPrescriptionComponent implements OnInit {
 
   createMyForm() {
     return this._FormBuilder.group({
-      RegId:'',
-      PatientName:'',
-      WardName:'',
+      RegId: '',
+      PatientName: '',
+      WardName: '',
+      StoreId: '',
+      RegID: [''],
+      Op_ip_id: ['1'],
+      AdmissionID: 0
+
+    })
+  }
+
+  createItemForm() {
+    return this._FormBuilder.group({
       ItemId: '',
       ItemName: '',
       Qty: ['', [
@@ -107,20 +117,17 @@ export class NewPrescriptionComponent implements OnInit {
         Validators.pattern("^[0-9]*$")]],
       Remark: ['', [
         Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      ]],
-      StoreId: '',
-      RegID: [''],
-      Op_ip_id: ['1'],
-      AdmissionID:0
-      
+      ]]
+
     })
   }
 
 
   ngOnInit(): void {
     this.myForm = this.createMyForm();
-    
-    
+    this.ItemForm = this.createItemForm();
+
+
     // this.getItemList();
     this.gePharStoreList();
     this.getWardList();
@@ -128,8 +135,8 @@ export class NewPrescriptionComponent implements OnInit {
     //  this.getSearchItemList();
 
   }
- 
- 
+
+
   getSearchList() {
     var m_data = {
       "Keyword": `${this.myForm.get('RegID').value}%`
@@ -148,10 +155,10 @@ export class NewPrescriptionComponent implements OnInit {
       });
     }
 
-    
+
   }
 
- 
+
 
   getOptionText(option) {
     if (!option) return '';
@@ -173,19 +180,16 @@ export class NewPrescriptionComponent implements OnInit {
     this.registerObj = row;
     this.getSelectedObj(row);
   }
-  getSelectedObjward(obj){
-this.WardId=obj.RoomId;
+  getSelectedObjward(obj) {
+    this.WardId = obj.RoomId;
   }
   getSelectedObj(obj) {
-
-
-    debugger
     this.registerObj = obj;
     // this.PatientName = obj.FirstName + '' + obj.LastName;
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' +obj.PatientName;
-    this.RegId= obj.RegID;
-    this.vAdmissionID= obj.AdmissionID
-   
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+    this.RegId = obj.RegID;
+    this.vAdmissionID = obj.AdmissionID
+
     console.log(obj);
   }
 
@@ -200,19 +204,19 @@ this.WardId=obj.RoomId;
   }
 
 
-  
-  getPrescriptionDetails(){
-    var vdata={
+
+  getPrescriptionDetails() {
+    var vdata = {
       FromDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
       ToDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
       Reg_No: this._PrescriptionService.mysearchform.get('RegNo').value || 0
     }
     // console.log(vdata);
-    this._PrescriptionService.getPrecriptionlistmain(vdata).subscribe(data =>{
-        this.dsPrePresList.data = data as PrescriptionList[];
-        // this.dsPrePresList.sort = this.sort;
-        // this.dsPrePresList.paginator = this.paginator;
-        console.log(this.dsPrePresList.data);
+    this._PrescriptionService.getPrecriptionlistmain(vdata).subscribe(data => {
+      this.dsPrePresList.data = data as PrescriptionList[];
+      // this.dsPrePresList.sort = this.sort;
+      // this.dsPrePresList.paginator = this.paginator;
+      console.log(this.dsPrePresList.data);
     })
   }
 
@@ -232,13 +236,13 @@ this.WardId=obj.RoomId;
   getSearchItemList() {
     debugger
     var m_data = {
-      "ItemName": `${this.myForm.get('ItemId').value}%`
+      "ItemName": `${this.ItemForm.get('ItemId').value}%`
       // "StoreId": this._loggedService.currentUserValue.user.storeId || 0
     }
-    if (this.myForm.get('ItemId').value.length >= 2) {
+    if (this.ItemForm.get('ItemId').value.length >= 2) {
       this._PrescriptionService.getItemlist(m_data).subscribe(data => {
         this.filteredOptionsItem = data;
-       // console.log(this.data);
+        // console.log(this.data);
         this.filteredOptionsItem = data;
         if (this.filteredOptionsItem.length == 0) {
           this.noOptionFound = true;
@@ -254,32 +258,48 @@ this.WardId=obj.RoomId;
     if (!option) return '';
     return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
-  getSelectedObjItem(obj) {
-    // this.registerObj = obj;
-    this.ItemName = obj.ItemName;
-    this.ItemId = obj.ItemId;
-    this.BalanceQty = obj.BalanceQty;
 
+
+  getSelectedObjItem(obj) {
+debugger
+    if (this.dsPresList.data.length > 0) {
+      this.dsPresList.data.forEach((element) => {
+        if (obj.ItemID == element.ItemID) {
+          Swal.fire('Selected Item already added in the list ');
+          this.ItemForm.reset();
+        }
+
+      });
+      this.ItemName = obj.ItemName;
+      this.ItemId = obj.ItemID;
+      this.BalanceQty = obj.BalanceQty;
+    }
+    else {
+      this.ItemName = obj.ItemName;
+      this.ItemId = obj.ItemID;
+      this.BalanceQty = obj.BalanceQty;
+    }
   }
 
-  
+
+
   viewgetIpprescriptionReportPdf(OP_IP_ID) {
     setTimeout(() => {
-      this.SpinLoading =true;
-    //  this.AdList=true;
-    this._PrescriptionService.getIpPrescriptionview(
-      OP_IP_ID,1
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "IP Prescription Viewer"
-          }
-        });
+      this.SpinLoading = true;
+      //  this.AdList=true;
+      this._PrescriptionService.getIpPrescriptionview(
+        OP_IP_ID, 1
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Prescription Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
           // this.AdList=false;
           this.SpinLoading = false;
@@ -288,39 +308,39 @@ this.WardId=obj.RoomId;
           // this.AdList=false;
           this.SpinLoading = false;
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
-  
+
   onAdd(event) {
-   
+
     this.dsPresList.data = [];
     this.PresItemlist.push(
       {
-        ItemID: this.myForm.get('ItemId').value.ItemID,
-        ItemName: this.myForm.get('ItemId').value.ItemName,
+        ItemID: this.ItemForm.get('ItemId').value.ItemID,
+        ItemName: this.ItemForm.get('ItemId').value.ItemName,
         Qty: this.vQty,
         Remark: this.vRemark || ''
       });
     this.dsPresList.data = this.PresItemlist
     // this.myForm.reset();
-    this.myForm.get('ItemId').reset('');
-    this.myForm.get('Qty').reset('');
-    this.myForm.get('Remark').reset('');
+    this.ItemForm.get('ItemId').reset('');
+    this.ItemForm.get('Qty').reset('');
+    this.ItemForm.get('Remark').reset('');
     this.itemid.nativeElement.focus();
-    this.add=false;
+    this.add = false;
   }
-  
+
   deleteTableRow(event, element) {
     // if (this.key == "Delete") {
-      let index = this.PresItemlist.indexOf(element);
-      if (index >= 0) {
-        this.PresItemlist.splice(index, 1);
-        this.dsPresList.data = [];
-        this.dsPresList.data = this.PresItemlist;
-      }
-      Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
+    let index = this.PresItemlist.indexOf(element);
+    if (index >= 0) {
+      this.PresItemlist.splice(index, 1);
+      this.dsPresList.data = [];
+      this.dsPresList.data = this.PresItemlist;
+    }
+    Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
 
     // }
   }
@@ -378,7 +398,7 @@ this.WardId=obj.RoomId;
   getWardList() {
     this._PrescriptionService.getWardList().subscribe(data => {
       this.WardList = data;
-      console.log(this.WardList )
+      console.log(this.WardList)
       this.optionsWard = this.WardList.slice();
       this.filteredOptionsWard = this.myForm.get('WardName').valueChanges.pipe(
         startWith(''),
@@ -388,7 +408,7 @@ this.WardId=obj.RoomId;
     });
   }
 
-  WardId:any;
+  WardId: any;
   getOptionTextWard(option) {
     debugger
     return option && option.RoomName ? option.RoomName : '';
@@ -400,36 +420,45 @@ this.WardId=obj.RoomId;
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('qty') qty: ElementRef;
   @ViewChild('remark') remark: ElementRef;
-  
+
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-  
-  
+
+
   onEnterItem(event): void {
     if (event.which === 13) {
       this.qty.nativeElement.focus();
-      
+
     }
   }
 
   public onEnterqty(event): void {
-    debugger
+    
     if (event.which === 13) {
       this.remark.nativeElement.focus();
-      
+
     }
   }
-  add:boolean=false;
+
   public onEnterremark(event): void {
-    debugger
+    
     if (event.which === 13) {
-      // setTimeout(() => {
-      this.add=true;
-      this.addbutton.focus();
-    // },2);
-    
+      // this.add = true;
+      // this.addbutton.focus();
     }
-    
+
   }
+
+  addData(){
+    this.add = true;
+      this.addbutton.focus();
+  }
+  // public onEnteradd(event): void {
+  //   debugger
+  //   if (event.which === 13) {
+  //     this.add = true;
+  //     this.addbutton.focus();
+  //   }
+  // }
 
 
   dateTimeObj: any;
@@ -450,7 +479,7 @@ this.WardId=obj.RoomId;
     let insertIP_Prescriptionarray = [];
     let insertIP_MedicalRecordArray = {};
     let deleteIP_Prescription = {};
-    
+
     deleteIP_Prescription['oP_IP_ID'] = this.vAdmissionID;
 
     submissionObj['deleteIP_Prescription'] = deleteIP_Prescription;
@@ -466,7 +495,7 @@ this.WardId=obj.RoomId;
     this.dsPresList.data.forEach((element) => {
       let insertIP_Prescription = {};
       insertIP_Prescription['ipMedID'] = 0;
-      insertIP_Prescription['oP_IP_ID'] =  this.RegId;
+      insertIP_Prescription['oP_IP_ID'] = this.RegId;
       insertIP_Prescription['opD_IPD_Type'] = 1;
       insertIP_Prescription['pDate'] = this.dateTimeObj.date;
       insertIP_Prescription['pTime'] = this.dateTimeObj.time;
@@ -481,7 +510,7 @@ this.WardId=obj.RoomId;
       insertIP_Prescription['isClosed'] = false;
       insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
       insertIP_Prescription['storeId'] = this._loggedService.currentUserValue.user.storeId;
-     debugger
+      debugger
       insertIP_Prescription['wardID'] = this.WardId// this.myForm.get('WardName').value.RoomId || 0;
       insertIP_Prescriptionarray.push(insertIP_Prescription);
     });
@@ -489,27 +518,27 @@ this.WardId=obj.RoomId;
     debugger
     console.log(submissionObj);
 
-      this._PrescriptionService.presciptionSave(submissionObj).subscribe(response => {
-        console.log(response);
-        if (response) {
-          Swal.fire('Congratulations !', 'New Prescription Saved Successfully  !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
-              this.viewgetIpprescriptionReportPdf(response);
-            }   
-          });
-        } else {
-          Swal.fire('Error !', 'Prescription Not Updated', 'error');
-        }
-        this.isLoading = '';
-      });
+    this._PrescriptionService.presciptionSave(submissionObj).subscribe(response => {
+      console.log(response);
+      if (response) {
+        Swal.fire('Congratulations !', 'New Prescription Saved Successfully  !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+            this.viewgetIpprescriptionReportPdf(response);
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Prescription Not Updated', 'error');
+      }
+      this.isLoading = '';
+    });
   }
 
 
 }
 export class PrecriptionItemList {
   ItemID: any;
-  ItemId:any;
+  ItemId: any;
   ItemName: string;
   Qty: number;
   Remark: any;
