@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import { CathLabBookingDetail } from '../cath-lab.component';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { NotificationServiceService } from 'app/core/notification-service.service';
@@ -10,9 +10,11 @@ import { OTManagementServiceService } from 'app/main/otmanagement/ot-management-
 import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { CathLabService } from '../../cath-lab.service';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-new-cath-lab',
@@ -62,10 +64,40 @@ export class NewCathLabComponent implements OnInit {
   Adm_Vit_ID: any = 0;
   OPDate:any;
   options = [];
-
+  myForm:FormGroup;
+  filteredOptions: any;
+  noOptionFound: boolean = false;
+  RegId:any;
+  vAdmissionID:any;
+  PatientListfilteredOptions:any;
+  isRegIdSelected: boolean = false;
   // @Input() panelWidth: string | number;
   // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
+
+  
+  filteredOptionSurgery: Observable<string[]>;
+  filteredOptionsSurgen1: Observable<string[]>;
+  filteredOptionsSurgeon2: Observable<string[]>;
+  filteredOptionsAnestheticsDr: Observable<string[]>;
+  filteredOptionsAnestheticsDr1: Observable<string[]>;
+  // filteredOptionsRegSearch: Observable<string[]>;
+
+
+  optionsSurgery: any[] = [];
+  optionsSurgeon1: any[] = [];
+  optionsSurgeon2: any[] = [];
+  optionsAnestheticsDr: any[] = [];
+  optionsAnestheticsDr1: any[] = [];
+
+  
+  
+  isSurgerySelected: boolean = false;
+  isSurgenSelected: boolean = false;
+  isPrefixSelected: boolean = false;
+  isCitySelected: boolean = false;
+  // isCompanySelected: boolean = false;
+  // isCompanyselected: boolean = false;
 
   screenFromString = 'registration';
   selectedPrefixId: any;
@@ -73,51 +105,24 @@ export class NewCathLabComponent implements OnInit {
   // @Input() childName: string[];
   // @Output() parentFunction: EventEmitter<any> = new EventEmitter();
   matDialogRef: any;
-
-  //doctorone filter
-  public doctoroneFilterCtrl: FormControl = new FormControl();
-  public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //doctortwo filter
-  public doctortwoFilterCtrl: FormControl = new FormControl();
-  public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-
-  //area filter
-  public AnesthDoctFilterCtrl1: FormControl = new FormControl();
-  public filteredAnesthDoctor1: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-
-  //area filter
-  public AnesthDoctFilterCtrl2: FormControl = new FormControl();
-  public filteredAnesthDoctor2: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
   private _onDestroy = new Subject<void>();
 
   constructor(
     public _OtManagementService: OTManagementServiceService,
+    public _CathLabService :CathLabService,
     private formBuilder: FormBuilder,
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
-    // public _matDialog: MatDialog,
+    public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    // public dialogRef: MatDialogRef<NewCathLabComponent>,
+    public dialogRef: MatDialogRef<NewCathLabComponent>,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private router: Router) { }
 
 
   ngOnInit(): void {
-    
+    this.myForm = this.createMyForm();
     this.personalFormGroup = this.createOtCathlabForm();
 
     if (this.data) {
@@ -129,10 +134,10 @@ export class NewCathLabComponent implements OnInit {
     }
 
 
-    this.getSergeryList();
+    this.getSurgeryList();
     this.getOttableList();
     this.getDoctorList();
-    this.getDoctor1List();
+    this.getSergeon2List();
     this.getDoctor2List();
     this.getAnesthestishDoctorList1();
     this.getAnesthestishDoctorList2();
@@ -153,43 +158,67 @@ export class NewCathLabComponent implements OnInit {
 
     }
     console.log(this.selectedAdvanceObj);
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
-
-    this.doctoroneFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctorone();
-      });
-
-    this.doctortwoFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctortwo();
-      });
-
-
-    this.AnesthDoctFilterCtrl1.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterAnesthDoctor1();
-      });
-
-    this.AnesthDoctFilterCtrl2.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterAnesthDoctor2();
-      });
-
+  
     setTimeout(function () {
 
       let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
       element.click();
 
     }, 1000);
+  }
+
+  
+  createMyForm() {
+    return this.formBuilder.group({
+      RegID: '',
+      // PatientName: '',
+      // WardName: '',
+      // StoreId: '',
+      // RegID: [''],
+      // Op_ip_id: ['1'],
+      // AdmissionID: 0
+
+    })
+  }
+
+
+
+  getSearchList() {
+    var m_data = {
+      "Keyword": `${this.myForm.get('RegID').value}%`
+    }
+    if (this.myForm.get('RegID').value.length >= 1) {
+      this._OtManagementService.getAdmittedpatientlist(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        console.log(resData)
+        this.PatientListfilteredOptions = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+
+      });
+    }
+
+
+  }
+
+  getSelectedObj(obj) {
+    this.registerObj = obj;
+    // this.PatientName = obj.FirstName + '' + obj.LastName;
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+    this.RegId = obj.RegID;
+    this.vAdmissionID = obj.AdmissionID
+
+    console.log(obj);
+  }
+
+ 
+
+  getOptionText(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
   }
 
   closeDialog() {
@@ -253,116 +282,6 @@ export class NewCathLabComponent implements OnInit {
   }
 
 
-  // doctorone filter code  
-  private filterDoctor() {
-    if (!this.DoctorList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.DoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.DoctorList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // doctorone filter code  
-  private filterDoctorone() {
-
-    if (!this.Doctor1List) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctoroneFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctorone.next(this.Doctor1List.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctorone.next(
-      this.Doctor1List.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // doctorone filter code  
-  private filterDoctortwo() {
-
-    if (!this.Doctor2List) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctortwoFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctortwo.next(this.Doctor2List.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctortwo.next(
-      this.Doctor2List.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // area filter code  
-  private filterAnesthDoctor1() {
-
-    if (!this.Anesthestishdoclist1) {
-      return;
-    }
-    // get the search keyword
-    let search = this.AnesthDoctFilterCtrl1.value;
-    if (!search) {
-      this.filteredAnesthDoctor1.next(this.Anesthestishdoclist1.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredAnesthDoctor1.next(
-      this.Anesthestishdoclist1.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-
-
-
-  // area filter code  
-  private filterAnesthDoctor2() {
-    if (!this.Anesthestishdoclist2) {
-      return;
-    }
-    // get the search keyword
-    let search = this.AnesthDoctFilterCtrl2.value;
-    if (!search) {
-      this.filteredAnesthDoctor2.next(this.Anesthestishdoclist2.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredAnesthDoctor2.next(
-      this.Anesthestishdoclist2.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-
-
-  }
   ngOnDestroys() {
     // this.isAlive = false;
   }
@@ -385,40 +304,107 @@ export class NewCathLabComponent implements OnInit {
   }
 
 
-  getSergeryList() {
+  // getSergeryList() {
+  //   this._OtManagementService.getSurgeryCombo().subscribe(data => {
+  //     this.SurgeryList = data;
+  //     console.log(data);
+  //     // this.filteredDoctor.next(this.SurgeryList.slice());
+
+  //   })
+  // }
+  getSurgeryList() {
     this._OtManagementService.getSurgeryCombo().subscribe(data => {
       this.SurgeryList = data;
-      console.log(data);
-      this.filteredDoctor.next(this.SurgeryList.slice());
+      this.optionsSurgery = this.SurgeryList.slice();
+      this.filteredOptionSurgery = this._OtManagementService.otreservationFormGroup.get('SurgeryId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSurgery(value) : this.SurgeryList.slice()),
+      );
 
-    })
+    });
+
+  }
+  private _filterSurgery(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.SurgeryName ? value.SurgeryName.toLowerCase() : value.toLowerCase();
+      return this.optionsSurgery.filter(option => option.SurgeryName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  
+  getOptionTextSurgery(option) {
+    return option && option.SurgeryName ? option.SurgeryName : '';
   }
 
 
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
-  }
+  // getAnesthestishDoctorList1() {
+  //   this._OtManagementService.getAnesthestishDoctorCombo().subscribe(data => {
+  //     this.Anesthestishdoclist1 = data;
+  //     console.log(data);
+  //     // this.filteredAnesthDoctor1.next(this.Anesthestishdoclist1.slice());
 
-
+  //   })
+  // }
 
   getAnesthestishDoctorList1() {
     this._OtManagementService.getAnesthestishDoctorCombo().subscribe(data => {
       this.Anesthestishdoclist1 = data;
-      console.log(data);
-      this.filteredAnesthDoctor1.next(this.Anesthestishdoclist1.slice());
+      this.optionsAnestheticsDr = this.Anesthestishdoclist1.slice();
+      this.filteredOptionsAnestheticsDr = this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterAnestheticsDr(value) : this.Anesthestishdoclist1.slice()),
+      );
 
-    })
+    });
+
+  }
+  private _filterAnestheticsDr(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsAnestheticsDr.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
   }
 
+  
+  getOptionTextAnestheticsDr(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
+
+
+  // getAnesthestishDoctorList2() {
+  //   this._OtManagementService.getAnesthestishDoctorCombo().subscribe(data => {
+  //     this.Anesthestishdoclist2 = data;
+  //     console.log(data);
+  //     // this.filteredAnesthDoctor2.next(this.Anesthestishdoclist2.slice());
+
+  //   })
+  // }
 
   getAnesthestishDoctorList2() {
     this._OtManagementService.getAnesthestishDoctorCombo().subscribe(data => {
       this.Anesthestishdoclist2 = data;
-      console.log(data);
-      this.filteredAnesthDoctor2.next(this.Anesthestishdoclist2.slice());
+      this.optionsAnestheticsDr1 = this.Anesthestishdoclist2.slice();
+      this.filteredOptionsAnestheticsDr1 = this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterAnestheticsDr1(value) : this.Anesthestishdoclist2.slice()),
+      );
 
-    })
+    });
+
+  }
+  private _filterAnestheticsDr1(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsAnestheticsDr.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  
+  getOptionTextAnestheticsDr1(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
   }
 
 
@@ -427,60 +413,88 @@ export class NewCathLabComponent implements OnInit {
   // }
 
 
+  // getDoctorList() {
+  //   this._OtManagementService.getDoctorMaster().subscribe(
+  //     data => {
+  //       this.DoctorList = data;
+  //       console.log(data)
+  //       // data => {
+  //       //   this.DoctorList = data;
+  //       // this.filteredDoctor.next(this.DoctorList.slice());
+  //     })
+  // }
+
+
+
   getDoctorList() {
-    this._OtManagementService.getDoctorMaster().subscribe(
-      data => {
-        this.DoctorList = data;
-        console.log(data)
-        // data => {
-        //   this.DoctorList = data;
-        this.filteredDoctor.next(this.DoctorList.slice());
-      })
+    this._OtManagementService.getDoctorMaster().subscribe(data => {
+      this.DoctorList = data;
+      this.optionsSurgeon1 = this.DoctorList.slice();
+      this.filteredOptionsSurgen1 = this._OtManagementService.otreservationFormGroup.get('SurgeonId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSurgen1(value) : this.DoctorList.slice()),
+      );
+
+    });
+
+  }
+  private _filterSurgen1(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsSurgeon1.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
   }
 
-  getDoctor1List() {
+  
+  getOptionTextSurgeon1(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
 
+
+  // getDoctor1List() {
+
+  //   this._OtManagementService.getDoctorMaster1Combo().subscribe(data => {
+  //     this.Doctor1List = data;
+  //     console.log(this.Doctor1List);
+  //     // this.filteredDoctorone.next(this.Doctor1List.slice());
+  //   })
+  // }
+
+  
+  getSergeon2List() {
     this._OtManagementService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor1List = data;
-      console.log(this.Doctor1List);
-      this.filteredDoctorone.next(this.Doctor1List.slice());
-    })
+      this.optionsSurgeon2 = this.Doctor1List.slice();
+      this.filteredOptionsSurgeon2 = this._OtManagementService.otreservationFormGroup.get('SurgeonId1').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSurgen2(value) : this.Doctor1List.slice()),
+      );
+
+    });
+
   }
+  private _filterSurgen2(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsSurgeon2.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  
+  getOptionTextSurgeon2(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
+
 
   getDoctor2List() {
     this._OtManagementService.getDoctorMaster2Combo().subscribe(data => {
       this.Doctor2List = data;
-      this.filteredDoctortwo.next(this.Doctor2List.slice())
+      // this.filteredDoctortwo.next(this.Doctor2List.slice())
     })
   }
 
-
-  searchPatientList() {
-    // const dialogRef = this._matDialog.open(IPPatientsearchComponent,
-    //   {
-    //     maxWidth: "90%",
-    //     height: "530px !important ", width: '100%',
-    //   });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   // console.log('The dialog was closed - Insert Action', result);
-    //   if (result) {
-    //     this.registerObj = result as OPIPPatientModel;
-    //     if (result) {
-    //       this.PatientName = this.registerObj.PatientName;
-    //       this.OPIP = this.registerObj.IP_OP_Number;
-    //       this.AgeYear = this.registerObj.AgeYear;
-    //       this.classname = this.registerObj.ClassName;
-    //       this.tariffname = this.registerObj.TariffName;
-    //       this.ipno = this.registerObj.IPNumber;
-    //       this.Bedname = this.registerObj.Bedname;
-    //       this.wardname = this.registerObj.WardId;
-    //       this.Adm_Vit_ID = this.registerObj.Adm_Vit_ID;
-    //     }
-    //   }
-    //   // console.log(this.registerObj);
-    // });
-  }
 
   onClose() {
     // this.dialogRef.close();
@@ -489,8 +503,65 @@ export class NewCathLabComponent implements OnInit {
   getView() { }
   
  
+  
+@ViewChild('duration') duration: ElementRef;
+@ViewChild('SurgeonId') SurgeonId: ElementRef;
+@ViewChild('SurgeonId2') SurgeonId2: ElementRef;
+@ViewChild('OTTable') OTTable: MatSelect;
+@ViewChild('AnestheticsDr') AnestheticsDr: ElementRef;
+@ViewChild('AnestheticsDr1') AnestheticsDr1: ElementRef;
+@ViewChild('AnesthType') AnesthType: ElementRef;
+@ViewChild('Instruction') Instruction: ElementRef;
 
 
+
+
+public onEnterSurgery(event): void {
+  if (event.which === 13) {
+    this.duration.nativeElement.focus();
+  }
+}
+
+public onEnterduration(event): void {
+  if (event.which === 13) {
+    this.SurgeonId.nativeElement.focus();
+  }
+}
+
+public onEnterSurgen1(event): void {
+  if (event.which === 13) {
+    this.SurgeonId2.nativeElement.focus();
+  }
+}
+public onEnterSurgen2(event): void {
+  if (event.which === 13) {
+    this.AnestheticsDr.nativeElement.focus();
+  }
+}
+
+public onEnterAnestheticsDr(event): void {
+  if (event.which === 13) {
+    
+    if(this.OTTable) this.OTTable.focus();
+    
+  }
+}
+public onEnterOTTable(event): void {
+  if (event.which === 13) {
+    this.AnestheticsDr1.nativeElement.focus();
+  }
+}
+public onEnterAnestheticsDr1(event): void {
+  if (event.which === 13) {
+    this.AnesthType.nativeElement.focus();
+  }
+}
+
+public onEnterAnesthType(event): void {
+  if (event.which === 13) {
+    this.Instruction.nativeElement.focus();
+  }
+}
 
   onSubmit() {
     debugger;
@@ -532,7 +603,7 @@ export class NewCathLabComponent implements OnInit {
         if (response) {
           Swal.fire('Congratulations !', 'OT CathLab  Data  save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              // this._matDialog.closeAll();
+              this._matDialog.closeAll();
                               
             }
           });

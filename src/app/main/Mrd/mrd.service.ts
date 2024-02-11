@@ -81,4 +81,8 @@ export class MrdService {
   public populateFormpersonal(employee){
     this.otreservationFormGroup.patchValue(employee);
   }
+
+  public getAdmittedpatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+  }
 }

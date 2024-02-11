@@ -72,7 +72,7 @@
                                         </mat-form-field>
                                         <mat-form-field appearance="outline">
                                             <mat-label>RegNo</mat-label>
-                                            <input name="Reg_No" formControlName="Reg_No" matInput placeholder="RegNo">
+                                            <input name="Reg_No" formControlName="Reg_No" matInput placeholder="RegNo" (keyup)="onShow($event)">
                                         </mat-form-field>
 
 
@@ -80,8 +80,8 @@
                                             style="margin-bottom: 8px;margin-top: 8px;" fxFlex>
                                             <mat-label style="padding:1px" fxFlex>Type :</mat-label>
                                             <mat-radio-group name="Istype" formControlName="Istype" value='1' (change)="onShow($event)">
-                                                <mat-radio-button value='1'>Pending</mat-radio-button>
-                                                <mat-radio-button value='0'>Completed</mat-radio-button>
+                                                <mat-radio-button value='1'>IP</mat-radio-button>
+                                                <mat-radio-button value='0'>OP</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
 
@@ -114,7 +114,7 @@
         
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search RegNo</mat-label>
-                                            <input name="RegNoSearch" formControlName="RegNoSearch" matInput (keyup)="onShow($event)">
+                                            <input name="RegNoSearch" formControlName="Reg_No" matInput (keyup)="onShow($event)">
                                         </mat-form-field>
 
                                         <div style="margin-top: 20px;">

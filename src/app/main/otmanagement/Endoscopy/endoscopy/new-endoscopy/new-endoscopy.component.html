@@ -35,53 +35,52 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                 <!-- <form [formGroup]="myRefundBillForm" style="width: 100%;"> -->
                 <div fxFlex.gt-sm="100%" fxFlex>
-                    <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                        <!-- ================================ LABEL HEADER  -->
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                                <h3 style="font-weight: bold; font-size: 23px; margin: 0 0 0px;">Patient Information
-                                </h3>
+                    <form [formGroup]="myForm">
+                        <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutAlign="space-between"
+                            style="align-items: baseline;">
+                            <div>
+                            <mat-form-field appearance="outline"
+                                style="width:40%;margin-left:20px; margin-right: 400px;"
+                                disabled="isRegSearchDisabled">
+                                <input type="text" name="RegID" formControlName="RegID"
+                                    placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                                    [matAutocomplete]="auto1" (input)="getSearchList()">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
+                                    (optionSelected)='getSelectedObj($event.option.value)'>
+                                    <mat-option *ngFor="let option of PatientListfilteredOptions"
+                                        [value]="option">
+                                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                        {{option.RegNo}} |
+                                        {{option.MobileNo}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error *ngIf="myForm.get('RegID').hasError('required')">
+                                    Required field cannot be left blank
+                                </mat-error>
+                            </mat-form-field>
+                             </div>
+
+                            <div>
+
+                                <span style="margin-left: 30px;font-size: large;color: rgb(4, 32, 122);">Patient
+                                    Name :{{PatientName}} <span style="margin-left: 20px;">RegId
+                                        :{{RegId}}</span><span style="margin-left: 20px;">Admission Id
+                                        :{{vAdmissionID}}</span>
+                                    <span style="margin-left: 20px;">Company Name :{{RegId}}</span>
+                                    <span style="margin-left: 20px;">Tariif :{{RegId}}</span>
+                                </span>
+
                             </div>
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
-                                style="align-items: baseline;">
 
-                                <button class="search-btn" mat-raised-button style="border-radius: 16px;"
-                                    (click)="searchPatientList()">Search
-                                    <mat-icon>search</mat-icon>
-                                </button>
-
-                                <span class="label"> Patient Name : </span>
-                                <span class="data_input">{{PatientName}}</span>
-
-                                <span class="label">Age(Y) :</span>
-                                <span class="data_input">{{AgeYear}}
-                                </span>
-
-                                <span class="label">OPIPNo :</span>
-                                <span class="data_input">{{OPIP}}</span>
-
-
-                                <span class="label">Class Name : </span>
-                                <span class="data_input">{{classname}}</span>
-
-                                <span class="label">Tariff Name : </span>
-                                <span class="data_input">{{tariffname}}
-                                </span>
-
-
-                                <span class="label">Bed Name : </span>
-                                <span class="data_input">{{Bedname}}</span>
-
-                                <span class="label">Ward Name : </span>
-                                <span class="data_input">{{wardname}}
-                                </span>
-                                <!-- <app-common-date [screenFrom]="screenFromString"
-                                    (dateTimeEventEmitter)="getDateTime($event)">
-                                </app-common-date> -->
-                            </div>
-                        </mat-card>
-                        <!-- ================================ LABEL HEADER  -->
-                    </div>
+                           
+                        </div>
+                    </form>
 
                 </div>
                 <!-- </form> -->

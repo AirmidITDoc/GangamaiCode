@@ -162,7 +162,7 @@ export class NewPrescriptionComponent implements OnInit {
 
   getOptionText(option) {
     if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+    return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
   }
 
   getOptionTextPatientName(option) {

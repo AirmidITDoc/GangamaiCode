@@ -1,7 +1,7 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { OTManagementServiceService } from '../../ot-management-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -9,10 +9,11 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Requestlist } from '../ot-request.component';
 import { fuseAnimations } from '@fuse/animations';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-new-request',
@@ -22,7 +23,7 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations
 })
 export class NewRequestComponent implements OnInit {
-
+  myForm:FormGroup;
   personalFormGroup: FormGroup;
   isAlive = false;
   savedValue: number = null;
@@ -63,6 +64,34 @@ export class NewRequestComponent implements OnInit {
   Adm_Vit_ID: any = 0;
   DepartmentList: any = [];
   options = [];
+  filteredOptions: any;
+  noOptionFound: boolean = false;
+  RegId:any;
+  vAdmissionID:any;
+  PatientListfilteredOptions:any;
+  isRegIdSelected: boolean = false;
+
+  
+  filteredOptionautoDepartment: Observable<string[]>;
+  filteredOptionsSurgeryCategory: Observable<string[]>;
+  filteredOptionsSurgeon: Observable<string[]>;
+  filteredOptionsSurgeon2: Observable<string[]>;
+  filteredOptionsSite: Observable<string[]>;
+  filteredOptionsSurgery: Observable<string[]>;
+  filteredOptionsRegSearch: Observable<string[]>;
+
+
+  optionsDepartment: any[] = [];
+  optionsSurgeryCategory: any[] = [];
+  optionsSurgeon: any[] = [];
+  optionsSurgeon2: any[] = [];
+  optionsSite: any[] = [];
+  optionsSurgery: any[] = [];
+  // optionsSurgery: any[] = [];
+  
+  
+  isSurgerySelected: boolean = false;
+
 
   // @Input() panelWidth: string | number;
   // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
@@ -75,47 +104,14 @@ export class NewRequestComponent implements OnInit {
   // @Output() parentFunction: EventEmitter<any> = new EventEmitter();
   matDialogRef: any;
 
-  //doctorone filter
-  public doctoroneFilterCtrl: FormControl = new FormControl();
-  public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //doctorone filter
-  public surgeryFilterCtrl: FormControl = new FormControl();
-  public filteredsurgery: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //doctortwo filter
-  public doctortwoFilterCtrl: FormControl = new FormControl();
-  public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-
-  //Category filter
-  public CategoryFilterCtrl1: FormControl = new FormControl();
-  public filteredCategory: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-
-  //Site filter
-  public SitetFilterCtrl: FormControl = new FormControl();
-  public filteredSite: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  public departmentFilterCtrl: FormControl = new FormControl();
-  public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
+  
   private _onDestroy = new Subject<void>();
 
   constructor(
     public _OtManagementService: OTManagementServiceService,
     private formBuilder: FormBuilder,
     private accountService: AuthenticationService,
-    public notification: NotificationServiceService,
+    // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewRequestComponent>,
@@ -125,8 +121,8 @@ export class NewRequestComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.myForm = this.createMyForm();
     
-    debugger;
     this.personalFormGroup = this.createOtrequestForm();
     if (this.data) {
 
@@ -162,57 +158,25 @@ export class NewRequestComponent implements OnInit {
     console.log(this.Today);
 
 
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
-
-    this.SitetFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterSite();
-      });
-
-    this.doctortwoFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctortwo();
-      });
-
-
-    this.CategoryFilterCtrl1.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterCategory();
-      });
-
-    this.surgeryFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterSurgery();
-      });
-
-    
 
      
-    this.departmentFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(serviceData => {
-        if (serviceData && this.isLoading) {
-          this.filteredDepartment = serviceData.filteredDepartment === null ? [] : serviceData.filteredDepartment;
-          this.isLoadings = false;
-          if (this.filteredDepartment && this.filteredDepartment && this.savedValue !== null && this.filteredDepartment) {
-            this.departmentFilterCtrl.setValue(this.savedValue);
-          }
-          if (serviceData.error) {
-            this.departmentFilterCtrl.setValue(this.savedValue);
-            this.departmentFilterCtrl.setErrors({ 'serviceFail': serviceData.error });
+    // this.departmentFilterCtrl.valueChanges
+    //   .pipe(takeUntil(this._onDestroy))
+    //   .subscribe(serviceData => {
+    //     if (serviceData && this.isLoading) {
+    //       this.filteredDepartment = serviceData.filteredDepartment === null ? [] : serviceData.filteredDepartment;
+    //       this.isLoadings = false;
+    //       if (this.filteredDepartment && this.filteredDepartment && this.savedValue !== null && this.filteredDepartment) {
+    //         this.departmentFilterCtrl.setValue(this.savedValue);
+    //       }
+    //       if (serviceData.error) {
+    //         this.departmentFilterCtrl.setValue(this.savedValue);
+    //         this.departmentFilterCtrl.setErrors({ 'serviceFail': serviceData.error });
 
-          }
-        }
-        this.filterDepartment();
-      });
+    //       }
+    //     }
+    //     this.filterDepartment();
+    //   });
 
       
     
@@ -224,6 +188,21 @@ export class NewRequestComponent implements OnInit {
       }, 1000);
     
   }
+
+   
+  createMyForm() {
+    return this.formBuilder.group({
+      RegID: '',
+      // PatientName: '',
+      // WardName: '',
+      // StoreId: '',
+      // RegID: [''],
+      // Op_ip_id: ['1'],
+      // AdmissionID: 0
+
+    })
+  }
+
 
   closeDialog() {
     console.log("closed")
@@ -251,176 +230,60 @@ export class NewRequestComponent implements OnInit {
     });
   }
 
-  private filterDepartment() {
-    // debugger;
+  
+  getSearchList() {
+    var m_data = {
+      "Keyword": `${this.myForm.get('RegID').value}%`
+    }
+    if (this.myForm.get('RegID').value.length >= 1) {
+      this._OtManagementService.getAdmittedpatientlist(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        this.PatientListfilteredOptions = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
 
-    if (!this.DepartmentList) {
-      return;
+      });
     }
-    // get the search keyword
-    let search = this.departmentFilterCtrl.value;
-    if (!search) {
-      this.filteredDepartment.next(this.DepartmentList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDepartment.next(
-      this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
-    );
+
 
   }
 
+  getSelectedObj(obj) {
+    this.registerObj = obj;
+    // this.PatientName = obj.FirstName + '' + obj.LastName;
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+    this.RegId = obj.RegID;
+    this.vAdmissionID = obj.AdmissionID
 
-  openChanged(event) {
-    this.isOpen = event;
-    this.isLoading = event;
-    if (event) {
-      this.savedValue = this.departmentFilterCtrl.value;
-      this.options = [];
-      this.departmentFilterCtrl.reset();
-      this._OtManagementService.getDepartmentCombo();
-    }
+    console.log(obj);
   }
 
-  // doctorone filter code  
-  private filterDoctor() {
-    if (!this.DoctorList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.DoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
-    );
+ 
+
+  getOptionText(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
   }
 
+ 
 
-
-
-  // filterSurgery filter code  
-  private filterSurgery() {
-    if (!this.SurgeryList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.surgeryFilterCtrl.value;
-    if (!search) {
-      this.filteredsurgery.next(this.SurgeryList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredsurgery.next(
-      this.SurgeryList.filter(bank => bank.SurgeryName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  // doctorone filter code  
-  private filterDoctorone() {
-
-    if (!this.Doctor1List) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctoroneFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctorone.next(this.Doctor1List.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctorone.next(
-      this.Doctor1List.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // doctorone filter code  
-  private filterDoctortwo() {
-
-    if (!this.Doctor2List) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctortwoFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctortwo.next(this.Doctor2List.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctortwo.next(
-      this.Doctor2List.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // area filter code  
-  private filterCategory() {
-
-    if (!this.CategoryList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.CategoryFilterCtrl1.value;
-    if (!search) {
-      this.filteredCategory.next(this.CategoryList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCategory.next(
-      this.CategoryList.filter(bank => bank.SurgeryCategoryName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-
-
-
-  // Site filter code  
-  private filterSite() {
-    if (!this.Sitelist) {
-      return;
-    }
-    // get the search keyword
-    let search = this.SitetFilterCtrl.value;
-    if (!search) {
-      this.filteredSite.next(this.Sitelist.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredSite.next(
-      this.Sitelist.filter(bank => bank.SiteDescriptionName.toLowerCase().indexOf(search) > -1)
-    );
-
-
-  }
+  // openChanged(event) {
+  //   this.isOpen = event;
+  //   this.isLoading = event;
+  //   if (event) {
+  //     this.savedValue = this.departmentFilterCtrl.value;
+  //     this.options = [];
+  //     this.departmentFilterCtrl.reset();
+  //     this._OtManagementService.getDepartmentCombo();
+  //   }
+  // }
 
 
   setDropdownObjs1() {
-    debugger;
+    
 
     this._OtManagementService.populateFormpersonal(this.registerObj1);
 
@@ -468,122 +331,283 @@ export class NewRequestComponent implements OnInit {
   }
 
 
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
-  }
+  // getOptionText(option) {
+  //   if (!option) return '';
+  //   return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
+  // }
 
 
+
+  // getCategoryList() {
+  //   this._OtManagementService.getCategoryCombo().subscribe(data => {
+  //     this.CategoryList = data;
+  //     console.log(data);
+  //     this.filteredCategory.next(this.CategoryList.slice());
+
+  //   })
+  // }
 
   getCategoryList() {
+    debugger
     this._OtManagementService.getCategoryCombo().subscribe(data => {
       this.CategoryList = data;
-      console.log(data);
-      this.filteredCategory.next(this.CategoryList.slice());
+      this.optionsSurgeryCategory = this.CategoryList.slice();
+      this.filteredOptionsSurgeryCategory = this._OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSurgeryCategory(value) : this.CategoryList.slice()),
+      );
 
-    })
+    });
+
   }
+  private _filterSurgeryCategory(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.SurgeryCategoryName ? value.SurgeryCategoryName.toLowerCase() : value.toLowerCase();
+      return this.optionsSurgeryCategory.filter(option => option.SurgeryCategoryName.toLowerCase().includes(filterValue));
+    }
 
+  }
+  
+  
+  getOptionTextautoSurgeryCategory(option) {
+    return option && option.SurgeryCategoryName ? option.SurgeryCategoryName : '';
+  }
+  // getSurgeryList() {
+  //   this._OtManagementService.getSurgeryCombo().subscribe(data => {
+  //     this.SurgeryList = data;
+  //     console.log(data);
+  //     this.filteredsurgery.next(this.SurgeryList.slice());
+
+  //   })
+  // }
 
   getSurgeryList() {
+    debugger
     this._OtManagementService.getSurgeryCombo().subscribe(data => {
       this.SurgeryList = data;
-      console.log(data);
-      this.filteredsurgery.next(this.SurgeryList.slice());
+      this.optionsSurgery = this.SurgeryList.slice();
+      this.filteredOptionsSurgery = this._OtManagementService.otreservationFormGroup.get('SurgeryId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this.Surgery(value) : this.SurgeryList.slice()),
+      );
 
-    })
+    });
+
   }
+  private Surgery(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.SurgeryName ? value.SurgeryName.toLowerCase() : value.toLowerCase();
+      return this.optionsSurgery.filter(option => option.SurgeryName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+
+  getOptionTextautoSurgery(option) {
+    return option && option.SurgeryName ? option.SurgeryName : '';
+  }
+
+  // getSiteList() {
+  //   // 
+  //  var m_data = {
+  //     "Id": 1
+  //   }
+  //   this._OtManagementService.getSiteCombo().subscribe(data => {
+  //     this.Sitelist = data;
+  //     console.log(data);
+  //     this.filteredSite.next(this.Sitelist.slice());
+
+  //   })
+  // }
+
 
   getSiteList() {
-    // debugger;
-   var m_data = {
-      "Id": 1
-    }
+    var m_data = {
+          "Id": 1
+        }
     this._OtManagementService.getSiteCombo().subscribe(data => {
       this.Sitelist = data;
-      console.log(data);
-      this.filteredSite.next(this.Sitelist.slice());
+      this.optionsSite = this.Sitelist.slice();
+      this.filteredOptionsSite = this._OtManagementService.otreservationFormGroup.get('SiteDescId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._Site(value) : this.Sitelist.slice()),
+      );
 
-    })
+    });
+
+  }
+  private _Site(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.SiteDescriptionName ? value.SiteDescriptionName.toLowerCase() : value.toLowerCase();
+      return this.optionsSite.filter(option => option.SiteDescriptionName.toLowerCase().includes(filterValue));
+    }
+
   }
 
+  
+  getOptionTextautoSiteDesc(option) {
+    return option && option.SiteDescriptionName ? option.SiteDescriptionName : '';
+  }
 
   // getDoctor1List() {
   //   this._registerService.getDoctorMaster1Combo().subscribe(data => { this.Doctor1List = data; })
   // }
 
 
+  // getDoctorList() {
+  //   this._OtManagementService.getDoctorMaster().subscribe(
+  //     data => {
+  //       this.DoctorList = data;
+  //       console.log(data)
+  //       // data => {
+  //       //   this.DoctorList = data;
+  //       // this.filteredDoctor.next(this.DoctorList.slice());
+  //     })
+  // }
+
+  // getDepartmentList() {
+  //   let cData = this._OtManagementService.getDepartmentCombo().subscribe(data => {
+  //     this.DepartmentList = data;
+  //     console.log(this.DepartmentList);
+  //     this.filteredDepartment.next(this.DepartmentList.slice());
+  //   });
+  // }
+
   getDoctorList() {
-    this._OtManagementService.getDoctorMaster().subscribe(
-      data => {
-        this.DoctorList = data;
-        console.log(data)
-        // data => {
-        //   this.DoctorList = data;
-        this.filteredDoctor.next(this.DoctorList.slice());
-      })
+    debugger
+    this._OtManagementService.getDoctorMaster().subscribe(data => {
+      this.DoctorList = data;
+      this.optionsSurgeon = this.DoctorList.slice();
+      this.filteredOptionsSurgeon = this._OtManagementService.otreservationFormGroup.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoctor(value) : this.DoctorList.slice()),
+      );
+
+    });
+
+  }
+
+
+  private _filterDoctor(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsSurgeon.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  
+  getOptionTextautoSurgeonName(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
   }
 
   getDepartmentList() {
-    let cData = this._OtManagementService.getDepartmentCombo().subscribe(data => {
+    this._OtManagementService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
-      console.log(this.DepartmentList);
-      this.filteredDepartment.next(this.DepartmentList.slice());
+      this.optionsDepartment = this.DepartmentList.slice();
+      this.filteredOptionautoDepartment = this._OtManagementService.otreservationFormGroup.get('DepartmentId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDepartment(value) : this.DepartmentList.slice()),
+      );
+
     });
+
   }
 
+
+  private _filterDepartment(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
+      return this.optionsDepartment.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  
+  getOptionTextautoDepartment(option) {
+    return option && option.departmentName ? option.departmentName : '';
+  }
   getDoctor1List() {
 
     this._OtManagementService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor1List = data;
       console.log(this.Doctor1List);
-      this.filteredDoctorone.next(this.Doctor1List.slice());
+      // this.filteredDoctorone.next(this.Doctor1List.slice());
     })
   }
 
   getDoctor2List() {
     this._OtManagementService.getDoctorMaster2Combo().subscribe(data => {
       this.Doctor2List = data;
-      this.filteredDoctortwo.next(this.Doctor2List.slice())
+      // this.filteredDoctortwo.next(this.Doctor2List.slice())
     })
   }
 
-
-  searchPatientList() {
-    // const dialogRef = this._matDialog.open(IPPatientsearchComponent,
-    //   {
-    //     maxWidth: "90%",
-    //     height: "530px !important ", width: '100%',
-    //   });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   // console.log('The dialog was closed - Insert Action', result);
-    //   if (result) {
-    //     this.registerObj = result as OPIPPatientModel;
-    //     if (result) {
-    //       this.PatientName = this.registerObj.PatientName;
-    //       this.OPIP = this.registerObj.IP_OP_Number;
-    //       this.AgeYear = this.registerObj.AgeYear;
-    //       this.classname = this.registerObj.ClassName;
-    //       this.tariffname = this.registerObj.TariffName;
-    //       this.ipno = this.registerObj.IPNumber;
-    //       this.Bedname = this.registerObj.Bedname;
-    //       this.wardname = this.registerObj.WardId;
-    //       this.Adm_Vit_ID = this.registerObj.Adm_Vit_ID;
-    //     }
-    //   }
-    //   // console.log(this.registerObj);
-    // });
+ 
+  
+  @ViewChild('SurgeryCategory') SurgeryCategory: ElementRef;
+  @ViewChild('SurgeonId1') SurgeonId1: ElementRef;
+  @ViewChild('Site') Site: ElementRef;
+  @ViewChild('OTTable') OTTable: MatSelect;
+  @ViewChild('SurgeonName') SurgeonName: ElementRef;
+  @ViewChild('SurgeryId') SurgeryId: ElementRef;
+  @ViewChild('AnesthType') AnesthType: ElementRef;
+  @ViewChild('Instruction') Instruction: ElementRef;
+  
+  
+  
+  
+  public onEnterDepartmentId(event): void {
+    if (event.which === 13) {
+      this.SurgeryCategory.nativeElement.focus();
+    }
   }
-
+  
+  public onEnterSurgeryCategory(event): void {
+    if (event.which === 13) {
+      this.SurgeonId1.nativeElement.focus();
+    }
+  }
+  
+  public onEnterSystem(event): void {
+    if (event.which === 13) {
+      this.Site.nativeElement.focus();
+    }
+  }
+  public onEnterSite(event): void {
+    if (event.which === 13) {
+      this.SurgeonName.nativeElement.focus();
+    }
+  }
+  
+  public onEnterSurgeonName(event): void {
+    if (event.which === 13) {
+      this.SurgeryId.nativeElement.focus();
+      
+    }
+  }
+  
+  // public onEnterSurgeryId(event): void {
+  //   if (event.which === 13) {
+  //     this.SurgeonName.nativeElement.focus();
+  //   }
+  // }
+  
+  // public onEnterSurgeonName(event): void {
+  //   if (event.which === 13) {
+  //     this.SurgeonName.nativeElement.focus();
+      
+  //   }
+  // }
+  
   OnChangeDoctorList(departmentObj) {
-    // debugger;
+    // 
     console.log("departmentObj", departmentObj)
     this._OtManagementService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
         this.DoctorList = data;
         console.log(this.DoctorList);
-        this.filteredDoctor.next(this.DoctorList.slice());
+        // this.filteredDoctor.next(this.DoctorList.slice());
       })
   }
 
@@ -593,11 +617,11 @@ export class NewRequestComponent implements OnInit {
 
 
   onSubmit() {
-    debugger;
+    
     let otBookingID = this.registerObj1.OTBookingId;
 
     this.isLoading = 'submit';
-    debugger;
+    
     // if (this.Adm_Vit_ID)
       if (!otBookingID) {
         var m_data = {
@@ -636,7 +660,7 @@ export class NewRequestComponent implements OnInit {
         });
       }
       else {
-        debugger;
+        
         var m_data1 = {
           "otTableRequestUpdate": {
             "OTBookingID": otBookingID || 0,

@@ -87,7 +87,6 @@ const routes: Routes = [
     NgxMatSelectSearchModule,
     MatBadgeModule,
     MatSelectModule,
-    MatSelectModule,
     MatChipsModule,
     // NgMultiSelectDropDownModule.forRoot(),
     MatTooltipModule
