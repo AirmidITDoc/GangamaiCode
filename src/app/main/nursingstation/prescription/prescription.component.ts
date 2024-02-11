@@ -30,17 +30,6 @@ export class PrescriptionComponent implements OnInit {
   SpinLoading:boolean=false;
   PType:any;
   displayedColumns: string[] = [
-    // 'action',
-    // 'RegNo',
-    // 'PatientName',
-    // 'Vst_Adm_Date',
-    
-    // 'StoreName',
-    // 'PreNo',
-    // 'PTime',
-    // 'Date',
-
-
     'action',
     'RegNo',
     'PatientName',
@@ -91,8 +80,9 @@ export class PrescriptionComponent implements OnInit {
   //window
   OpenNewPrescription(){
     this.dialog.open(NewPrescriptionComponent,{
-      maxWidth: "90%",
-      height: '695px !important',
+      height: '95%',
+      width: '95%'
+      //height: '695px !important',
     })
   }
 

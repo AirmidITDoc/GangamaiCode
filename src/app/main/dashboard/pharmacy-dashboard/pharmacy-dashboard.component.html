@@ -44,63 +44,193 @@
                 <!-- </mat-card> -->
             </form>
         </div>
-        <!-- 
-            m_PharCollectionSummaryDashboard && m_pharlast3MonthSalesSummaryDashboard
-         -->
-        <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="20px grid">
-            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                <mat-card class="chart-card">
-                    <mat-card-header>
-                        <div class="card-hearder">
-                            <mat-card-title>Static</mat-card-title>
-                            <mat-form-field>
-                                <mat-select [(value)]="selectedStatic" (selectionChange)="onChangeStatic($event)">
-                                    <mat-option *ngFor="let option of staticOptions" [value]="option.value">
-                                        {{ option.viewValue }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-card-content>
-                        <mat-spinner *ngIf="sIsLoading === 'loading-data'"></mat-spinner>
-                        <div fxLayout="row" fxLayoutAlign="space-between">
-                            <ngx-charts-pie-chart [view]="StaticChartConfig.view"
-                                [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data"
-                                [gradient]="StaticChartConfig.gradient" [legend]="StaticChartConfig.showLegend"
-                                [legendPosition]="StaticChartConfig.legendPosition"
-                                [labels]="StaticChartConfig.showLabels" [doughnut]="StaticChartConfig.isDoughnut">
-                            </ngx-charts-pie-chart>
-                        </div>
-                        <div *ngIf="sIsLoading === 'noPharSumData'">
-                            <h3>No Data</h3>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
 
-            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                <mat-card class="chart-card">
-                    <mat-card-header>
-                        <div class="card-hearder">
-                            <mat-card-title>3 Months Sales Summary Data</mat-card-title>
-                            <!-- <mat-form-field>
+        <div class="content" dynamicHeight>
+            <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                [@animateStagger]="{value:'50'}">
+
+                <!-- WIDGET 2 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-xs="50" fxFlex.gt-md="20" *ngFor="let element of dashCardsData">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <!-- <div class="h3">{{widgets.widget2.title}}</div> -->
+                            <div class="h3">{{element.Title}}</div>
+
+                            <!-- <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button" aria-label="more">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button> -->
+                        </div>
+
+                        <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                            <div
+                                [ngClass]="element.Title == 'Total Summary' ? 'orange-fg red-fg font-size-50 line-height-50' : 'blue-grey-fg red-fg font-size-50 line-height-50'">
+                                <!-- {{widgets.widget2.data.count}} -->
+                                {{element.count}}
+                            </div>
+                            <div class="h3 secondary-text font-weight-500">
+                                <!-- {{widgets.widget2.data.label}} -->
+                                {{element.label}}
+                            </div>
+                        </div>
+
+                        <div class="py-8 mh-16 border-top" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                            <div class="py-8 border-right" fxLayout="column" fxLayoutAlign="start center" fxFlex="100"
+                                fxFlex.gt-sm="50">
+                                <span class="h4 secondary-text text-truncate">
+                                    {{element.SelfLbl}}
+                                </span>
+                                <span class="h4 ml-8">
+                                    {{element.SelfCnt}}
+                                </span>
+                            </div>
+
+                            <div class="py-8" fxLayout="column" fxLayoutAlign="start center" fxFlex="100"
+                                fxFlex.gt-sm="50">
+                                <span class="h4 secondary-text text-truncate">
+                                    {{element.CompanyLbl}}
+                                </span>
+                                <span class="h4 ml-8">
+                                    {{element.CompayCnt}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Front -->
+
+                    <!-- Back -->
+                    <div class="fuse-widget-back p-16 pt-32">
+                        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                            aria-label="Flip widget">
+                            <mat-icon class="s-16">close</mat-icon>
+                        </button>
+
+                        <!-- <div>
+                                    {{widgets.widget2.detail}}
+                                </div> -->
+                    </div>
+                    <!-- / Back -->
+
+                </fuse-widget>
+                <!-- / WIDGET 2 -->
+
+            </div>
+        </div>
+        <div class="content" dynamicHeight>
+            <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                [@animateStagger]="{value:'50'}">
+                <!-- m_PharCollectionSummaryDashboard && m_pharlast3MonthSalesSummaryDashboard -->
+                <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="20px grid">
+                    <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="60%">
+                        <mat-card class="chart-card">
+                            <mat-card-header>
+                                <div class="card-hearder">
+                                    <mat-card-title>3 Months Sales Summary Data</mat-card-title>
+                                    <!-- <mat-form-field>
                                 <mat-select [(value)]="selectedStatic" (selectionChange)="onChangeStatic($event)">
                                   <mat-option *ngFor="let option of staticOptions" [value]="option.value">
                                     {{ option.viewValue }}
                                   </mat-option>
                                 </mat-select>
                               </mat-form-field> -->
+
+                                    <form [formGroup]="_DashboardService.UseFrom">
+
+                                        <mat-form-field>
+                                            <!-- <mat-label style="color: white;">Select Store</mat-label> -->
+                                            <mat-select formControlName="StoreId" name="StoreId"
+                                                (selectionChange)="onChangeStore()">
+                                                <mat-option></mat-option>
+                                                <mat-option *ngFor="let m of PharmStoreList" [value]="m">
+                                                    {{m.StoreName}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>&nbsp;&nbsp;
+                                        <!-- </mat-card>&nbsp;&nbsp; -->
+                                    </form>
+                                </div>
+                            </mat-card-header>
+                            <hr>
+                            <mat-card-content>
+                                <div *ngIf="ThreeMonSalesConfig.data.length > 0||ThreeMonSalesConfig.multi.length > 0">
+                                    <!-- <canvas baseChart [datasets]="threeMonSalesData" [labels]="threeMonSalesLabels"
+                                [options]="barChartOptions" [legend]="barChartLegend"
+                                [chartType]="barChartType">
+                            </canvas> -->
+                                    <ngx-charts-bar-vertical-2d [view]="ThreeMonSalesConfig.view"
+                                        [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.multi"
+                                        [gradient]="ThreeMonSalesConfig.gradient"
+                                        [xAxis]="ThreeMonSalesConfig.showXAxis" [yAxis]="ThreeMonSalesConfig.showYAxis"
+                                        [legend]="ThreeMonSalesConfig.showLegend"
+                                        [showXAxisLabel]="ThreeMonSalesConfig.showXAxisLabel"
+                                        [showYAxisLabel]="ThreeMonSalesConfig.showYAxisLabel"
+                                        [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel"
+                                        [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel"
+                                        [legendTitle]="ThreeMonSalesConfig.legendTitle"
+                                        *ngIf="ThreeMonSalesConfig.multi.length>0">
+                                    </ngx-charts-bar-vertical-2d>
+                                    <ngx-charts-bar-vertical [view]="ThreeMonSalesConfig.view"
+                                        [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.data"
+                                        [gradient]="ThreeMonSalesConfig.gradient"
+                                        [xAxis]="ThreeMonSalesConfig.showXAxis" [yAxis]="ThreeMonSalesConfig.showYAxis"
+                                        [legend]="ThreeMonSalesConfig.showLegend" [showXAxisLabel]="showXAxisLabel"
+                                        [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel"
+                                        [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel"
+                                        [showGridLines]="ThreeMonSalesConfig.True"
+                                        [showDataLabel]="ThreeMonSalesConfig.True"
+                                        *ngIf="ThreeMonSalesConfig.data.length>0">
+                                    </ngx-charts-bar-vertical>
+                                </div>
+                                <!-- <canvas id="pharSumBarChart" style="width: 100%;"></canvas> -->
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="40%">
+                        <mat-card class="chart-card">
+                            <mat-card-header>
+                                <div class="card-hearder">
+                                    <mat-card-title>Static</mat-card-title>
+                                    <mat-form-field>
+                                        <mat-select [(value)]="selectedStatic"
+                                            (selectionChange)="onChangeStatic($event)">
+                                            <mat-option *ngFor="let option of staticOptions" [value]="option.value">
+                                                {{ option.viewValue }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </mat-card-header>
+                            <hr>
+                            <mat-card-content>
+                                <mat-spinner *ngIf="sIsLoading === 'loading-data'"></mat-spinner>
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <ngx-charts-pie-chart [view]="StaticChartConfig.view"
+                                        [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data"
+                                        [gradient]="StaticChartConfig.gradient" [legend]="StaticChartConfig.showLegend"
+                                        [legendPosition]="StaticChartConfig.legendPosition"
+                                        [labels]="StaticChartConfig.showLabels"
+                                        [doughnut]="StaticChartConfig.isDoughnut">
+                                    </ngx-charts-pie-chart>
+                                </div>
+                                <div *ngIf="sIsLoading === 'noPharSumData'">
+                                    <h3>No Data</h3>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                <mat-card class="chart-card">
+                    <mat-card-header>
+                        <div class="card-hearder">
+                            <mat-card-title>3 Months Sales Summary Data</mat-card-title>
                         </div>
                     </mat-card-header>
                     <hr>
                     <mat-card-content>
                         <div *ngIf="ThreeMonSalesConfig.data.length > 0||ThreeMonSalesConfig.multi.length > 0">
-                            <!-- <canvas baseChart [datasets]="threeMonSalesData" [labels]="threeMonSalesLabels"
-                                [options]="barChartOptions" [legend]="barChartLegend"
-                                [chartType]="barChartType">
-                            </canvas> -->
                             <ngx-charts-bar-vertical-2d [view]="ThreeMonSalesConfig.view"
                                 [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.multi"
                                 [gradient]="ThreeMonSalesConfig.gradient" [xAxis]="ThreeMonSalesConfig.showXAxis"
@@ -122,17 +252,234 @@
                                 *ngIf="ThreeMonSalesConfig.data.length>0">
                             </ngx-charts-bar-vertical>
                         </div>
-                        <!-- <canvas id="pharSumBarChart" style="width: 100%;"></canvas> -->
                     </mat-card-content>
                 </mat-card>
+            </div> -->
+
+                </div>
             </div>
-
         </div>
+        <!-- CONTENT -->
+        <div class="content" dynamicHeight>
+            <!-- New Table -->
+            <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                [@animateStagger]="{value:'50'}">
+                <!-- --pieChart Collection Summary -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-sm="60">
+                    <div class="fuse-widget-front">
 
+                        <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3"> Collection Summary</div>
+                            <mat-form-field style="width: 184px;">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [formGroup]="rangeFormGroup" [rangePicker]="picker">
+                                    <input matStartDate placeholder="Start date" formControlName="startDate" readonly>
+                                    <input matEndDate placeholder="End date" formControlName="endDate"
+                                        (dateChange)="onDateChange($event)" readonly>
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="table-container">
+                            <mat-table #table matSort [dataSource]="dataSourceTable" [@animateStagger]="{value:'50'}"
+                                style="overflow:auto; ">
+
+                                <ng-container matColumnDef="StoreName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Store Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm >
+                                        {{contact.StoreName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CollectionAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CollectionAmount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.CollectionAmount | currency:'INR'}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="RefundAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.RefundAmount | currency:'INR'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="NetAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>NetAmount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.NetAmount | currency:'INR'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="BillCount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BillCount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.BillCount}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        <mat-spinner [color]="blue" [diameter]="20"></mat-spinner>
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dataSourceTable!=null && dataSourceTable.data.length==0)}">
+                                </mat-footer-row>
+                            </mat-table>
+                        </div>
+                    </div>
+                </fuse-widget>
+                <!-- Phar Current Stock Value Summary -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-sm="33">
+                    <div class="fuse-widget-front">
+
+                        <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">Current Value Summary</div>
+                            <!-- <mat-form-field>
+                                <mat-select class="simplified" [(ngModel)]="pieChartCurStkData.currentRange"
+                                    (selectionChange)="onSelectPieOptionOP($event.value)" aria-label="Change range">
+                                    <mat-option *ngFor="let range of pieChartMaster | keys" [value]="range.key">
+                                        {{range.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+                            <form [formGroup]="_DashboardService.UseFrom">
+                                <mat-form-field>
+                                    <mat-select formControlName="StoreId" name="StoreId"
+                                        (selectionChange)="onChangeStore()">
+                                        <mat-option></mat-option>
+                                        <mat-option *ngFor="let m of PharmStoreList" [value]="m">
+                                            {{m.StoreName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </form>
+                        </div>
+
+                        <div class="h-400">
+                            <div #containerRef1 *ngIf="DashChartCurStk.length > 0">
+                                <ngx-charts-pie-chart *fuseIfOnDom
+                                    [results]="this.pieChartCurStkData.mainChart[pieChartCurStkData.currentRange]"
+                                    [legend]="widget6.showLegend" [explodeSlices]="widget6.explodeSlices"
+                                    [labels]="widget6.labels" [doughnut]="widget6.doughnut"
+                                    [gradient]="widget6.gradient" (select)="widget6.onSelect($event)"
+                                    [view]="[containerRef1.offsetWidth, 400]">
+                                </ngx-charts-pie-chart>
+                            </div>
+                            <div style="text-align: center;" *ngIf="DashChartCurStk.length == 0">No Data Found </div>
+                        </div>
+
+                        <div class="py-8 mh-16 border-top" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                            <div class="py-8 border-right" fxLayout="column" fxLayoutAlign="center center" fxFlex="100"
+                                fxFlex.gt-sm="50">
+                                <span class="mat-display-1 mb-0">
+                                    {{pieChartCurStkData.footerLeft.count | currency:'INR'}}
+                                </span>
+                                <span class="h4">
+                                    {{pieChartCurStkData.footerLeft.title}}
+                                </span>
+                            </div>
+
+                            <div class="py-8" fxLayout="column" fxLayoutAlign="center center" fxFlex="100"
+                                fxFlex.gt-sm="50">
+                                <span class="mat-display-1 mb-0">
+                                    {{pieChartCurStkData.footerRight.count | currency:'INR'}}
+                                </span>
+                                <span class="h4">
+                                    {{pieChartCurStkData.footerRight.title}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Front -->
+                </fuse-widget>
+
+
+                <!-- <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-sm="33">
+                    <div class="fuse-widget-front">
+
+                        <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">Category Summary</div>
+                            <mat-form-field>
+                                <mat-select class="simplified" [(ngModel)]="pieChartOPData.currentRange"
+                                    (selectionChange)="onSelectPieOptionOP($event.value)" aria-label="Change range">
+                                    <mat-option *ngFor="let range of pieChartMaster | keys" [value]="range.key">
+                                        {{range.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="h-400">
+                            <div #containerRef1 *ngIf="DashChartOP.length > 0">
+                                <ngx-charts-pie-chart *fuseIfOnDom
+                                    [results]="this.pieChartOPData.mainChart[pieChartOPData.currentRange]"
+                                    [legend]="widget6.showLegend" [explodeSlices]="widget6.explodeSlices"
+                                    [labels]="widget6.labels" [doughnut]="widget6.doughnut"
+                                    [gradient]="widget6.gradient" (select)="widget6.onSelect($event)"
+                                    [view]="[containerRef1.offsetWidth, 400]">
+                                </ngx-charts-pie-chart>
+                            </div>
+                            <div style="text-align: center;" *ngIf="DashChartOP.length == 0">No Data Found </div>
+                        </div>
+
+                        <div class="py-8 mh-16 border-top" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                            <div class="py-8 border-right" fxLayout="column" fxLayoutAlign="center center" fxFlex="100"
+                                fxFlex.gt-sm="50">
+                                <span class="mat-display-1 mb-0">
+                                    {{pieChartOPData.footerLeft.count}}
+                                </span>
+                                <span class="h4">
+                                    {{pieChartOPData.footerLeft.title}}
+                                </span>
+                            </div>
+
+                            <div class="py-8" fxLayout="column" fxLayoutAlign="center center" fxFlex="100"
+                                fxFlex.gt-sm="50">
+                                <span class="mat-display-1 mb-0">
+                                    {{pieChartOPData.footerRight.count}}
+                                </span>
+                                <span class="h4">
+                                    {{pieChartOPData.footerRight.title}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </fuse-widget> -->
+
+            </div>
+        </div>
         <!-- 
             m_pharlast3MonthCollectionSummaryDashboard && m_pharCurStockValueSummaryDashboard
          -->
-        <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="20px grid">
+        <!-- <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="20px grid">
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                 <mat-card class="chart-card">
                     <mat-card-header>
@@ -148,7 +495,6 @@
                             <canvas baseChart [datasets]="threeMonCollectionData" [labels]="threeMonCollectionLabels"
                                 [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
                             </canvas>
-                            <!-- <canvasjs-chart [options]="chartJsOptions"></canvasjs-chart> -->
                         </div>
                     </mat-card-content>
                 </mat-card>
@@ -164,10 +510,6 @@
                     <hr>
                     <mat-card-content>
                         <div *ngIf="pharCustStockData && pharCustStockData.length > 0">
-                            <!-- <canvas baseChart [datasets]="pharCustStockData" [labels]="pharCustStockLabels"
-                                [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
-                                [chartType]="barChartType">
-                            </canvas> -->
                             <canvas baseChart [datasets]="pharCustStockData" [labels]="pharCustStockLabels"
                                 [options]="pieChartOptions" legend="true" chartType="doughnut">
                             </canvas>
@@ -175,9 +517,11 @@
                     </mat-card-content>
                 </mat-card>
             </div>
-        </div>
+        </div> -->
 
-        <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="30px grid">
+
+
+        <!-- <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="30px grid">
             <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                 <mat-card class="h-340 p-10">
@@ -204,13 +548,7 @@
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="space-between start" style="height: 100px;">
-                        <!-- <canvas id="BarChart" style="width: 100%;"></canvas> -->
-
                         <div class="chart-wrapper" fxFlex style="height: 300px;">
-                            <!-- <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
-                                [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
-                                [chartType]="barChartType">
-                            </canvas> -->
                         </div>
                     </div>
 
@@ -402,87 +740,10 @@
                                     style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Cheque}}</span>
                         </div>
                     </div>
-
-
-
-                    <!-- <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 25px;">
-
-                        <span style="font-weight: bold;font-size: 25px;">
-                            <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
-                            <span style="font-size: 15px;font-weight:200px;color: gray;">from
-                                <mat-icon style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{GrossAmount}}
-                            </span>
-                        </span>
-                        
-
-                        <div fxLayout="column" fxLayoutAlign="space-between end">
-                            <div fxLayout="row" fxLayoutAlign="space-between end">
-                                {{progressValue}}
-                                <mat-progress-bar mode="determinate" value="75" fxFlex="200px"></mat-progress-bar>
-                            </div>
-                            <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top:10px;">
-                                CASH <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Cash}}</span>
-
-                        </div>
-                    </div> -->
-
-
-
-                    <!-- <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 20px;">
-                        <div fxLayout="column" fxLayoutAlign="space-between start">
-                            <span style="font-weight: 200px;font-size: 18px;color: gray;">
-                                Total Payment In</span>
-                            <span style="font-size: 15px;font-weight:200px;">
-                                <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Totalamount}}
-                            </span>
-
-                        </div>
-
-                        <div fxLayout="column" fxLayoutAlign="space-between end">
-                            <div fxLayout="row" fxLayoutAlign="space-between start">
-                                {{progressValue1}} <mat-progress-bar mode="determinate" value="40"
-                                    fxFlex="50%"></mat-progress-bar>
-                            </div>
-                            <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top:10px;">
-                                ONLINE <mat-icon
-                                    style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Online}}</span>
-                        </div>
-                    </div> -->
-
-
-                    <!-- <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 20px;">
-                        <div fxLayout="column" style="margin-right: 10px;">
-                            <span style="font-weight: 100px;font-size: 18px;color: gray;">
-                                Total Payment Out</span>
-                            <span style="margin-top:10px;;font-size: 15px;font-weight:100px;">
-                                <mat-icon style="font-size: 15px;margin-left: 5px; ">&#8377;</mat-icon>{{Totalamount}}
-                            </span>
-                        </div>
-
-                        <div class="vertical-line"></div>
-
-                        <div fxLayout="column" fxLayoutAlign="space-between start">
-                            <span style="font-weight: 100px;font-size: 18px;color: gray;">
-                                Expenses (excl gst)</span>
-                            <span style="margin-top:10px;;font-size: 15px;font-weight:bold;">
-                                <mat-icon style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Totalamount}}
-                            </span>
-                        </div>
-
-                        <div fxLayout="column" fxLayoutAlign="space-between end">
-                            <div fxLayout="row" fxLayoutAlign="space-between">
-                                {{progressValue2}}
-                                <mat-progress-bar mode="determinate" value="12" fxFlex="50%"></mat-progress-bar>
-                            </div>
-                            <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top: 10px;">
-                                CHEQUE <mat-icon
-                                    style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Cheque}}</span>
-                        </div>
-                    </div> -->
-
+                
                 </mat-card>
 
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
