@@ -777,28 +777,23 @@
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.TotalAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.TotalDiscAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
+            padding: 15px;height: 20px;">{{item?.DiscAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.CGSTPer}}%</td>
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.SGSTPer}}%</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.TotalVATAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
+            padding: 15px;height: 20px;">{{item?.VatAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
             <!-- <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.OtherCharge | currency:'INR':'symbol-narrow':'0.2'}}</td> -->
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.NetPayble | currency:'INR':'symbol-narrow':'0.2'}}</td>
+            padding: 15px;height: 20px;">{{item?.NetAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
 
         </tr>
-        <tr style="height:20px;">
+        <!-- <tr style="height:20px;">
 
             <td colspan="5" style="border: 1px solid gray;vertical-align: top;
             padding: 15px;color: black;font-weight:bold;">Total</td>
-
-            <!-- <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;color: black;">{{TotalQty}}</td> -->
-            <!-- <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-             padding: 15px;height: 20px;color: black;"></td> -->
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
             padding: 15px;height: 20px;color: black;">{{TotalRate | currency:'INR':'symbol-narrow':'0.2'}}</td>
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
@@ -811,30 +806,29 @@
               padding: 15px;height: 20px;color: black;">{{TotalSGSTPer}}%</td>
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
             padding: 15px;height: 20px;color: black;">{{TotalGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}</td>
-            <!-- <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;color: black;">{{TotalOtherCharge | currency:'INR':'symbol-narrow':'0.2'}}</td> -->
+ 
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
             padding: 15px;height: 20px;color: black;">{{TotalNetAmt | currency:'INR':'symbol-narrow':'0.2'}}</td>
 
-        </tr>
+        </tr> -->
         <tr style="height: 5px;">
             <td colspan="7" style="border: 1px solid gray;vertical-align: top;
             padding: 15px;text-align: left;font-weight: 500;">Total CGST Amount :-
-                {{TotalCGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}</td>
+                {{reportPrintObjList[0]?.TotCGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}</td>
 
             <td colspan="3" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left;">Total Amount</td>
+            padding: 15px;text-align: left;"> Grand Total Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;text-align: right;">{{TotalAmt | currency:'INR':'symbol-narrow':'0.2'}}</td>
+            padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.GrandTotalAount | currency:'INR':'symbol-narrow':'0.2'}}</td>
         </tr>
         <tr>
             <td colspan="7" style="border: 1px solid gray;vertical-align: top;
             padding: 15px;text-align: left;font-weight: 500;">Total SGST Amount :-
-                {{TotalSGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}</td>
+                {{reportPrintObjList[0]?.TotSGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}</td>
             <td colspan="3" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;text-align: left;">Discount Amount</td>
+             padding: 15px;text-align: left;"> Discount Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;height: 20px;text-align: right;">{{TotalDiscPer | currency:'INR':'symbol-narrow':'0.2'}}
+             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.TotalDiscAmount | currency:'INR':'symbol-narrow':'0.2'}}
             </td>
         </tr>
         <tr>
@@ -851,7 +845,7 @@
 
             <td colspan="7" style="border: 1px solid gray;vertical-align: top;
              padding: 15px;text-align: left;font-weight: 500;">Received By :-
-                {{reportPrintObjList[0]?.ReceivedBy}}</td>
+                {{reportPrintObjList[0]?.AddedByName}}</td>
             <td colspan="3" style="border: 1px solid gray;vertical-align: top;
              padding: 15px;text-align: left;">Debit Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
@@ -863,19 +857,19 @@
             padding: 15px;text-align: left;font-weight: 500;">Remark :-
                 {{reportPrintObjList[0]?.Remark}}</td>
             <td colspan="3" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;text-align: left;">GST Amount</td>
+             padding: 15px;text-align: left;"> GST Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;height: 20px;text-align: right;">{{TotalGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}</td>
+             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.TotalVATAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
         </tr>
 
         <tr>
             <td colspan="7" style="vertical-align: top;border: 1px solid gray;
             padding: 15px;text-align: left;font-weight: 500;">Total Amount In Words :- {{finalamt | uppercase}}</td>
             <td colspan="3" style="border: 1px solid gray;vertical-align: top;text-align: left;font-weight:bold;
-             padding: 15px;color: black; ">Grand Total Amount</td>
+             padding: 15px;color: black; ">Total Net Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;text-align: right;font-weight:bold;
              padding: 15px;height: 20px;color: black;border-bottom-right-radius: 20px;">
-                {{TotalNetAmt | currency:'INR':'symbol-narrow':'0.2'}}</td>
+                {{reportPrintObjList[0]?.NetPayble | currency:'INR':'symbol-narrow':'0.2'}}</td>
         </tr>
 
     </table>
@@ -886,11 +880,8 @@
             <span style="font-weight: 500;margin-left: 51px;">{{reportPrintObjList[0]?.AddedByName | uppercase}}</span><br>
             <span style="font-weight: 500;margin-left: 42px;"> Added By</span>
         </div>
-        <div>
-            <span style="font-weight: 500;margin-left: 350px;">{{reportPrintObjList[0]?.AddedByName | uppercase}}</span><br>
-            <span style="font-weight: 500;margin-left: 340px;"> Verified By</span>
-        </div>
-        <span style="margin-left: 270px; font-weight: 500;">Authorized Signature</span>
+        
+        <span style="margin-left: 670px; font-weight: 500;">Authorized Signature</span>
     </div><br>
 
 

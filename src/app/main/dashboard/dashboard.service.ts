@@ -40,13 +40,30 @@ export class DashboardService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BedOccupancyList_1", params)
   }
 
+  public getPathCategoryPieChart(params)
+  {
+    return this._httpClient.post("Generic/GetByProc?procName=Dash_PathCategPieChart_Range", params)
+  }
+
+  public getPieChartPharCurrentStockData(params)
+  {
+    return this._httpClient.post("Generic/GetByProc?procName=m_pharCurStockValueSummaryDashboard", params)
+  }
+
+  public getPharCollSummStoreWiseDashboard()
+  {
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptPharCollSumStoreWiseDashboard",{})
+  }
+
   // Pharmacy Dashboard Summary
   public getPharDashboardSalesSummary(params) {
     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
   }
+
   public getPharDashboardPeichart(spname, params) {
     return this._httpClient.post("Dashboard/get-pie-chart-date?procName=" + spname, params)
   }
+
   public getPharDashboardBarchart(spname, params) {
     return this._httpClient.post("Dashboard/get-bar-chart-date?procName=" + spname, params)
   }
@@ -65,5 +82,18 @@ export class DashboardService {
     return this._httpClient.post("Generic/GetByProc?procName=" + api, params)
   }
 
+  public getPharmacyCollectionStoreandDateWise(params)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard",params)
+  }
+
+  public getPathtestSummaryDateWise(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=dash_PathTestWiseCnt",x)
+  }
+  public getPathCategorySummaryDateWise(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=dash_PathCateWiseCnt",x)
+  }
 }
 

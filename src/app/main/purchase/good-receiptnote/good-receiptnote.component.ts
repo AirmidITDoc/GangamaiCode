@@ -621,29 +621,30 @@ export class GoodReceiptnoteComponent implements OnInit {
     this._GRNService.getPrintGRNList(m_data).subscribe(data => {
       this.reportPrintObjList = data as GRNList[];
       // debugger
-      console.log(this.reportPrintObjList)
-      for (let i = 0; i < 10; i++) {
-        this.reportPrintObj = data[0] as GRNList;
-        console.log(this.reportPrintObj)
-        this.TotalAmt += data[i].TotalAmount
-        this.TotalQty += data[i].ReceiveQty
-        this.TotalRate += data[i].Rate
-        this.TotalDiscPer += data[i].TotalDiscAmount
-        this.TotalCGSTPer += data[i].CGSTPer
-        this.TotalSGSTPer += data[i].SGSTPer
-        this.TotalCGSTAmt += data[i].CGSTAmt
-        this.TotalSGSTAmt += data[i].SGSTAmt
-        this.TotalGSTAmt += data[i].TotalVATAmount
-        this.TotalOtherCharge += data[i].OtherCharge
-        this.TotalNetAmt += data[i].NetPayble
-        const toword =require('num-words')
-        this.finalamt = toword(this.TotalNetAmt);
-                 
-        setTimeout(() => {
-          this.print3();
-        }, 1000);
-      }
-      
+      // console.log(this.reportPrintObjList)
+      // for (let i = 0; i < 10; i++) {
+      //   this.reportPrintObj = data[0] as GRNList;
+      //   console.log(this.reportPrintObj)
+      //   this.TotalAmt += data[i].TotalAmount
+      //   this.TotalQty += data[i].ReceiveQty
+      //   this.TotalRate += data[i].Rate
+      //   this.TotalDiscPer += data[i].TotalDiscAmount
+      //   this.TotalCGSTPer += data[i].CGSTPer
+      //   this.TotalSGSTPer += data[i].SGSTPer
+      //   this.TotalCGSTAmt += data[i].CGSTAmt
+      //   this.TotalSGSTAmt += data[i].SGSTAmt
+      //   this.TotalGSTAmt += data[i].TotalVATAmount
+      //   this.TotalOtherCharge += data[i].OtherCharge
+      //   this.TotalNetAmt += data[i].NetPayble
+      //   const toword =require('num-words')
+      //   this.finalamt = toword(this.TotalNetAmt);
+      // }
+     // let TotalNetAmt =this.reportPrintObjList[0].NetPayble
+      const toword =require('num-words')
+      this.finalamt = toword(this.reportPrintObjList[0].NetPayble);
+      setTimeout(() => {
+        this.print3();
+      }, 1000);
       
     })
 
@@ -1189,6 +1190,9 @@ export class GRNList {
   SGSTAmt:any;
   NetPayble:any
   AddedByName:any;
+  GrandTotalAount:any;
+  TotCGSTAmt:any;
+  TotSGSTAmt:any;
   /**
    * Constructor
    *
@@ -1203,6 +1207,7 @@ export class GRNList {
       this.TotalAmount = GRNList.TotalAmount || 0;
       this.TotalDiscAmount = GRNList.TotalDiscAmount || 0;
       this.TotalVATAmount = GRNList.TotalVATAmount || 0;
+      this.NetPayble = GRNList.NetPayble || 0;
       this.NetAmount = GRNList.NetAmount || 0;
       this.RoundingAmt = GRNList.RoundingAmt || 0;
       this.DebitNote = GRNList.DebitNote || 0;
@@ -1213,6 +1218,8 @@ export class GRNList {
       this.IsClosed = GRNList.IsClosed || 0;
       this.GSTNo = GRNList.GSTNo || 0;
       this.Remark = GRNList.Remark || "";
+      this.TotSGSTAmt = GRNList.TotSGSTAmt || 0;
+      this.TotCGSTAmt = GRNList.TotCGSTAmt || 0;
     }
   }
 }
@@ -1327,6 +1334,8 @@ export class ItemNameList {
   discAmount: number;
   DiscPercentage: number;
   DiscAmount: number;
+  DiscPercentage2: number;
+  DiscAmount2: number;
   PaymentType: any;
   GRNType: any;
   DateOfInvoice: any;
