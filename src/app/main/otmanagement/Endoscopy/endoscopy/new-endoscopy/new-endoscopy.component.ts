@@ -60,7 +60,15 @@ patienttype:any='';
 Adm_Vit_ID:any=0;
 public dateValue: Date = new Date();
   options = [];
+  myForm:FormGroup;
+  filteredOptions: any;
+  noOptionFound: boolean = false;
+  RegId:any;
+  vAdmissionID:any;
+  isRegIdSelected: boolean = false;
 
+  PatientListfilteredOptions:any;
+  
   // @Input() panelWidth: string | number;
   // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
@@ -116,7 +124,8 @@ public dateValue: Date = new Date();
 
 
   ngOnInit(): void {
-  console.log(this.data)
+    this.myForm = this.createMyForm();
+  
    this.personalFormGroup = this.createOtCathlabForm();
    
 
@@ -195,6 +204,59 @@ public dateValue: Date = new Date();
        
       },1000);
   }
+
+
+  createMyForm() {
+    return this.formBuilder.group({
+      RegID: '',
+      // PatientName: '',
+      // WardName: '',
+      // StoreId: '',
+      // RegID: [''],
+      // Op_ip_id: ['1'],
+      // AdmissionID: 0
+
+    })
+  }
+
+
+
+  getSearchList() {
+    var m_data = {
+      "Keyword": `${this.myForm.get('RegID').value}%`
+    }
+    if (this.myForm.get('RegID').value.length >= 1) {
+      this._OtManagementService.getAdmittedpatientlist(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        console.log(resData)
+        this.PatientListfilteredOptions = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+
+      });
+    }
+
+
+  }
+
+  getSelectedObj(obj) {
+    this.registerObj = obj;
+    // this.PatientName = obj.FirstName + '' + obj.LastName;
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+    this.RegId = obj.RegID;
+    this.vAdmissionID = obj.AdmissionID
+
+    console.log(obj);
+  }
+
+  // getOptionText(option) {
+  //   if (!option) return '';
+  //   return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+  // }
+
 
   closeDialog() {
     console.log("closed")
@@ -394,10 +456,10 @@ public dateValue: Date = new Date();
     this._OtManagementService.getSurgeryCombo().subscribe(data => { this.SurgeryList = data; })
   }
   
-  
+ 
   getOptionText(option) {
     if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
+    return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
   }
 
   

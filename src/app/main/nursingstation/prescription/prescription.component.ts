@@ -16,6 +16,7 @@ import { SampleCollectionComponent } from 'app/main/pathology/sample-collection/
 import { ResultEntryComponent } from 'app/main/pathology/result-entry/result-entry.component';
 import { RadiologyOrderListComponent } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
 import Swal from 'sweetalert2';
+import { CertificateComponent } from 'app/main/Mrd/certificate/certificate.component';
 
 @Component({
   selector: 'app-prescription',

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -6,13 +6,14 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 // import { OPIPPatientModel } from 'app/main/nursingstation/patient-vist/patient-vist.component';
 import { MrdService } from '../../mrd.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import { fuseAnimations } from '@fuse/animations';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 
 @Component({
   selector: 'app-new-certificate',
@@ -63,7 +64,7 @@ export class NewCertificateComponent implements OnInit {
   sIsLoading: string = '';
   minDate: Date;
   Today:Date =new Date();
-
+  selectedAdvanceObj: OPIPPatientModel;
   PatientName: any = '';
   OPIP: any = '';
   Bedname: any = '';
@@ -75,9 +76,13 @@ export class NewCertificateComponent implements OnInit {
   patienttype: any = '';
   Adm_Vit_ID: any = 0;
   Injuries: any;
-
+  PatientHeaderObj: any;
   // dataSource = new MatTableDataSource<PhoneschlistMaster>();
   isChecked = true;
+  myForm:FormGroup;
+  PatientListfilteredOptions: any;
+  RegId:any;
+  vAdmissionID:any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -88,8 +93,11 @@ export class NewCertificateComponent implements OnInit {
     public formBuilder: FormBuilder,
     // public _PhoneAppointListService :MrdService,
     public _matDialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     // public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
+    private advanceDataStored: AdvanceDataStored,
+    // private _FormBuilder: FormBuilder,
     public dialogRef: MatDialogRef<NewCertificateComponent>,
     public datePipe: DatePipe) {
     dialogRef.disableClose = true;
@@ -109,6 +117,8 @@ export class NewCertificateComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.myForm = this.createMyForm();
+
     this.createMrdcertificate = this.createMrdcertificateForm();
     this.getDepartmentList();
     this.getDoctorList();
@@ -126,6 +136,65 @@ export class NewCertificateComponent implements OnInit {
         this.filterDepartment();
       });
 
+      
+    if (this.advanceDataStored.storage) {
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj);
+      this.PatientHeaderObj = this.advanceDataStored.storage;
+    }
+
+  }
+
+
+  createMyForm() {
+    return this.formBuilder.group({
+      RegID: '',
+      // PatientName: '',
+      // WardName: '',
+      // StoreId: '',
+      // RegID: [''],
+      // Op_ip_id: ['1'],
+      // AdmissionID: 0
+
+    })
+  }
+
+
+
+  getSearchList() {
+    var m_data = {
+      "Keyword": `${this.myForm.get('RegID').value}%`
+    }
+    if (this.myForm.get('RegID').value.length >= 1) {
+      this._MrdService.getAdmittedpatientlist(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        console.log(resData)
+        this.PatientListfilteredOptions = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+
+      });
+    }
+
+
+  }
+
+  getSelectedObj(obj) {
+    this.registerObj = obj;
+    // this.PatientName = obj.FirstName + '' + obj.LastName;
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+    this.RegId = obj.RegID;
+    this.vAdmissionID = obj.AdmissionID
+
+    console.log(obj);
+  }
+
+  getOptionText(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
 
 
@@ -268,7 +337,7 @@ export class NewCertificateComponent implements OnInit {
           },
           "certificateInsert": {
             "certificateNo": 0,
-            "opD_IPD_Id": this.Adm_Vit_ID || 0,
+            "opD_IPD_Id": this.vAdmissionID || 0,
             "certificateDate": this.dateTimeObj.date,
             "certificateTime": this.dateTimeObj.time,
             "opD_IPD_Type":1,

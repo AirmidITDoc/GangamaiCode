@@ -60,7 +60,7 @@ export class SampleCollectionComponent implements OnInit {
     'DOT',
     'RegNo',
     'PatientName',
-    //'DoctorName',
+    'DoctorName',
     'PBillNo',
     'PatientType',
     'WardName',
@@ -70,7 +70,8 @@ export class SampleCollectionComponent implements OnInit {
 
   displayedColumns1: string[] = [
     // 'checkbox',
-    'DOA',
+    'VADate',
+    'VATime',
     'ServiceName',
     'IsSampleCollection',
     'SampleCollectionTime',
@@ -183,24 +184,24 @@ export class SampleCollectionComponent implements OnInit {
   onEdit(row): void {
     ;
     console.log(row)
-    debugger
+    
 
     let OPIP
-    if (this._SampleService.myformSearch.get("PatientTypeSearch").value == "IP") {
+    if (this._SampleService.myformSearch.get("PatientTypeSearch").value == '1') {
+    
       OPIP = 1;
     }
     else {
       OPIP = 0;
     }
-debugger
+
     var m_data = {
       "BillNo": row.BillNo,
-      "BillDate": row.PathDate,//this.datePipe.transform(this._SampleService.myformSearch.get("From_dt").value, "yyyy-MM-dd"),
+      "BillDate": this.datePipe.transform(row.PathDate, "yyyy-MM-dd"),
       "OP_IP_Type": OPIP
     }
-
-
-    console.log(m_data);
+  console.log(m_data);
+  debugger
     this._SampleService.getSampleDetailsList(m_data).subscribe(Visit => {
       this.dataSource1.data = Visit as SampleList[];
       console.log(this.dataSource1.data);
@@ -433,7 +434,7 @@ debugger
     const dialogRef1 = this._matDialog1.open(SampledetailtwoComponent,
       {
         maxWidth: "85vw",
-        height: '420px',
+        height: '520px',
         width: '100%',
         data: {
           BillNo: contact.BillNo,

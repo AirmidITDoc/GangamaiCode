@@ -22,7 +22,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class CathLabComponent implements OnInit {
 
- 
+  hasSelectedContacts: boolean;
   personalFormGroup: FormGroup;
   searchFormGroup : FormGroup;
   registerObj = new CathLabBookingDetail({});
@@ -39,7 +39,7 @@ export class CathLabComponent implements OnInit {
   submitted = false;
   sIsLoading: string = '';
   minDate:Date;
-  hasSelectedContacts: boolean;
+  
   AnesthType:any ='';
 
   displayedColumns = [
@@ -177,7 +177,7 @@ debugger;
    const dialogRef = this._matDialog.open(NewCathLabComponent,
      {
        maxWidth: "70%",
-       height: '85%',
+       height: '95%',
        width: '100%',
      });
      dialogRef.afterClosed().subscribe(result => {

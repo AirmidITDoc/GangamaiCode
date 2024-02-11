@@ -729,14 +729,16 @@ export class NewOPBillingComponent implements OnInit {
       this.isLoading = '';
       this.dataSource.data = this.chargeslist;
       this.changeDetectorRefs.detectChanges();
-    }
-    this.onClearServiceAddList();
-    this.getTotalNetAmount();
-    this.isDoctor = false;
 
-    setTimeout(() => {
-      this.add = false;
-    }, 400);
+      this.onClearServiceAddList();
+      this.getTotalNetAmount();
+      this.isDoctor = false;
+    }
+
+   
+
+    this.itemid.nativeElement.focus();
+    this.add = false;
 
   }
 
@@ -1075,13 +1077,18 @@ export class NewOPBillingComponent implements OnInit {
     }
   }
 
-  public onEnternetAmount(event): void {
-    debugger
-    if (event.which === 13) {
+  // public onEnternetAmount(event): void {
+  //   debugger
+  //   if (event.which === 13) {
 
-      this.add = true;
-      this.addbutton.focus();
-    }
+  //     this.add = true;
+  //     this.addbutton.focus();
+  //   }
+  // }
+
+  addData() {
+    this.add = true;
+    this.addbutton.focus();
   }
 
   public onEnterDoctorname(event): void {

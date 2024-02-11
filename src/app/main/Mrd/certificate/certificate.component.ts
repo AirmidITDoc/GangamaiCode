@@ -184,7 +184,7 @@ addNewCasepaper(){
   const dialogRef = this._matDialog.open(NewCertificateComponent,
     {
       maxWidth: "85%",
-      height: '85%',
+      height: '115%',
       width: '100%',
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -253,7 +253,7 @@ onEdit(contact){
  
 //  this._MrdService.populateFormpersonal(PatInforObj);
 
-this.advanceDataStored.storage = new CharityPatientdetail(PatInforObj);
+this.advanceDataStored.storage = contact;
 
 const dialogRef = this._matDialog.open(NewCertificateComponent,
   {
@@ -261,7 +261,7 @@ const dialogRef = this._matDialog.open(NewCertificateComponent,
     height: '96%',
     width: '100%',
     data: {
-      PatObj: PatInforObj 
+      PatObj: contact 
     }
   });
 dialogRef.afterClosed().subscribe(result => {

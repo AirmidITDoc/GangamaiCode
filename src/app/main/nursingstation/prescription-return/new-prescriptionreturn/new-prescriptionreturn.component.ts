@@ -229,7 +229,11 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.addbutton.focus();
     }
   }
-
+  
+  addData(){
+    this.add = true;
+      this.addbutton.focus();
+  }
  
 
   onAdd() {

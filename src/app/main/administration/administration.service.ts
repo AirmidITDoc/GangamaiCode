@@ -1,14 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdministrationService {
+  myDocShrformSearch: FormGroup;
+  constructor(private _httpClient: HttpClient, private _formBuilder: FormBuilder,
+    ) {
+      this.myDocShrformSearch = this.BillListForDocShr();
+     }
 
-  constructor(private _httpClient: HttpClient, private _formBuilder: FormBuilder) { }
 
+     
+  BillListForDocShr(): FormGroup {
+    return this._formBuilder.group({
+
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      DoctorId: '',
+      PBillNo: '',
+
+
+    });
+  }
   public getUserList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=RtrvUserList", employee)
   }
@@ -60,5 +76,12 @@ export class AdministrationService {
     public getLoggedStoreList(Param){
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
     }
-    
+     // Doctor Master Combobox List
+  public getAdmittedDoctorCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+  }
+ //Doctor Share
+ public getBillListForDocShrList(employee) {
+  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_BillListForDocShr", employee)
+}
 }

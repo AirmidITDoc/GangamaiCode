@@ -28,7 +28,7 @@ export class EndoscopyComponent implements OnInit {
   AnesthType:any=''
   D_data1:any;
   dataArray = {};
-  
+  hasSelectedContacts: boolean;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 

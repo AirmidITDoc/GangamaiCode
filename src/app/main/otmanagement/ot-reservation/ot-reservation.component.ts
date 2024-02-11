@@ -22,8 +22,6 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class OTReservationComponent implements OnInit {
 
- 
-
   personalFormGroup: FormGroup;
   searchFormGroup: FormGroup;
   registerObj = new OTReservationDetail({});

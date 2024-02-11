@@ -57,7 +57,7 @@
 
         <!-- SIDEBAR -->
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width: 100%; border-radius:4px; 
-        margin-left: 12px; margin-top: 5px; background-color: white;height:99%;">
+        margin-left: 10px; margin-top: 5px; background-color: white;height:99%;">
             <div class="content">
                 <div class="sidebar-content">
 
@@ -67,7 +67,7 @@
                         <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
                             <!-- USER -->
                             <!-- <img [src]="user.avatar" class="avatar mr-16" [alt]="user.name" /> -->
-                            <span class="h5" style="font-size: 17px;">Patient Information</span>
+                            <span class="h5" style="font-size: 17px;">Search Information</span>
                             <!-- / USER -->
                         </div>
                         <!-- / SIDEBAR HEADER -->
@@ -87,13 +87,13 @@
                                             <mat-date-range-picker #picker></mat-date-range-picker>
                                         </mat-form-field>
 
-
+                                      
                                         <div fxLayoutAlign="center center" appearance="outline"
                                             style="margin-bottom: 8px;margin-top: 8px;" fxFlex>
-                                            <mat-label style="padding:1px" fxFlex>Patient Type:</mat-label>
+                                            <mat-label fxFlex>Patient Type:</mat-label>
                                             <mat-radio-group name="PatientTypeSearch"
                                                 formControlName="PatientTypeSearch" value='2'
-                                                style="margin-right:10px;" (change)="onShow($event)">
+                                                (change)="onShow($event)">
                                                 <mat-radio-button value='2'>All</mat-radio-button>
                                                 <mat-radio-button value='1' checked=true>IP</mat-radio-button>
                                                 <mat-radio-button value='0'>OP</mat-radio-button>
@@ -104,7 +104,7 @@
 
                                         <div fxLayoutAlign="center center" appearance="outline"
                                             style="margin-bottom: 9px;" fxFlex>
-                                            <mat-label> Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <mat-label style="padding:1px"> Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
                                             <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
                                                 value='2' fxLayoutAlign="center center"
                                                 style="float:left;margin-left:0px;margin-left:15px;" (change)="onShow($event)">
@@ -149,6 +149,10 @@
 
                                         </div>
 
+                                        <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
+                                            Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
+                                        </span>
+    
 
                                     </div>
                                 </form>
@@ -262,7 +266,7 @@
 
                                         <ng-container matColumnDef="PBillNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                PrintBillNo
+                                                PBillNo
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                 {{contact.PBillNo}}
@@ -348,9 +352,9 @@
                                         style="background-color:white; margin-left:5px; width:100%;width: fit-content;"
                                         sticky>
 
-                                        <h3 style="font-weight: bold; font-size: 14px; margin: 10 0 0px;">Test Details
-                                        </h3>
-                                        <mat-label style="margin-left:900px;font-weight: bold;"> Test Status:
+                                        <span style="font-weight: bold; font-size: 14px;">Test Details
+                                        </span>
+                                        <mat-label style="margin-left:800px;font-weight: bold;"> Test Status:
                                         </mat-label>
 
                                         <form [formGroup]="_SampleService.myformSearch">
@@ -433,7 +437,7 @@
 
                                         <ng-container matColumnDef="SampleCollectionTime">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                SampleCollectionDate/Time
+                                                Sample Coll.Date/Time
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                 {{contact.SampleCollectionTime | date:'dd/MM/yyyy, h:mm a'}}
@@ -445,21 +449,21 @@
                                                 SampleNo
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.PathTestID}}
+                                                {{contact.SampleNo}}
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="PathRefDoc">
+                                        <ng-container matColumnDef="DoctorName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                PathRefDoc
+                                                DoctorName
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                {{contact.PathReportID }}
+                                                {{contact.DoctorName }}
                                             </mat-cell>
                                         </ng-container>
 
                                       
-                                        <ng-container matColumnDef="action" stickyEnd>
+                                        <ng-container matColumnDef="action">
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact">

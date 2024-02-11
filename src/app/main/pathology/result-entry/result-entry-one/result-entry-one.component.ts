@@ -220,7 +220,7 @@ debugger;
     let PathInsertArry = [];
 
     this.Pthologyresult.forEach((element) => {
-
+console.log(element)
       let pathologyInsertReportObj = {};
       pathologyInsertReportObj['PathReportId'] = this.selectedAdvanceObj.PathReportID;
       pathologyInsertReportObj['CategoryID'] = element.CategoryID || 0;
@@ -228,7 +228,7 @@ debugger;
       pathologyInsertReportObj['SubTestId'] = element.SubTestID || 0;
       pathologyInsertReportObj['ParameterId'] = element.ParameterId || 0;
       pathologyInsertReportObj['ResultValue'] = element.ResultValue || '';
-      pathologyInsertReportObj['UnitId'] = element.UnitId || 0;
+      pathologyInsertReportObj['UnitId'] = element.UnitId || 1;
       pathologyInsertReportObj['NormalRange'] = element.NormalResult || '';
       pathologyInsertReportObj['PrintOrder'] = element.PrintOrder || 0;
       pathologyInsertReportObj['PIsNumeric'] = element.PIsNumeric || 0;

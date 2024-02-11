@@ -306,6 +306,7 @@ export class SampledetailtwoComponent implements OnInit {
 
 export class SampleList {
   VADate: Date;
+  VATime:Date;
   PathTestID: Number;
   ServiceName: String;
   IsSampleCollection: boolean;
@@ -315,6 +316,7 @@ export class SampleList {
 
   constructor(SampleList) {
     this.VADate = SampleList.VADate || '';
+    this.VATime = SampleList.VATime || '';
     this.PathTestID = SampleList.PathTestID || 0;
     this.ServiceName = SampleList.ServiceName || '';
     this.IsSampleCollection = SampleList.IsSampleCollection || 0;

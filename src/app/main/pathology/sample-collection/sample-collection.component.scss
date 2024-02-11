@@ -210,28 +210,28 @@ app-sample-collection {
         height: 250px !important;
         .mat-header-row {
             width: 100%;
-            min-width: 800px;
+            min-width: 1500px;
             min-height: 25px;
         }
 
         .mat-row {
             width: 100%;
-            min-width: 800px;
+            min-width: 1500px;
             min-height: 25px;
         }
 
         // PatientData
         .mat-column-DOA {
-            width: 130px;
-            max-width: 130px;
-            min-width: 130px;
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px;
             justify-content: left;
         }
 
         .mat-column-DOT {
-            width: 80px;
-            max-width: 80px;
-            min-width: 80px;
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
             justify-content: left;
         }
 
@@ -252,9 +252,7 @@ app-sample-collection {
             overflow: hidden;
             text-overflow: ellipsis;
             overflow: hidden !important;
-            display: inline-block;
-            margin-top: 7px;
-            margin-right: 15px;
+          
         }
 
         .mat-column-AgeYear {
@@ -288,9 +286,7 @@ app-sample-collection {
             overflow: hidden;
             text-overflow: ellipsis;
             overflow: hidden !important;
-            display: inline-block;
-            margin-top: 7px;
-            margin-right: 10px;
+          
         }
 
         .mat-column-PBillNo {
@@ -301,18 +297,16 @@ app-sample-collection {
         }
 
         .mat-column-WardName {
-            width: 150px;
-            max-width: 150px;
-            min-width: 150px;
+            width: 250px;
+            max-width: 250px;
+            min-width: 250px;
             text-align: left;
             justify-content: left;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             overflow: hidden !important;
-            display: inline-block;
-            margin-top: 7px;
-            margin-right: 10px;
+            
         }
 
         .mat-column-checkbox {
@@ -323,9 +317,9 @@ app-sample-collection {
 
         .mat-column-action {
 
-            width: 40px;
-            max-width: 40px;
-            min-width: 40px;
+            width: 130px;
+            max-width: 130px;
+            min-width: 130px;
             min-height: 25px;
             text-align: right;
 
@@ -353,9 +347,15 @@ app-sample-collection {
             min-width: 1200px;
             min-height: 25px;
         }
+      
+        .mat-column-VADate {
+            width: 200px;
+            max-width: 200px;
+            min-width: 200px;
+            justify-content: left;
+        }
 
-
-        .mat-column-DOA {
+        .mat-column-VATime {
             width: 200px;
             max-width: 200px;
             min-width: 200px;
@@ -370,17 +370,22 @@ app-sample-collection {
         }
 
         .mat-column-ServiceName {
-            width: 600px;
-            max-width: 600px;
-            min-width: 600px;
+            width: 500px;
+            max-width: 500px;
+            min-width: 500px;
             justify-content: left;
+            justify-content: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            overflow: hidden !important;
         }
 
 
         .mat-column-IsSampleCollection {
-            width: 200px;
-            max-width: 200px;
-            min-width: 320px;
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
         }
 
         .mat-column-SampleCollectionTime {

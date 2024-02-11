@@ -221,15 +221,15 @@
                 </mat-card>
             </div>
         </div>
-
+    </form>
 
 
 
         <!--Second card content-->
-
+      
         <div class="content-card">
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-
+                <form [formGroup]="ItemForm">
                 <mat-card fxFlex.gt-sm="100%" fxFlex
                     style="width: 70%; padding: 0 9px;margin-top: 10px; height: fit-content;">
 
@@ -253,9 +253,9 @@
                                 [matAutocomplete]="auto" (input)="getSearchItemList()">
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
-                                    (click)="myForm.get('ItemId').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                    (click)="ItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
-                                    (click)="myForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                    (click)="ItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
                             </span>
                             <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
                                 (optionSelected)='getSelectedObjItem($event.option.value)'>
@@ -264,7 +264,7 @@
                                 </mat-option>
                             </mat-autocomplete>
                             <mat-error class="error"
-                                *ngIf="myForm.get('ItemId').invalid && myForm.get('ItemId').touched">
+                                *ngIf="ItemForm.get('ItemId').invalid && ItemForm.get('ItemId').touched">
                                 Select ItemName
                             </mat-error>
                         </mat-form-field>
@@ -277,11 +277,11 @@
                                 Qty is required and Numbers Only
                             </mat-error> -->
                         </mat-form-field>&nbsp;&nbsp;&nbsp;
-
+                        <!-- (keydown)="onEnterremark($event)" -->
                         <mat-form-field appearance="outline" fxFlex="30%">
                             <mat-label>Remark</mat-label>
-                            <input type="text" name="Remark" [(ngModel)]="vRemark" (keydown)="onEnterremark($event)"
-                                formControlName="Remark" matInput #remark>
+                            <input type="text" name="Remark" [(ngModel)]="vRemark" 
+                                formControlName="Remark" matInput #remark (keydown)="addData()">
                             <!-- <mat-error *ngIf="myForm.get('Remark').touched">
                                 Remark is required Alphabets
                             </mat-error> -->
@@ -289,21 +289,20 @@
 
 
 
-                        <div matTooltip="Select  name to enable this button!!" [matTooltipDisabled]="!myForm.invalid"
+                        <div matTooltip="Select  name to enable this button!!" [matTooltipDisabled]="!ItemForm.invalid"
                             [matTooltipPosition]="'above'">
-                        
-
-                        <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                        class="add-btn" [disabled]="!add" (click)="onAdd($event)">
-                        <mat-icon> add </mat-icon>
-                        Add
+                     
+                         <button mat-raised-button fxLayoutAlign="center center" #addbutton
+                         class="add-btn" [disabled]="!add" (click)="onAdd($event)">
+                         <mat-icon> add </mat-icon>
+                         Add
                          </button>
 
                             <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
                         </div>
                     </div>
                 </mat-card>
-
+            </form>
 
 
                 <!-- Table 1 -->
@@ -337,7 +336,7 @@
 
             </div>
         </div>
-
+      
 
 
 
@@ -409,7 +408,7 @@
 
             <div style="margin-top: 20px; margin-right: 10px; ">
                 <button class="next-btn" color="accent" style="border-radius: 16px; width: 80px;"
-                    (click)="OnSavePrescription()">Save</button>
+                    (click)="OnSavePrescription()"  [disabled]="myForm.invalid || dsPresList.data.length == 0">Save</button>
                 <button class="footer-btn" id="btncancel" (click)="onClose()">Close</button>
             </div>
         </div>
@@ -418,6 +417,6 @@
             (click)="OnSavePrescription()">Save</button>&nbsp;&nbsp;
         <button mat-raised-button style="width: 90px; height: 35px; font-size: 15px;">Close</button>
          </div> -->
-    </form>
+ 
 
 </div>

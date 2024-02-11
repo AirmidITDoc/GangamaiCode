@@ -26,8 +26,11 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations
 })
 export class ResultEntryComponent implements OnInit {
+  SpinLoading: boolean = false;
+
+
   displayedColumns: string[] = [
-   
+
     'Date',
     'Time',
     'RegNo',
@@ -38,10 +41,10 @@ export class ResultEntryComponent implements OnInit {
     'GenderName',
     'AgeYear',
     'PathDues'
-    
+
   ];
 
-  
+
   reportPrintObjList: SampleDetailObj[] = [];
   reportPrintObjs: SampleDetailObj;
   currentDate = new Date();
@@ -62,13 +65,13 @@ export class ResultEntryComponent implements OnInit {
   PathTestId: any
   subscriptionArr: Subscription[] = [];
   reportPrintObj: Templateprintdetail;
-  SBillNo:any;
-  SOPIPtype:any;
-  SFromDate:any;
-  PatientName:any;
-  OPD_IPD:any;
-  Age:any;
-  PatientType:any;
+  SBillNo: any;
+  SOPIPtype: any;
+  SFromDate: any;
+  PatientName: any;
+  OPD_IPD: any;
+  Age: any;
+  PatientType: any;
 
   setStep(index: number) {
     this.step = index;
@@ -82,7 +85,7 @@ export class ResultEntryComponent implements OnInit {
 
 
   dataSource = new MatTableDataSource<PatientList>();
- 
+
 
   dataSource1 = new MatTableDataSource<SampleList>();
   @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
@@ -95,9 +98,9 @@ export class ResultEntryComponent implements OnInit {
     'Age',
     'SampleCollectionTime',
     'SampleNo',
-    'PathRefDoc',
+    'DoctorName',
     'action'
-     
+
   ];
 
   hasSelectedContacts: boolean;
@@ -161,7 +164,7 @@ export class ResultEntryComponent implements OnInit {
       VATime: contact.VATime,
       Visit_Adm_ID: contact.Visit_Adm_ID
 
-     
+
     };
 
     this.advanceDataStored.storage = new Templateprintdetail(XX);
@@ -243,18 +246,19 @@ export class ResultEntryComponent implements OnInit {
   }
 
   getPatientsList() {
-   
+
+    this.dataSource1.data = [];
     this.sIsLoading = 'loading-data';
     var m_data = {
-      "F_Name": (this._SampleService.myformSearch.get("FirstNameSearch").value).trim() +'%' || '%',
-      "L_Name": (this._SampleService.myformSearch.get("LastNameSearch").value).trim()  + '%' || '%',
+      "F_Name": (this._SampleService.myformSearch.get("FirstNameSearch").value).trim() + '%' || '%',
+      "L_Name": (this._SampleService.myformSearch.get("LastNameSearch").value).trim() + '%' || '%',
       "Reg_No": (this._SampleService.myformSearch.get("RegNoSearch").value) || 0,
       "From_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("start").value, "yyyy-MM-dd ") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._SampleService.myformSearch.get("end").value, "yyyy-MM-dd") || '01/01/1900',
       "IsCompleted": parseInt(this._SampleService.myformSearch.get("StatusSearch").value) || 0,
       "OP_IP_Type": parseInt(this._SampleService.myformSearch.get("PatientTypeSearch").value) || 0,
     }
-    
+
     this._SampleService.getPatientList(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as PatientList[];
       this.dataSource.sort = this.sort;
@@ -277,16 +281,16 @@ export class ResultEntryComponent implements OnInit {
 
     console.log(m);
 
-    this.PatientName=m.PatientName;
-    this.OPD_IPD=m.OP_IP_No
-    this.Age=m.AgeYear
-    this.PatientType=m.PatientType
+    this.PatientName = m.PatientName;
+    this.OPD_IPD = m.OP_IP_No
+    this.Age = m.AgeYear
+    this.PatientType = m.PatientType
 
-    this.SBillNo=m.BillNo;
-    this.SOPIPtype=m.OPD_IPD_Type;
-    this.SFromDate=this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
-  
-debugger
+    this.SBillNo = m.BillNo;
+    this.SOPIPtype = m.OPD_IPD_Type;
+    this.SFromDate = this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
+
+    debugger
     var m_data = {
       "BillNo": m.BillNo,
       "OP_IP_Type": m.OPD_IPD_Type,
@@ -306,15 +310,15 @@ debugger
       error => {
         this.sIsLoading = '';
       });
-    
+
   }
 
-  SearchTest($event){
-  
+  SearchTest($event) {
+
     var m_data = {
-      "BillNo":this.SBillNo,
+      "BillNo": this.SBillNo,
       "OP_IP_Type": this.SOPIPtype,
-      "IsCompleted":this._SampleService.myformSearch.get("TestStatusSearch").value || 0,
+      "IsCompleted": this._SampleService.myformSearch.get("TestStatusSearch").value || 0,
       // "From_Dt": this.datePipe.transform(this.SFromDate, "yyyy-MM-dd "),
     }
     console.log(m_data);
@@ -355,12 +359,12 @@ debugger
       ServiceId: m.ServiceId,
       CategoryID: m.CategoryID,
       TemplateDesc: m.TemplateDesc,
-      PathResultDr1:m.PathResultDr1,
+      PathResultDr1: m.PathResultDr1,
 
-      PatientName:this.PatientName,
-      OP_IP_No:this.OPD_IPD,
-      AgeYear:this.Age,
-      PatientType:this.PatientType
+      PatientName: this.PatientName,
+      OP_IP_No: this.OPD_IPD,
+      AgeYear: this.Age,
+      PatientType: this.PatientType
 
     };
     this.advanceDataStored.storage = new SampleDetailObj(xx);
@@ -385,8 +389,8 @@ debugger
             "CategoryID": m.CategoryID,
             "SampleDetailObj": m.SampleDetailObj,
             "DoctorId": m.PathResultDr1,
-            "PathTestID":m.PathTestID,
-            "TemplateDesc":m.TemplateDesc
+            "PathTestID": m.PathTestID,
+            "TemplateDesc": m.TemplateDesc
           }
         });
 
@@ -426,12 +430,12 @@ debugger
     let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=10';
     this._SampleService.getTemplate(query).subscribe((resData: any) => {
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['RegNo','PathReportId','PathTemplateDetailsResult','TestName','ReportDate','PatientName','AgeDay','AgeMonth','AgeYear','GenderName','BedName','RoomName','Path_DoctorName','Path_RefDoctorName','ConsultantDocName']; // resData[0].TempKeys;
+      let keysArray = ['RegNo', 'PathReportId', 'PathTemplateDetailsResult', 'TestName', 'ReportDate', 'PatientName', 'AgeDay', 'AgeMonth', 'AgeYear', 'GenderName', 'BedName', 'RoomName', 'Path_DoctorName', 'Path_RefDoctorName', 'ConsultantDocName']; // resData[0].TempKeys;
       for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
         let re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      
+
         this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
       }
       console.log(this.reportPrintObj);
@@ -443,7 +447,7 @@ debugger
   }
 
   getPrint(el) {
-  debugger
+    debugger
     console.log(el);
     if (el.IsTemplateTest == 1) {
 
@@ -462,7 +466,7 @@ debugger
 
       //     console.log(this.reportPrintObj);
       //     this.getTemplate();
-         
+
       //   })
       // );
 
@@ -499,20 +503,20 @@ debugger
   // PathologyReportPrintMultiple
 
   getTemplateMultiple() {
-  
+
     let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=15';
     this._SampleService.getTemplate(query).subscribe((resData: any) => {
       console.log(resData);
       this.printTemplate = resData[0].TempDesign;
       let keysArray =
-        ['OP_IP_Number','RegNo','PatientName','Adm_Visit_Time','AgeDay','AgeMonth','AgeYear','AdmDateTime','GenderName','PathResultDr1','PrintTestName','NormalRange','ResultValue','ReportDate','Path_ConsultantDocname','RoomName'
-          ,'BedName','PrintParameterName','ConsultantDocName','VisitTime','VisitDate','SuggestionNote','PathDate','PathTime'];
+        ['OP_IP_Number', 'RegNo', 'PatientName', 'Adm_Visit_Time', 'AgeDay', 'AgeMonth', 'AgeYear', 'AdmDateTime', 'GenderName', 'PathResultDr1', 'PrintTestName', 'NormalRange', 'ResultValue', 'ReportDate', 'Path_ConsultantDocname', 'RoomName'
+          , 'BedName', 'PrintParameterName', 'ConsultantDocName', 'VisitTime', 'VisitDate', 'SuggestionNote', 'PathDate', 'PathTime'];
 
-       for (let i = 0; i < keysArray.length; i++) {
+      for (let i = 0; i < keysArray.length; i++) {
         let reString = "{{" + keysArray[i] + "}}";
         let re = new RegExp(reString, "g");
         console.log(this.reportPrintObjs);
-        this.printTemplate = this.printTemplate.replace(re,this.reportPrintObjs[keysArray[i]]);
+        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObjs[keysArray[i]]);
       }
 
       var strrowslist = "";
@@ -523,10 +527,10 @@ debugger
         this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
         this.printTemplate = this.printTemplate.replace('StrPathDate', this.transform(objreportPrint.PathDate));
         this.printTemplate = this.printTemplate.replace('StrReportDate', this.transformReportDate(objreportPrint.ReportDate));
-debugger;
+        debugger;
         // if( objreportPrint.ResultValue > objreportPrint.NormalRange){
         //   var strabc = `
-      
+
         //   <div style="display:flex; width:100%; margin:8px 0">
         //     <br/>
         //   <div style="display:flex;width:500px;margin-left:5px;">
@@ -538,15 +542,15 @@ debugger;
         //   <div style="display:flex;width:170px;margin-left:30px;">
         //   <div>`+ objreportPrint.NormalRange + `</div> <!-- <div>BLOOD UREA</div> -->
         //   </div>
-        
-         
+
+
         //   </div>`;
         //       strrowslist += strabc;
-      
-      
+
+
         // }
         // else{
-          var strabc = `
+        var strabc = `
       
           <div style="display:flex; width:100%; margin:8px 0">
             <br/>
@@ -562,9 +566,9 @@ debugger;
         
          
           </div>`;
-              strrowslist += strabc;
-        }
-       
+        strrowslist += strabc;
+      }
+
 
 
       // }
@@ -606,49 +610,64 @@ debugger;
     return value;
   }
 
-  
 
+  AdList: boolean = false;
   viewgetPathologyTemplateReportPdf(obj) {
-    
-    this._SampleService.getPathTempReport(
-      53473,1
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this.AdList = true;
+      this._SampleService.getPathTempReport(
+        53473, 1
       ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pathology Template  Viewer"
-          }
-        });
-    });
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pathology Template  Viewer"
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            this.AdList=false;
+            this.SpinLoading = false;
+          });
+      });
+
+    }, 100);
   }
 
 
-  
+
   viewgetPathologyTestReportPdf(obj) {
-    
-    this._SampleService.getPathTestReport(
-    2
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this.AdList = true;
+      this._SampleService.getPathTestReport(
+        2
       ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "pathology Test  Viewer"
-          }
-        });
-    });
-  }
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "pathology Test  Viewer"
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            this.AdList=false;
+            this.SpinLoading = false;
+          });
+      });
 
+    }, 100);
+  }
 
   getPrintPathologyReport(el) {
-  
+
     var D_data = {
       "OP_IP_Type": 1,// el.OPD_IPD_Type
 
@@ -703,7 +722,7 @@ debugger;
 
 
 
-  onExport(exprtType){
+  onExport(exprtType) {
     // debugger;
     // let columnList=[];
     // if(this.dataSource.data.length == 0){
@@ -725,8 +744,8 @@ debugger;
     //       "PBillNo" :this.dataSource.data[i]["PBillNo"] ? this.dataSource.data[i]["PBillNo"] : "N/A",
     //       "GenderName" :this.dataSource.data[i]["GenderName"] ? this.dataSource.data[i]["GenderName"] :"N/A",
     //       "AgeYear" :this.dataSource.data[i]["AgeYear"] ? this.dataSource.data[i]["AgeYear"] : "N/A",
-               
-         
+
+
     //     };
     //     excelData.push(singleEntry);
     //   }
@@ -772,7 +791,7 @@ debugger;
     //       });
     //       rows.push(arr);
     //     });
-      
+
     //     doc.autoTable(col, rows,{
     //       margin:{left:5,right:5,top:5},
     //       theme:"grid",
@@ -787,7 +806,7 @@ debugger;
   }
 
 
-  onExport1(exprtType){
+  onExport1(exprtType) {
     // debugger;
     // let columnList=[];
     // if(this.dataSource1.data.length == 0){
@@ -805,8 +824,8 @@ debugger;
     //       "IsSampleCollection" :this.dataSource1.data[i]["IsSampleCollection"] ? this.dataSource1.data[i]["IsSampleCollection"]:"N/A",
     //       "SampleCollectionTime" :this.dataSource1.data[i]["SampleCollectionTime"] ? this.dataSource1.data[i]["SampleCollectionTime"]:"N/A",
     //       "PathTestID" :this.dataSource1.data[i]["PathTestID"] ? this.dataSource1.data[i]["PathTestID"]:"N/A",
-         
-         
+
+
     //     };
     //     excelData.push(singleEntry);
     //   }
@@ -852,7 +871,7 @@ debugger;
     //       });
     //       rows.push(arr);
     //     });
-      
+
     //     doc.autoTable(col, rows,{
     //       margin:{left:5,right:5,top:5},
     //       theme:"grid",
@@ -876,7 +895,7 @@ export class PatientList {
   PBillNo: number;
   PatientType: number;
   DoctorName: String;
-  AgeYear: number;
+  AgeYear: any;
   GenderName: String;
 
   constructor(PatientList) {
@@ -887,7 +906,7 @@ export class PatientList {
     this.PBillNo = PatientList.PBillNo;
     this.PatientType = PatientList.PatientType || '0';
     this.DoctorName = PatientList.DoctorName || 1;
-    this.AgeYear = PatientList.AgeYear;
+    this.AgeYear = PatientList.AgeYear || 0;
     this.GenderName = PatientList.GenderName;
 
 
@@ -950,10 +969,10 @@ export class SampleDetailObj {
   Path_ConsultantDocname: any;
   RoomName: any;
   BedName: any;
-  PathDate:any;
-  PathTime:any;
-PathResultDr1:any;
-PathTestID:any;
+  PathDate: any;
+  PathTime: any;
+  PathResultDr1: any;
+  PathTestID: any;
 
   /**
   * Constructor
@@ -990,12 +1009,12 @@ PathTestID:any;
       this.TemplateDesc = SampleDetailObj.TemplateDesc || '';
       this.PrintTestName = SampleDetailObj.PrintTestName || '';
       this.Path_ConsultantDocname = SampleDetailObj.Path_ConsultantDocname || '';
-      this.PathResultDr1=SampleDetailObj.PathResultDr1 || 0;
+      this.PathResultDr1 = SampleDetailObj.PathResultDr1 || 0;
       this.BedName = SampleDetailObj.BedName || '';
       this.RoomName = SampleDetailObj.RoomName || '';
       this.PathDate = SampleDetailObj.PathDate || '';
       this.PathTime = SampleDetailObj.PathTime || '';
-      this.PathTestID=SampleDetailObj.PathTestID || 0;
+      this.PathTestID = SampleDetailObj.PathTestID || 0;
     }
   }
 }
