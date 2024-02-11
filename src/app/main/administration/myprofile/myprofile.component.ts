@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { UserList } from '../create-user/create-user.component';
 import { Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,6 +19,7 @@ import { CreateUserComponent } from '../create-user/create-user.component';
 import { AdministrationService } from '../administration.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { CreateUserService } from '../create-user/create-user.service';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-myprofile',
@@ -26,6 +27,12 @@ import { CreateUserService } from '../create-user/create-user.service';
   styleUrls: ['./myprofile.component.scss']
 })
 export class MyprofileComponent implements OnInit {
+
+  @ViewChild('dialogContent')
+  dialogContent: TemplateRef<any>;
+
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  
   advanceData: any;
   selectedAdvanceObj: UserList;
   Indent:any;
@@ -73,45 +80,14 @@ export class MyprofileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //  if (this.advanceDataStored.storage) {
-    //     this.selectedAdvanceObj = this.advanceDataStored.storage;
-  
-    // if(this.selectedAdvanceObj.IsIndentVerify)
-    // this.Indent="YES";
-    // else
-    // this. Indent='NO';
-   
-    
-    // if(this.selectedAdvanceObj.IsGRNVerify)
-    // this.GRN="YES";
-    // else
-    // this. GRN='NO';
-   
-
-    // if(this.selectedAdvanceObj.IsPOVerify)
-    // this.POVerify="YES";
-    // else
-    // this. POVerify='NO';
-   
-    //  }
-
      console.log(this.accountService.currentUserValue);
 
-
-
-    // if (this.advanceDataStored.storage) {
-    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
-
-    // }
-
-    // this.getSampledetailList();
-
-    debugger;
     this.sIsLoading = 'loading-data';
     var m_data = {
       "UserName": this.accountService.currentUserValue.user.userName || '%',
     }
     console.log(m_data);
+
     this._AdministrationService.getUserList(m_data).subscribe(Visit => {
       // console.log(Visit);
       this.dataSource1.data = Visit as UserList[];
@@ -147,7 +123,6 @@ export class MyprofileComponent implements OnInit {
 
 
 onClose() {
-  
   this.dialogRef.close();
  }
 
