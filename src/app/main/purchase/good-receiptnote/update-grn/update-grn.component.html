@@ -119,8 +119,8 @@
 
                                         <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>InvoiceDate</mat-label>
-                                            <input name="DateOfInvoice" matInput [matDatepicker]="picker11"
-                                                formControlName="DateOfInvoice" [(ngModel)]="registerObj.InvDate">
+                                            <input name="DateOfInvoice" matInput [matDatepicker]="picker11" (keydown)="onEnterDateOfInvoice($event)"
+                                                formControlName="DateOfInvoice" [(ngModel)]="registerObj.InvDate" #DateOfInvoice>
                                             <mat-datepicker-toggle matSuffix [for]="picker11"></mat-datepicker-toggle>
                                             <mat-datepicker #picker11></mat-datepicker>
                                         </mat-form-field>&nbsp;
@@ -129,7 +129,7 @@
                                             <mat-label>Invoice No</mat-label>
                                             <input matInput placeholder="Placeholder"
                                                 [(ngModel)]="registerObj.InvoiceNo" formControlName="InvoiceNo"
-                                                #InvoiceNo (keydown)="onEnterInvoiceNo($event)">
+                                                #InvoiceNo1 (keydown)="onEnterInvoiceNo($event)">
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
@@ -141,8 +141,8 @@
 
                                         <mat-form-field appearance="outline" style="width: 140px;">
                                             <mat-label>-Select GST Type-</mat-label>
-                                            <mat-select formControlName="GSTType" name="GSTType" required
-                                                (selectionChange)="calculateGSTType($event)">
+                                            <mat-select formControlName="GSTType" name="GSTType" required #GSTType
+                                                (selectionChange)="calculateGSTType($event)" (keydown)="onEnterGSTType($event)">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of GSTTypeList" [value]="m">
                                                     {{m.Name}}
@@ -152,8 +152,8 @@
                                         </mat-form-field>&nbsp;
                                         <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>PaymentDueDate</mat-label>
-                                            <input name="PaymentDate" matInput [matDatepicker]="picker10"
-                                                formControlName="PaymentDate" [(ngModel)]="registerObj.PaymentDate">
+                                            <input name="PaymentDate" matInput [matDatepicker]="picker10" (keydown)="onEnterPaymentDueDate($event)"
+                                                formControlName="PaymentDate" [(ngModel)]="registerObj.PaymentDate" #paymentdate>
                                             <mat-datepicker-toggle matSuffix [for]="picker10"></mat-datepicker-toggle>
                                             <mat-datepicker #picker10></mat-datepicker>
                                         </mat-form-field>
@@ -258,9 +258,9 @@
                                 </div>
                                 <div fxLayout="row">
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
-                                        <mat-label>Disc %</mat-label>
-                                        <input matInput [(ngModel)]="Disc" name="Disc" type="number"
+                                    <mat-form-field appearance="outline" fxFlex="6%">
+                                        <mat-label>Disc1 %</mat-label>
+                                        <input matInput [(ngModel)]="Disc" name="Disc" type="number"  autocomplete="off"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                             (keyup)="calculateDiscperAmount()" formControlName="Disc" id="Disc"
                                             (keydown)="onEnterDisc($event)" #disc required>
@@ -272,8 +272,22 @@
                                             formControlName="DisAmount" readonly>
                                     </mat-form-field>&nbsp;
 
+                                    <mat-form-field appearance="outline" fxFlex="6%">
+                                        <mat-label>Disc2%</mat-label>
+                                        <input matInput [(ngModel)]="vDisc2" name="Disc2" type="number"  autocomplete="off"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                            (keyup)="calculateDiscperAmount()" formControlName="Disc2" id="Disc2"
+                                            (keydown)="onEnterDisc2($event)" #disc2 required>
+                                    </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="8%">
+                                        <mat-label>Dis Amount2 </mat-label>
+                                        <input matInput [(ngModel)]="vDisAmount2" name="DisAmount2" type="number"
+                                            formControlName="DisAmount2" readonly>
+                                    </mat-form-field>&nbsp;
+
+
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>CGST </mat-label>
                                         <input matInput [(ngModel)]="CGST" name="CGST" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
@@ -287,7 +301,7 @@
                                             type="number" formControlName="CGSTAmount" id="CGSTAmount" readonly>
                                     </mat-form-field>&nbsp;
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>SGST </mat-label>
                                         <input matInput [(ngModel)]="SGST" name="SGST" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
@@ -301,7 +315,7 @@
                                             type="number" formControlName="SGSTAmount" id="SGSTAmount" readonly>
                                     </mat-form-field>&nbsp;
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>IGST</mat-label>
                                         <input matInput [(ngModel)]="IGST" name="IGST" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
@@ -315,7 +329,7 @@
                                             formControlName="IGSTAmount" id="IGSTAmount" readonly>
                                     </mat-form-field>&nbsp;
 
-                                    <mat-form-field appearance="outline" fxFlex="8%">
+                                    <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>GST </mat-label>
                                         <input matInput [(ngModel)]="GST" name="GST" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
@@ -339,7 +353,7 @@
                                     <div matTooltip="Select All Value to enable this button!!">
                                         <button mat-raised-button fxLayoutAlign="center center" #addbutton
                                             (click)="onAdd($event)" [disabled]="_GRNList.userFormGroup.invalid"
-                                            style="background-color: blue; color: white; width: 70px;margin-left: 20px; ">
+                                            style="background-color: blue; color: white; width: 70px;margin-left: 15px;margin-top: 10px; ">
                                             <mat-icon> add </mat-icon> &nbsp;Add
                                         </button>
                                     </div>
@@ -505,6 +519,22 @@
                                                 DisAmt</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.DiscAmount | number:'1.2-2'}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Disc2">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                Disc2%</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.DiscPercentage2}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="DisAmount2">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                DisAmt2</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.DiscAmount2 | number:'1.2-2'}}
                                             </mat-cell>
                                         </ng-container>
 

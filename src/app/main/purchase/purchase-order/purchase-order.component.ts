@@ -179,6 +179,7 @@ export class PurchaseOrderComponent implements OnInit {
 
     this.getFromStoreSearch();
     this.getSupplierSearchCombo();
+    this.getPurchaseOrderList();
   }
 
 
@@ -403,7 +404,7 @@ export class PurchaseOrderComponent implements OnInit {
   TotalNetAmt: any = 0;
   TOtalDiscPer: any = 0;
   TotalGSTAmt: any = 0;
-
+  finalamt:any;
   getPrint(el) {
 
     var m_data = {
@@ -412,27 +413,15 @@ export class PurchaseOrderComponent implements OnInit {
     //console.log(m_data);
     this._PurchaseOrder.getPrintPurchaseOrdert(m_data).subscribe(data => {
       this.reportPrintObjList = data as PurchaseOrder[];
-      // debugger
-      for (let i = 0; i < 10; i++) {
-        this.reportPrintObj = data[0] as PurchaseOrder;
-        this.TotalAmt += data[i].ItemTotalAmount
-        this.TotalQty += data[i].Qty
-        this.TotalRate += data[i].Rate
-        this.TOtalDiscPer += data[i].DiscAmount
-        this.TotalGSTAmt += data[i].VatAmount
-        this.TotalNetAmt += data[i].GrandTotalAmount
+     console.log(this.reportPrintObjList)
 
-        // console.log(this.TotalAmt);
-        // console.log(this.reportPrintObjList[i]["Qty"]);
-        //   this.TotalQty=this.TotalQty + parseInt(this.reportPrintObj[i]["Qty"]);
-        //   console.log(this.TotalQty)
-
-        // console.log(this.reportPrintObjList);
-
-        setTimeout(() => {
-          this.print3();
-        }, 1000);
-      }
+    //  let TotalNetAmt =this.reportPrintObjList[0].GrandTotal
+    //   const toword =require('num-words')
+    //   this.finalamt = toword(TotalNetAmt);
+       
+      setTimeout(() => {
+        this.print3();
+      }, 1000);
     })
 
   }
@@ -654,17 +643,24 @@ export class PurchaseOrder {
   Mobile:any;
   PaymentTermId:any;
   ModeOfPayment: any;
-
-
-
+  DiscAmount:any;
+  TaxAmount:any;
+  GrandTotal:any;
+  AddedByName:any;
+  VerifiedName:any;
+  TransportChanges:any
+  HandlingCharges:any;
+  FreightAmount:any;
+  OctriAmount:any;
   constructor(PurchaseOrder) {
     {
       this.PurchaseNo = PurchaseOrder.PurchaseNo || 0;
+      this.GrandTotal = PurchaseOrder.GrandTotal || 0;
       this.PurchaseDate = PurchaseOrder.PurchaseDate || 0;
       this.PurchaseTime = PurchaseOrder.PurchaseTime || "";
       this.StoreName = PurchaseOrder.StoreName || "";
       this.SupplierName = PurchaseOrder.SupplierName || 0;
-      this.TotalAmount = PurchaseOrder.TotalAmount || "";
+      this.TotalAmount = PurchaseOrder.TotalAmount ||  0;
       this.PurchaseId = PurchaseOrder.PurchaseId || "";
       this.FromStoreId = PurchaseOrder.FromStoreId || "";
       this.ItemTotalAmount = PurchaseOrder.ItemTotalAmount || "";

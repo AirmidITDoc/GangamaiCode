@@ -60,7 +60,7 @@
                                                             <mat-label>Enter a date range</mat-label>
                                                             <mat-date-range-input [rangePicker]="picker">
                                                                 <input matStartDate formControlName="start"
-                                                                    placeholder="Start date" >
+                                                                    placeholder="Start date">
                                                                 <input matEndDate formControlName="end"
                                                                     placeholder="End date"
                                                                     (dateChange)="getPurchaseOrderList()">
@@ -104,13 +104,15 @@
                                                             </mat-autocomplete>
                                                         </mat-form-field>
 
-                                                        <mat-radio-group name="Status" formControlName="Status" fxFlex="30%" value="0" 
-                                                        style="padding-top: 12px;"  >
-                                                        <mat-label >Status:</mat-label>&nbsp;
-                                                            <mat-radio-button value="1" class="mr-sm-12" (keyup)="getPurchaseOrderList()">Verify
-                                                              </mat-radio-button>
-                                                            <mat-radio-button value="0" class="mr-sm-12" (keyup)="getPurchaseOrderList()">Pending
-                                                                </mat-radio-button>
+                                                        <mat-radio-group name="Status" formControlName="Status"
+                                                            fxFlex="30%" value="0" style="padding-top: 12px;">
+                                                            <mat-label>Status:</mat-label>&nbsp;
+                                                            <mat-radio-button value="1" class="mr-sm-12"
+                                                                (keyup)="getPurchaseOrderList()">Verify
+                                                            </mat-radio-button>
+                                                            <mat-radio-button value="0" class="mr-sm-12"
+                                                                (keyup)="getPurchaseOrderList()">Pending
+                                                            </mat-radio-button>
                                                         </mat-radio-group>
 
                                                         <div style="margin-top: 10px;">
@@ -151,18 +153,19 @@
                                                             <div class="spinner-border text-danger"></div>
                                                         </div>
                                                         <!-- sppinner -->
-                                                        <mat-table #table class="table1" matSort [dataSource]="dsPurchaseOrder"
+                                                        <mat-table #table class="table1" matSort
+                                                            [dataSource]="dsPurchaseOrder"
                                                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
- 
+
                                                             <ng-container matColumnDef="Status">
                                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                                     style="color: white;">Verify</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact">
                                                                     <mat-icon
                                                                         style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                                                        *ngIf="contact.IsVerified"  
-                                                                        matTooltip="Verified" class=" green-600 s-16">circle</mat-icon>
+                                                                        *ngIf="contact.IsVerified" matTooltip="Verified"
+                                                                        class=" green-600 s-16">circle</mat-icon>
                                                                     <mat-icon
                                                                         style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                                         *ngIf="!contact.IsVerified" matTooltip="Pending"
@@ -234,19 +237,29 @@
                                                                         <mat-icon title="print Menu">print</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button (click)="onEdit(row)">
-                                                                        <mat-icon title="Edit Menu"    *ngIf="row.IsVerified==1"  
-                                                                         [disabled]="row.disabled"  class="disabled-icon"> edit</mat-icon>
-                                                                         <mat-icon title="Edit Menu"    *ngIf="row.IsVerified==0"  > edit</mat-icon>
+                                                                        <mat-icon title="Edit Menu"
+                                                                            *ngIf="row.IsVerified==1"
+                                                                            [disabled]="row.disabled"
+                                                                            class="disabled-icon"> edit</mat-icon>
+                                                                        <mat-icon title="Edit Menu"
+                                                                            *ngIf="row.IsVerified==0"> edit</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button (click)="onVerify(row)">
-                                                                        <mat-icon   *ngIf="row.IsVerified==1"   [disabled]="row.disabled"  class="disabled-icon"
+                                                                        <mat-icon *ngIf="row.IsVerified==1"
+                                                                            [disabled]="row.disabled"
+                                                                            class="disabled-icon"
                                                                             title="verify Menu">verified_user</mat-icon>
-                                                                            <mat-icon title="verify Menu"  *ngIf="row.IsVerified==0"> verified_user</mat-icon>
+                                                                        <mat-icon title="verify Menu"
+                                                                            *ngIf="row.IsVerified==0">
+                                                                            verified_user</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button (click)="POEmail()">
-                                                                        <mat-icon  *ngIf="row.IsVerified==0" [disabled]="row.disabled"  class="disabled-icon"
-                                                                            title="Email Menu" >mail</mat-icon>
-                                                                            <mat-icon *ngIf="row.IsVerified==1" title="Email Menu">mail</mat-icon>
+                                                                        <mat-icon *ngIf="row.IsVerified==0"
+                                                                            [disabled]="row.disabled"
+                                                                            class="disabled-icon"
+                                                                            title="Email Menu">mail</mat-icon>
+                                                                        <mat-icon *ngIf="row.IsVerified==1"
+                                                                            title="Email Menu">mail</mat-icon>
                                                                     </button>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -256,7 +269,7 @@
                                                                     style="display: none;">
                                                                 </mat-header-cell>
                                                             </ng-container>
-                                                            
+
 
                                                             <ng-container matColumnDef="noData">
                                                                 <mat-footer-cell *matFooterCellDef colspan="6">
@@ -400,7 +413,8 @@
                                                                             Net Amount </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.GrandTotalAmount | number:'1.2-2'}}
+                                                                            {{contact.GrandTotalAmount |
+                                                                            number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 
@@ -491,8 +505,7 @@
             </h2>
         </div>
         <div style="display: flex;">
-            <div
-                style="border: 1px solid black;width: 700px;height: 50px;border-bottom-right-radius: 110px;">
+            <div style="border: 1px solid black;width: 700px;height: 50px;border-bottom-right-radius: 110px;">
                 <span
                     style="text-transform: uppercase;font-size: 11px;font-weight: 500;text-align: center;color: black">(A
                     Unit of Shri
@@ -519,36 +532,36 @@
                 <span>{{reportPrintObjList[0]?.SupplierName}}</span>
             </td>
             <td> <span style="font-weight: 500;margin-right: 35px;margin-left: 300px;">PO No.</span>
-                <span >{{reportPrintObjList[0]?.PurchaseNo}} </span>
+                <span>{{reportPrintObjList[0]?.PurchaseNo}} </span>
             </td>
-            
+
         </tr>
 
         <tr>
             <td><span style="font-weight: 500;margin-right: 60px;">Address</span>
-                <span >{{reportPrintObjList[0]?.Address}}</span>
+                <span>{{reportPrintObjList[0]?.Address}}</span>
             </td>
             <td><span style="font-weight: 500;margin-right:27px;margin-left: 300px;">PO Date</span>
-                <span > {{reportPrintObjList[0]?.PurchaseDate | date: 'dd/MM/yyyy'}} </span>
+                <span> {{reportPrintObjList[0]?.PurchaseDate | date: 'dd/MM/yyyy'}} </span>
             </td>
         </tr>
 
         <tr>
             <td><span style="font-weight: 500;margin-right: 60px;">Email Id</span>
-                <span >{{reportPrintObjList[0]?.Email}}</span>
+                <span>{{reportPrintObjList[0]?.Email}}</span>
             </td>
             <td><span style="font-weight: 500;margin-right: 30px;margin-left: 300px;">GST No.</span>
-                <span >{{reportPrintObjList[0]?.GSTNo}}</span>'
+                <span>{{reportPrintObjList[0]?.GSTNo}}</span>'
             </td>
-            
+
         </tr>
 
         <tr>
             <td><span style="font-weight: 500;margin-right: 45px;">Mobile No.</span>
-                <span >{{reportPrintObjList[0]?.Mobile}}</span>'
+                <span>{{reportPrintObjList[0]?.Mobile}}</span>'
             </td>
             <td><span style="font-weight: 500;margin-right: 21px;margin-left: 300px;">Phone No</span>
-                <span >{{reportPrintObjList[0]?.Phone}} </span>
+                <span>{{reportPrintObjList[0]?.Phone}} </span>
             </td>
         </tr>
     </table>
@@ -575,6 +588,9 @@
                 Qty</td>
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
                 color: black;">
+                MRP</td>
+            <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
+                color: black;">
                 Rate</td>
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
                 color: black;">
@@ -585,14 +601,7 @@
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
                 color: black;">
                 GST </td>
-            <!-- <td
-                style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                background-color: red;color: white;">
-                SGST</td>
-            <td
-                style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
-                background-color: red;color: white;">
-                IGST</td> -->
+
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
               border-top-right-radius: 20px;color: black;">
                 Net Amount</td>
@@ -607,28 +616,23 @@
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.Qty}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.Rate.toFixed(2)}}</td>
+            padding: 15px;height: 20px;">{{item?.MRP | currency:'INR':'symbol-narrow':'0.2'}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.ItemTotalAmount.toFixed(2)}}</td>
+            padding: 15px;height: 20px;">{{item?.Rate | currency:'INR':'symbol-narrow':'0.2'}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.DiscAmount.toFixed(2)}}</td>
+            padding: 15px;height: 20px;">{{item?.ItemTotalAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.VatAmount.toFixed(2)}}</td>
-            <!-- <td style="border: 1px solid gray;vertical-align: top;
-              padding: 15px;height: 20px;">{{item?.SGSTAmt}}<br>({{item?.SGSTPer}}%)</td>
+            padding: 15px;height: 20px;">{{item?.ItemDiscAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-                padding: 15px;height: 20px;">{{item?.IGSTAmt}}<br>({{item?.IGSTPer}}%)</td> -->
+            padding: 15px;height: 20px;">{{item?.VatAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;">{{item?.GrandTotalAmount.toFixed(2)}}</td>
+            padding: 15px;height: 20px;">{{item?.GrandTotalAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
 
         </tr>
-        <tr style="height:20px;">
-            <!-- <td style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;background-color: red;color: white;"></td> -->
+        <!-- <tr style="height:20px;">
+          
             <td colspan="3" style="border: 1px solid gray;vertical-align: top;
             padding: 15px;color: black;font-weight:bold;">Total</td>
-            <!-- <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;background-color: red;color: white;">{{TotalUnit}}</td> -->
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
             padding: 15px;height: 20px;color: black;">{{TotalQty}}</td>
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
@@ -639,75 +643,77 @@
             padding: 15px;height: 20px;color: black;">{{TOtalDiscPer.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
             padding: 15px;height: 20px;color: black;">{{TotalGSTAmt.toFixed(2)}}</td>
-            <!-- <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;background-color: red;color: white;">{{reportPrintObjList[0]?.SGSTAmt}}</td>
-            <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
-            padding: 15px;height: 20px;background-color: red;color: white;">{{reportPrintObjList[0]?.IGSTAmt}}</td> -->
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
             padding: 15px;height: 20px;color: black;">{{TotalNetAmt.toFixed(2)}}</td>
 
-        </tr>
+        </tr> -->
         <tr style="height: 5px;">
-            <td colspan="5" style="border: 1px solid gray;
-           padding: 15px;text-align: left;vertical-align: top;">Terms Of Payment:-
-             <span>{{reportPrintObjList[0]?.PaymentTermId}}</span></td>
-
+            <td colspan="2" style="border: 1px solid gray;font-weight: 500;
+           padding: 15px;text-align: left;vertical-align: top;">Freight Amount :-
+                <span>{{reportPrintObjList[0]?.FreightAmount | currency:'INR':'symbol-narrow':'0.2'}}</span>
+            </td>
+            <td colspan="4" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;text-align: left;font-weight: 500;"> Transport Charges :-
+                <span>{{reportPrintObjList[0]?.TransportChanges | currency:'INR':'symbol-narrow':'0.2'}}</span>
+            </td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left;">Total Amount</td>
+            padding: 15px;text-align: left;"> Grand Total Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;text-align: right;">{{TotalAmt.toFixed(2)}}</td>
+            padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.TotalAmount |
+                currency:'INR':'symbol-narrow':'0.2'}}</td>
         </tr>
         <tr>
             <!-- <td colspan="7"></td> -->
-            <td colspan="5" style="border: 1px solid gray;
-            padding: 15px;text-align: left;vertical-align: top;">Payment Mode:-
-              <span>{{reportPrintObjList[0]?.ModeOfPayment}}</span></td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;text-align: left;">Discount</td>
+            padding: 15px;text-align: left;font-weight: 500;">Handling Charges :-
+                <span>{{reportPrintObjList[0]?.HandlingCharges | currency:'INR':'symbol-narrow':'0.2'}}</span>
+            </td>
+            <td colspan="4" style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;text-align: left;font-weight: 500;"> Octri Amount :-
+               <span>{{reportPrintObjList[0]?.OctriAmount | currency:'INR':'symbol-narrow':'0.2'}}</span>
+           </td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;height: 20px;text-align: right;">{{TOtalDiscPer.toFixed(2)}}</td>
+             padding: 15px;text-align: left;">Discount Amount</td>
+            <td colspan="2" style="border: 1px solid gray;vertical-align: top;
+             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.DiscAmount |
+                currency:'INR':'symbol-narrow':'0.2'}}</td>
         </tr>
         <tr>
-            <td colspan="5" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left;font-weight: 500;">Remark:- 
-            <span>{{reportPrintObjList[0]?.Remarks}}</span></td>
+            <td colspan="6" style="border: 1px solid gray;vertical-align: top;
+            padding: 15px;text-align: left;font-weight: 500;">Remark :-
+                <span>{{reportPrintObjList[0]?.Remarks}}</span>
+            </td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;text-align: left;">GST</td>
+             padding: 15px;text-align: left;">GST Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;height: 20px;text-align: right;">{{TotalGSTAmt.toFixed(2)}}</td>
+             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.TaxAmount |
+                currency:'INR':'symbol-narrow':'0.2'}}</td>
         </tr>
-        <!-- <tr>
-            <td colspan="5" rowspan="2" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left;font-weight: 500;">Remark</td>
-             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;text-align: left;">SGST</td>
-             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.SGSTAmt}}</td> 
-         </tr> -->
-        <!-- <tr>
-            <td colspan="7"></td>
-             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;text-align: left;">GST</td>
-             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.GSTAmt}}</td> 
-         </tr> -->
-        <tr>
-            <td colspan="5" style="font-weight: 500;border: 1px solid gray;vertical-align: top;
-            padding: 15px;text-align: left; border-bottom-left-radius: 20px;">Total Amount in words :-</td>
+
+        <tr rowspan="2">
+            <td colspan="6" style="font-weight: 500;border: 1px solid gray;vertical-align: top;
+            padding: 15px;text-align: left; border-bottom-left-radius: 20px;">Total Amount in words :-
+                {{finalamt}}</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;text-align: left;font-weight:bold;
-             padding: 15px;color: black; "> Grand Total Amount</td>
+             padding: 15px;color: black; ">Total Net Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;text-align: right;font-weight:bold;
              padding: 15px;height: 20px;color: black;border-bottom-right-radius: 20px;">
-                {{TotalNetAmt.toFixed(2)}}</td>
+                {{reportPrintObjList[0]?.GrandTotal | currency:'INR':'symbol-narrow':'0.2'}}</td>
         </tr>
 
     </table>
     <hr><br>
- 
+
 
     <div style="display: flex;">
-        <span style="font-weight: 500;">ADMIN ADMIN</span>
-        <span style="margin-left: 650px; font-weight: 500;">Authorized Signature</span>
+        <div>
+            <span style="font-weight: 500;margin-left: 45px;">{{reportPrintObjList[0]?.AddedByName |
+                uppercase}}</span><br>
+            <span style="font-weight: 500;margin-left: 55px;"> Added By</span>
+        </div>
+
+        <span style="margin-left: 670px; font-weight: 500;">Authorized Signature</span>
+
     </div><br>
 
 

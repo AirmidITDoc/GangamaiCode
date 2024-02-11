@@ -624,9 +624,9 @@ debugger
  
   calculateTotalAmt() {
     let Qty = this._PurchaseOrder.userFormGroup.get('Qty').value
-    if (Qty >= 100) {
-      Swal.fire("Enter Qty less than 100");
-    }
+    // if (Qty >= 100) {
+    //   Swal.fire("Enter Qty less than 100");
+    // }
 
     if (Qty && this.Rate) {
       this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(2);
@@ -671,20 +671,33 @@ debugger
       }
     }
   }
+  // let Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge").value ;
+  //   FinalRoundAmt =  (parseFloat(FinalRoundAmt) +  parseFloat(Othercharge));
 
+  //   let DebitAmount = this._GRNList.GRNFinalForm.get("DebitAmount").value ;
+  //   FinalRoundAmt =  (parseFloat(FinalRoundAmt) +  parseFloat(DebitAmount));
+
+  //   let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount").value ;
+  //   FinalRoundAmt =  (parseFloat(FinalRoundAmt) -  parseFloat(CreditAmount));
 
   getTotalNet(element) {
     let NetAmt;
     this.FinalNetAmount = element.reduce((sum, { GrandTotalAmount }) => sum += +(GrandTotalAmount || 0), 0);
     
     let handlingCharges = this._PurchaseOrder.FinalPurchaseform.get('HandlingCharges').value;
-    this.FinalNetAmount += handlingCharges;
+    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) +  parseFloat(handlingCharges));
+
     let transportChanges = this._PurchaseOrder.FinalPurchaseform.get('TransportCharges').value;
-    this.FinalNetAmount += transportChanges;
+      this.FinalNetAmount = (parseFloat(this.FinalNetAmount) +  parseFloat(transportChanges));
+
     let Freight = this._PurchaseOrder.FinalPurchaseform.get('Freight').value;
-    this.FinalNetAmount += Freight;
+    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) +  parseFloat(Freight));
+
     let OctriAmt = this._PurchaseOrder.FinalPurchaseform.get('OctriAmount').value;
-    this.FinalNetAmount += OctriAmt;
+    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) +  parseFloat(OctriAmt));
+
+    
+   
     return this.FinalNetAmount;
   }
 
