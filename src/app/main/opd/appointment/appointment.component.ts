@@ -241,6 +241,7 @@ export class AppointmentComponent implements OnInit {
   displayedColumns = [
     "PatientOldNew",
     "MPbillNo",
+    "CrossConsultation",
     "Edit",
     "Bill",
     "RegNoWithPrefix",
@@ -250,7 +251,9 @@ export class AppointmentComponent implements OnInit {
     "OPDNo",
     "Doctorname",
     "RefDocName",
+  
     "PatientType",
+    "CompanyName",
     // 'HospitalName',
     "action",
   ];
@@ -279,8 +282,7 @@ export class AppointmentComponent implements OnInit {
   filterReligion: any;
   filterMaritalstatus: any;
   filterArea: any;
-  filterCompany: any;
-  filterHospital: any;
+    filterHospital: any;
 
   public height: string;
   sanitizeImagePreview;
@@ -378,6 +380,9 @@ export class AppointmentComponent implements OnInit {
   }
 
 
+  NewCrossConsultation(contact){
+
+  }
 
   // AddList(m) {
   //   // var m_data = {
@@ -486,6 +491,9 @@ export class AppointmentComponent implements OnInit {
   }
  
 
+getPrint(contact){
+
+}
 
 
 
@@ -935,6 +943,14 @@ export class AppointmentComponent implements OnInit {
   }
 
 
+  private filterCompany(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
+
+      return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+    }
+
+  }
 
   getSubTPACompList() {
     this._opappointmentService.getSubTPACompCombo().subscribe(data => {
@@ -1396,7 +1412,9 @@ export class AppointmentComponent implements OnInit {
 
 
   OnSaveAppointmentwithoutphoto() {
-    
+    debugger
+  //  if(this.personalFormGroup.invalid && this.VisitFormGroup.invalid)
+  //  {
     if (this.searchFormGroup.get('regRadio').value == "registration") {
 
       this.isLoading = 'submit';
@@ -1453,7 +1471,7 @@ export class AppointmentComponent implements OnInit {
       visitSave['RefDocId'] = this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-      visitSave['CompanyId'] = this.CompanyId;
+      visitSave['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
       visitSave['AddedBy'] = this.accountService.currentUserValue.user.id;
       visitSave['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
         visitSave['IsCancelled'] = false;
@@ -1511,8 +1529,8 @@ export class AppointmentComponent implements OnInit {
 
       registrationUpdate['regID'] = this.registerObj.RegId;
       registrationUpdate['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        registrationUpdate['regTime'] = this.dateTimeObj.time,
-        registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
+      registrationUpdate['regTime'] = this.dateTimeObj.time,
+      registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       registrationUpdate['firstName'] = this.registerObj.FirstName;
       registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
       registrationUpdate['lastName'] = this.registerObj.LastName;
@@ -1520,7 +1538,7 @@ export class AppointmentComponent implements OnInit {
       registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
       registrationUpdate['pinNo'] = '';
       registrationUpdate['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
-        registrationUpdate['age'] = this.registerObj.AgeYear;
+      registrationUpdate['age'] = this.registerObj.AgeYear;
       registrationUpdate['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
       registrationUpdate['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
       registrationUpdate['mobileNo'] = this.registerObj.MobileNo || 0;
@@ -1536,39 +1554,39 @@ export class AppointmentComponent implements OnInit {
       registrationUpdate['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       registrationUpdate['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
       registrationUpdate['Aadharcardno'] = 0,//this.personalFormGroup.get('Aadharcardno').value || '';
-        registrationUpdate['Pancardno'] = this.personalFormGroup.get('PanCardNo').value || '';
+      registrationUpdate['Pancardno'] = this.personalFormGroup.get('PanCardNo').value || '';
       registrationUpdate['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
       registrationUpdate['Photo'] = ''
 
 
-      this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
+      // this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
       submissionObj['registrationUpdate'] = registrationUpdate;
       // visit detail
       visitUpdate['VisitId'] = 0;
       visitUpdate['RegID'] = this.registerObj.RegId;
       visitUpdate['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        visitUpdate['VisitTime'] = this.dateTimeObj.time,
-        visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
+      visitUpdate['VisitTime'] = this.dateTimeObj.time,
+      visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
       visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
       visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
       visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
       visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-      visitUpdate['CompanyId'] = this.CompanyId;
+      visitUpdate['CompanyId'] =  this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
       visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
       visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
-        visitUpdate['IsCancelled'] = 0;
+      visitUpdate['IsCancelled'] = 0;
       visitUpdate['IsCancelledBy'] = 0;
       visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
 
-        visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
+      visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
       visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
       visitUpdate['PatientOldNew'] = this.Patientnewold;
       visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-        visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
+      visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
 
-        submissionObj['visitUpdate'] = visitUpdate;
+      submissionObj['visitUpdate'] = visitUpdate;
 
 
       tokenNumberWithDoctorWiseUpdate['patVisitID'] = 0;
@@ -1590,8 +1608,8 @@ export class AppointmentComponent implements OnInit {
         this.isLoading = '';
       });
 
-    }
-
+    // }
+  }
     //Reset Page
     this.onClose();
   }
@@ -1973,120 +1991,6 @@ export class AppointmentComponent implements OnInit {
     this.selectRow = row;
   }
 
-  getTemplate() {
-    let query =
-      "select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=12";
-    this._AppointmentSreviceService
-      .getTemplate(query)
-      .subscribe((resData: any) => {
-        this.printTemplate = resData[0].TempDesign;
-        this.TempKeys = resData[0].TempKeys;
-
-        let keysArray1 = this.TempKeys;
-
-        let keysArray = [
-          'HospitalName', 'HospitalAddress', 'Phone', 'EmailId',
-          "RegNo",
-          "PrecriptionId",
-          "PatientName",
-          "OPDNo",
-          "Diagnosis",
-          "PatientName",
-          "Weight",
-          "Pluse",
-          "BP",
-          "BSL",
-          "DoseName",
-          "Days",
-          "GenderName",
-          "AgeYear",
-          "DrugName",
-          "ConsultantDocName",
-          "RefDocName",
-          "SecondRefDoctorName",
-          "MobileNo",
-          "Address",
-          "VisitDate",
-          "PreviousVisitDate"
-        ]; // resData[0].TempKeys;
-
-
-        ;
-        for (let i = 0; i < keysArray.length; i++) {
-          let reString = "{{" + keysArray[i] + "}}";
-          let re = new RegExp(reString, "g");
-          this.printTemplate = this.printTemplate.replace(
-            re,
-            this.reportPrintObj[keysArray[i]]
-          );
-        }
-        let strabc = '<div style="display:flex"><img class="logo-print" src="../../../../assets/images/logos/Hospital_logo.jpg" width="110" height="110"> <div> <div  style="font-weight:700;font-size:30px;text-align:left;width:1100px;margin-left:290px;font-family:serif;font-size:x-large;padding-top:10px">  {{HospitalName}}</div> <div   style="color:#464343;text-align:left;font-size:18px;width:1100px;margin-left:90px;font-family:serif;font-weight:700">   {{HospitalAddress}}</div> <div style="color:#464343;text-align:left;font-size:18px;width:900px;margin-left:180px;font-family:serif;font-weight:700"> Call:- {{Phone}}, EmailId : {{EmailId}}</div> </div> </div>'
-
-        this.printTemplate = this.printTemplate.replace("StrPrintDate", this.transform2(this.currentDate.toString()));
-        this.printTemplate = this.printTemplate.replace('StrVisitDate', this.transform2(this.reportPrintObj.VisitDate));
-        this.printTemplate = this.printTemplate.replace('StrPreviousVisitDate', this.transform2(this.reportPrintObj.PreviousVisitDate));
-        this.printTemplate = this.printTemplate.replace('Strheader', strabc);
-        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, "");
-        setTimeout(() => {
-          this.print();
-        }, 1000);
-      });
-  }
-
-  transform1(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform(value, "dd/MM/yyyy hh:mm a");
-    return value;
-  }
-
-  transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform(new Date(), "dd/MM/yyyy h:mm a");
-    return value;
-  }
-
-  getPrint(contact) {
-    var D_data = {
-      VisitId: contact.VisitId || 0,
-    };
-
-    let printContents;
-    this.subscriptionArr.push(
-      this._AppointmentSreviceService
-        .getOPDPrecriptionPrint(D_data)
-        .subscribe((res) => {
-          this.reportPrintObjList = res as CasepaperVisitDetails[];
-
-          this.reportPrintObj = res[0] as CasepaperVisitDetails;
-          this.getTemplate();
-        })
-    );
-  }
-
-  // PRINT
-  print() {
-
-    let popupWin, printContents;
-
-    popupWin = window.open(
-      "",
-      "_blank",
-      "top=0,left=0,height=800px !important,width=auto,width=2200px !important"
-    );
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-
-    popupWin.document
-      .write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-    popupWin.document.close();
-  }
 
 
   //

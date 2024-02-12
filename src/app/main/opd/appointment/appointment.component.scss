@@ -17,14 +17,14 @@ app-appointment{
 }
 .mat-header-row {
     width: 100%;
-    min-width: 1500px;  
+    min-width: 1800px;  
     min-height: 30px; 
       
 }
 
 .mat-row {
     width: 100%;
-    min-width: 1500px;      
+    min-width: 1800px;      
     min-height: 30px;  
    
 }
@@ -41,6 +41,13 @@ app-appointment{
     max-width: 50px;
     min-width: 50px;
     text-align: center;
+}
+
+.mat-column-CompanyName {
+  width:150px;
+  max-width: 150px;
+  min-width: 150px;
+  text-align: center;
 }
 .mat-column-Edit {
   width:50px;
