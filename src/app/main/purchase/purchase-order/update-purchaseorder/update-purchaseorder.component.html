@@ -322,8 +322,8 @@
                                             <ng-container matColumnDef="Qty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Quantity</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Qty}}
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
+                                                (input)="onQtyEdit($event, contact)">{{contact.Qty}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -338,8 +338,8 @@
                                             <ng-container matColumnDef="Rate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Rate</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Rate | number:'1.2-2'}}
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
+                                                (input)="onRateEdit($event, contact)"> {{contact.Rate | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 

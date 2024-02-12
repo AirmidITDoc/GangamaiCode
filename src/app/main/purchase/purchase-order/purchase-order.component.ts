@@ -526,6 +526,8 @@ export class ItemNameList {
   Mobile:any
   taxAmount:any;
   GSTAmt:any;
+  VatAmount:any;
+  VatPer:any;
   /**
    * Constructor
    *

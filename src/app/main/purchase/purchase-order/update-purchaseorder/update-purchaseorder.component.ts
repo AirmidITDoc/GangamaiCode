@@ -610,16 +610,68 @@ debugger
        toastClass: 'tostr-tost custom-toast-error',
      });
    });
- 
+  }
+
+  onQtyEdit(event: any, contact: ItemNameList) {
+    const editedQty = parseFloat(event.target.textContent) || 0;
+    contact.Qty = editedQty;
+   
+    if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == 'GST After Disc') {
+      //total amt
+      contact.TotalAmount = (contact.Qty * contact.Rate);
+      //disc
+      contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPer)) / 100);
+      let TotalAmt = ((contact.TotalAmount) - (contact.DiscAmount));
+      //Gst
+      contact.VatAmount = (((TotalAmt) * (contact.VatPer)) / 100);
+
+      contact.GrandTotalAmount = ((TotalAmt) + (contact.VatAmount));
+    } else {
+      //total amt
+      contact.TotalAmount = (contact.Qty * contact.Rate);
+      //Gst
+      contact.VatAmount = (((contact.TotalAmount) * (contact.VatPer)) / 100);
+
+      let totalAmt = ((contact.TotalAmount) + (contact.VatAmount));
+      //disc
+      contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPer)) / 100);
+
+      contact.GrandTotalAmount = ((totalAmt) - (contact.DiscAmount));
+    }
+  }
+  onRateEdit(event: any, contact: ItemNameList) {
+    const editedRate = parseFloat(event.target.textContent) || 0;
+    contact.Rate = editedRate;
+   
+    if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == 'GST After Disc') {
+      //total amt
+      contact.TotalAmount = (contact.Qty * contact.Rate);
+      //disc
+      contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPer)) / 100);
+      let TotalAmt = ((contact.TotalAmount) - (contact.DiscAmount));
+      //Gst
+      contact.VatAmount = (((TotalAmt) * (contact.VatPer)) / 100);
+
+      contact.GrandTotalAmount = ((TotalAmt) + (contact.VatAmount));
+    } else {
+      //total amt
+      contact.TotalAmount = (contact.Qty * contact.Rate);
+      //Gst
+      contact.VatAmount = (((contact.TotalAmount) * (contact.VatPer)) / 100);
+
+      let totalAmt = ((contact.TotalAmount) + (contact.VatAmount));
+      //disc
+      contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPer)) / 100);
+
+      contact.GrandTotalAmount = ((totalAmt) - (contact.DiscAmount));
+    }
   }
   OnchekPurchaserateValidation() {
     let mrp = this._PurchaseOrder.userFormGroup.get('MRP').value
     if (mrp <= this.Rate) {
       Swal.fire("Enter Purchase Rate Less Than MRP");
       this._PurchaseOrder.userFormGroup.get('Rate').setValue('');
-
     }
-    //this.disc.nativeElement.focus();
   }
  
   calculateTotalAmt() {
@@ -696,8 +748,6 @@ debugger
     let OctriAmt = this._PurchaseOrder.FinalPurchaseform.get('OctriAmount').value;
     this.FinalNetAmount = (parseFloat(this.FinalNetAmount) +  parseFloat(OctriAmt));
 
-    
-   
     return this.FinalNetAmount;
   }
 

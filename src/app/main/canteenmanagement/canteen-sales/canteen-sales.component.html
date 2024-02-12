@@ -37,16 +37,20 @@
 
                                             <mat-form-field appearance="outline" fxFlex="11%">
                                                 <mat-label>Code</mat-label>
-                                                <input matInput name="Code" #Code formControlName="Code">
+                                                <input matInput name="Code" #Code formControlName="Code"
+                                                (keydown)="onEnterCode($event)"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                >
                                             </mat-form-field>&nbsp;&nbsp;&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="28%">
                                                 <mat-label>Customer Name</mat-label>
                                                 <input matInput name="CustomerName" #CustomerName
-                                                    formControlName="CustomerName" required>
+                                                    formControlName="CustomerName" required  (keydown)="onEnterCustomer($event)">
                                             </mat-form-field>&nbsp;&nbsp;&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="16%">
+                                                <mat-label>PaymentDate</mat-label>
                                                 <input matInput [matDatepicker]="picker" formControlName="Start">
                                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker></mat-datepicker>
@@ -55,7 +59,7 @@
                                             <mat-form-field appearance="outline" fxFlex="18%">
                                                 <mat-label>TotalAoumt</mat-label>
                                                 <input matInput name="TotalAoumt" #TotalAoumt
-                                                    formControlName="TotalAoumt">
+                                                    formControlName="TotalAoumt" [(ngModel)]="vTotalFinalAmount">
                                             </mat-form-field>&nbsp;
 
                                         </mat-card>
@@ -199,12 +203,10 @@
                                                 <ng-container matColumnDef="Qty">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        <mat-form-field appearance="legacy" formControlName="Qty">
-                                                            <input matInput [(ngModel)]="contact.Qty" (keyup)="calculateTotal(contact,contact.Qty)"  type="number">
-                                                        </mat-form-field>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
+                                                    (input)="onQtyEdit($event, contact)">{{contact.Qty}}   
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container>        
                 
                                                 <ng-container matColumnDef="Amount">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Amount
@@ -237,16 +239,21 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="21%">
                                                     <mat-label>Discount%</mat-label>
-                                                    <input matInput name="Discount" #Code formControlName="Discount">
+                                                    <input matInput name="Discount"  #Discount formControlName="Discount"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                    (keyup)="CalculateDiscount()"  [(ngModel)]="vDisc">
                                                 </mat-form-field>&nbsp;&nbsp;
+
                                                 <mat-form-field appearance="outline" fxFlex="23%">
                                                     <mat-label>DiscAmt</mat-label>
-                                                    <input matInput name="DiscAmt" #Code formControlName="DiscAmt">
+                                                    <input matInput name="DiscAmt" #DiscAmt formControlName="DiscAmt"
+                                                    [(ngModel)]="vDiscAmt" (keyup)="CalculateDisAmt()">
                                                 </mat-form-field>&nbsp;&nbsp;
+
                                                 <mat-form-field appearance="outline" fxFlex="23">
                                                     <mat-label>TotalAoumt</mat-label>
-                                                    <input matInput name="TotalAoumt" #Code
-                                                        formControlName="TotalAoumt">
+                                                    <input matInput name="TotalAoumt" #TotalAoumt
+                                                        formControlName="TotalAoumt" [(ngModel)]="vTotalFinalAmount">
                                                 </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
                                                 <div matTooltip="Select All Value to enable this button!!"
