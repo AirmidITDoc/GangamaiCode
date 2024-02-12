@@ -171,6 +171,15 @@
                               circle</mat-icon>
                           </mat-cell>
                         </ng-container>
+                        <ng-container matColumnDef="CrossConsultation">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <button mat-icon-button matTooltip="CrossConsultation" (click)="NewCrossConsultation(contact)">
+                              <mat-icon>CrossConsultation</mat-icon>
+                            </button>
+                          </mat-cell>
+                        </ng-container>
 
                         <ng-container matColumnDef="Edit">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -255,6 +264,9 @@
                           </mat-cell>
                         </ng-container>
 
+                        
+                      
+
                         <ng-container matColumnDef="PatientType">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                             <span class="mat-header-text">Patient Type</span>
@@ -263,8 +275,18 @@
                             {{contact.PatientType}}
                           </mat-cell>
                         </ng-container>
+
+                        <ng-container matColumnDef="CompanyName">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                            <span class="mat-header-text">Company Name</span>
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md style="margin-top: 1px;">
+                            {{contact.CompanyName}}
+                          </mat-cell>
+                        </ng-container>
+
                         <!-- stickyEnd -->
-                        <ng-container matColumnDef="action">
+                        <ng-container matColumnDef="action" stickyEnd>
                           <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
                             <span class="mat-header-text">Action</span>
                           </mat-header-cell>
