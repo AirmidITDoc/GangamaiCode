@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { NewEndoscopyComponent } from './new-endoscopy/new-endoscopy.component';
 import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-endoscopy',
@@ -56,7 +57,7 @@ export class EndoscopyComponent implements OnInit {
   
   constructor( public _OtManagementService: OTManagementServiceService,
        private formBuilder: FormBuilder,
-    
+       private _fuseSidebarService: FuseSidebarService,
     public _matDialog: MatDialog,
     private accountService: AuthenticationService,
     // public dialogRef: MatDialogRef<EndoscopyDetailsComponent>,
@@ -167,6 +168,10 @@ export class EndoscopyComponent implements OnInit {
       this.searchFormGroup.get('Reg_No').reset();
     }
 
+  // toggle sidebar
+  toggleSidebar(name): void {
+    this._fuseSidebarService.getSidebar(name).toggleOpen();
+  }
 
     onEdit(contact){
 

@@ -215,7 +215,7 @@
             <label style="font-weight: bolder;width:1000px">Sample Collection Date / Time </label>
             <div style="border-style: groove;font-size: xx-large;">
                 <mat-form-field>
-                    <input matInput type="datetime-local" placeholder="start date">
+                    <input matInput type="datetime-local" placeholder="start date" [value]="date" (change)="date=$event.target.value">
                 </mat-form-field>
                 <!-- <ejs-datetimepicker #ejDateTimePicker formControlName="Sampledate" name="datetimepicker"  floatLabelType='Auto' style="width:205px; " >
                  </ejs-datetimepicker>  -->

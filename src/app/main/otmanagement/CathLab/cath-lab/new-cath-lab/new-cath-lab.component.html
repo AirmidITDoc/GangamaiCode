@@ -266,9 +266,9 @@
                           (keydown)="onEnterAnestheticsDr($event)" formControlName="AnestheticsDr" [matAutocomplete]="autoAnestheticsDr">
                         <span matSuffix style="display: flex;">
                           <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('AnestheticsDr').setValue(''); isSurgen2Selected = false;">close</mat-icon>
+                            (click)="_OtManagementService.otreservationFormGroup.get('AnestheticsDr').setValue(''); isAnestheticsDrSelected = false;">close</mat-icon>
                           <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('AnestheticsDr').setValue(''); isSurgen2Selected = false;">search</mat-icon>
+                            (click)="_OtManagementService.otreservationFormGroup.get('AnestheticsDr').setValue(''); isAnestheticsDrSelected = false;">search</mat-icon>
                         </span>
                         <mat-autocomplete #autoAnestheticsDr="matAutocomplete" [displayWith]="getOptionTextAnestheticsDr">
                           <mat-option *ngFor="let option of filteredOptionsAnestheticsDr| async" [value]="option">
@@ -317,9 +317,9 @@
                           (keydown)="onEnterAnestheticsDr1($event)" formControlName="AnestheticsDr1" [matAutocomplete]="autoAnestheticsDr1">
                         <span matSuffix style="display: flex;">
                           <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('AnestheticsDr1').setValue(''); isSurgen2Selected = false;">close</mat-icon>
+                            (click)="_OtManagementService.otreservationFormGroup.get('AnestheticsDr1').setValue(''); isAnestheticsDr1Selected = false;">close</mat-icon>
                           <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('AnestheticsDr1').setValue(''); isSurgen2Selected = false;">search</mat-icon>
+                            (click)="_OtManagementService.otreservationFormGroup.get('AnestheticsDr1').setValue(''); isAnestheticsDr1Selected = false;">search</mat-icon>
                         </span>
                         <mat-autocomplete #autoAnestheticsDr1="matAutocomplete" [displayWith]="getOptionTextAnestheticsDr1">
                           <mat-option *ngFor="let option of filteredOptionsAnestheticsDr1 | async" [value]="option">

@@ -360,5 +360,13 @@ public documentdownloadInsert(employee){
     public getDoctorMasterComboA() {
       return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
     }
-  
+    public CrossConsultationInsert(element){
+
+      return this._httpClient.post("OutPatient/OPDCrossConsultationInsert",element)
+    }
+
+    public getAppointmentReport(VisitId){
+      return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
+    }
+    
 }

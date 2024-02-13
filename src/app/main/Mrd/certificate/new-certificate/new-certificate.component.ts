@@ -83,6 +83,7 @@ export class NewCertificateComponent implements OnInit {
   PatientListfilteredOptions: any;
   RegId:any;
   vAdmissionID:any;
+  isRegIdSelected :boolean=false;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;

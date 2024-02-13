@@ -155,13 +155,13 @@
                               <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">IsMLC
                               </mat-header-cell>
                               <mat-cell *matCellDef="let contact">
+                                <!-- <mat-icon
+                                  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                  *ngIf="contact.IsMLC=='0' " matTooltip="IsMLC" class=" orange-600 s-16 ">No
+                                </mat-icon> -->
                                 <mat-icon
                                   style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                  *ngIf="contact.IsMLC=='0' " matTooltip="IsMLC" class=" orange-600 s-16 ">circle
-                                </mat-icon>
-                                <mat-icon
-                                  style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                  *ngIf="contact.IsMLC=='1' " matTooltip="IsNotMLC" class="green-600 s-16 ">circle
+                                  *ngIf="contact.IsMLC=='1' " matTooltip="IsNotMLC" class="green-600 s-16 " (click)="NewMLc(contact)">Yes
                                 </mat-icon>
                               </mat-cell>
                             </ng-container>
@@ -968,7 +968,10 @@
               </div>
             </mat-card>
             <br>
-
+            <mat-checkbox aria-label="Remember Me" style="margin-right: 20px;margin-left:20px ;"
+            formControlName="IsMLC">
+              ISMLC
+          </mat-checkbox>
             <div class="footer-navigation-container">
               <div class="next-div" style=" float: right;">
                 <button class="next-btn" color="accent" (click)="nextClicked(otherFormGroup)"

@@ -234,8 +234,8 @@
                           <mat-icon class="mat-icon-close"
                             (click)="_OtManagementService.otreservationFormGroup.get('SurgeonId1').setValue(''); isSurgerySelected = false;">search</mat-icon>
                         </span>
-                        <mat-autocomplete #autoSurgeonId1="matAutocomplete" [displayWith]="getOptionTextautoSurgeonId1">
-                          <mat-option *ngFor="let option of filteredOptionautoSurgeonId1 | async" [value]="option">
+                        <mat-autocomplete #autoSurgeonId1="matAutocomplete" [displayWith]="getOptionTextSurgeonId1">
+                          <mat-option *ngFor="let option of filteredOptionsSurgeon | async" [value]="option">
                             {{option.DoctorName}}
                           </mat-option>
                         </mat-autocomplete>
@@ -341,7 +341,7 @@
                     <mat-form-field appearance="outline" fxFlex="60%" fxFlex.xs="100%">
                         <mat-label>Surgery Name </mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Surgeon Name" matInput #SurgeryId
-                          (keydown)="onEnterSurgeryId($event)" formControlName="SurgeryId" [matAutocomplete]="autoSurgeryId" required>
+                          (keydown)="onEnterSurgery($event)" formControlName="SurgeryId" [matAutocomplete]="autoSurgeryId" required>
                         <span matSuffix style="display: flex;">
                           <mat-icon class="mat-icon-close"
                             (click)="_OtManagementService.otreservationFormGroup.get('SurgeryId').setValue(''); isSurgerySelected = false;">close</mat-icon>

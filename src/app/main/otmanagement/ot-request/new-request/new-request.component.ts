@@ -497,6 +497,9 @@ export class NewRequestComponent implements OnInit {
   }
 
   
+  getOptionTextSurgeonId1(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
   getOptionTextautoSurgeonName(option) {
     return option && option.DoctorName ? option.DoctorName : '';
   }
@@ -587,11 +590,11 @@ export class NewRequestComponent implements OnInit {
     }
   }
   
-  // public onEnterSurgeryId(event): void {
-  //   if (event.which === 13) {
-  //     this.SurgeonName.nativeElement.focus();
-  //   }
-  // }
+  public onEnterSurgery(event): void {
+    if (event.which === 13) {
+      this.SurgeonName.nativeElement.focus();
+    }
+  }
   
   // public onEnterSurgeonName(event): void {
   //   if (event.which === 13) {
