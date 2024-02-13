@@ -20,6 +20,7 @@ import { RegInsert } from '../../appointment/appointment.component';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-new-opbilling',
@@ -142,6 +143,19 @@ export class NewOPBillingComponent implements OnInit {
   noOptionFound: boolean = false;
   SrvcName: any;
   add: Boolean = false;
+   // search code
+   PatientListfilteredOptions: any;
+   isRegIdSelected: boolean = false;
+   registerObj = new RegInsert({});
+   PatientName: any = "";
+   RegId: any;
+   searchFormGroup: FormGroup;
+   Regflag: boolean = false;
+   RegDate: any;
+   City: any;
+   CompanyName: any;
+   Tarrifname: any;
+   Doctorname: any;
   Paymentdata: any;
   vOPIPId:any =0;
   vOPDNo:any=0;
@@ -453,7 +467,7 @@ export class NewOPBillingComponent implements OnInit {
 
     let InsertBillUpdateBillNoObj = {};
     InsertBillUpdateBillNoObj['BillNo'] = 0;
-    InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
+    InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.RegId ,//this.vOPIPId;
     InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value; //this.totalAmtOfNetAmt;
     InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value; //this.b_concessionamt;
     InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
@@ -577,7 +591,7 @@ export class NewOPBillingComponent implements OnInit {
               Swal.fire('OP Bill With Payment!', 'Bill Generated Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                   let m = response;
-                  this.viewgetBillReportPdf(m);
+                  this.viewgetBillReportPdf(response);
                   // this._matDialog.closeAll();
                 }
               });
@@ -586,6 +600,13 @@ export class NewOPBillingComponent implements OnInit {
             }
             this.isLoading = '';
           });
+
+          this.dataSource.data=[];
+          this.chargeslist=[];
+          this.PatientName="";
+          this.vOPDNo="";
+          this.Doctorname="";
+          this.Tarrifname="";
         }
         else {
 
@@ -692,6 +713,12 @@ export class NewOPBillingComponent implements OnInit {
         this.isLoading = '';
       });
     }
+    this.dataSource.data=[];
+    this.chargeslist=[];
+    this.PatientName="";
+    this.vOPDNo="";
+    this.Doctorname="";
+    this.Tarrifname="";
   }
 
   onAddCharges() {
@@ -717,6 +744,7 @@ export class NewOPBillingComponent implements OnInit {
           Qty: this.b_qty || 0,
           TotalAmt: this.b_totalAmount || 0,
           ConcessionPercentage: this.v_ChargeDiscPer || 0,
+          DiscPer:this.v_ChargeDiscPer || 0,
           DiscAmt: this.b_ChargeDisAmount || 0,
           NetAmount: this.b_netAmount || 0,
           ClassId: 1,//this.selectedAdvanceObj.ClassId || 0,
@@ -779,6 +807,15 @@ export class NewOPBillingComponent implements OnInit {
     }
   }
 
+  calculateTotalAmtbyprice(){
+    if (this.b_price && this.b_qty) {
+      if(this.isDoctor){
+      this.b_totalAmount = Math.round(parseInt(this.b_price) * parseInt(this.b_qty)).toString();
+      this.b_netAmount = this.b_totalAmount;
+      this.calculatePersc();
+      }
+    }
+  }
   // Charges Wise Disc Percentage 
   calculatePersc() {
     if (this.v_ChargeDiscPer) {
@@ -798,7 +835,8 @@ export class NewOPBillingComponent implements OnInit {
 
 
   calcDiscPersonTotal() {
-    if (this.b_concessionDiscPer > 0) {
+    debugger
+    if (this.b_concessionDiscPer > 0 || this.v_ChargeDiscPer > 0) {
       this.b_concessionamt = Math.round((this.b_TotalChargesAmount * parseInt(this.b_concessionDiscPer)) / 100);
 
       this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
@@ -1050,19 +1088,50 @@ export class NewOPBillingComponent implements OnInit {
   @ViewChild('doctorname') doctorname: ElementRef;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
   @ViewChild('netamt') netamt: ElementRef;
+  
+  @ViewChild('Doctor') Doctor: MatSelect;
 
   onEnterservice(event): void {
+    debugger
     if (event.which === 13) {
+      if(this.isDoctor){
+        
+        this.price.nativeElement.focus();
+      }
+else{
       this.qty.nativeElement.focus();
       // this.calculateTotalAmt()
     }
   }
+  }
 
+  public onEnterorice(event): void {
+
+    if (event.which === 13) {
+      this.qty.nativeElement.focus();
+
+    }
+  }
+  
   public onEnterqty(event): void {
 
     if (event.which === 13) {
+      if(this.isDoctor){
+        if(this.Doctor) this.Doctor.focus();
+      }
+      else{
       this.disper.nativeElement.focus();
       // this.calculateTotalAmt()
+    }
+  }
+  }
+
+  
+  public onEnterdoctor(event): void {
+debugger
+    if (event.which === 13) {
+      this.disper.nativeElement.focus();
+
     }
   }
   public onEnterdiscper(event): void {
@@ -1119,19 +1188,7 @@ export class NewOPBillingComponent implements OnInit {
     });
   }
 
-  // search code
-  PatientListfilteredOptions: any;
-  isRegIdSelected: boolean = false;
-  registerObj = new RegInsert({});
-  PatientName: any = "";
-  RegId: any;
-  searchFormGroup: FormGroup;
-  Regflag: boolean = false;
-  RegDate: any;
-  City: any;
-  CompanyName: any;
-  Tarrifname: any;
-  Doctorname: any;
+ 
   // City: any;
   getSearchList() {
 
@@ -1152,9 +1209,11 @@ export class NewOPBillingComponent implements OnInit {
 
   getSelectedObj1(obj) {
 debugger
+this.dataSource.data=[];
 console.log(obj)
     this.registerObj = obj;
-    this.PatientName = obj.FirstName + " " + obj.MiddleName + " " + obj.LastName;
+    // this.PatientName = obj.FirstName + " " + obj.PatientName;
+    this.PatientName = obj.FirstName + " " + obj.LastName;
     this.RegId = obj.RegId;
     this.City = obj.City;
     this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');

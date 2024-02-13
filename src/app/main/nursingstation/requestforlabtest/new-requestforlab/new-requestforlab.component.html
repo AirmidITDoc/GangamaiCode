@@ -138,16 +138,105 @@
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field> -->
-                        <span
+                        <!-- <span
                             style="margin-left: 30px;font-size: medium;color: rgb(3, 83, 83);font-weight: bold;">Patient
                             Name :{{PatientName}} <span style="margin-left: 20px;">IPNO :{{RegId}}</span><span
                                 style="margin-left: 20px;">Adm No:{{vAdmissionID}}</span>
                                 <span style="margin-left: 20px;">Company Name :{{RegId}}</span>
-                                <span style="margin-left: 20px;">Tariif :{{RegId}}</span></span>
+                                <span style="margin-left: 20px;">Tariif :{{RegId}}</span></span> -->
 
                     </div>
 
                 </mat-card>
+                
+                <div>
+                    <fieldset class="fieldset-div">
+                        <legend>Patient Information</legend>
+                        
+                        <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
+                            <div class="patient-sub">
+                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <div class="flex-item" >
+                                        <h3 class="labels-h3">Patient Name</h3>
+                                    </div>
+                                    <div class="flex-item-middle">
+                                        <h6 class="labels-h6">:</h6>
+                                    </div>
+                                    <div class="flex-item" style="width: 275px;">
+                                        <h6 class="labels-h6">{{PatientName}}</h6>
+                                    </div>
+                                    <div class="flex-item item-header" style="margin-left: 10px;">
+                                        <h3 class="labels-h3">OPIPNo</h3>
+                                    </div>
+                                    <div class="flex-item-middle">
+                                        <h6 class="labels-h6">:</h6>
+                                    </div>
+                                    <div class="flex-item">
+                                        <h6 class="labels-h6">{{vOPDNo}}</h6>
+                                    </div>
+                                </div>
+                               
+                            </div>
+        
+                                           
+        
+                            <div class="patient-sub">
+                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <div class="flex-item item-header">
+                                        <h3 class="labels-h3">DoctorName</h3>
+                                    </div>
+                                    <div class="flex-item-middle">
+                                        <h6 class="labels-h6">:</h6>
+                                    </div>
+                                    <div class="flex-item">
+                                        <h6 class="labels-h6">{{Doctorname}}</h6>
+                                    </div>
+                                    <div class="flex-item item-header">
+                                        <h3 class="labels-h3">CompanyName</h3>
+                                    </div>
+                                    <div class="flex-item-middle">
+                                        <h6 class="labels-h6">:</h6>
+                                    </div>
+                                    <div class="flex-item">
+                                        <h6 class="labels-h6">{{CompanyName}}</h6>
+                                    </div>
+        
+                                    <div class="flex-item item-header">
+                                        <h3 class="labels-h3">TarrifName</h3>
+                                    </div>
+                                    <div class="flex-item-middle">
+                                        <h6 class="labels-h6">:</h6>
+                                    </div>
+                                    <div class="flex-item">
+                                        <h6 class="labels-h6">{{Tarrifname}}</h6>
+                                    </div>
+                                </div>
+                                <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <!-- <div class="flex-item item-header">
+                                        <h3 class="labels-h3">DoctorName</h3>
+                                    </div>
+                                    <div class="flex-item-middle">
+                                        <h6 class="labels-h6">:</h6>
+                                    </div>
+                                    <div class="flex-item">
+                                        <h6 class="labels-h6">{{Doctorname}}</h6>
+                                    </div> -->
+        
+        
+                                    <!-- <div class="flex-item item-header">
+                                        <h3 class="labels-h3">Doctor</h3>
+                                    </div>
+                                    <div class="flex-item-middle">
+                                        <h6 class="labels-h6">:</h6>
+                                    </div>
+                                    <div class="flex-item">
+                                        <h6 class="labels-h6">XYZ XYZ Xyz</h6>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
             </div>
         </div>
 
