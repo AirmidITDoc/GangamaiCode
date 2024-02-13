@@ -16,6 +16,8 @@ import { PurchaseOrderService } from '../purchase-order.service';
 })
 export class EmailComponent implements OnInit {
 
+ registerObj:any;
+
   constructor(
     public _matDialog: MatDialog,
     public _PurchaseOrder: PurchaseOrderService,
@@ -27,6 +29,9 @@ export class EmailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if(this.data.Obj){
+    this.data.obj = this.registerObj;
+    }
   }
   OnSend(){
 

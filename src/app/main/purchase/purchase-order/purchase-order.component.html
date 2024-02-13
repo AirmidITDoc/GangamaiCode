@@ -253,7 +253,7 @@
                                                                             *ngIf="row.IsVerified==0">
                                                                             verified_user</mat-icon>
                                                                     </button>
-                                                                    <button mat-icon-button (click)="POEmail()">
+                                                                    <button mat-icon-button (click)="POEmail(row)">
                                                                         <mat-icon *ngIf="row.IsVerified==0"
                                                                             [disabled]="row.disabled"
                                                                             class="disabled-icon"

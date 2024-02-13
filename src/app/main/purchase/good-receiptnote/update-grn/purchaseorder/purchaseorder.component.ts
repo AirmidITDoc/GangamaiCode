@@ -11,6 +11,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
+import { UpdateGRNComponent } from '../update-grn.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 
 @Component({
   selector: 'app-purchaseorder',
@@ -28,6 +30,20 @@ export class PurchaseorderComponent implements OnInit {
     'TotalAmount',
     'GrandTotal',
   ];
+  displayedColumns1 = [
+    'Action',
+    'PurchaseId',
+    'ItemName',
+    'Qty',
+    'MRP',
+    'Rate',
+    'DiscPer',
+    'DiscAmount',
+    'VatPer',
+    'VatAmount',
+    'TotalAmount',
+    'GrandTotalAmount',
+  ];
 
   sIsLoading: string = '';
   isLoading = true;
@@ -40,6 +56,7 @@ export class PurchaseorderComponent implements OnInit {
   StoreList:any=[];
 
   dsPOList = new MatTableDataSource<POList>();
+  dsPODetailList = new MatTableDataSource<PODetailList>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
@@ -48,6 +65,7 @@ export class PurchaseorderComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    private advanceDataStored: AdvanceDataStored,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _dialogRef: MatDialogRef<PurchaseorderComponent>,
     private accountService: AuthenticationService,
@@ -57,6 +75,7 @@ export class PurchaseorderComponent implements OnInit {
   ngOnInit(): void {
     this.getSupplierSearchCombo();
     this.gePharStoreList();
+    this.getDirectPOList();
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -117,21 +136,93 @@ export class PurchaseorderComponent implements OnInit {
           this.sIsLoading = '';
         });
   }
-  onClear(){
+  getPOList(Params){
+      var Param = {
+        "PurchaseId": Params.PurchaseID
+      }
+      //console.log(Params)
+      this._GRNList.getPurchaseItemList(Param).subscribe(data => {
+        this.dsPODetailList.data = data as PODetailList[];
+        this.dsPODetailList.sort = this.sort;
+        this.dsPODetailList.paginator = this.paginator;
+        this.sIsLoading = '';
+       console.log(this.dsPODetailList);
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+   // this.onClose();
+   
+  }
+  interimArray: any = [];
+  tableElementChecked(event, element) {
 
+   // debugger
+    if (event.checked) {
+      this.interimArray.push(element);
+    }
+    
+    // else if (this.interimArray.length > 0) {
+    //   let index = this.interimArray.indexOf(element);
+    //   if (index !== -1) {
+    //     this.interimArray.splice(index, 1);
+    //   }
+    // }
+
+    console.log(this.interimArray)
+  }
+
+  OnAddgrn( ) { 
+   
+    console.log(this.interimArray)
+    // this.advanceDataStored.storage = new PODetailList(this.interimArray[0]);
+    // console.log(this.advanceDataStored.storage)
+   
+    this._dialogRef.close(this.interimArray);
+    // this._dialogRef.close(this.interimArray)
+  }
+ 
+
+ 
+  onClear(){
   }
   onClose() {
     this._dialogRef.close();
   }
+} 
+export class PODetailList{
+  PurchaseId: any;
+  ItemName: string;
+  Qty: number;
+  Rate: number;
+  DiscPer: number;
+  DiscAmount: number;
+  VatPer: number;
+  VatAmount: number;
+  TotalAmount: number;
+  MRP: number;
+  GrandTotalAmount: number;
+
+  constructor(PODetailList){
+    this.PurchaseId = PODetailList.PurchaseId || 0;
+      this.ItemName = PODetailList.ItemName || "";
+      this.Qty = PODetailList.Qty || 0;
+      this.Rate = PODetailList.Rate || 0;
+      this.DiscPer = PODetailList.DiscPer || 0;
+      this.DiscAmount = PODetailList.DiscAmount || 0;
+      this.VatPer = PODetailList.VatPer || 0;
+      this.VatAmount = PODetailList.VatAmount || 0;
+      this.TotalAmount = PODetailList.TotalAmount || 0;
+      this.MRP = PODetailList.MRP || 0;
+      this.GrandTotalAmount = PODetailList.GrandTotalAmount || 0;
+  }
 }
 export class POList {
-
   PurchaseDate: any;
   SupplierName: string;
   PurchaseNo: number;
   TotalAmount: number;
   GrandTotal: number;
-
   /**
    * Constructor
    *

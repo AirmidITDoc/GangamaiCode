@@ -1,5 +1,5 @@
 .table1 {
-    height: 600px !important;
+    height:280px !important;
   //  width: 100%;
 
   
@@ -10,15 +10,15 @@
     text-align: left;
   }  
   .mat-column-PurchaseNo{
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     text-align: left;
   }  
  .mat-column-SupplierName {
-  width: 220px;
-  max-width: 220px;
-  min-width: 220px;
+  width: 250px;
+  max-width: 250px;
+  min-width: 250px;
   text-align: left;
   justify-content: left;
   white-space: nowrap;
@@ -42,4 +42,90 @@
     min-width: 150px;
     text-align: left;
 }  
+  }
+  .table2 {
+    height: 255px !important;
+    width:100%;
+    .mat-column-Action {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    .mat-column-PurchaseId {
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
+      text-align: left;
+    }  
+    .mat-column-ItemName {
+      width: 170px;
+      max-width: 170px;
+      min-width: 170px;
+      text-align: left;
+      justify-content: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      overflow: hidden !important;
+      display: inline-flex;
+      display: inline;
+      margin-right: 20px;
+      margin-top: 20px;
+    }
+    .mat-column-Qty {
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
+      text-align: left;
+    }
+    .mat-column-MRP {
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
+      text-align: left;
+    }
+    .mat-column-Rate {
+      width: 90px;
+      max-width: 90px;
+      min-width: 90px;
+      text-align: left;
+    }
+    .mat-column-DiscPer {
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
+      text-align: left;
+    }
+    .mat-column-DiscAmount {
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
+      text-align: left;
+    }
+    .mat-column-VatPer {
+      width: 80px;
+      max-width: 80px;
+      min-width: 80px;
+      text-align: left;
+    }
+    .mat-column-VatAmount {
+      width: 100px;
+      max-width: 100px;
+      min-width: 100px;
+      text-align: left;
+    }
+    .mat-column-TotalAmount {
+      width: 120px;
+      max-width: 120px;
+      min-width: 120px;
+      text-align: left;
+    }
+    .mat-column-GrandTotalAmount {
+      width: 150px;
+      max-width: 150px;
+      min-width: 150px;
+      text-align: left;
+    }
+       
   }

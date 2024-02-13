@@ -679,17 +679,22 @@ debugger
     // if (Qty >= 100) {
     //   Swal.fire("Enter Qty less than 100");
     // }
-
+    if (Qty > 0 && this.Rate > 0){
     if (Qty && this.Rate) {
       this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(2);
       this.NetAmount = this.TotalAmount;
       //Dicount calculation
       this.DiscAmt = (( parseFloat(this.TotalAmount) * this.Dis) / 100).toFixed(2);
       let totalamt=this.TotalAmount - this._PurchaseOrder.userFormGroup.get('DiscAmount').value;
-       //GST Calculation
-       this.calculateGSTperAmount();
-
+       //GST Calculation 
      }
+    }else{
+      this._PurchaseOrder.userFormGroup.get('TotalAmount').setValue(0);
+      this._PurchaseOrder.userFormGroup.get('DiscAmount').setValue(0);
+      this._PurchaseOrder.userFormGroup.get('GSTAmount').setValue(0);
+      this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(0);
+    }
+    this.calculateGSTperAmount();
   }
   calculateDiscperAmount() {
     let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
