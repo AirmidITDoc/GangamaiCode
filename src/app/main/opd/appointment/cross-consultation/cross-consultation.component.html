@@ -1,0 +1,162 @@
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex fxLayoutGap="5px">
+    <div class="header-container accent" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
+        fxLayoutAlign="space-between" style="width: 100%;">
+        <span style="font-size: 22px; font-weight: 500; color: #fff;">Cross Consultation </span>
+       
+        <span  style="margin-left:600px;" hidden><app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>  
+        <span class="material-icons" style="cursor: pointer; margin-left: 24px; color: #fff;" (click)="onClose()">
+            close
+        </span>
+    </div>
+    <div style="padding:3px;">
+
+        <div class="content-card">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                <form [formGroup]="_AdmissionService.mySaveForm" style="width: 100%;">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
+                            <!-- ================================ LABEL HEADER  -->
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
+                                    <h3 style="font-weight: bold; font-size: 18px; margin: 0 0 0px;">Patient Information
+                                    </h3>
+                                </div>
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
+                                    style="align-items: baseline;font-size: 18px;color: rgb(6, 96, 99);">
+                                    <span class="label">VisitId :</span>
+                                    <!-- <span class="data_input">{{_AdmissionService.mySaveForm.get("AdmissionID").value}}</span> -->
+                                    <span class="data_input">{{PatientHeaderObj.VisitId}}</span>
+
+                                    <span class="label">RegNo :</span>
+                                    <!-- <span class="data_input">{{_AdmissionService.mySaveForm.get("AdmissionID").value}}</span> -->
+                                    <span class="data_input">{{PatientHeaderObj.RegNo}}</span>
+
+                                    <span class="label"> Patient Name : </span>
+                                    <span class="data_input">{{PatientHeaderObj.PatientName}}</span>
+
+                                    <span class="label"> VisitDate : </span>
+                                    <span class="data_input">{{PatientHeaderObj.VisitDate | date:'dd/mm/yyyy'}}</span>
+                                   
+                                    <span class="label"> VisitTime : </span>
+                                    <span class="data_input">{{PatientHeaderObj.VisitTime}}</span>
+
+
+                                </div>
+                            </mat-card>
+                            <!-- ================================ LABEL HEADER  -->
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <mat-card class="example-card" name="m1">
+            <div fxFlexFill fxLayout="column">
+                <form [formGroup]="InfoFormGroup" style="border: blue;">
+                    <h3 style="font-weight:bold ;">Cross Consultation Information</h3>
+                    <div fxLayoutGap="5px">
+                        <mat-form-field appearance="outline" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-label>Department</mat-label>
+                            <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
+                                #dept (keydown)="onEnterdept($event)" formControlName="Departmentid"
+                                [matAutocomplete]="autoDep1" required>
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="InfoFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="InfoFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                            </span>
+
+                            <mat-autocomplete #autoDep1="matAutocomplete" [displayWith]="getOptionTextDep">
+                                <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
+                                    (onSelectionChange)="OnChangeDoctorList(option)">
+                                    {{option.departmentName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>&nbsp;
+
+                        <mat-form-field appearance="outline" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-label>Doctor Name</mat-label>
+                            <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput #deptdoc
+                                (keydown)="onEnterdeptdoc($event)" formControlName="DoctorID"
+                                [matAutocomplete]="autoDoctor1" required>
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="InfoFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="InfoFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                            </span>
+
+                            <mat-autocomplete #autoDoctor1="matAutocomplete" [displayWith]="getOptionTextDoc">
+                                <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
+                                    (onSelectionChange)="isDoctorSelected = true;">
+                                    {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b>
+                                    {{option.DoctorId
+                                    }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                        <div>
+
+                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                <input matInput [matDatepicker]="picker2" placeholder="Choose a VisitDate"
+                                    name="ReportingDate" formControlName="VisitDate" [(ngModel)]="value">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <input matInput [matDatepicker]="picker3" placeholder="Choose a VisitTime"
+                                    name="ReportingTime" formControlName="VisitTime" [(ngModel)]="value">
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                            </mat-form-field> -->
+                            <!-- {{date}} -->
+                            <!-- <mat-form-field>
+                                <input matInput type="datetime-local" placeholder="Visit date" formControlName="VisitDate"
+                                [value]="date" (change)="date=$event.target.value" /> 
+                            </mat-form-field> -->
+
+                            <mat-form-field>
+                                <input matInput type="datetime-local" placeholder="Visit Date / Time" formControlName="VisitDate"
+                                [ngModel]="date | date:'yyyy-MM-ddTHH:mm'"/> 
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="footer-navigation-container" style=" float: right;">
+                   
+            <div class="next-div">
+              
+              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;"> Save </button>
+  
+              <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;" >Cancel</button>
+            </div>
+          </div>  -->
+
+                    <div class="footer-navigation-container" style=" float: right;">
+
+                        <div class="next-div">
+
+                            <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;"
+                            [disabled]="InfoFormGroup.invalid">
+                                <span style="display: flex;justify-content: center;">
+                                    <mat-spinner *ngIf="isLoading=='submit'" [color]="white"
+                                        [diameter]="20"></mat-spinner>
+                                    <span style="margin-right: 10px;">Save</span>
+                                </span>
+                            </button>
+                            <!-- <button class="footer-btn" (click)="getPrint(5)" style="border-radius: 16px;">Print</button> -->
+                            <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </mat-card>
+
+    </div>
+</div>

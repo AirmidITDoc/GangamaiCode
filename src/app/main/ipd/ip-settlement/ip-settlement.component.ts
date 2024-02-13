@@ -59,6 +59,7 @@ export class IPSettlementComponent implements OnInit {
   PatientName:any;
   RegId:any;
   isRegIdSelected: boolean = false;
+  vAdmissionID:any;
 
   dataSource = new MatTableDataSource<PaidBilldetail>();
   displayedColumns: string[] = [
@@ -91,8 +92,6 @@ export class IPSettlementComponent implements OnInit {
   hasSelectedContacts: boolean;
   constructor(public _IpSearchListService: IPSettlementService,
     private accountService: AuthenticationService,
-    
-    // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
     // @Inject(MAT_DIALOG_DATA) public data: any,
     public datePipe: DatePipe,
@@ -128,16 +127,28 @@ export class IPSettlementComponent implements OnInit {
 
       });
     }
+  
+  
+
+    getSelectedObj(obj) {
+      debugger
+      this.registerObj = obj;
+      // this.PatientName = obj.FirstName + '' + obj.LastName;
+      this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' +obj.PatientName;
+      this.RegId= obj.RegID;
+      this.vAdmissionID= obj.AdmissionID
+     
+      console.log(obj);
+    }
 
 
-    
   getSearchList() {
-    // this.searchFormGroup.get('RegId').value + '%' //
+    
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
-      this._IpSearchListService.getRegistrationList(m_data).subscribe(resData => {
+      this._IpSearchListService.getAdmittedpatientlist(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
@@ -149,16 +160,7 @@ export class IPSettlementComponent implements OnInit {
 
   }
 
-  getSelectedObj(obj) {
-    
-    this.registerObj = new AdmissionPersonlModel({});
-    this.registerObj = obj;
-    this.PatientName=obj.FirstName + ' ' + obj.LastName
-    this.RegId=obj.RegNo;
   
-    // Swal.fire(this.PatientName,this.RegId)
-  }
-
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
@@ -225,7 +227,7 @@ export class IPSettlementComponent implements OnInit {
 
     this.sIsLoading = 'loading-data';
 
-    this.regId=95645;
+    this.regId=95645 || this.RegId;
   
     let query ="Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
   
@@ -243,11 +245,11 @@ export class IPSettlementComponent implements OnInit {
 
   }
 
-
+// 106549
   getCreditBillDetails(){
     debugger
     this.sIsLoading = 'loading-data';
-    this.regId=95645
+    this.regId=106549 || this.RegId;
     
     let query = "Select * from lvwBillIPD  where TransactionType =0 and companyid = 0 and RegID= " + this.regId + " and BalanceAmt>0";
     console.log(query);
@@ -316,8 +318,9 @@ debugger
 
         console.log("Procced with Payment Option");
         let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
-
-
+debugger
+        console.log(result);
+        result.submitDataPay.ipPaymentInsert.TransactionType=0;
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
         console.log(UpdateAdvanceDetailarr1);
         debugger

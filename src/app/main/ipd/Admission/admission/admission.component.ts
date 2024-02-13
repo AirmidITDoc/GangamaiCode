@@ -395,6 +395,7 @@ export class AdmissionComponent implements OnInit {
       RelativeAddress: '',
       RelatvieMobileNo: ['', [ Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       RelationshipId: '',
+      IsMLC:['1']
     });
   }
   createSearchForm() {
@@ -1587,6 +1588,20 @@ debugger
   // field validation 
   get f() { return this._AdmissionService.myFilterform.controls; }
 
+
+  NewMLc(contact){
+    this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+    this._AdmissionService.populateForm(contact);
+    const dialogRef = this._matDialog.open(MLCInformationComponent,
+      {
+        maxWidth: '85vw',
+        height: '400px', width: '100%',
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
   getRecord(contact, m): void {
    
     if (m == "Edit Admission") {

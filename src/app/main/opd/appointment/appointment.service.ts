@@ -232,5 +232,8 @@ export class AppointmentService {
   //   return this._httpClient.post("OutPatient/OPDAppointmentUpdate", employee);
   // }
 
-  
+  public CrossConsultationInsert(element){
+
+    return this._httpClient.post("OutPatient/OPDCrossConsultationInsert",element)
+  }
 }

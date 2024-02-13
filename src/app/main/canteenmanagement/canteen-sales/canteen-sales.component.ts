@@ -199,9 +199,9 @@ onQtyEdit(event: any, contact:ItemDetTable2List  ) {
     }
    
   }
-  // CalculateDisAmt(){
-  //   this.vTotalFinalAmount = (parseInt(this.vTotalFinalAmount) - parseInt(this.vDiscAmt));
-  // }
+  CalculateDisAmt(){
+    this.vTotalFinalAmount = (parseInt(this.vTotalFinalAmount) - parseInt(this.vDiscAmt));
+  }
  
   @ViewChild('Code') Code: ElementRef;
   @ViewChild('CustomerName') CustomerName: ElementRef;

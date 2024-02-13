@@ -42,6 +42,8 @@ import { VisitDetailsComponent } from "./visit-details/visit-details.component";
 import { ConfigService } from "app/core/services/config.service";
 import { MatDrawer } from "@angular/material/sidenav";
 import { MatAccordion } from "@angular/material/expansion";
+import { CrossConsultationComponent } from "./cross-consultation/cross-consultation.component";
+
 
 
 export class DocData {
@@ -167,7 +169,7 @@ export class AppointmentComponent implements OnInit {
   isOpen = false;
   loadID = 0;
   savedValue: number = null;
-
+  SpinLoading: boolean = false;
   // Image upload
   docData;
   docType;
@@ -242,7 +244,7 @@ export class AppointmentComponent implements OnInit {
     "PatientOldNew",
     "MPbillNo",
     "CrossConsultation",
-    "Edit",
+    // "Edit",
     "Bill",
     "RegNoWithPrefix",
     "PatientName",
@@ -254,7 +256,7 @@ export class AppointmentComponent implements OnInit {
   
     "PatientType",
     "CompanyName",
-    // 'HospitalName',
+    'TariffName',
     "action",
   ];
 
@@ -381,7 +383,17 @@ export class AppointmentComponent implements OnInit {
 
 
   NewCrossConsultation(contact){
-
+    const dialogRef = this._matDialog.open(CrossConsultationComponent,
+      {
+        maxWidth: '85vw',
+        height: '400px', width: '100%',
+        data:contact,
+        // UnitId:this.VisitFormGroup.get('HospitalId').value.HospitalId ||1
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      
+      // this.getAdmittedPatientList();
+    });
   }
 
   // AddList(m) {
@@ -1598,7 +1610,7 @@ getPrint(contact){
           Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
               this.getPrint(response);
-              this._matDialog.closeAll();
+              // this._matDialog.closeAll();
             }
             this.getVisitList();
           });
@@ -1709,7 +1721,7 @@ getPrint(contact){
             // if (result.isConfirmed) {
             // this._matDialog.closeAll();
             this.getPrint(result);
-            // this.getVisitList();
+            this.getVisitList();
             // }
           });
         } else {
@@ -2062,6 +2074,32 @@ getPrint(contact){
   }
 
 
+  AdList: boolean = false;
+  viewgetPatientAppointmentReportPdf(obj) {
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this.AdList = true;
+      this._opappointmentService.getAppointmentReport(
+        obj.VisitId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Appointment  Viewer"
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            this.AdList=false;
+            this.SpinLoading = false;
+          });
+      });
+
+    }, 100);
+  }
 
 
   onImageFileChange(events: any) {
@@ -2191,7 +2229,7 @@ getPrint(contact){
     this.registerObj = new RegInsert({});
     this.personalFormGroup.reset();
     this.personalFormGroup.get('RegId').reset();
-    this.searchFormGroup.get('RegId').disable();
+    // this.searchFormGroup.get('RegId').disable();
 
     this.personalFormGroup = this.createPesonalForm();
     this.personalFormGroup.markAllAsTouched();
@@ -2527,7 +2565,7 @@ getPrint(contact){
   }
   public onEnterlname(event): void {
     if (event.which === 13) {
-      this.mstatus.nativeElement.focus();
+      this.agey.nativeElement.focus();
       // if(this.mstatus) this.mstatus.focus();
     }
   }
@@ -2549,8 +2587,8 @@ getPrint(contact){
 
   public onEnterreligion(event): void {
     if (event.which === 13) {
-      this.bday.nativeElement.focus();
-      // if(this.religion) this.religion.focus();
+     
+      if(this.ptype) this.ptype.focus();
     }
   }
   public onEnterbday(event): void {
@@ -2579,18 +2617,18 @@ getPrint(contact){
   }
   public onEnterpan(event): void {
     if (event.which === 13) {
-      this.phone.nativeElement.focus();
+      this.address.nativeElement.focus();
     }
   }
 
   public onEnterphone(event): void {
     if (event.which === 13) {
-      this.mobile.nativeElement.focus();
+      this.mstatus.nativeElement.focus();
     }
   }
   public onEntermobile(event): void {
     if (event.which === 13) {
-      this.address.nativeElement.focus();
+      this.phone.nativeElement.focus();
     }
   }
 
@@ -2608,8 +2646,8 @@ getPrint(contact){
 
   public onEntercity(event): void {
     if (event.which === 13) {
-      if (this.hname) this.hname.focus();
-
+      // if (this.hname) this.hname.focus();
+      this.mobile.nativeElement.focus();
     }
   }
 
@@ -2892,6 +2930,8 @@ export class AdvanceDetailObj {
   RefDocName: any;
   WardName: any;
   BedName: any;
+  VisitDate:any;
+  VisitTime:any;
   /**
    * Constructor
    *
@@ -2919,6 +2959,8 @@ export class AdvanceDetailObj {
       this.RefDocName = AdvanceDetailObj.RefDocName || "";
       this.WardName = AdvanceDetailObj.WardName || "";
       this.BedName = AdvanceDetailObj.BedName || "";
+      this.VisitDate =AdvanceDetailObj.VisitDate || "";
+      this.VisitTime =AdvanceDetailObj.VisitTime || "";
     }
   }
 }

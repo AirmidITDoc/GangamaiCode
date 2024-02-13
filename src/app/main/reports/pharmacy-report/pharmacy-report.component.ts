@@ -114,6 +114,7 @@ export class PharmacyReportComponent implements OnInit {
   ) { 
     this.UserId= this._loggedUser.currentUserValue.user.id;
     this.UserName= this._loggedUser.currentUserValue.user.userName;
+    console.log(this.UserId)
   }
 
 
@@ -272,13 +273,14 @@ export class PharmacyReportComponent implements OnInit {
 
 
   viewDailyCollectionPdf(){
+    debugger
     setTimeout(() => {
       this.SpinLoading =true;
      this.AdList=true;
     this._BrowsSalesBillService.getSalesDailyCollectionNew(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this._loggedUser.currentUserValue.user.storeId,this._BrowsSalesBillService.userForm.get('UserId').value.UserId || 0
+      this._loggedUser.currentUserValue.user.storeId, this.UserId 
     ).subscribe(res=>{
     const dialogRef = this._matDialog.open(PdfviewerComponent, 
       {   maxWidth: "95vw",

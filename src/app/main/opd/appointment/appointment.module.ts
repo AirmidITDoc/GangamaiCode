@@ -47,6 +47,7 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
 import { MatDrawer, MatDrawerContainer, MatSidenavModule } from "@angular/material/sidenav";
 import { VisitDetailsComponent } from './visit-details/visit-details.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { CrossConsultationComponent } from './cross-consultation/cross-consultation.component';
 // import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 
 const routes: Routes = [
@@ -67,6 +68,7 @@ const routes: Routes = [
         CameraComponent,
         InfoheadDirective,
         VisitDetailsComponent,
+        CrossConsultationComponent,
         
     ],
     imports: [

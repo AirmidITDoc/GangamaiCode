@@ -24,7 +24,7 @@ export class NewReservationComponent implements OnInit {
 
  
   personalFormGroup: FormGroup;
-
+  isRegIdSelected:Boolean=false;
   submitted = false;
   now = Date.now();
   searchFormGroup: FormGroup;

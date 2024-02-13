@@ -71,6 +71,11 @@ export class NewCathLabComponent implements OnInit {
   vAdmissionID:any;
   PatientListfilteredOptions:any;
   isRegIdSelected: boolean = false;
+  isSurgen2Selected: boolean = false;
+  isAnestheticsDrSelected: boolean = false;
+  isAnestheticsDr1Selected: boolean = false;
+
+  
   // @Input() panelWidth: string | number;
   // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
