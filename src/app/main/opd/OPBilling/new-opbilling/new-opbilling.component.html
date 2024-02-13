@@ -31,7 +31,7 @@
 
             <mat-card-content style="width: 100%;margin-right: 5px;">
                 <div fxLayout="column">
-                    <mat-card style="background-color: rgb(202, 223, 223);height:80px !important">
+                    <mat-card style="background-color: rgb(202, 223, 223);height:100px !important">
                         <form [formGroup]="searchFormGroup">
                             <mat-form-field class=searchRegId appearance="outline"
                                 style="width:600px !important;margin-left:20px;">
@@ -56,12 +56,21 @@
                               Required field cannot be left blank
                             </mat-error> -->
                             </mat-form-field>
+                            <div>
+                                <span
+                                    style="margin-left: 30px;font-size: medium;color: rgb(3, 83, 83);font-weight: bold;">Patient
+                                    Name :{{PatientName}}
+                                    <span style="margin-left: 10px;">OPDNo :{{vOPDNo}}</span>
+                                    <!-- <span> -->
+                                        <!-- style="margin-left: 10px;">RegDate :{{RegDate}}</span>
+                                    <span
+                                    style="margin-left: 10px;">City :{{City}}</span> -->
+                                        <span style="margin-left: 10px;">Company Name :{{CompanyName}}</span>
+                                        <span style="margin-left: 10px;">Tarrif :{{Tarrifname}}</span>
+                                        <span style="margin-left: 10px;">Doctor Name :{{Doctorname}}</span>
 
-                            <span
-                                style="margin-left: 30px;font-size: medium;color: rgb(3, 83, 83);font-weight: bold;">Patient
-                                Name :{{PatientName}} <span style="margin-left: 10px;">RegId :{{RegId}}</span><span
-                                    style="margin-left: 10px;">RegDate :{{RegDate}}</span><span
-                                    style="margin-left: 10px;">City :{{City}}</span></span>
+                                    </span>
+                            </div>
                         </form>
                     </mat-card>
 

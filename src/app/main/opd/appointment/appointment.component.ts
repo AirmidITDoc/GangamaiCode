@@ -383,6 +383,7 @@ export class AppointmentComponent implements OnInit {
 
 
   NewCrossConsultation(contact){
+    console.log(contact)
     const dialogRef = this._matDialog.open(CrossConsultationComponent,
       {
         maxWidth: '85vw',
@@ -1820,7 +1821,7 @@ getPrint(contact){
         }
         this.isLoading = '';
       });
-
+      this.searchFormGroup.get('RegId').reset();
     }
 
     //Reset Page
@@ -2932,6 +2933,9 @@ export class AdvanceDetailObj {
   BedName: any;
   VisitDate:any;
   VisitTime:any;
+  PatientTypeId:any;
+  CompanyId:any;
+  HospitalId:any;
   /**
    * Constructor
    *
@@ -2961,6 +2965,9 @@ export class AdvanceDetailObj {
       this.BedName = AdvanceDetailObj.BedName || "";
       this.VisitDate =AdvanceDetailObj.VisitDate || "";
       this.VisitTime =AdvanceDetailObj.VisitTime || "";
+      this.PatientTypeId =AdvanceDetailObj.PatientTypeId || 0;
+      this.CompanyId =AdvanceDetailObj.CompanyId || 0;
+      this.HospitalId =AdvanceDetailObj.HospitalId || 0;
     }
   }
 }

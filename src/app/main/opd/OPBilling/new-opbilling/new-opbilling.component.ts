@@ -143,7 +143,10 @@ export class NewOPBillingComponent implements OnInit {
   SrvcName: any;
   add: Boolean = false;
   Paymentdata: any;
-
+  vOPIPId:any =0;
+  vOPDNo:any=0;
+  vTariffId:any=0;
+  vClassId:any=0;
   //doctorone filter
   public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -450,7 +453,7 @@ export class NewOPBillingComponent implements OnInit {
 
     let InsertBillUpdateBillNoObj = {};
     InsertBillUpdateBillNoObj['BillNo'] = 0;
-    InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
+    InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
     InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value; //this.totalAmtOfNetAmt;
     InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value; //this.b_concessionamt;
     InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
@@ -466,8 +469,8 @@ export class NewOPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['IsPrinted'] = 0;
     InsertBillUpdateBillNoObj['IsFree'] = 0;
     InsertBillUpdateBillNoObj['CompanyId'] = 0;
-    InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0;
-    InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
+    InsertBillUpdateBillNoObj['TariffId'] = this.vTariffId || 0;
+    InsertBillUpdateBillNoObj['UnitId'] = 1,//this.selectedAdvanceObj.UnitId || 0;
     InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
     InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
     InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
@@ -490,7 +493,7 @@ export class NewOPBillingComponent implements OnInit {
       InsertAddChargesObj['ChargeID'] = 0,
         InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
         InsertAddChargesObj['opD_IPD_Type'] = 0,
-        InsertAddChargesObj['opD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,
+        InsertAddChargesObj['opD_IPD_Id'] = this.vOPIPId,
         InsertAddChargesObj['serviceId'] = element.ServiceId,
         InsertAddChargesObj['price'] = element.Price,
         InsertAddChargesObj['qty'] = element.Qty,
@@ -515,7 +518,7 @@ export class NewOPBillingComponent implements OnInit {
         InsertAddChargesObj['packageId'] = 0,
         InsertAddChargesObj['BillNo'] = 0,
         InsertAddChargesObj['chargeTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-        InsertAddChargesObj['classId'] = this.selectedAdvanceObj.ClassId,
+        InsertAddChargesObj['classId'] = this.vClassId,
 
         InsertAdddetArr.push(InsertAddChargesObj);
     })
@@ -528,7 +531,7 @@ export class NewOPBillingComponent implements OnInit {
 
     PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       PatientHeaderObj['PatientName'] = this.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+    PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
     PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
     if (!this.BillingForm.get('cashpay').value) {
@@ -1126,6 +1129,10 @@ export class NewOPBillingComponent implements OnInit {
   Regflag: boolean = false;
   RegDate: any;
   City: any;
+  CompanyName: any;
+  Tarrifname: any;
+  Doctorname: any;
+  // City: any;
   getSearchList() {
 
     var m_data = {
@@ -1144,13 +1151,21 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   getSelectedObj1(obj) {
-
+debugger
+console.log(obj)
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.MiddleName + " " + obj.LastName;
     this.RegId = obj.RegId;
     this.City = obj.City;
     this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
-    // this.setDropdownObjs();
+    this.CompanyName = obj.CompanyName;
+    this.Tarrifname = obj.TariffName;
+    this.Doctorname = obj.DocName;
+    this.vOPIPId = obj.AdmissionID;
+    this.vOPDNo=obj.OPDNo;
+    this.vTariffId=obj.TariffId;
+    this.vClassId=obj.classId  
+      // this.setDropdownObjs();
 
     // this.getregisterList();
     // this.getVisitDetails();

@@ -2200,6 +2200,7 @@ export class Admission {
   AgeMonth: number;
   SubCompanyId: any;
   AdmittedDoctorName: any;
+  PatientTypeId:any;
   /**
 * Constructor
 *
@@ -2281,6 +2282,7 @@ export class Admission {
       this.AgeMonth = Admission.AgeMonth || '';
       this.SubCompanyId = Admission.SubCompanyId || 0;
       this.AdmittedDoctorName = Admission.AdmittedDoctorName || ''
+      this.PatientTypeId = Admission.PatientTypeId || ''
     }
   }
 }
