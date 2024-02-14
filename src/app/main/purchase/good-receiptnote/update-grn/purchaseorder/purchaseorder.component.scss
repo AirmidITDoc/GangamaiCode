@@ -129,3 +129,18 @@
     }
        
   }
+  .next-btn:hover{
+    background-color: #039be5 ;
+   // border: 1px solid rgb(247, 97, 97);
+    color:  white;
+   
+}
+
+button:disabled {
+    color: white;
+   background-color: #7bd3ff  !important;
+   //background-color: #b7e6fd ;
+    border-radius: 2px;
+   // border: 1px solid #CCCCCC;
+   border: 1px solid  #b7e6fd ;
+}

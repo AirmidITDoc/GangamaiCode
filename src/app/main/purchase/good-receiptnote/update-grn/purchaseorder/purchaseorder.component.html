@@ -113,7 +113,7 @@
 
                 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="30px">
                     <div fxFlex.gt-sm="100%" fxFlex>
-
+                        <form [formGroup]="_GRNList.POFrom">
                         <div fxlayout="row" style="padding-bottom: 10px;">
                             <div style="width: 100%;">
                                 <div>
@@ -148,7 +148,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Total Amount</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.TotalAmount | number:'1.2-2'}}
+                                                {{contact.TotalAmount | currency:'INR':'symbol-narrow':'0.2'}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -156,7 +156,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Grand Total</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.GrandTotal | number:'1.2-2'}}
+                                                {{contact.GrandTotal | currency:'INR':'symbol-narrow':'0.2'}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -209,7 +209,7 @@
                                                     cached
                                                 </span>
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact">
+                                            <mat-cell *matCellDef="let contact" required>
                                                 <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
                                                 </mat-checkbox>
                                             </mat-cell>
@@ -236,7 +236,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Rate </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.Rate | number:'1.2-2'}}
+                                                {{contact.Rate | currency:'INR':'symbol-narrow':'0.2'}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -252,7 +252,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 DiscAmount </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.DiscAmount | number:'1.2-2'}}
+                                                {{contact.DiscAmount | currency:'INR':'symbol-narrow':'0.2'}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -268,7 +268,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 GSTAmount </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.VatAmount | number:'1.2-2'}}
+                                                {{contact.VatAmount | currency:'INR':'symbol-narrow':'0.2'}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -276,7 +276,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 TotalAmount </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.TotalAmount | number:'1.2-2'}}
+                                                {{contact.TotalAmount | currency:'INR':'symbol-narrow':'0.2'}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -284,7 +284,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 MRP </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.MRP | number:'1.2-2'}}
+                                                {{contact.MRP | currency:'INR':'symbol-narrow':'0.2'}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -292,8 +292,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Net Amount </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.NetAmount |
-                                                number:'1.2-2'}}
+                                                {{contact.NetAmount | currency:'INR':'symbol-narrow':'0.2'}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -335,13 +334,16 @@
                                 </div>
                             </div>
                             <hr>
-                            <div fxFlexAlign="start end" style="float: right;">
-                                <button class="next-btn"
-                                    style="border-radius: 20px; width: 110px;height:45px;" (click)="OnAddgrn()">OK</button>
+                            <div matTooltip="Select Check Box  to enable this button!!"
+                              fxFlexAlign="start end" style="float: right;">
+                                <button class="next-btn" style="border-radius: 20px; width: 110px;height:45px;" 
+                                    [disabled]="_GRNList.POFrom.invalid" (click)="OnAddgrn()">OK</button>
                                 <button class="footer-btn" style="border-radius: 20px;width: 110px;height:45px;"
                                     (click)="onClose()"> PO Close</button>
                             </div>
+                            
                         </div>
+                       </form>
 
                     </div>
                 </div>

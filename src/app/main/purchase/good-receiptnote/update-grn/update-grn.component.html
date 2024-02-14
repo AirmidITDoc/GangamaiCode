@@ -445,7 +445,7 @@
                                         <ng-container matColumnDef="BatchNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 BatchNo</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true">
                                                 {{contact.BatchNo}}
                                             </mat-cell>
                                         </ng-container>
@@ -453,7 +453,7 @@
                                         <ng-container matColumnDef="ExpDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 ExpDate</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true">
                                                 {{contact.BatchExpDate | date: 'MM/dd/yyyy'}}
                                             </mat-cell>
                                         </ng-container>
@@ -497,7 +497,7 @@
                                         <ng-container matColumnDef="TotalQty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 TotalQty</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm >
                                                 {{contact.TotalQty}}
                                             </mat-cell>
                                         </ng-container>
@@ -808,6 +808,7 @@
                                             <mat-label>Remark</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="Remark" #Remark
                                                 type="text" [(ngModel)]="registerObj.Remark"
+                                                [(ngModel)]="vRemark"
                                                 (keydown)="onEnterRemark($event)" (keydown.enter)="focusNextService()">
                                         </mat-form-field>
 
@@ -839,6 +840,7 @@
                                             <mat-label>Other Charges</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="OtherCharge"
                                                 #OtherCharge [(ngModel)]="registerObj.OtherCharge"
+                                                [(ngModel)]="vOtherCharge"
                                                 (keydown)="onEnterOtherCharges($event)" >
                                         </mat-form-field>
 

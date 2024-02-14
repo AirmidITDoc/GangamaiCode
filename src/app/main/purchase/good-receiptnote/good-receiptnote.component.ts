@@ -617,7 +617,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     var m_data = {
       "GRNID": el.GRNID
     }
-     console.log(m_data);
+     //console.log(m_data);
     this._GRNService.getPrintGRNList(m_data).subscribe(data => {
       this.reportPrintObjList = data as GRNList[];
       // const toword =require('num-words')
@@ -667,7 +667,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     popupWin.document.close();
   }
   LastThreeItemList(contact) {
-    console.log(contact);
+   // console.log(contact);
     var vdata = {
       'ItemId': contact.ItemId,
     }
@@ -1045,7 +1045,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
   onEdit(contact) {
     this.chkNewGRN = 2;
-    console.log(contact);
+    //console.log(contact);
     const dialogRef = this._matDialog.open(UpdateGRNComponent,
       {
         maxWidth: "100%",
@@ -1173,6 +1173,7 @@ export class GRNList {
   GrandTotalAount:any;
   TotCGSTAmt:any;
   TotSGSTAmt:any;
+ 
   /**
    * Constructor
    *
@@ -1328,6 +1329,7 @@ export class ItemNameList {
   TotalQty: any;
   UnitofMeasurementName: number;
   UnitofMeasurementId: any;
+ 
    
   /**
    * Constructor

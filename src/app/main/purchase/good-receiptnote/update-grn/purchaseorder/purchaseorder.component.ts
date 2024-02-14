@@ -124,12 +124,12 @@ export class PurchaseorderComponent implements OnInit {
         "Status": this._GRNList.POFrom.get("Status").value || 0,
         "SupplierId": this._GRNList.POFrom.get('SupplierId').value.SupplierId || 0,
       }
-      console.log(Param);
+      //console.log(Param);
       this._GRNList.getDirectPOList(Param).subscribe(data => {
         this.dsPOList.data = data as POList[];
         this.dsPOList.sort = this.sort;
         this.dsPOList.paginator = this.paginator;
-        console.log(this.dsPOList);
+       // console.log(this.dsPOList);
         this.sIsLoading = '';
       },
         error => {
@@ -146,7 +146,7 @@ export class PurchaseorderComponent implements OnInit {
         this.dsPODetailList.sort = this.sort;
         this.dsPODetailList.paginator = this.paginator;
         this.sIsLoading = '';
-       console.log(this.dsPODetailList);
+      // console.log(this.dsPODetailList);
       },
         error => {
           this.sIsLoading = '';
@@ -169,12 +169,12 @@ export class PurchaseorderComponent implements OnInit {
     //   }
     // }
 
-    console.log(this.interimArray)
+    //console.log(this.interimArray)
   }
 
   OnAddgrn( ) { 
    
-    console.log(this.interimArray)
+   // console.log(this.interimArray)
     // this.advanceDataStored.storage = new PODetailList(this.interimArray[0]);
     // console.log(this.advanceDataStored.storage)
    
