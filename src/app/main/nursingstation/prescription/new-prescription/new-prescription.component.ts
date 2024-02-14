@@ -32,7 +32,7 @@ export class NewPrescriptionComponent implements OnInit {
   ItemForm: FormGroup;
   screenFromString = 'admission-form';
   ItemId: any;
-
+  vOpIpId:any;
   displayedVisitColumns: string[] = [
     'Date',
     'Time'
@@ -78,6 +78,15 @@ export class NewPrescriptionComponent implements OnInit {
   filteredOptionsStore: Observable<string[]>;
   optionsStore: any[] = [];
   isStoreselected: boolean = false;
+
+  CompanyName: any;
+  Tarrifname: any;
+  Doctorname: any;
+ Paymentdata: any;
+ vOPIPId:any =0;
+ vOPDNo:any=0;
+ vTariffId:any=0;
+ vClassId:any=0;
 
   dsPresList = new MatTableDataSource<PrecriptionItemList>();
   dsPrePresList = new MatTableDataSource<PrescriptionList>();
@@ -187,9 +196,13 @@ export class NewPrescriptionComponent implements OnInit {
     this.registerObj = obj;
     // this.PatientName = obj.FirstName + '' + obj.LastName;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
-    this.RegId = obj.RegID;
+    // this.vOpIpId = obj.oP_IP_ID;
     this.vAdmissionID = obj.AdmissionID
-
+    this.CompanyName = obj.CompanyName;
+    this.Tarrifname = obj.TariffName;
+    this.Doctorname = obj.DocName;
+    this.vOpIpId = obj.AdmissionID;
+    this.vOPDNo=obj.OPDNo;
     console.log(obj);
   }
 
@@ -495,7 +508,7 @@ debugger
     this.dsPresList.data.forEach((element) => {
       let insertIP_Prescription = {};
       insertIP_Prescription['ipMedID'] = 0;
-      insertIP_Prescription['oP_IP_ID'] = this.RegId;
+      insertIP_Prescription['oP_IP_ID'] = this.vOpIpId;
       insertIP_Prescription['opD_IPD_Type'] = 1;
       insertIP_Prescription['pDate'] = this.dateTimeObj.date;
       insertIP_Prescription['pTime'] = this.dateTimeObj.time;

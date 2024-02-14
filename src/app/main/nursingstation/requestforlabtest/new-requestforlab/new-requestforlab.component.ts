@@ -39,8 +39,14 @@ export class NewRequestforlabComponent implements OnInit {
   sIsLoading: string = "";
   matDialogRef: any;
   SpinLoading:boolean=false;
- 
- 
+  CompanyName: any;
+  Tarrifname: any;
+  Doctorname: any;
+  vOPIPId:any =0;
+  vOPDNo:any=0;
+  vTariffId:any=0;
+  vClassId:any=0;
+  
  
   displayedServiceColumns: string[] = [
   'ServiceName',
@@ -76,7 +82,7 @@ export class NewRequestforlabComponent implements OnInit {
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
     this.myFormGroup = this.createMyForm();
-    this.getServiceListdata();
+    // this.getServiceListdata();
   }
 
   createMyForm():FormGroup {
@@ -172,6 +178,14 @@ export class NewRequestforlabComponent implements OnInit {
     this.RegId = obj.RegId;
     this.vAdmissionID = obj.AdmissionID;
     this.DoctorName = obj.DoctorName;
+
+    this.CompanyName = obj.CompanyName;
+    this.Tarrifname = obj.TariffName;
+    this.Doctorname = obj.DocName;
+    this.vOPIPId = obj.AdmissionID;
+    this.vOPDNo=obj.OPDNo;
+    this.vTariffId=obj.TariffId;
+    this.vClassId=obj.classId  
    // console.log( this.PatientName)
     // this.setDropdownObjs();
   }
@@ -303,7 +317,7 @@ export class NewRequestforlabComponent implements OnInit {
 
       ipPathOrRadiRequestInsertArray['reqDate']  =  this.dateTimeObj.date;
       ipPathOrRadiRequestInsertArray['reqTime']  = this.dateTimeObj.time;
-      ipPathOrRadiRequestInsertArray['oP_IP_ID']  = this.vAdmissionID
+      ipPathOrRadiRequestInsertArray['oP_IP_ID']  = this.vOPIPId
       ipPathOrRadiRequestInsertArray['oP_IP_Type']  =  1;
       ipPathOrRadiRequestInsertArray['isAddedBy']  = this._loggedService.currentUserValue.user.id;
       ipPathOrRadiRequestInsertArray['isCancelled']  = 0;

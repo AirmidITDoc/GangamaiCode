@@ -56,6 +56,12 @@
                 <form [formGroup]="InfoFormGroup" style="border: blue;">
                     <h3 style="font-weight:bold ;">Cross Consultation Information</h3>
                     <div fxLayoutGap="5px">
+                        
+                        <mat-form-field appearance="outline">
+                            <input matInput type="datetime-local" placeholder="Visit Date / Time" formControlName="VisitDate"
+                            [ngModel]="date | date:'yyyy-MM-ddTHH:mm'"/> 
+                        </mat-form-field>
+
                         <mat-form-field appearance="outline" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-label>Department</mat-label>
                             <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
@@ -119,11 +125,7 @@
                                 [value]="date" (change)="date=$event.target.value" /> 
                             </mat-form-field> -->
 
-                            <mat-form-field>
-                                <input matInput type="datetime-local" placeholder="Visit Date / Time" formControlName="VisitDate"
-                                [ngModel]="date | date:'yyyy-MM-ddTHH:mm'"/> 
-                            </mat-form-field>
-
+                         
                         </div>
                     </div>
 

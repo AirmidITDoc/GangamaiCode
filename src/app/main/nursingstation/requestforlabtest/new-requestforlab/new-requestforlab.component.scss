@@ -86,3 +86,48 @@
    
 }
  
+
+.patient-details mat-error {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.patient-bill-info {
+    display: flex;
+}
+.labels-h3 {
+    font-size: 15px;
+    font-weight: bold;
+}
+.labels-h6 {
+    font-size: 15px;
+}
+.form-field-labels {
+    font-size: 13px;
+}
+
+fieldset {
+    border-color: #039be5;// #fff9f9;
+}
+.fieldset-div {
+    background-color: #191a1c21;
+}
+legend {
+    padding: 10px;
+    font-size: 20px;
+}
+
+
+.flex-item, .patient-sub {
+    flex-basis: 100%;
+}
+.flex-item-middle{
+    width: 5px;
+    margin-right:5px;
+}
+.item-header {
+    width: 200px;
+}
+.field-row {
+    align-items: center;
+}
