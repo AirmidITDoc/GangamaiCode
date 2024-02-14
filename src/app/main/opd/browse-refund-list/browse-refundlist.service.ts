@@ -50,4 +50,8 @@ export class BrowseRefundlistService {
   public getBrowseOpdPaymentReceiptPrint(PaymentId) {
     return this._httpClient.post("Generic/GetByProc?procName=rptOPDPaymentReceiptPrint", PaymentId)
   }   
+
+  public getOpRefundview(RefundId){
+    return this._httpClient.get("OutPatient/view-OPRefundofBill?RefundId=" + RefundId);
+  }
   }
