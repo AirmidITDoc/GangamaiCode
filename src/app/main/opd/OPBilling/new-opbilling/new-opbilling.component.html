@@ -1,4 +1,4 @@
-<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" style="width: 100%; background:#F5F5F5; ">
+<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" style="width: 100%; background:#F5F5F5; padding: 10px 10px 10px 10px; ">
     <!-- <div class="col-md-12" style="padding:10px;" *ngIf="selectedView == 'Dropdown'"> -->
     <div class="container" style="width: 100%;">
         <div style="width: 100%;">
@@ -31,7 +31,7 @@
 
             <mat-card-content style="width: 100%;margin-right: 5px;">
                 <div fxLayout="column">
-                    <mat-card style="height:180px !important">
+                    <mat-card style="height:80px !important; padding: 0px 0 8px 0;">
                         <form [formGroup]="searchFormGroup">
                             <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
 
@@ -49,9 +49,8 @@
                                 <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1"
                                     (optionSelected)='getSelectedObj1($event.option.value)'>
                                     <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
-                                        {{option.RegNo}} |
-                                        {{option.MobileNo}}
+                                        {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                        {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
                                     </mat-option>
                                 </mat-autocomplete>
                                 <!-- <mat-error *ngIf="searchFormGroup.get('ItemId').hasError('required')">
@@ -76,109 +75,105 @@
                                     </span>
                             </div> -->
                         </form>
-
-
-                        <div>
-                            <fieldset class="fieldset-div" style="width: 98% !important;">
-                                <legend>Patient Information</legend>
-                                
-                                <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
-                                    <div class="patient-sub">
-                                        <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                            <div class="flex-item" >
-                                                <h3 class="labels-h3">Patient Name</h3>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h6 class="labels-h6">:</h6>
-                                            </div>
-                                            <div class="flex-item" style="width: 275px;">
-                                                <h6 class="labels-h6">{{PatientName}}</h6>
-                                            </div>
-                                            <div class="flex-item item-header" style="margin-left: 10px;">
-                                                <h3 class="labels-h3">OPIPNo</h3>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h6 class="labels-h6">:</h6>
-                                            </div>
-                                            <div class="flex-item">
-                                                <h6 class="labels-h6">{{RegId}}</h6>
-                                            </div>
+                    </mat-card>
+                    <div>
+                    <mat-card style="padding: 8px 0 8px 0;">
+                        <fieldset class="fieldset-div" style="width: 98% !important;">
+                            <legend>Patient Information</legend>
+                            
+                            <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
+                                <div class="patient-sub">
+                                    <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                        <div class="flex-item" >
+                                            <h3 class="labels-h3">Patient Name</h3>
                                         </div>
-                                       
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item" style="width: 275px;">
+                                            <h6 class="labels-h6">{{PatientName}}</h6>
+                                        </div>
+                                        <div class="flex-item item-header" style="margin-left: 10px;">
+                                            <h3 class="labels-h3">OPIPNo</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{RegId}}</h6>
+                                        </div>
                                     </div>
-                
-                                                   
-                
-                                    <div class="patient-sub">
-                                        <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                            <div class="flex-item item-header">
-                                                <h3 class="labels-h3">DoctorName</h3>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h6 class="labels-h6">:</h6>
-                                            </div>
-                                            <div class="flex-item">
-                                                <h6 class="labels-h6">{{Doctorname}}</h6>
-                                            </div>
-                                            <div class="flex-item item-header">
-                                                <h3 class="labels-h3">CompanyName</h3>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h6 class="labels-h6">:</h6>
-                                            </div>
-                                            <div class="flex-item">
-                                                <h6 class="labels-h6">{{CompanyName}}</h6>
-                                            </div>
-                
-                                            <div class="flex-item item-header">
-                                                <h3 class="labels-h3">TarrifName</h3>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h6 class="labels-h6">:</h6>
-                                            </div>
-                                            <div class="flex-item">
-                                                <h6 class="labels-h6">{{Tarrifname}}</h6>
-                                            </div>
+                                   
+                                </div>
+            
+                                <div class="patient-sub">
+                                    <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                        <div class="flex-item item-header">
+                                            <h3 class="labels-h3">DoctorName</h3>
                                         </div>
-                                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                            <!-- <div class="flex-item item-header">
-                                                <h3 class="labels-h3">DoctorName</h3>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h6 class="labels-h6">:</h6>
-                                            </div>
-                                            <div class="flex-item">
-                                                <h6 class="labels-h6">{{Doctorname}}</h6>
-                                            </div> -->
-                
-                
-                                            <!-- <div class="flex-item item-header">
-                                                <h3 class="labels-h3">Doctor</h3>
-                                            </div>
-                                            <div class="flex-item-middle">
-                                                <h6 class="labels-h6">:</h6>
-                                            </div>
-                                            <div class="flex-item">
-                                                <h6 class="labels-h6">XYZ XYZ Xyz</h6>
-                                            </div> -->
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
                                         </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{Doctorname}}</h6>
+                                        </div>
+                                        <div class="flex-item item-header">
+                                            <h3 class="labels-h3">CompanyName</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{CompanyName}}</h6>
+                                        </div>
+            
+                                        <div class="flex-item item-header">
+                                            <h3 class="labels-h3">TarrifName</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{Tarrifname}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                                        <!-- <div class="flex-item item-header">
+                                            <h3 class="labels-h3">DoctorName</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{Doctorname}}</h6>
+                                        </div> -->
+            
+            
+                                        <!-- <div class="flex-item item-header">
+                                            <h3 class="labels-h3">Doctor</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">XYZ XYZ Xyz</h6>
+                                        </div> -->
                                     </div>
                                 </div>
-                            </fieldset>
-                        </div>
+                            </div>
+                        </fieldset>
                     </mat-card>
-
+                    </div>
                 </div>
                 <div fxLayout="column">
 
                     <div class="content-card"
                         style="width:100%;  margin-top: 2px; float: right;background-color: white; margin-right: 10px;margin-left: 10px;">
                         <div fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="3px">
-                            <div fxlayout="row" style=" padding: 3px 3px 3px 1px; margin-right: 5px;">
+                            <div fxlayout="row">
                                 <!-- ================================ LABEL HEADER  -->
 
-                                <mat-card fxFlex.gt-sm="100%" fxFlex
-                                    style="padding: 0 5px; height: fit-content; background-color: white;">
+                                <mat-card fxFlex.gt-sm="100%" fxFlex>
                                     &nbsp;
                                     <form [formGroup]="registeredForm" style="display: flex;" #f="ngForm" #aForm>
 

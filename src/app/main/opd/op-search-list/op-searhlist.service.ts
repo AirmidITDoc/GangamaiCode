@@ -406,9 +406,9 @@ public getConcessionCombo()
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
   }
 
-  // public getRegisteredList(employee) {
-  //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
-  // }
+  public getPatientVisitedListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
 
   public getrptAppointmentList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=rptOPAppointmentListReport", employee)
