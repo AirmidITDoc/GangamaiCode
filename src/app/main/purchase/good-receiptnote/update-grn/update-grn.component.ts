@@ -225,7 +225,7 @@ export class UpdateGRNComponent implements OnInit {
       this.GateEntryNo = this.registerObj.GateEntryNo;
       this.SupplierId = this.registerObj.SupplierId;
       this.StoreId = this.registerObj.StoreId;
-      console.log(this.registerObj);
+      //console.log(this.registerObj);
       //  console.log(this.registerObj);
       //debugger
       if (this.registerObj.Cash_CreditType)
@@ -282,12 +282,12 @@ export class UpdateGRNComponent implements OnInit {
     this._GRNList.getGSTtypeList(vdata).subscribe(data => {
       this.GSTTypeList = data;
       // console.log( this.GSTTypeList);
-     // this._GRNList.userFormGroup.get('GSTType').setValue(this.GSTTypeList[0]);
+      // this._GRNList.userFormGroup.get('GSTType').setValue(this.GSTTypeList[0]);
       if (this.data) {
         const toSelectGSTType = this.GSTTypeList.find(c => c.Name == this.registerObj.Tranprocessmode);
         this._GRNList.userFormGroup.get('GSTType').setValue(toSelectGSTType);
         //console.log(toSelectGSTType);  
-        console.log(this.registerObj);
+        //console.log(this.registerObj);
       }
     });
   }
@@ -494,8 +494,8 @@ export class UpdateGRNComponent implements OnInit {
       contact.CGSTAmt = (((contact.TotalAmount) * (contact.CGSTPer)) / 100);
       contact.SGSTAmt = (((contact.TotalAmount) * (contact.SGSTPer)) / 100);
       contact.IGSTAmt = (((contact.TotalAmount) * (contact.IGSTPer)) / 100);
-     // contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
-       contact.VatAmount = (((contact.TotalAmount) * (contact.VatPercentage)) / 100);
+      // contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
+      contact.VatAmount = (((contact.TotalAmount) * (contact.VatPercentage)) / 100);
       let totalAmt = ((contact.TotalAmount) + (contact.VatAmount));
       //disc
       contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100);
@@ -517,10 +517,10 @@ export class UpdateGRNComponent implements OnInit {
       contact.CGSTAmt = (((TotalAmt) * (contact.CGSTPer)) / 100);
       contact.SGSTAmt = (((TotalAmt) * (contact.SGSTPer)) / 100);
       contact.IGSTAmt = (((TotalAmt) * (contact.IGSTPer)) / 100);
-     // contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
+      // contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
       contact.VatAmount = (((TotalAmt) * (contact.VatPercentage)) / 100);
-      console.log(contact.VatAmount)
-      console.log(contact.VatPercentage)
+      //console.log(contact.VatAmount)
+      //console.log(contact.VatPercentage)
 
       contact.NetAmount = ((TotalAmt) + (contact.VatAmount));
     } else {
@@ -531,7 +531,7 @@ export class UpdateGRNComponent implements OnInit {
       contact.SGSTAmt = (((contact.TotalAmount) * (contact.SGSTPer)) / 100);
       contact.IGSTAmt = (((contact.TotalAmount) * (contact.IGSTPer)) / 100);
       //contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
-     contact.VatAmount = (((contact.TotalAmount) * (contact.VatPercentage)) / 100);
+      contact.VatAmount = (((contact.TotalAmount) * (contact.VatPercentage)) / 100);
       let totalAmt = ((contact.TotalAmount) + (contact.VatAmount));
       //disc
       contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100);
@@ -615,7 +615,7 @@ export class UpdateGRNComponent implements OnInit {
     let netamt = ((parseFloat(this.GSTAmount)) + (parseFloat(this.TotalAmount))).toFixed(2);
     this._GRNList.userFormGroup.get('NetAmount').setValue(netamt);
 
-      
+
     // if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After Disc") {
     //   let totalamt = this.TotalAmount - this._GRNList.userFormGroup.get('DisAmount').value
     //   this.GST = ((parseFloat(this.CGST)) + (parseFloat(this.SGST)) + (parseFloat(this.IGST)));
@@ -1396,11 +1396,12 @@ export class UpdateGRNComponent implements OnInit {
 
   onClose() {
     this.dialogRef.close();
-
   }
 
   onScroll() {
   }
+  vRemark: any;
+  vOtherCharge: any;
   PurchaseOrderList() {
     const _dialogRef = this._matDialog.open(PurchaseorderComponent,
       {
@@ -1408,13 +1409,35 @@ export class UpdateGRNComponent implements OnInit {
         height: '95%',
         width: '95%',
       });
-      
-      _dialogRef.afterClosed().subscribe(result => {
-        console.log(result)
 
-        this.dsItemNameList.data=result;
-      });
+    _dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+
+      this.dsItemNameList.data = result;
+      this.dsItemNameList.data[0].TotalQty = result[0].ReceiveQty;
+      this.dsItemNameList.data[0].FreeQty = 0;
+      this.dsItemNameList.data[0].DiscPercentage2 = 0;
+      this.dsItemNameList.data[0].DiscAmount2 = 0;
+      
+      result.freeQty = 0;
+      result.TotalQty = result[0].ReceiveQty;
+
+      this.vRemark = result[0].Remarks;
+
+      let other = result[0].FreightCharges + result[0].HandlingCharges + result[0].TransportChanges + result[0].OctriAmount
+      this.vOtherCharge = other;
+
+      const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
+      this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
+      //console.log(toSelectSUpplierId);
+      this.vMobile = toSelectSUpplierId.Mobile;
+      this.vContact = toSelectSUpplierId.ContactPerson;
+      // console.log(toSelectSUpplierId.Mobile);
+
+      //this.setDropdowns(result);
+    });
   }
+
 }
 export class LastThreeItemList {
   ItemID: any;

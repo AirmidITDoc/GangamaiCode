@@ -5,9 +5,9 @@ app-update-purchaseorder {
       width: 100%;
 
       .mat-column-ItemName {
-        width: 240px;
-        max-width: 240px;
-        min-width: 240px;
+        width: 210px;
+        max-width: 210px;
+        min-width: 210px;
         text-align: left;
         justify-content: left;
         white-space: nowrap;
@@ -20,39 +20,39 @@ app-update-purchaseorder {
         padding-top: 8px;
       }
       .mat-column-Qty {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
         text-align: left;
       }
       .mat-column-UOM {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
         text-align: left;
       }
       .mat-column-Rate {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 80px;
+        max-width: 70px;
+        min-width: 70px;
         text-align: left;
       }
       .mat-column-TotalAmount {
-        width: 140px;
-        max-width: 140px;
-        min-width: 140px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
         text-align: center;
       }
       .mat-column-Action {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
         text-align: left;
       }
       .mat-column-Dis {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
         text-align: left;
       }
       .mat-column-DiscAmount {
@@ -61,10 +61,34 @@ app-update-purchaseorder {
         min-width: 100px;
         text-align: left;
       }
-      .mat-column-GST {
+      .mat-column-CGST {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left;
+      }
+      .mat-column-CGSTAmount {
         width: 100px;
         max-width: 100px;
         min-width: 100px;
+        text-align: left;
+      }
+      .mat-column-SGST {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left;
+      }
+      .mat-column-SGSTAmount {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        text-align: left;
+      }
+      .mat-column-GST {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
         text-align: left;
       }
       .mat-column-GSTAmount {
@@ -80,16 +104,16 @@ app-update-purchaseorder {
         text-align: left;
       }
       .mat-column-MRP {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 70px;
+        max-width: 70px;
+        min-width: 70px;
         text-align: left;
       }
   
       .mat-column-Specification {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
         text-align: left;
       }
     

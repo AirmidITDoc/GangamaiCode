@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { IssueToDepartmentService } from './issue-to-department.service';
@@ -19,28 +19,31 @@ import Swal from 'sweetalert2';
   animations: fuseAnimations,
 })
 export class IssueToDepartmentComponent implements OnInit {
-  displayedColumns:string[] = [
+  displayedColumns: string[] = [
     'action',
     'IssueNo',
     'IssueDate',
     'FromStoreName',
     'ToStoreName',
+    'Addedby',
+    'TotalAmount',
+    'TotalVatAmount',
     'NetAmount',
     'Remark',
     'Receivedby'
-    
+
   ];
-  displayedColumns1:string[] = [
+  displayedColumns1: string[] = [
     'ItemName',
     'BatchNo',
     'BatchExpDate',
     'Qty',
+    'VatPercentage',
     'PerUnitLandedRate',
     'LandedTotalAmount',
-    'VatPercentage'
-   ]
+  ]
 
-   displayedNewIssuesList3:string[] = [
+  displayedNewIssuesList3: string[] = [
     'ItemId',
     'ItemName',
     'BatchNO',
@@ -49,31 +52,31 @@ export class IssueToDepartmentComponent implements OnInit {
     'Qty',
     'UnitRate',
     'TotalAmount'
-   ];
-   displayedNewIssuesList1:string[] = [
+  ];
+  displayedNewIssuesList1: string[] = [
     'ItemName',
     'Qty'
-   ]
-   displayedNewIssuesList2:string[] = [
+  ]
+  displayedNewIssuesList2: string[] = [
     'BatchNo',
     'ExpDateNo',
     'BalQty'
-   ]
-   hasSelectedContacts: boolean;
-   isItemIdSelected: boolean = false;
+  ]
+  hasSelectedContacts: boolean;
+  isItemIdSelected: boolean = false;
   sIsLoading: string = '';
   isLoading = true;
-  ToStoreList:any=[];
-  FromStoreList:any=[];
+  ToStoreList: any = [];
+  FromStoreList: any = [];
   screenFromString = 'admission-form';
   filteredOptions: any;
- 
+
   showAutocomplete = false;
   noOptionFound: boolean = false;
-  ItemCode:any;
-  ItemName:any;
-  Qty:any;
-  filteredOptionsItem:any;
+  ItemCode: any;
+  ItemName: any;
+  Qty: any;
+  filteredOptionsItem: any;
   ItemId: any;
   BalanceQty: any;
 
@@ -86,12 +89,12 @@ export class IssueToDepartmentComponent implements OnInit {
   dsNewIssueList2 = new MatTableDataSource<NewIssueList2>();
   dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
 
- 
+
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
-  
+
+
   constructor(
     public _IssueToDep: IssueToDepartmentService,
     public _matDialog: MatDialog,
@@ -99,16 +102,17 @@ export class IssueToDepartmentComponent implements OnInit {
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
     private _loggedService: AuthenticationService
-    
-  ) {  }
+
+  ) { }
 
   ngOnInit(): void {
-   
+
     this.getToStoreSearchList();
     this.gePharStoreList();
-    // this.getIssueToDepList();
+    this.getToStoreList();
+    this.getPharStoreList();
   }
-  
+
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -121,6 +125,7 @@ export class IssueToDepartmentComponent implements OnInit {
   getToStoreSearchList() {
     this._IssueToDep.getToStoreSearchList().subscribe(data => {
       this.ToStoreList = data;
+      //console.log(this.ToStoreList);
     });
   }
 
@@ -128,65 +133,60 @@ export class IssueToDepartmentComponent implements OnInit {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
     }
-    //console.log(vdata);
-    this._IssueToDep.getFromStoreSearchList(vdata).subscribe(data => {
+    this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
       this.FromStoreList = data;
-      //console.log(this.StoreList);
+      //console.log(this.FromStoreList);
       this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
-  
+
   getIssueToDepList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "FromStoreId": this._IssueToDep.IssueSearchGroup.get('FromStoreId').value.FromStoreId || 1,
-      "ToStoreId": this._IssueToDep.IssueSearchGroup.get('ToStoreId').value.ToStoreId || 0,
-       "From_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "IsVerify": 0,
+      "FromStoreId": this._IssueToDep.IssueSearchGroup.get('ToStoreId').value.StoreId,
+      "ToStoreId": this._loggedService.currentUserValue.user.storeId || 1,
+      "From_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "To_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "IsVerify": 0,
     }
-    console.log(vdata)
-      this._IssueToDep.getIssueToDepList(vdata).subscribe(data => {
+    //console.log(vdata)
+    this._IssueToDep.getIssueToDepList(vdata).subscribe(data => {
       this.dsIssueToDep.data = data as IssueToDep[];
       this.dsIssueToDep.sort = this.sort;
       this.dsIssueToDep.paginator = this.paginator;
       this.sIsLoading = '';
-      console.log(this.dsIssueToDep.data);
-    } ,
-    error => {
-      this.sIsLoading = '';
-    });
+      // console.log(this.dsIssueToDep.data);
+    },
+      error => {
+        this.sIsLoading = '';
+      });
   }
 
-  getIssueItemList(Param){
-    
+  getIssueItemList(Param) {
+
     var vdata = {
       "IssueId": Param
     }
-      this._IssueToDep.getIssueItemList(vdata).subscribe(data => {
+    this._IssueToDep.getIssueItemList(vdata).subscribe(data => {
       this.dsIssueItemList.data = data as IssueItemList[];
       this.dsIssueItemList.sort = this.sort;
       this.dsIssueItemList.paginator = this.paginator;
-      console.log(this.dsIssueItemList.data);
+      // console.log(this.dsIssueItemList.data);
     });
   }
-  OnSelect(Param){
-    console.log(Param.IssueId);
+  OnSelect(Param) {
+    //console.log(Param.IssueId);
     this.getIssueItemList(Param.IssueId)
-  } 
-  
-  
-  
+  }
   getSearchItemList() {
     var m_data = {
-      "ItemName": `${this._IssueToDep.userFormGroup.get('ItemID').value}%`
-      // "ItemID": 1//this._IssueToDep.userFormGroup.get('ItemID').value.ItemID || 0 
+      "ItemName": `${this._IssueToDep.NewIssueGroup.get('ItemID').value}%`,
+      "StoreId": this._IssueToDep.NewIssueGroup.get('FromStoreId').value.storeid
     }
-    // console.log(m_data);
-    if (this._IssueToDep.userFormGroup.get('ItemID').value.length >= 2) {
+    console.log(m_data);
       this._IssueToDep.getItemlist(m_data).subscribe(data => {
         this.filteredOptionsItem = data;
-        // console.log(this.filteredOptionsItem.data);
+        console.log(this.filteredOptionsItem.data);
         this.filteredOptionsItem = data;
         if (this.filteredOptionsItem.length == 0) {
           this.noOptionFound = true;
@@ -194,62 +194,108 @@ export class IssueToDepartmentComponent implements OnInit {
           this.noOptionFound = false;
         }
       });
-    }
+    
   }
   getOptionItemText(option) {
     this.ItemId = option.ItemID;
     if (!option) return '';
-    return option.ItemID + ' ' + option.ItemName ;
+    return option.ItemID + ' ' + option.ItemName;
   }
   getSelectedObjItem(obj) {
-   // console.log(obj);
- 
-  }
- 
- 
-}
-export class NewIssueList3{
+    // console.log(obj);
 
-  ItemId:any;
-  ItemName:any;
-  BatchNO:any;
-  ExpDate:any;
-  BalanceQty:any;
-  Qty:any;
-  UnitRate:any;
-  TotalAmount:any;
-  
-  constructor(NewIssueList3){
+  }
+  getToStoreList() {
+    this._IssueToDep.getToStoreSearchList().subscribe(data => {
+      this.ToStoreList = data;
+      //console.log(this.ToStoreList);
+    });
+    this.itemid.nativeElement.focus();
+  }
+
+  getPharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
+    }
+    this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
+      this.FromStoreList = data;
+      //console.log(this.FromStoreList);
+      this._IssueToDep.NewIssueGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
+    });
+  }
+  @ViewChild('itemid') itemid: ElementRef;
+  @ViewChild('Batchno') Batchno: ElementRef;
+  @ViewChild('RoundingAmt') RoundingAmt: ElementRef;
+  @ViewChild('EwayBillNo') EwayBillNo: ElementRef;
+
+  public onEnterFromstore(event): void {
+    if (event.which === 13) {
+      this.itemid.nativeElement.focus();
+    }
+  }
+  public onEnteritemid(event): void {
+    if (event.which === 13) {
+      this.Batchno.nativeElement.focus();
+    }
+  }
+  onAdd($event){
+    
+  }
+  OnSave(){
+
+  }
+  OnReset(){
+    this._IssueToDep.NewIssueGroup.reset();
+  }
+  // public onEnterBatchno(event): void {
+  //   if (event.which === 13) {
+  //     this.InvoiceNo1.nativeElement.focus()
+  //   }
+  // }
+
+}
+export class NewIssueList3 {
+
+  ItemId: any;
+  ItemName: any;
+  BatchNO: any;
+  ExpDate: any;
+  BalanceQty: any;
+  Qty: any;
+  UnitRate: any;
+  TotalAmount: any;
+
+  constructor(NewIssueList3) {
     this.ItemId = NewIssueList3.ItemId || 0;
     this.ItemName = NewIssueList3.ItemName || '';
     this.BatchNO = NewIssueList3.BatchNO || 0;
-    this.ExpDate = NewIssueList3.ExpDate ||  1/2/23;
-    this.BalanceQty = NewIssueList3.BalanceQty ||  0;
+    this.ExpDate = NewIssueList3.ExpDate || 1 / 2 / 23;
+    this.BalanceQty = NewIssueList3.BalanceQty || 0;
     this.Qty = NewIssueList3.Qty || 0;
     this.UnitRate = NewIssueList3.UnitRate || 0;
     this.TotalAmount = NewIssueList3.TotalAmount || 0;
   }
 }
 
-export class NewIssueList2{
+export class NewIssueList2 {
 
-  BatchNo:any;
-  ExpDateNo;any;
-  BalQty:any;
-  
-  constructor(NewIssueList2){
+  BatchNo: any;
+  ExpDateNo; any;
+  BalQty: any;
+
+  constructor(NewIssueList2) {
     this.BatchNo = NewIssueList2.BatchNo || 0;
-    this.ExpDateNo = NewIssueList2.ExpDateNo || 1/2/23;
+    this.ExpDateNo = NewIssueList2.ExpDateNo || 1 / 2 / 23;
     this.BalQty = NewIssueList2.BalQty || 0;
 
   }
 }
-export class NewIssueList1{
+export class NewIssueList1 {
 
-  ItemName:any;
-  Qty;any;
+  ItemName: any;
+  Qty; any;
 
-  constructor(NewIssueList1){
+  constructor(NewIssueList1) {
     this.ItemName = NewIssueList1.ItemName || '';
     this.Qty = NewIssueList1.Qty || 0;
 
@@ -259,23 +305,23 @@ export class NewIssueList1{
 export class IssueItemList {
   ItemName: string;
   BatchNo: number;
-  BatchExpDate:number;
-  Qty:number;
-  PerUnitLandedRate:number;
-  LandedTotalAmount:number;
-  VatPercentage:number;
-  StoreId:any;
-  StoreName:any;
+  BatchExpDate: number;
+  Qty: number;
+  PerUnitLandedRate: number;
+  LandedTotalAmount: number;
+  VatPercentage: number;
+  StoreId: any;
+  StoreName: any;
 
   constructor(IssueItemList) {
     {
       this.ItemName = IssueItemList.ItemName || "";
       this.BatchNo = IssueItemList.BatchNo || 0;
       this.BatchExpDate = IssueItemList.BatchExpDate || 0;
-      this.Qty = IssueItemList.Qty|| 0;
+      this.Qty = IssueItemList.Qty || 0;
       this.PerUnitLandedRate = IssueItemList.PerUnitLandedRate || 0;
-      this.LandedTotalAmount=IssueItemList.LandedTotalAmount || 0;
-      this.VatPercentage=IssueItemList.VatPercentage || 0;
+      this.LandedTotalAmount = IssueItemList.LandedTotalAmount || 0;
+      this.VatPercentage = IssueItemList.VatPercentage || 0;
       this.StoreId = IssueItemList.StoreId || 0;
       this.StoreName = IssueItemList.StoreName || "";
     }
@@ -285,12 +331,12 @@ export class IssueItemList {
 export class IssueToDep {
   IssueNo: Number;
   IssueDate: number;
-  FromStoreName:string;
-  ToStoreName:string;
-  NetAmount:number;
+  FromStoreName: string;
+  ToStoreName: string;
+  NetAmount: number;
   Remark: string;
-  Receivedby:string;
-  IssueDepId:number;
+  Receivedby: string;
+  IssueDepId: number;
 
   constructor(IssueToDep) {
     {
@@ -303,6 +349,6 @@ export class IssueToDep {
       this.Receivedby = IssueToDep.Receivedby || "";
       this.IssueDepId = IssueToDep.IssueDepId || 0;
     }
-    }
   }
+}
 
