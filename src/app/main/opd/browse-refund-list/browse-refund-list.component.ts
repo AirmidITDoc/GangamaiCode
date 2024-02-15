@@ -11,6 +11,7 @@ import { BrowseRefundlistService } from './browse-refundlist.service';
 import { BrowseOPDBill, ViewBrowseOPDRefundComponent } from './view-browse-opdrefund/view-browse-opdrefund.component';
 import { fuseAnimations } from '@fuse/animations';
 import * as converter from 'number-to-words';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -39,10 +40,11 @@ export class BrowseRefundListComponent implements OnInit {
   displayedColumns = [
     'RefundDate',
     'PatientName',
-    // 'PaymentDate',
+    'PaymentDate',
     'RefundAmount',
     'TotalAmt',
     'MobileNo',
+    "BillId",
     // 'CashPayAmount',
     // 'ChequePayAmount',
     // 'CardPayAmount',
@@ -57,7 +59,7 @@ export class BrowseRefundListComponent implements OnInit {
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _BrowseOPDReturnsService: BrowseRefundlistService,
-    
+    public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
     private matDialog: MatDialog
@@ -269,6 +271,40 @@ getPrint(el) {
   </html>`);
     popupWin.document.close();
   }
+
+
+  
+SpinLoading:boolean=false;
+viewgetOPRefundofBillPdf(row) {
+  debugger
+  setTimeout(() => {
+    this.SpinLoading =true;
+  //  this.AdList=true;
+  this._BrowseOPDReturnsService.getOpRefundview(
+    row.RefundId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Op Refund Of Bill Receipt Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+  });
+ 
+  },100);
+}
 
 }
 

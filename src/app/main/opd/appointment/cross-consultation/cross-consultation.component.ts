@@ -215,6 +215,9 @@ export class CrossConsultationComponent implements OnInit {
       crossConsult['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
       crossConsult['appPurposeId'] = 0,//this.PatientHeaderObj.App
       crossConsult['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+      crossConsult['CrossConsulFlag'] = 1
+
+
 
       submissionObj['crossConsultationSave'] = crossConsult;
 

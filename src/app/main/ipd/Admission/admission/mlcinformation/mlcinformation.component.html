@@ -50,27 +50,31 @@
          <div fxLayoutGap="5px">
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>MLC No</mat-label>
-              <input name="MlcNo" formControlName="MlcNo" placeholder="Mlc No. " matInput required>
+              <input name="MlcNo" formControlName="MlcNo" placeholder="Mlc No. " matInput required
+              #mlc (keydown)="onEntermlc($event)">
             </mat-form-field>
          
   
          
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>Authority Name</mat-label>
-              <input name="AuthorityName" formControlName="AuthorityName" placeholder="AuthorityName" matInput>
+              <input name="AuthorityName" formControlName="AuthorityName" placeholder="AuthorityName"
+              #authority (keydown)="onEnterauthority($event)" matInput required>
             </mat-form-field>
           
         
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>Authority Buckle No</mat-label>
-              <input name="ABuckleNo" formControlName="ABuckleNo" placeholder="ABuckleNo" matInput>
+              <input name="ABuckleNo" formControlName="ABuckleNo" placeholder="ABuckleNo" matInput 
+              #buckleno (keydown)="onEnterbuckleno($event)" required>
             </mat-form-field>
           </div>
          
           <div fxLayoutGap="5px">
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>PoliceStation</mat-label>
-              <input name="PoliceStation" formControlName="PoliceStation" placeholder="PoliceStation" matInput>
+              <input name="PoliceStation" formControlName="PoliceStation" placeholder="PoliceStation" 
+              #polic (keydown)="onEnterpolic($event)" matInput required>
             </mat-form-field>
   
         
@@ -78,7 +82,7 @@
        
             <mat-form-field appearance="outline" fxFlex>
               <input matInput [matDatepicker]="picker2" placeholder="Choose a ReportingDate" name="ReportingDate"
-                formControlName="ReportingDate" [(ngModel)]="value">
+                formControlName="ReportingDate" [(ngModel)]="value" #rdate>
               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
               <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
@@ -106,7 +110,8 @@
   
             <div class="next-div">
              
-              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;">
+              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;"
+              [disabled]="MlcInfoFormGroup.invalid">
                 <span style="display: flex;justify-content: center;">
                   <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20"></mat-spinner>
                   <span style="margin-right: 10px;">Save</span>

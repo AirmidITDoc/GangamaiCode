@@ -1224,8 +1224,10 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onClose1() {
+    debugger
     let IsSubmit = {
-      "IsSubmitFlag": false
+      "IsSubmitFlag": false,
+      "BalAmt":  this.netPayAmt
     }
     this.dialogRef.close(IsSubmit);
   }

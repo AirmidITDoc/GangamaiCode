@@ -4,7 +4,21 @@
 
 app-browse-refund-list {
 
+    .loading-spinner {
+        font-size: 50px;
+        color: #319fc0;
+    }
 
+    .loading-overlay {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        z-index: 2;
+      }
+      
+      .container {
+        width: 100%;
+      } 
 .mat-header-row {
     width: 100%;
     max-width: 1400px;
@@ -47,10 +61,7 @@ app-browse-refund-list {
     overflow: hidden;
     text-overflow: ellipsis;
     overflow: hidden !important;
-    display: inline-flex;
-    display: inline;
-    margin-right: 20px;
-    padding-top: 8px;
+  
 }
 
 .mat-column-RefundAmount {
@@ -78,9 +89,9 @@ app-browse-refund-list {
 // }
 
 .mat-column-PaymentDate {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
     text-align:center;
     justify-content:center;
 }
@@ -131,5 +142,8 @@ app-browse-refund-list {
     text-align: right;
     justify-content:center;
 }
+
+
+
 
 }

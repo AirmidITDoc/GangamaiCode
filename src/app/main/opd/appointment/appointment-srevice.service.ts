@@ -310,7 +310,7 @@ public documentdownloadInsert(employee){
   }
   //registration list 
   public getPhoneAppointmentList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PhoneAppointmentListSearch", employee)
   }
   getuploadeddocumentsList(query){
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
