@@ -532,7 +532,7 @@
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       Personal Information :
-                      <span style="font-size: medium;color: rgb(2, 54, 63);"> {{RegOrPhoneflag}}</span>
+                      <span style="font-size: large;color: rgb(6, 106, 124);margin-left: 800px;"> {{RegOrPhoneflag}} <mat-icon style="margin-left:10px;" *ngIf="vPhoneFlage">settings_phone</mat-icon></span>
                   
                     </mat-panel-title>
                   </mat-expansion-panel-header>
@@ -983,7 +983,7 @@
               </mat-accordion>
               <div style="float: right;">
                 <!-- (click)="nextClicked(VisitFormGroup)" -->
-                <button class="next-btn" color="accent" (click)="OnSaveAppointmentwithoutphoto()"
+                <button class="next-btn" color="accent" (click)="onSave()"
                   [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid" style="border-radius: 16px;">
                   <span style="display: flex;justify-content: center;">
                     <span style="margin-left: 6px;">Save</span>

@@ -1221,7 +1221,9 @@ export class AdmissionComponent implements OnInit {
 
 
  OnSaveAdmission() {
-    debugger
+    
+  if(!this.personalFormGroup && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)
+  {
     if (this.searchFormGroup.get('regRadio').value == "registration") {
       //Api
       this.isLoading = 'submit';
@@ -1333,7 +1335,7 @@ export class AdmissionComponent implements OnInit {
 
     }
     else {
-debugger
+
       this.isLoading = 'submit';
       let submissionObj = {};
       let admissionInsert = {};
@@ -1409,7 +1411,7 @@ debugger
       });
 
     }
-
+  }
   }
 
 
@@ -1489,7 +1491,7 @@ debugger
 
 
   getAdmittedPatientListview() {
-    debugger
+    
     setTimeout(() => {
       this.SpinLoading =true;
      this.AdList=true;
@@ -1525,7 +1527,7 @@ debugger
 
   
   getAdmittedPatientCasepaperview(row) {
-    debugger
+    
     setTimeout(() => {
       this.SpinLoading =true;
      this.AdList=true;
@@ -1827,7 +1829,7 @@ debugger
   }
 
   getPrint(el) {
-   debugger
+   
     var D_data = {
       "AdmissionId": el.AdmissionID
     }
