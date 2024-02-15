@@ -65,6 +65,8 @@ export class GoodReceiptnoteService {
   }
   getGRNForm() {
     return this._formBuilder.group({
+      PurchaseId:[''],
+      poBalQty:[''],
       ItemName:[''],
       UOM:[''],
       HSNCode:[''],

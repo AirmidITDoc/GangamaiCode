@@ -370,8 +370,8 @@
                                     style="background-color: white; padding: 5px,5px,5px,5px; margin-bottom:10px;">-->
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                                        <mat-form-field appearance="outline" fxFlex="29%">
-                                            <mat-label>From Store</mat-label>
+                                        <mat-form-field appearance="outline" fxFlex="30%">
+                                            <mat-label>To Store</mat-label>
                                             <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of FromStoreList" [value]="m">
@@ -381,8 +381,8 @@
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex="30%">
-                                            <mat-label>To Store</mat-label>
-                                            <mat-select formControlName="ToStoreId" name="ToStoreId" (keydown)="onEnterFromstore($event)">
+                                            <mat-label>From Store</mat-label>
+                                            <mat-select formControlName="ToStoreId" name="ToStoreId">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of ToStoreList" [value]="m">
                                                     {{m.StoreName}}

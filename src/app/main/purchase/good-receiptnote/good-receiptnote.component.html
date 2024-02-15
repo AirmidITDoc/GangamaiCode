@@ -668,9 +668,9 @@
             <td colspan="4"> <span>{{reportPrintObjList[0]?.Address}}</span>
             </td>
 
-            <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">GRN No.</span>
+            <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">GRN Time</span>
             </td>
-            <td colspan="2"> <span> {{reportPrintObjList[0]?.GrnNumber}} </span>
+            <td colspan="2"> <span> {{reportPrintObjList[0]?.GRNDate | date:'h:mm a'}} </span>
             </td>
 
         </tr>
@@ -682,9 +682,9 @@
             <td colspan="4"> <span>{{reportPrintObjList[0]?.Email}}</span>
             </td>
 
-            <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">PONo</span>
+            <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">GRN No.</span>
             </td>
-            <td colspan="2"> <span> {{reportPrintObjList[0]?.PONo}} </span>
+            <td colspan="2"> <span> {{reportPrintObjList[0]?.GrnNumber}} </span>
             </td>
         </tr>
 
@@ -694,15 +694,26 @@
             <td colspan="4"> <span>{{reportPrintObjList[0]?.Mobile}}</span>
             </td>
 
-            <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">Eway Bill Date</span>
+            <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">PONo</span>
             </td>
-            <td colspan="2"> <span> {{reportPrintObjList[0]?.EwayBillDate | date: 'dd/MM/yyyy'}}</span>
+            <td colspan="2"> <span> {{reportPrintObjList[0]?.PONo}} </span>
             </td>
         </tr>
         <tr>
             <td> <span style="font-weight: 500;margin-right: 20px;">Phone No</span>
             </td>
             <td colspan="4">{{reportPrintObjList[0]?.Phone}} <span></span>
+            </td>
+
+            <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">Eway Bill Date</span>
+            </td>
+            <td colspan="2"> <span> {{reportPrintObjList[0]?.EwayBillDate | date: 'dd/MM/yyyy'}}</span>
+            </td>
+        </tr>
+        <tr>
+            <td> <span style="font-weight: 500;margin-right: 20px;">GST NO</span>
+            </td>
+            <td colspan="4">{{reportPrintObjList[0]?.GSTNo}} <span></span>
             </td>
 
             <td><span style="font-weight: 500;margin-right: 20px;margin-left: 250px;">Eway Bill No</span>

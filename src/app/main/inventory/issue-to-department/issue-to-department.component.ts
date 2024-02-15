@@ -210,9 +210,7 @@ export class IssueToDepartmentComponent implements OnInit {
       this.ToStoreList = data;
       //console.log(this.ToStoreList);
     });
-    this.itemid.nativeElement.focus();
   }
-
   getPharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
@@ -220,7 +218,7 @@ export class IssueToDepartmentComponent implements OnInit {
     this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
       this.FromStoreList = data;
       //console.log(this.FromStoreList);
-      this._IssueToDep.NewIssueGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
+      this._IssueToDep.NewIssueGroup.get('FromStoreId').setValue(this.FromStoreList[0])
     });
   }
   @ViewChild('itemid') itemid: ElementRef;

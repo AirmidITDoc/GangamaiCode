@@ -160,6 +160,9 @@
                                     </div>
                                 </div>
                                 <div fxLayout="row">
+                                        <input type="hidden" name="PurchaseId"  [(ngModel)]="vPurchaseId" formControlName="PurchaseId">
+                                        <input type="hidden" name="poBalQty"  [(ngModel)]="vpoBalQty" formControlName="poBalQty">
+
                                     <mat-form-field appearance="outline" fxFlex="7%">
                                         <mat-label>HSN Code</mat-label>
                                         <input matInput [(ngModel)]="HSNCode" name="HSNCode" formControlName="HSNCode"
@@ -505,7 +508,7 @@
                                         <ng-container matColumnDef="MRP">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 MRP</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true">
                                                 {{contact.MRP | number:'1.2-2'}}
                                             </mat-cell>
                                         </ng-container>
@@ -546,8 +549,8 @@
                                         <ng-container matColumnDef="Disc">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Disc%</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.DiscPercentage}}
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
+                                                (input)="onDiscEdit($event, contact)"> {{contact.DiscPercentage}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -563,7 +566,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Disc2%</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.DiscPercentage2}}
+                                                {{contact.DiscPer2}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -571,7 +574,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 DisAmt2</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.DiscAmount2 | number:'1.2-2'}}
+                                                {{contact.DiscAmt2 | number:'1.2-2'}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -594,8 +597,8 @@
                                         <ng-container matColumnDef="CGST">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 CGST</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.CGSTPer}}
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
+                                                (input)="onGSTEdit($event, contact)"> {{contact.CGSTPer}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -610,8 +613,8 @@
                                         <ng-container matColumnDef="SGST">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 SGST</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.SGSTPer}}
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
+                                                (input)="onSGSTEdit($event, contact)">  {{contact.SGSTPer}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -624,10 +627,10 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="IGST">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >
                                                 IGST</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.IGSTPer}}
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
+                                                (input)="onIGSTEdit($event, contact)">  {{contact.IGSTPer}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -644,6 +647,46 @@
                                                 NetAmt</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.NetAmount | number:'1.2-2'}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="poId">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                PO Id</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.PurchaseId}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="purDetID">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                purDetID</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.PurDetId}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="isClosed">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                isClosed</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.IsClosed}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="poBalQty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                POBalQty</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.POBalQty}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="poQty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                PO Qty</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.ReceiveQty}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -808,7 +851,7 @@
                                             <mat-label>Remark</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="Remark" #Remark
                                                 type="text" [(ngModel)]="registerObj.Remark"
-                                                [(ngModel)]="vRemark"
+                                             
                                                 (keydown)="onEnterRemark($event)" (keydown.enter)="focusNextService()">
                                         </mat-form-field>
 
@@ -840,7 +883,7 @@
                                             <mat-label>Other Charges</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="OtherCharge"
                                                 #OtherCharge [(ngModel)]="registerObj.OtherCharge"
-                                                [(ngModel)]="vOtherCharge"
+                                                
                                                 (keydown)="onEnterOtherCharges($event)" >
                                         </mat-form-field>
 

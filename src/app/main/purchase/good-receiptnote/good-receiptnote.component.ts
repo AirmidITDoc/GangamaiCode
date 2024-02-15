@@ -1030,7 +1030,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     this.getGRNList();
   }
   GRNEmail() {
-    this.chkNewGRN = 1;
+    //this.chkNewGRN = 1;
     const dialogRef = this._matDialog.open(GrnemailComponent,
       {
         maxWidth: "100%",
@@ -1045,7 +1045,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
   onEdit(contact) {
     this.chkNewGRN = 2;
-    //console.log(contact);
+    console.log(contact);
     const dialogRef = this._matDialog.open(UpdateGRNComponent,
       {
         maxWidth: "100%",
@@ -1315,8 +1315,8 @@ export class ItemNameList {
   discAmount: number;
   DiscPercentage: number;
   DiscAmount: number;
-  DiscPercentage2: number;
-  DiscAmount2: number;
+  DiscPer2: number;
+  DiscAmt2: number;
   PaymentType: any;
   GRNType: any;
   DateOfInvoice: any;
@@ -1329,7 +1329,10 @@ export class ItemNameList {
   TotalQty: any;
   UnitofMeasurementName: number;
   UnitofMeasurementId: any;
- 
+  POBalQty:any;
+  PurchaseId:any;
+  IsClosed:boolean;
+  PurDetId:any;
    
   /**
    * Constructor
@@ -1351,6 +1354,8 @@ export class ItemNameList {
       this.TotalAmount = ItemNameList.TotalAmount || 0;
       this.Disc = ItemNameList.Disc || '';
       this.DisAmount = ItemNameList.DisAmount || 0;
+      this.DiscPer2 = ItemNameList.DiscPer2 || 0;
+      this.DiscAmt2 = ItemNameList.DiscAmt2 || 0;
       this.GSTNo = ItemNameList.GSTNo || 0;
       this.GSTAmount = ItemNameList.GSTAmount || 0;
       this.CGST = ItemNameList.CGST || 0;
