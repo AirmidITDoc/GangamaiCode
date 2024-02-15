@@ -92,3 +92,19 @@
 //     }
 //   }
 // }
+.mat-radio-button{
+    @include themed(){
+        &.mat-radio-checked{
+            .mat-radio-label{
+                .mat-radio-container{
+                    .mat-radio-outer-circle{
+                        // border-color: $primary-600;
+                    }
+                    .mat-radio-inner-circle{
+                        // background-color: $primary-600;
+                    }
+                }
+            }
+        }
+    }
+}

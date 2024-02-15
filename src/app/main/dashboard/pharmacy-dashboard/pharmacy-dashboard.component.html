@@ -1,23 +1,19 @@
-<div class="dashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
+<div id="dashboard-project" class="page-layout simple right-sidebar pharmacy-dashboard" fxLayout="row">
 
     <!-- CENTER -->
     <div class="center">
-        <div class="header h-100 accent pb-0 p-12" fxLayout="row" fxFlex="100%" fxLayoutAlign="space-between start">
-
+        <div class="header accent" fxLayout="row" fxFlex="100%" fxLayoutAlign="space-between center">
             <div fxLayout="row" fxLayoutAlign="space-between center">
-                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;" *ngIf="false">
                     <mat-icon>menu</mat-icon>
                 </button>
-
                 <span class="mat-display-1 my-0 my-sm-12 welcome-message"
                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                     Pharmacy Dashboard
                 </span>
             </div>
             <form [formGroup]="_DashboardService.UseFrom">
-
                 <!-- <mat-card class="h-80  p-2 accent" fxLayout="row" fxFlex="270px" style=" color: black;padding: 10px;"> -->
-
                 <mat-form-field appearance="outline" fxFlex="270px">
                     <mat-label style="color: white;">Select Store</mat-label>
                     <mat-select formControlName="StoreId" name="StoreId" (selectionChange)="onChangeStore()">
@@ -64,7 +60,9 @@
                     </mat-card-header>
                     <hr>
                     <mat-card-content>
-                        <mat-spinner *ngIf="sIsLoading === 'loading-data'"></mat-spinner>
+                        <div class="pharmacy-db-spinnner">
+                            <mat-spinner *ngIf="sIsLoading === 'loading-data'"></mat-spinner>
+                        </div>
                         <div fxLayout="row" fxLayoutAlign="space-between">
                             <ngx-charts-pie-chart [view]="StaticChartConfig.view"
                                 [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data"
@@ -118,8 +116,7 @@
                                 [yAxis]="ThreeMonSalesConfig.showYAxis" [legend]="ThreeMonSalesConfig.showLegend"
                                 [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
                                 [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel"
-                                [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel"
-                                *ngIf="ThreeMonSalesConfig.data.length>0">
+                                [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel" *ngIf="ThreeMonSalesConfig.data.length>0">
                             </ngx-charts-bar-vertical>
                         </div>
                         <!-- <canvas id="pharSumBarChart" style="width: 100%;"></canvas> -->
@@ -180,18 +177,21 @@
         <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="30px grid">
             <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                <mat-card class="h-340 p-10">
+                <mat-card class=" ">
                     <div class="p-5">
                         <div fxLayout="row" fxLayoutAlign="space-between start">
-                            <span style="font-size: 30px; font-weight:400px;">Net
-                                Sales
-                                <mat-icon style="color: gray;">circle_information</mat-icon></span>
-                            <span style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);">
-                                <mat-icon>carrow_upward</mat-icon>11.3%</span>
+                            <div class="card-title">
+                                <span>Net Sales
+                                    <mat-icon style="color: gray;">circle_information</mat-icon>
+                                </span>
+                            </div>
+                            <div class="chart-per">
+                                <span style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);">
+                                    <mat-icon>carrow_upward</mat-icon>11.3%
+                                </span>
+                            </div>
                         </div>
                     </div>
-
-
                     <div fxLayout="row" fxLayoutAlign="space-between">
                         <span style="margin-top: 10px;font-weight: bold;font-size: 25px;">
                             <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount }}
@@ -218,13 +218,13 @@
                 </mat-card>
             </div>
 
-            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <mat-card class="h-340 p-10">
+            <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <mat-card class="">
                     <div fxLayout="row" fxLayoutAlign="space-between start">
-                        <span style="font-size: 30px; font-weight:400px;">Stock
-                            Value<mat-icon style="color: gray;">circle_information</mat-icon>
-                        </span><br><br>
-
+                        <div class="card-title">
+                            <span>Stock Value <mat-icon style="color: gray;">circle_information</mat-icon>
+                            </span><br><br>
+                        </div>
                     </div>
                     <div fxLayout="column" fxLayoutAlign="space-between start">
                         <span style="font-size: 15px;font-weight:200px;color: gray;">
@@ -233,8 +233,6 @@
                             <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
                         </span>
                     </div> <br>
-
-
                     <div fxLayout="column" fxLayoutAlign="space-between end" style="color: gray;">
                         <span style="font-size: 15px;font-weight:200px;">MRP (incl gst) </span>
                         <span style="font-weight:200px;font-size: 18px;">
@@ -251,13 +249,17 @@
             </div>
 
             <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <mat-card class="h-340 p-10">
+                <mat-card class="">
                     <div fxLayout="row" fxLayoutAlign="space-between start">
-                        <span style="font-size: 30px; font-weight:400px;">Customers
+                        <div class="card-title">
+                            <span>Customers
 
-                            <mat-icon style="color: gray;">circle_information</mat-icon></span>
-                        <span style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);">
-                            <mat-icon>carrow_upward</mat-icon>11.3%</span>
+                                <mat-icon style="color: gray;">circle_information</mat-icon></span>
+                        </div>
+                        <div class="chart-per">
+                            <span style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);">
+                                <mat-icon>carrow_upward</mat-icon>11.3%</span>
+                        </div>
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="space-between start" style="padding: 8px;">
@@ -294,13 +296,17 @@
         </div>
 
         <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="30px grid">
-            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <mat-card class="h-340 p-8">
+            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="50%">
+                <mat-card class="">
                     <div fxLayout="row" fxLayoutAlign="space-between">
-                        <span style="font-size: 30px; font-weight:400px;">Net Purchase
-                            <mat-icon style="color: gray;">circle_information</mat-icon></span>
-                        <span style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);">
-                            <mat-icon>carrow_downward</mat-icon>11.3%</span>
+                        <div class="card-title">
+                            <span>Net Purchase
+                                <mat-icon style="color: gray;">circle_information</mat-icon></span>
+                        </div>
+                        <div class="chart-icon">
+                            <span style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);">
+                                <mat-icon>carrow_downward</mat-icon>11.3%</span>
+                        </div>
                     </div>
 
 
@@ -323,20 +329,92 @@
                 </mat-card>
             </div>
 
-            <div class="MatcardContent" fxFlex="57%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-bottom: 10px;">
-                <mat-card class=" h-340 p-10">
-
-                    <div fxLayout="row" fxLayoutAlign="space-between start">
-                        <span style="font-size: 30px; font-weight:400px;">Cash-In-Hand
-                            <mat-icon style="color: gray;">circle_information</mat-icon></span>
-
-                        <span style="font-size:22px; font-weight:bold;color: rgb(245, 78, 134);">Add
-                            Opening Balance</span>
-                        <span style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);">
-                            <mat-icon>carrow_downward</mat-icon>11.3%</span>
+            <div fxFlex="65%" fxFlex.xs="100%" fxFlex.sm="50%" class="MatcardContent">
+                <mat-card class="">
+                    <div fxLayout="row" fxLayoutAlign="space-between start" class="cash-header">
+                        <div class="card-title">
+                            <span>Cash-In-Hand
+                                <mat-icon style="color: gray;">circle_information</mat-icon>
+                            </span>
+                        </div>
+                        <div class="chart-balance">
+                            <span style="font-size:22px; font-weight:bold;color: rgb(245, 78, 134);">Add Opening
+                                Balance</span>
+                        </div>
+                        <div class="chart-per">
+                            <span style="font-size: 20px; font-weight: bold;color: rgb(22, 239, 167);">
+                                <mat-icon>carrow_downward</mat-icon>11.3%
+                            </span>
+                        </div>
                     </div>
+                    <div *ngIf="!false" fxLayout="row" fxLayoutAlign="space-between start" class="cash-body">
+                        <div class="cash-col-left">
+                            <div class="gross-amount mt-4">
+                                <span style="font-weight: bold;font-size: 25px;">
+                                    <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
+                                    <span style="font-size: 15px;font-weight:200px;color: gray;">from
+                                        <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{GrossAmount}}
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="total-amount-in">
+                                <span style="font-weight: 200px;font-size: 18px;color: gray;">
+                                    Total Payment In</span><br>
+                                <span style="font-size: 15px;font-weight:200px;">
+                                    <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Totalamount}}
+                                </span>
+                            </div>
+                            <div class="total-amount-out">
+                                <div fxLayout="column">
+                                    <span style="font-weight: 100px;font-size: 18px;color: gray;">
+                                        Total Payment <br>Out</span>
+                                    <span style="margin-top:6px;;font-size: 15px;font-weight:100px;">
+                                        <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Totalamount}}
+                                    </span>
+                                </div>
+                                <div class="vertical-line"></div>
+                                <div fxLayout="column" fxLayoutAlign="space-between start">
+                                    <span style="font-weight: 100px;font-size: 18px;color: gray;">
+                                        Expenses (excl gst)</span>
+                                    <span style="margin-top:6px;;font-size: 15px;font-weight:bold;">
+                                        <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Totalamount}}
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- --------- -->
+                        </div>
+                        <div class="cash-col-right">
+                            <div fxLayout="column" fxLayoutAlign="space-between end">
+                                {{progressValue}}
+                                <span><mat-progress-bar mode="determinate" value="75"
+                                        fxFlex="200px"></mat-progress-bar></span>
+                                <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top:8px;">
+                                    CASH <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Cash}}</span>
+                            </div>
+                            <!-- ----- -->
+                            <div fxLayout="column" fxLayoutAlign="space-between end">
+                                {{progressValue1}}
+                                <span> <mat-progress-bar mode="determinate" value="40"
+                                        fxFlex="200px"></mat-progress-bar></span>
 
-                    <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 10px;margin-left: 10px;">
+                                <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top:8px;">
+                                    ONLINE
+                                    <mat-icon style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Online}}
+                                </span>
+                            </div>
+                            <div fxLayout="column" fxLayoutAlign="space-between end">
+                                {{progressValue2}}
+                                <span> <mat-progress-bar mode="determinate" value="12"
+                                        fxFlex="200px"></mat-progress-bar></span>
+
+                                <span style="font-weight: 100px;font-size: 18px;color: gray;margin-top: 8px;">
+                                    CHEQUE <mat-icon
+                                        style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Cheque}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="false" fxLayout="row" fxLayoutAlign="space-between start"
+                        style="margin-top: 10px;margin-left: 10px;">
                         <span style="font-weight: bold;font-size: 25px;">
                             <mat-icon style="font-weight: bold;">&#8377;</mat-icon>{{Totalamount}}
                             <span style="font-size: 15px;font-weight:200px;color: gray;">from
@@ -352,8 +430,7 @@
                                 CASH <mat-icon style="font-size: 15px;">&#8377;</mat-icon>{{Cash}}</span>
                         </div>
                     </div>
-
-                    <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 0px;">
+                    <div *ngIf="false" fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 0px;">
                         <div>
                             <span style="font-weight: 200px;font-size: 18px;color: gray;">
                                 Total Payment In</span><br>
@@ -372,8 +449,7 @@
                                     style="font-size: 15px;margin-left: 5px;">&#8377;</mat-icon>{{Online}}</span>
                         </div>
                     </div>
-
-                    <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 5px;">
+                    <div *ngIf="false" fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 5px;">
                         <div fxLayout="column" style="margin-right: 10px;">
                             <span style="font-weight: 100px;font-size: 18px;color: gray;">
                                 Total Payment <br>Out</span>

@@ -422,13 +422,13 @@ background: rgba(240, 239, 239, 0.15);
   }
 // Body Them Color
   body.theme-default .accent{
-    background-color: #0479b4 !important;
+    background-color: $primary-600 !important;
     // background-color: #0479b4 !important;
     // color: black !important;
 }
 
 .mat-toolbar{
-    background-color: #0479b4 !important;
+    background-color: $primary-600 !important;
 }
 
 // Button
@@ -587,7 +587,7 @@ legend {
 }
 
 .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
-    color: red !important;
+    color: $red-600 !important;
 }
 
 

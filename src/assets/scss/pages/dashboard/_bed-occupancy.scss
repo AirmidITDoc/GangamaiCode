@@ -5,12 +5,13 @@
             .ward-container{
                 font-weight: normal;
                 font-family: $inter-bold;
+                background:$primary-100;
             }
             .ward-details-container{
                 background-color: $primary-25;
                 transition: 0.2s;
                 &:hover,&.active{
-                    background-color: $primary-100;
+                    background-color: $primary-50;
                 }
                 .detail-div{
                     .labels {
