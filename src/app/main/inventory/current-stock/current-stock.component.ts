@@ -11,6 +11,7 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-current-stock',
@@ -23,6 +24,7 @@ import { Subscription } from 'rxjs';
 export class CurrentStockComponent implements OnInit {
   displayedColumns = [
     // 'action',
+  
     'ToStoreName',
     'ItemName',
     'ReceivedQty',
@@ -31,6 +33,7 @@ export class CurrentStockComponent implements OnInit {
     // 'GenericName'
   ];
   displayedColumnsDayWise = [
+    // 'action',
     'BatchNo',
     'BatchExpDate',
     'ItemName',
@@ -42,7 +45,7 @@ export class CurrentStockComponent implements OnInit {
     
   ];
   displayedColumnsItemWise = [
-   // 'Action',
+  //  'action',
     'ItemName',
     'ConversionFactor',
     'Current_BalQty',
@@ -57,7 +60,7 @@ export class CurrentStockComponent implements OnInit {
   screenFromString = 'admission-form';
   FromDate:any;
   Todate:any;
-  
+  SpinLoading:boolean=false;
   dsCurrentStock= new MatTableDataSource<CurrentStockList>();
   dsDaywiseStock= new MatTableDataSource<DayWiseStockList>();
   dsItemwiseStock= new MatTableDataSource<ItemWiseStockList>();
@@ -246,6 +249,108 @@ export class CurrentStockComponent implements OnInit {
     }
   
   
+    
+  viewgetDaywisestockReportPdf() {
+    debugger
+    let LedgerDate =  this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    let StoreId =this._loggedService.currentUserValue.user.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
+    setTimeout(() => {
+      this.SpinLoading =true;
+    //  this.AdList=true;
+    this._CurrentStockService.getDaywisestockview(
+      LedgerDate,StoreId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Day Wise Stock Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+
+  
+  viewgetCurrentstockReportPdf() {
+    debugger
+    let ItemName = this._CurrentStockService.SearchGroup.get("ItemCategory").value + '%' || "%"
+    let StoreId = this._loggedService.currentUserValue.user.storeId || this._CurrentStockService.SearchGroup.get("StoreId").value.StoreId || 0
+    setTimeout(() => {
+      this.SpinLoading =true;
+   this._CurrentStockService.getCurrentstockview(
+    StoreId, ItemName
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Current Stock Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+
+  
+  viewgetItemwisestockReportPdf() {
+    debugger
+    
+    let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    let todate =this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    let StoreId = this._loggedService.currentUserValue.user.storeId || this._CurrentStockService.ItemWiseFrom.get("StoreId").value.StoreId || 0
+    setTimeout(() => {
+      this.SpinLoading =true;
+    //  this.AdList=true;
+    this._CurrentStockService.getItemwisestockview(
+      FromDate,todate,StoreId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Item Wise Current Stock Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
 }
  
 export class CurrentStockList {

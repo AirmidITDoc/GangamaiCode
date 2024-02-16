@@ -224,7 +224,7 @@ export class AppointmentComponent implements OnInit {
   FimeName: any;
   VisitFlag = 0;
   vPhoneFlage = 0;
-  PhoneAppId: any=0;
+  vPhoneAppId: any=0;
   vOPDNo:any=0;
 
   VisitFlagDisp: boolean = false;
@@ -251,6 +251,7 @@ export class AppointmentComponent implements OnInit {
     "CrossConsultation",
     // "Edit",
     "Bill",
+    "PhoneAppId",
     "RegNoWithPrefix",
     "PatientName",
     "DVisitDate",
@@ -1354,11 +1355,12 @@ debugger
 
 
   getPhoneAppointmentList() {
+    debugger
     var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+      "Keyword": `${this.searchFormGroup.get('RegId').value}`
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
-      this._opappointmentService.getPhoneAppointmentList(m_data).subscribe(resData => {
+      this._opappointmentService.getPhoneAppointmentList1(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         this.PatientListfilteredOptions = resData;
         if (this.filteredOptions.length == 0) {
@@ -1389,7 +1391,7 @@ debugger
     this.PatientName = obj.PatientName;
     this.RegId = obj.RegId;
     this.RegNo = obj.RegNo;
-    this.PhoneAppId = obj.PhoneAppId;
+    this.vPhoneAppId = obj.PhoneAppId;
     this.setDropdownObjs();
 
     this.VisitFlagDisp = true;
@@ -1451,13 +1453,13 @@ debugger
      
     if (this.searchFormGroup.get('regRadio').value == "registration") {
 
-      if (this.PhoneAppId == 0 && this.Regflag ==false ) {
+      if (this.vPhoneAppId == 0 && this.Regflag ==false || this.RegNo !== "" && this.vPhoneAppId != 0 ) {
         this.OnsaveNewRegister();
       }
-      if (this.RegNo !== "" && this.PhoneAppId != 0) {
-        this.OnsaveNewRegister();
-      }
-      else if (this.RegNo == "" && this.PhoneAppId != 0) {
+      // if (this.RegNo !== "" && this.PhoneAppId != 0) {
+      //   this.OnsaveNewRegister();
+      // }
+      else if (this.RegNo == "" && this.vPhoneAppId != 0) {
         this.onSaveRegistered();
       }
     }
@@ -1558,6 +1560,8 @@ debugger
         visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;// ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitSave['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',// this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
         visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
+        visitSave['PhoneAppId'] =this.vPhoneAppId,
+
 
         submissionObj['visitSave'] = visitSave;
 
@@ -1571,7 +1575,7 @@ debugger
       this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
         if (response) {
           debugger
-          if (this.PhoneAppId !==0) {
+          if (this.vPhoneAppId !==0) {
           Swal.fire('Congratulations !', 'New Appoinment from Phone save Successfully !', 'success').then((result) => {
           
           });
@@ -1661,7 +1665,8 @@ debugger
     visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
     visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-
+    visitUpdate['crossConsulFlag'] = 0,
+    visitUpdate['PhoneAppId'] = this.vPhoneAppId,
       submissionObj['visitUpdate'] = visitUpdate;
 
 
@@ -1671,7 +1676,7 @@ debugger
     console.log(submissionObj);
     this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
       if (response) {
-        if (this.PhoneAppId !=0) {
+        if (this.vPhoneAppId !=0) {
           Swal.fire('Congratulations !', 'Phone Registered Appoinment Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
               this.getPrint(response);
@@ -1815,7 +1820,7 @@ debugger
     else {
 
       if (this.RegOrPhoneflag) {
-        this.registerObj.RegId = this.PhoneAppId;
+        this.registerObj.RegId = this.vPhoneAppId;
       }
       this.isLoading = 'submit';
       let submissionObj = {};

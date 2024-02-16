@@ -182,12 +182,21 @@
                                     <ng-container matColumnDef="CompanyName"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> CompanyName
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                        [style.background-color]="CompanyName !== ' ' ? 'white' : 'pink'">
                                             {{contact.CompanyName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedBy"  >
+                                    <ng-container matColumnDef="ReqTime">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Presc Time
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ReqTime | date:'mm/dd/yyyy hh:mm:ss'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> AddedBy
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -209,6 +218,7 @@
                                     <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''"
                                         [@animate]="{value:'*',params:{y:'100%'}}" (click)="getRequestdetList(contact)">
                                     </mat-row>
                                     <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;"

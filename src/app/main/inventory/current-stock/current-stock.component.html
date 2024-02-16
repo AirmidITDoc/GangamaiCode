@@ -105,8 +105,12 @@
                                                 (click)="getCurrentStockList()" matTooltip="search">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>
+                                            <button mat-raised-button style="width:100px;"
+                                            (click)="viewgetCurrentstockReportPdf()" matTooltip="Pdf">
+                                            <mat-icon class="searchiconbutton">book</mat-icon>
+                                        </button>
                                         </div>
-
+                                      
                                     </div>
 
                                 </form>
@@ -135,6 +139,17 @@
 
                                         <mat-table #table class="table1" matSort [dataSource]="dsCurrentStock"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
+
+                                                   <!-- <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <button mat-icon-button matTooltip="print" (click)="viewgetCurrentstockReportPdf(contact)">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container> -->
+
 
                                             <ng-container matColumnDef="ToStoreName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -188,16 +203,7 @@
                                         </mat-cell>
                                     </ng-container> -->
 
-                                            <!-- <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button matTooltip="print">
-                                                <mat-icon>print</mat-icon>
-                                            </button>
-                                        </mat-cell>
-                                    </ng-container> -->
-
+                                     
                                             <ng-container matColumnDef="loading">
                                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                                 </mat-header-cell>
@@ -311,8 +317,12 @@
                                                 (click)="getDayWiseStockList()" matTooltip="search">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>
+                                            <button mat-raised-button style="width: 100px;"
+                                            (click)="viewgetDaywisestockReportPdf()" matTooltip="Pdf">
+                                            <mat-icon class="searchiconbutton">book</mat-icon>
+                                            </button>
                                         </div>
-
+                                      
                                     </div>
 
                                 </form>
@@ -341,14 +351,7 @@
                                         <mat-table #table class="table2" matSort [dataSource]="dsDaywiseStock"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
 
-                                            <!-- <ng-container matColumnDef="ToStoreName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                To Store Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.StoreName }}
-                                            </mat-cell>
-                                        </ng-container> -->
-
+                                           
                                             <ng-container matColumnDef="BatchNo">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                     Batch No
@@ -558,13 +561,16 @@
                                                 [disabled]="_CurrentStockService.ItemWiseFrom.invalid">Print
                                             </button> -->
 
-                                            <button class="next-btn" (click)="getPrint()"
+                                            <!-- <button class="next-btn" (click)="viewgetItemwisestockReportPdf()"
                                             style="margin-right: 8px; width: 80px;border-radius: 16px;"
-                                            [disabled]="printflag">Print</button>
-
+                                            [disabled]="printflag">Print</button> -->
+                                            <button mat-raised-button style="width: 100px;"
+                                            (click)="viewgetItemwisestockReportPdf()" matTooltip="Pdf">
+                                            <mat-icon class="searchiconbutton">book</mat-icon>
+                                            </button>
                                         </div>
 
-
+                                      
                                     </div>
 
                                 </form>
