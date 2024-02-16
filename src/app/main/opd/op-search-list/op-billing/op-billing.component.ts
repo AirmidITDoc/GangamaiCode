@@ -1186,7 +1186,6 @@ debugger
   @ViewChild('doctorname') doctorname: ElementRef;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
   @ViewChild('netamt') netamt: ElementRef;
-
   @ViewChild('Doctor') Doctor: MatSelect;
 
   onEnterservice(event): void {
