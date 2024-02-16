@@ -24,7 +24,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 export class CurrentStockComponent implements OnInit {
   displayedColumns = [
     // 'action',
-    'action',
+  
     'ToStoreName',
     'ItemName',
     'ReceivedQty',

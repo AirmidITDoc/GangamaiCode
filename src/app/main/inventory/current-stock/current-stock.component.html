@@ -102,11 +102,15 @@
                                                 <mat-icon class="cleariconbutton">close</mat-icon>
                                             </button>&nbsp;
                                             <button mat-raised-button class="searchButton"
-                                                (click)="viewgetCurrentstockReportPdf()" matTooltip="search">
+                                                (click)="getCurrentStockList()" matTooltip="search">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>
+                                            <button mat-raised-button style="width:100px;"
+                                            (click)="viewgetCurrentstockReportPdf()" matTooltip="Pdf">
+                                            <mat-icon class="searchiconbutton">book</mat-icon>
+                                        </button>
                                         </div>
-
+                                      
                                     </div>
 
                                 </form>
@@ -136,7 +140,7 @@
                                         <mat-table #table class="table1" matSort [dataSource]="dsCurrentStock"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
 
-                                                   <ng-container matColumnDef="action" stickyEnd>
+                                                   <!-- <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
@@ -144,7 +148,7 @@
                                                 <mat-icon>print</mat-icon>
                                             </button>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
 
                                             <ng-container matColumnDef="ToStoreName">
@@ -310,11 +314,15 @@
                                                 <mat-icon class="cleariconbutton">close</mat-icon>
                                             </button>&nbsp;
                                             <button mat-raised-button class="searchButton"
-                                                (click)="viewgetDaywisestockReportPdf()" matTooltip="search">
+                                                (click)="getDayWiseStockList()" matTooltip="search">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>
+                                            <button mat-raised-button style="width: 100px;"
+                                            (click)="viewgetDaywisestockReportPdf()" matTooltip="Pdf">
+                                            <mat-icon class="searchiconbutton">book</mat-icon>
+                                            </button>
                                         </div>
-
+                                      
                                     </div>
 
                                 </form>
@@ -545,7 +553,7 @@
                                                 <mat-icon class="cleariconbutton">close</mat-icon>
                                             </button>&nbsp;
                                             <button mat-raised-button class="searchButton"
-                                                (click)="viewgetItemwisestockReportPdf()" matTooltip="search">
+                                                (click)="getItemWiseStockList()" matTooltip="search">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>&nbsp;&nbsp;&nbsp;
                                             <!-- <button mat-raised-button matTooltip="Print"
@@ -556,10 +564,13 @@
                                             <!-- <button class="next-btn" (click)="viewgetItemwisestockReportPdf()"
                                             style="margin-right: 8px; width: 80px;border-radius: 16px;"
                                             [disabled]="printflag">Print</button> -->
-
+                                            <button mat-raised-button style="width: 100px;"
+                                            (click)="viewgetItemwisestockReportPdf()" matTooltip="Pdf">
+                                            <mat-icon class="searchiconbutton">book</mat-icon>
+                                            </button>
                                         </div>
 
-
+                                      
                                     </div>
 
                                 </form>
