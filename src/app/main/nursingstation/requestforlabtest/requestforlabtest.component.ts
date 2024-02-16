@@ -34,6 +34,7 @@ export class RequestforlabtestComponent implements OnInit {
     'RequestType',
     'TariffName',
     'CompanyName',
+    'ReqTime',
     'AddedBy'
   ]
 
@@ -76,7 +77,7 @@ export class RequestforlabtestComponent implements OnInit {
 
   Openpopup(){
     this.dialog.open(NewRequestforlabComponent,{
-      width:'80%',
+      width:'90%',
       height:'800px',
       panelClass: 'new-request-dialog'
     })
@@ -125,11 +126,19 @@ export class RequestforlabtestComponent implements OnInit {
       }
       Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
 
+debugger
+      let query = "update T_HLabRequest set IsCancelled=1 where RequestId=" + element.RequestId + "";
+      this._RequestforlabtestService.Canclerequest(query).subscribe((resData: any) => {
+        
+      });
     }
     else{
       Swal.fire('Billed Prescription can not Delete !');
 
     }
+
+
+
   }
 
 

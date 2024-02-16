@@ -472,76 +472,76 @@ export class NewOPBillingComponent implements OnInit {
       ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
 
     let InsertBillUpdateBillNoObj = {};
-    // InsertBillUpdateBillNoObj['BillNo'] = 0;
-    // InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId,//this.vOPIPId;
-    //   InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value; //this.totalAmtOfNetAmt;
-    // InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value; //this.b_concessionamt;
-    // InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
-    // InsertBillUpdateBillNoObj['PaidAmt'] = 0; //this.BillingForm.get('FinalAmt').value;
-    // InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
-    // InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-    //   InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
-    // InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-    //   InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-    //   InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-    //   InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId; //this.BillingForm.get('ConcessionId').value.ConcessionId || 0;
-    // InsertBillUpdateBillNoObj['IsSettled'] = 0;
-    // InsertBillUpdateBillNoObj['IsPrinted'] = 0;
-    // InsertBillUpdateBillNoObj['IsFree'] = 0;
-    // InsertBillUpdateBillNoObj['CompanyId'] = 0;
-    // InsertBillUpdateBillNoObj['TariffId'] = this.vTariffId || 0;
-    // InsertBillUpdateBillNoObj['UnitId'] = 1,//this.selectedAdvanceObj.UnitId || 0;
-    //   InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
-    // InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
-    // InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
-    // InsertBillUpdateBillNoObj['TaxPer'] = 0;
-    // InsertBillUpdateBillNoObj['TaxAmount'] = 0;
-    // InsertBillUpdateBillNoObj['DiscComments'] = '',// this.BillingForm.get('CashCounterId').value.CashCounterId || 0;
-    //   InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
+    InsertBillUpdateBillNoObj['BillNo'] = 0;
+    InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId,//this.vOPIPId;
+      InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value; //this.totalAmtOfNetAmt;
+    InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value; //this.b_concessionamt;
+    InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
+    InsertBillUpdateBillNoObj['PaidAmt'] = 0; //this.BillingForm.get('FinalAmt').value;
+    InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
+    InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
+    InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+      InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
+      InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId; //this.BillingForm.get('ConcessionId').value.ConcessionId || 0;
+    InsertBillUpdateBillNoObj['IsSettled'] = 0;
+    InsertBillUpdateBillNoObj['IsPrinted'] = 0;
+    InsertBillUpdateBillNoObj['IsFree'] = 0;
+    InsertBillUpdateBillNoObj['CompanyId'] = 0;
+    InsertBillUpdateBillNoObj['TariffId'] = this.vTariffId || 0;
+    InsertBillUpdateBillNoObj['UnitId'] = 1,//this.selectedAdvanceObj.UnitId || 0;
+      InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
+    InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
+    InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
+    InsertBillUpdateBillNoObj['TaxPer'] = 0;
+    InsertBillUpdateBillNoObj['TaxAmount'] = 0;
+    InsertBillUpdateBillNoObj['DiscComments'] = '',// this.BillingForm.get('CashCounterId').value.CashCounterId || 0;
+      InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
 
     let Billdetsarr = [];
-    // this.dataSource.data.forEach((element) => {
-    //   let BillDetailsInsertObj = {};
-    //   BillDetailsInsertObj['BillNo'] = 0;
-    //   BillDetailsInsertObj['ChargesId'] = element.ChargesId;
-    //   Billdetsarr.push(BillDetailsInsertObj);
-    // });
+    this.dataSource.data.forEach((element) => {
+      let BillDetailsInsertObj = {};
+      BillDetailsInsertObj['BillNo'] = 0;
+      BillDetailsInsertObj['ChargesId'] = element.ChargesId;
+      Billdetsarr.push(BillDetailsInsertObj);
+    });
 
     let InsertAdddetArr = [];
-    // this.dataSource.data.forEach((element) => {
-    //   let InsertAddChargesObj = {};
-    //   InsertAddChargesObj['ChargeID'] = 0,
-    //     InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-    //     InsertAddChargesObj['opD_IPD_Type'] = 0,
-    //     InsertAddChargesObj['opD_IPD_Id'] = this.vOPIPId,
-    //     InsertAddChargesObj['serviceId'] = element.ServiceId,
-    //     InsertAddChargesObj['price'] = element.Price,
-    //     InsertAddChargesObj['qty'] = element.Qty,
-    //     InsertAddChargesObj['totalAmt'] = element.TotalAmt,
-    //     InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
-    //     InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
-    //     InsertAddChargesObj['netAmount'] = element.NetAmount,
-    //     InsertAddChargesObj['doctorId'] = element.DoctorId,
-    //     InsertAddChargesObj['docPercentage'] = 0,
-    //     InsertAddChargesObj['docAmt'] = 0,
-    //     InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
-    //     InsertAddChargesObj['isGenerated'] = 0,
-    //     InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
-    //     InsertAddChargesObj['isCancelled'] = 0,
-    //     InsertAddChargesObj['isCancelledBy'] = 0,
-    //     InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
-    //     InsertAddChargesObj['isPathology'] = element.IsPathology,
-    //     InsertAddChargesObj['isRadiology'] = element.IsRadiology,
-    //     InsertAddChargesObj['isPackage'] = 0,
-    //     InsertAddChargesObj['packageMainChargeID'] = 0,
-    //     InsertAddChargesObj['isSelfOrCompanyService'] = false,
-    //     InsertAddChargesObj['packageId'] = 0,
-    //     InsertAddChargesObj['BillNo'] = 0,
-    //     InsertAddChargesObj['chargeTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-    //     InsertAddChargesObj['classId'] = this.vClassId,
+    this.dataSource.data.forEach((element) => {
+      let InsertAddChargesObj = {};
+      InsertAddChargesObj['ChargeID'] = 0,
+        InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+        InsertAddChargesObj['opD_IPD_Type'] = 0,
+        InsertAddChargesObj['opD_IPD_Id'] = this.vOPIPId,
+        InsertAddChargesObj['serviceId'] = element.ServiceId,
+        InsertAddChargesObj['price'] = element.Price,
+        InsertAddChargesObj['qty'] = element.Qty,
+        InsertAddChargesObj['totalAmt'] = element.TotalAmt,
+        InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
+        InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
+        InsertAddChargesObj['netAmount'] = element.NetAmount,
+        InsertAddChargesObj['doctorId'] = element.DoctorId,
+        InsertAddChargesObj['docPercentage'] = 0,
+        InsertAddChargesObj['docAmt'] = 0,
+        InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
+        InsertAddChargesObj['isGenerated'] = 0,
+        InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
+        InsertAddChargesObj['isCancelled'] = 0,
+        InsertAddChargesObj['isCancelledBy'] = 0,
+        InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
+        InsertAddChargesObj['isPathology'] = element.IsPathology,
+        InsertAddChargesObj['isRadiology'] = element.IsRadiology,
+        InsertAddChargesObj['isPackage'] = 0,
+        InsertAddChargesObj['packageMainChargeID'] = 0,
+        InsertAddChargesObj['isSelfOrCompanyService'] = false,
+        InsertAddChargesObj['packageId'] = 0,
+        InsertAddChargesObj['BillNo'] = 0,
+        InsertAddChargesObj['chargeTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+        InsertAddChargesObj['classId'] = this.vClassId,
 
-    //     InsertAdddetArr.push(InsertAddChargesObj);
-    // })
+        InsertAdddetArr.push(InsertAddChargesObj);
+    })
 
 
     let opCalDiscAmountBill = {}
@@ -578,79 +578,79 @@ export class NewOPBillingComponent implements OnInit {
 
           this.balanceamt= result.BalAmt;
         }
-
+debugger
         // let InsertBillUpdateBillNoObj = {};
-        InsertBillUpdateBillNoObj['BillNo'] = 0;
-        InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId,//this.vOPIPId;
-          InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value; //this.totalAmtOfNetAmt;
-        InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value; //this.b_concessionamt;
-        InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
-        InsertBillUpdateBillNoObj['PaidAmt'] = 0; //this.BillingForm.get('FinalAmt').value;
-        debugger
-        InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
-        InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-          InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
-        InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-          InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-          InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-          InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId; //this.BillingForm.get('ConcessionId').value.ConcessionId || 0;
-        InsertBillUpdateBillNoObj['IsSettled'] = 0;
-        InsertBillUpdateBillNoObj['IsPrinted'] = 0;
-        InsertBillUpdateBillNoObj['IsFree'] = 0;
-        InsertBillUpdateBillNoObj['CompanyId'] = 0;
-        InsertBillUpdateBillNoObj['TariffId'] = this.vTariffId || 0;
-        InsertBillUpdateBillNoObj['UnitId'] = 1,//this.selectedAdvanceObj.UnitId || 0;
-          InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
-        InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
-        InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
-        InsertBillUpdateBillNoObj['TaxPer'] = 0;
-        InsertBillUpdateBillNoObj['TaxAmount'] = 0;
-        InsertBillUpdateBillNoObj['DiscComments'] = '',// this.BillingForm.get('CashCounterId').value.CashCounterId || 0;
-          InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
+        // InsertBillUpdateBillNoObj['BillNo'] = 0;
+        // InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId,//this.vOPIPId;
+        //   InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value; //this.totalAmtOfNetAmt;
+        // InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value; //this.b_concessionamt;
+        // InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
+        // InsertBillUpdateBillNoObj['PaidAmt'] = 0; //this.BillingForm.get('FinalAmt').value;
+        // debugger
+        // InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
+        // InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        //   InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
+        // InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+        //   InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
+        //   InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        //   InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId; //this.BillingForm.get('ConcessionId').value.ConcessionId || 0;
+        // InsertBillUpdateBillNoObj['IsSettled'] = 0;
+        // InsertBillUpdateBillNoObj['IsPrinted'] = 0;
+        // InsertBillUpdateBillNoObj['IsFree'] = 0;
+        // InsertBillUpdateBillNoObj['CompanyId'] = 0;
+        // InsertBillUpdateBillNoObj['TariffId'] = this.vTariffId || 0;
+        // InsertBillUpdateBillNoObj['UnitId'] = 1,//this.selectedAdvanceObj.UnitId || 0;
+        //   InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
+        // InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
+        // InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
+        // InsertBillUpdateBillNoObj['TaxPer'] = 0;
+        // InsertBillUpdateBillNoObj['TaxAmount'] = 0;
+        // InsertBillUpdateBillNoObj['DiscComments'] = '',// this.BillingForm.get('CashCounterId').value.CashCounterId || 0;
+        //   InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
     
-        let Billdetsarr = [];
-        this.dataSource.data.forEach((element) => {
-          let BillDetailsInsertObj = {};
-          BillDetailsInsertObj['BillNo'] = 0;
-          BillDetailsInsertObj['ChargesId'] = element.ChargesId;
-          Billdetsarr.push(BillDetailsInsertObj);
-        });
+        // let Billdetsarr = [];
+        // this.dataSource.data.forEach((element) => {
+        //   let BillDetailsInsertObj = {};
+        //   BillDetailsInsertObj['BillNo'] = 0;
+        //   BillDetailsInsertObj['ChargesId'] = element.ChargesId;
+        //   Billdetsarr.push(BillDetailsInsertObj);
+        // });
     
         // let InsertAdddetArr = [];
-        this.dataSource.data.forEach((element) => {
-          let InsertAddChargesObj = {};
-          InsertAddChargesObj['ChargeID'] = 0,
-            InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-            InsertAddChargesObj['opD_IPD_Type'] = 0,
-            InsertAddChargesObj['opD_IPD_Id'] = this.vOPIPId,
-            InsertAddChargesObj['serviceId'] = element.ServiceId,
-            InsertAddChargesObj['price'] = element.Price,
-            InsertAddChargesObj['qty'] = element.Qty,
-            InsertAddChargesObj['totalAmt'] = element.TotalAmt,
-            InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
-            InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
-            InsertAddChargesObj['netAmount'] = element.NetAmount,
-            InsertAddChargesObj['doctorId'] = element.DoctorId,
-            InsertAddChargesObj['docPercentage'] = 0,
-            InsertAddChargesObj['docAmt'] = 0,
-            InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
-            InsertAddChargesObj['isGenerated'] = 0,
-            InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
-            InsertAddChargesObj['isCancelled'] = 0,
-            InsertAddChargesObj['isCancelledBy'] = 0,
-            InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
-            InsertAddChargesObj['isPathology'] = element.IsPathology,
-            InsertAddChargesObj['isRadiology'] = element.IsRadiology,
-            InsertAddChargesObj['isPackage'] = 0,
-            InsertAddChargesObj['packageMainChargeID'] = 0,
-            InsertAddChargesObj['isSelfOrCompanyService'] = false,
-            InsertAddChargesObj['packageId'] = 0,
-            InsertAddChargesObj['BillNo'] = 0,
-            InsertAddChargesObj['chargeTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-            InsertAddChargesObj['classId'] = this.vClassId,
+        // this.dataSource.data.forEach((element) => {
+        //   let InsertAddChargesObj = {};
+        //   InsertAddChargesObj['ChargeID'] = 0,
+        //     InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+        //     InsertAddChargesObj['opD_IPD_Type'] = 0,
+        //     InsertAddChargesObj['opD_IPD_Id'] = this.vOPIPId,
+        //     InsertAddChargesObj['serviceId'] = element.ServiceId,
+        //     InsertAddChargesObj['price'] = element.Price,
+        //     InsertAddChargesObj['qty'] = element.Qty,
+        //     InsertAddChargesObj['totalAmt'] = element.TotalAmt,
+        //     InsertAddChargesObj['concessionPercentage'] = element.DiscPer || 0,
+        //     InsertAddChargesObj['concessionAmount'] = element.DiscAmt || 0,
+        //     InsertAddChargesObj['netAmount'] = element.NetAmount,
+        //     InsertAddChargesObj['doctorId'] = element.DoctorId,
+        //     InsertAddChargesObj['docPercentage'] = 0,
+        //     InsertAddChargesObj['docAmt'] = 0,
+        //     InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
+        //     InsertAddChargesObj['isGenerated'] = 0,
+        //     InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
+        //     InsertAddChargesObj['isCancelled'] = 0,
+        //     InsertAddChargesObj['isCancelledBy'] = 0,
+        //     InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
+        //     InsertAddChargesObj['isPathology'] = element.IsPathology,
+        //     InsertAddChargesObj['isRadiology'] = element.IsRadiology,
+        //     InsertAddChargesObj['isPackage'] = 0,
+        //     InsertAddChargesObj['packageMainChargeID'] = 0,
+        //     InsertAddChargesObj['isSelfOrCompanyService'] = false,
+        //     InsertAddChargesObj['packageId'] = 0,
+        //     InsertAddChargesObj['BillNo'] = 0,
+        //     InsertAddChargesObj['chargeTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+        //     InsertAddChargesObj['classId'] = this.vClassId,
     
-            InsertAdddetArr.push(InsertAddChargesObj);
-        })
+        //     InsertAdddetArr.push(InsertAddChargesObj);
+        // })
     
 
         if (this.b_concessionDiscPer > 0) {
@@ -706,8 +706,8 @@ export class NewOPBillingComponent implements OnInit {
 
 
             if (flag.isConfirmed) {
-debugger
-              const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+              InsertBillUpdateBillNoObj['BalanceAmt'] =  result.BalAmt;
+              // const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
               // InsertBillUpdateBillNoObj['BalanceAmt'] = this.BillingForm.get('FinalAmt').value;
 
               let submitData = {
@@ -722,7 +722,7 @@ debugger
                   Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
                     if (result.isConfirmed) {
                       let m = response;
-                      this.viewgetBillReportPdf(response);
+                      // this.viewgetBillReportPdf(response);
                       // this._matDialog.closeAll();
                     }
                   });

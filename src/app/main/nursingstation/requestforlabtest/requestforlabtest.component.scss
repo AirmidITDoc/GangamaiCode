@@ -1,13 +1,13 @@
 .mat-header-row {
     width: 100%;
-    min-width: 1500px;  
+    min-width: 1900px;  
     min-height: 30px; 
       
 }
 
 .mat-row {
     width: 100%;
-    min-width: 1500px;      
+    min-width: 1900px;      
     min-height: 30px;  
    
 }
@@ -77,6 +77,12 @@
         min-width: 120px;
         align-items: left;
     }
+    .mat-column-ReqTime {
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
+        align-items: left;
+    }
     .mat-column-AddedBy {
         width: 120px;
         max-width: 120px;
@@ -111,9 +117,9 @@
 
 .Tab2 {
     .mat-column-ServiceName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
         text-align: left;
          justify-content: left;
          white-space: nowrap;

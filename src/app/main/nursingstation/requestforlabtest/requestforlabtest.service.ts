@@ -52,7 +52,9 @@ export class RequestforlabtestService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList",Param);
   }
 
-  
+ public Canclerequest(query){
+  return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+ }
 
 
   public LabRequestSave(employee) {

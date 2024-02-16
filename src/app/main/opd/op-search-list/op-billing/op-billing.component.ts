@@ -23,6 +23,7 @@ import { OpPaymentNewComponent } from '../op-payment-new/op-payment-new.componen
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { RegInsert } from '../../appointment/appointment.component';
 import { ToastrService } from 'ngx-toastr';
+import { MatSelect } from '@angular/material/select';
 
 type NewType = Observable<any[]>;
 export class ILookup {

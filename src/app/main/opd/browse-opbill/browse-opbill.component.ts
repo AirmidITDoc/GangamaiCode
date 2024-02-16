@@ -188,28 +188,30 @@ export class BrowseOPBillComponent implements OnInit {
             });
 
           }
-          else {
-            Swal.fire('Payment not Done.....');
-          }
+          // else {
+          //   Swal.fire('Payment not Done.....');
+          // }
         });
          
     }
 
 Billpayment(contact){
+  debugger
   let PatientHeaderObj = {};
-  PatientHeaderObj['Date'] = contact.BillDate;
-  PatientHeaderObj['PatientName'] = contact.PatientName;
-  PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-  PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
-  PatientHeaderObj['BillId'] = contact.BillNo;
 
-  const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+  PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
+  PatientHeaderObj['PatientName'] = contact.PatientName;
+PatientHeaderObj['OPD_IPD_Id'] = contact.vOPIPId;
+PatientHeaderObj['NetPayAmount'] = contact.NetAmount;
+PatientHeaderObj['BillId'] = contact.BillNo;
+
+  const dialogRef = this._matDialog.open(OpPaymentNewComponent,
     {
       maxWidth: "90vw",
       height: '640px',
       width: '100%',
       data: {
-        advanceObj: PatientHeaderObj,
+        vPatientHeaderObj: PatientHeaderObj,
         FromName: "OP-Bill"
       }
     });

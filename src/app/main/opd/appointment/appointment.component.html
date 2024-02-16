@@ -207,6 +207,23 @@
                           </mat-cell>
                         </ng-container>
 
+                        
+                        <ng-container matColumnDef="PhoneAppId">
+                          <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let contact">
+                            <mat-icon
+                              style="font-size:60px;width: 20px !important; height:20px !important;border-radius:100% ;"
+                              *ngIf="contact.PhoneAppId !==0" matTooltip="Phone Appointment"
+                              class=" pink-600 s-16">circle</mat-icon>
+                            <mat-icon
+                              style="font-size: 60px;width: 20px !important; border: black 1px solid; height:20px !important;border-radius:100% ;"
+                              *ngIf="contact.PhoneAppId=='0' " matTooltip="Not Phone App"
+                              class=" white-600 s-16">
+                              circle</mat-icon>
+                          </mat-cell>
+                        </ng-container>
+
                         <ng-container matColumnDef="RegNoWithPrefix">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                             <span class="mat-header-text">Reg No</span>

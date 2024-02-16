@@ -70,14 +70,16 @@ export class NewRequestforlabComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
   vAdmissionID: any;
-  
+  date: Date;
   
  
   constructor(private _FormBuilder: FormBuilder,
     private dialogRef: MatDialogRef<NewRequestforlabComponent>,
     private _matDialog:MatDialog,
     public _RequestforlabtestService: RequestforlabtestService,
-    private _loggedService: AuthenticationService) { }
+    private _loggedService: AuthenticationService) { 
+      this.date = new Date();
+    }
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
@@ -95,8 +97,8 @@ export class NewRequestforlabComponent implements OnInit {
       Price2: '',
       PatientName:'',
       RegId:'',
-      AdmissionID:0
-
+      AdmissionID:0,
+      Requestdate:''
       
     })
   }
@@ -300,6 +302,8 @@ export class NewRequestforlabComponent implements OnInit {
       Swal.fire('Success !', 'Service Row Deleted Successfully', 'success');
 
     // }
+   
+
   }
   onClose() {
     this.dialogRef.close();
