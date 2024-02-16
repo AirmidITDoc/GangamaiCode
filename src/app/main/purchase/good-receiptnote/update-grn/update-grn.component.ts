@@ -1661,6 +1661,9 @@ export class UpdateGRNComponent implements OnInit {
   onScroll() {
   }
 
+  FinalLandedrate1:any=0;
+  FinalpurUnitRate1:any=0;
+  FinalpurUnitrateWF1:any=0;
   PurchaseOrderList() {
     const _dialogRef = this._matDialog.open(PurchaseorderComponent,
       {
@@ -1694,38 +1697,41 @@ export class UpdateGRNComponent implements OnInit {
       this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
       this.vMobile = toSelectSUpplierId.Mobile;
       this.vContact = toSelectSUpplierId.ContactPerson;
-      this.dsItemNameList = result;
-console.log(this.dsItemNameList)
+      this.dsItemNameList1.data = result;
+console.log(this.dsItemNameList1)
 
       this.dsItemNameList1.data.forEach((element) => {
+        debugger
 
+      //  this.FinalLandedrate1 =  (parseInt(element.NetAmount) / parseInt(element.FinalTotalQty)) || 0
+      //  this.FinalpurUnitRate1 = (parseInt(element.TotalAmount) / parseInt(element.Qty) * parseInt(element.ConversionFactor)) 
+      //  this.FinalpurUnitrateWF1 = (parseInt(element.TotalAmount) / parseInt(element.FinalTotalQty) * parseInt(element.ConversionFactor))
+     let Qty = element.Qty;
 
-       this.FinalLandedrate =  (parseInt(element.NetAmount) / parseInt(element.FinalTotalQty)) || 0
-       this.FinalpurUnitRate = (parseInt(element.TotalAmount) / parseInt(element.Qty) * parseInt(element.ConversionFactor)) 
-       this.FinalpurUnitrateWF = (parseInt(element.TotalAmount) / parseInt(element.FinalTotalQty) * parseInt(element.ConversionFactor))
+       this.FinalLandedrate1 =  (element.NetAmount) / (element.TotalQty) || 0
+       this.FinalpurUnitRate1 = ((element.TotalAmount) / (element.TotalQty) * (element.ConversionFactor)) 
+       this.FinalpurUnitrateWF1 = ((element.TotalAmount) / (element.TotalQty) * parseInt(element.ConversionFactor))
      
-
-        
         this.chargeslist.push(
           {
             ItemId: element.ItemID || 0,
             ItemName: element.ItemName || '',
             ConversionFactor: element.ConversionFactor || 0,
-            UOMId: element.UOM,
+            // UOMId: element.UOM,
             HSNcode: element.HSNCode,
             BatchNo: element.BatchNo,
-            BatchExpDate: element.BatchExpDate,
+            // BatchExpDate: element.BatchExpDate,
             ReceiveQty: element.Qty || 0,
             FreeQty: element.FreeQty || 0,
-            TotalQty: element.FinalTotalQty || 0,
+            // TotalQty: element.FinalTotalQty || 0,
             MRP: element.MRP || 0,
             Rate: element.Rate || 0,
             TotalAmount: element.TotalAmount || 0,
             DiscPercentage: element.Disc || '',
             DiscAmount: element.DisAmount || 0,
-            DiscPer2: element.vDisc2 || 0,
-            DiscAmt2: element.vDisAmount2 || 0,
-            VatPercentage: element.GST || 0,
+            // DiscPer2: element.vDisc2 || 0,
+            // DiscAmt2: element.vDisAmount2 || 0,
+            // VatPercentage: element.GST || 0,
             VatAmount: element.GSTAmount || 0,
             CGSTPer: element.CGST || 0,
             CGSTAmt: element.CGSTAmount || 0,
@@ -1737,9 +1743,9 @@ console.log(this.dsItemNameList)
             PurchaseId: 0,
             PurDetId: 0,
             POBalQty: 0,
-            LandedRate: FinalLandedrate || 0,
-            PurUnitRate: FinalpurUnitRate || 0,
-            PurUnitRateWF: FinalpurUnitrateWF || 0
+            LandedRate: this.FinalLandedrate1 || 0,
+            PurUnitRate: this.FinalpurUnitRate1 || 0,
+            PurUnitRateWF: this.FinalpurUnitrateWF1 || 0
           });
     
         // this.dsItemNameList.data = this.chargeslist
