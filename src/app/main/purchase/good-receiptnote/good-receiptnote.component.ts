@@ -1026,6 +1026,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getGRNList();
     });
     this.getGRNList();
   }
@@ -1333,7 +1334,9 @@ export class ItemNameList {
   PurchaseId:any;
   IsClosed:boolean;
   PurDetId:any;
-   
+  LandedRate:any;
+  PurUnitRate:any;
+  PurUnitRateWF:any;
   /**
    * Constructor
    *
@@ -1392,6 +1395,9 @@ export class ItemNameList {
       this.EwayBillDate = ItemNameList.EwayBillDate || this.CurrentDate;
       this.PaymentDate = ItemNameList.PaymentDate || this.CurrentDate;
       this.DateOfInvoice = ItemNameList.DateOfInvoice || this.CurrentDate;
+      this.LandedRate = ItemNameList.LandedRate || 0;
+      this.PurUnitRate = ItemNameList.PurUnitRate || 0;
+      this.PurUnitRateWF = ItemNameList.PurUnitRateWF || 0;
     }
   }
 }

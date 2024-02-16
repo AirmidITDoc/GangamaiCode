@@ -58,14 +58,14 @@
                                             <mat-label>To Store</mat-label>
                                             <input matAutocompletePosition="below" (keyup)="getGRNList()"
                                                 placeholder="Select Payment" matInput formControlName="ToStoreId"
-                                                [matAutocomplete]="autoTostore">
+                                                [matAutocomplete]="auto">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_GRNService.GRNSearchGroup.get('ToStoreId').setValue(''); isPaymentSelected = false;">close</mat-icon>
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_GRNService.GRNSearchGroup.get('ToStoreId').setValue(''); isPaymentSelected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #autoTostore="matAutocomplete"
+                                            <mat-autocomplete #auto="matAutocomplete"
                                                 [displayWith]="getOptionTextPayment">
                                                 <mat-option *ngFor="let option of filteredoptionsToStore | async"
                                                     [value]="option">
@@ -188,7 +188,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     TotalAmt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.TotalAmount | number:'1.2-2'}}
+                                                    {{contact.TotalAmount | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -196,7 +196,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     DiscAmt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.TotalDiscAmount | number:'1.2-2'}}
+                                                    {{contact.TotalDiscAmount | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -204,7 +204,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GSTAmt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.TotalVATAmount | number:'1.2-2'}}
+                                                    {{contact.TotalVATAmount | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -212,7 +212,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     NetAmt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.NetAmount | number:'1.2-2'}}
+                                                    {{contact.NetAmount | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -220,7 +220,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     RoundAmt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.RoundingAmt}}
+                                                    {{contact.RoundingAmt | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -228,7 +228,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     DebitNote</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.DebitNote}}
+                                                    {{contact.DebitNote | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -236,7 +236,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     CreditNote</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.CreditNote}}
+                                                    {{contact.CreditNote | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -394,7 +394,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     MRP</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.MRP}}
+                                                    {{contact.MRP | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -402,7 +402,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Rate</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Rate}}
+                                                    {{contact.Rate | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -452,7 +452,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     NetAmt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.NetAmount.toFixed(2)}}
+                                                    {{contact.NetAmount | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -533,7 +533,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     MRP</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.MRP}}
+                                                    {{contact.MRP | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -541,7 +541,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Rate</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.Rate}}
+                                                    {{contact.Rate | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
 

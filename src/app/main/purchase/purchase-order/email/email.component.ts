@@ -17,6 +17,9 @@ import { PurchaseOrderService } from '../purchase-order.service';
 export class EmailComponent implements OnInit {
 
  registerObj:any;
+ vToMailId:any;
+ vSubject:any;
+ vBody:any;
 
   constructor(
     public _matDialog: MatDialog,
@@ -30,9 +33,14 @@ export class EmailComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.data.Obj){
-    this.data.obj = this.registerObj;
+    this.registerObj = this.data.Obj ;
+    //console.log(this.registerObj);
+    this.vToMailId = this.registerObj.Email;
+    this.vSubject = "we rise purchase order ";
+    this.vBody = " we rise purchase order "
     }
   }
+  
   OnSend(){
 
   }

@@ -358,11 +358,12 @@ export class PurchaseOrderComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getPurchaseOrderList();
     });
     this.getPurchaseOrderList();
   }
   POEmail(contact) {
-    //console.log(contact)
+    console.log(contact)
     const dialogRef = this._matDialog.open(EmailComponent,
       {
         maxWidth: "100%",

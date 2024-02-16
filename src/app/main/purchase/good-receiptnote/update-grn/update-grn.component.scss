@@ -200,6 +200,24 @@ app-update-grn {
     min-width: 90px;
     text-align: left;
   }
+  .mat-column-landedRate {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
+  }
+  .mat-column-purUnitRate {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
+  }
+  .mat-column-purUnitRateWF {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
+  }
   .mat-column-Action {
     width: 80px;
     max-width: 80px;
@@ -207,16 +225,16 @@ app-update-grn {
     text-align: left;
   }
    .mat-header-row {
-      width:2480px;
-      max-width: 2480px;
-      min-width:2480px;
+      width:2850px;
+      max-width: 2850px;
+      min-width:2850px;
       // min-height: 30px;
       // background-color: blue;
     }
 
     .mat-row {
-    width: 2480px;
-    min-width: 2480px;  
+    width: 2850px;
+    min-width: 2850px;  
     // min-height: 30px; 
     }
     }
