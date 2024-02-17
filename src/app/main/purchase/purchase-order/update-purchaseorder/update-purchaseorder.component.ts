@@ -486,8 +486,8 @@ debugger
       purchaseDetailInsertObj['purchaseId'] = 0;
       purchaseDetailInsertObj['itemId'] = element.ItemId;
       purchaseDetailInsertObj['uomId'] = element.UOMID;
-      purchaseDetailInsertObj['qty'] = element.Qty;
-      purchaseDetailInsertObj['rate'] = element.Rate;
+      purchaseDetailInsertObj['qty'] =  element.Qty || this.editedFinalQty || 0;
+      purchaseDetailInsertObj['rate'] =  element.Rate || this.editedFinalRate || 0;
       purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
       purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
       purchaseDetailInsertObj['discPer'] = element.DiscPer;
@@ -575,8 +575,8 @@ debugger
       purchaseDetailInsertObj['purchaseId'] = 0;
       purchaseDetailInsertObj['itemId'] = element.ItemId;
       purchaseDetailInsertObj['uomId'] = element.UOMID;
-      purchaseDetailInsertObj['qty'] = element.Qty;
-      purchaseDetailInsertObj['rate'] = element.Rate;
+      purchaseDetailInsertObj['qty'] = element.Qty || this.editedFinalQty || 0;
+      purchaseDetailInsertObj['rate'] = element.Rate || this.editedFinalRate || 0;
       purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
       purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
       purchaseDetailInsertObj['discPer'] = element.DiscPer;
@@ -619,9 +619,11 @@ debugger
      });
    });
   }
-
+editedFinalQty:any=0;
+editedFinalRate:any=0;
   onQtyEdit(event: any, contact: ItemNameList) {
     const editedQty = parseFloat(event.target.textContent) || 0;
+    this.editedFinalQty = editedQty;
     contact.Qty = editedQty;
    
     if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == 'GST After Disc') {
@@ -631,6 +633,10 @@ debugger
       contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPer)) / 100);
       let TotalAmt = ((contact.TotalAmount) - (contact.DiscAmount));
       //Gst
+      //Gst
+      contact.CGSTAmt = (((TotalAmt) * (contact.CGSTPer)) / 100);
+      contact.SGSTAmt = (((TotalAmt) * (contact.SGSTPer)) / 100);
+      contact.IGSTAmt = (((TotalAmt) * (contact.IGSTPer)) / 100);
       contact.VatAmount = (((TotalAmt) * (contact.VatPer)) / 100);
 
       contact.GrandTotalAmount = ((TotalAmt) + (contact.VatAmount));
@@ -638,6 +644,9 @@ debugger
       //total amt
       contact.TotalAmount = (contact.Qty * contact.Rate);
       //Gst
+      contact.CGSTAmt = (((contact.TotalAmount) * (contact.CGSTPer)) / 100);
+      contact.SGSTAmt = (((contact.TotalAmount) * (contact.SGSTPer)) / 100);
+      contact.IGSTAmt = (((contact.TotalAmount) * (contact.IGSTPer)) / 100);
       contact.VatAmount = (((contact.TotalAmount) * (contact.VatPer)) / 100);
 
       let totalAmt = ((contact.TotalAmount) + (contact.VatAmount));
@@ -649,6 +658,7 @@ debugger
   }
   onRateEdit(event: any, contact: ItemNameList) {
     const editedRate = parseFloat(event.target.textContent) || 0;
+    this.editedFinalRate = editedRate;
     contact.Rate = editedRate;
    
     if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == 'GST After Disc') {
@@ -658,6 +668,9 @@ debugger
       contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPer)) / 100);
       let TotalAmt = ((contact.TotalAmount) - (contact.DiscAmount));
       //Gst
+      contact.CGSTAmt = (((TotalAmt) * (contact.CGSTPer)) / 100);
+      contact.SGSTAmt = (((TotalAmt) * (contact.SGSTPer)) / 100);
+      contact.IGSTAmt = (((TotalAmt) * (contact.IGSTPer)) / 100);
       contact.VatAmount = (((TotalAmt) * (contact.VatPer)) / 100);
 
       contact.GrandTotalAmount = ((TotalAmt) + (contact.VatAmount));
@@ -665,6 +678,9 @@ debugger
       //total amt
       contact.TotalAmount = (contact.Qty * contact.Rate);
       //Gst
+      contact.CGSTAmt = (((contact.TotalAmount) * (contact.CGSTPer)) / 100);
+      contact.SGSTAmt = (((contact.TotalAmount) * (contact.SGSTPer)) / 100);
+      contact.IGSTAmt = (((contact.TotalAmount) * (contact.IGSTPer)) / 100);
       contact.VatAmount = (((contact.TotalAmount) * (contact.VatPer)) / 100);
 
       let totalAmt = ((contact.TotalAmount) + (contact.VatAmount));

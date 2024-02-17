@@ -1029,14 +1029,17 @@ export class GoodReceiptnoteComponent implements OnInit {
       this.getGRNList();
     });
     this.getGRNList();
-  }
-  GRNEmail() {
-    //this.chkNewGRN = 1;
+  }  
+  GRNEmail(contact) {
+    console.log(contact)
     const dialogRef = this._matDialog.open(GrnemailComponent,
       {
         maxWidth: "100%",
         height: '55%',
         width: '55%',
+        data: {
+          Obj:contact
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -1337,6 +1340,8 @@ export class ItemNameList {
   LandedRate:any;
   PurUnitRate:any;
   PurUnitRateWF:any;
+  BatchExpDate:number;
+  POQty:any;
   /**
    * Constructor
    *
@@ -1398,6 +1403,7 @@ export class ItemNameList {
       this.LandedRate = ItemNameList.LandedRate || 0;
       this.PurUnitRate = ItemNameList.PurUnitRate || 0;
       this.PurUnitRateWF = ItemNameList.PurUnitRateWF || 0;
+      this.BatchExpDate = ItemNameList.BatchExpDate || 0;
     }
   }
 }

@@ -323,6 +323,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Qty</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
+                                                style="text-decoration: underline;"
                                                 (input)="onQtyEdit($event, contact)">{{contact.Qty}}
                                                 </mat-cell>
                                             </ng-container>
@@ -339,6 +340,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Rate</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
+                                                style="text-decoration: underline;"
                                                 (input)="onRateEdit($event, contact)"> {{contact.Rate | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
