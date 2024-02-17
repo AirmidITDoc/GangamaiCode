@@ -134,8 +134,6 @@ export class GoodReceiptnoteService {
   }
   createGRNEmailFrom(){
     return this._formBuilder.group({
-      FromMailId: [''],
-      Password: [''],
       ToMailId: [''],
       Subject: [''],
       Body: [''],

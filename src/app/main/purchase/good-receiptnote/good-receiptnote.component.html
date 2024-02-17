@@ -296,7 +296,7 @@
                                                         <mat-icon title="verify Menu" *ngIf="row.IsVerified==0">
                                                             verified_user</mat-icon>
                                                     </button>
-                                                    <button mat-icon-button (click)="GRNEmail()">
+                                                    <button mat-icon-button (click)="GRNEmail(row)">
                                                         <mat-icon *ngIf="row.IsVerified==0" [disabled]="row.disabled"
                                                             class="disabled-icon" title="Email Menu">mail</mat-icon>
                                                         <mat-icon *ngIf="row.IsVerified==1"

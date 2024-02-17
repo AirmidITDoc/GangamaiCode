@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { GoodReceiptnoteService } from '../good-receiptnote.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -14,6 +14,10 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations,
 })
 export class GrnemailComponent implements OnInit {
+  registerObj:any;
+  vToMailId:any;
+  vSubject:any;
+  vBody:any;
 
   constructor(
     public _GRNList: GoodReceiptnoteService,
@@ -21,10 +25,19 @@ export class GrnemailComponent implements OnInit {
     public datePipe: DatePipe,
     public toastr: ToastrService,
     public dialogRef: MatDialogRef<GrnemailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
+    if(this.data.Obj){
+      this.registerObj = this.data.Obj ;
+      //console.log(this.registerObj);
+      this.vToMailId = this.registerObj.Email;
+      this.vSubject = "we rise purchase order ";
+      this.vSubject =this.registerObj.SupplierName;
+      this.vBody = " we rise purchase order "
+      }
   }
 
   OnSend(){

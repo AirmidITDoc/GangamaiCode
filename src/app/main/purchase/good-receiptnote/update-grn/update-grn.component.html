@@ -127,14 +127,14 @@
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>Invoice No</mat-label>
-                                            <input matInput placeholder="Placeholder"
+                                            <input matInput placeholder="InvoiceNo"
                                                 [(ngModel)]="registerObj.InvoiceNo" formControlName="InvoiceNo"
                                                 #InvoiceNo1 (keydown)="onEnterInvoiceNo($event)">
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>Gate Entry No</mat-label>
-                                            <input matInput placeholder="Placeholder"
+                                            <input matInput placeholder="GateEntryNo"
                                                 [(ngModel)]="registerObj.GrnNumber" formControlName="GateEntryNo"
                                                 #GateEntryNo1 (keydown)="onEnterGateEntryNo($event)">
                                         </mat-form-field>&nbsp;
@@ -212,7 +212,7 @@
                                     <!-- [max]="maxDate"  -->
                                     <mat-form-field appearance="outline" fxFlex="9%">
                                         <mat-label>Exp date</mat-label>
-                                        <input name="ExpDate" matInput [min]="minDate" [matDatepicker]="picker7"
+                                        <input name="ExpDate" matInput [min]="minDate"  placeholder="MM/YYYY" [matDatepicker]="picker7"
                                             [formControl]="date" (keydown)="onEnterExpDate($event)" #expdate required>
                                         <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
                                         <mat-datepicker #picker7></mat-datepicker>
@@ -294,7 +294,7 @@
                                         <mat-label>CGST </mat-label>
                                         <input matInput [(ngModel)]="CGST" name="CGST" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                            (keyup)="calculateGSTAmount()" formControlName="CGST" id="CGST"
+                                            (keyup)=" calculateDiscperAmount()" formControlName="CGST" id="CGST"
                                             (keydown)="onEnterCGST($event)" #cgst required readonly>
                                     </mat-form-field>&nbsp;
 
@@ -308,7 +308,7 @@
                                         <mat-label>SGST </mat-label>
                                         <input matInput [(ngModel)]="SGST" name="SGST" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                            (keyup)="calculateGSTAmount()" formControlName="SGST" id="SGST"
+                                            (keyup)=" calculateDiscperAmount()" formControlName="SGST" id="SGST"
                                             (keydown)="onEnterSGST($event)" #sgst required readonly>
                                     </mat-form-field>&nbsp;
 
@@ -322,7 +322,7 @@
                                         <mat-label>IGST</mat-label>
                                         <input matInput [(ngModel)]="IGST" name="IGST" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                            (keyup)="calculateGSTAmount()" formControlName="IGST" id="IGST"
+                                            (keyup)=" calculateDiscperAmount()" formControlName="IGST" id="IGST"
                                             (keydown)="onEnterIGST($event)" #igst readonly>
                                     </mat-form-field>&nbsp;
 
@@ -446,29 +446,51 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="BatchNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BatchNo
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.BatchNo">
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <!-- <ng-container matColumnDef="BatchNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 BatchNo</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
                                             style="text-decoration: underline;"
-                                                (input)="onBatchNoEdit($event, contact)" > {{contact.BatchNo}}
+                                                (input)="onBatchNoEdit($event, contact)" [(ngModel)]="contact.BatchNo" > 
+                                                {{contact.BatchNo}}
+                                            </mat-cell>
+                                        </ng-container> -->
+                                        <ng-container matColumnDef="ExpDate">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ExpDate
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.BatchExpDate">  
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="ExpDate">
+                                        <!-- <ng-container matColumnDef="ExpDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 ExpDate</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
                                             style="text-decoration: underline;"
                                                 (input)="onExpDateEdit($event, contact)">  {{contact.BatchExpDate | date: 'MM/dd/yyyy'}}
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
+
+                                      
 
                                         <ng-container matColumnDef="Qty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Qty</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
                                             style="text-decoration: underline;"
-                                                (input)="onQtyEdit($event, contact)"> {{contact.ReceiveQty}}
+                                                (input)="OnCellEditCalu($event, contact)"> {{contact.ReceiveQty}}
                                             </mat-cell>
                                         </ng-container>
                                        
@@ -492,7 +514,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 MRP</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm >
-                                                {{contact.MRP | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.MRP | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -501,7 +523,7 @@
                                                 Rate</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm   contenteditable="true"
                                             style="text-decoration: underline;"
-                                           (input)="onRateEdit($event, contact)"> {{contact.Rate | currency:'INR':'symbol-narrow':'0.2'}}
+                                           (input)="OnCellEditCalu($event, contact)"> {{contact.Rate | number:'1.2-2' }}
                                             </mat-cell>
                                            
                                         </ng-container>
@@ -510,7 +532,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 TotalAmt </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.TotalAmount | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.TotalAmount | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -519,7 +541,7 @@
                                                 Disc%</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
                                             style="text-decoration: underline;"
-                                                (input)="onDiscEdit($event, contact)"> {{contact.DiscPercentage}}
+                                                (input)="OnCellEditCalu($event, contact)"> {{contact.DiscPercentage}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -527,7 +549,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 DisAmt</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.DiscAmount | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.DiscAmount | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -543,7 +565,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 DisAmt2</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.DiscAmt2 | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.DiscAmt2 | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -559,7 +581,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 GSTAmount</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.VatAmount | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.VatAmount | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -568,7 +590,7 @@
                                                 CGST</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
                                             style="text-decoration: underline;"
-                                                (input)="onGSTEdit($event, contact)"> {{contact.CGSTPer}}
+                                                (input)="OnCellEditCalu($event, contact)"> {{contact.CGSTPer}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -576,7 +598,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 CGSTAmt</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.CGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.CGSTAmt | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -585,7 +607,7 @@
                                                 SGST</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
                                             style="text-decoration: underline;"
-                                                (input)="onSGSTEdit($event, contact)">  {{contact.SGSTPer}}
+                                                (input)="OnCellEditCalu($event, contact)">  {{contact.SGSTPer}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -593,7 +615,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 SGSTAmt</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.SGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.SGSTAmt | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -610,7 +632,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 IGSTAmt</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.IGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.IGSTAmt | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -618,7 +640,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 NetAmt</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.NetAmount | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.NetAmount | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -658,7 +680,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 PO Qty</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.ReceiveQty}}
+                                                {{contact.POQty}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -666,7 +688,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 landedRate</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.LandedRate | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.LandedRate | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -674,7 +696,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 purUnitRate</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.PurUnitRate | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.PurUnitRate | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -682,7 +704,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 purUnitRateWF</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.PurUnitRateWF | currency:'INR':'symbol-narrow':'0.2'}}
+                                                {{contact.PurUnitRateWF | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
 
