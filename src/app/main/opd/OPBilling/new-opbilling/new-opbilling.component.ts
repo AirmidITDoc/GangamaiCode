@@ -309,9 +309,9 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   getOptionText1(option) {
-    // if (!option)
-    //   return '';
-    // return option.ServiceName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
+    if (!option)
+      return '';
+    return option.FirstName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
 
   }
 
@@ -722,7 +722,7 @@ debugger
                   Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
                     if (result.isConfirmed) {
                       let m = response;
-                      // this.viewgetBillReportPdf(response);
+                      this.viewgetBillReportPdf(response);
                       // this._matDialog.closeAll();
                     }
                   });
@@ -1277,11 +1277,13 @@ debugger
 
   // City: any;
   getSearchList() {
+    debugger
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
     this._oPSearhlistService.getPatientVisitedListSearch(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
+      console.log(data)
       if (this.PatientListfilteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {

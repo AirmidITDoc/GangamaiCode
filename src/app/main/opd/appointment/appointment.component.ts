@@ -1086,12 +1086,14 @@ debugger
       To_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
       IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
     };
+    console.log(D_data)
     setTimeout(() => {
       this.isLoadingStr = 'loading';
       this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
         (Visit) => {
           this.dataSource.data = Visit as VisitMaster[];
           this.dataSource.sort = this.sort;
+          console.log(Visit)
           this.dataSource.paginator = this.paginator;
           this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
         },
@@ -1453,12 +1455,12 @@ debugger
      
     if (this.searchFormGroup.get('regRadio').value == "registration") {
 
-      if (this.vPhoneAppId == 0 && this.Regflag ==false || this.RegNo !== "" && this.vPhoneAppId != 0 ) {
+      if (this.vPhoneAppId == 0 && this.Regflag ==false) {
         this.OnsaveNewRegister();
       }
-      // if (this.RegNo !== "" && this.PhoneAppId != 0) {
-      //   this.OnsaveNewRegister();
-      // }
+      if (this.RegNo !== "" && this.vPhoneAppId != 0) {
+        this.OnsaveNewRegister();
+      }
       else if (this.RegNo == "" && this.vPhoneAppId != 0) {
         this.onSaveRegistered();
       }
@@ -3104,6 +3106,7 @@ export class VisitMaster {
   AddedBy: number;
   MPbillNo: number;
   RegNo: any;
+  PhoneAppId:any;
   /**
    * Constructor
    *
@@ -3135,6 +3138,7 @@ export class VisitMaster {
       this.AddedBy = VisitMaster.AddedBy || "";
       this.MPbillNo = VisitMaster.MPbillNo || "";
       this.RegNo = VisitMaster.RegNo || "";
+      this.PhoneAppId =VisitMaster.PhoneAppId || 0
     }
   }
 }
