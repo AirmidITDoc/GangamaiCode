@@ -50,6 +50,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import {MatSliderModule} from '@angular/material/slider';
 import { OpPaymentNewComponent } from './op-payment-new/op-payment-new.component';
 import { SharedModule } from 'app/main/shared/shared.module';
+import { NewOPRefundofbillComponent } from './new-oprefundofbill/new-oprefundofbill.component';
 
 
 
@@ -75,6 +76,7 @@ const routes: Routes = [
          OPRefundofBillComponent,
         SchduleTreeComponent,
         OpPaymentNewComponent,
+        NewOPRefundofbillComponent,
         // OutstandingPaymentComponent
     ],
     imports: [

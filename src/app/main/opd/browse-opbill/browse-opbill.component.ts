@@ -104,15 +104,24 @@ export class BrowseOPBillComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-  NewBillpayment(SelectedRecordValue) {
+  NewBillpayment(contact) {
+
+    let PatientHeaderObj = {};
+
+  PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
+  PatientHeaderObj['PatientName'] = contact.PatientName;
+PatientHeaderObj['OPD_IPD_Id'] = contact.vOPIPId;
+PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+PatientHeaderObj['BillId'] = contact.BillNo;
+
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
         maxWidth: "100vw",
         height: '600px',
         width: '100%',
         data: {
-          vPatientHeaderObj: SelectedRecordValue,
-          FromName: "SETTLEMENT"
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "OP_SETTLEMENT"
         }
       });
 
@@ -122,13 +131,13 @@ export class BrowseOPBillComponent implements OnInit {
 
       
             let updateBillobj = {};
-            updateBillobj['BillNo'] = SelectedRecordValue.BillNo;
+            updateBillobj['BillNo'] = contact.BillNo;
             updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
 
             const updateBill = new UpdateBill(updateBillobj);
             let CreditPaymentobj = {};
             CreditPaymentobj['paymentId'] = 0;
-            CreditPaymentobj['BillNo'] = SelectedRecordValue.BillNo;
+            CreditPaymentobj['BillNo'] = contact.BillNo;
             CreditPaymentobj['ReceiptNo'] = '';
             CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
             CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
@@ -195,102 +204,106 @@ export class BrowseOPBillComponent implements OnInit {
          
     }
 
-Billpayment(contact){
-  debugger
-  let PatientHeaderObj = {};
+// Billpayment(contact){
+//   debugger
+//   let PatientHeaderObj = {};
 
-  PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
-  PatientHeaderObj['PatientName'] = contact.PatientName;
-PatientHeaderObj['OPD_IPD_Id'] = contact.vOPIPId;
-PatientHeaderObj['NetPayAmount'] = contact.NetAmount;
-PatientHeaderObj['BillId'] = contact.BillNo;
+//   PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
+//   PatientHeaderObj['PatientName'] = contact.PatientName;
+// PatientHeaderObj['OPD_IPD_Id'] = contact.vOPIPId;
+// PatientHeaderObj['NetPayAmount'] = contact.NetAmount;
+// PatientHeaderObj['BillId'] = contact.BillNo;
 
-  const dialogRef = this._matDialog.open(OpPaymentNewComponent,
-    {
-      maxWidth: "90vw",
-      height: '640px',
-      width: '100%',
-      data: {
-        vPatientHeaderObj: PatientHeaderObj,
-        FromName: "OP-Bill"
-      }
-    });
+//   const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+//     {
+//       maxWidth: "90vw",
+//       height: '640px',
+//       width: '100%',
+//       // data: {
+//       //   vPatientHeaderObj: PatientHeaderObj,
+//       //   FromName: "OP-Bill"
+//       // }
+//       data: {
+//         vPatientHeaderObj: PatientHeaderObj,
+//         FromName: "OP_SETTLEMENT"
+//       }
+//     });
 
-  dialogRef.afterClosed().subscribe(result => {
+//   dialogRef.afterClosed().subscribe(result => {
 
-    let updateBillobj = {};
+//     let updateBillobj = {};
 
 
-    updateBillobj['BillNo'] = contact.BillNo;
-    updateBillobj['BillBalAmount'] = result.submitDataPay.BalAmt || 0;
+//     updateBillobj['BillNo'] = contact.BillNo;
+//     updateBillobj['BillBalAmount'] = result.submitDataPay.BalAmt || 0;
 
-    const updateBill = new UpdateBill(updateBillobj);
-
-    
-    let CreditPaymentobj = {};
-    CreditPaymentobj['paymentId'] = 0;
-    CreditPaymentobj['BillNo'] = contact.BillNo;
-    CreditPaymentobj['ReceiptNo'] = '';
-    CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
-    CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
-    CreditPaymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
-    CreditPaymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
-    CreditPaymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
-    CreditPaymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName || '';
-    CreditPaymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate || '01/01/1900';
-    CreditPaymentobj['CardPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CardPayAmount) || 0;
-    CreditPaymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo || '';
-    CreditPaymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName || '';
-    CreditPaymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate || '01/01/1900';
-    CreditPaymentobj['AdvanceUsedAmount'] = 0;
-    CreditPaymentobj['AdvanceId'] = 0;
-    CreditPaymentobj['RefundId'] = 0;
-    CreditPaymentobj['TransactionType'] = 0;
-    CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
-    CreditPaymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-      CreditPaymentobj['IsCancelled'] = 0;
-    CreditPaymentobj['IsCancelledBy'] = 0;
-    CreditPaymentobj['IsCancelledDate'] = this.currentDate;
-    // CreditPaymentobj['CashCounterId'] = 0;
-    // CreditPaymentobj['IsSelfORCompany'] = 0;
-    // CreditPaymentobj['CompanyId'] = 0;
-    CreditPaymentobj['opD_IPD_Type'] = 0;
-    CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
-    CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
-    CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
-    CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
-    CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
-    CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
-    CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
-    // CreditPaymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
-    // CreditPaymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+//     const updateBill = new UpdateBill(updateBillobj);
 
     
-    const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
+//     let CreditPaymentobj = {};
+//     CreditPaymentobj['paymentId'] = 0;
+//     CreditPaymentobj['BillNo'] = contact.BillNo;
+//     CreditPaymentobj['ReceiptNo'] = '';
+//     CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
+//     CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
+//     CreditPaymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
+//     CreditPaymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
+//     CreditPaymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
+//     CreditPaymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName || '';
+//     CreditPaymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate || '01/01/1900';
+//     CreditPaymentobj['CardPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CardPayAmount) || 0;
+//     CreditPaymentobj['CardNo'] = result.submitDataPay.ipPaymentInsert.CardNo || '';
+//     CreditPaymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName || '';
+//     CreditPaymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate || '01/01/1900';
+//     CreditPaymentobj['AdvanceUsedAmount'] = 0;
+//     CreditPaymentobj['AdvanceId'] = 0;
+//     CreditPaymentobj['RefundId'] = 0;
+//     CreditPaymentobj['TransactionType'] = 0;
+//     CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
+//     CreditPaymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+//       CreditPaymentobj['IsCancelled'] = 0;
+//     CreditPaymentobj['IsCancelledBy'] = 0;
+//     CreditPaymentobj['IsCancelledDate'] = this.currentDate;
+//     // CreditPaymentobj['CashCounterId'] = 0;
+//     // CreditPaymentobj['IsSelfORCompany'] = 0;
+//     // CreditPaymentobj['CompanyId'] = 0;
+//     CreditPaymentobj['opD_IPD_Type'] = 0;
+//     CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
+//     CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
+//     CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
+//     CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
+//     CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
+//     CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
+//     CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
+//     // CreditPaymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
+//     // CreditPaymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
 
-    let Data = {
-      "updateBill": updateBill,
-      "paymentCreditUpdate": ipPaymentInsert
-    };
+    
+//     const ipPaymentInsert = new IpPaymentInsert(CreditPaymentobj);
+
+//     let Data = {
+//       "updateBill": updateBill,
+//       "paymentCreditUpdate": ipPaymentInsert
+//     };
 
 
-    this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
-      if (response) {
-        Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            // let m = response;
-            // this.getPrint(m);
-            this._matDialog.closeAll();
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
-      }
+//     this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
+//       if (response) {
+//         Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
+//           if (result.isConfirmed) {
+//             // let m = response;
+//             // this.getPrint(m);
+//             this._matDialog.closeAll();
+//           }
+//         });
+//       } else {
+//         Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+//       }
 
-    });
-  });
+//     });
+//   });
 
-}
+// }
 onShow(event: MouseEvent) {
   this.click = !this.click;
   setTimeout(() => {
