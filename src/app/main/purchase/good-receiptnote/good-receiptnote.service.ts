@@ -200,6 +200,10 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Pharmacy/VerifyGRN", Param)
   } 
 
+ public getGRNreportview(GRNID){
+    return this._httpClient.get("Pharmacy/view-GRNReport?GRNID=" + GRNID);
+  } 
+
 }
 
 

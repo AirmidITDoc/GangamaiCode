@@ -181,10 +181,9 @@ export class PurchaseOrderService {
   // }
  
 
-
- 
-
-
+ public getPurchaseorderreportview(PurchaseID){
+  return this._httpClient.get("Pharmacy/view-Purchaseorder?PurchaseID=" + PurchaseID);
+ }
   
   populateForm(employee) {
     // this.PurchaseStoreFrom.patchValue(employee);

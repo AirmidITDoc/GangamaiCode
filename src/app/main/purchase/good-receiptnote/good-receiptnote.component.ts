@@ -19,6 +19,7 @@ import { UpdateGRNComponent } from './update-grn/update-grn.component';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { GrnemailComponent } from './grnemail/grnemail.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-good-receiptnote',
@@ -61,7 +62,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   IGSTFinalAmount: any;
   TotalFinalAmount: any;
   chkNewGRN: any;
-
+  SpinLoading:boolean=false;
   dsGRNList = new MatTableDataSource<GRNList>();
 
   dsGrnItemList = new MatTableDataSource<GrnItemList>();
@@ -613,6 +614,37 @@ export class GoodReceiptnoteComponent implements OnInit {
   TotalOtherCharge:any=0;
   finalamt:any=0;
   
+   
+  viewgetCurrentstockReportPdf(row) {
+  
+    setTimeout(() => {
+      this.SpinLoading =true;
+   this._GRNService.getGRNreportview(
+    row.GRNID
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "GRN REPORT Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+
   getPrint(el) {
     var m_data = {
       "GRNID": el.GRNID
