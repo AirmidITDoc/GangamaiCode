@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AdvanceDetailObj } from '../../appointment/appointment.component';
+import { AdvanceDetailObj, RegInsert } from '../../appointment/appointment.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -14,6 +14,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { OpPaymentNewComponent } from '../op-payment-new/op-payment-new.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 type NewType = Observable<any[]>;
 @Component({
   selector: 'app-new-oprefundofbill',
@@ -23,6 +24,7 @@ type NewType = Observable<any[]>;
 export class NewOPRefundofbillComponent implements OnInit {
   screenFromString = 'app-op-refund-bill';
   RefundOfBillFormGroup: FormGroup;
+  searchFormGroup: FormGroup;
   myRefundBillForm: FormGroup;
   myserviceForm: FormGroup;
   isLoading: String = '';
@@ -74,6 +76,26 @@ export class NewOPRefundofbillComponent implements OnInit {
   RefAmt1:any=0;
 
 
+  registerObj = new RegInsert({});
+  PatientName: any = "";
+  RegId: any;
+  Regflag: boolean = false;
+  RegDate: any;
+  City: any;
+  CompanyName: any;
+  Tarrifname: any;
+  Doctorname: any;
+  Paymentdata: any;
+  vOPIPId: any = 0;
+  vOPDNo: any = 0;
+  vTariffId: any = 0;
+  vClassId: any = 0;
+
+  PatientListfilteredOptions: any;
+  isRegIdSelected: boolean = false;
+  noOptionFound: boolean = false;
+
+
   displayedColumns1 = [
     // 'ChargesId',
     // 'ChargesDate',
@@ -117,13 +139,13 @@ export class NewOPRefundofbillComponent implements OnInit {
     // public _IpSearchListService: IpSearchListService,
     private _ActRoute: Router,
     public _matDialog: MatDialog,
-    private advanceDataStored: AdvanceDataStored,
+    // private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
     private formBuilder: FormBuilder,
 
     private changeDetectorRefs: ChangeDetectorRef,
-    private dialogRef: MatDialogRef<NewOPRefundofbillComponent>,
+    // private dialogRef: MatDialogRef<NewOPRefundofbillComponent>,
     private _formBuilder: FormBuilder
     ) {
      
@@ -133,19 +155,21 @@ export class NewOPRefundofbillComponent implements OnInit {
 
   ngOnInit(): void {
     this.RefundOfBillFormGroup = this.refundForm();
-
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-
-    }
+    this.searchFormGroup = this.createSearchForm();
+   
 
        
     this.refundBillForm();
     this.getRefundofBillIPDList();
-    this.getServiceListCombobox();
+    // this.getServiceListCombobox();
      
   }
 
+  createSearchForm() {
+    return this.formBuilder.group({
+    RegId: ['']
+    });
+  }
 
   refundForm(): FormGroup {
     return this._formBuilder.group({
@@ -168,13 +192,56 @@ export class NewOPRefundofbillComponent implements OnInit {
     });
   }
 
+  // Patient Search;
+  getSearchList() {
+    debugger
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+    }
+    this._OpSearchListService.getPatientVisitedListSearch(m_data).subscribe(data => {
+      this.PatientListfilteredOptions = data;
+      console.log(data)
+      if (this.PatientListfilteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+
+  }
+
+  getSelectedObj1(obj) {
+    this.dataSource.data = [];
+    console.log(obj)
+    this.registerObj = obj;
+    // this.PatientName = obj.FirstName + " " + obj.PatientName;
+    this.PatientName = obj.FirstName + " " + obj.LastName;
+    this.RegId = obj.RegId;
+    this.City = obj.City;
+    this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    this.CompanyName = obj.CompanyName;
+    this.Tarrifname = obj.TariffName;
+    this.Doctorname = obj.DoctorName;
+    this.vOPIPId = obj.VisitId;
+    this.vOPDNo = obj.OPDNo;
+    this.vTariffId = obj.TariffId;
+    this.vClassId = obj.classId
+  }
+
+  getOptionText1(option) {
+    if (!option)
+      return '';
+    return option.FirstName + ' ' + option.MiddleName  + ' ' + option.LastName ;
+
+  }
+
 
   //Give BillNumber For List
   getRefundofBillIPDList() {
     debugger;
     
     var m_data = {
-      "RegNo": this.selectedAdvanceObj.OPD_IPD_ID
+      "RegNo": 5,// this.vOPIPId || this.RegId
             
     }
     
@@ -326,13 +393,13 @@ export class NewOPRefundofbillComponent implements OnInit {
     InsertRefundObj['refundNo'] = '';
     InsertRefundObj['RefundDate'] =  this.dateTimeObj.date;
     InsertRefundObj['RefundTime'] =  this.dateTimeObj.date;
-    InsertRefundObj['BillId'] = parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
+    InsertRefundObj['BillId'] = this.BillNo,//parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
     InsertRefundObj['AdvanceId'] = 0;
     InsertRefundObj['OPD_IPD_Type'] = 0;
-    InsertRefundObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
+    InsertRefundObj['OPD_IPD_ID'] = this.vOPIPId,
     InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
     InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
-    InsertRefundObj['TransactionId'] = 2;
+    InsertRefundObj['TransactionId'] = 1;
     InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.user.id,
     InsertRefundObj['IsCancelled'] = 0;
     InsertRefundObj['IsCancelledBy'] = 0;
@@ -369,23 +436,23 @@ export class NewOPRefundofbillComponent implements OnInit {
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+    PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
     PatientHeaderObj['NetPayAmount'] =   this.TotalRefundAmount;
-    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+    PatientHeaderObj['PatientName'] = this.PatientName;
    
     const insertRefund = new InsertRefund(InsertRefundObj);
    
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
-        maxWidth: "85vw",
-        height: '540px',
+        maxWidth: "100vw",
+        height: '600px',
         width: '100%',
         data: {
-          
-          advanceObj: PatientHeaderObj, //this.advanceAmount
-          FromName: "Advance-Refund",
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "Advance-Refund"
         }
       });
+      
     dialogRef.afterClosed().subscribe(result => {
       // console.log('============================== Return Adv ===========');
       let submitData = {
@@ -402,9 +469,10 @@ export class NewOPRefundofbillComponent implements OnInit {
             if (result.isConfirmed) {
               
             let m=response
-            // this.getPrint(m);
+            this.viewgetOPRefundofbillPdf(m);
 
               this._matDialog.closeAll();
+
             }
           });
         } else {
@@ -418,7 +486,46 @@ export class NewOPRefundofbillComponent implements OnInit {
     else{
 Swal.fire("Refund Amount is More than RefundBalance")
     }
+
+    this.dataSource.data=[];
+    this.dataSource1.data=[];
+    this.dataSource2.data=[];
+    this.RefundOfBillFormGroup.reset();
   }
+
+
+  
+SpinLoading:boolean=false;
+viewgetOPRefundofbillPdf(row) {
+  debugger
+  setTimeout(() => {
+    this.SpinLoading =true;
+  //  this.AdList=true;
+  this._OpSearchListService.getOprefundofbillview(
+    row.RefundId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Op Refund Of Bill Receipt Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+  });
+ 
+  },100);
+}
 
 onClose() {
   

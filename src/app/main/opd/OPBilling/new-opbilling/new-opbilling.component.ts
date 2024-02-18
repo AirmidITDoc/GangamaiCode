@@ -212,10 +212,7 @@ export class NewOPBillingComponent implements OnInit {
 
   createSearchForm() {
     return this.formBuilder.group({
-      // regRadio: ['registration'],
-      // regRadio1: ['registration1'],
-
-      RegId: ['']
+    RegId: ['']
     });
   }
 
@@ -311,7 +308,7 @@ export class NewOPBillingComponent implements OnInit {
   getOptionText1(option) {
     if (!option)
       return '';
-    return option.FirstName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
+      return option.FirstName + ' ' + option.MiddleName  + ' ' + option.LastName ;
 
   }
 
@@ -319,7 +316,7 @@ export class NewOPBillingComponent implements OnInit {
   getOptionText(option) {
     if (!option)
       return '';
-    return option.ServiceName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
+    return option.ServiceName; 
 
   }
 
@@ -1017,138 +1014,9 @@ debugger
     })
   }
 
-  getPrint(el) {
-    ;
-    var D_data = {
-      "BillNo": el,
-    }
-
-    let printContents;
-    this.subscriptionArr.push(
-      this._oPSearhlistService.getBillPrint(D_data).subscribe(res => {
-
-        this.reportPrintObjList = res as BrowseOPDBill[];
-        console.log(this.reportPrintObjList);
-        this.reportPrintObj = res[0] as BrowseOPDBill;
-
-        this.getTemplate();
-
-      })
-    );
-  }
-  getTemplate() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=2';
-    this._oPSearhlistService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'PhoneNo', 'RegNo', 'BillNo', 'PBillNo', 'AgeYear', 'AgeDay', 'AgeMonth', 'PBillNo', 'PatientName', 'BillDate', 'VisitDate', 'ConsultantDocName', 'DepartmentName', 'ServiceName', 'ChargesDoctorName', 'Price', 'Qty', 'ChargesTotalAmount', 'TotalBillAmount', 'NetPayableAmt', 'NetAmount', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt', 'AddedByName']; // resData[0].TempKeys;
-      // ;
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-
-        let docname;
-        if (objreportPrint.ChargesDoctorName)
-          docname = objreportPrint.ChargesDoctorName;
-        else
-          docname = '';
-        var strabc = `<hr style="border-color:white" >
-        <div style="display:flex;margin:8px 0">
-        <div style="display:flex;width:60px;margin-left:20px;">
-            <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-        </div>
-        <div style="display:flex;width:300px;margin-left:10px;text-align:left;">
-            <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-        </div>
-        <div style="display:flex;width:300px;margin-left:10px;text-align:left;">
-        <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-        </div>
-        <div style="display:flex;width:80px;margin-left:10px;text-align:left;">
-            <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-        </div>
-        <div style="display:flex;width:80px;margin-left:10px;text-align:left;">
-            <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-        </div>
-        <div style="display:flex;width:110px;margin-left:30px;text-align:center;">
-            <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
-        </div>
-        </div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-      let concessinamt;
-
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      console.log(this.printTemplate);
-
-      setTimeout(() => {
-        this.print();
-      }, 1000);
-    });
-  }
-
-  convertToWord(e) {
-
-    // return converter.toWords(e);
-  }
-
-
-
-  transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-    return value;
-  }
-
-  transformBilld(value: string) {
-    // var datePipe = new DatePipe("en-US");
-    // value = datePipe.transform(this.reportPrintObj.BillDate, 'dd/MM/yyyy');
-    // return value;
-  }
-  // PRINT 
-  print() {
-
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-    if (this.reportPrintObjList.length > 0) {
-      // if(this.reportPrintObjList[0].BalanceAmt === 0) {
-      //   popupWin.document.getElementById('trAmountBalance').style.display = 'none';
-      // }
-      if (this.reportPrintObjList[0].ConcessionAmt === 0) {
-        popupWin.document.getElementById('trAmountconcession').style.display = 'none';
-      }
-      if (this.reportPrintObjList[0].BalanceAmt === 0) {
-        popupWin.document.getElementById('idBalAmt').style.display = 'none';
-      }
-    }
-    popupWin.document.close();
-  }
-
+ 
   onClose() {
-    // this.dialogRef.close();
-    this.registeredForm.reset();
+        this.registeredForm.reset();
     this.dataSource.data = [];
   }
 
@@ -1157,7 +1025,6 @@ debugger
     const dialogRef1 = this._matDialog.open(OpPaymentNewComponent,
       {
         maxWidth: "85vw",
-        // height: '540px',
         width: '100%',
         data: {
           advanceObj: { advanceObj: this.BillingForm.get('FinalAmt').value, FromName: "OP-Bill" },
@@ -1275,7 +1142,7 @@ debugger
   }
 
 
-  // City: any;
+  // Patient Search;
   getSearchList() {
     debugger
     var m_data = {

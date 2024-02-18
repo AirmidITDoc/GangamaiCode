@@ -16,6 +16,7 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
 import { OPRefundofBillComponent } from '../op-refundof-bill/op-refundof-bill.component';
+import { NewOPRefundofbillComponent } from '../new-oprefundofbill/new-oprefundofbill.component';
 
 
 
@@ -253,7 +254,7 @@ get f() { return this._opSearchListService.myFilterform.controls; }
       this.advanceDataStored.storage = new SearchInforObj(xx);
 
       // this._ActRoute.navigate(['opd/new-OpdBilling']);
-      const dialogRef = this._matDialog.open(OPRefundofBillComponent,
+      const dialogRef = this._matDialog.open(NewOPRefundofbillComponent,
         {
           maxWidth: "85%",
           height: '900px',

@@ -191,6 +191,21 @@ export class OpPaymentNewComponent implements OnInit {
       this.paidAmt = this.netPayAmt;
       this.getBalanceAmt();
     }
+    else if (this.PatientHeaderObj.FromName == "Advance-Refund") {
+      this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
+      this.amount1 = this.cashAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
+      this.paidAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
+      this.billNo = parseInt(this.advanceData.SalesId);
+      this.PatientName = this.advanceData.PatientName;
+      this.selectedPaymnet1 = 'cash';
+      this.BillDate = this.advanceData.Date;
+      this.Paymentobj['TransactionType'] = 2;
+      this.IsCreditflag = true;
+      this.paymentRowObj["cash"] = true;
+      this.onPaymentChange(1, 'cash');
+      this.paidAmt = this.netPayAmt;
+      this.getBalanceAmt();
+    }
     // else {
     //   this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
     //   this.cashAmt = parseInt(this.advanceData.NetPayAmount);
