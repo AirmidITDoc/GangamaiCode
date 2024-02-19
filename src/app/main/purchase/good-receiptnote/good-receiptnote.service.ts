@@ -73,7 +73,7 @@ export class GoodReceiptnoteService {
       BatchNo:[''],
       ConversionFactor:[''],
       Qty:[''],
-      ExpDate:[''],
+      ExpDatess:[''],
       MRP:[''],
       FreeQty:[''],
       Rate:[''],

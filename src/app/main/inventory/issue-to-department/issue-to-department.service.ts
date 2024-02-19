@@ -42,8 +42,9 @@ export class IssueToDepartmentService {
       TotalAmount:[''],
       Remark:[''],
       GSTAmount:[''],
-      FinalTotalAmount:['']
-      
+      FinalTotalAmount:[''],
+      Exp:[''],
+      ExpDatess:['']
     });
 
   }
@@ -64,8 +65,8 @@ export class IssueToDepartmentService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  public getItemlist(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
+  public getItemlist(Param){//RetrieveItemMasterForCombo
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
   }
   public getBatchList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);

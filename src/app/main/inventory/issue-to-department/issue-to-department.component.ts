@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 
 @Component({
   selector: 'app-issue-to-department',
@@ -186,7 +187,7 @@ export class IssueToDepartmentComponent implements OnInit {
     console.log(m_data);
       this._IssueToDep.getItemlist(m_data).subscribe(data => {
         this.filteredOptionsItem = data;
-        console.log(this.filteredOptionsItem.data);
+        console.log(this.filteredOptionsItem);
         this.filteredOptionsItem = data;
         if (this.filteredOptionsItem.length == 0) {
           this.noOptionFound = true;
@@ -199,11 +200,93 @@ export class IssueToDepartmentComponent implements OnInit {
   getOptionItemText(option) {
     this.ItemId = option.ItemID;
     if (!option) return '';
-    return option.ItemID + ' ' + option.ItemName;
+    return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
+ 
   getSelectedObjItem(obj) {
     // console.log(obj);
+      // this.registerObj = obj;
+      this.ItemName = obj.ItemName;
+      this.ItemId = obj.ItemId;
+      this.BalanceQty = obj.BalanceQty;
+      if (this.BalanceQty > 0) {
+        this.getBatch();
+      } 
+  }
 
+  vBatchNo: any;
+  vBatchExpDate: any;
+  vUnitMRP: any;
+  vQty: any = 0;
+  IssQty: any;
+  vBal: any;
+  StoreName: any;
+  GSTPer: any;
+  vMRP: any;
+  DiscPer: any = 0;
+  vDiscAmt: any = 0;
+  vNetAmt: any = 0;
+  vTotalMRP: any = 0;
+  vBalanceQty:any;
+  currentDate = new Date();
+
+  vVatPer: any;
+  vCgstPer: any;
+  vSgstPer: any;
+  vIgstPer: any;
+  vTotalAmount:any;
+  vVatAmount: any;
+  vStockId: any;
+  vStoreId: any;
+  vLandedRate: any;
+  vPurchaseRate: any;
+  vItemObj: NewIssueList3;
+
+  getBatch() {
+    this.Quantity.nativeElement.focus();
+    const dialogRef = this._matDialog.open(SalePopupComponent,
+      {
+        maxWidth: "800px",
+        minWidth: '800px',
+        width: '800px',
+        height: '380px',
+        disableClose: true,
+        data: {
+          "ItemId": this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId,
+          "StoreId": this._IssueToDep.NewIssueGroup.get('FromStoreId').value.storeid
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+       console.log(result);
+      
+      this.vBatchNo = result.BatchNo;
+      this.vBatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
+      this.vMRP = result.UnitMRP;
+      this.vQty = '';
+      this.vBal = result.BalanceAmt;
+      this.GSTPer = result.VatPercentage;
+
+      this.vTotalMRP = this.vQty * this.vMRP;
+      this.vDiscAmt = 0;
+      this.vNetAmt = this.vTotalMRP;
+      this.vBalanceQty = result.BalanceQty;
+      this.vItemObj = result;
+
+      this.vVatPer = result.VatPercentage;
+      // console.log(this.VatPer);
+      this.vCgstPer = result.CGSTPer;
+      this.vSgstPer = result.SGSTPer;
+      this.vIgstPer = result.IGSTPer;
+
+      this.vVatAmount = result.VatPercentage;
+      this.vStockId = result.StockId
+      this.vStoreId = result.StoreId;
+      this.vLandedRate = result.LandedRate;
+      this.vPurchaseRate = result.PurchaseRate;
+      this.vUnitMRP = result.UnitMRP;
+    });
+
+    // this.Quantity.nativeElement.focus();
   }
   getToStoreList() {
     this._IssueToDep.getToStoreSearchList().subscribe(data => {
@@ -223,8 +306,9 @@ export class IssueToDepartmentComponent implements OnInit {
   }
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('Batchno') Batchno: ElementRef;
-  @ViewChild('RoundingAmt') RoundingAmt: ElementRef;
-  @ViewChild('EwayBillNo') EwayBillNo: ElementRef;
+  @ViewChild('Rate') Rate: ElementRef;
+  @ViewChild('BalQuantity') BalQuantity: ElementRef;
+  @ViewChild('Quantity') Quantity: ElementRef;
 
   public onEnterFromstore(event): void {
     if (event.which === 13) {
@@ -236,8 +320,32 @@ export class IssueToDepartmentComponent implements OnInit {
       this.Batchno.nativeElement.focus();
     }
   }
+  public onEnterBatchNo(event): void {
+    if (event.which === 13) {
+      this.BalQuantity.nativeElement.focus();
+    }
+  }
+  public onEnterBalQty(event): void {
+    if (event.which === 13) {
+      this.Quantity.nativeElement.focus();
+    }
+  }
+  public onEnterQty(event): void {
+    if (event.which === 13) {
+      this.Rate.nativeElement.focus();
+    }
+  }
   onAdd($event){
     
+  }
+  CalculateTotalAmt(){
+    if(this.vQty > this.vBalanceQty){
+      Swal.fire("Enter Qty less than Balance");
+      this._IssueToDep.NewIssueGroup.get('Qty').setValue(0);
+    }
+    if(this.vQty && this.vUnitMRP){
+      this.vTotalAmount = (parseInt(this.vQty) * parseInt(this.vUnitMRP)).toFixed(2);
+    }
   }
   OnSave(){
 
@@ -251,6 +359,37 @@ export class IssueToDepartmentComponent implements OnInit {
   //   }
   // }
 
+  // lastDay: string = '';
+  // ExpDate:any;
+  // calculateLastDay(inputDate: string) {
+  
+  //   if (inputDate && inputDate.length === 6) {
+  //     const month = +inputDate.substring(0, 2);
+  //     const year = +inputDate.substring(2, 6);
+
+  //     if (month >= 1 && month <= 12) {
+  //       const lastDay = this.getLastDayOfMonth(month, year);
+  //       this.lastDay = `${lastDay}/${this.pad(month)}/${year}`;
+  //       // this.ExpDate =new Date(this.lastDay);
+  //       console.log(this.lastDay )
+  //      this._IssueToDep.NewIssueGroup.get('ExpDatess').setValue(this.lastDay)
+  //      // this.ExpDate = this.lastDay;
+  //     } else {
+  //       this.lastDay = 'Invalid month';
+  //     }
+  //   } else {
+  //     this.lastDay = 'Invalid input';
+  //   } 
+  // }
+  
+  // getLastDayOfMonth(month: number, year: number): number {
+  //   return new Date(year, month, 0).getDate();
+  // }
+
+  // pad(n: number): string {
+  //   return n < 10 ? '0' + n : n.toString();
+  // }
+
 }
 export class NewIssueList3 {
 
@@ -262,6 +401,33 @@ export class NewIssueList3 {
   Qty: any;
   UnitRate: any;
   TotalAmount: any;
+  BatchNo: string;
+  BatchExpDate: any;
+  QtyPerDay:any;
+  UnitMRP: any;
+  Bal: number;
+  StoreId: any;
+  StoreName: any;
+  GSTPer: any;
+  GSTAmount: any;
+  TotalMRP: any;
+  DiscPer: any;
+  DiscAmt: any;
+  NetAmt: any;
+  StockId: any;
+  ReturnQty: any;
+  Total: any;
+  VatPer: any;
+  VatAmount: any;
+  LandedRate: any;
+  CgstPer: any;
+  CGSTAmt: any;
+  SgstPer: any;
+  SGSTAmt: any;
+  IgstPer: any;
+  IGSTAmt: any;
+  DiscAmount: any;
+  NetAmount: any;
 
   constructor(NewIssueList3) {
     this.ItemId = NewIssueList3.ItemId || 0;
@@ -272,6 +438,32 @@ export class NewIssueList3 {
     this.Qty = NewIssueList3.Qty || 0;
     this.UnitRate = NewIssueList3.UnitRate || 0;
     this.TotalAmount = NewIssueList3.TotalAmount || 0;
+    this.BatchExpDate = NewIssueList3.BatchExpDate || "";
+    this.UnitMRP = NewIssueList3.UnitMRP || "";
+    this.QtyPerDay=NewIssueList3.QtyPerDay || 0;
+    this.Bal = NewIssueList3.Bal || 0;
+    this.StoreId = NewIssueList3.StoreId || 0;
+    this.StoreName = NewIssueList3.StoreName || '';
+    this.GSTPer = NewIssueList3.GSTPer || "";
+    this.TotalMRP = NewIssueList3.TotalMRP || 0;
+    this.DiscAmt = NewIssueList3.DiscAmt || 0;
+    this.NetAmt = NewIssueList3.NetAmt || 0;
+    this.StockId = NewIssueList3.StockId || 0;
+    this.NetAmt = NewIssueList3.NetAmt || 0;
+    this.ReturnQty = NewIssueList3.ReturnQty || 0;
+    this.TotalAmount = NewIssueList3.TotalAmount || 0;
+    this.Total = NewIssueList3.Total || '';
+    this.VatPer = NewIssueList3.VatPer || 0;
+    this.VatAmount = NewIssueList3.VatAmount || 0;
+    this.LandedRate = NewIssueList3.LandedRate || 0;
+    this.CgstPer = NewIssueList3.CgstPer || 0;
+    this.CGSTAmt = NewIssueList3.CGSTAmt || 0;
+    this.SgstPer = NewIssueList3.SgstPer || 0;
+    this.SGSTAmt = NewIssueList3.SGSTAmt || 0;
+    this.IgstPer = NewIssueList3.IgstPer || 0;
+    this.IGSTAmt = NewIssueList3.IGSTAmt || 0;
+    this.NetAmount = NewIssueList3.NetAmount || 0;
+    this.DiscAmount = NewIssueList3.DiscAmount || 0;
   }
 }
 

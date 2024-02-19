@@ -239,7 +239,7 @@
                                                 <input matInput [(ngModel)]="GSTPer" name="GST" #gst required readonly
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                                     (keydown)="onEnterGST($event)" type="number"
-                                                    (keyup)="calculateGSTperAmount()" formControlName="GSTPer">
+                                                    (keyup)="calculateDiscperAmount()" formControlName="GSTPer">
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="5%">

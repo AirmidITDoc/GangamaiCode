@@ -210,15 +210,22 @@
                                             id="BatchNo" #batchno (keydown)="onEnterBatchNo($event)" required>
                                     </mat-form-field>&nbsp;
                                     <!-- [max]="maxDate"  -->
-                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="9%">
                                         <mat-label>Exp date</mat-label>
-                                        <input name="ExpDate" matInput [min]="minDate"  placeholder="MM/YYYY" [matDatepicker]="picker7"
-                                            [formControl]="date" (keydown)="onEnterExpDate($event)" #expdate required>
+                                        <input name="ExpDate" matInput [min]="minDate"  = #expdate required>
                                         <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
                                         <mat-datepicker #picker7></mat-datepicker>
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>&nbsp; -->
 
-
+                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                        <mat-label>Enter month and year (MMYYYY)</mat-label>
+                                        <input matInput #inputField (keyup.enter)="calculateLastDay(inputField.value)" 
+                                        formControlName="ExpDatess" value="lastDay" [(ngModel)]="lastDay" #expdate
+                                        placeholder="mmyyyy" 
+                                        >
+                                         <!-- <p *ngIf="lastDay"   formControlName="Exp">{{lastDay}}</p> -->
+                                      </mat-form-field> 
+                                      <!-- (keydown)="onEnterExpDate($event)" -->
 
                                     <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Qty</mat-label>
@@ -374,11 +381,6 @@
 
 
                             </form>
-
-
-
-
-
                         </div>
 
                     </div>
@@ -468,9 +470,17 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ExpDate
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                <mat-form-field appearance="legacy">
+                                                <!-- <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.BatchExpDate">  
-                                                </mat-form-field>
+                                                </mat-form-field> -->
+
+
+
+                                                <mat-form-field appearance="legacy" >
+                                                  <input matInput #inputField (keyup.enter)="CellcalculateLastDay(contact,inputField.value)" 
+                                                    [(ngModel)]="contact.BatchExpDate"  placeholder="mmyyyy" >
+                                                     <!-- <p *ngIf="lastDay"   formControlName="Exp">{{lastDay}}</p> -->
+                                                  </mat-form-field> 
                                             </mat-cell>
                                         </ng-container>
 

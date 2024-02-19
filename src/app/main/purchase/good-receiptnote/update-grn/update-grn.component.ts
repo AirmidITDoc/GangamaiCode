@@ -283,7 +283,55 @@ export class UpdateGRNComponent implements OnInit {
   }
 
 
-  // fromchange
+  // mm/yyyy
+  lastDay: string = '';
+  // ExpDate:any;
+  calculateLastDay(inputDate: string) {
+  
+    if (inputDate && inputDate.length === 6) {
+      const month = +inputDate.substring(0, 2);
+      const year = +inputDate.substring(2, 6);
+
+      if (month >= 1 && month <= 12) {
+        const lastDay = this.getLastDayOfMonth(month, year);
+        this.lastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                console.log(this.lastDay )
+       this._GRNList.userFormGroup.get('ExpDatess').setValue(this.lastDay)
+       this.qty.nativeElement.focus();
+      } else {
+        this.lastDay = 'Invalid month';
+      }
+    } else {
+      this.lastDay = 'Invalid input';
+    } 
+  }
+  
+  getLastDayOfMonth(month: number, year: number): number {
+    return new Date(year, month, 0).getDate();
+  }
+
+  pad(n: number): string {
+    return n < 10 ? '0' + n : n.toString();
+  }
+
+  CellcalculateLastDay(contact,inputDate: string) {
+  debugger
+    if (inputDate && inputDate.length === 6) {
+      const month = +inputDate.substring(0, 2);
+      const year = +inputDate.substring(2, 6);
+
+      if (month >= 1 && month <= 12) {
+        const lastDay = this.getLastDayOfMonth(month, year);
+        this.lastDay = `${lastDay}/${this.pad(month)}/${year}`;
+                console.log(this.lastDay )
+       contact.BatchExpDate=this.lastDay;
+      } else {
+        this.lastDay = 'Invalid month';
+      }
+    } else {
+      this.lastDay = 'Invalid input';
+    } 
+  }
 
   getGSTtypeList() {
     var vdata = {
@@ -1338,7 +1386,8 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
       grnDetailSaveObj['poNo'] = 0; //this.IgstAmt;
       grnDetailSaveObj['batchNo'] = element.BatchNo || "";
-      grnDetailSaveObj['batchExpDate'] = this.datePipe.transform(this.date.value, "yyyy-MM") || this.date.value;
+      debugger
+      grnDetailSaveObj['batchExpDate'] = new Date(element.BatchExpDate);//element.BatchExpDate,//this.datePipe.transform(element.BatchExpDate, "yyyy-MM");
       grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
       grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
       grnDetailSaveObj['cgstPer'] = element.CGSTPer || 0;
@@ -1458,7 +1507,7 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['totalQty'] = this.FinalTotalQty || 0;
       grnDetailSaveObj['poNo'] = 0; //this.IgstAmt;
       grnDetailSaveObj['batchNo'] = element.BatchNo || "";
-      grnDetailSaveObj['batchExpDate'] = this.datePipe.transform(this.date.value, "yyyy-MM") || this.date.value;
+      grnDetailSaveObj['batchExpDate'] = this.datePipe.transform(element.BatchExpDate, "yyyy-MM") || this.date.value;
       grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
       grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
       grnDetailSaveObj['cgstPer'] = element.CGSTPer || 0;
@@ -1494,11 +1543,7 @@ export class UpdateGRNComponent implements OnInit {
         this.toastr.success('Record Updated Successfully.', 'Updated !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        // Swal.fire('Updated GRN !', 'Record Updated Successfully !', 'success').then((result) => {
-        // if (result.isConfirmed) {
-        //   let m = response;
-        // this._matDialog.closeAll();
-        // }  
+     
         this._matDialog.closeAll();
         this.OnReset()
       }

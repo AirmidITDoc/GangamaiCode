@@ -728,9 +728,23 @@ editedFinalRate:any=0;
     }
     if (disc) {
       let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
-      this.DiscAmt = ((parseFloat(this.TotalAmount) * disc) / 100).toFixed(2);
       this.NetAmount = (parseFloat(this.TotalAmount) - parseFloat(this._PurchaseOrder.userFormGroup.get('DiscAmount').value)).toFixed(2);
-      this.calculateGSTperAmount();
+      if(this._PurchaseOrder.userFormGroup.get('Status3').value.Name == "GST After Disc")
+      {
+        this.DiscAmt = ((parseFloat(this.TotalAmount) * disc) / 100).toFixed(2);
+        let totalamt=  (parseFloat(this.TotalAmount) - (parseFloat(this.DiscAmt))).toFixed(2);
+
+       this.GSTAmt = ((parseFloat(totalamt) * parseFloat(this.GSTPer)) / 100).toFixed(2);
+
+       this.NetAmount = (parseFloat(totalamt) +  parseFloat(this.GSTAmt)).toFixed(2);
+
+      }else{
+     this.DiscAmt = ((parseFloat(this.TotalAmount) * disc) / 100).toFixed(2);
+     this.GSTAmt = ((parseFloat(this.TotalAmount) * parseFloat(this.GSTPer)) / 100).toFixed(2);
+     let totalamt=  (parseFloat(this.TotalAmount) + (parseFloat(this.GSTAmt))).toFixed(2);
+
+     this.NetAmount = (parseFloat(totalamt) -  parseFloat(this.DiscAmt)).toFixed(2);
+      }
     }
   }
 

@@ -399,10 +399,10 @@
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
 
-                                            <mat-form-field appearance="outline" fxFlex="40%">
+                                            <mat-form-field appearance="outline" fxFlex="22%">
                                                 <mat-label>ItemName</mat-label>
                                                 <input type="text" name="ItemID" formControlName="ItemID" #itemid
-                                                    placeholder="Item Name " matInput [matAutocomplete]="auto"
+                                                    placeholder="Item Name (enter 2 char)  " matInput [matAutocomplete]="auto"
                                                     (input)="getSearchItemList()" (keydown)="onEnteritemid($event)">
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
@@ -415,44 +415,46 @@
                                                     (optionSelected)='getSelectedObjItem($event.option.value)'>
                                                     <mat-option *ngFor="let option of filteredOptionsItem"
                                                         [value]="option">
-                                                        {{option.ItemID}} | {{option.ItemName}}
+                                                        <span>{{option.ItemName}}  | {{option.BalanceQty}} </span> |
+                                                  <small>MRP: {{option.UnitMRP}}</small>
                                                     </mat-option>
                                                 </mat-autocomplete>
                                                 <mat-error class="error"
                                                     *ngIf="_IssueToDep.NewIssueGroup.get('ItemID').invalid && _IssueToDep.NewIssueGroup.get('ItemID').touched">
-                                                    Select ItemName
+                                                    Required field cannot be left blank
                                                 </mat-error>
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>Batch No</mat-label>
                                                 <input name="BatchNo" formControlName="BatchNO" required
-                                                 matInput #Batchno  >
+                                                 matInput #Batchno [(ngModel)]="vBatchNo" (keydown)="onEnterBatchNo($event)" >
                                             </mat-form-field>
 
                 
-                                            <mat-form-field appearance="outline" fxFlex="8%">
+                                            <mat-form-field appearance="outline" fxFlex="6%">
                                                 <mat-label>Balance Qty</mat-label>
-                                                <input name="BalanceQty" formControlName="BalanceQty" matInput>
+                                                <input name="BalanceQty" formControlName="BalanceQty" matInput 
+                                                 #BalQuantity (keydown)="onEnterBalQty($event)" [(ngModel)]="vBalanceQty">
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex="8%">
+                                            <mat-form-field appearance="outline" fxFlex="6%">
                                                 <mat-label>Qty</mat-label>
-                                                <input name="Qty" formControlName="Qty" matInput
+                                                <input name="Qty" formControlName="Qty" matInput #Quantity (keydown)="onEnterQty($event)"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                                required>
+                                                required (keyup)="CalculateTotalAmt()" [(ngModel)]="vQty"  autocomplete="off">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex="8%">
                                                 <mat-label>Unit Rate</mat-label>
-                                                <input name="UnitRate" formControlName="UnitRate" matInput
+                                                <input name="UnitRate" formControlName="UnitRate" matInput #Rate [(ngModel)]="vUnitMRP"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                                required>
+                                                required (keyup)="CalculateTotalAmt()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>Total Amount</mat-label>
-                                                <input name="TotalAmount" formControlName="TotalAmount" matInput
+                                                <input name="TotalAmount" formControlName="TotalAmount" matInput [(ngModel)]="vTotalAmount"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                                 >
                                             </mat-form-field>
@@ -464,6 +466,16 @@
                                                 <mat-icon> add </mat-icon> &nbsp;Add
                                             </button>
                                         </div>
+                                        <!-- <mat-form-field appearance="outline">
+                                            <mat-label>Enter month and year (MMYYYY)</mat-label>
+                                            <input matInput #inputField (keyup.enter)="calculateLastDay(inputField.value)" 
+                                            formControlName="ExpDatess" value="lastDay" [ngmodel]="lastDay">
+                                           
+                                          </mat-form-field> 
+                                          
+                                          <p *ngIf="lastDay">Last day of entered month and year: {{ lastDay }}</p> -->
+                                          
+                                          
                                     </div>
                                 <!-- </mat-card> -->
 
