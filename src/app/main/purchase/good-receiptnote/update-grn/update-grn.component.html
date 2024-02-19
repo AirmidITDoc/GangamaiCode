@@ -210,16 +210,26 @@
                                             id="BatchNo" #batchno (keydown)="onEnterBatchNo($event)" required>
                                     </mat-form-field>&nbsp;
                                     <!-- [max]="maxDate"  -->
-                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="9%">
                                         <mat-label>Exp date</mat-label>
                                         <input name="ExpDate" matInput [min]="minDate"  placeholder="MM/YYYY" [matDatepicker]="picker7"
                                             [formControl]="date" (keydown)="onEnterExpDate($event)" #expdate required>
                                         <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
                                         <mat-datepicker #picker7></mat-datepicker>
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>&nbsp; -->
 
 
-
+                                    <mat-form-field  appearance="outline" fxFlex="9%">
+                                        <mat-label>Month and Year</mat-label>
+                                        <input matInput [matDatepicker]="dp" [formControl]="date">
+                                        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                        <mat-datepicker #dp
+                                                        startView="multi-year"
+                                                        (yearSelected)="chosenYearHandler($event)"
+                                                        (monthSelected)="chosenMonthHandler($event, dp)"
+                                                        panelClass="example-month-picker">
+                                        </mat-datepicker>
+                                      </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Qty</mat-label>
                                         <input matInput [(ngModel)]="Qty" name="Qty" required

@@ -26,17 +26,15 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 
 const moment = _rollupMoment || _moment;
 
-// export const MY_FORMATS = {
-//   parse: {
-//     dateInput: 'MM/YYYY',
-//   },
-//   display: {
-//     dateInput: 'MM//YYYY',
-//     monthYearLabel: 'MMM YYYY',
-//     dateA11yLabel: 'LL',
-//     monthYearA11yLabel: 'MMMM YYYY',
-//   },
-// };
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL', 
+  },
+  display: {
+    dateInput: 'MMMM YYYY',
+    monthYearLabel: 'MMMM YYYY', 
+  },
+};
 @Component({
   selector: 'app-update-grn',
   templateUrl: './update-grn.component.html',
@@ -53,6 +51,20 @@ const moment = _rollupMoment || _moment;
 
   //   { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   // ],
+
+  providers: [
+    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+    // application's root module. We provide it at the component level here, due to limitations of
+    // our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
+ 
 })
 export class UpdateGRNComponent implements OnInit {
 
@@ -1890,6 +1902,32 @@ export class UpdateGRNComponent implements OnInit {
     });
   }
 
+
+
+  chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+    const ctrlValue = this.date.value;
+    ctrlValue.month(normalizedMonth.month());
+    this.date.setValue(ctrlValue);
+    datepicker.close();
+
+
+   this.calculateDiff(this.date.value);
+  }
+
+
+
+  calculateDiff(sentDate) {
+    debugger
+    var date1:any = new Date(sentDate);
+    var date2:any = new Date();
+    var diffDays:any = Math.floor((date1 - date2) / (1000 * 60 * 60 * 24));
+      console.log(diffDays)
+
+      if(diffDays  <= 120 && diffDays > 1){
+          Swal.fire("Item Expiry date in 3 months !");
+      }
+    // return diffDays;
+}
 
 }
 export class LastThreeItemList {
