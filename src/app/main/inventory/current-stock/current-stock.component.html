@@ -230,7 +230,7 @@
 
                                         </mat-table>
 
-                                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
+                                        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
                                             showFirstLastButtons>
                                         </mat-paginator>
                                     </div>
@@ -341,12 +341,12 @@
 
                                 <div fxlayout="row">
                                     <div style="width: 100%;">
-                                        <div matColumnDef="loading"
+                                        <!-- <div matColumnDef="loading"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                             class="backgroundBlur">
                                             <div class="spinner-border text-danger"></div>
 
-                                        </div>
+                                        </div> -->
 
                                         <mat-table #table class="table2" matSort [dataSource]="dsDaywiseStock"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
@@ -442,16 +442,19 @@
                                             </mat-cell>
                                         </ng-container> -->
 
-                                            <ng-container matColumnDef="loading">
-                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                                </mat-header-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    no data found...
-                                                </mat-footer-cell>
-                                            </ng-container>
+                                        <ng-container matColumnDef="loading">
+                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                            </mat-header-cell>
+                                          </ng-container>
+                  
+                                          <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                              <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                              </mat-spinner>
+                                              <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                            </mat-footer-cell>
+                                          </ng-container>
+                                          
 
                                             <mat-header-row class="accent"
                                                 *matHeaderRowDef="displayedColumnsDayWise; sticky: true">
@@ -468,7 +471,7 @@
 
                                         </mat-table>
 
-                                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
+                                        <mat-paginator #thirdPaginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
                                             showFirstLastButtons>
                                         </mat-paginator>
                                     </div>
@@ -589,12 +592,12 @@
 
                                 <div fxlayout="row">
                                     <div style="width: 100%;">
-                                        <div matColumnDef="loading"
+                                        <!-- <div matColumnDef="loading"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                             class="backgroundBlur">
                                             <div class="spinner-border text-danger"></div>
 
-                                        </div>
+                                        </div> -->
 
                                         <mat-table #table class="table3" matSort [dataSource]="dsItemwiseStock"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
@@ -648,13 +651,15 @@
                                             <ng-container matColumnDef="loading">
                                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                                 </mat-header-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="noData">
+                                              </ng-container>
+                      
+                                              <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    no data found...
+                                                  <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                                  </mat-spinner>
+                                                  <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                                 </mat-footer-cell>
-                                            </ng-container>
+                                              </ng-container>
 
                                             <mat-header-row class="accent"
                                                 *matHeaderRowDef="displayedColumnsItemWise; sticky: true">
@@ -671,7 +676,7 @@
 
                                         </mat-table>
 
-                                        <mat-paginator [pageSizeOptions]="[10, 25, 100]" [pageSize]="10"
+                                        <mat-paginator #secondPaginator [pageSizeOptions]="[10, 25, 100]" [pageSize]="10"
                                             showFirstLastButtons>
                                         </mat-paginator>
                                     </div>
