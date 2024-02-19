@@ -241,8 +241,8 @@ export class AppointmentComponent implements OnInit {
   displayedColumns = [
     "PatientOldNew",
     "MPbillNo",
-    "Edit",
-    "Bill",
+    // "Edit",
+    // "Bill",
     "RegNoWithPrefix",
     "PatientName",
     "DVisitDate",
@@ -493,7 +493,7 @@ export class AppointmentComponent implements OnInit {
     // }
      
      
-    debugger
+    // debugger
     this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
       startWith(''),
       map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
@@ -2381,7 +2381,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   OnChangeDoctorList(departmentObj) {
-    debugger
+    // debugger
     this.isDepartmentSelected = true;
     this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
@@ -2395,7 +2395,7 @@ export class AppointmentComponent implements OnInit {
 
 
     if (this.configService.configParams.DoctorId) {
-      debugger
+    //   debugger
       // this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
       //   data => {
       //     this.DoctorList = data;

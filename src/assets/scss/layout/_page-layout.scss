@@ -1,0 +1,17 @@
+.page-layout {
+    .center{
+        .header {
+            height: 70px ;
+            .header-row {
+                width: 100%;
+            }
+        }
+    }
+    .opd-header{
+        height: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 16px;
+    }
+}

@@ -12,45 +12,43 @@
 @import './assets/scss/airmid'; // Airmid layout css
 
 //added by prasad
-.mat-cell, .mat-footer-cell, .mat-label{
+// .mat-cell, .mat-footer-cell, .mat-label{
+//     font-size: 15px !important;
+// } 
+.mat-label{
     font-size: 15px !important;
 } 
 //added by prasad
-.mat-row, .mat-footer-row {
-    min-height: 42px !important;
-    height: 42px !important;
-}
 
-.mat-table {
-    height: 520px !important;
-    .mat-row {
-        &:hover {
-            background: #d7d7d7;
-        }
-        &:active {
-            background:#d7d7d7;
-        }
-    }
+// .mat-table {
+    
+//     .mat-row {
+//         &:hover {
+//             background: #d7d7d7;
+//         }
+//         &:active {
+//             background:#d7d7d7;
+//         }
+//     }
    
 
-    .mat-header-row {
-        min-height: 40px;
-        height: 20px;
-       
-    }
-    .mat-sort-header-content {
-        color: white; 
-    }
-    .mat-header-cell {
-        .mat-sort-header-button {
-            color: white;
-        }
+//     .mat-header-row {
+//         min-height: 40px;
+//         height: 20px;   
+//     }
+//     .mat-sort-header-content {
+//         color: white; 
+//     }
+//     .mat-header-cell {
+//         .mat-sort-header-button {
+//             color: white;
+//         }
 
-        .mat-sort-header-arrow {
-            color:white;
-        }
-    }
-}
+//         .mat-sort-header-arrow {
+//             color:white;
+//         }
+//     }
+// }
 
 .mat-saletable{
         height: 50% !important;   
@@ -60,10 +58,10 @@
             }
 }}
 
-.mat-header-cell {
-    color: white;
-    font-size: 16px !important;
-}
+// .mat-header-cell {
+//     color: white;
+//     font-size: 16px !important;
+// }
 .mat-card{
     width: 100%;
     padding: 2px;
@@ -82,10 +80,6 @@
 
 .mat-form-field-wrapper {
     padding-bottom: 0.34375em;
-}
-
-.mat-form-field {
-    font-size: 14px;
 }
 
 // Table Footer Label CSS 
@@ -132,7 +126,7 @@ mat-footer-row mat-footer-cell {
 
 // Highlight company ro self patient color code
 .self-row {
-    background-color: lightgreen !important;
+    // background-color: lightgreen !important;
 }
 
 

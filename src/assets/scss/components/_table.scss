@@ -1,3 +1,40 @@
-// .mat-table{
-//     // background-color: red;
-// }
+.mat-table {
+    .mat-header-row {
+        .mat-header-cell {
+            @include font-size(13px);
+            &:not(:first-of-type) {
+                padding: 15px 10px;
+            }
+            // @include line-clamp(1);
+            .mat-sort-header-button {
+                color: $primary-25;
+            }
+
+            .mat-sort-header-arrow {
+                color: $primary-25;
+            }
+        }
+    }
+    .mat-sort-header-content {
+        color: $primary-25;
+    }
+    .mat-row {
+        .mat-cell {
+            @include font-size(12px);
+            word-break: break-word;
+            line-height: 20px;
+            &:not(:first-of-type) {
+                padding: 10px;
+            }
+        }
+        &:hover {
+            background: #d7d7d7;
+        }
+        &:active {
+            background: #d7d7d7;
+        }
+        &.self-row {
+            background-color: $primary-50;
+        }
+    }
+}
