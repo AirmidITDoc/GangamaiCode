@@ -1372,7 +1372,7 @@ export class ItemNameList {
   LandedRate:any;
   PurUnitRate:any;
   PurUnitRateWF:any;
-  BatchExpDate:number;
+  BatchExpDate:any;
   POQty:any;
   /**
    * Constructor

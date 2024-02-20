@@ -26,15 +26,15 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 
 const moment = _rollupMoment || _moment;
 
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'LL', 
-  },
-  display: {
-    dateInput: 'MMMM YYYY',
-    monthYearLabel: 'MMMM YYYY', 
-  },
-};
+// export const MY_FORMATS = {
+//   parse: {
+//     dateInput: 'LL', 
+//   },
+//   display: {
+//     dateInput: 'MMMM YYYY',
+//     monthYearLabel: 'MMMM YYYY', 
+//   },
+// };
 @Component({
   selector: 'app-update-grn',
   templateUrl: './update-grn.component.html',
@@ -52,19 +52,19 @@ export const MY_FORMATS = {
   //   { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   // ],
 
-  providers: [
-    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
-    // application's root module. We provide it at the component level here, due to limitations of
-    // our example generation script.
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
+  // providers: [
+  //   // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+  //   // application's root module. We provide it at the component level here, due to limitations of
+  //   // our example generation script.
+  //   {
+  //     provide: DateAdapter,
+  //     useClass: MomentDateAdapter,
+  //     deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+  //   },
 
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
-  ],
- 
+  //   {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  // ],
+
 })
 export class UpdateGRNComponent implements OnInit {
 
@@ -242,7 +242,7 @@ export class UpdateGRNComponent implements OnInit {
     // }
 
     if (this.data.chkNewGRN == 2) {
-      // debugger
+      // 
       this.registerObj = this.data.Obj;
       this.InvoiceNo = this.registerObj.InvoiceNo;
       this.GateEntryNo = this.registerObj.GateEntryNo;
@@ -250,7 +250,7 @@ export class UpdateGRNComponent implements OnInit {
       this.StoreId = this.registerObj.StoreId;
       //console.log(this.registerObj);
       //  console.log(this.registerObj);
-      //debugger
+      //
       if (this.registerObj.Cash_CreditType)
         this.Cahchecked = 1;
       if (!this.registerObj.Cash_CreditType)
@@ -280,7 +280,7 @@ export class UpdateGRNComponent implements OnInit {
   maxDate = new Date(2024, 4, 1);
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
 
-    //debugger
+    //
     const ctrlValue = this.date.value;
     const currentDate = new Date();
     ctrlValue.month(normalizedMonthAndYear.month());
@@ -297,9 +297,11 @@ export class UpdateGRNComponent implements OnInit {
 
   // mm/yyyy
   lastDay: string = '';
-  // ExpDate:any;
+  lastDay2: string = '';
+  vExpDate: string = '';
+
   calculateLastDay(inputDate: string) {
-  
+
     if (inputDate && inputDate.length === 6) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
@@ -307,17 +309,20 @@ export class UpdateGRNComponent implements OnInit {
       if (month >= 1 && month <= 12) {
         const lastDay = this.getLastDayOfMonth(month, year);
         this.lastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                console.log(this.lastDay )
-       this._GRNList.userFormGroup.get('ExpDatess').setValue(this.lastDay)
-       this.qty.nativeElement.focus();
+        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+        console.log(this.lastDay)
+        
+        // this.calculateDiff(this.lastDay);
+        this._GRNList.userFormGroup.get('ExpDatess').setValue(this.lastDay)
+        this.qty.nativeElement.focus();
       } else {
         this.lastDay = 'Invalid month';
       }
     } else {
       this.lastDay = 'Invalid input';
-    } 
+    }
   }
-  
+
   getLastDayOfMonth(month: number, year: number): number {
     return new Date(year, month, 0).getDate();
   }
@@ -325,24 +330,26 @@ export class UpdateGRNComponent implements OnInit {
   pad(n: number): string {
     return n < 10 ? '0' + n : n.toString();
   }
-
-  CellcalculateLastDay(contact,inputDate: string) {
-  debugger
+  lastDay1: any;
+  CellcalculateLastDay(contact, inputDate: string) {
+    debugger
     if (inputDate && inputDate.length === 6) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
 
       if (month >= 1 && month <= 12) {
-        const lastDay = this.getLastDayOfMonth(month, year);
-        this.lastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                console.log(this.lastDay )
-       contact.BatchExpDate=this.lastDay;
+        const lastDay1 = this.getLastDayOfMonth(month, year);
+        this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
+        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
+        console.log(this.lastDay2)
+
+        contact.BatchExpDate = this.lastDay1;
       } else {
         this.lastDay = 'Invalid month';
       }
     } else {
       this.lastDay = 'Invalid input';
-    } 
+    }
   }
 
   getGSTtypeList() {
@@ -395,7 +402,7 @@ export class UpdateGRNComponent implements OnInit {
 
 
   getGRNItemDetailList(el) {
-    // debugger
+    // 
     var Param = {
       "GRNID": el.GRNID,
 
@@ -414,7 +421,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   getPOItemDetailList(el) {
-    // debugger
+    // 
     var Param = {
       "PurchaseId": el.PurchaseID
     }
@@ -433,8 +440,26 @@ export class UpdateGRNComponent implements OnInit {
 
 
   onAdd(event) {
+
+    console.log(this.lastDay)
+    if (this.lastDay && this.lastDay.length === 10) {
+      const day = +this.lastDay.substring(0, 2);
+      const month = +this.lastDay.substring(3, 5);
+      const year = +this.lastDay.substring(6, 10);
+
+      this.lastDay2 = `${year}/${this.pad(month)}/${day}`;
+      console.log(this.lastDay)
+    }
+
+
+
     this.dsItemNameList.data = [];
     this.chargeslist = this.dsTempItemNameList.data;
+
+    const expirationDate1 = new Date(Date.parse(this.lastDay2));
+    console.log(expirationDate1);
+
+
     this.chargeslist.push(
       {
         ItemId: this._GRNList.userFormGroup.get('ItemName').value.ItemID || 0,
@@ -443,7 +468,7 @@ export class UpdateGRNComponent implements OnInit {
         UOMId: this.UOM,
         HSNcode: this.HSNCode,
         BatchNo: this.BatchNo,
-        BatchExpDate: this.datePipe.transform(this.date.value, "yyyy-MM"),
+        BatchExpDate: this.lastDay2,// this.datePipe.transform(this.lastDay, "yyyy-MM-dd"),
         ReceiveQty: this.Qty || 0,
         FreeQty: this.FreeQty || 0,
         TotalQty: this.FinalTotalQty || 0,
@@ -559,7 +584,7 @@ export class UpdateGRNComponent implements OnInit {
     }
     contact.TotalQty = (((contact.FreeQty) + (editedQty)) * (contact.ConversionFactor)) || 0;
     //console.log(contact.POBalQty)
-    // debugger
+    // 
     contact.Qty = editedQty;
     contact.ReceiveQty = editedQty;
 
@@ -634,7 +659,7 @@ export class UpdateGRNComponent implements OnInit {
   //   }
   //   contact.TotalQty = (((contact.FreeQty) + (editedQty)) * (contact.ConversionFactor)) || 0;
   //   //console.log(contact.POBalQty)
-  //  // debugger
+  //  // 
   //   contact.Qty = editedQty;
   //   contact.ReceiveQty = editedQty;
 
@@ -901,7 +926,7 @@ export class UpdateGRNComponent implements OnInit {
       this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
       this._GRNList.userFormGroup.get('NetAmount').setValue(0);
     }
-   // this.calculateGSTAmount();
+    // this.calculateGSTAmount();
     this.calculateDiscperAmount();
 
   }
@@ -919,7 +944,7 @@ export class UpdateGRNComponent implements OnInit {
 
         //disc
         this.DisAmount = ((parseFloat(this.TotalAmount) * parseFloat(dis)) / 100).toFixed(2);
-        let TotalAmt = (parseFloat(this.TotalAmount) - parseInt(this.DisAmount )).toFixed(2);
+        let TotalAmt = (parseFloat(this.TotalAmount) - parseInt(this.DisAmount)).toFixed(2);
         //Gst
         this.GST = ((parseFloat(this.CGST)) + (parseFloat(this.SGST)) + (parseFloat(this.IGST)));
         this.CGSTAmount = ((parseInt(TotalAmt) * parseFloat(this.CGST)) / 100).toFixed(2);
@@ -927,7 +952,7 @@ export class UpdateGRNComponent implements OnInit {
         this.IGSTAmount = ((parseInt(TotalAmt) * parseFloat(this.IGST)) / 100).toFixed(2);
         this.GSTAmount = ((parseFloat(this.CGSTAmount)) + (parseFloat(this.SGSTAmount)) + (parseFloat(this.IGSTAmount))).toFixed(2);
 
-        this.NetAmount = ( (parseFloat(this.TotalAmount) - parseFloat(this.DisAmount )) + parseFloat(this.GSTAmount)).toFixed(2);
+        this.NetAmount = ((parseFloat(this.TotalAmount) - parseFloat(this.DisAmount)) + parseFloat(this.GSTAmount)).toFixed(2);
 
       } else {
         //disc
@@ -944,7 +969,7 @@ export class UpdateGRNComponent implements OnInit {
 
         let TotalAmt = (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmount)).toFixed(2);
 
-        this.NetAmount = ( (parseFloat(this.TotalAmount) + parseFloat(this.GSTAmount)) - parseFloat(this.DisAmount)).toFixed(2);
+        this.NetAmount = ((parseFloat(this.TotalAmount) + parseFloat(this.GSTAmount)) - parseFloat(this.DisAmount)).toFixed(2);
       }
     }
   }
@@ -1118,7 +1143,7 @@ export class UpdateGRNComponent implements OnInit {
 
 
   getGRNItemList() {
-    // debugger
+    // 
     var m_data = {
       "ItemName": `${this._GRNList.userFormGroup.get('ItemName').value}%`,
       "StoreId": this._GRNList.GRNStoreForm.get('StoreId').value.storeid
@@ -1201,7 +1226,7 @@ export class UpdateGRNComponent implements OnInit {
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-    //debugger
+    //
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1221,7 +1246,7 @@ export class UpdateGRNComponent implements OnInit {
     grnSaveObj['isVerified'] = false;
     grnSaveObj['isClosed'] = false;
     grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
-    grnSaveObj['invDate'] = this._GRNList.userFormGroup.get('DateOfInvoice').value || 0;
+    grnSaveObj['invDate'] = this._GRNList.userFormGroup.get('DateOfInvoice').value.DateOfInvoice || '01/01/1900';
     grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
     grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
     grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
@@ -1239,7 +1264,6 @@ export class UpdateGRNComponent implements OnInit {
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
 
-      console.log(element);
 
       let grnDetailSaveObj = {};
       // grnDetailSaveObj['grnDetID'] = 0;
@@ -1263,7 +1287,8 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
       grnDetailSaveObj['poNo'] = element.PurchaseId || 0;
       grnDetailSaveObj['batchNo'] = element.BatchNo || "";
-      grnDetailSaveObj['batchExpDate'] = this.datePipe.transform(this.date.value, "yyyy-MM") || this.date.value;
+
+      grnDetailSaveObj['batchExpDate'] = this.datePipe.transform(this.lastDay1, "mm/dd/yyyy");
       grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
       grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
       grnDetailSaveObj['cgstPer'] = element.CGSTPer || 0;
@@ -1336,7 +1361,8 @@ export class UpdateGRNComponent implements OnInit {
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-    //debugger
+
+
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1356,7 +1382,8 @@ export class UpdateGRNComponent implements OnInit {
     grnSaveObj['isVerified'] = false;
     grnSaveObj['isClosed'] = false;
     grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
-    grnSaveObj['invDate'] = this._GRNList.userFormGroup.get('DateOfInvoice').value || 0;
+
+    grnSaveObj['invDate'] = this.datePipe.transform(this._GRNList.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd");
     grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
     grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
     grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
@@ -1373,7 +1400,7 @@ export class UpdateGRNComponent implements OnInit {
 
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
-      debugger
+
       console.log(element);
 
       let grnDetailSaveObj = {};
@@ -1398,8 +1425,21 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
       grnDetailSaveObj['poNo'] = 0; //this.IgstAmt;
       grnDetailSaveObj['batchNo'] = element.BatchNo || "";
+
       debugger
-      grnDetailSaveObj['batchExpDate'] = new Date(element.BatchExpDate);//element.BatchExpDate,//this.datePipe.transform(element.BatchExpDate, "yyyy-MM");
+      console.log(element.BatchExpDate)
+      if (element.BatchExpDate && element.BatchExpDate.length === 10) {
+        const day = +element.BatchExpDate.substring(0, 2);
+        const month = +element.BatchExpDate.substring(3, 5);
+        const year = +element.BatchExpDate.substring(6, 10);
+
+        this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+        console.log(this.vExpDate)
+      }
+
+
+
+      grnDetailSaveObj['batchExpDate'] = this.vExpDate;
       grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
       grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
       grnDetailSaveObj['cgstPer'] = element.CGSTPer || 0;
@@ -1494,7 +1534,7 @@ export class UpdateGRNComponent implements OnInit {
 
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
-      //debugger
+      //
       // console.log(element);
 
       let grnDetailSaveObj = {};
@@ -1549,13 +1589,13 @@ export class UpdateGRNComponent implements OnInit {
     };
 
     console.log(submitData);
-    //debugger
+    //
     this._GRNList.GRNEdit(submitData).subscribe(response => {
       if (response) {
         this.toastr.success('Record Updated Successfully.', 'Updated !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-     
+
         this._matDialog.closeAll();
         this.OnReset()
       }
@@ -1691,7 +1731,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   public onEnterRate(event): void {
-    //debugger
+    //
     if (event.which === 13) {
       this.disc.nativeElement.focus();
     }
@@ -1888,7 +1928,7 @@ export class UpdateGRNComponent implements OnInit {
       console.log(this.dsItemNameList1)
 
       this.dsItemNameList1.data.forEach((element) => {
-        debugger
+
 
         //  this.FinalLandedrate1 =  (parseInt(element.NetAmount) / parseInt(element.FinalTotalQty)) || 0
         //  this.FinalpurUnitRate1 = (parseInt(element.TotalAmount) / parseInt(element.Qty) * parseInt(element.ConversionFactor)) 
@@ -1956,23 +1996,23 @@ export class UpdateGRNComponent implements OnInit {
     datepicker.close();
 
 
-   this.calculateDiff(this.date.value);
+    this.calculateDiff(this.date.value);
   }
 
 
 
   calculateDiff(sentDate) {
-    debugger
-    var date1:any = new Date(sentDate);
-    var date2:any = new Date();
-    var diffDays:any = Math.floor((date1 - date2) / (1000 * 60 * 60 * 24));
-      console.log(diffDays)
+debugger
+    var date1: any = new Date(sentDate);
+    var date2: any = new Date();
+    var diffDays: any = Math.floor((date1 - date2) / (1000 * 60 * 60 * 24));
+    console.log(diffDays)
 
-      if(diffDays  <= 120 && diffDays > 1){
-          Swal.fire("Item Expiry date in 3 months !");
-      }
+    if (diffDays <= 120 && diffDays > 1) {
+      Swal.fire("Item Expiry date in 3 months !");
+    }
     // return diffDays;
-}
+  }
 
 }
 export class LastThreeItemList {
