@@ -114,9 +114,9 @@
                                                     <mat-icon class="searchiconbutton">search</mat-icon>
                                                 </button>
                                             </div>
-                                            <span *ngIf="SpinLoading" style="width:60px;height: 60px;">
+                                            <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;">
                                                 Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
-                                            </span>
+                                            </span> -->
                                         </div>
 
                                     </form>
@@ -138,7 +138,11 @@
 
                                     <div fxlayout="row">
                                         <div style="width: 100%;">
-
+                                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                            class="backgroundBlur">
+                                            <div class="spinner-border text-danger"></div>
+                    
+                                             </div>
 
                                             <mat-table class="Table1" matSort [dataSource]="dssaleList1"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">

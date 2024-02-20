@@ -413,9 +413,9 @@ export class PurchaseOrderComponent implements OnInit {
 
   
   viewgetPurchaseorderReportPdf(row) {
-  
+    this.sIsLoading = 'loading-data';
     setTimeout(() => {
-      this.SpinLoading =true;
+      
    this._PurchaseOrder.getPurchaseorderreportview(
     row.PurchaseID
     ).subscribe(res => {
@@ -431,12 +431,9 @@ export class PurchaseOrderComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           // this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = ' ';
         });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
-        });
+       
     });
    
     },100);

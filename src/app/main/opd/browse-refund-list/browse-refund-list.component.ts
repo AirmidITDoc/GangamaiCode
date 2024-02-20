@@ -107,7 +107,7 @@ export class BrowseRefundListComponent implements OnInit {
       "Reg_No": this._BrowseOPDReturnsService.myFilterform.get("RegNo").value || 0
 
     }
-debugger
+
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       console.log(D_data);
@@ -185,11 +185,11 @@ debugger
  
 
   
-SpinLoading:boolean=false;
+// SpinLoading:boolean=false;
 viewgetOPRefundofBillPdf(row) {
-  debugger
+  this.sIsLoading = 'loading-data';
   setTimeout(() => {
-    this.SpinLoading =true;
+    // this.SpinLoading =true;
   //  this.AdList=true;
   this._BrowseOPDReturnsService.getOpRefundview(
     row.RefundId
@@ -206,11 +206,11 @@ viewgetOPRefundofBillPdf(row) {
       });
       dialogRef.afterClosed().subscribe(result => {
         // this.AdList=false;
-        this.SpinLoading = false;
+        // this.SpinLoading = false;
       });
       dialogRef.afterClosed().subscribe(result => {
         // this.AdList=false;
-        this.SpinLoading = false;
+        this.sIsLoading = '';
       });
   });
  

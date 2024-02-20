@@ -84,9 +84,9 @@
 
 
                         </div>
-                        <span *ngIf="SpinLoading" style="width:60px;height: 60px;">
+                        <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;">
                             Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
-                        </span>
+                        </span> -->
                     </div>
                 </form>
             </div>
@@ -99,13 +99,15 @@
 
             <div class="content-card" style="border-radius:4px; ">
 
-
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                     <div fxFlex.gt-sm="100%" fxFlex>
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                class="backgroundBlur">
+                                <div class="spinner-border text-danger"></div>
+                            </div>
                                 <mat-table #table table="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 

@@ -345,127 +345,7 @@ app-new-oprefundofbill{
         .mat-card{
             width: 100%;
         }
-            
-        .services-table{
-    
-            height: 200px !important;
-            .mat-header-row {
-                width:1400px;
-                max-width:1400px;
-                min-width:1400px;   
-                min-height: 30px;
-            }
-            .mat-row {
-                width:1400px;
-                max-width:14000px;
-                min-width:1400px;    
-                min-height: 25px;
-                // text-align:center;
-            }
-           
-           
-          
-            .mat-column-ChargesDate {
-                width: 150px;
-                max-width: 150px;
-                min-width: 150px;
-                justify-content:center;
-            }
-            .mat-column-TotalAmt {
-                width: 120px;
-                max-width: 120px;
-                min-width: 120px;
-                justify-content:center;
-            }
-           
-            .mat-column-RefundAmount {
-                width: 150px;
-                max-width: 150px;
-                min-width: 150px;
-                justify-content:center;
-            }
-            .mat-column-ChargesId {
-                width: 130px;
-                max-width: 130px;
-                min-width: 130px;
-                text-align:left;
-            }
-            .mat-column-ChargesDate {
-                width: 150px;
-                max-width: 150px;
-                min-width: 150px;
-                justify-content:center;
-            }
-            .mat-column-ServiceId {
-                width: 100px;
-                max-width: 100px;
-                min-width: 100px;
-                justify-content:center;
-            }
-           
-            .mat-column-ServiceName {
-                width: 400px;
-                max-width: 400px;
-                min-width: 400px;
-                justify-content:center;
-            }
-            .mat-column-Price {
-                width: 70px;
-                max-width: 70px;
-                min-width: 70px;
-                justify-content:center;
-            }
-            .mat-column-Qty {
-                width: 70px;
-                max-width: 70px;
-                min-width: 70px;
-                justify-content:center;
-            }
-           
-            .mat-column-TotalAmt {
-                width: 150px;
-                max-width: 150px;
-                min-width: 150px;
-                justify-content:center;
-            }
-        
-            .mat-column-NetAmount {
-                width: 150px;
-                max-width: 150px;
-                min-width: 150px;
-                justify-content:center;
-            }
-            .mat-column-ChargesDocName {
-                width: 180px;
-                max-width: 180px;
-                min-width: 180px;
-                justify-content:center;
-            }
-            .mat-column-RefundAmount {
-                width: 150px;
-                max-width: 150px;
-                min-width: 150px;
-                justify-content:center;
-            }
-            .mat-column-action {
-                // color: white !important;
-                width:60px;
-                max-width: 60px;
-                min-width: 60px;
-                text-align: right;
-                justify-content:right;
-            }
-            .mat-icon-button {
-                padding: 0;
-                min-width: 0;
-                width: 40px;
-                height: 20px;
-                flex-shrink: 0;
-                line-height: 20px;
-                border-radius: 50%;
-            }
-        }
-        
+      
     
         .footer-navigation-container {
             text-align: right;
@@ -474,3 +354,125 @@ app-new-oprefundofbill{
         }
         
     }
+
+          
+    .services-table{
+    
+        height: 200px !important;
+        .mat-header-row {
+            width:1200px;
+            max-width:1100px;
+            min-width:1100px;   
+            min-height: 30px;
+        }
+        .mat-row {
+            width:1100px;
+            max-width:11000px;
+            min-width:1100px;    
+            min-height: 25px;
+            // text-align:center;
+        }
+       
+       
+      
+        .mat-column-ChargesDate {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+        .mat-column-TotalAmt {
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
+            justify-content:center;
+        }
+       
+        .mat-column-RefundAmount {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+        .mat-column-ChargesId {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            text-align:left;
+        }
+        .mat-column-ChargesDate {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            justify-content:center;
+        }
+        .mat-column-ServiceId {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            justify-content:left;
+        }
+       
+        .mat-column-ServiceName {
+            width: 400px;
+            max-width: 400px;
+            min-width: 400px;
+            justify-content:left;
+        }
+        .mat-column-Price {
+            width: 70px;
+            max-width: 70px;
+            min-width: 70px;
+            justify-content:center;
+        }
+        .mat-column-Qty {
+            width: 70px;
+            max-width: 70px;
+            min-width: 70px;
+            justify-content:center;
+        }
+       
+        .mat-column-TotalAmt {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            justify-content:center;
+        }
+    
+        .mat-column-NetAmount {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            justify-content:center;
+        }
+        .mat-column-ChargesDocName {
+            width: 180px;
+            max-width: 180px;
+            min-width: 180px;
+            justify-content:center;
+        }
+        .mat-column-RefundAmount {
+            width: 150px;
+            max-width: 150px;
+            min-width: 150px;
+            justify-content:center;
+        }
+        .mat-column-action {
+            // color: white !important;
+            width:60px;
+            max-width: 60px;
+            min-width: 60px;
+            text-align: right;
+            justify-content:right;
+        }
+        .mat-icon-button {
+            padding: 0;
+            min-width: 0;
+            width: 40px;
+            height: 20px;
+            flex-shrink: 0;
+            line-height: 20px;
+            border-radius: 50%;
+        }
+    }
+    

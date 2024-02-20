@@ -2384,8 +2384,9 @@ debugger
 
   AdList: boolean = false;
   viewgetPatientAppointmentReportPdf(obj) {
+    this.sIsLoading = 'loading-data';
     setTimeout(() => {
-      this.SpinLoading = true;
+      // this.SpinLoading = true;
       this.AdList = true;
       this._opappointmentService.getAppointmentReport(
         obj.VisitId
@@ -2402,7 +2403,7 @@ debugger
           });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
       });
 

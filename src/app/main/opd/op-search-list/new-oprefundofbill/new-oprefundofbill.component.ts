@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj, RegInsert } from '../../appointment/appointment.component';
 import { MatPaginator } from '@angular/material/paginator';
@@ -15,13 +15,25 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { OpPaymentNewComponent } from '../op-payment-new/op-payment-new.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+
+import {default as _rollupMoment, Moment} from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
+import { fuseAnimations } from '@fuse/animations';
 type NewType = Observable<any[]>;
+
+
 @Component({
   selector: 'app-new-oprefundofbill',
   templateUrl: './new-oprefundofbill.component.html',
-  styleUrls: ['./new-oprefundofbill.component.scss']
+  styleUrls: ['./new-oprefundofbill.component.scss'],
+
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class NewOPRefundofbillComponent implements OnInit {
+  
   screenFromString = 'app-op-refund-bill';
   RefundOfBillFormGroup: FormGroup;
   searchFormGroup: FormGroup;
@@ -96,6 +108,7 @@ export class NewOPRefundofbillComponent implements OnInit {
   noOptionFound: boolean = false;
 
 
+  @ViewChild('picker') datePickerElement = MatDatepicker;
   displayedColumns1 = [
     // 'ChargesId',
     // 'ChargesDate',
@@ -163,13 +176,22 @@ export class NewOPRefundofbillComponent implements OnInit {
     this.getRefundofBillIPDList();
     // this.getServiceListCombobox();
      
+
+    console.log(this.datePickerElement) 
+    console.log(this.datePickerElement['opened'])  
+   
   }
 
+  
+
+  
   createSearchForm() {
     return this.formBuilder.group({
     RegId: ['']
     });
   }
+
+
 
   refundForm(): FormGroup {
     return this._formBuilder.group({
@@ -382,15 +404,17 @@ export class NewOPRefundofbillComponent implements OnInit {
     //   }
     // }
   }
-
+  chkform:boolean=true;
   onSave() {
-    debugger;
+   if( !this.RefundOfBillFormGroup.invalid && this.vOPIPId !==0)
+   {
+    this.chkform=false;
     this.isLoading = 'submit';
 
     if(this.TotalRefundAmount <= this.RefundBalAmount){
     let InsertRefundObj = {};
 
-    InsertRefundObj['refundNo'] = '';
+    InsertRefundObj['refundNo'] = 's2';
     InsertRefundObj['RefundDate'] =  this.dateTimeObj.date;
     InsertRefundObj['RefundTime'] =  this.dateTimeObj.date;
     InsertRefundObj['BillId'] = this.BillNo,//parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
@@ -410,7 +434,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     let RefundDetailarr = [];
     let InsertRefundDetailObj = {};
     
-    debugger;
+   
     // this.dataSource.data.forEach((element) => {
       InsertRefundDetailObj['RefundID'] = 0;
       InsertRefundDetailObj['ServiceId'] = this.serviceId || 0;
@@ -419,15 +443,15 @@ export class NewOPRefundofbillComponent implements OnInit {
       InsertRefundDetailObj['DoctorId'] =1;// this.myRefundBillForm.get('DoctorId').value;// this.selectedAdvanceObj.Doctorname;
       InsertRefundDetailObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
       InsertRefundDetailObj['AddBy'] = this.accountService.currentUserValue.user.id,
-      InsertRefundDetailObj['ChargesId'] = this.ChargeId;
+      InsertRefundDetailObj['ChargesId'] = this.serviceId ||  this.ChargeId;
 
       RefundDetailarr.push(InsertRefundDetailObj);
-   
+    // });
     let AddchargesRefundAmountarr = [];
     let AddchargesRefundAmountObj = {};
     
     this.dataSource.data.forEach((element) => {
-      AddchargesRefundAmountObj['ChargesId'] = 1;
+      AddchargesRefundAmountObj['ChargesId'] =this.serviceId || 0;
       AddchargesRefundAmountObj['RefundAmount'] =  parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
       AddchargesRefundAmountarr.push(AddchargesRefundAmountObj);
     });
@@ -492,7 +516,7 @@ Swal.fire("Refund Amount is More than RefundBalance")
     this.dataSource2.data=[];
     this.RefundOfBillFormGroup.reset();
   }
-
+  }
 
   
 SpinLoading:boolean=false;
