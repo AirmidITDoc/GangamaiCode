@@ -102,7 +102,8 @@ mat-footer-row mat-footer-cell {
 
 // Header dialog part of content // Subhash
 .mat-dialog-container {
-    padding: 5px !important;
+    // padding: 5px !important;
+    padding: 0px !important;
 }
 //Radio button Size and Css
 .mat-radio-label-content {
@@ -417,6 +418,7 @@ background: rgba(240, 239, 239, 0.15);
 // Body Them Color
   body.theme-default .accent{
     background-color: $primary-600 !important;
+    color: $primary-25;
     // background-color: #0479b4 !important;
     // color: black !important;
 }
@@ -555,13 +557,13 @@ legend {
 }
 
 .toast-title, .toast-message {
-    font-size: 16px;
+    font-size: 14px;
     letter-spacing: 1.3px;
     color: white;
 }
 
 .mat-tab-label .mat-tab-label-content {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
 }
 

@@ -8,3 +8,6 @@
 @import "./components/index";
 @import "./pages/index";
 // @import "./responsive";
+.material-icons{
+    @include font-size(22px);
+}

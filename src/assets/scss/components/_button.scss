@@ -1,19 +1,20 @@
 .btn {
-  font-family: $inter-semibold;
+  font-family: $inter-medium;
   font-weight: normal;
   line-height: normal;
   border-radius: 8px;
-  // padding: 12px 16px;
-  padding: 15px 24px;
+  padding: 12px 18px;
   letter-spacing: 0.28px;
-  @include font-size(14px);
+  cursor: pointer;
+  @include font-size(13px);
+  border: 1px solid;
   &.btn-xxl {
     padding: 21px 40px;
     @include font-size(16px);
   }
   &.btn-xl {
-    padding: 21px 40px;
-    @include font-size(16px);
+    padding: 15px 20px;
+    @include font-size(13px);
     letter-spacing: 0.32px;
   }
   &.btn-transparent {
@@ -76,6 +77,11 @@
     &.btn-primary {
       background: $primary-600;
       border-color: $primary-600;
+      color: $primary-25;
+    }
+    &.btn-danger {
+      background: $red-600;
+      border-color: $red-600;
     }
     &.btn-warning {
       background: t($ngt-warning);
@@ -85,6 +91,11 @@
       background: transparent;
       color: $primary-600;
       border-color: $primary-600;
+    }
+    &.btn-danger-outline {
+      background: transparent;
+      color: $red-600;
+      border-color: $red-600;
     }
     &.btn-group-primary-gradient {
       background: linear-gradient(273.05deg, #4940c1 -11.82%, #20233b 70.41%);
@@ -160,9 +171,9 @@
     &.btn-with-icon {
       span {
         &.btn-icon {
-          height: 16px;
-          width: 16px;
-          margin-right: 5px;
+        //   height: 16px;
+        //   width: 16px;
+          margin-right: 8px;
         }
       }
     }

@@ -1,24 +1,29 @@
 .mat-table {
     .mat-header-row {
+        min-height: auto;
+        height: auto;
         .mat-header-cell {
             @include font-size(13px);
+            color: inherit;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             &:not(:first-of-type) {
                 padding: 15px 10px;
             }
             // @include line-clamp(1);
-            .mat-sort-header-button {
-                color: $primary-25;
-            }
-
+            .mat-sort-header-button,
             .mat-sort-header-arrow {
                 color: $primary-25;
             }
         }
     }
-    .mat-sort-header-content {
-        color: $primary-25;
-    }
+    // .mat-sort-header-content {
+    //     color: $primary-25;
+    // }
     .mat-row {
+        min-height: auto;
+        height: auto;
         .mat-cell {
             @include font-size(12px);
             word-break: break-word;
