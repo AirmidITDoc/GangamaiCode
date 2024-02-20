@@ -292,6 +292,8 @@
                                         <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount"
                                             name="RefundBalAmount">
                                     </mat-form-field>&nbsp;
+
+                                    
                                     </div>
 
                                 </form>
@@ -300,9 +302,9 @@
 
                                 <div class="footer-navigation-container">
                                     <div class="next-div">
-                                        <button class="next-btn" [disabled]="RefundOfBillFormGroup.invalid || vOPIPId !==0"
+                                        <button class="next-btn" [disabled]="chkform"
                                             (click)="onSave()" 
-                                            style="border-radius: 16px;margin-left:500px;">Save</button>
+                                            style="border-radius: 16px;margin-left:650px;">Save</button>
                                         <button class="footer-btn" (click)="onClose()"
                                             style="border-radius: 16px;margin-left: 10px;">Close</button>
 

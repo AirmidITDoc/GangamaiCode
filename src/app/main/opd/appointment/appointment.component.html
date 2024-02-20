@@ -140,6 +140,11 @@
                         <button mat-raised-button (click)="exportReportPdf()"
                           style="background-color: #8e67e0;color: white;">Export Table(PDF)
                         </button> -->
+
+                        <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                        class="backgroundBlur">
+                        <div class="spinner-border text-danger"></div>
+                    </div>
                       </div>
                       <mat-table #table matSort table="table1" [dataSource]="dataSource" id="app-table"
                         [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">

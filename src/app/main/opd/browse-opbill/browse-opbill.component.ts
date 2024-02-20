@@ -58,7 +58,7 @@ export class BrowseOPBillComponent implements OnInit {
 
 
   isLoading = true;
-
+  sIsLoading: string = '';
   displayedColumns = [
 
     'chkBalanceAmt',
@@ -319,8 +319,9 @@ onShow(event: MouseEvent) {
 
 
 viewgetOPBillReportPdf(contact) {
+  this.sIsLoading = 'loading-data';
   setTimeout(() => {
-    this.SpinLoading =true;
+    // this.SpinLoading =true;
    this.AdList=true;
   this._BrowseOPDBillsService.getOpBillReceipt(
  contact.BillNo
@@ -337,7 +338,7 @@ viewgetOPBillReportPdf(contact) {
       });
       matDialog.afterClosed().subscribe(result => {
         this.AdList=false;
-        this.SpinLoading = false;
+        this.sIsLoading = '';
       });
   });
  
