@@ -12,6 +12,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import Swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-current-stock',
@@ -36,12 +37,14 @@ export class CurrentStockComponent implements OnInit {
     // 'action',
     'BatchNo',
     'BatchExpDate',
+    'LedgerDate',
     'ItemName',
+    'UnitMRP',
     'ReceivedQty',
     'IssueQty',
     'BalanceQty',
-    'UnitMRP',
-    'LedgerDate'
+   
+   
     
   ];
   displayedColumnsItemWise = [
@@ -80,6 +83,7 @@ export class CurrentStockComponent implements OnInit {
   constructor(
     public _CurrentStockService: CurrentStockService,
     public _matDialog: MatDialog,
+    private reportDownloadService: ExcelDownloadService,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private _loggedService: AuthenticationService,
@@ -148,34 +152,26 @@ export class CurrentStockComponent implements OnInit {
      "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
     }
     setTimeout(() => {
-      this.isLoadingStr = 'loading';
+      
       this._CurrentStockService.getDayWiseStockList(vdata).subscribe(
         (Visit) => {
           this.dsDaywiseStock.data = Visit as DayWiseStockList[];
           this.dsDaywiseStock.sort = this.sort;
           this.dsDaywiseStock.paginator = this.thirdPaginator;
+          this.sIsLoading = '';
           this.isLoadingStr = this.dsDaywiseStock.data.length == 0 ? 'no-data' : '';
         },
         (error) => {
-          this.isLoading = 'list-loaded';
+         this.isLoadingStr = 'no-data';
         }
       );
     }, 1000);
 
-  // // console.log(vdata);
-  //     this._CurrentStockService.getDayWiseStockList(vdata).subscribe(data => {
-  //     this.dsDaywiseStock.data = data as DayWiseStockList[];
-  //   // console.log(this.dsDaywiseStock.data)
-  //     this.dsDaywiseStock.sort = this.sort;
-  //     this.dsDaywiseStock.paginator = this.thirdPaginator;
-  //     this.sIsLoading = '';
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
+ 
   } 
   
   getItemWiseStockList() {
+    debugger
     this.sIsLoading = 'loading-data';
     var vdata = {
      "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -183,30 +179,25 @@ export class CurrentStockComponent implements OnInit {
      "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
     }
     setTimeout(() => {
-      this.isLoadingStr = 'loading';
+      // this.isLoadingStr = 'loading';
       this._CurrentStockService.getItemWiseStockList(vdata).subscribe(
         (Visit) => {
           this.dsItemwiseStock.data = Visit as ItemWiseStockList[];
           this.dsItemwiseStock.sort = this.sort;
           this.dsItemwiseStock.paginator = this.secondPaginator;
+          this.sIsLoading = '';
           this.isLoadingStr = this.dsItemwiseStock.data.length == 0 ? 'no-data' : '';
         },
         (error) => {
-          this.isLoading = 'list-loaded';
+           this.isLoadingStr = 'no-data';
         }
       );
     }, 1000);
-
-    //   this._CurrentStockService.getItemWiseStockList(vdata).subscribe(data => {
-    //   this.dsItemwiseStock.data = data as ItemWiseStockList[];
-    //   this.dsItemwiseStock.sort = this.sort;
-    //   this.dsItemwiseStock.paginator = this.secondPaginator;
-    //   this.sIsLoading = '';
-    // },
-    //   error => {
-    //     this.sIsLoading = '';
-    //   });
+   
+   
   }
+
+
   @ViewChild('ItemWiseStockTemplate') ItemWiseStockTemplate: ElementRef;
   reportPrintObjList: ItemWiseStockList[] = [];
   printTemplate: any;
@@ -216,73 +207,34 @@ export class CurrentStockComponent implements OnInit {
  
 
   _loaderShow:boolean = true;
-  getPrint() {
-    this.printflag = true;
-    var vdata = {
-      "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "StoreId": this._loggedService.currentUserValue.user.storeId || 0     
-     }
+  exportItemReportExcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['ItemName', 'ConversionFactor', 'Current_BalQty', 'Received_Qty', 'Sales_Qty'];
+    this.reportDownloadService.getExportJsonData(this.dsItemwiseStock.data, exportHeaders, 'ItemWise Report');
+ 
+    this.dsItemwiseStock.data=[];
+    this.sIsLoading = '';
+  }
 
-     this.FromDate=this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd");
-     this.Todate=this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd");
+    
+  exportDayReportExcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['BatchNo', 'BatchExpDate','LedgerDate' ,'ItemName', 'UnitMRP', 'ReceivedQty', 'IssueQty', 'BalanceQty'];
+    this.reportDownloadService.getExportJsonData(this.dsDaywiseStock.data, exportHeaders, 'Day Wise Report');
+    this.dsDaywiseStock.data=[];
+    this.sIsLoading = '';
+  }
 
-    // console.log(vdata);
- //   this.Fromdate=this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") 
-    this._CurrentStockService.getItemWiseStockListPrint(vdata).subscribe(data => {
-      this.reportPrintObjList = data as ItemWiseStockList[];
-    
-        // console.log(this.reportPrintObjList);
+  exportCurrentStockReportExcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['StoreName', 'ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty'];
+    this.reportDownloadService.getExportJsonData(this.dsCurrentStock.data, exportHeaders, 'CurrentStock');
+    this.dsCurrentStock.data=[];
+    this.sIsLoading = '';
+  }
 
-        setTimeout(() => {
-          this.print3();
-         
-        }, 1000);
-    })
-    this.printflag = false;
-  }    
-    
-    print3() {
-      let popupWin, printContents;
-  
-      popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  
-      popupWin.document.write(` <html>
-      <head><style type="text/css">`);
-      popupWin.document.write(`
-        </style>
-        <style type="text/css" media="print">
-      @page { size: portrait; }
-    </style>
-            <title></title>
-        </head>
-      `);
-      popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.ItemWiseStockTemplate.nativeElement.innerHTML}</body>
-      <script>
-        var css = '@page { size: portrait; }',
-        head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style');
-        style.type = 'text/css';
-        style.media = 'print';
-    
-        if (style.styleSheet){
-            style.styleSheet.cssText = css;
-        } else {
-            style.appendChild(document.createTextNode(css));
-        }
-        head.appendChild(style);
-      </script>
-      </html>`);
-      // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-      // </html>`);
-  
-      popupWin.document.close();
-    }
-  
-  
-    
   viewgetDaywisestockReportPdf() {
-    debugger
+    this.sIsLoading == 'loading-data'
     let LedgerDate =  this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
     let StoreId =this._loggedService.currentUserValue.user.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
     setTimeout(() => {
@@ -302,13 +254,9 @@ export class CurrentStockComponent implements OnInit {
           }
         });
         dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
-        });
+     
     });
    
     },100);
@@ -316,7 +264,7 @@ export class CurrentStockComponent implements OnInit {
 
   
   viewgetCurrentstockReportPdf() {
-    debugger
+    this.sIsLoading == 'loading-data'
     let ItemName = this._CurrentStockService.SearchGroup.get("ItemCategory").value + '%' || "%"
     let StoreId = this._loggedService.currentUserValue.user.storeId || this._CurrentStockService.SearchGroup.get("StoreId").value.StoreId || 0
     setTimeout(() => {
@@ -335,13 +283,9 @@ export class CurrentStockComponent implements OnInit {
           }
         });
         dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
-        });
+       
     });
    
     },100);
@@ -349,6 +293,7 @@ export class CurrentStockComponent implements OnInit {
 
   
   viewgetItemwisestockReportPdf() {
+    this.sIsLoading == 'loading-data'
     let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
     let todate =this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
     let StoreId = this._loggedService.currentUserValue.user.storeId || this._CurrentStockService.ItemWiseFrom.get("StoreId").value.StoreId || 0
@@ -367,8 +312,7 @@ export class CurrentStockComponent implements OnInit {
           }
         });
         dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
     });
     },1000);

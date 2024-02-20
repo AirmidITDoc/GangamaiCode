@@ -296,12 +296,17 @@
                                                         <mat-icon title="verify Menu" *ngIf="row.IsVerified==0">
                                                             verified_user</mat-icon>
                                                     </button>
-                                                    <button mat-icon-button (click)="GRNEmail(row)">
+                                                    <!-- <button mat-icon-button (click)="GRNEmail(row)">
                                                         <mat-icon *ngIf="row.IsVerified==0" [disabled]="row.disabled"
                                                             class="disabled-icon" title="Email Menu">mail</mat-icon>
                                                         <mat-icon *ngIf="row.IsVerified==1"
                                                             title="Email Menu">mail</mat-icon>
-                                                    </button>
+                                                    </button> -->
+                                                    <button mat-icon-button matTooltip="Send Bill On WhatsApp"
+                                                    (click)="getWhatsappshareSales(row)">
+                                                    <img width="100" height="20px"
+                                                        src="assets/images/logos/WhatsApp.png">
+                                            </button> 
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="loading">

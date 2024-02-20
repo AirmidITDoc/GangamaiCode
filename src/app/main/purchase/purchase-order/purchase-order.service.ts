@@ -185,6 +185,13 @@ export class PurchaseOrderService {
   return this._httpClient.get("Pharmacy/view-Purchaseorder?PurchaseID=" + PurchaseID);
  }
   
+ 
+
+ public InsertWhatsappPurchaseorder(emp){
+  return this._httpClient.post("WhatsappEmail/WhatsappSalesSave", emp);
+}
+
+
   populateForm(employee) {
     // this.PurchaseStoreFrom.patchValue(employee);
   }

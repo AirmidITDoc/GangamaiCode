@@ -46,7 +46,7 @@ export class NewRequestforlabComponent implements OnInit {
   vOPDNo:any=0;
   vTariffId:any=0;
   vClassId:any=0;
-  
+  vAge:any=0;
  
   displayedServiceColumns: string[] = [
   'ServiceName',
@@ -180,7 +180,7 @@ export class NewRequestforlabComponent implements OnInit {
     this.RegId = obj.RegId;
     this.vAdmissionID = obj.AdmissionID;
     this.DoctorName = obj.DoctorName;
-
+    this.vAge=obj.Age;
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
     this.Doctorname = obj.DocName;
@@ -190,6 +190,10 @@ export class NewRequestforlabComponent implements OnInit {
     this.vClassId=obj.classId  
    // console.log( this.PatientName)
     // this.setDropdownObjs();
+
+    if(this.vAge > 100){
+      Swal.fire("Age is Above 100 can't Generate Request !");
+    }
   }
   onChangeReg(event) {
     if (event.value == 'registration') {

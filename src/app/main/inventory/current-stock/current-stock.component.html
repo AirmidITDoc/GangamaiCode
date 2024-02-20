@@ -109,6 +109,10 @@
                                                 (click)="viewgetCurrentstockReportPdf()" matTooltip="Pdf">
                                                 <mat-icon class="searchiconbutton">book</mat-icon>
                                             </button>
+                                            
+                                            <button mat-raised-button (click)="exportCurrentStockReportExcel()" [disabled]="! (dsCurrentStock.data.length > 0)"
+                                                   style="background-color: #8e67e0;color: white; margin-right: 15px;margin-top: 10px;">Export Table(Excel)
+                                            </button>
                                         </div>
 
                                     </div>
@@ -130,12 +134,12 @@
 
                                 <div fxlayout="row">
                                     <div style="width: 100%;">
-                                        <!-- <div matColumnDef="loading"
+                                        <div matColumnDef="loading"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                             class="backgroundBlur">
                                             <div class="spinner-border text-danger"></div>
 
-                                        </div> -->
+                                        </div>
 
                                         <mat-table #table class="table1" matSort [dataSource]="dsCurrentStock"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
@@ -211,9 +215,9 @@
 
                                             <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
+                                                    <!-- <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
                                                         [diameter]='30'>
-                                                    </mat-spinner>
+                                                    </mat-spinner> -->
                                                     <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                                 </mat-footer-cell>
                                             </ng-container>
@@ -324,6 +328,10 @@
                                                 (click)="viewgetDaywisestockReportPdf()" matTooltip="Pdf">
                                                 <mat-icon class="searchiconbutton">book</mat-icon>
                                             </button>
+                                            <br/>
+                                            <button mat-raised-button (click)="exportDayReportExcel()" [disabled]="! (dsDaywiseStock.data.length > 0)"
+                                            style="background-color: #8e67e0;color: white; margin-right: 15px;margin-top: 10px;">Export Table(Excel)
+                                             </button>
                                         </div>
 
                                     </div>
@@ -344,12 +352,12 @@
 
                                 <div fxlayout="row">
                                     <div style="width: 100%;">
-                                        <!-- <div matColumnDef="loading"
+                                        <div matColumnDef="loading"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                             class="backgroundBlur">
                                             <div class="spinner-border text-danger"></div>
 
-                                        </div> -->
+                                        </div>
 
                                         <mat-table #table class="table2" matSort [dataSource]="dsDaywiseStock"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
@@ -382,20 +390,22 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                            <ng-container matColumnDef="UnitMRP">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Unit MRP
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.UnitMRP }}
-                                                </mat-cell>
-                                            </ng-container>
+                                       
 
                                             <ng-container matColumnDef="ItemName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     ItemName </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.ItemName}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="UnitMRP">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Unit MRP
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.UnitMRP }}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -426,14 +436,7 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                            <ng-container matColumnDef="UnitMRP">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Unit MRP
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.UnitMRP }}
-                                                </mat-cell>
-                                            </ng-container>
+                                         
 
                                             <!-- <ng-container matColumnDef="action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
@@ -452,9 +455,9 @@
 
                                             <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
+                                                    <!-- <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
                                                         [diameter]='30'>
-                                                    </mat-spinner>
+                                                    </mat-spinner> -->
                                                     <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                                 </mat-footer-cell>
                                             </ng-container>
@@ -575,6 +578,10 @@
                                                 (click)="viewgetItemwisestockReportPdf()" matTooltip="Pdf">
                                                 <mat-icon class="searchiconbutton">book</mat-icon>
                                             </button>
+                                            <br/>
+                                            <button mat-raised-button (click)="exportItemReportExcel()" [disabled]="!(dsItemwiseStock.data.length > 0)"
+                                            style="background-color: #8e67e0;color: white; margin-right: 15px;margin-top: 10px;">Export Table(Excel)
+                                             </button>
                                         </div>
 
 
@@ -596,17 +603,24 @@
 
                                 <div fxlayout="row">
                                     <div style="width: 100%;">
-                                        <!-- <div matColumnDef="loading"
+                                        <div matColumnDef="loading"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                             class="backgroundBlur">
                                             <div class="spinner-border text-danger"></div>
 
-                                        </div> -->
+                                        </div>
 
                                         <mat-table #table class="table3" matSort [dataSource]="dsItemwiseStock"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
 
 
+                                            <ng-container matColumnDef="ItemName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    ItemName </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.ItemName}}
+                                                </mat-cell>
+                                            </ng-container>
 
                                             <ng-container matColumnDef="ConversionFactor">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -644,13 +658,7 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                            <ng-container matColumnDef="ItemName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    ItemName </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ItemName}}
-                                                </mat-cell>
-                                            </ng-container>
+                                          
 
                                             <ng-container matColumnDef="loading">
                                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -659,9 +667,9 @@
 
                                             <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
+                                                    <!-- <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
                                                         [diameter]='30'>
-                                                    </mat-spinner>
+                                                    </mat-spinner> -->
                                                     <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                                 </mat-footer-cell>
                                             </ng-container>

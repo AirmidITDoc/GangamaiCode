@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserList } from '../create-user.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -24,8 +24,8 @@ export class ChangePasswordComponent implements OnInit {
   Uname: String;
   changePasswordFormGroup: FormGroup;
   hide = true;
-
-
+  UserId:any;
+  passrule:boolean=false;
   
   constructor(private _fuseSidebarService: FuseSidebarService,
     private accountService: AuthenticationService,
@@ -36,6 +36,7 @@ export class ChangePasswordComponent implements OnInit {
     public _matDialog: MatDialog,
     private formBuilder: FormBuilder,) {
     dialogRef.disableClose = true;
+    this.UserId= this.accountService.currentUserValue.user.id;
   }
 
   ngOnInit(): void {
@@ -51,6 +52,20 @@ export class ChangePasswordComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onClear(){
+    this.changePasswordFormGroup.get("password").reset();
+  }
+
+  passrulesdisp(){
+    setTimeout(() => {
+      this.passrule=true;
+    }, 500);
+    this.passrule=false;
+  }
+  changepassflag(){
+    this.passrule=false;
+  }
+ 
   createchangePasswordForm() {
     return this.formBuilder.group({
       fname: '',
@@ -63,8 +78,18 @@ export class ChangePasswordComponent implements OnInit {
   changepassword() {
     let pass = this.changePasswordFormGroup.get('password').value;
     let id = this.accountService.currentUserValue.user.id;
-    let UpdateUserPassword = "update LoginManager set Password ='" + pass + "' where UserId=" + id 
-    this._CreateUserService.getpasswwordupdate(UpdateUserPassword).subscribe(data => {
+
+    // let UpdateUserPassword = "update LoginManager set Password ='" + pass + "' where UserId=" + id 
+    let changePasswordObj = {};
+    changePasswordObj['userId'] =  this.UserId
+    changePasswordObj['userName'] = this.Uname;
+    changePasswordObj['password'] = this.changePasswordFormGroup.get('password').value || ''
+
+      let submitData = {
+        "changePassword": changePasswordObj,
+      }
+    
+    this._CreateUserService.getpasswwordChange(submitData).subscribe(data => {
       if (data) {
         Swal.fire('Pasword Changed!', 'Record updated Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
@@ -79,6 +104,12 @@ export class ChangePasswordComponent implements OnInit {
       //   this.isLoading = 'list-loaded';
       // }
     );
+  }
+
+  screenFromString = 'OP-billing';
+  dateTimeObj: any;
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
   }
 }
 

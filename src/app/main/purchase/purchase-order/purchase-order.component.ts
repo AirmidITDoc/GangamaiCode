@@ -106,6 +106,11 @@ export class PurchaseOrderComponent implements OnInit {
   TotalQty: any = 0;
   SpinLoading:boolean=false;
 
+  Filepath: any;
+  loadingarry: any = [];
+  currentDate = new Date();
+  IsLoading: boolean = false;
+
   dsPurchaseOrder = new MatTableDataSource<PurchaseOrder>();
 
   dsPurchaseItemList = new MatTableDataSource<PurchaseItemList>();
@@ -439,7 +444,44 @@ export class PurchaseOrderComponent implements OnInit {
     },100);
   }
 
+ 
   
+  getWhatsappshareSales(el) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": 11,//el.RegNo,
+        "smsString": "Dear" + el.PatientName + ",Your Sales Bill has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+        "isSent": 0,
+        "smsType": 'WhatsApp',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el.PurchaseID,
+        "PatientType":2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": this.Filepath || '',
+        "smsOutGoingID": 0
+
+      }
+    }
+    console.log(m_data);
+    this._PurchaseOrder.InsertWhatsappPurchaseorder(m_data).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+      }
+
+    });
+    this.IsLoading = false;
+    el.button.disbled = false;
+  }
 
   onClose() { }
   onClear() { }

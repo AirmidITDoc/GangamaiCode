@@ -160,6 +160,11 @@ export class GoodReceiptnoteComponent implements OnInit {
   tab: number = 3;
   selectedIndex = 0;
 
+  Filepath: any;
+  loadingarry: any = [];
+  currentDate = new Date();
+  IsLoading: boolean = false;
+
   constructor(
     public _GRNService: GoodReceiptnoteService,
     public _matDialog: MatDialog,
@@ -1167,6 +1172,46 @@ export class GoodReceiptnoteComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-success',
       });
     }); this.getGRNList();
+  }
+
+
+
+
+  getWhatsappshareSales(el) {
+    
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": 22,//el.RegNo,
+        "smsString": "Dear" + el.PatientName + ",Your GRN has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+        "isSent": 0,
+        "smsType": 'WhatsApp',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el.GrnId,
+        "PatientType":2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": this.Filepath || '',
+        "smsOutGoingID": 0
+
+      }
+    }
+    console.log(m_data);
+    this._GRNService.InsertWhatsappGRN(m_data).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+      }
+
+    });
+    this.IsLoading = false;
+    el.button.disable = false;
   }
 
   onScroll() {
