@@ -441,24 +441,30 @@ export class UpdateGRNComponent implements OnInit {
 
   onAdd(event) {
 
+    // console.log(this.lastDay)
+    // if (this.lastDay && this.lastDay.length === 10) {
+    //   const day = +this.lastDay.substring(0, 2);
+    //   const month = +this.lastDay.substring(3, 5);
+    //   const year = +this.lastDay.substring(6, 10);
+
+    //   this.lastDay2 = `${year}/${this.pad(month)}/${day}`;
+    //   console.log(this.lastDay)
+    // }
+
+    debugger
     console.log(this.lastDay)
-    if (this.lastDay && this.lastDay.length === 10) {
+    
       const day = +this.lastDay.substring(0, 2);
       const month = +this.lastDay.substring(3, 5);
       const year = +this.lastDay.substring(6, 10);
 
-      this.lastDay2 = `${year}/${this.pad(month)}/${day}`;
-      console.log(this.lastDay)
-    }
-
+      this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+      console.log(this.vExpDate)
+    
 
 
     this.dsItemNameList.data = [];
     this.chargeslist = this.dsTempItemNameList.data;
-
-    const expirationDate1 = new Date(Date.parse(this.lastDay2));
-    console.log(expirationDate1);
-
 
     this.chargeslist.push(
       {
@@ -468,7 +474,7 @@ export class UpdateGRNComponent implements OnInit {
         UOMId: this.UOM,
         HSNcode: this.HSNCode,
         BatchNo: this.BatchNo,
-        BatchExpDate: this.lastDay2,// this.datePipe.transform(this.lastDay, "yyyy-MM-dd"),
+        BatchExpDate:this.lastDay,// this.datePipe.transform(this.lastDay, "yyyy-MM-dd"),
         ReceiveQty: this.Qty || 0,
         FreeQty: this.FreeQty || 0,
         TotalQty: this.FinalTotalQty || 0,
@@ -1264,6 +1270,16 @@ export class UpdateGRNComponent implements OnInit {
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
 
+      debugger
+      console.log(element.BatchExpDate)
+      if (element.BatchExpDate && element.BatchExpDate.length === 10) {
+        const day = +element.BatchExpDate.substring(0, 2);
+        const month = +element.BatchExpDate.substring(3, 5);
+        const year = +element.BatchExpDate.substring(6, 10);
+
+        this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+        console.log(this.vExpDate)
+      }
 
       let grnDetailSaveObj = {};
       // grnDetailSaveObj['grnDetID'] = 0;
@@ -1288,7 +1304,7 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['poNo'] = element.PurchaseId || 0;
       grnDetailSaveObj['batchNo'] = element.BatchNo || "";
 
-      grnDetailSaveObj['batchExpDate'] = this.datePipe.transform(this.lastDay1, "mm/dd/yyyy");
+      grnDetailSaveObj['batchExpDate'] = this.vExpDate;//this.datePipe.transform(this.lastDay1, "mm/dd/yyyy");
       grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
       grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
       grnDetailSaveObj['cgstPer'] = element.CGSTPer || 0;
@@ -1534,8 +1550,18 @@ export class UpdateGRNComponent implements OnInit {
 
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
-      //
-      // console.log(element);
+      
+      debugger
+      console.log(element.BatchExpDate)
+      if (element.BatchExpDate && element.BatchExpDate.length === 10) {
+        const day = +element.BatchExpDate.substring(0, 2);
+        const month = +element.BatchExpDate.substring(3, 5);
+        const year = +element.BatchExpDate.substring(6, 10);
+
+        this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+        console.log(this.vExpDate)
+      }
+
 
       let grnDetailSaveObj = {};
       grnDetailSaveObj['grnDetID'] = 0;
@@ -1559,7 +1585,7 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['totalQty'] = this.FinalTotalQty || 0;
       grnDetailSaveObj['poNo'] = 0; //this.IgstAmt;
       grnDetailSaveObj['batchNo'] = element.BatchNo || "";
-      grnDetailSaveObj['batchExpDate'] = this.datePipe.transform(element.BatchExpDate, "yyyy-MM") || this.date.value;
+      grnDetailSaveObj['batchExpDate'] = this.vExpDate;//this.datePipe.transform(element.BatchExpDate, "yyyy-MM") || this.date.value;
       grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
       grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
       grnDetailSaveObj['cgstPer'] = element.CGSTPer || 0;
