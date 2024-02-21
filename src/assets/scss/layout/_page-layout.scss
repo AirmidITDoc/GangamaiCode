@@ -2,6 +2,9 @@
     .center{
         .header {
             height: 70px ;
+            .welcome-message{
+                @include font-size(20px);
+            }
             .header-row {
                 width: 100%;
             }

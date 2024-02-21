@@ -1,0 +1,12 @@
+.mat-tab-group {
+    .mat-tab-header {
+        .mat-tab-label-container {
+            .mat-tab-labels {
+                .mat-tab-label-content {
+                    @include font-size(13px);
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

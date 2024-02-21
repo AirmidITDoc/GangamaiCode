@@ -166,14 +166,15 @@
     }
 }
 @each $prop, $abbrev in (width: w) {
-    @for $index from 0 through 200 {
-        $size: $index * 5;
+    @for $index from 0 through 50 {
+        $size: $index * 10;
         $length: #{$size}px;
 
         .#{$abbrev}-#{$size} {
             #{$prop}: $length;
             min-#{$prop}: $length;
             max-#{$prop}: $length;
+            
         }
     }
 }

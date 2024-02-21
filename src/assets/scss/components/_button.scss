@@ -148,10 +148,10 @@
 }
 @include media-breakpoint('xs') {
   .btn {
-    padding: 15px 24px;
+    padding: 10px 16px;
     // font-family: $inter-medium;
     font-family: $inter-semibold;
-    @include font-size(14px);
+    @include font-size(12px);
 
     &.btn-xxl {
       padding: 17px 40px;

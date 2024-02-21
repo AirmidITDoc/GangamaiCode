@@ -9,18 +9,14 @@
             overflow: hidden;
             text-overflow: ellipsis;
             &:not(:first-of-type) {
-                padding: 15px 10px;
+                padding: 10px 0px;
             }
-            // @include line-clamp(1);
             .mat-sort-header-button,
             .mat-sort-header-arrow {
-                color: $primary-25;
+                color: inherit;
             }
         }
     }
-    // .mat-sort-header-content {
-    //     color: $primary-25;
-    // }
     .mat-row {
         min-height: auto;
         height: auto;
@@ -29,7 +25,23 @@
             word-break: break-word;
             line-height: 20px;
             &:not(:first-of-type) {
-                padding: 10px;
+                // padding: 10px;
+            }
+            .mat-icon-button {
+                height: 25px;
+                width: 25px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                line-height: 25px;
+                .material-icons {
+                    font-size: 1.5rem;
+                }
+            }
+            span {
+                @include media-breakpoint('lt-lg'){
+                    @include line-clamp(1);
+                }
             }
         }
         &:hover {

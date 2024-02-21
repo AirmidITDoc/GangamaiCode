@@ -1,4 +1,3 @@
-
 @import "src/@fuse/scss/fuse"; // Fuse styles
 @import "./utils/other-mixin/font-size"; // Added this temporary
 @import "./../fonts/font";
@@ -8,6 +7,3 @@
 @import "./components/index";
 @import "./pages/index";
 // @import "./responsive";
-.material-icons{
-    @include font-size(22px);
-}
