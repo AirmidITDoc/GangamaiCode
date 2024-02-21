@@ -395,7 +395,7 @@ export class AdmissionComponent implements OnInit {
       RelativeAddress: '',
       RelatvieMobileNo: ['', [ Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       RelationshipId: '',
-      IsMLC:['1']
+      IsMLC:[true]
     });
   }
   createSearchForm() {
@@ -1222,7 +1222,7 @@ export class AdmissionComponent implements OnInit {
 
  OnSaveAdmission() {
     
-  if(!this.personalFormGroup && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)
+  if(!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)
   {
     if (this.searchFormGroup.get('regRadio').value == "registration") {
       //Api
@@ -1310,9 +1310,9 @@ export class AdmissionComponent implements OnInit {
 
 
       let query = "Update BedMaster set IsAvailible=0 where BedId=" + this.wardFormGroup.get('BedId').value.BedId;
-      
+      console.log(submissionObj);
          this._AdmissionService.AdmissionInsert(submissionObj).subscribe(response => {
-      
+         
         if (response) {
           
           Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
@@ -1491,9 +1491,9 @@ export class AdmissionComponent implements OnInit {
 
 
   getAdmittedPatientListview() {
-    
+    this.sIsLoading = 'loading-data';
     setTimeout(() => {
-      this.SpinLoading =true;
+      
      this.AdList=true;
     this._AdmissionService.getAdmittedPatientListView(
      
@@ -1514,7 +1514,7 @@ export class AdmissionComponent implements OnInit {
 
         matDialog.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = ' ';
         });
     });
    

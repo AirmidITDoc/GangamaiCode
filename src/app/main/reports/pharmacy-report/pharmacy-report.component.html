@@ -33,10 +33,10 @@
                 <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                     <div fxlayout="column" style="width: 50%;">
                         <!-- style="width: 100%;" -->
-                        <div fxFlex.gt-sm="100%" style="width: 90%;">
+                        <div fxFlex.gt-sm="100%" style="width: 99%;">
 
                             <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                            class="backgroundBlur">
+                            class="backgroundBlur" style="height: 100%;">
                             <div class="spinner-border text-danger"></div>
     
                              </div>

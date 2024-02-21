@@ -452,14 +452,14 @@ export class UpdateGRNComponent implements OnInit {
     // }
 
     debugger
-    console.log(this.lastDay)
+    // console.log(this.lastDay)
     
-      const day = +this.lastDay.substring(0, 2);
-      const month = +this.lastDay.substring(3, 5);
-      const year = +this.lastDay.substring(6, 10);
+    //   const day = +this.lastDay.substring(0, 2);
+    //   const month = +this.lastDay.substring(3, 5);
+    //   const year = +this.lastDay.substring(6, 10);
 
-      this.vExpDate = `${year}/${this.pad(month)}/${day}`;
-      console.log(this.vExpDate)
+    //   this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+    //   console.log(this.vExpDate)
     
 
 

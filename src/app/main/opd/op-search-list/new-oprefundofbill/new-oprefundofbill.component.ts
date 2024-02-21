@@ -406,9 +406,11 @@ export class NewOPRefundofbillComponent implements OnInit {
   }
   chkform:boolean=true;
   onSave() {
+
+    debugger
    if( !this.RefundOfBillFormGroup.invalid && this.vOPIPId !==0)
    {
-    this.chkform=false;
+    // this.chkform=false;
     this.isLoading = 'submit';
 
     if(this.TotalRefundAmount <= this.RefundBalAmount){

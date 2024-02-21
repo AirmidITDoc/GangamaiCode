@@ -1088,7 +1088,7 @@ debugger
     };
     console.log(D_data)
     setTimeout(() => {
-      this.isLoadingStr = 'loading';
+      // this.isLoadingStr = 'loading';
       this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
         (Visit) => {
           this.dataSource.data = Visit as VisitMaster[];
@@ -1096,9 +1096,10 @@ debugger
           console.log(Visit)
           this.dataSource.paginator = this.paginator;
           this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+          this.sIsLoading = " ";
         },
         (error) => {
-          this.isLoading = 'list-loaded';
+          // this.isLoading = 'list-loaded';
         }
       );
     }, 1000);

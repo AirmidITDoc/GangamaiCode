@@ -104,12 +104,7 @@
                               matTooltip="search">
                               <mat-icon class="searchiconbutton">search</mat-icon>
                             </button>
-                            <!-- *ngIf="SpinLoading === 'init-payment'" -->
-                            <!-- <div class="container"  style="background-color: blueviolet;width:60px;height:60px;" *ngIf="SpinLoading">
-                              <div class="loading-overlay">
-                                <i class="fa fa-spinner fa-spin fa-4x"></i>
-                              </div>
-                            </div> -->
+                           
 
                             <!-- 
                             <span *ngIf="SpinLoading === 'init-payment'" style="background-color: blueviolet;wi">
@@ -122,9 +117,9 @@
                           <button mat-raised-button class="searchButton" (click)="getAdmittedPatientListview()" s
                             matTooltip="search" style="background-color: #0479b4;width: 200px;" [disabled]="AdList">
                             Admission List
-                            <span *ngIf="SpinLoading" style="width:40px;height: 40px;">
+                            <!-- <span *ngIf="SpinLoading" style="width:40px;height: 40px;">
                               <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
-                            </span>
+                            </span> -->
                           </button>
                         </div>
 
@@ -147,7 +142,11 @@
 
                       <div fxlayout="row">
                         <div style="width: 100%;">
-
+                          <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                          class="backgroundBlur"  style="height: 100%;">
+                          <div class="spinner-border text-danger"></div>
+  
+                      </div>
                           <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                             class="table1" style="overflow: auto;">
 
