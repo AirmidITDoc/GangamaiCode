@@ -350,7 +350,7 @@ export class UpdateGRNComponent implements OnInit {
         this.lastDay = 'Invalid month';
       }
     } else {
-      this.lastDay = 'Invalid input';
+      this.lastDay = ' ';
     }
   }
 

@@ -722,8 +722,8 @@ export class UpdatePurchaseorderComponent implements OnInit {
     let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
     if (disc >= 100) {
       Swal.fire("Enter Discount less than 100");
-
-    }
+      this._PurchaseOrder.userFormGroup.get('Dis').setValue(0);
+        }
     if (disc) {
       let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
       this.NetAmount = ((this.TotalAmount) - (this._PurchaseOrder.userFormGroup.get('DiscAmount').value)).toFixed(2);

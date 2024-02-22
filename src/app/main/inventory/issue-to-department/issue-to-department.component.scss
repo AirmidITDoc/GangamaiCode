@@ -228,6 +228,13 @@
     align-items: left;
     justify-content:left;
   }
+  .mat-column-ExpDate{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    align-items: left;
+    justify-content:left;
+  }
   .mat-column-BalanceQty{
     width: 120px;
     max-width: 120px;
@@ -253,6 +260,13 @@
     width: 120px;
     max-width: 120px;
     min-width: 120px;
+    align-items: left;
+    justify-content:left;
+  }
+  .mat-column-Action{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
     align-items: left;
     justify-content:left;
   }
