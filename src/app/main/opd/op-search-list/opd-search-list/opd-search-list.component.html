@@ -1,8 +1,8 @@
-<mat-tab-group>
-    <mat-tab>
-        <ng-template mat-tab-label>
+<!-- <mat-tab-group>
+    <mat-tab> -->
+        <!-- <ng-template mat-tab-label>
             OP List
-          </ng-template>
+          </ng-template> -->
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
   
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
@@ -77,14 +77,14 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
-                                      formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
+                                      formControlName="DoctorId" [matAutocomplete]="autoDoctorchk" required>
                                     <span matSuffix style="display: flex;">
                                       <mat-icon class="mat-icon-close"
                                         (click)="_opSearchListService.myFilterform.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
                                       <mat-icon class="mat-icon-close"
                                         (click)="_opSearchListService.myFilterform.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoctor">
+                                    <mat-autocomplete #autoDoctorchk="matAutocomplete" [displayWith]="getOptionTextDoctor">
                                       <mat-option *ngFor="let option of filteredOptionsDoctor| async" [value]="option"
                                         (onSelectionChange)="getVisitList()">
                                         {{option.DoctorName}}
@@ -298,11 +298,7 @@
     <!-- / CENTER -->
     <!-- / CONTENT-->
 </div>
-</mat-tab>
-<mat-tab>
-    <ng-template mat-tab-label>
-       OP Bill
-      </ng-template>
-</mat-tab>
+<!-- </mat-tab>
 
-</mat-tab-group>
+
+</mat-tab-group> -->

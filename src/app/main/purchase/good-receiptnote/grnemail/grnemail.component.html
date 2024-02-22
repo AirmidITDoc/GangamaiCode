@@ -31,36 +31,23 @@
                             style="overflow:hidden;">
 
                             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
-                                <div fxLayout="row">
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>From Mail Id</mat-label>
-                                        <input matInput name="FromMailId" formControlName="FromMailId"
-                                            placeholder="From Mail Id" id="FromMailId" type="email" required>
-                                    </mat-form-field>&nbsp;
-
-                                    <mat-form-field appearance="outline" fxFlex="30%">
-                                        <mat-label>Password</mat-label>
-                                        <input matInput name="Password" formControlName="Password"
-                                            placeholder="Enter Password" id="Password" type="password" required>
-                                    </mat-form-field>
-                                </div>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>To Mail Id</mat-label>
                                     <input matInput name="ToMailId" formControlName="ToMailId" placeholder="To Mail Id"
-                                        id="ToMailId" type="email" required>
+                                        id="ToMailId" type="email" [(ngModel)]="vToMailId" required>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Subject</mat-label>
                                     <input matInput name="Subject" formControlName="Subject" placeholder="Subject"
-                                        id="Subject" type="text" required>
+                                        id="Subject" type="text" required [(ngModel)]="vSubject">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Body</mat-label>
                                     <textarea matInput name="Body" formControlName="Body" placeholder="Write......"
-                                        id="Body" type="text"  required style="height: 60px;"></textarea>
+                                        id="Body" type="text"  required style="height: 60px;" [(ngModel)]="vBody"></textarea>
                                 </mat-form-field>
 
                                 <div matTooltip="Fill All Data  to enable this button!!">

@@ -21,6 +21,7 @@ export class PrescriptionService {
     return this._formBuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
+      PrescriptionStatus:['Pending'],
       RegNo:''
      
       
@@ -58,7 +59,7 @@ export class PrescriptionService {
   }
 
   public getAdmittedpatientlist(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=M_Retrieve_OPIPPatientList", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
   public presciptionSave(employee) {
     return this._httpClient.post("InPatient/InsertIPPrescription", employee);

@@ -40,7 +40,7 @@ export class RequestforlabtestService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_NursingLabRequestDetails",Param)
   }
   public getAdmittedPatientList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientAdmittedListSearch", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
   }
   
   
@@ -52,7 +52,9 @@ export class RequestforlabtestService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList",Param);
   }
 
-  
+ public Canclerequest(query){
+  return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+ }
 
 
   public LabRequestSave(employee) {

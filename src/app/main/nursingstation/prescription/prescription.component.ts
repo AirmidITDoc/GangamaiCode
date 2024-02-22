@@ -15,6 +15,8 @@ import { SampleRequestComponent } from 'app/main/pathology/sample-request/sample
 import { SampleCollectionComponent } from 'app/main/pathology/sample-collection/sample-collection.component';
 import { ResultEntryComponent } from 'app/main/pathology/result-entry/result-entry.component';
 import { RadiologyOrderListComponent } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
+import Swal from 'sweetalert2';
+import { CertificateComponent } from 'app/main/Mrd/certificate/certificate.component';
 
 @Component({
   selector: 'app-prescription',
@@ -27,19 +29,25 @@ export class PrescriptionComponent implements OnInit {
 
   hasSelectedContacts: boolean;
   SpinLoading:boolean=false;
+  PType:any;
   displayedColumns: string[] = [
     'action',
     'RegNo',
     'PatientName',
-    'Vst_Adm_Date',
+    // 'DoctorName',
     'Date',
-    'StoreName',
-    'PreNo'
+    'OPD_IPD_Type',
+    'PTime',
+    'CompanyName',
+    // 'WardName'
+    'AddedBy'
+    
   ]
 
   dscPrescriptionDetList:string[] = [
     'ItemName',
-    'Qty'
+    'Qty',
+    // 'TotalQty'
   ]
 
    
@@ -73,20 +81,30 @@ export class PrescriptionComponent implements OnInit {
   //window
   OpenNewPrescription(){
     this.dialog.open(NewPrescriptionComponent,{
-      // width:'98%',
-      // height:'750px'
-      
-
-      width:'900px;',
-      height:'950px;'
+      height: '95%',
+      width: '100%'
+      //height: '695px !important',
     })
+  }
+
+
+  onChangePrescriptionType(event) {
+    if (event.value == 'Pending') {
+      this.PType = 0;
+      this.getPrescriptionList();
+    }
+    else{
+      this.PType = 1;
+      this.getPrescriptionList();
+    }
   }
 
   getPrescriptionList(){
     var vdata={
       FromDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
       ToDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
-      Reg_No: this._PrescriptionService.mysearchform.get('RegNo').value || 0
+      Reg_No: this._PrescriptionService.mysearchform.get('RegNo').value || 0,
+      Type:this.PType || 0
     }
     // console.log(vdata);
     this._PrescriptionService.getPrecriptionlistmain(vdata).subscribe(data =>{
@@ -98,6 +116,7 @@ export class PrescriptionComponent implements OnInit {
   }
 
   getPrescriptiondetList(Param){
+    debugger
     var vdata={
       IPMedID: Param
 
@@ -108,6 +127,27 @@ export class PrescriptionComponent implements OnInit {
       this.dsprescriptiondetList.paginator = this.paginator;
        console.log(this.dsprescriptiondetList.data);
     })
+  }
+
+  
+  PresItemlist:any =[];
+  deleteTableRow(element) {
+    debugger
+    if(!element.IsClosed){
+    // if (this.key == "Delete") {
+      let index = this.PresItemlist.indexOf(element);
+      if (index >= 0) {
+        this.PresItemlist.splice(index, 1);
+        this.dsprescritionList.data = [];
+        this.dsprescritionList.data = this.PresItemlist;
+      }
+      Swal.fire('Success !', ' Row Deleted Successfully', 'success');
+
+    }
+    else{
+      Swal.fire('Row can not Delete ..!');
+
+    }
   }
 
   onSelect(Parama){
@@ -136,8 +176,8 @@ export class PrescriptionComponent implements OnInit {
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
-          maxWidth: "85vw",
-          height: '750px',
+          maxWidth: "95vw",
+          height: '850px',
           width: '100%',
           data: {
             base64: res["base64"] as string,

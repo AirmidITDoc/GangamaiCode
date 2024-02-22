@@ -21,6 +21,7 @@ import { SearchInforObj } from 'app/main/opd/op-search-list/opd-search-list/opd-
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ToastrService } from 'ngx-toastr'; 
 import { EmailComponent } from './email/email.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 
@@ -103,7 +104,12 @@ export class PurchaseOrderComponent implements OnInit {
   chkNewGRN: any;
 
   TotalQty: any = 0;
+  SpinLoading:boolean=false;
 
+  Filepath: any;
+  loadingarry: any = [];
+  currentDate = new Date();
+  IsLoading: boolean = false;
 
   dsPurchaseOrder = new MatTableDataSource<PurchaseOrder>();
 
@@ -179,6 +185,7 @@ export class PurchaseOrderComponent implements OnInit {
 
     this.getFromStoreSearch();
     this.getSupplierSearchCombo();
+    this.getPurchaseOrderList();
   }
 
 
@@ -357,16 +364,22 @@ export class PurchaseOrderComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getPurchaseOrderList();
     });
     this.getPurchaseOrderList();
   }
-  POEmail() {
-    this.chkNewGRN = 1;
+
+  
+  POEmail(contact) {
+    console.log(contact)
     const dialogRef = this._matDialog.open(EmailComponent,
       {
         maxWidth: "100%",
-        height: '55%',
+        height: '75%',
         width: '55%',
+        data: {
+          Obj:contact
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -403,78 +416,74 @@ export class PurchaseOrderComponent implements OnInit {
   TotalNetAmt: any = 0;
   TOtalDiscPer: any = 0;
   TotalGSTAmt: any = 0;
+  finalamt:any;
 
-  getPrint(el) {
-
-    var m_data = {
-      "PurchaseID": el.PurchaseID
-    }
-    //console.log(m_data);
-    this._PurchaseOrder.getPrintPurchaseOrdert(m_data).subscribe(data => {
-      this.reportPrintObjList = data as PurchaseOrder[];
-      // debugger
-      for (let i = 0; i < 10; i++) {
-        this.reportPrintObj = data[0] as PurchaseOrder;
-        this.TotalAmt += data[i].ItemTotalAmount
-        this.TotalQty += data[i].Qty
-        this.TotalRate += data[i].Rate
-        this.TOtalDiscPer += data[i].DiscAmount
-        this.TotalGSTAmt += data[i].VatAmount
-        this.TotalNetAmt += data[i].GrandTotalAmount
-
-        // console.log(this.TotalAmt);
-        // console.log(this.reportPrintObjList[i]["Qty"]);
-        //   this.TotalQty=this.TotalQty + parseInt(this.reportPrintObj[i]["Qty"]);
-        //   console.log(this.TotalQty)
-
-        // console.log(this.reportPrintObjList);
-
-        setTimeout(() => {
-          this.print3();
-        }, 1000);
-      }
-    })
-
-  }
-
-
-  print3() {
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-      <style type="text/css" media="print">
-    @page { size: portrait; }
-  </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.PurchaseOrderTemplate.nativeElement.innerHTML}</body>
-    <script>
-      var css = '@page { size: portrait; }',
-      head = document.head || document.getElementsByTagName('head')[0],
-      style = document.createElement('style');
-      style.type = 'text/css';
-      style.media = 'print';
   
-      if (style.styleSheet){
-          style.styleSheet.cssText = css;
-      } else {
-          style.appendChild(document.createTextNode(css));
-      }
-      head.appendChild(style);
-    </script>
-    </html>`);
-    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-    // </html>`);
-
-    popupWin.document.close();
+  viewgetPurchaseorderReportPdf(row) {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      
+   this._PurchaseOrder.getPurchaseorderreportview(
+    row.PurchaseID
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "PURCHASE ORDER Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+       
+    });
+   
+    },100);
   }
 
+ 
+  
+  getWhatsappshareSales(el) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": 11,//el.RegNo,
+        "smsString": "Dear" + el.PatientName + ",Your Sales Bill has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+        "isSent": 0,
+        "smsType": 'Purchase',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el.PurchaseID,
+        "PatientType":2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": this.Filepath || '',
+        "smsOutGoingID": 0
+
+      }
+    }
+    console.log(m_data);
+    this._PurchaseOrder.InsertWhatsappPurchaseorder(m_data).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+      }
+
+    });
+    this.IsLoading = false;
+    el.button.disbled = false;
+  }
 
   onClose() { }
   onClear() { }
@@ -537,6 +546,8 @@ export class ItemNameList {
   Mobile:any
   taxAmount:any;
   GSTAmt:any;
+  VatAmount:any;
+  VatPer:any;
   /**
    * Constructor
    *
@@ -654,17 +665,24 @@ export class PurchaseOrder {
   Mobile:any;
   PaymentTermId:any;
   ModeOfPayment: any;
-
-
-
+  DiscAmount:any;
+  TaxAmount:any;
+  GrandTotal:any;
+  AddedByName:any;
+  VerifiedName:any;
+  TransportChanges:any
+  HandlingCharges:any;
+  FreightAmount:any;
+  OctriAmount:any;
   constructor(PurchaseOrder) {
     {
       this.PurchaseNo = PurchaseOrder.PurchaseNo || 0;
+      this.GrandTotal = PurchaseOrder.GrandTotal || 0;
       this.PurchaseDate = PurchaseOrder.PurchaseDate || 0;
       this.PurchaseTime = PurchaseOrder.PurchaseTime || "";
       this.StoreName = PurchaseOrder.StoreName || "";
       this.SupplierName = PurchaseOrder.SupplierName || 0;
-      this.TotalAmount = PurchaseOrder.TotalAmount || "";
+      this.TotalAmount = PurchaseOrder.TotalAmount ||  0;
       this.PurchaseId = PurchaseOrder.PurchaseId || "";
       this.FromStoreId = PurchaseOrder.FromStoreId || "";
       this.ItemTotalAmount = PurchaseOrder.ItemTotalAmount || "";

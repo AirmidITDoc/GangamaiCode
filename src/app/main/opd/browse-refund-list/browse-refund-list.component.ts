@@ -11,6 +11,7 @@ import { BrowseRefundlistService } from './browse-refundlist.service';
 import { BrowseOPDBill, ViewBrowseOPDRefundComponent } from './view-browse-opdrefund/view-browse-opdrefund.component';
 import { fuseAnimations } from '@fuse/animations';
 import * as converter from 'number-to-words';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -39,10 +40,11 @@ export class BrowseRefundListComponent implements OnInit {
   displayedColumns = [
     'RefundDate',
     'PatientName',
-    // 'PaymentDate',
+    'PaymentDate',
     'RefundAmount',
     'TotalAmt',
     'MobileNo',
+    "BillId",
     // 'CashPayAmount',
     // 'ChequePayAmount',
     // 'CardPayAmount',
@@ -57,7 +59,7 @@ export class BrowseRefundListComponent implements OnInit {
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _BrowseOPDReturnsService: BrowseRefundlistService,
-    
+    public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
     private matDialog: MatDialog
@@ -105,7 +107,7 @@ export class BrowseRefundListComponent implements OnInit {
       "Reg_No": this._BrowseOPDReturnsService.myFilterform.get("RegNo").value || 0
 
     }
-debugger
+
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       console.log(D_data);
@@ -180,95 +182,40 @@ debugger
     this.dataSource.paginator = this.paginator;
   }
 
-  convertToWord(e){
-    
-     return converter.toWords(e);
-       }
-
-  getTemplate() {
-    let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=9';
-    this._BrowseOPDReturnsService.getTemplate(query).subscribe((resData: any) => {
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','PBillNo','BillDate','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby','NetPayableAmt']; // resData[0].TempKeys;
-        for (let i = 0; i < keysArray.length; i++) {
-          let reString = "{{" + keysArray[i] + "}}";
-          let re = new RegExp(reString, "g");
-          this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-        }
-        this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
-        this.printTemplate = this.printTemplate.replace('StrRefundDate', this.transform1(this.reportPrintObj.RefundTime));
-        this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(this.reportPrintObj.BillDate));
-        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-        setTimeout(() => {
-          this.print();
-        }, 1000);
-    });
-  }
-
-
-  transform(value: string) {
-    var datePipe = new DatePipe("en-US");
-     value = datePipe.transform(value, 'dd/MM/yyyy ');
-     return value;
- }
-
- transform1(value: string) {
-  var datePipe = new DatePipe("en-US");
-  value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
-   return value;
-}
-
-transform2(value: string) {
-  var datePipe = new DatePipe("en-US");
-  value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-  return value;
-}
-
-transformBilld(value: string) {
-  var datePipe = new DatePipe("en-US");
-  value = datePipe.transform(value, 'dd/MM/yyyy');
-  return value;
-}
-getPrint(el) {
  
-  var D_data = {
-    "RefundId":3
-  }
+
   
-  let printContents; 
-  this.subscriptionArr.push(
-    this._BrowseOPDReturnsService.getRefundBrowsePrint(D_data).subscribe(res => {
-      if(res){
-      this.reportPrintObj = res[0] as BrowseIpdreturnadvanceReceipt;
-      
-     }
-        
-      this.getTemplate();
-            
-    })
-  );
+// SpinLoading:boolean=false;
+viewgetOPRefundofBillPdf(row) {
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+    // this.SpinLoading =true;
+  //  this.AdList=true;
+  this._BrowseOPDReturnsService.getOpRefundview(
+    row.RefundId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Op Refund Of Bill Receipt Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        // this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = '';
+      });
+  });
+ 
+  },100);
 }
-
-
-
-  print() {
-    
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
-  <head><style type="text/css">`);
-    popupWin.document.write(`
-    </style>
-        <title></title>
-    </head>
-  `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-  </html>`);
-    popupWin.document.close();
-  }
 
 }
 

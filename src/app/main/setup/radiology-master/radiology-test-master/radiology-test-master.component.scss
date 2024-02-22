@@ -23,9 +23,9 @@
               min-width: 100px;
           }
           .mat-column-TestName {
-              width: 250px;
-              max-width: 250px;
-              min-width: 250px;
+              width: 200px;
+              max-width: 200px;
+              min-width: 200px;
               text-align: left;
               justify-content: left;
               white-space: nowrap;
@@ -39,9 +39,9 @@
           }
 
           .mat-column-PrintTestName {
-            width: 250px;
-            max-width: 250px;
-            min-width: 250px;
+            width: 200px;
+            max-width: 200px;
+            min-width: 200px;
               text-align: left;
               justify-content: left;
               white-space: nowrap;
@@ -71,32 +71,43 @@
           }
 
           .mat-column-ServiceId {
-              width: 150px;
-              max-width: 150px;
-              min-width: 150px;
+            width: 250px;
+            max-width: 250px;
+            min-width: 250px;
+            text-align: left;
+            justify-content: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            overflow: hidden !important;
+            display: inline-flex;
+            display: inline;
+            margin-right: 30px;
+            margin-top: 20px;
           }
 
           .mat-column-AddedByName {
               width: 150px;
               max-width: 150px;
               min-width: 150px;
+              text-align: left;
+              justify-content: left;
           }
 
           .mat-column-IsDeleted {
               width: 100px;
               max-width: 100px;
               min-width: 100px;
-              text-align: center;
-              justify-content: center;
+              text-align: left;
+              justify-content: left;
           }
 
           .mat-column-action {
-              // color: white !important;
-              width: 70px;
-              max-width: 70px;
-              min-width: 70px;
-              text-align: right;
-              justify-content: right;
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            text-align: left;
+            justify-content: left;
           }
 
       }

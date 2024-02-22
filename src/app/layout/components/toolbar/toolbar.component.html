@@ -22,14 +22,13 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="toolbar-right-content">
                     <!-- <button mat-button class="user-button" (click)="navigateToDash()">
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon class="mr-6" title="Dashboard">dashboard</mat-icon>
-                            Dashoard
-                        </div>
-                    </button> -->
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon class="mr-6" title="Dashboard">dashboard</mat-icon>
+                        Dashoard
+                    </div>
+                </button> -->
                     <!-- Dashboard ------------- -->
                     <div class="nav-menu" *ngIf="!false">
                         <!--fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center"-->
@@ -49,15 +48,15 @@
                                 </button>
                                 <mat-menu #dashboardMenu="matMenu" [overlapTrigger]="false">
                                     <!-- <button mat-menu-item (click)="navigateToDash()" *ngIf="user.user.loginStatus">
-                                <span>Daily Dashboard</span>
-                            </button> 
-                           -->
+                            <span>Daily Dashboard</span>
+                        </button> 
+                       -->
                                     <button mat-menu-item (click)="navigateToDailyDashboard()">
                                         <span>Daily Dashboard</span>
                                     </button>
                                     <!-- <button mat-menu-item (click)="navigateToDailyDashboard()">
-                                <span>Account Subhash Dashboard</span>
-                            </button> -->
+                            <span>Account Subhash Dashboard</span>
+                        </button> -->
 
                                     <button mat-menu-item class="" (click)="navigateToBedOccupancyDashboard()">
                                         <span>Bed Occupancy Dashboard</span>
@@ -77,9 +76,9 @@
                                 <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
                                     <div fxLayout="row" fxLayoutAlign="center center">
                                         <!-- <img
-                                    class="avatar mr-0 mr-sm-16"
-                                    src="assets/images/avatars/Velazquez.jpg"
-                                /> -->
+                                class="avatar mr-0 mr-sm-16"
+                                src="assets/images/avatars/Velazquez.jpg"
+                            /> -->
                                         <mat-icon class="mr-12">account_circle</mat-icon>
                                         <span class="username mr-12" fxHide fxShow.gt-sm>{{ user && user.user &&
                                             user.user.firstName
@@ -96,9 +95,9 @@
                                     </button>
 
                                     <!-- <button mat-menu-item class="">
-                                <mat-icon>mail</mat-icon>
-                                <span>Inbox</span>
-                            </button> -->
+                            <mat-icon>mail</mat-icon>
+                            <span>Inbox</span>
+                        </button> -->
                                     <button mat-menu-item class="">
                                         <mat-icon>mail</mat-icon>
                                         <!-- <span  (click) ="addchangePassword()">Change Password</span> -->
@@ -127,10 +126,10 @@
                                         [matMenuTriggerFor]="languageMenu">
                                         <div fxLayout="row" fxLayoutAlign="center center">
                                             <img class="flag mr-8" [src]="
-                                            'assets/icons/flags/' +
-                                            selectedLanguage.flag +
-                                            '.png'
-                                        " />
+                                        'assets/icons/flags/' +
+                                        selectedLanguage.flag +
+                                        '.png'
+                                    " />
                                             <span class="iso text-uppercase">{{
                                                 selectedLanguage.id
                                                 }}</span>

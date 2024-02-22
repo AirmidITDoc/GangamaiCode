@@ -10,7 +10,8 @@
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Mail Information
             </span>
-
+            <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+            style="border-color: red;"></app-common-date> -->
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
                 style="margin-left: 660px;">
                 <mat-icon>close</mat-icon>
@@ -31,41 +32,41 @@
                             style="overflow:hidden;">
 
                             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
-                                <div fxLayout="row">
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>From Mail Id</mat-label>
-                                        <input matInput name="FromMailId" formControlName="FromMailId"
-                                            placeholder="From Mail Id" id="FromMailId" type="email" required>
-                                    </mat-form-field>&nbsp;
-
-                                    <mat-form-field appearance="outline" fxFlex="30%">
-                                        <mat-label>Password</mat-label>
-                                        <input matInput name="Password" formControlName="Password"
-                                            placeholder="Enter Password" id="Password" type="password" required>
-                                    </mat-form-field>
-                                </div>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>To Mail Id</mat-label>
                                     <input matInput name="ToMailId" formControlName="ToMailId" placeholder="To Mail Id"
-                                        id="ToMailId" type="email" required>
+                                        id="ToMailId" type="email" [(ngModel)]="vToMailId" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>To Mail Id CC</mat-label>
+                                    <input matInput name="cc" formControlName="CCName" placeholder="cc"
+                                        id="CCName" type="email" [(ngModel)]="vCCName" >
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>To Mail Id bcc</mat-label>
+                                    <input matInput name="bccName" formControlName="bccName" placeholder="bcc"
+                                        id="bccName" type="email" [(ngModel)]="vbccName" >
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Subject</mat-label>
                                     <input matInput name="Subject" formControlName="Subject" placeholder="Subject"
-                                        id="Subject" type="text" required>
+                                        id="Subject" type="text" [(ngModel)]="vSubject" required>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Body</mat-label>
                                     <textarea matInput name="Body" formControlName="Body" placeholder="Write......"
-                                        id="Body" type="text"  required style="height: 60px;"></textarea>
+                                        id="Body" type="text"  required style="height: 100px;"
+                                        [(ngModel)]="vBody"></textarea>
                                 </mat-form-field>
 
                                 <div matTooltip="Fill All Data  to enable this button!!">
                                     <button class="next-btn"
-                                        style="border-radius: 16px;margin-left: 750px; margin-top: 10px;"
+                                        style="border-radius: 16px;margin-left: 600px; margin-top: 10px;"
                                         [disabled]="_PurchaseOrder.POEmailFrom.invalid" (click)="OnSend()">Send</button>
                                     <button class="footer-btn" style="border-radius: 16px;"
                                         (click)="OnReset()">Reset</button>&nbsp;&nbsp;

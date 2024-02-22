@@ -95,4 +95,9 @@ public getpasswwordupdate(data) {
 }
 
 
+public getpasswwordChange(data) {
+  return this._httpClient.post("Administration/UserChangePassword" ,data)
+}
+
+
 }

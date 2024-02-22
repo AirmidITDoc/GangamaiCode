@@ -109,8 +109,8 @@ export class ResultEntryService {
 
 
 
-  public getPathTestReport(BillNo){
-    return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo=" + BillNo);
+  public getPathTestReport(OP_IP_Type){
+    return this._httpClient.get("Pathology/view-PathReportMultiple?OP_IP_Type=" + OP_IP_Type);
   }
 
   populateForm(employee) {

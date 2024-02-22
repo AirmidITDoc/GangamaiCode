@@ -210,14 +210,14 @@ app-sample-request {
         height: 250px !important;
         .mat-header-row {
             width: 100%;
-            min-width: 1000px;
-            min-height: 25px;
+            min-width: 1300px;
+            min-height: 30px;
         }
 
         .mat-row {
             width: 100%;
-            min-width: 1000px;
-            min-height: 25px;
+            min-width: 1300px;
+            min-height: 30px;
         }
 
         // PatientData
@@ -232,40 +232,38 @@ app-sample-request {
         }
 
         .mat-column-PatientName {
-            width: 250px;
-            max-width: 250px;
-            min-width: 250px;
+            width: 350px;
+            max-width: 350px;
+            min-width: 350px;
             text-align: left;
             justify-content: left;
             white-space: nowrap;
-            overflow: hidden;
             text-overflow: ellipsis;
             overflow: hidden !important;
-            display: inline-block;
-          
+                   
         }
 
         .mat-column-AdmDate {
-            width: 100px;
-            max-width: 100px;
-            min-width: 100px;
-            text-align: left;
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
+            text-align: center;
             // justify-content: center;
         }
 
         .mat-column-ReqTime {
-            width: 150px;
-            max-width: 150px;
-            min-width: 150px;
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
             text-align: center;
             // justify-content: center;
         }
 
         .mat-column-ReqDate {
-            width: 200px;
-            max-width: 200px;
-            min-width: 200px;
-            text-align: left;
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
+            text-align: center;
             // justify-content: center;
         }
 
@@ -276,20 +274,17 @@ app-sample-request {
             text-align: left;
             justify-content: left;
             white-space: nowrap;
-            overflow: hidden;
             text-overflow: ellipsis;
             overflow: hidden !important;
-            display: inline-block;
-           
-            margin-right: 10px;
+          
         }
 
         .mat-column-BedName {
             width: 100px;
             max-width: 100px;
             min-width: 100px;
-            text-align: left;
-            justify-content: left;
+            text-align: center;
+            justify-content: center;
         }
 
         .mat-column-IsOnFileTest {
@@ -331,14 +326,14 @@ app-sample-request {
         height: 250px !important;
         .mat-header-row {
             width: 100%;
-            min-width: 1500px;
-            min-height: 25px;
+            min-width: 1700px;
+            min-height: 30px;
         }
 
         .mat-row {
             width: 100%;
-            min-width: 1500px;
-            min-height: 25px;
+            min-width: 1700px;
+            min-height: 30px;
         }
 
         .mat-column-checkbox {
@@ -348,9 +343,9 @@ app-sample-request {
         }
 
         .mat-column-ReqDate {
-            width: 100px;
-            max-width: 100px;
-            min-width: 100px;
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
             text-align: left;
             // justify-content: left;
         }
@@ -364,9 +359,9 @@ app-sample-request {
         }
 
         .mat-column-ReqTime {
-            width: 90px;
-            max-width: 90px;
-            min-width: 90px;
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px;
             text-align: center;
             // justify-content: center;
         }
@@ -381,9 +376,7 @@ app-sample-request {
             overflow: hidden;
             text-overflow: ellipsis;
             overflow: hidden !important;
-            display: inline-block;
            
-
         }
 
 
@@ -392,12 +385,10 @@ app-sample-request {
             max-width: 150px;
             min-width: 150px;
             text-align: left;
-            //   justify-content: left;
             white-space: nowrap;
-            overflow: hidden;
             text-overflow: ellipsis;
             overflow: hidden !important;
-            display: inline-block;
+          
            
         }
 
@@ -408,11 +399,9 @@ app-sample-request {
             text-align: left;
             // justify-content: left;
             white-space: nowrap;
-            overflow: hidden;
             text-overflow: ellipsis;
             overflow: hidden !important;
-            display: inline-block;
-           
+          
         }
 
         .mat-column-AddedByDate {
@@ -422,10 +411,8 @@ app-sample-request {
             text-align: left;
             //   justify-content: left;
             white-space: nowrap;
-            overflow: hidden;
             text-overflow: ellipsis;
             overflow: hidden !important;
-            display: inline-block;
            
 
         }
@@ -435,34 +422,34 @@ app-sample-request {
             max-width: 100px;
             min-width: 100px;
             text-align: center;
-            justify-content: left;
+            justify-content: center;
 
         }
 
         .mat-column-IsPathology {
-            width: 100px;
-            max-width: 100px;
-            min-width: 100px;
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px;
             text-align: center;
-            justify-content: left;
+            justify-content: center;
 
         }
 
         .mat-column-IsRadiology {
-            width: 100px;
-            max-width: 100px;
-            min-width: 100px;
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px;
             text-align: center;
-            justify-content: left;
+            justify-content: center;
 
         }
 
         .mat-column-IsTestCompted {
-            width: 100px;
-            max-width: 100px;
-            min-width: 100px;
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px;
             text-align: center;
-            justify-content: left;
+            justify-content: center;
 
         }
 

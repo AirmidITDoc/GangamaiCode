@@ -406,6 +406,9 @@ public getConcessionCombo()
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
   }
 
+  public getPatientVisitedListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
 
   public getrptAppointmentList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=rptOPAppointmentListReport", employee)
@@ -455,7 +458,7 @@ public prescriptionDetails(visistId) {
     return this._httpClient.post("Generic/GetByProc?procName=RtrvIPDRefundAgainstBill_List", employee)
   }
   public getRefundofBillOPDList(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList1",employee)
     }
     public InsertOPSettlementPayment (employee){
       // return this._httpClient.post("InPatient/IPBillingCreditInsert", employee)
@@ -474,6 +477,12 @@ public prescriptionDetails(visistId) {
 
   public getOpBillReceipt(BillNo){
     return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo=" + BillNo);
+  }
+
+
+
+  getOprefundofbillview(RefundId){
+    return this._httpClient.get("getOprefundofbillview?RefundId="+RefundId)
   }
 
   getPaymentArr() {

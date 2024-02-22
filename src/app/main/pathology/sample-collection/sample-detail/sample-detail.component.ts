@@ -19,7 +19,7 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations
 })
 export class SampleDetailComponent implements OnInit {
-
+  date: string;
   msg: any;
   displayedColumns: string[] = [
     'checkbox',
@@ -57,11 +57,12 @@ export class SampleDetailComponent implements OnInit {
     private dialogRef: MatDialogRef<SampleDetailComponent>,
     public dialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
-    private _fuseSidebarService: FuseSidebarService,) {
+    private _fuseSidebarService: FuseSidebarService,) 
+    {
     dialogRef.disableClose = true;
     this.advanceData = data;
     console.log(this.advanceData);
-
+    this.date = new Date().toISOString().slice(0, 16);
   }
 
   ngOnInit(): void {

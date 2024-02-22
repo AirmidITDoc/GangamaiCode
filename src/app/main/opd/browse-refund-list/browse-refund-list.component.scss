@@ -4,7 +4,107 @@
 
 app-browse-refund-list {
 
+    // .loading-spinner {
+    //     font-size: 50px;
+    //     color: #319fc0;
+    // }
+    .spinner > div {
+        background-color: #333;
+        height: 100%;
+        width: 6px;
+        display: inline-block;
+    
+        -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+        animation: sk-stretchdelay 1.2s infinite ease-in-out;
+      }
 
+    .spinner_overlay {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff; /* You can adjust the color and opacity */
+        opacity: 0.2;
+        z-index: 1000; /* Make sure the z-index is greater than the z-index of the container */
+      }
+    
+      .spinner {   
+        width: 50px;
+        height: 40px;
+        text-align: center;
+        font-size: 10px;
+        position: fixed;
+        z-index: 1500;
+        overflow: show;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+
+
+
+      .spinner > div {
+        background-color: #333;
+        height: 100%;
+        width: 6px;
+        display: inline-block;
+    
+        -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+        animation: sk-stretchdelay 1.2s infinite ease-in-out;
+      }
+    
+      .spinner .rect2 {
+        -webkit-animation-delay: -1.1s;
+        animation-delay: -1.1s;
+      }
+    
+      .spinner .rect3 {
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+      }
+    
+      .spinner .rect4 {
+        -webkit-animation-delay: -0.9s;
+        animation-delay: -0.9s;
+      }
+    
+      .spinner .rect5 {
+        -webkit-animation-delay: -0.8s;
+        animation-delay: -0.8s;
+      }
+    
+      @-webkit-keyframes sk-stretchdelay {
+        0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+        20% { -webkit-transform: scaleY(1.0) }
+      }
+    
+      @keyframes sk-stretchdelay {
+        0%, 40%, 100% { 
+          transform: scaleY(0.4);
+          -webkit-transform: scaleY(0.4);
+        }  20% { 
+          transform: scaleY(1.0);
+          -webkit-transform: scaleY(1.0);
+        }
+      }
+
+
+
+
+      //
+    .loading-overlay {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        z-index: 2;
+      }
+      
+      .container {
+        width: 100%;
+      } 
 .mat-header-row {
     width: 100%;
     max-width: 1400px;
@@ -47,10 +147,7 @@ app-browse-refund-list {
     overflow: hidden;
     text-overflow: ellipsis;
     overflow: hidden !important;
-    display: inline-flex;
-    display: inline;
-    margin-right: 20px;
-    padding-top: 8px;
+  
 }
 
 .mat-column-RefundAmount {
@@ -78,9 +175,9 @@ app-browse-refund-list {
 // }
 
 .mat-column-PaymentDate {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
     text-align:center;
     justify-content:center;
 }
@@ -132,4 +229,8 @@ app-browse-refund-list {
     justify-content:center;
 }
 
+
+
+
 }
+

@@ -34,37 +34,27 @@ export class CreateUserComponent implements OnInit {
   
   MouseEvent=true;
   displayedColumns: string[] = [
-    
-   
-    
-    // 'UserId',
-	  // 'FirstName',
-    // 'LastName',
     'UserName',
   	'UserLoginName',
     'RoleName',
-   
     'StoreName',
     'DoctorName',
     'IsDateIntervalDays',
-    'MailDomain',
-     'MailId' ,
+    // 'MailDomain',
+    // 'MailId' ,
     'IsActive',
-    'AddChargeIsDelete',
-    'IsBedStatus',
-    'IsCollection',
-    'IsCurrentStk',
-    'IsDateInterval',
-    'IsDoctorType',
-    'IsGRNVerify',
-    'IsInchIndVfy',
-    'IsIndentVerify',
-    'IsPOVerify',
-    'IsPatientInfo',
-    
-    
+    // 'AddChargeIsDelete',
+    // 'IsBedStatus',
+    // 'IsCollection',
+    // 'IsCurrentStk',
+    // 'IsDateInterval',
+    // 'IsDoctorType',
+    // 'IsGRNVerify',
+    // 'IsInchIndVfy',
+    // 'IsIndentVerify',
+    // 'IsPOVerify',
+    // 'IsPatientInfo',
     'action'
-
   ]; 
   sIsLoading: string = '';
   dataSource1 = new MatTableDataSource<UserList>();
@@ -145,50 +135,9 @@ export class CreateUserComponent implements OnInit {
     });
   }
 
-
-
-  // addNewProfile(contact,m):void{
-  //   ;
-    
-  
-  //    console.log(contact);
-         
-  //      let xx = {
-        
-  //               FirstName: contact.FirstName,
-  //               LastName: contact.LastName,
-  //               LoginName:contact.LoginName,
-  //                Password:contact.Password,
-  //                RoleName:contact.RoleName,
-  //                MailDomain:contact.MailDomain,
-  //                 MailId:contact.MailId,
-  //                DoctorId:contact.DoctorId,
-        
-        
-  //      };
-  //       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-      
-  //         const dialogRef = this._matDialog.open(ProfieComponent, 
-  //         {   maxWidth: "80vw",
-  //               maxHeight: "75vh", width: '100%', height: "100%",
-           
-            
-  //       });
-        
-  //       dialogRef.afterClosed().subscribe(result => {
-  //         console.log('The dialog was closed - Insert Action', result);
-        
-  //       });
-  //    }
-
-
-
-
   onresultentry(c,m) {
     console.log(m);
-    
      let xx = {
-     
       UserLoginName: m.UserLoginName,
       RoleName: m.RoleName,
       UserName: m.UserName,
@@ -215,38 +164,25 @@ export class CreateUserComponent implements OnInit {
       IsCreditBillScroll:m.IsCreditBillScroll,
       IsCollectionInformation:m.IsCollectionInformation,
       IsViewBrowseBill:m.IsViewBrowseBill,
-
-     
      };
-
       this.advanceDataStored.storage = new UserList(xx);
-            
-            
            const dialogRef = this._matDialog.open(MyprofileComponent, 
              {  
-              maxWidth: "55vw",
-              maxHeight: "100vh", width: '100%',
-              // height: "100%",
+              panelClass: 'contact-form-dialog',
+              // maxWidth: "55vw",
+              // maxHeight: "100vh", 
+              // width: '100%',
+              // height: "90%",
+              maxWidth: "100%",
+              height: '90%',
+              width: '90%',
 
            });
            dialogRef.afterClosed().subscribe(result => {
              console.log('The dialog was closed - Insert Action', result);
-           
            });
                
  }
-
-  // addNewProfile() {
-  //   const dialogRef = this._matDialog.open(ProfieComponent,
-  //     {
-  //       maxWidth: "80vw",
-  //       maxHeight: "52vh", width: '100%', height: "100%"
-
-  //     });
-  //   // dialogRef.afterClosed().subscribe(result => {
-      
-  //   // });
-  // }
 
   addUserDetails() {
     const dialogRef = this._matDialog.open(UserDetailComponent,

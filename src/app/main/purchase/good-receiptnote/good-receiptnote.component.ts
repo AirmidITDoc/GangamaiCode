@@ -19,6 +19,8 @@ import { UpdateGRNComponent } from './update-grn/update-grn.component';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { GrnemailComponent } from './grnemail/grnemail.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { EmailComponent } from '../purchase-order/email/email.component';
 
 @Component({
   selector: 'app-good-receiptnote',
@@ -61,7 +63,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   IGSTFinalAmount: any;
   TotalFinalAmount: any;
   chkNewGRN: any;
-
+  SpinLoading:boolean=false;
   dsGRNList = new MatTableDataSource<GRNList>();
 
   dsGrnItemList = new MatTableDataSource<GrnItemList>();
@@ -159,6 +161,11 @@ export class GoodReceiptnoteComponent implements OnInit {
   tab: number = 3;
   selectedIndex = 0;
 
+  Filepath: any;
+  loadingarry: any = [];
+  currentDate = new Date();
+  IsLoading: boolean = false;
+
   constructor(
     public _GRNService: GoodReceiptnoteService,
     public _matDialog: MatDialog,
@@ -168,9 +175,9 @@ export class GoodReceiptnoteComponent implements OnInit {
     private accountService: AuthenticationService,
 
   ) { }
-
+   
   ngOnInit(): void {
-
+ 
     // this.OnReset();
     this.getToStoreSearchList();
     // this.getSupplierSearchList();
@@ -189,7 +196,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
 
   onAdd() {
-    debugger
+    //debugger
     this.dsItemNameList.data = [];
     // this.chargeslist=this.chargeslist;
     this.chargeslist.push(
@@ -457,7 +464,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
 
   getGRNItemList() {
-    debugger
+   // debugger
     var m_data = {
       "ItemName": `${this._GRNService.userFormGroup.get('ItemName').value}%`,
       "StoreId": this._GRNService.GRNStoreForm.get('StoreId').value.storeid || 0
@@ -518,7 +525,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   getGrnItemDetailList(Params) {
-    debugger
+    //debugger
     this.sIsLoading = 'loading-data';
     var Param = {
       "GrnId": Params.GRNID
@@ -603,38 +610,60 @@ export class GoodReceiptnoteComponent implements OnInit {
   TotalQty: any = 0;
   TotalRate: any = 0;
   TotalNetAmt: any = 0;
-  TOtalDiscPer: any = 0;
+  TotalDiscPer: any = 0;
+  TotalCGSTPer:any = 0;
+  TotalSGSTPer :any =0;
   TotalGSTAmt: any = 0;
+  TotalCGSTAmt:any = 0;
+  TotalSGSTAmt :any =0;
+  TotalNetAmount:any=0;
+  TotalOtherCharge:any=0;
+  finalamt:any=0;
+  
+   
+  viewgetCurrentstockReportPdf(row) {
+  
+    setTimeout(() => {
+      this.SpinLoading =true;
+   this._GRNService.getGRNreportview(
+    row.GRNID
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "GRN REPORT Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
 
   getPrint(el) {
-
     var m_data = {
       "GRNID": el.GRNID
     }
-    // console.log(m_data);
+     //console.log(m_data);
     this._GRNService.getPrintGRNList(m_data).subscribe(data => {
       this.reportPrintObjList = data as GRNList[];
-      // debugger
-      for (let i = 0; i < 10; i++) {
-        this.reportPrintObj = data[0] as GRNList;
-        this.TotalAmt += data[i].TotalAmount
-        this.TotalQty += data[i].ReceiveQty
-        this.TotalRate += data[i].Rate
-        this.TOtalDiscPer += data[i].TotalDiscAmount
-        this.TotalGSTAmt += data[i].TotalVATAmount
-        this.TotalNetAmt += data[i].NetPayble
-
-        // console.log(this.TotalAmt);
-        // console.log(this.reportPrintObjList[i]["Qty"]);
-        //   this.TotalQty=this.TotalQty + parseInt(this.reportPrintObj[i]["Qty"]);
-        //   console.log(this.TotalQty)
-
-        //console.log(this.reportPrintObjList);
-
-        setTimeout(() => {
-          this.print3();
-        }, 1000);
-      }
+      // const toword =require('num-words')
+      // this.finalamt = toword(this.reportPrintObjList[0].NetPayble);
+      setTimeout(() => {
+        this.print3();
+      }, 1000);
+      
     })
 
   }
@@ -676,7 +705,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     popupWin.document.close();
   }
   LastThreeItemList(contact) {
-    console.log(contact);
+   // console.log(contact);
     var vdata = {
       'ItemId': contact.ItemId,
     }
@@ -696,7 +725,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   OnSavenew() {
-    debugger
+   // debugger
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1035,16 +1064,20 @@ export class GoodReceiptnoteComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getGRNList();
     });
     this.getGRNList();
-  }
-  GRNEmail() {
-    this.chkNewGRN = 1;
-    const dialogRef = this._matDialog.open(GrnemailComponent,
+  }  
+  GRNEmail(contact) {
+    console.log(contact)
+    const dialogRef = this._matDialog.open(EmailComponent,
       {
         maxWidth: "100%",
-        height: '55%',
+        height: '75%',
         width: '55%',
+        data: {
+          Obj:contact
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -1142,6 +1175,46 @@ export class GoodReceiptnoteComponent implements OnInit {
     }); this.getGRNList();
   }
 
+
+
+
+  getWhatsappshareSales(el) {
+    debugger
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": 22,//el.RegNo,
+        "smsString": "Dear" + el.PatientName + ",Your GRN has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+        "isSent": 0,
+        "smsType": 'GRN',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el.GRNID,
+        "PatientType":2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": this.Filepath || '',
+        "smsOutGoingID": 0
+
+      }
+    }
+    console.log(m_data);
+    this._GRNService.InsertWhatsappGRN(m_data).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+      }
+
+    });
+    this.IsLoading = false;
+    el.button.disable = false;
+  }
+
   onScroll() {
   }
 }
@@ -1149,12 +1222,13 @@ export class GoodReceiptnoteComponent implements OnInit {
 export class GRNList {
   GrnNumber: number;
   GRNDate: number;
+  GRNTime:any;
   InvoiceNo: number;
   SupplierName: string;
-  TotalAmount: number;
-  TotalDiscAmount: number;
-  TotalVATAmount: number;
-  NetAmount: number;
+  TotalAmount: any;
+  TotalDiscAmount: any;
+  TotalVATAmount: any;
+  NetAmount: any;
   RoundingAmt: number;
   DebitNote: number;
   CreditNote: number;
@@ -1169,7 +1243,20 @@ export class GRNList {
   Email:any;
   Phone:any;
   PONo:any;
-
+  EwayBillNo: any;
+  EwayBillDate: Date;
+  OtherCharge:any;
+  Rate: any;
+  CGSTPer:any;
+  SGSTPer:any;
+  CGSTAmt:any;
+  SGSTAmt:any;
+  NetPayble:any
+  AddedByName:any;
+  GrandTotalAount:any;
+  TotCGSTAmt:any;
+  TotSGSTAmt:any;
+ 
   /**
    * Constructor
    *
@@ -1179,11 +1266,13 @@ export class GRNList {
     {
       this.GrnNumber = GRNList.GrnNumber || 0;
       this.GRNDate = GRNList.GRNDate || 0;
+      this.GRNTime = GRNList.GRNTime || '';
       this.InvoiceNo = GRNList.InvoiceNo || 0;
       this.SupplierName = GRNList.SupplierName || "";
       this.TotalAmount = GRNList.TotalAmount || 0;
       this.TotalDiscAmount = GRNList.TotalDiscAmount || 0;
       this.TotalVATAmount = GRNList.TotalVATAmount || 0;
+      this.NetPayble = GRNList.NetPayble || 0;
       this.NetAmount = GRNList.NetAmount || 0;
       this.RoundingAmt = GRNList.RoundingAmt || 0;
       this.DebitNote = GRNList.DebitNote || 0;
@@ -1194,6 +1283,8 @@ export class GRNList {
       this.IsClosed = GRNList.IsClosed || 0;
       this.GSTNo = GRNList.GSTNo || 0;
       this.Remark = GRNList.Remark || "";
+      this.TotSGSTAmt = GRNList.TotSGSTAmt || 0;
+      this.TotCGSTAmt = GRNList.TotCGSTAmt || 0;
     }
   }
 }
@@ -1308,6 +1399,8 @@ export class ItemNameList {
   discAmount: number;
   DiscPercentage: number;
   DiscAmount: number;
+  DiscPer2: number;
+  DiscAmt2: number;
   PaymentType: any;
   GRNType: any;
   DateOfInvoice: any;
@@ -1318,7 +1411,17 @@ export class ItemNameList {
   tranProcessMode: any;
   EwayBillNo: any;
   TotalQty: any;
-
+  UnitofMeasurementName: number;
+  UnitofMeasurementId: any;
+  POBalQty:any;
+  PurchaseId:any;
+  IsClosed:boolean;
+  PurDetId:any;
+  LandedRate:any;
+  PurUnitRate:any;
+  PurUnitRateWF:any;
+  BatchExpDate:any;
+  POQty:any;
   /**
    * Constructor
    *
@@ -1337,8 +1440,10 @@ export class ItemNameList {
       this.MRP = ItemNameList.MRP || 0;
       this.Rate = ItemNameList.Rate || 0;
       this.TotalAmount = ItemNameList.TotalAmount || 0;
-      this.Disc = ItemNameList.Disc;
+      this.Disc = ItemNameList.Disc || '';
       this.DisAmount = ItemNameList.DisAmount || 0;
+      this.DiscPer2 = ItemNameList.DiscPer2 || 0;
+      this.DiscAmt2 = ItemNameList.DiscAmt2 || 0;
       this.GSTNo = ItemNameList.GSTNo || 0;
       this.GSTAmount = ItemNameList.GSTAmount || 0;
       this.CGST = ItemNameList.CGST || 0;
@@ -1375,6 +1480,10 @@ export class ItemNameList {
       this.EwayBillDate = ItemNameList.EwayBillDate || this.CurrentDate;
       this.PaymentDate = ItemNameList.PaymentDate || this.CurrentDate;
       this.DateOfInvoice = ItemNameList.DateOfInvoice || this.CurrentDate;
+      this.LandedRate = ItemNameList.LandedRate || 0;
+      this.PurUnitRate = ItemNameList.PurUnitRate || 0;
+      this.PurUnitRateWF = ItemNameList.PurUnitRateWF || 0;
+      this.BatchExpDate = ItemNameList.BatchExpDate || 0;
     }
   }
 }

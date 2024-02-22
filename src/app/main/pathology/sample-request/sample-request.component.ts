@@ -105,13 +105,13 @@ export class SampleRequestComponent implements OnInit {
   }
 
   getSampleLabOrRadRequestLists() {
-
+    debugger
     this.sIsLoading = 'loading-data';
     var m_data = {
 
       "FromDate": this.datePipe.transform(this._PathologyService.myformSearch.get("start").value, "MM-dd-yyyy"),
       "ToDate": this.datePipe.transform(this._PathologyService.myformSearch.get("end").value, "MM-dd-yyyy"),
-      "Reg_No": (this._PathologyService.myformSearch.get("Reg_No").value) || 0,
+      "Reg_No": this._PathologyService.myformSearch.get("Reg_No").value || 0,
       "Istype": parseInt(this._PathologyService.myformSearch.get("Istype").value) || 1,
       "IsCompleted":1
 
@@ -130,8 +130,7 @@ export class SampleRequestComponent implements OnInit {
   }
 
   onShow(event: MouseEvent) {
-    // this.click = false;// !this.click;
-
+    
     this.click = !this.click;
     // this. showSpinner = true;
 

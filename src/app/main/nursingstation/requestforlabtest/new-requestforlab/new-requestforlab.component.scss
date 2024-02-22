@@ -1,7 +1,7 @@
 .table1{
-    height: 400px;
-    max-height: 400px;
-    min-height: 400px;
+    height: 380px;
+    max-height: 380px;
+    min-height: 380px;
     overflow: auto;
 
     .mat-column-ServiceName{
@@ -38,9 +38,9 @@
 }
 .table2{
     .mat-column-ServiceName{
-        width: 350px;
-        max-width: 350px;
-        min-width: 350px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
         align-items: left; 
         overflow: hidden;
         text-overflow: ellipsis; 
@@ -49,16 +49,16 @@
 
     }
     .mat-column-Price{
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
         align-items: left; 
         justify-content:left; 
 
     }
-    height: 400px;
-    max-height: 400px;
-    min-height: 400px;
+    height: 380px;
+    max-height: 380px;
+    min-height: 380px;
     overflow:  auto;
      
 }
@@ -86,3 +86,48 @@
    
 }
  
+
+.patient-details mat-error {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.patient-bill-info {
+    display: flex;
+}
+.labels-h3 {
+    font-size: 15px;
+    font-weight: bold;
+}
+.labels-h6 {
+    font-size: 15px;
+}
+.form-field-labels {
+    font-size: 13px;
+}
+
+fieldset {
+    border-color: #039be5;// #fff9f9;
+}
+.fieldset-div {
+    background-color: #191a1c21;
+}
+legend {
+    padding: 10px;
+    font-size: 20px;
+}
+
+
+.flex-item, .patient-sub {
+    flex-basis: 100%;
+}
+.flex-item-middle{
+    width: 5px;
+    margin-right:5px;
+}
+.item-header {
+    width: 200px;
+}
+.field-row {
+    align-items: center;
+}

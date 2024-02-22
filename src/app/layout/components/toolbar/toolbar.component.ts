@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit,ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { TranslateService } from "@ngx-translate/core";
@@ -18,6 +18,7 @@ import { NotificationServiceService } from 'app/core/notification-service.servic
 // import { ProfieComponent } from '../../../main/administration/profie/profie.component';
 // import { ChangePasswordComponent } from '../../../main/administration/change-password/change-password.component';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { ChangePasswordComponent } from "app/main/administration/create-user/change-password/change-password.component";
 // import { CreateUserComponent } from "app/main/administration/create-user/create-user.component";
 // import { UserDetailsComponent } from "app/main/administration/user-details/user-details.component";
 // import { MyprofileComponent } from "app/main/administration/myprofile/myprofile.component";
@@ -106,7 +107,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         setInterval(() => {
             this.currentDate = new Date();
-          }, 1);
+        }, 1);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -161,12 +162,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         // this.accountService.logout();
         this.router.navigate(['/dashboard/Cashless-dashboard']);
     }
-    
+
     navigateToPharmacyDashboard() {
         // this.accountService.logout();
         this.router.navigate(['/dashboard/Pharmacy-dashboard']);
     }
-    
+
     /**
      * On destroy
      */
@@ -219,7 +220,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     //           maxHeight: "93vh", width: '100%',
     //       });
     //     dialogRef.afterClosed().subscribe(result => {
-          
+
     //     });
     //   }
 
@@ -230,10 +231,17 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     //         maxHeight: "60vh", 
     //       });
     //     dialogRef.afterClosed().subscribe(result => {
-          
+
     //     });
     //   }
-    
 
+    Changepassword() {
+        const dialogRef = this._matDialog.open(ChangePasswordComponent,
+            {
+                maxWidth: "60vw",
+                maxHeight: "80vh", width: '100%', height: "100%"
+            });
+
+    }
 
 }

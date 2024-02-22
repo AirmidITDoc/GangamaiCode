@@ -96,6 +96,12 @@
                                               Clear
                                             </button>
                                           </div>
+
+
+                                          <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
+                                            Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
+                                        </span> -->
+    
                                     </div>
                                 </form>
                             </div>
@@ -116,7 +122,7 @@
             <div class="content-card" style="border-radius:4px;">
                 <div style="width: 100%;">
                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                        class="backgroundBlur">
+                        class="backgroundBlur"  style="height: 100%;">
                         <div class="spinner-border text-danger"></div>
 
                     </div>
@@ -245,14 +251,14 @@
                             </mat-cell>
                         </ng-container>
                         <!-- stickyEnd -->
-                        <ng-container matColumnDef="buttons" >
+                        <ng-container matColumnDef="buttons" stickyEnd>
                             <mat-header-cell *matHeaderCellDef style="color: white;">Action
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact">
 
-                                <button mat-icon-button (click)="getViewbill(contact)" matTooltip="how_to_reg">
+                                <!-- <button mat-icon-button (click)="getViewbill(contact)" matTooltip="how_to_reg">
                                     <mat-icon>how_to_reg</mat-icon>
-                                </button>
+                                </button> -->
                                 <button mat-icon-button class="material-icons" (click)="viewgetOPPayemntPdf(contact)"
                                     matTooltip="print">
                                     <mat-icon>print</mat-icon>

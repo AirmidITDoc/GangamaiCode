@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class IssueToDepartmentService {
 
-  userFormGroup: FormGroup;
+  NewIssueGroup: FormGroup;
   IssueSearchGroup :FormGroup;
   
 
@@ -15,7 +15,7 @@ export class IssueToDepartmentService {
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.getIssueForm();
+    this.NewIssueGroup = this.getNewIssueForm();
     this.IssueSearchGroup= this.IssueSearchFrom();
   
   }
@@ -29,15 +29,22 @@ export class IssueToDepartmentService {
      
     });
   }
-  
-
-  getIssueForm() {
+  getNewIssueForm() {
     return this._formBuilder.group({
-      
+      ToStoreId: '',
+      FromStoreId:'',
       ItemName:  [''],
+      ItemID:[''],
+      BatchNO:[''],
+      BalanceQty:[''],
       Qty: [''],
-      ItemID:''
-      
+      UnitRate:[''],
+      TotalAmount:[''],
+      Remark:[''],
+      GSTAmount:[''],
+      FinalTotalAmount:[''],
+      Exp:[''],
+      ExpDatess:['']
     });
 
   }
@@ -55,13 +62,11 @@ export class IssueToDepartmentService {
   public getToStoreSearchList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
   }
-
-  public getFromStoreSearchList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
+  public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  
-  public getItemlist(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
+  public getItemlist(Param){//RetrieveItemMasterForCombo
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
   }
   public getBatchList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);

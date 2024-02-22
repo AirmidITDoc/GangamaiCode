@@ -49,9 +49,7 @@ export class OTManagementServiceService {
         Validators.required,
         ]],
        AnestheticsDr1 :'',
-       Surgeryname :['', [
-        Validators.required,
-        ]],
+       Surgeryname :[''],
        ProcedureId :'',
        AnesthType :'',
        UnBooking :'',  
@@ -204,7 +202,9 @@ export class OTManagementServiceService {
 
 
 
-  
+  public getAdmittedpatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+  }
   // public RequestInsert(employee){
   //   return this._httpClient.post("InPatient/OTRequestInsert", employee);
   // }

@@ -82,7 +82,12 @@
                                       Clear
                                     </button>
                                   </div>
+                                 
+                                  <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
+                                    Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
+                                </span> -->
                             </div>
+                           
 
                         </form>
                     </div>
@@ -102,7 +107,7 @@
                         <div fxlayout="row">
                             <div style="width: 100%;">
                                 <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
+                                    class="backgroundBlur"  style="height: 100%;">
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
@@ -127,6 +132,14 @@
                                             {{element.PatientName}} </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="PaymentDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            style="margin-top: 8px;">
+                                            PaymentDate </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            {{element.PaymentDate | date:'shortDate'}} </mat-cell>
+                                    </ng-container>
+
                                     <ng-container matColumnDef="RefundAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             RefundAmount </mat-header-cell>
@@ -149,6 +162,14 @@
                                             {{element.MobileNo }} </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="BillId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            BillId </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <!-- {{todayDate | date:'shortDate'}} -->
+                                            {{element.BillId}}
+                                        </mat-cell>
+                                    </ng-container>
 
                                     <ng-container matColumnDef="buttons" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef style="color: white;">Action
@@ -157,14 +178,14 @@
                                            
                                             <button mat-icon-button (click)="getViewbill(contact)"
                                                 matTooltip="how_to_reg"><mat-icon>how_to_reg</mat-icon></button>
-                                            <button mat-icon-button class="material-icons" (click)="getPrint(contact)"
+                                            <button mat-icon-button class="material-icons" (click)="viewgetOPRefundofBillPdf(contact)"
                                                 matTooltip="print">
                                                 <mat-icon>print</mat-icon>
                                             </button>
-                                            <button mat-icon-button class="material-icons"
+                                            <!-- <button mat-icon-button class="material-icons"
                                                 (click)="getRecord(contact,'EMAIL')" matTooltip="email">
                                                 <mat-icon>email</mat-icon>
-                                            </button>
+                                            </button> -->
                                          
                                             <button mat-icon-button class="material-icons"
                                                 (click)="getRecord(contact,'SMS')" matTooltip="message">

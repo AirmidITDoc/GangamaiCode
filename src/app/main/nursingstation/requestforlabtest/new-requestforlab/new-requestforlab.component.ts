@@ -39,16 +39,22 @@ export class NewRequestforlabComponent implements OnInit {
   sIsLoading: string = "";
   matDialogRef: any;
   SpinLoading:boolean=false;
+  CompanyName: any;
+  Tarrifname: any;
+  Doctorname: any;
+  vOPIPId:any =0;
+  vOPDNo:any=0;
+  vTariffId:any=0;
+  vClassId:any=0;
+  vAge:any=0;
  
- 
- 
-  displayedVisitColumns: string[] = [
-    'ServiceName',
+  displayedServiceColumns: string[] = [
+  'ServiceName',
     // 'Price'
    
   ]
 
-  displayedVisitColumns2: string[] = [
+  displayedServiceselected: string[] = [
     'ServiceName',
     'Price',
     'buttons'
@@ -64,19 +70,21 @@ export class NewRequestforlabComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
   vAdmissionID: any;
-  
+  date: Date;
   
  
   constructor(private _FormBuilder: FormBuilder,
     private dialogRef: MatDialogRef<NewRequestforlabComponent>,
     private _matDialog:MatDialog,
     public _RequestforlabtestService: RequestforlabtestService,
-    private _loggedService: AuthenticationService) { }
+    private _loggedService: AuthenticationService) { 
+      this.date = new Date();
+    }
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
     this.myFormGroup = this.createMyForm();
-    this.getServiceListdata();
+    // this.getServiceListdata();
   }
 
   createMyForm():FormGroup {
@@ -89,8 +97,8 @@ export class NewRequestforlabComponent implements OnInit {
       Price2: '',
       PatientName:'',
       RegId:'',
-      AdmissionID:0
-
+      AdmissionID:0,
+      Requestdate:''
       
     })
   }
@@ -131,7 +139,7 @@ export class NewRequestforlabComponent implements OnInit {
       "Keyword": `${this.searchFormGroup.get('RegID').value}%`
     }
     if (this.searchFormGroup.get('RegID').value.length >= 1) {
-      this._RequestforlabtestService.getRegistrationList(m_data).subscribe(resData => {
+      this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         console.log(resData);
         this.PatientListfilteredOptions = resData;
@@ -166,14 +174,26 @@ export class NewRequestforlabComponent implements OnInit {
     this.getSelectedObj(row);
   }
   getSelectedObj(obj) {
-    
+    debugger
     this.registerObj = obj;
-    this.PatientName = obj.FirstName + '' + obj.FirstName + '' +obj.LastName;
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' +obj.PatientName;
     this.RegId = obj.RegId;
     this.vAdmissionID = obj.AdmissionID;
     this.DoctorName = obj.DoctorName;
+    this.vAge=obj.Age;
+    this.CompanyName = obj.CompanyName;
+    this.Tarrifname = obj.TariffName;
+    this.Doctorname = obj.DocName;
+    this.vOPIPId = obj.AdmissionID;
+    this.vOPDNo=obj.OPDNo;
+    this.vTariffId=obj.TariffId;
+    this.vClassId=obj.classId  
    // console.log( this.PatientName)
     // this.setDropdownObjs();
+
+    if(this.vAge > 100){
+      Swal.fire("Age is Above 100 can't Generate Request !");
+    }
   }
   onChangeReg(event) {
     if (event.value == 'registration') {
@@ -219,7 +239,7 @@ export class NewRequestforlabComponent implements OnInit {
   getServiceListdata() {
     debugger
     var Param = {
-      "ServiceName": 'c%',
+      "ServiceName":`${this.myFormGroup.get('ServiceId').value}%` ||'%',
       "IsPathRad":parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
       "ClassId":1,
       "TariffId":1
@@ -238,7 +258,9 @@ export class NewRequestforlabComponent implements OnInit {
   }
  
 
-  getServiceListItem(){}
+  getServiceListItem(){
+
+  }
 
   onSaveEntry(row) {
     this.isLoading = 'save';
@@ -284,6 +306,8 @@ export class NewRequestforlabComponent implements OnInit {
       Swal.fire('Success !', 'Service Row Deleted Successfully', 'success');
 
     // }
+   
+
   }
   onClose() {
     this.dialogRef.close();
@@ -301,7 +325,7 @@ export class NewRequestforlabComponent implements OnInit {
 
       ipPathOrRadiRequestInsertArray['reqDate']  =  this.dateTimeObj.date;
       ipPathOrRadiRequestInsertArray['reqTime']  = this.dateTimeObj.time;
-      ipPathOrRadiRequestInsertArray['oP_IP_ID']  = this.vAdmissionID
+      ipPathOrRadiRequestInsertArray['oP_IP_ID']  = this.vOPIPId
       ipPathOrRadiRequestInsertArray['oP_IP_Type']  =  1;
       ipPathOrRadiRequestInsertArray['isAddedBy']  = this._loggedService.currentUserValue.user.id;
       ipPathOrRadiRequestInsertArray['isCancelled']  = 0;

@@ -1,4 +1,25 @@
+.mat-header-row {
+    width: 100%;
+    min-width: 1900px;  
+    min-height: 30px; 
+      
+}
+
+.mat-row {
+    width: 100%;
+    min-width: 1900px;      
+    min-height: 30px;  
+   
+}
+
 .Tab1 {
+
+    .mat-column-RequestId {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        align-items: left;
+    }
     .mat-column-RegNo {
         width: 100px;
         max-width: 100px;
@@ -16,10 +37,8 @@
         overflow: hidden;
         text-overflow: ellipsis;
         overflow: hidden !important;
-        display: inline-flex;
-        display: inline;
-        margin-right: 20px;
-        padding-top: 8px;
+       
+      
     }
     .mat-column-Age {
         width: 90px;
@@ -29,10 +48,15 @@
     }
 
     .mat-column-WardName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 250px;
+        max-width: 250px;
+        min-width: 250px;
         align-items: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
     }
     .mat-column-RequestType {
         width: 120px;
@@ -53,6 +77,18 @@
         min-width: 120px;
         align-items: left;
     }
+    .mat-column-ReqTime {
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
+        align-items: left;
+    }
+    .mat-column-AddedBy {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        align-items: left;
+    }
     .mat-column-CompanyName {
         width: 200px;
         max-width: 200px;
@@ -63,10 +99,7 @@
          overflow: hidden;
          text-overflow: ellipsis;
          overflow: hidden !important;
-         display: inline-flex;
-         display: inline;
-         margin-right: 20px;
-         padding-top: 8px;
+       
     }
     .mat-column-action{
         width: 100px;
@@ -84,20 +117,16 @@
 
 .Tab2 {
     .mat-column-ServiceName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
+        width: 300px;
+        max-width: 300px;
+        min-width: 300px;
         text-align: left;
          justify-content: left;
          white-space: nowrap;
          overflow: hidden;
          text-overflow: ellipsis;
          overflow: hidden !important;
-         display: inline-flex;
-         display: inline;
-         margin-right: 20px;
-         padding-top: 8px;
-        
+                
     }
 
     .mat-column-ReqDate {
@@ -116,20 +145,20 @@
         
     }
     .mat-column-AddedByName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
+        width: 110px;
+        max-width: 110px;
+        min-width: 110px;
         align-items: left;
         
     }
-    .mat-column-AddBilingUser {
+    .mat-column-BillingUser {
         width: 150px;
         max-width: 150px;
         min-width: 150px;
         align-items: left;
          
     }
-    .mat-column-BillDateTime {
+    .mat-column-AddedByDate {
         width: 200px;
         max-width: 200px;
         min-width: 200px;
@@ -137,9 +166,9 @@
        
     }
     .mat-column-IsStatus {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
         align-items: left;
         
     }

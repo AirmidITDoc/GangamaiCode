@@ -1,4 +1,4 @@
-<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" style="width: 100%; background:#F5F5F5; ">
+<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" style="width: 100%; background:#F5F5F5; padding: 10px 10px 10px 10px; ">
     <!-- <div class="col-md-12" style="padding:10px;" *ngIf="selectedView == 'Dropdown'"> -->
     <div class="container" style="width: 100%;">
         <div style="width: 100%;">
@@ -13,14 +13,14 @@
 
                     <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}"
                         style="width: 98%;font-size: 16px;">
-                        OPD BILLING 
+                        OPD BILLING
                     </span>
 
                     <div fxLayout="row" style="float: right; margin-right: 5px;">
-                        <span style="margin-right: 40px;color: aliceblue;font-weight: bold;">
+                        <!-- <span style="margin-right: 40px;color: aliceblue;font-weight: bold;">
                             <app-common-date [screenFrom]="screenFromString"
                                 (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                        </span>
+                        </span> -->
                         <!-- <span class="material-icons" style="cursor: pointer;" (click)="onClose()">
                             close
                         </span> -->
@@ -28,47 +28,152 @@
                 </div>
             </div>
 
-          
+
             <mat-card-content style="width: 100%;margin-right: 5px;">
                 <div fxLayout="column">
-                    <mat-card style="background-color: rgb(202, 223, 223);height:80px !important">
+                    <mat-card style="height:80px !important; padding: 0px 0 8px 0;">
                         <form [formGroup]="searchFormGroup">
-                        <mat-form-field class=searchRegId appearance="outline" style="width:600px !important;margin-left:20px;">
-                            <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No "
-                              matInput [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
-                            <span matSuffix style="display: flex;">
-                              <mat-icon class="mat-icon-close"
-                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                              <mat-icon class="mat-icon-close"
-                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                            </span>
-                            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1"
-                              (optionSelected)='getSelectedObj1($event.option.value)'>
-                              <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
-                                {{option.MobileNo}}
-                              </mat-option>
-                            </mat-autocomplete>
-                            <!-- <mat-error *ngIf="searchFormGroup.get('ItemId').hasError('required')">
+                            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
+
+                            <mat-form-field class=searchRegId appearance="outline"
+                                style="width:600px !important;margin-left:20px;">
+                                <input type="text" name="RegId" formControlName="RegId"
+                                    placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput
+                                    [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1"
+                                    (optionSelected)='getSelectedObj1($event.option.value)'>
+                                    <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                        {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                        {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <!-- <mat-error *ngIf="searchFormGroup.get('ItemId').hasError('required')">
                               Required field cannot be left blank
                             </mat-error> -->
-                          </mat-form-field>
+                            </mat-form-field>
 
-                          <span style="margin-left: 30px;font-size: medium;color: rgb(3, 83, 83);font-weight: bold;">Patient Name :{{PatientName}} <span style="margin-left: 10px;">RegId :{{RegId}}</span><span style="margin-left: 10px;">RegDate :{{RegDate}}</span><span style="margin-left: 10px;">City :{{City}}</span></span>
+                            <span style="margin-right: 40px;">
+                                <app-common-date [screenFrom]="screenFromString"
+                                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                            </span>
+                            </div>
+                            <!-- <div>
+                                <span
+                                    style="margin-left: 30px;font-size: medium;color: rgb(3, 83, 83);font-weight: bold;">Patient
+                                    Name :{{PatientName}}
+                                    <span style="margin-left: 10px;">OPDNo :{{vOPDNo}}</span>
+                                         <span style="margin-left: 10px;">Company Name :{{CompanyName}}</span>
+                                        <span style="margin-left: 10px;">Tarrif :{{Tarrifname}}</span>
+                                        <span style="margin-left: 10px;">Doctor Name :{{Doctorname}}</span>
+
+                                    </span>
+                            </div> -->
                         </form>
                     </mat-card>
-
+                    <div>
+                    <mat-card style="padding: 8px 0 8px 0;">
+                        <fieldset class="fieldset-div" style="width: 98% !important;">
+                            <legend>Patient Information</legend>
+                            
+                            <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
+                                <div class="patient-sub">
+                                    <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                        <div class="flex-item" >
+                                            <h3 class="labels-h3">Patient Name</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item" style="width: 275px;">
+                                            <h6 class="labels-h6">{{PatientName}}</h6>
+                                        </div>
+                                        <div class="flex-item item-header" style="margin-left: 10px;">
+                                            <h3 class="labels-h3">OPIPNo</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{vOPDNo}}</h6>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+            
+                                <div class="patient-sub">
+                                    <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                        <div class="flex-item item-header">
+                                            <h3 class="labels-h3">DoctorName</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{Doctorname}}</h6>
+                                        </div>
+                                        <div class="flex-item item-header">
+                                            <h3 class="labels-h3">CompanyName</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{CompanyName}}</h6>
+                                        </div>
+            
+                                        <div class="flex-item item-header">
+                                            <h3 class="labels-h3">TarrifName</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{Tarrifname}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
+                                        <!-- <div class="flex-item item-header">
+                                            <h3 class="labels-h3">DoctorName</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">{{Doctorname}}</h6>
+                                        </div> -->
+            
+            
+                                        <!-- <div class="flex-item item-header">
+                                            <h3 class="labels-h3">Doctor</h3>
+                                        </div>
+                                        <div class="flex-item-middle">
+                                            <h6 class="labels-h6">:</h6>
+                                        </div>
+                                        <div class="flex-item">
+                                            <h6 class="labels-h6">XYZ XYZ Xyz</h6>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </mat-card>
+                    </div>
                 </div>
                 <div fxLayout="column">
 
                     <div class="content-card"
                         style="width:100%;  margin-top: 2px; float: right;background-color: white; margin-right: 10px;margin-left: 10px;">
                         <div fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="3px">
-                            <div fxlayout="row" style=" padding: 3px 3px 3px 1px; margin-right: 5px;">
+                            <div fxlayout="row">
                                 <!-- ================================ LABEL HEADER  -->
-                               
-                                <mat-card fxFlex.gt-sm="100%" fxFlex
-                                    style="padding: 0 5px; height: fit-content; background-color: white;">
+
+                                <mat-card fxFlex.gt-sm="100%" fxFlex>
                                     &nbsp;
                                     <form [formGroup]="registeredForm" style="display: flex;" #f="ngForm" #aForm>
 
@@ -101,8 +206,8 @@
 
                                             <mat-form-field appearance="outline" #Price style="width:100px;">
                                                 <mat-label>Price</mat-label>
-                                                <input matInput [(ngModel)]="b_price" name="bPrice" #price
-                                                    formControlName="price" required type="number" id="Price"
+                                                <input matInput [(ngModel)]="b_price" name="bPrice" #price  (keyup)="calculateTotalAmtbyprice()"
+                                                    formControlName="price" required type="number" id="Price" #price  (keydown)="onEnterorice($event)"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
                                                 <mat-error
                                                     *ngIf="registeredForm.get('price').invalid && registeredForm.get('price').touched">
@@ -131,8 +236,8 @@
                                             <div style="margin-right: 10px; width:200px;" *ngIf="isDoctor">
                                                 <mat-form-field appearance="outline" fxFlex id="DoctorID">
                                                     <mat-label>Doctor Name</mat-label>
-                                                    <mat-select formControlName="DoctorID" placeholder="Bank" #DoctorId
-                                                        #singleSelect>
+                                                    <mat-select formControlName="DoctorID" placeholder="Doctor" #Doctor
+                                                        #singleSelect (keydown)="onEnterdoctor($event)">
                                                         <mat-option>
                                                             <ngx-mat-select-search [formControl]="doctorFilterCtrl"
                                                                 [placeholderLabel]="'Search'"
@@ -177,14 +282,13 @@
                                             <mat-form-field appearance="outline" style="width:100px;">
                                                 <mat-label>NetAmount</mat-label>
                                                 <input matInput [(ngModel)]="b_netAmount" name="b_netAmount" readonly
-                                                    formControlName="netAmount" required (keydown)="onEnternetAmount($event)" 
-                                                    #netamt>
+                                                    formControlName="netAmount" required (keyup)="addData()" #netamt>
                                                 <mat-error
                                                     *ngIf="registeredForm.get('netAmount').invalid && registeredForm.get('netAmount').touched">
                                                     NetAmount is required</mat-error>
                                             </mat-form-field>
 
-                                            <div matTooltip="Select doctor name to enable this button!!"
+                                            <div matTooltip="Enter all data to enable this button!!"
                                                 [matTooltipDisabled]="!registeredForm.invalid"
                                                 [matTooltipPosition]="'above'">
                                                 <!-- <button mat-raised-button fxLayoutAlign="center center"
@@ -203,7 +307,7 @@
 
                                             </div>
 
-                                            
+
                                         </div>
                                     </form>
                                 </mat-card>
@@ -226,7 +330,8 @@
                                         <div class="col-md-12">
                                             <!-- ================= Charges List Table ======================= -->
                                             <mat-table #table matSort [dataSource]="dataSource"
-                                                [@animateStagger]="{value:'50'}" style="height:300px !important;overflow: auto;">
+                                                [@animateStagger]="{value:'50'}"
+                                                style="height:200px !important;overflow: auto;">
                                                 <!-- <ng-container matColumnDef="checkbox" sticky>
                                 style="overflow:auto; border: 1px solid;" class="mat-data-table">
                                 <ng-container matColumnDef="checkbox" sticky>
@@ -273,7 +378,7 @@
                                                         <!-- <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button>       -->
                                                     </mat-cell>
                                                 </ng-container>
-                                             
+
                                                 <ng-container matColumnDef="ServiceName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Service Name
@@ -382,7 +487,7 @@
                                                         {{contact.ChargesAddedName}}
                                                     </mat-cell>
                                                 </ng-container>
-                                              
+
 
                                                 <ng-container matColumnDef="loading">
                                                     <mat-footer-cell *matFooterCellDef colspan="6">
@@ -421,16 +526,18 @@
                                                         class="net-amt-value">{{chargeslist.length}}</span>
                                                 </div> -->
                                                 <div>
-                                                 
+
                                                     <!-- Disc Amount
                                                     {{getDiscAmtSum(dataSource.data)}} -->
                                                     <span class="net-amt-label"
-                                                    style="width: 200px;font-weight: bold;color: blue;">No of
-                                                    Services:</span><span class="net-amt-value"
-                                                    style="margin-right: 200px;">{{dataSource.data.length}}</span>
-                                                    <span class="net-amt-label" style="margin-left:480px;color: blue;">Net Amount:</span>&nbsp;<span
+                                                        style="width: 200px;font-weight: bold;color: blue;">No of
+                                                        Services:</span><span class="net-amt-value"
+                                                        style="margin-right: 200px;">{{dataSource.data.length}}</span>
+                                                    <span class="net-amt-label"
+                                                        style="margin-left:480px;color: blue;">Net
+                                                        Amount:</span>&nbsp;<span
                                                         class="net-amt-value">{{getNetAmtSum(dataSource.data)}}</span>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -458,7 +565,7 @@
 
                                         <div>
                                             <mat-form-field appearance="outline" class="Consession-field"
-                                                style="width: 200px;">
+                                               fxFlex>
                                                 <mat-label>Total Amount</mat-label>
                                                 <input matInput [(ngModel)]="b_TotalChargesAmount"
                                                     name="b_TotalChargesAmount" formControlName="TotallistAmount"
@@ -469,7 +576,7 @@
                                             </mat-form-field>
 
                                             <mat-form-field class="Consession-field" appearance="outline"
-                                                style="width: 100px;">
+                                            fxFlex>
                                                 <mat-label>Disc(%)</mat-label>
                                                 <input matInput [(ngModel)]="b_concessionDiscPer"
                                                     formControlName="concesDiscPer" name="b_concessionDiscPer"
@@ -480,7 +587,7 @@
                                             </mat-form-field>
 
                                             <mat-form-field class="Consession-field" appearance="outline"
-                                                style="width: 100px;">
+                                            fxFlex>
                                                 <mat-label>Disc Amt</mat-label>
                                                 <input matInput [(ngModel)]="b_concessionamt" name="b_Consessionamt"
                                                     formControlName="concessionAmt" placeholder="0" type="number"
@@ -488,7 +595,7 @@
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" class="Consession-field"
-                                                style="width: 200px;">
+                                            fxFlex>
                                                 <mat-label>Net Amount</mat-label>
                                                 <input matInput [(ngModel)]="TotalnetPaybleAmt" name="TotalnetPaybleAmt"
                                                     formControlName="FinalAmt" readonly required>
@@ -497,7 +604,7 @@
                                                     FinalAmt is required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width: 250px;"
+                                            <mat-form-field appearance="outline" fxFlex
                                                 *ngIf="Consessionres">
                                                 <mat-label>Concession Reason Type</mat-label>
                                                 <mat-select formControlName="ConcessionId" [disabled]="Consession">
@@ -507,7 +614,7 @@
                                                 </mat-select>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="width: 250px;">
+                                            <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Remark</mat-label>
                                                 <input name="Address" appearance="legacy" style="color: green;"
                                                     formControlName="BillRemark" placeholder="Remark" matInput>
@@ -534,10 +641,10 @@
                                     <!-- <button class="next-btn" (click)="onSaveOPBill2()" [disabled]="BillingForm.invalid"
                                     style="border-radius: 16px;margin-left: 60%;">View Bill</button> -->
                                     <button class="footer-btn" (click)="onClose()"
-                                    style="border-radius: 16px;margin-left:80%;">Reset</button>
+                                        style="border-radius: 16px;margin-left:80%;">Reset</button>
                                     <button class="next-btn" (click)="onSaveOPBill2()" [disabled]="BillingForm.invalid"
                                         style="border-radius: 16px;margin-left:10px;">Save</button>
-                                   
+
                                     <!-- <button class="next-btn" (click)="showNewPaymnet()"
                                         style="border-radius: 16px;">Save</button> -->
                                 </div>

@@ -12,6 +12,8 @@ import { RadiologyTestMasterService } from './radiology-test-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatTabGroup } from '@angular/material/tabs';
 import { DatePipe } from '@angular/common';
+import { UpdateradiologymasterComponent } from './updateradiologymaster/updateradiologymaster.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-radiology-test-master',
@@ -65,15 +67,15 @@ export class RadiologyTestMasterComponent implements OnInit {
   constructor(
     public _radiologytestService: RadiologyTestMasterService,
     public toastr: ToastrService,
-    //public datePipe: DatePipe,
+    public _matDialog: MatDialog,
     private accountService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
     this.getRadiologyTestList();
-    this.getCategoryNameCombobox();
-    this.getServiceNameCombobox();
-    this.getTemplateNameCombobox();
+    // this.getCategoryNameCombobox();
+    // this.getServiceNameCombobox();
+    // this.getTemplateNameCombobox();
 
 
     this.categoryFilterCtrl.valueChanges
@@ -104,22 +106,9 @@ export class RadiologyTestMasterComponent implements OnInit {
     }); this.getRadiologyTestList();
   }
 
-  // getRadiologytestMasterList() {
-  //   var vdata={
-  //     ServiceName: this._radiologytestService.myformSearch.get('TestNameSearch').value + '%' || '%'
-  //   };
-  //     console.log(vdata)
-  //    this._radiologytestService.getRadiologyList(vdata).subscribe(Menu => {
-  //     this.dataSource.data = Menu as RadiologytestMaster[];
-  //     console.log(this.dataSource)
-  //     this.dataSource.sort= this.sort;
-  //     this.dataSource.paginator=this.paginator;
-  //   });
-  // } @ServiceName   [nvarchar](100) 
-  
   
   getRadiologyTestList() {
-    debugger
+    //debugger
     var vdata = {
       "ServiceName": this._radiologytestService.myformSearch.get("TestNameSearch").value + '%' || '%'
     }
@@ -247,7 +236,7 @@ export class RadiologyTestMasterComponent implements OnInit {
          insertRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
          insertRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
          insertRadiologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id;
-         insertRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.serviceId;
+         insertRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
         
          let insertRadiologyTemplateTest = [];
          this.DSTestList.data.forEach((element) => {
@@ -290,7 +279,7 @@ export class RadiologyTestMasterComponent implements OnInit {
         updateRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
         updateRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
         updateRadiologyTestMaster['updatedBy'] = this.accountService.currentUserValue.user.id;
-        updateRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceName;
+        updateRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
        
         let insertRadiologyTemplateTest = [];
         this.DSTestList.data.forEach((element) => {
@@ -333,25 +322,47 @@ export class RadiologyTestMasterComponent implements OnInit {
       }
      
   }
-  @ViewChild('tabGroup') tabGroup: MatTabGroup;
-  onAdd(tabName: string, tabGroup: MatTabGroup) {
-    const tabIndex = tabName === 'tab1' ? 0 : 1;
-    tabGroup.selectedIndex = tabIndex;
-    // console.log(row)
-    // this.getRadiologyTestList();
-    this.onClear();
+
+  
+  onAdd() {
+    const dialogRef = this._matDialog.open(UpdateradiologymasterComponent,
+      {
+           maxWidth: "80%", 
+            width: "80%",
+            height: "85%",
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+       this.getRadiologyTestList();
+    });
   }
   onEdit(row) {
     var m_data = {
-      "TestId": row.TestId, "TestName": row.TestName.trim(),
-      "PrintTestName": row.PrintTestName.trim(),
-      "CategoryId": row.CategoryId,
-      "ServiceId": row.ServiceId,
-      "IsDeleted": JSON.stringify(row.IsDeleted),
+      "TestId": row.TestId, 
+      "TestName": row.TestName.trim(),
+      "PrintTestName":row.PrintTestName,
+      "CategoryId": row.CategoryName,
+      "ServiceId": row.ServiceName,
+      "IsDeleted": JSON.stringify(row.Isdeleted),
       "UpdatedBy": row.UpdatedBy,
-    }
+    };
+    console.log(row)
+    console.log(m_data)
     this._radiologytestService.populateForm(m_data);
-  }
+    const dialogRef = this._matDialog.open(UpdateradiologymasterComponent, {
+      maxWidth: "80%", 
+      width: "80%",
+      height: "85%",
+        data : {
+            Obj : row,
+          }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+        console.log("The dialog was closed - Insert Action", result);
+        this.getRadiologyTestList();
+    });
+}
+  
 }
 
 

@@ -10,6 +10,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
 import { Subscription } from 'rxjs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-requestforlabtest',
@@ -24,14 +25,17 @@ export class RequestforlabtestComponent implements OnInit {
   SpinLoading:boolean=false;
   displayedColumns: string[] = [
     'action',
+    'RequestId',
     'RegNo',
     'PatientName',
     'Age',
     'Vst_Adm_Date',
     'WardName',
     'RequestType',
-    // 'TariffName',
-    // 'CompanyName'
+    'TariffName',
+    'CompanyName',
+    'ReqTime',
+    'AddedBy'
   ]
 
   displayColumns: string[] =[
@@ -39,8 +43,8 @@ export class RequestforlabtestComponent implements OnInit {
     'ReqTime',
     'ServiceName',
     'AddedByName',
-    'AddBilingUser',
-    'BillDateTime',
+    'BillingUser',
+    'AddedByDate',
     'IsStatus',
     'PBillNo',
     'IsComplted'
@@ -73,7 +77,7 @@ export class RequestforlabtestComponent implements OnInit {
 
   Openpopup(){
     this.dialog.open(NewRequestforlabComponent,{
-      width:'80%',
+      width:'90%',
       height:'800px',
       panelClass: 'new-request-dialog'
     })
@@ -110,6 +114,32 @@ export class RequestforlabtestComponent implements OnInit {
   //   console.log(Parama.RequestId);
   //   this.getRequestdetList(Parama.RequestId)
   // }
+  PresItemlist:any =[];
+  deleteTableRow(element) {
+    if(!element.IsClosed){
+    // if (this.key == "Delete") {
+      let index = this.PresItemlist.indexOf(element);
+      if (index >= 0) {
+        this.PresItemlist.splice(index, 1);
+        this.dsrequestList.data = [];
+        this.dsrequestList.data = this.PresItemlist;
+      }
+      Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
+
+debugger
+      let query = "update T_HLabRequest set IsCancelled=1 where RequestId=" + element.RequestId + "";
+      this._RequestforlabtestService.Canclerequest(query).subscribe((resData: any) => {
+        
+      });
+    }
+    else{
+      Swal.fire('Billed Prescription can not Delete !');
+
+    }
+
+
+
+  }
 
 
   viewgetLabrequestReportPdf(row) {
@@ -225,6 +255,7 @@ export class RequestList{
   BillDate:any;
   BillTime:any;
   ReqDate:any;
+  RequestId:any;
 
   constructor(RequestList) {
     this.RegNo=RequestList.RegNo || 0;
@@ -235,6 +266,7 @@ export class RequestList{
     this.RequestType=RequestList.RequestType || '';
     this.TariffName=RequestList.TariffName || '';
     this.CompanyName=RequestList.CompanyName || '';
+    this.RequestId =RequestList.RequestId || 0
   }
 }
 

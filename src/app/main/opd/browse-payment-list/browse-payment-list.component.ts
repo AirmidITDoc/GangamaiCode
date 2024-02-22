@@ -146,11 +146,11 @@ ngOnChanges(changes: SimpleChanges) {
 }
 
 
-SpinLoading:boolean=false;
+
 viewgetOPPayemntPdf(row) {
-  debugger
+  this.sIsLoading = 'loading-data';
   setTimeout(() => {
-    this.SpinLoading =true;
+    
   //  this.AdList=true;
   this._BrowseOpdPaymentReceiptService.getOpPaymentview(
     row.PaymentId
@@ -167,12 +167,9 @@ viewgetOPPayemntPdf(row) {
       });
       dialogRef.afterClosed().subscribe(result => {
         // this.AdList=false;
-        this.SpinLoading = false;
+        this.sIsLoading = '';
       });
-      dialogRef.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.SpinLoading = false;
-      });
+     
   });
  
   },100);
@@ -189,164 +186,7 @@ viewgetOPPayemntPdf(row) {
     // });
 
   }
-  convertToWord(e){
-    
-     return converter.toWords(e);
-       }
-       val = 1;
-
-getTemplate() {
-
-  let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=8';
-  this._BrowseOpdPaymentReceiptService.getTemplates(query).subscribe((resData: any) => {
-      this.printTemplate = resData[0].TempDesign;
-   
-    let  keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','BillDate','RegId','BillNo','PatientName','ConsultantDr','Department',"Address",'MobileNo','ReferDr','PaidAmount','CashPayAmount','CardPayAmount','ChequePayAmount','NEFTPayAmount','PayTMAmount','Remark','UserName','CardNo','CardBankName']; // resData[0].TempKeys;
-   
-
-   for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(this.reportPrintObj.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrPaidAmountInWords', this.convertToWord(this.reportPrintObj.PaidAmount));
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      
-      console.log(this.printTemplate )
-      setTimeout(() => {
-        this.print();
-      }, 50);
-  });
-
-}
-
-
-transform2(value: string) {
-  var datePipe = new DatePipe("en-US");
-  value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-  return value;
-}
-
-getPrint(el) {
   
-   var D_data = {
-     "PaymentId": el.PaymentId,
-   }
-  
-   let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-   this.subscriptionArr.push(
-     this._BrowseOpdPaymentReceiptService.getBrowseOpdPaymentReceiptPrint(D_data).subscribe(res => {
-       if(res){
-       this.reportPrintObj = res[0] as BrowseOpdPaymentReceipt;
-         this.getTemplate();
-      }
-              
-     })
-   );
- }
-
-//  getTemplateheader(){
-//   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=21';
-//   this._BrowseOpdPaymentReceiptService.getTemplates(query).subscribe((resData: any) => {
-//       this.printTemplate = resData[0].TempDesign;
-   
-//     let  keysArray = ['HospitalName','HospitalAddress','Phone','EmailId']; // resData[0].TempKeys;
-   
-//    for (let i = 0; i < keysArray.length; i++) {
-//         let reString = "{{" + keysArray[i] + "}}";
-//         let re = new RegExp(reString, "g");
-//         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj1[keysArray[i]]);
-//       }
-   
-//       setTimeout(() => {
-//         }, 50);
-//   });
-//  }
-
-//  getPrint1() {
-  
-//   let printContents;
-//   this.subscriptionArr.push(
-//     this._BrowseOpdPaymentReceiptService.getHospital().subscribe(res => {
-//       if(res){
-//       this.reportPrintObj1 = res[0] as HospitalMaster;
-      
-//      this.getTemplateheader();
-//      }
-             
-//     })
-//   );
-// }
-
-
-print() {
-  
-  let popupWin, printContents;
-  // printContents =this.printTemplate; // document.getElementById('print-section').innerHTML;
-
-  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  // popupWin.document.open();
-  popupWin.document.write(` <html>
-  <head><style type="text/css">`);
-  popupWin.document.write(`
-    </style>
-        <title></title>
-    </head>
-  `);
-  popupWin.document.write(`<body onload="window.print();window.close()"></body> 
-  </html>`);
-
-  // if(this.reportPrintObj.CashPayAmount === 0) {
-  //   popupWin.document.getElementById('idCashpay').style.display = 'none';
-  // }
-  // if(this.reportPrintObj.CardPayAmount === 0) {
-  //   popupWin.document.getElementById('idCardpay').style.display = 'none';
-  // }
-  // if(this.reportPrintObj.ChequePayAmount === 0) {
-  //   popupWin.document.getElementById('idChequepay').style.display = 'none';
-  // }
-  // if(this.reportPrintObj.NEFTPayAmount === 0) {
-  //   popupWin.document.getElementById('idNeftpay').style.display = 'none';
-  // }
-  // if(this.reportPrintObj.PayTMAmount === 0) {
-  //   popupWin.document.getElementById('idPaytmpay').style.display = 'none';
-  // }
-  // if(this.reportPrintObj.PayTMAmount === 0) {
-  //   popupWin.document.getElementById('idPaytmpay').style.display = 'none';
-  // }
-  // if(this.reportPrintObj.Remark === '') {
-  //   popupWin.document.getElementById('idremark').style.display = 'none';
-  // }
-  this.createCDKPortal({}, popupWin);
-  popupWin.document.close();
-}
-
-  createCDKPortal(data, windowInstance) {
-    if (windowInstance) {
-      const outlet = new DomPortalOutlet(windowInstance.document.body, this.componentFactoryResolver, this.applicationRef, this.injector);
-      const injector = this.createInjector(data);
-      let componentInstance;
-      componentInstance = this.attachHeaderContainer(outlet, injector);
-      // console.log(windowInstance.document)
-      let template = windowInstance.document.createElement('div'); // is a node
-      template.innerHTML = this.printTemplate;
-      windowInstance.document.body.appendChild(template);
-    }
-  }
-  createInjector(data): any {
-    const injectionTokens = new WeakMap();
-    injectionTokens.set({}, data);
-    return new PortalInjector(this.injector, injectionTokens);
-  }
-
-  attachHeaderContainer(outlet, injector) {
-    const containerPortal = new ComponentPortal(HeaderComponent, null, injector);
-    const containerRef: ComponentRef<HeaderComponent> = outlet.attach(containerPortal);
-    return containerRef.instance;
-  }
-
 
 getViewbill(contact)
 {

@@ -54,7 +54,7 @@
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
                                         <input matStartDate formControlName="startdate" placeholder="Start date">
-                                        <input matEndDate formControlName="enddate" placeholder="End date">
+                                        <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)=getRequesttList()>
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-date-range-picker #picker></mat-date-range-picker>
@@ -62,7 +62,7 @@
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Search RegNo</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput>
+                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="getRequesttList()">
                                 </mat-form-field>
 
                                 <div style="margin-top: 10px;">
@@ -106,6 +106,19 @@
                                             <button mat-icon-button matTooltip="print" (click)="viewgetLabrequestReportPdf(row)">
                                                 <mat-icon>print</mat-icon>
                                             </button>
+                                            <button mat-icon-button (click)="deleteTableRow(row)"
+                                            color="warn">
+                                            <mat-icon>delete_outline</mat-icon>
+                                        </button>
+                                        </mat-cell>
+                                    </ng-container>
+                                    RequestId
+
+                                    <ng-container matColumnDef="RequestId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RequestId
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm >
+                                            {{contact.RequestId}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -158,7 +171,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <!-- <ng-container matColumnDef="TariffName"  >
+                                    <ng-container matColumnDef="TariffName"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> TariffName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -169,12 +182,27 @@
                                     <ng-container matColumnDef="CompanyName"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> CompanyName
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                        [style.background-color]="CompanyName !== ' ' ? 'white' : 'pink'">
                                             {{contact.CompanyName}}
                                         </mat-cell>
-                                    </ng-container> -->
+                                    </ng-container>
 
-                                   
+                                    <ng-container matColumnDef="ReqTime">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Presc Time
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ReqTime | date:'mm/dd/yyyy hh:mm:ss'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="AddedBy">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> AddedBy
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.AddedBy}}
+                                        </mat-cell>
+                                    </ng-container>
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -190,8 +218,14 @@
                                     <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''"
                                         [@animate]="{value:'*',params:{y:'100%'}}" (click)="getRequestdetList(contact)">
                                     </mat-row>
+                                    <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                          [ngClass]="contact.Isclosed == 'true' ? 'self-row' : ''"
+                          [@animate]="{value:'*',params:{y:'100%'}}">
+                        </mat-row> -->
+                                   
                                     <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                      </mat-footer-row>
                                           <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsrequestList!=null && dsrequestList.data.length==0)}">
@@ -230,14 +264,14 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="AddedByName"  >
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedByName
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedBy
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.AddedByName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddBilingUser"  >
+                                    <ng-container matColumnDef="BillingUser"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Add Biling User
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -245,7 +279,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="BillDateTime"  >
+                                    <ng-container matColumnDef="AddedByDate"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BillDateTime
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>

@@ -1,28 +1,27 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <mat-toolbar class="accent"
-        style="height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12"  style="color: white;">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                 IP Prescription
+                IP Prescription
             </span>
 
             <div fxLayout="row" fxLayoutGap="5px" style="margin-left:330% !important; ">
                 <button mat-raised-button (click)="OpenNewPrescription()" matTooltip="close"
                     style="background-color: aliceblue;color: brown;margin-left:2% !important">Add Prescription
-    
+
                 </button>
             </div>
             <!-- <button mat-raised-button  class="clearbutton"(click)="Openpopup()"  matTooltip="close" style= "left: 300%; width:100%; height: 40px;">
                 Add Prescription</button> -->
         </div>
 
-        
+
 
     </mat-toolbar>
 
@@ -53,7 +52,7 @@
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
                                         <input matStartDate formControlName="startdate" placeholder="Start date">
-                                        <input matEndDate formControlName="enddate" placeholder="End date">
+                                        <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getPrescriptionList()">
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-date-range-picker #picker></mat-date-range-picker>
@@ -61,13 +60,23 @@
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Search RegNo</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput >
+                                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="getPrescriptionList()">
                                 </mat-form-field>
 
-                                <div style="margin-top: 10px;">
-                                    <button mat-raised-button  class="clearbutton" matTooltip="close">
+                                <mat-radio-group aria-label="Select an option" formControlName="PrescriptionStatus"
+                                    name="PrescriptionStatus" style="margin-top: 12px;" (change)="onChangePrescriptionType($event)"
+                                    (blur)="onChangePrescriptionType($event)">
+                                    <mat-radio-button value="Pending">Pending</mat-radio-button>
+                                    <mat-radio-button value="Closed">Closed</mat-radio-button>
+                                   
+                                </mat-radio-group>
+
+
+                                <div style="margin-top: 20px;">
+                                    <button mat-raised-button class="clearbutton" matTooltip="close">
                                         <mat-icon class="cleariconbutton">close</mat-icon></button>&nbsp;
-                                    <button mat-raised-button class="searchButton" (click)="getPrescriptionList()" matTooltip="search">
+                                    <button mat-raised-button class="searchButton" (click)="getPrescriptionList()"
+                                        matTooltip="search">
                                         <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
 
@@ -96,18 +105,28 @@
                                 <mat-table class="Tab1" matSort [dataSource]="dsprescritionList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <ng-container matColumnDef="Date">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
+
+
+                                    <ng-container matColumnDef="action">
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.Date}}
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button matTooltip="print"
+                                                (click)="viewgetIpprescriptionReportPdf(row)">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+
+                                            <button mat-icon-button (click)="deleteTableRow(row)"
+                                            color="warn">
+                                            <mat-icon>delete_outline</mat-icon>
+                                        </button>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="RegNo" fxLayoutAlign="start center">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            style=" margin-top: 8px; ">
-                                            RegNo</mat-header-cell>
+                                    <ng-container matColumnDef="RegNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
+                                            style=" margin-top: 8px; ">RegNo
+                                        </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             {{contact.RegNo}}
                                         </mat-cell>
@@ -122,40 +141,60 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Vst_Adm_Date">
+                                    <!-- <ng-container matColumnDef="Vst_Adm_Date">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Vst_Adm_Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             {{contact.Vst_Adm_Date}}
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
-                                    <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button matTooltip="print" (click)="viewgetIpprescriptionReportPdf(row)">
-                                                <mat-icon>print</mat-icon>
-                                            </button>
-                                        </mat-cell>
-                                    </ng-container>
 
-                                    <ng-container matColumnDef="StoreName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>StoreName
+
+                                    <ng-container matColumnDef="Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Pres .Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                            {{contact.StoreName}}
+                                            {{contact.Date | date:'shortDate'}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="PreNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Pre.No
+                                    <ng-container matColumnDef="OPD_IPD_Type">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Type
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                            {{contact.PreNo}}
+                                            {{contact.OPD_IPD_Type}}
                                         </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="PTime">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Prec.Time
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.PTime | date:'HH:mm:ss'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="CompanyName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CompanyName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.CompanyName}}
+                                        </mat-cell>
+                                    </ng-container>
+<!-- 
+                                    <ng-container matColumnDef="CompanyName">
+                                        <mat-header-cell *matHeaderCellDef>CompanyName</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" *ngIf="contact.CompanyName !== '' " [style.color]="'red'"> {{contact.CompanyName}}</mat-cell>
+                                      </ng-container> -->
+
+                                    <ng-container matColumnDef="AddedBy">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedBy
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.AddedBy}}
+                                        </mat-cell>
+                                    </ng-container>
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -170,8 +209,14 @@
 
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect(contact)"></mat-row>
+                                    <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"
+                                        (click)="onSelect(contact)"></mat-row> -->
+
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                        [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect(contact)">
+                                      </mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>
@@ -186,52 +231,62 @@
                             </div>
                             <div>
                                 <mat-table class="Tab2" matSort [dataSource]="dsprescriptiondetList"
-                                [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                <ng-container matColumnDef="ItemName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemName
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.ItemName}}
-                                    </mat-cell>
-                                </ng-container>
+                                    <ng-container matColumnDef="ItemName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ItemName}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                <ng-container matColumnDef="Qty">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                        style=" margin-top: 8px; ">
-                                        Qty</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                        {{contact.Qty}}
-                                    </mat-cell>
-                                </ng-container>
+                                    <ng-container matColumnDef="Qty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            style=" margin-top: 8px; ">
+                                            Qty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.Qty}}
+                                        </mat-cell>
+                                    </ng-container>
 
+<!-- 
+                                    <ng-container matColumnDef="TQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            style=" margin-top: 8px; ">
+                                            Qty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.Qty}}
+                                        </mat-cell>
+                                    </ng-container> -->
 
-                                <ng-container matColumnDef="loading">
-                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                    </mat-header-cell>
-                                </ng-container>
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
 
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
 
-                                <mat-header-row class="accent" *matHeaderRowDef="dscPrescriptionDetList; sticky: true">
-                                </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: dscPrescriptionDetList;" class="contact"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                </mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dsprescriptiondetList!=null && dsprescriptiondetList.data.length==0)}">
-                                </mat-footer-row>
-                            </mat-table>
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="dscPrescriptionDetList; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: dscPrescriptionDetList;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsprescriptiondetList!=null && dsprescriptiondetList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
 
-                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
-                                showFirstLastButtons>
-                            </mat-paginator>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
+                                    showFirstLastButtons>
+                                </mat-paginator>
                             </div>
                         </div>
                     </div>
@@ -261,33 +316,42 @@
             | Reg.No :-BIJ00467ALSSh </span><br><br>
 
 
-        <span style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center; background-color: gray;">IP Prescription</span>
+        <span style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center; background-color: gray;">IP
+            Prescription</span>
         <hr> <br>
 
     </div>
     <table>
         <tr>
-            <td > <span style="font-weight: 500;margin-right: 75px;">Reg No. </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.RegNo}} </span> </td>
-            <td><span style="font-weight: 500;margin-right:43px;margin-left: 200px;">Date</span><span style="font-size:11px;"> {{reportPrintObjList[0]?.PDate  | date: 'dd/MM/yyyy'}} </span> </td>
+            <td> <span style="font-weight: 500;margin-right: 75px;">Reg No. </span><span
+                    style="font-size:11px; ">{{reportPrintObjList[0]?.RegNo}} </span> </td>
+            <td><span style="font-weight: 500;margin-right:43px;margin-left: 200px;">Date</span><span
+                    style="font-size:11px;"> {{reportPrintObjList[0]?.PDate | date: 'dd/MM/yyyy'}} </span> </td>
         </tr>
 
         <tr>
-            <td ><span style="font-weight: 500;margin-right: 38px;">Patient Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.PatientName}}</span> </td>
-            <td><span style="font-weight: 500;margin-right: 40px;margin-left: 200px;">IP No</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.IPPreId}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 38px;">Patient Name</span><span
+                    style="font-size:11px;">{{reportPrintObjList[0]?.PatientName}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 40px;margin-left: 200px;">IP No</span> <span
+                    style="font-size:11px;">{{reportPrintObjList[0]?.IPPreId}}</span> </td>
         </tr>
 
         <tr>
-            <td > <span style="font-weight: 500;margin-right: 35px;">Doctor Name </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.ConsultantDocName}} </span> </td>
-            <td><span style="font-weight: 500;margin-right: 52px;margin-left: 200px;">Age</span><span style="font-size:11px;">{{reportPrintObjList[0]?.AgeYear}}</span> </td>
+            <td> <span style="font-weight: 500;margin-right: 35px;">Doctor Name </span><span
+                    style="font-size:11px; ">{{reportPrintObjList[0]?.ConsultantDocName}} </span> </td>
+            <td><span style="font-weight: 500;margin-right: 52px;margin-left: 200px;">Age</span><span
+                    style="font-size:11px;">{{reportPrintObjList[0]?.AgeYear}}</span> </td>
         </tr>
 
         <tr>
-            <td><span style="font-weight: 500;margin-right: 50px;">Ward Name</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.WardName}} </span></td>
-            <td><span style="font-weight: 500;margin-right: 28px;margin-left: 200px;">Gender</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.GenderName}} </span></td>
+            <td><span style="font-weight: 500;margin-right: 50px;">Ward Name</span> <span
+                    style="font-size:11px;">{{reportPrintObjList[0]?.WardName}} </span></td>
+            <td><span style="font-weight: 500;margin-right: 28px;margin-left: 200px;">Gender</span> <span
+                    style="font-size:11px;">{{reportPrintObjList[0]?.GenderName}} </span></td>
         </tr>
     </table>
 
-  
+
     <hr>
 
     <table class="table" style="width: 100%;border-collapse: collapse;text-align: center;">
@@ -296,7 +360,7 @@
             <td
                 style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
                 Sr.No</td>
-                <td
+            <td
                 style="border: 1px solid black;font-weight:bold;text-align:center;vertical-align: middle;padding:5px 5px;">
                 Drug name</td>
             <td
@@ -317,19 +381,19 @@
             padding: 0;height: 20px; ">{{indx + 1}}</td>
             <td style="border: 1px solid black;vertical-align: top;
             padding: 0;height: 20px; ">{{item?.DrugName}}</td>
-           <td style="border: 1px solid black;vertical-align: top;
+            <td style="border: 1px solid black;vertical-align: top;
            padding: 0;height: 20px; ">{{item?.TotalQty}}</td>
-           <!-- <td style="border: 1px solid black;vertical-align: top;
+            <!-- <td style="border: 1px solid black;vertical-align: top;
            padding: 0;height: 20px;text-align: right;">{{item?.Date  | date: 'MM/yyyy'}}</td>
            <td style="border: 1px solid black;vertical-align: top;
            padding: 0;height: 20px;text-align: right;">{{item?.GenericName}}</td>
            <td style="border: 1px solid black;vertical-align: top;
            padding: 0;height: 20px;text-align: right;">{{item?.IPMedID}}</td> -->
         </tr>
-         
+
     </table><br><br>
-    
-        <!-- <span style="vertical-align: top;padding:0 10px 10px;">
+
+    <!-- <span style="vertical-align: top;padding:0 10px 10px;">
            
             <span style="margin-left: 490px;font-weight: 500;margin-right: 20px;">TotalAmount</span>
             <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WOTotalAmount}}</span> <br>
@@ -341,21 +405,19 @@
             <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WoNetAmount}}</span> <br>
         </span><br>
         <span style="font-weight: 500;"> Total Amount in words :-</span> -->
-        
-       
 
-        <div style="display: flex;">
-            <span style="vertical-align: top;padding:0 10px 10px">
-                <span style="font-weight: 500;">ADMIN ADMIN</span>
-                <span style="margin-left: 380px;font-weight: 500; margin-right: 30px;">Authorized Signature</span>
-                
-            </span>
-        </div><br><br>
+
+
+    <div style="display: flex;">
+        <span style="vertical-align: top;padding:0 10px 10px">
+            <span style="font-weight: 500;">ADMIN ADMIN</span>
+            <span style="margin-left: 380px;font-weight: 500; margin-right: 30px;">Authorized Signature</span>
+
+        </span>
+    </div><br><br>
 
 
     <div style="font-style: italic; opacity:.6;text-align: center;font-size: 12px; margin-top: 15px;">
         This is Computer generated invoice hence doesn’t require signature
     </div>
 </div>
-
- 

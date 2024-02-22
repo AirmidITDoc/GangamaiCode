@@ -309,8 +309,8 @@ public documentdownloadInsert(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
   //registration list 
-  public getPhoneAppointmentList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
+  public getPhoneAppointmentList1(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PhoneAppointmentListSearch", employee)
   }
   getuploadeddocumentsList(query){
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
@@ -360,5 +360,13 @@ public documentdownloadInsert(employee){
     public getDoctorMasterComboA() {
       return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
     }
-  
+    public CrossConsultationInsert(element){
+
+      return this._httpClient.post("OutPatient/OPDCrossConsultationInsert",element)
+    }
+
+    public getAppointmentReport(VisitId){
+      return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
+    }
+    
 }

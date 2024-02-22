@@ -24,7 +24,7 @@ export class NewReservationComponent implements OnInit {
 
  
   personalFormGroup: FormGroup;
-
+  isRegIdSelected:Boolean=false;
   submitted = false;
   now = Date.now();
   searchFormGroup: FormGroup;
@@ -60,6 +60,12 @@ export class NewReservationComponent implements OnInit {
   Adm_Vit_ID: any = 0;
   public dateValue: Date = new Date();
   options = [];
+  myForm:FormGroup;
+  filteredOptions: any;
+  noOptionFound: boolean = false;
+  RegId:any;
+  vAdmissionID:any;
+  PatientListfilteredOptions:any;
 
   // @Input() panelWidth: string | number;
   // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
@@ -115,6 +121,7 @@ export class NewReservationComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.myForm = this.createMyForm();
     console.log(this.data)
     this.personalFormGroup = this.createOtCathlabForm();
 
@@ -189,6 +196,59 @@ export class NewReservationComponent implements OnInit {
 
     }, 1000);
 
+  }
+
+
+  createMyForm() {
+    return this.formBuilder.group({
+      RegID: '',
+      // PatientName: '',
+      // WardName: '',
+      // StoreId: '',
+      // RegID: [''],
+      // Op_ip_id: ['1'],
+      // AdmissionID: 0
+
+    })
+  }
+
+
+
+  getSearchList() {
+    var m_data = {
+      "Keyword": `${this.myForm.get('RegID').value}%`
+    }
+    if (this.myForm.get('RegID').value.length >= 1) {
+      this._OtManagementService.getAdmittedpatientlist(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        console.log(resData)
+        this.PatientListfilteredOptions = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+
+      });
+    }
+
+
+  }
+
+  getSelectedObj(obj) {
+    this.registerObj = obj;
+    // this.PatientName = obj.FirstName + '' + obj.LastName;
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+    this.RegId = obj.RegID;
+    this.vAdmissionID = obj.AdmissionID
+
+    console.log(obj);
+  }
+
+
+  getOptionText(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
   }
 
   closeDialog() {
@@ -389,10 +449,10 @@ export class NewReservationComponent implements OnInit {
   }
 
 
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
-  }
+  // getOptionText(option) {
+  //   if (!option) return '';
+  //   return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
+  // }
 
 
 

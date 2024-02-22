@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { AdmissionService } from '../admission.service';
@@ -59,6 +59,45 @@ export class MLCInformationComponent implements OnInit {
 
     });
   }
+
+
+
+
+  @ViewChild('mlc') mlc: ElementRef;
+@ViewChild('authority') authority: ElementRef;
+@ViewChild('buckleno') buckleno: ElementRef;
+@ViewChild('polic') polic: ElementRef;
+@ViewChild('rdate') rdate: ElementRef;
+// @ViewChild('polic') polic: ElementRef;
+
+
+
+add: boolean = false;
+@ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+ 
+
+public onEntermlc(event): void {
+  if (event.which === 13) {
+    this.authority.nativeElement.focus();
+  }
+}
+public onEnterauthority(event): void {
+  if (event.which === 13) {
+    this.buckleno.nativeElement.focus();
+  }
+}
+
+public onEnterbuckleno(event): void {
+  if (event.which === 13) {
+    this.polic.nativeElement.focus();
+  }
+}
+public onEnterpolic(event): void {
+  if (event.which === 13) {
+  this.rdate.nativeElement.focus();
+  // if(this.mstatus) this.mstatus.focus();
+  }
+}
 
   onClose() {
     this.dialogRef.close();

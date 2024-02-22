@@ -19,6 +19,16 @@ import { filter, map } from 'rxjs/operators';
 
 })
 export class PharmacyDashboardComponent implements OnInit {
+
+  dashCardsData: any = [];
+  pieChartOPData = new PieChartOPData();
+  pieChartCurStkData = new pieChartCurStkData();
+
+  // pieChartCurrentStockData = new pieChartCurrentStockData();
+
+  DashChartOP: any = [];
+  DashChartCurStk: any = [];
+
   StaticChartConfig: any = {
     gradient: true,
     showLegend: true,
@@ -26,7 +36,7 @@ export class PharmacyDashboardComponent implements OnInit {
     isDoughnut: true,
     legendPosition: 'below',
     colorScheme: { domain: [] },
-    view: [700, 400],
+    view: [800, 350],
     data: []
   };
 
@@ -35,7 +45,7 @@ export class PharmacyDashboardComponent implements OnInit {
     var m_data = {
       "FromDate": this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '12/25/2023',
       "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '12/30/2023',
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value.storeid || 0,
+      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0,
       "Mode": this.selectedStatic || 'CollectionAmount'
     }
     this._DashboardService.getPharDashboardPeichart("m_pharPayModeColSummaryDashboard", m_data).subscribe(data => {
@@ -50,7 +60,7 @@ export class PharmacyDashboardComponent implements OnInit {
   ThreeMonSalesConfig: any = {
     data: [],
     multi: [],
-    view: [700, 400],
+    view: [1000, 400],
     showXAxis: true,
     showYAxis: true,
     gradient: false,
@@ -61,44 +71,205 @@ export class PharmacyDashboardComponent implements OnInit {
     showYAxisLabel: true,
     yAxisLabel: 'Amount',
     legendTitle: 'Month',
-    // barPadding:300,
+    showGridLines: true,
+    showDataLabel: true,
     colorScheme: {
-      domain: []
+      domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
     },
-    onSelect: null
+    onSelect: null,
   }
+
   fetchThreeMonSalesSumData() {
     this.ThreeMonSalesConfig.data = [];
     this.ThreeMonSalesConfig.multi = [];
     this.sIsLoading = 'loading-data';
     var m_data = {
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value.storeid || 0,
+      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0,
     }
     this._DashboardService.getPharDashboardBarchart("m_pharlast3MonthSalesSummaryDashboard", m_data).subscribe(data => {
-      if ((this._DashboardService.UseFrom.get("StoreId").value.storeid || 0) > 0) {
+      if ((this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0) > 0) {
         this.ThreeMonSalesConfig.data = data["data"] as any[];
       }
       else {
         this.ThreeMonSalesConfig.multi = data["data"] as any[];
       }
-      this.ThreeMonSalesConfig.colorScheme.domain = data["colors"] as any[];
+      // this.ThreeMonSalesConfig.colorScheme.domain = data["color"] as any[];
       this.sIsLoading = '';
     }, error => {
       this.sIsLoading = 'noPharSumData';
     });
   }
+  public getPharCollSummStoreWiseDashboard() {
+    this._DashboardService.getPharCollSummStoreWiseDashboard().subscribe(data => {
+      this.dashCardsData = data;
+    });
+  }
+
   onChangeStore() {
     this.fetchStaticData();
     this.fetchThreeMonSalesSumData();
+    this.getPieChartPharCurrentValueData();
   }
-  displayedColumns = [
-    'StoreName',
-    'CollectionAmount',
-    'RefundAmount',
-    'NetAmount',
-  ];
+  // displayedColumns = [
+  //   'StoreName',
+  //   'CollectionAmount',
+  //   'RefundAmount',
+  //   'NetAmount',
+  // ];
 
-  name: any;
+  public getOPChartData() {
+    var m_data = {
+      "DateRange": this.pieChartOPData.currentRange,
+    }
+    this._DashboardService.getPathCategoryPieChart(m_data).subscribe(data => {
+      this.DashChartOP = data;
+      if (this.DashChartOP && this.DashChartOP.length > 0) {
+        this.pieChartOPData['footerLeft'].title = 'Total Count';
+        this.pieChartOPData['footerLeft'].count = this.DashChartOP[0]['DischargeCount'];
+        this.pieChartOPData['footerRight'].title = 'Total Count';
+        this.pieChartOPData['footerRight'].count = this.DashChartOP[0]['TotalCount'];
+        this.pieChartOPData.mainChart[this.pieChartOPData.currentRange] = [];
+        this.DashChartOP.forEach(element => {
+          this.pieChartOPData.mainChart[this.pieChartOPData.currentRange].push(element);
+        });
+      } else {
+        this.pieChartOPData['footerLeft'].count = 0;
+        this.pieChartOPData['footerRight'].count = 0;
+      }
+    });
+  }
+  
+  public getPieChartPharCurrentValueData() {
+    var m_data = {
+      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0, // this.pieChartCurStkData.currentRange,
+    }
+    this._DashboardService.getPieChartPharCurrentStockData(m_data).subscribe(data => {
+      this.DashChartCurStk = data;
+      if (this.DashChartCurStk && this.DashChartCurStk.length > 0) {
+        this.pieChartCurStkData['footerLeft'].title = 'Purchase Rate (excl gst)';
+        this.pieChartCurStkData['footerLeft'].count = this.DashChartCurStk[0]['DischargeCount'];
+        this.pieChartCurStkData['footerRight'].title = 'MRP (incl gst)';
+        this.pieChartCurStkData['footerRight'].count = this.DashChartCurStk[0]['TotalCount'];
+        this.pieChartCurStkData.mainChart[this.pieChartCurStkData.currentRange] = [];
+        this.DashChartCurStk.forEach(element => {
+          this.pieChartCurStkData.mainChart[this.pieChartCurStkData.currentRange].push(element);
+        });
+      } else {
+        this.pieChartCurStkData['footerLeft'].count = 0;
+        this.pieChartCurStkData['footerRight'].count = 0;
+      }
+    });
+  }
+
+  dataSourceTable = new MatTableDataSource<PathTestSummary>();
+  displayedColumns = [
+      // 'PathDate',
+      'StoreName',
+      'CollectionAmount',
+      'RefundAmount',
+      'NetAmount',
+      'BillCount'
+    ];
+
+  dataSourceTable1 = new MatTableDataSource<PathCateSummary>();
+  displayedColumns1 = [
+      'PathDate',
+      'CategoryName',
+      'TCount'
+  ];
+  
+  pieChartMaster = {
+    'Todays': 'Today',
+    'Last Weeks': 'Last Week',
+    'Last Month': 'Last Month'
+  };
+  
+  pieChartCurrValMaster = {
+    'Todays': 'Today',
+    'Last Weeks': 'Last Week',
+    'Last Month': 'Last Month'
+  };
+
+   // Path Test Summary Date Range form
+   createForm() {
+    var myCurrentDate=new Date(); 
+    var myPastDate=new Date(myCurrentDate);
+    myPastDate.setDate(myPastDate.getDate() - 1);
+    console.log(myPastDate);
+
+    this.rangeFormGroup = this.formBuilder.group({
+      startDate: [(new Date(myPastDate)).toISOString()],
+      endDate: [(new Date()).toISOString()]
+    });
+  }
+
+  // PharSales Range form
+  createForm1() {
+    var myCurrentDate1=new Date(); 
+    var myPastDate1=new Date(myCurrentDate1);
+    myPastDate1.setDate(myPastDate1.getDate() - 1);
+    console.log(myPastDate1);
+
+    this.rangeFormGroup1 = this.formBuilder.group({
+      startDate: [(new Date(myPastDate1)).toISOString()],
+      endDate: [(new Date()).toISOString()]
+    });
+  }
+
+  onDateChange(event) {
+    let m_data = {
+      "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy") || '01/01/2021',
+      "ToDate": this.datePipe.transform(this.rangeFormGroup.get('endDate').value,"MM-dd-yyyy") || '01/11/2021'
+    }
+    this.getPharmsaleTableData(m_data);
+  }
+
+  // PharmsalesonDateChange(event) {
+  //   let m_data = {
+  //     "FromDate": this.datePipe.transform(this.rangeFormGroup1.get('startDate').value,"MM-dd-yyyy") ,
+  //     "ToDate": this.datePipe.transform(this.rangeFormGroup1.get('endDate').value,"MM-dd-yyyy")
+  //     }
+  //   this.getPharmsaleTableData(m_data);
+  // }
+
+  getPharmsaleTableData(params_sd) {
+    this.sIsLoading = 'loading-data';
+    this._DashboardService.getPharmacyCollectionStoreandDateWise(params_sd).subscribe((response: any) => {
+      this.dataSourceTable.data = response;
+      // this.dataSourceTable1.sort = this.sort;
+      // this.dataSourceTable1.paginator = this.paginator;
+      // console.log(this.dataSourceTable.data);
+      this.sIsLoading = '';
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+
+  // getTableData(params) {
+  //   this.sIsLoading = 'loading-data';
+  //   this._DashboardService.getPathtestSummaryDateWise(params).subscribe((response: any) => {
+  //     this.dataSourceTable.data = response;
+  //     // this.dataSourceTable.sort = this.sort;
+  //     // this.dataSourceTable.paginator = this.paginator;
+  //     //  console.log(this.dataSourceTable.data);
+  //     this.sIsLoading = '';
+  //   },
+  //   error => {
+  //     this.sIsLoading = '';
+  //   });
+  // }
+
+  onSelectPieOptionOP(value) {
+    this.pieChartOPData.currentRange = value;
+    this.getOPChartData();
+  }
+
+  onSelectPieOptionCurVal(value) {
+    this.pieChartCurStkData.currentRange = value;
+    this.getPieChartPharCurrentValueData();
+  }
+
   SubPlease: any;
   progressValue = '75%';
   progressValue1 = '40%';
@@ -209,85 +380,154 @@ export class PharmacyDashboardComponent implements OnInit {
   pharCustStockData: any[] = [];
   pharCustStockLabels: any[] = [];
 
+  rangeFormGroup: FormGroup;
+  rangeFormGroup1: FormGroup;
+  widget6: any = {};
+  widget7: any = {};
+
   constructor(
     public _DashboardService: DashboardService,
     public datePipe: DatePipe,
+    private formBuilder: FormBuilder,
   ) { }
   ngOnInit(): void {
     this.getPharDashboardSalesSummary();
-    this.getThreeMonSalesSumData();
-    this.getThreeMonCollSumData();
     this.getPharmStoreList();
     this.getPharStockValueSumData();
-    //this.getPharPayModeColSumData();
     this.fetchStaticData();
     this.fetchThreeMonSalesSumData();
-    //this.BarChart(this.BarlabelData,this.BarchartData);
+    this.getPharCollSummStoreWiseDashboard();
+
+    this.getOPChartData();
+    this.getPieChartPharCurrentValueData();
+
+    this.createForm();
+    this.createForm1();
+
+  var myCurrentDate=new Date(); 
+  var myPastDate=new Date(myCurrentDate);
+  myPastDate.setDate(myPastDate.getDate() - 1);
+  
+  // let m_data = {
+  //   "FromDate": myPastDate, //this.datePipe.transform(this.rangeFormGroup.get('myPastDate').value,"MM-dd-yyyy") || '01/01/2021',
+  //   "ToDate": this.datePipe.transform(this.rangeFormGroup.get('endDate').value,"MM-dd-yyyy") || '01/11/2021'
+  // }
+  // this.getTableData(m_data);
+
+  var myCurrentDate1=new Date(); 
+    var myPastDate1=new Date(myCurrentDate1);
+    myPastDate1.setDate(myPastDate1.getDate() - 1);
+    let m_data1 = {
+      "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy"),
+      "ToDate": this.datePipe.transform(this.rangeFormGroup1.get('endDate').value,"MM-dd-yyyy")
+    }
+    // console.log(m_data1);
+    this.getPharmsaleTableData(m_data1);
+
+    setTimeout(() => {
+      this.widget6 = {
+        // currentRange: 'Todays',
+        legend: false,
+        explodeSlices: false,
+        labels: true,
+        doughnut: true,
+        gradient: true,
+        // scheme: {
+        //   domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']
+        // },
+        onSelect: (ev) => {
+          console.log(ev);
+        }
+      };
+    }, 1);
+
+    setTimeout(() => {
+      this.widget7 = {
+        // currentRange: 'Todays',
+        legend: false,
+        explodeSlices: false,
+        labels: true,
+        doughnut: true,
+        gradient: true,
+        // scheme: {
+        //   domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']
+        // },
+        onSelect: (ev) => {
+          console.log(ev);
+        }
+      };
+
+    
+
+    }, 1);
+    
   }
 
-  getThreeMonSalesSumData() {
-    let req = { StoreId: 0 };
-    this._DashboardService.getThreeMonSumData('m_pharlast3MonthSalesSummaryDashboard', req).subscribe((respo: any) => {
-      if (respo && respo.length > 0) {
-        let labelNames = [...new Set(respo.map((ele) => ele.StoreName))];
-        // console.log(labelNames);
-        let salesMonth = [...new Set(respo.map((ele) => ele.SalesMonth))];
-        // console.log(salesMonth);
-        let data = [];
-        salesMonth.forEach((month) => {
-          let monthWiseData = respo.filter((ele: any) => ele.SalesMonth === month).
-            map((ele: any) => ele.NetSalesAmount)
-          data.push({
-            data: monthWiseData,
-            label: month
-          }
-          )
-          console.log(monthWiseData);
-        });
-        console.log(data);
-        this.threeMonSalesData = data;
-        // [
-        //   { data: [50, 67, 50, 35, 66, 100], label:'Jan' },
-        //   { data: [65, 57, 40, 40, 56, 53], label: 'Dec' },
-        //   { data: [35, 34, 61, 50, 36, 60], label: 'Nov' }
-        // ];
-        this.threeMonSalesLabels = labelNames; //['assApple', 'Banasna', 'Kiwissfruit', 'Bluddeberry', 'Oradnge', 'Grafgpes'];
-      }
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
+  
+  
+  // getThreeMonSalesSumData() {
+  //   let req = { StoreId: 0 };
+  //   this._DashboardService.getThreeMonSumData('m_pharlast3MonthSalesSummaryDashboard', req).subscribe((respo: any) => {
+  //     if (respo && respo.length > 0) {
+  //       let labelNames = [...new Set(respo.map((ele) => ele.StoreName))];
+  //       // console.log(labelNames);
+  //       let salesMonth = [...new Set(respo.map((ele) => ele.SalesMonth))];
+  //       // console.log(salesMonth);
+  //       let data = [];
+  //       salesMonth.forEach((month) => {
+  //         let monthWiseData = respo.filter((ele: any) => ele.SalesMonth === month).
+  //           map((ele: any) => ele.NetSalesAmount)
+  //         data.push({
+  //           data: monthWiseData,
+  //           label: month
+  //         }
+  //         )
+  //         console.log(monthWiseData);
+  //       });
+  //       console.log(data);
+  //       this.threeMonSalesData = data;
+  //       // [
+  //       //   { data: [50, 67, 50, 35, 66, 100], label:'Jan' },
+  //       //   { data: [65, 57, 40, 40, 56, 53], label: 'Dec' },
+  //       //   { data: [35, 34, 61, 50, 36, 60], label: 'Nov' }
+  //       // ];
+  //       this.threeMonSalesLabels = labelNames; //['assApple', 'Banasna', 'Kiwissfruit', 'Bluddeberry', 'Oradnge', 'Grafgpes'];
+  //     }
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+  // }
 
 
-  getThreeMonCollSumData() {
-    this.isCollectionLoad = 'pharCollectionChartLoading';
-    let req = { StoreId: 0 };
-    this._DashboardService.getThreeMonSumData('m_pharlast3MonthCollectionSummaryDashboard ', req).subscribe((respo: any) => {
-      if (respo && respo.length > 0) {
-        this.isCollectionLoad = 'pharCollectionChartLoaded';
-        let labelNames = [...new Set(respo.map((ele) => ele.StoreName))];
-        // console.log(labelNames);
-        let salesMonth = [...new Set(respo.map((ele) => ele.SalesMonth))];
-        // console.log(salesMonth);
-        let data = [];
-        salesMonth.forEach((month) => {
-          let monthWiseData = respo.filter((ele: any) => ele.SalesMonth === month).
-            map((ele: any) => ele.NetCollectionAmount)
-          data.push({
-            data: monthWiseData,
-            label: month
-          })
-          console.log(monthWiseData);
-        });
-        this.threeMonCollectionData = data;
-        this.threeMonCollectionLabels = labelNames;
-      }
-    },
-      error => {
-        this.isCollectionLoad = '';
-      });
-  }
+  // getThreeMonCollSumData() {
+  //   this.isCollectionLoad = 'pharCollectionChartLoading';
+  //   let req = { StoreId: 0 };
+  //   this._DashboardService.getThreeMonSumData('m_pharlast3MonthCollectionSummaryDashboard', req).subscribe((respo: any) => {
+  //     if (respo && respo.length > 0) {
+  //       this.isCollectionLoad = 'pharCollectionChartLoaded';
+  //       let labelNames = [...new Set(respo.map((ele) => ele.StoreName))];
+  //       // console.log(labelNames);
+  //       let salesMonth = [...new Set(respo.map((ele) => ele.SalesMonth))];
+  //       // console.log(salesMonth);
+  //       let data = [];
+  //       salesMonth.forEach((month) => {
+  //         let monthWiseData = respo.filter((ele: any) => ele.SalesMonth === month).
+  //           map((ele: any) => ele.NetCollectionAmount)
+  //         data.push({
+  //           data: monthWiseData,
+  //           label: month
+  //         })
+  //         console.log(monthWiseData);
+  //       });
+  //       this.threeMonCollectionData = data;
+  //       this.threeMonCollectionLabels = labelNames;
+  //     }
+  //   },
+  //     error => {
+  //       this.isCollectionLoad = '';
+  //     });
+  // }
 
   getPharStockValueSumData() {
     this.isCollectionLoad = 'pharStockLoading';
@@ -428,4 +668,64 @@ export class PharDashSummary {
     this.NetAmount = PharDashSummary.NetAmount || 0;
   }
 }
+export class PieChartOPData {
+  currentRange = 'Todays';
+  mainChart = {
+    'Todays': [],
+    'Last Weeks': [],
+    'Last Month': []
+  };
+  footerLeft = {
+    title: '',
+    count: 0
+  };
+  footerRight = {
+    title: '',
+    count: 0
+  };
+}
 
+export class pieChartCurStkData {
+  currentRange = 'Todays';
+  mainChart = {
+    'Todays': [],
+    'Last Weeks': [],
+    'Last Month': []
+  };
+  footerLeft = {
+    title: '',
+    count: 0
+  };
+  footerRight = {
+    title: '',
+    count: 0
+  };
+}
+export class PathTestSummary {
+  StoreName: string;
+  CollectionAmount: number;
+  RefundAmount: number;
+  NetAmount :number;
+  BillCount: number;
+
+  constructor(PathTestSummary) {
+    this.StoreName = PathTestSummary.StoreName || '';
+    this.CollectionAmount = PathTestSummary.CollectionAmount || 0;
+    this.RefundAmount = PathTestSummary.RefundAmount || 0;
+    this.NetAmount = PathTestSummary.NetAmount || 0;
+    this.BillCount = PathTestSummary.BillCount || 0;
+    }
+}
+
+export class PathCateSummary {
+  PathDate: Date;
+  CategoryName:string;
+  TCount: number;
+  
+  constructor(PathCateSummary) {
+    this.PathDate = PathCateSummary.PathDate || '';
+    this.CategoryName = PathCateSummary.CategoryName || 0;
+    this.TCount = PathCateSummary.TCount || 0 ;
+    
+    }
+}

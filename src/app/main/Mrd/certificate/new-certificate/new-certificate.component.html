@@ -1,4 +1,4 @@
-<div class="content-card" style="width:100%;height:100%">
+<div class="content-card" style="width:100%;overflow: auto;">
     <div class="dialog-content-wrapper">
         <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
             fxLayoutAlign.gt-xs="space-between center " style="height: 40px;width: 100%;">
@@ -10,7 +10,7 @@
 
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                     style="font-size: 20px;width: 70%; font-weight: 400;">
-                   Death Certificate
+                    Death Certificate
                 </span>
 
                 <div fxLayout="column" fxLayout.gt-xs="row">
@@ -25,7 +25,7 @@
 
         </div>
 
-    <br/>
+        <br />
         <div>
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                 <!-- <form [formGroup]="myRefundBillForm" style="width: 100%;"> -->
@@ -37,46 +37,53 @@
                                 <h3 style="font-weight: bold; font-size: 23px; margin: 0 0 0px;">Patient Information
                                 </h3>
                             </div>
-                            <br/>
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
-                                style="align-items: baseline;">
+                            <br />
+                            <form [formGroup]="myForm">
+                                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutAlign="space-between"
+                                    style="align-items: baseline;">
+                                    <div>
+                                    <mat-form-field appearance="outline"
+                                        style="width:40%;margin-left:20px; margin-right: 400px;"
+                                        disabled="isRegSearchDisabled">
+                                        <input type="text" name="RegID" formControlName="RegID"
+                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                                            [matAutocomplete]="auto1" (input)="getSearchList()">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
+                                            (optionSelected)='getSelectedObj($event.option.value)'>
+                                            <mat-option *ngFor="let option of PatientListfilteredOptions"
+                                                [value]="option">
+                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                                {{option.RegNo}} |
+                                                {{option.MobileNo}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <mat-error *ngIf="myForm.get('RegID').hasError('required')">
+                                            Required field cannot be left blank
+                                        </mat-error>
+                                    </mat-form-field>
+                                     </div>
 
-                             
+                                    <div>
 
-                                <span class="label"> Patient Name : </span>
-                                <span class="data_input">{{PatientName}}</span>
+                                        <span style="margin-left: 30px;font-size: large;color: rgb(4, 32, 122);">Patient
+                                            Name :{{PatientName}} <span style="margin-left: 20px;">RegId
+                                                :{{RegId}}</span><span style="margin-left: 20px;">Admission Id
+                                                :{{vAdmissionID}}</span>
+                                            <span style="margin-left: 20px;">Company Name :{{RegId}}</span>
+                                            <span style="margin-left: 20px;">Tariif :{{RegId}}</span>
+                                        </span>
 
-                                <span class="label">Age(Y) :</span>
-                                <span class="data_input">{{AgeYear}}
-                                </span>
+                                    </div>
 
-                                <span class="label">OPIPNo :</span>
-                                <span class="data_input">{{OPIP}}</span>
-
-
-                                <span class="label">Class Name : </span>
-                                <span class="data_input">{{classname}}</span>
-
-                                <span class="label">Tariff Name : </span>
-                                <span class="data_input">{{tariffname}}
-                                </span>
-
-
-                                <span class="label">Bed Name : </span>
-                                <span class="data_input">{{Bedname}}</span>
-
-                                <span class="label">Ward Name : </span>
-                                <span class="data_input">{{wardname}}
-                                </span>
-                                <!-- <app-common-date [screenFrom]="screenFromString"
-                                    (dateTimeEventEmitter)="getDateTime($event)">
-                                </app-common-date> -->
-
-                                <button class="search-btn" mat-raised-button style="border-radius: 16px;float: right;"
-                                (click)="searchPatientList()">Search
-                                <mat-icon>search</mat-icon>
-                            </button>
-                            </div>
+                                   
+                                </div>
+                            </form>
                         </mat-card>
                         <!-- ================================ LABEL HEADER  -->
                     </div>
@@ -86,7 +93,7 @@
             </div>
         </div>
     </div>
-    <br/>
+    <br />
     <!--Middle Data-->
     <div class="content">
         <!-- CENTER -->
@@ -96,128 +103,133 @@
                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="10px">
                         <form [formGroup]="createMrdcertificate">
-                            
-                       
-                        <div fxlayout="row">
-
-                            <div fxFlex.gt-sm="48%" fxFlex fxLayoutGap="20px"
-                                style="background-color: white; padding: 5px 10px 5px 10px;">
-                                <mat-card fxFlex.gt-sm="100%" fxFlex
-                                    style="padding: 0 9px; height: fit-content;margin-left:30px;">
 
 
-                                    <div fxLayout="row"  style="margin-bottom:20px;">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Department</mat-label>
-                                            <mat-select formControlName="Departmentid" placeholder="Bank"
-                                                #singleSelect required
-                                                (selectionChange)="OnChangeDoctorList($event.value)">
-                                                <mat-option>
-                                                    <ngx-mat-select-search [formControl]="departmentFilterCtrl"
-                                                        [placeholderLabel]="'Search'"
-                                                        [noEntriesFoundLabel]="'No matching found'">
-                                                    </ngx-mat-select-search>
-                                                </mat-option>
-                                                <mat-option *ngFor="let element of filteredDepartment | async"
-                                                    [value]="element">
-                                                    {{element.departmentName}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
+                            <div fxlayout="row">
 
-                                    
-                                    <div fxLayout="row" style="margin-bottom:20px;">
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Consultant Doctor Name</mat-label>
-                                            <mat-select formControlName="DoctorId" placeholder="Bank"
-                                                #singleSelect>
-                                                <mat-option>
-                                                    <ngx-mat-select-search [formControl]="doctorFilterCtrl"
-                                                        [placeholderLabel]="'Search'"
-                                                        [noEntriesFoundLabel]="'No matching found'">
-                                                    </ngx-mat-select-search>
-                                                </mat-option>
-                                                <mat-option *ngFor="let element of filteredDoctor | async"
-                                                    [value]="element">
-                                                    {{element.Doctorname}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div fxLayout="row"  style="margin-bottom:20px;">
-                                        <ejs-datetimepicker #ejDateTimePicker [(ngModel)]="Today" formControlName="DOA" placeholder="Select DOA Date/Time"  name="datetimepicker"  floatLabelType='Auto' style="width:85%;height:60px;">
-                                        </ejs-datetimepicker> 
-                                       
-                                    </div>
-
-                                   
-                                    <div fxLayout="row"  style="margin-bottom:20px;">
-
-                                        <ejs-datetimepicker #ejDateTimePicker [(ngModel)]="Today" formControlName="DateofDeath" placeholder="Select Date of Death"  name="datetimepicker"  floatLabelType='Auto' style="width:85%;height:60px;">
-                                        </ejs-datetimepicker> 
-                                       
-                                    </div>
-
-                                  
-                                </mat-card>
-                            </div>
+                                <div fxFlex.gt-sm="48%" fxFlex fxLayoutGap="20px"
+                                    style="background-color: white; padding: 5px 10px 5px 10px;">
+                                    <mat-card fxFlex.gt-sm="100%" fxFlex
+                                        style="padding: 0 9px; height: fit-content;margin-left:30px;">
 
 
-                            <!-- <br> -->
-                            <div fxFlex.gt-sm="48%" fxFlex fxLayoutGap="20px"
-                                style="background-color: white; padding: 5px 10px 5px 10px;">
-                                <mat-card fxFlex.gt-sm="100%" fxFlex
-                                    style="padding: 0 9px; height: fit-content;margin-right: 30px;">
+                                        <div fxLayout="row" style="margin-bottom:20px;">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Department</mat-label>
+                                                <mat-select formControlName="Departmentid" placeholder="Bank"
+                                                    #singleSelect required
+                                                    (selectionChange)="OnChangeDoctorList($event.value)">
+                                                    <mat-option>
+                                                        <ngx-mat-select-search [formControl]="departmentFilterCtrl"
+                                                            [placeholderLabel]="'Search'"
+                                                            [noEntriesFoundLabel]="'No matching found'">
+                                                        </ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let element of filteredDepartment | async"
+                                                        [value]="element">
+                                                        {{element.departmentName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
 
-                                    <h3>Cause Of Death</h3>
-                                    <div fxLayout="row">
-                                        <mat-form-field appearance="outline" class="mr-sm-12" style="width:100%;">
-                                            <textarea name="CauseofDeath" matInput rows="2" cols="8"
-                                                placeholder="Enter CauseofDeath" formControlName="CauseofDeath">
+
+                                        <div fxLayout="row" style="margin-bottom:20px;">
+
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Consultant Doctor Name</mat-label>
+                                                <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect>
+                                                    <mat-option>
+                                                        <ngx-mat-select-search [formControl]="doctorFilterCtrl"
+                                                            [placeholderLabel]="'Search'"
+                                                            [noEntriesFoundLabel]="'No matching found'">
+                                                        </ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let element of filteredDoctor | async"
+                                                        [value]="element">
+                                                        {{element.Doctorname}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxLayout="row" style="margin-bottom:20px;">
+                                            <ejs-datetimepicker #ejDateTimePicker [(ngModel)]="Today"
+                                                formControlName="DOA" placeholder="Select DOA Date/Time"
+                                                name="datetimepicker" floatLabelType='Auto'
+                                                style="width:85%;height:60px;">
+                                            </ejs-datetimepicker>
+
+                                        </div>
+
+
+                                        <div fxLayout="row" style="margin-bottom:20px;">
+
+                                            <ejs-datetimepicker #ejDateTimePicker [(ngModel)]="Today"
+                                                formControlName="DateofDeath" placeholder="Select Date of Death"
+                                                name="datetimepicker" floatLabelType='Auto'
+                                                style="width:85%;height:60px;">
+                                            </ejs-datetimepicker>
+
+                                        </div>
+
+
+                                    </mat-card>
+                                </div>
+
+
+                                <!-- <br> -->
+                                <div fxFlex.gt-sm="48%" fxFlex fxLayoutGap="20px"
+                                    style="background-color: white; padding: 5px 10px 5px 10px;">
+                                    <mat-card fxFlex.gt-sm="100%" fxFlex
+                                        style="padding: 0 9px; height: fit-content;margin-right: 30px;">
+
+                                        <h3>Cause Of Death</h3>
+                                        <div fxLayout="row">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" style="width:100%;">
+                                                <textarea name="CauseofDeath" matInput rows="2" cols="8"
+                                                    placeholder="Enter CauseofDeath" formControlName="CauseofDeath">
                                               </textarea>
-                                        </mat-form-field>
+                                            </mat-form-field>
                                         </div>
                                         <h3>Place Of Death</h3>
                                         <div fxLayout="row">
-                                        <mat-form-field appearance="outline" class="mr-sm-12" style="width:100%;">
-                                            <textarea name="PlaceOfDeath" matInput rows="2" cols="8"
-                                                placeholder="Enter PlaceOfDeath" formControlName="PlaceOfDeath">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" style="width:100%;">
+                                                <textarea name="PlaceOfDeath" matInput rows="2" cols="8"
+                                                    placeholder="Enter PlaceOfDeath" formControlName="PlaceOfDeath">
                                               </textarea>
-                                        </mat-form-field>
+                                            </mat-form-field>
                                         </div>
                                         <h3>Responsible Person Name /Addesss</h3>
                                         <div fxLayout="row">
-                                        <mat-form-field appearance="outline" class="mr-sm-12" style="width:100%;">
-                                            <textarea name="ResponsiblePersonName" matInput rows="3" cols="8"
-                                                placeholder="Enter ResponsiblePersonName Address"
-                                                formControlName="ResponsiblePersonName">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" style="width:100%;">
+                                                <textarea name="ResponsiblePersonName" matInput rows="3" cols="8"
+                                                    placeholder="Enter ResponsiblePersonName Address"
+                                                    formControlName="ResponsiblePersonName">
                                               </textarea>
-                                        </mat-form-field>
-                                    </div>
-                                    <h3>Diagnsis</h3>
-                                    <div fxLayout="row">
-                                        <mat-form-field appearance="outline" class="mr-sm-12" style="width:100%;">
-                                            <textarea name="Diagnsis" matInput rows="2" cols="8"
-                                                placeholder="Enter Diagnsis" formControlName="Diagnsis">
-                                              </textarea>
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div fxLayout="row">
-                                        <mat-form-field appearance="outline" fxFlex="100%">
-                                            <mat-label>SMCNo</mat-label>
-                                            <input name="SMCNo" formControlName="SMCNo" matInput>
-                                        </mat-form-field>
+                                            </mat-form-field>
                                         </div>
-                                </mat-card>
+                                        <h3>Diagnsis</h3>
+                                        <div fxLayout="row">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" style="width:100%;">
+                                                <textarea name="Diagnsis" matInput rows="2" cols="8"
+                                                    placeholder="Enter Diagnsis" formControlName="Diagnsis">
+                                              </textarea>
+                                            </mat-form-field>
+                                        </div>
 
-                                <!-- </mat-card> -->
+                                        <div fxLayout="row">
+                                            <mat-form-field appearance="outline" fxFlex="100%">
+                                                <mat-label>SMCNo</mat-label>
+                                                <input name="SMCNo" formControlName="SMCNo" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </mat-card>
+
+                                    <!-- </mat-card> -->
+                                </div>
+
                             </div>
-
-                        </div>
-                    </form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -234,3 +246,4 @@
 
 
     </div>
+</div>

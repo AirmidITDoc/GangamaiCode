@@ -309,7 +309,7 @@ export class AdmissionComponent implements OnInit {
 
       this.menuActions.push('Edit Admission');
       this.menuActions.push('View Admission');
-      this.menuActions.push('Update MLC Information');
+      // this.menuActions.push('Update MLC Information');
       this.menuActions.push('Update TPA Company Information');
       this.menuActions.push('Print Patient Card');
       this.menuActions.push('Print Patient Sticker');
@@ -395,6 +395,7 @@ export class AdmissionComponent implements OnInit {
       RelativeAddress: '',
       RelatvieMobileNo: ['', [ Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       RelationshipId: '',
+      IsMLC:[true]
     });
   }
   createSearchForm() {
@@ -1220,7 +1221,9 @@ export class AdmissionComponent implements OnInit {
 
 
  OnSaveAdmission() {
-    debugger
+    
+  if(!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)
+  {
     if (this.searchFormGroup.get('regRadio').value == "registration") {
       //Api
       this.isLoading = 'submit';
@@ -1291,7 +1294,7 @@ export class AdmissionComponent implements OnInit {
       admissionNewInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId ? this.otherFormGroup.get('RelationshipId').value.RelationshipId : 0;
       admissionNewInsert['addedBy'] = this.accountService.currentUserValue.user.id;
 
-      admissionNewInsert['isMLC'] = false;
+      admissionNewInsert['isMLC'] = this.otherFormGroup.get('IsMLC').value || false;
       admissionNewInsert['motherName'] = '';
       admissionNewInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID : 0;
       admissionNewInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID : 0;
@@ -1307,9 +1310,9 @@ export class AdmissionComponent implements OnInit {
 
 
       let query = "Update BedMaster set IsAvailible=0 where BedId=" + this.wardFormGroup.get('BedId').value.BedId;
-      
+      console.log(submissionObj);
          this._AdmissionService.AdmissionInsert(submissionObj).subscribe(response => {
-      
+         
         if (response) {
           
           Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
@@ -1332,7 +1335,7 @@ export class AdmissionComponent implements OnInit {
 
     }
     else {
-debugger
+
       this.isLoading = 'submit';
       let submissionObj = {};
       let admissionInsert = {};
@@ -1367,7 +1370,7 @@ debugger
       admissionInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId ? this.otherFormGroup.get('RelationshipId').value.RelationshipId : 0;
       admissionInsert['addedBy'] = this.accountService.currentUserValue.user.id;
 
-      admissionInsert['isMLC'] = false;
+      admissionInsert['isMLC'] = this.otherFormGroup.get('IsMLC').value || false;
       admissionInsert['motherName'] = '';
       admissionInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorIdOne ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId : 0;
       admissionInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorIdTwo ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId : 0;
@@ -1408,7 +1411,7 @@ debugger
       });
 
     }
-
+  }
   }
 
 
@@ -1488,9 +1491,9 @@ debugger
 
 
   getAdmittedPatientListview() {
-    debugger
+    this.sIsLoading = 'loading-data';
     setTimeout(() => {
-      this.SpinLoading =true;
+      
      this.AdList=true;
     this._AdmissionService.getAdmittedPatientListView(
      
@@ -1511,7 +1514,7 @@ debugger
 
         matDialog.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = ' ';
         });
     });
    
@@ -1524,7 +1527,7 @@ debugger
 
   
   getAdmittedPatientCasepaperview(row) {
-    debugger
+    
     setTimeout(() => {
       this.SpinLoading =true;
      this.AdList=true;
@@ -1587,6 +1590,20 @@ debugger
   // field validation 
   get f() { return this._AdmissionService.myFilterform.controls; }
 
+
+  NewMLc(contact){
+    this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+    this._AdmissionService.populateForm(contact);
+    const dialogRef = this._matDialog.open(MLCInformationComponent,
+      {
+        maxWidth: '85vw',
+        height: '400px', width: '100%',
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
   getRecord(contact, m): void {
    
     if (m == "Edit Admission") {
@@ -1616,58 +1633,58 @@ debugger
     if (m == "View Admission") {
       this.getAdmittedPatientCasepaperview(contact);
     }
-    else if (m == "Update MLC Information") {
-      let xx = {
+    // else if (m == "Update MLC Information") {
+    //   let xx = {
 
-        RegNo: contact.RegId,
-        AdmissionID: contact.AdmissionID,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId,
-        HospitalAddress: contact.HospitalAddress,
-        BDate: contact.BDate,
-        BalanceAmt: contact.BalanceAmt,
-        TotalAmt: contact.TotalAmt,
-        BillDate: contact.BillDate,
-        BillNo: contact.BillNo,
-        ConcessionAmt: contact.ConcessionAmt,
-        HospitalName: contact.HospitalName,
-        NetPayableAmt: contact.NetPayableAmt,
-        OPD_IPD_ID: contact.OPD_IPD_ID,
-        OPD_IPD_Type: contact.OPD_IPD_Type,
-        PBillNo: contact.PBillNo,
-        PaidAmount: contact.PaidAmount,
-        VisitDate: contact.VisitDate,
-        TotalBillAmount: contact.TotalBillAmount,
-        TransactionType: contact.TransactionType,
-        ConsultantDocName: contact.ConsultantDocName,
-        DepartmentName: contact.DepartmentName,
-        AddedByName: contact.AddedByName,
-        NetAmount: contact.NetAmount,
-        ServiceName: contact.ServiceName,
-        Price: contact.Price,
-        Qty: contact.Qty,
-        IsMLC: contact.IsMLC
+    //     RegNo: contact.RegId,
+    //     AdmissionID: contact.AdmissionID,
+    //     PatientName: contact.PatientName,
+    //     Doctorname: contact.Doctorname,
+    //     AdmDateTime: contact.AdmDateTime,
+    //     AgeYear: contact.AgeYear,
+    //     ClassId: contact.ClassId,
+    //     TariffName: contact.TariffName,
+    //     TariffId: contact.TariffId,
+    //     HospitalAddress: contact.HospitalAddress,
+    //     BDate: contact.BDate,
+    //     BalanceAmt: contact.BalanceAmt,
+    //     TotalAmt: contact.TotalAmt,
+    //     BillDate: contact.BillDate,
+    //     BillNo: contact.BillNo,
+    //     ConcessionAmt: contact.ConcessionAmt,
+    //     HospitalName: contact.HospitalName,
+    //     NetPayableAmt: contact.NetPayableAmt,
+    //     OPD_IPD_ID: contact.OPD_IPD_ID,
+    //     OPD_IPD_Type: contact.OPD_IPD_Type,
+    //     PBillNo: contact.PBillNo,
+    //     PaidAmount: contact.PaidAmount,
+    //     VisitDate: contact.VisitDate,
+    //     TotalBillAmount: contact.TotalBillAmount,
+    //     TransactionType: contact.TransactionType,
+    //     ConsultantDocName: contact.ConsultantDocName,
+    //     DepartmentName: contact.DepartmentName,
+    //     AddedByName: contact.AddedByName,
+    //     NetAmount: contact.NetAmount,
+    //     ServiceName: contact.ServiceName,
+    //     Price: contact.Price,
+    //     Qty: contact.Qty,
+    //     IsMLC: contact.IsMLC
 
-      };
+    //   };
       
-      this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-      this._AdmissionService.populateForm(xx);
-      const dialogRef = this._matDialog.open(MLCInformationComponent,
-        {
-          maxWidth: '85vw',
+    //   this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+    //   this._AdmissionService.populateForm(xx);
+    //   const dialogRef = this._matDialog.open(MLCInformationComponent,
+    //     {
+    //       maxWidth: '85vw',
 
-          height: '400px', width: '100%',
-        });
+    //       height: '400px', width: '100%',
+    //     });
 
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-      });
-    }
+    //   dialogRef.afterClosed().subscribe(result => {
+    //     console.log('The dialog was closed - Insert Action', result);
+    //   });
+    // }
     else if (m == "Update TPA Company Information") {
 
       let xx = {
@@ -1812,7 +1829,7 @@ debugger
   }
 
   getPrint(el) {
-   debugger
+   
     var D_data = {
       "AdmissionId": el.AdmissionID
     }
@@ -2185,6 +2202,7 @@ export class Admission {
   AgeMonth: number;
   SubCompanyId: any;
   AdmittedDoctorName: any;
+  PatientTypeId:any;
   /**
 * Constructor
 *
@@ -2266,6 +2284,7 @@ export class Admission {
       this.AgeMonth = Admission.AgeMonth || '';
       this.SubCompanyId = Admission.SubCompanyId || 0;
       this.AdmittedDoctorName = Admission.AdmittedDoctorName || ''
+      this.PatientTypeId = Admission.PatientTypeId || ''
     }
   }
 }

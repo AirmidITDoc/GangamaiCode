@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CanteenmanagementService } from '../canteenmanagement.service';
 import { fuseAnimations } from '@fuse/animations';
 import { MatSort } from '@angular/material/sort';
@@ -7,6 +7,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { MatTableDataSource } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
+import { parseInt } from 'lodash';
 
 @Component({
   selector: 'app-canteen-sales',
@@ -52,7 +53,10 @@ export class CanteenSalesComponent implements OnInit {
   isItemIdSelected:boolean=false;
   chargeslist: any = [];
   Itemsearch: string;
-
+  vTotalFinalAmount:any;
+  vDiscAmt:any;
+  vDisc:any;
+  
   dsItemTable1= new MatTableDataSource<ItemTable1List>();
   dsItemDetTable2 = new MatTableDataSource<ItemDetTable2List>();
   dsBillList = new MatTableDataSource<BillList>();
@@ -85,10 +89,10 @@ export class CanteenSalesComponent implements OnInit {
       "ItemName":'%',
       "IsOtherOrIsEmployee": this._CanteenmanagementService.userFormGroup.get('Type').value 
     }
-     console.log(vdata);
+     //console.log(vdata);
       this._CanteenmanagementService.getItemTable1List(vdata).subscribe(data => {
       this.dsItemTable1.data = data as ItemTable1List[];
-     console.log(this.dsItemTable1.data)
+    // console.log(this.dsItemTable1.data)
       this.dsItemTable1.sort = this.sort;
       this.dsItemTable1.paginator = this.paginator;
       this.sIsLoading = '';
@@ -124,7 +128,7 @@ export class CanteenSalesComponent implements OnInit {
   // }
 
   getItemDetailList(row) {
-    console.log(row);
+   // console.log(row);
     this.sIsLoading = 'loading-data';
     this.sIsLoading = 'save';
     this.dsItemDetTable2.data = [];
@@ -142,67 +146,75 @@ export class CanteenSalesComponent implements OnInit {
   }
 
   addChargList(row) {
-    debugger
+   // debugger
     
     this.chargeslist.push(
       {
         // ItemID: row.ItemID,
         ItemName: row.ItemName,
         Price: row.price || 0,
-        Qty:1,
+        Qty:0,
         Amount : 0
       });
     this.sIsLoading = '';
-     console.log(this.chargeslist);
+   //  console.log(this.chargeslist);
     this.dsItemDetTable2.data = this.chargeslist;
-   
   }
 
-
- RQty:any=0;
-totalAmt:any=0;
-
-  calculateTotalAmt(contact,Qty) {
-    debugger
-      this.RQty = parseInt(Qty);
-      const total = (parseFloat(contact.Price) * parseInt(this.RQty)).toFixed(2);
-       contact.Amount = total;
-    
+onQtyEdit(event: any, contact:ItemDetTable2List  ) {
+    const editedQty = parseFloat(event.target.textContent) || 0;
+    contact.Qty = editedQty;
+    contact.Amount = (contact.Qty * contact.Price);
+    this. getTotalAmount();
+  }
+  getTotalAmount(): number {
+    this.vTotalFinalAmount = 0;
+    for (let i = 0; i < this.chargeslist.length; i++) {
+      this.vTotalFinalAmount  += this.chargeslist[i].Amount;
     }
-  // // getCGSTAmt(element) {
-  // //   let CGSTAmt;
-  // //   CGSTAmt = element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0); this.CGSTAmount
-  // //   this.CGSTFinalAmount = CGSTAmt;
-  // //   return CGSTAmt;
-  // // }
-
-
-  // getCellCalculation(contact,ReturnQty) {
-  //   debugger
-  //   this.RQty = parseInt(ReturnQty);
-  //   if ((parseInt(this.RQty)) < (parseInt(contact.Qty))) {
-  //     Swal.fire("Return Qty cannot be less than Qty")
-
-  //     contact.ReturnQty = parseInt(contact.Qty);
-  //     this.RQty = parseInt(contact.Qty);
-
-  //     this.totalAmt = (parseFloat(contact.Price) * parseInt(this.RQty)).toFixed(2);
-  //     this.totalAmt = contact.Amount;
-      
-      
-  //   }
-   
+    this.CalculateDiscount();
     
-  // }
-  calculateTotal(contact,Qty) {
-    contact.Amount = contact.Price * contact.Qty;
-    console.log(contact.Price);
-      console.log(contact.Qty);
-      //console.log(total);
+    //this._CanteenmanagementService.userFormGroup.get('Discount').setValue('');
+    return  this.vTotalFinalAmount ;
+    
+  }
+
+   
+  CalculateDiscount(){
+    let disc = this._CanteenmanagementService.userFormGroup.get('Discount').value;
+   
+    if(disc >= 100 && disc > 0 ){
+      Swal.fire('Enter Disount Less Than 100')
+      this._CanteenmanagementService.userFormGroup.get('Discount').setValue(0);
+      this._CanteenmanagementService.userFormGroup.get('DiscAmt').setValue(0);
+      //this._CanteenmanagementService.userFormGroup.get('TotalAoumt').setValue(this.vTotalFinalAmount);
+      this.vTotalFinalAmount.toFixed(2);
+    }
+    if(disc){
+      let dis = this._CanteenmanagementService.userFormGroup.get('Discount').value ;
+      this.vDiscAmt = ((dis * parseInt(this.vTotalFinalAmount)) / 100).toFixed(2);
+      this.vTotalFinalAmount = this.vTotalFinalAmount - this.vDiscAmt;
+    //  total = this.vTotalFinalAmount.toFixed(2);
+    // this.CalculateDisAmt();
+    }
+   
+  }
+  CalculateDisAmt(){
+    this.vTotalFinalAmount = (parseInt(this.vTotalFinalAmount) - parseInt(this.vDiscAmt));
   }
  
-
-
+  @ViewChild('Code') Code: ElementRef;
+  @ViewChild('CustomerName') CustomerName: ElementRef;
+  public onEnterCode(event): void {
+    if (event.which === 13) {
+      this.CustomerName.nativeElement.focus()
+    }
+  }
+  public onEnterCustomer(event): void {
+    if (event.which === 13) {
+      this.CustomerName.nativeElement.focus()
+    }
+  }
 
 //BillList
   getBillList() {
@@ -211,10 +223,10 @@ totalAmt:any=0;
       "FromDate":this.datePipe.transform(this._CanteenmanagementService.BillListFrom.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate":  this.datePipe.transform(this._CanteenmanagementService.BillListFrom.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     }
-     console.log(vdata);
+    // console.log(vdata);
       this._CanteenmanagementService.getBillList(vdata).subscribe(data => {
       this.dsBillList.data = data as BillList[];
-     console.log(this.dsBillList.data)
+    // console.log(this.dsBillList.data)
       this.dsBillList.sort = this.sort;
       this.dsBillList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -229,10 +241,10 @@ totalAmt:any=0;
     var vdata = {    
       "BillNo": Param.BillNo,
      }
-     console.log(vdata);
+    // console.log(vdata);
       this._CanteenmanagementService.getBillDetList(vdata).subscribe(data => {
       this.dsBillDetailList.data = data as BillDetailList[];
-     console.log(this.dsBillDetailList.data)
+    // console.log(this.dsBillDetailList.data)
       this.dsBillDetailList.sort = this.sort;
       this.dsBillDetailList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -250,10 +262,10 @@ totalAmt:any=0;
         'ToDate': this.datePipe.transform(this._CanteenmanagementService.userFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         'Reg_No':  0,    
     }
-    console.log(vdata);
+   // console.log(vdata);
     this._CanteenmanagementService.getNursingBillList(vdata).subscribe(data =>{
       this.dsNursingBillList.data = data as NursingBillList[];
-      console.log(this.dsNursingBillList.data)
+     // console.log(this.dsNursingBillList.data)
        this.dsNursingBillList.sort = this.sort;
        this.dsNursingBillList.paginator = this.paginator;
        this.sIsLoading = '';

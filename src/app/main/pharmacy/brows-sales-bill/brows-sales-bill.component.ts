@@ -61,8 +61,10 @@ export class BrowsSalesBillComponent implements OnInit {
   UTRNO: any;
   rowid: any = [];
   TotalAmt: any = 0;
-  SpinLoading:boolean=false;
+  sIsLoading:any='';
   AdList:boolean=false;
+
+
   displayedColumns: string[] = [
     'action',
     //  'action1',
@@ -433,8 +435,9 @@ export class BrowsSalesBillComponent implements OnInit {
     );
   }
   viewSalesPdf(el) {
+    this.sIsLoading = 'loading-data';
     setTimeout(() => {
-      this.SpinLoading =true;
+      // this.SpinLoading =true;
      this.AdList=true;
     this._BrowsSalesBillService.getPdfSales(el.SalesId, el.OP_IP_Type).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -449,7 +452,7 @@ export class BrowsSalesBillComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
     });
    
@@ -457,9 +460,9 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   ViewSalesRetPdf(el) {
-    debugger
+    this.sIsLoading =true;
     setTimeout(() => {
-      this.SpinLoading =true;
+     
      this.AdList=true;
     this._BrowsSalesBillService.getSalesReturnPdf(el.SalesReturnId, el.OP_IP_Type).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -474,7 +477,7 @@ export class BrowsSalesBillComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = ' ';
         });
     });
    
@@ -1012,7 +1015,7 @@ export class BrowsSalesBillComponent implements OnInit {
         "mobileNumber": el.RegNo,
         "smsString": "Dear" + el.PatientName + ",Your Sales Bill has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
         "isSent": 0,
-        "smsType": 'WhatsApp',
+        "smsType": 'Sales',
         "smsFlag": 0,
         "smsDate": this.currentDate,
         "tranNo": el.SalesId,
@@ -1043,13 +1046,13 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   getWhatsappshareSalesReturn(el) {
-    
+    debugger
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": el.RegNo,
         "smsString": "Dear" + el.PatientName + ",Your Sales Bill has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
         "isSent": 0,
-        "smsType": 'WhatsApp',
+        "smsType": 'SalesReturn',
         "smsFlag": 0,
         "smsDate": this.currentDate,
         "tranNo": el.SalesReturnId,

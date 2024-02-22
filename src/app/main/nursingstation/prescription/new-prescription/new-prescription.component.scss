@@ -39,16 +39,16 @@ app-new-prescription{
     .table1{
     .mat-header-row {
         width: 100%;
-        max-width:700px;
-        min-width: 700px;    
+        max-width:680px;
+        min-width: 680px;    
         min-height: 25px;     
     }
     
     
     .mat-row {
         width: 100%;
-        max-width:700px;
-        min-width:700px; 
+        max-width:680px;
+        min-width:680px; 
         min-height: 25px;            
     }
     
@@ -65,16 +65,16 @@ app-new-prescription{
     }
     
     .mat-column-Qty {
-        width:90px;
-        max-width:90px;
-        min-width:90px;
+        width:100px;
+        max-width:100px;
+        min-width:100px;
         text-align: right;
     }
     
     .mat-column-Remark {
-        width:150px;
-        max-width:150px;
-        min-width:150px;
+        width:130px;
+        max-width:130px;
+        min-width:130px;
         text-align:left;
         white-space: nowrap; 
         text-overflow: ellipsis; 
@@ -131,17 +131,72 @@ app-new-prescription{
     color: white !important;
     font-size: 16px;
   }
+  .disable-1-add {
+    pointer-events: none;
+    // cursor: ar;
+  }
 
+  .enable-1-add {
+    cursor: pointer;
+    pointer-events: visible;
+  }
+  
   button:disabled {
     color: white;
     background-color: #7bd3ff  !important;
-     //background-color: #b7e6fd ;
+    
      border-radius: 16px;
-    //  border-radius: 16px;
-     // border: 1px solid #CCCCCC;
      border: 1px solid  #b7e6fd ;
      
     }
+
+    
+
+
+.patient-details mat-error {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.patient-bill-info {
+    display: flex;
+}
+.labels-h3 {
+    font-size: 15px;
+    font-weight: bold;
+}
+.labels-h6 {
+    font-size: 15px;
+}
+.form-field-labels {
+    font-size: 13px;
+}
+
+fieldset {
+    border-color: #039be5;// #fff9f9;
+}
+.fieldset-div {
+    background-color: #191a1c21;
+}
+legend {
+    padding: 10px;
+    font-size: 20px;
+}
+
+
+.flex-item, .patient-sub {
+    flex-basis:70%;
+}
+.flex-item-middle{
+    width: 5px;
+    margin-right:5px;
+}
+.item-header {
+    width: 200px;
+}
+.field-row {
+    align-items: center;
+}
 }
 
 

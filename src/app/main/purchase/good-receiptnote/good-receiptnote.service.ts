@@ -65,19 +65,23 @@ export class GoodReceiptnoteService {
   }
   getGRNForm() {
     return this._formBuilder.group({
+      PurchaseId:[''],
+      poBalQty:[''],
       ItemName:[''],
       UOM:[''],
       HSNCode:[''],
       BatchNo:[''],
       ConversionFactor:[''],
       Qty:[''],
-      ExpDate:[''],
+      ExpDatess:[''],
       MRP:[''],
       FreeQty:[''],
       Rate:[''],
       TotalAmount:[''],
       Disc:[''],
+      Disc2:[''],
       DisAmount:[''],
+      DisAmount2:[''],
       GST:[''],
       GSTAmount:[''],
       CGST:[''],
@@ -106,7 +110,7 @@ export class GoodReceiptnoteService {
       Remark:[''],
       ReceivedBy:[''],
       DebitAmount:[''],
-      CreditAmount:['true'],
+      CreditAmount:[''],
       DiscAmount:[''],
       TotalAmt:[''],
       VatAmount:[''],
@@ -130,8 +134,6 @@ export class GoodReceiptnoteService {
   }
   createGRNEmailFrom(){
     return this._formBuilder.group({
-      FromMailId: [''],
-      Password: [''],
       ToMailId: [''],
       Subject: [''],
       Body: [''],
@@ -145,6 +147,9 @@ export class GoodReceiptnoteService {
   }
   public getDirectPOList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DirectPOList_by_Name",Param);
+  }
+  public getPurchaseItemList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PurchaseItemList", Param);
   }
   public getGRNList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name",Param);
@@ -193,6 +198,15 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Pharmacy/VerifyGRN", Param)
   } 
 
+ public getGRNreportview(GRNID){
+    return this._httpClient.get("Pharmacy/view-GRNReport?GRNID=" + GRNID);
+  } 
+
+
+  
+ public InsertWhatsappGRN(emp){
+  return this._httpClient.post("WhatsappEmail/WhatsappSalesSave", emp);
+}
 }
 
 

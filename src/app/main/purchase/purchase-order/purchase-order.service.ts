@@ -104,11 +104,11 @@ export class PurchaseOrderService {
   }
   createPOEmailFrom(){
     return this._formBuilder.group({
-      FromMailId: [''],
-      Password: [''],
       ToMailId: [''],
       Subject: [''],
       Body: [''],
+      CCName: [''],
+      bccName: ['']
     })
   }
 
@@ -183,11 +183,19 @@ export class PurchaseOrderService {
   // }
  
 
-
+ public getPurchaseorderreportview(PurchaseID){
+  return this._httpClient.get("Pharmacy/view-Purchaseorder?PurchaseID=" + PurchaseID);
+ }
+  
  
 
+ public InsertWhatsappPurchaseorder(emp){
+  return this._httpClient.post("WhatsappEmail/WhatsappSalesSave", emp);
+}
 
-  
+public EmailSendInsert(emp){
+  return this._httpClient.post("WhatsappEmail/EmailSave", emp);
+}
   populateForm(employee) {
     // this.PurchaseStoreFrom.patchValue(employee);
   }

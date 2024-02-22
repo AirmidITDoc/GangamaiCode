@@ -94,6 +94,9 @@ export class PharmacyReportComponent implements OnInit {
   Todate: any;
   UserId:any=0;
   UserName:any;
+  IsLoading: boolean = false;
+
+
   displayedColumns = [
     'ReportName'
   ];
@@ -114,6 +117,7 @@ export class PharmacyReportComponent implements OnInit {
   ) { 
     this.UserId= this._loggedUser.currentUserValue.user.id;
     this.UserName= this._loggedUser.currentUserValue.user.userName;
+    console.log(this.UserId)
   }
 
 
@@ -272,13 +276,13 @@ export class PharmacyReportComponent implements OnInit {
 
 
   viewDailyCollectionPdf(){
-    setTimeout(() => {
-      this.SpinLoading =true;
+     setTimeout(() => {
+      this.sIsLoading = 'loading-data';
      this.AdList=true;
     this._BrowsSalesBillService.getSalesDailyCollectionNew(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this._loggedUser.currentUserValue.user.storeId,this._BrowsSalesBillService.userForm.get('UserId').value.UserId || 0
+      this._loggedUser.currentUserValue.user.storeId, this.UserId 
     ).subscribe(res=>{
     const dialogRef = this._matDialog.open(PdfviewerComponent, 
       {   maxWidth: "95vw",
@@ -291,7 +295,7 @@ export class PharmacyReportComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
     });
    
@@ -302,7 +306,7 @@ export class PharmacyReportComponent implements OnInit {
   viewDailyCollectionSummaryPdf() {
     
     setTimeout(() => {
-      this.SpinLoading =true;
+      this.sIsLoading = 'loading-data';
      this.AdList=true;
     this._BrowsSalesBillService.getSalesDailyCollectionSummary(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -322,7 +326,7 @@ export class PharmacyReportComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
     });
    
@@ -331,7 +335,7 @@ export class PharmacyReportComponent implements OnInit {
 
   viewgetPharCollsummDayuserwiseReportPdf() {
     setTimeout(() => {
-      this.SpinLoading =true;
+      this.sIsLoading = 'loading-data';
      this.AdList=true;
     this._BrowsSalesBillService.getSalesDailyCollectionSummaryDayuserwise(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -350,12 +354,9 @@ export class PharmacyReportComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = ' ';
         });
-        dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
-          this.SpinLoading = false;
-        });
+      
     });
    
     },100);
@@ -363,7 +364,7 @@ export class PharmacyReportComponent implements OnInit {
 
   viewgetsalesSummaryReportPdf() {
     setTimeout(() => {
-      this.SpinLoading =true;
+      this.sIsLoading = 'loading-data';
      this.AdList=true;
     this._BrowsSalesBillService.getSalesDetailSummary(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -382,7 +383,7 @@ export class PharmacyReportComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
     });
    
@@ -390,7 +391,7 @@ export class PharmacyReportComponent implements OnInit {
   }
   viewgetSalesPatientWiseReportPdf() {
     setTimeout(() => {
-      this.SpinLoading =true;
+      this.sIsLoading = 'loading-data';
      this.AdList=true;
     this._BrowsSalesBillService.getSalesDetail_Patientwise(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -409,7 +410,7 @@ export class PharmacyReportComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = ' ';
         });
     });
    
@@ -419,7 +420,7 @@ export class PharmacyReportComponent implements OnInit {
  
   viewgetSalesReturnReportPdf() {
     setTimeout(() => {
-      this.SpinLoading =true;
+      this.sIsLoading = 'loading-data';
      this.AdList=true;
     this._BrowsSalesBillService.getSalesReturn(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -438,7 +439,7 @@ export class PharmacyReportComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
     });
    
@@ -446,7 +447,7 @@ export class PharmacyReportComponent implements OnInit {
   }
   viewgetSalesReturnPatientwiseReportPdf() {
     setTimeout(() => {
-      this.SpinLoading =true;
+      this.sIsLoading = 'loading-data';
      this.AdList=true;
     this._BrowsSalesBillService.getSalesReturnPatientwise(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -465,7 +466,7 @@ export class PharmacyReportComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
     });
    
@@ -474,7 +475,7 @@ export class PharmacyReportComponent implements OnInit {
 
   viewgetSalesCreditReportPdf() {
     setTimeout(() => {
-      this.SpinLoading =true;
+      this.sIsLoading = 'loading-data';
      this.AdList=true;
     this._BrowsSalesBillService.getSalesCredit(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -493,7 +494,7 @@ export class PharmacyReportComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
     });
    
@@ -504,7 +505,7 @@ export class PharmacyReportComponent implements OnInit {
 
   viewgetSalesCashBookReportPdf() {
     setTimeout(() => {
-      this.SpinLoading =true;
+      this.sIsLoading = 'loading-data';
      this.AdList=true;
  
     this._BrowsSalesBillService.getSalesCashBook(
@@ -524,7 +525,7 @@ export class PharmacyReportComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = '';
         });
     });
    
