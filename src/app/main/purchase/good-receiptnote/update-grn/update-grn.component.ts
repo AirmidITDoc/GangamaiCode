@@ -314,13 +314,15 @@ export class UpdateGRNComponent implements OnInit {
         
         // this.calculateDiff(this.lastDay);
         this._GRNList.userFormGroup.get('ExpDatess').setValue(this.lastDay)
+       // Swal.fire('Item Expired in next 3 Months');
         this.qty.nativeElement.focus();
       } else {
         this.lastDay = 'Invalid month';
       }
     } else {
-      this.lastDay = 'Invalid input';
+      this.lastDay = '';
     }
+    
   }
 
   getLastDayOfMonth(month: number, year: number): number {

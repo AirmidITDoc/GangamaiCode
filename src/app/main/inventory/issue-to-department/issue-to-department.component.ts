@@ -48,7 +48,7 @@ export class IssueToDepartmentComponent implements OnInit {
     'ItemId',
     'ItemName',
     'BatchNO',
-    'ExpDate',
+   // 'ExpDate',
     'BalanceQty',
     'Qty',
     'UnitRate',
@@ -80,7 +80,36 @@ export class IssueToDepartmentComponent implements OnInit {
   filteredOptionsItem: any;
   ItemId: any;
   BalanceQty: any;
-
+  vBatchNo: any;
+  vBatchExpDate: any;
+  vUnitMRP: any;
+  vQty: any = 0;
+  IssQty: any;
+  vBal: any;
+  StoreName: any;
+  GSTPer: any;
+  vMRP: any;
+  DiscPer: any = 0;
+  vDiscAmt: any = 0;
+  vNetAmt: any = 0;
+  vTotalMRP: any = 0;
+  vBalanceQty:any;
+  currentDate = new Date();
+  vVatPer: any;
+  vCgstPer: any;
+  vSgstPer: any;
+  vIgstPer: any;
+  vTotalAmount:any;
+  vVatAmount: any;
+  vStockId: any;
+  vStoreId: any;
+  vLandedRate: any;
+  vPurchaseRate: any;
+  vItemObj: NewIssueList3;
+  chargeslist:any=[];
+  vItemID:any;
+  FromStoreList1:any=[];
+  vFinalTotalAmount:any;
 
   dsIssueToDep = new MatTableDataSource<IssueToDep>();
 
@@ -89,6 +118,7 @@ export class IssueToDepartmentComponent implements OnInit {
   dsNewIssueList1 = new MatTableDataSource<NewIssueList1>();
   dsNewIssueList2 = new MatTableDataSource<NewIssueList2>();
   dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
+  dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
 
 
 
@@ -126,6 +156,7 @@ export class IssueToDepartmentComponent implements OnInit {
   getToStoreSearchList() {
     this._IssueToDep.getToStoreSearchList().subscribe(data => {
       this.ToStoreList = data;
+      this._IssueToDep.IssueSearchGroup.get('ToStoreId').setValue(this.ToStoreList[0]);
       //console.log(this.ToStoreList);
     });
   }
@@ -137,10 +168,9 @@ export class IssueToDepartmentComponent implements OnInit {
     this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
       this.FromStoreList = data;
       //console.log(this.FromStoreList);
-      this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
+      this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0])
     });
   }
-
   getIssueToDepList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
@@ -179,6 +209,8 @@ export class IssueToDepartmentComponent implements OnInit {
     //console.log(Param.IssueId);
     this.getIssueItemList(Param.IssueId)
   }
+
+  //second tab
   getSearchItemList() {
     var m_data = {
       "ItemName": `${this._IssueToDep.NewIssueGroup.get('ItemID').value}%`,
@@ -198,7 +230,7 @@ export class IssueToDepartmentComponent implements OnInit {
     
   }
   getOptionItemText(option) {
-    this.ItemId = option.ItemID;
+    this.vItemID = option.ItemID;
     if (!option) return '';
     return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
@@ -213,35 +245,106 @@ export class IssueToDepartmentComponent implements OnInit {
         this.getBatch();
       } 
   }
+  getToStoreList() {
+    this._IssueToDep.getToStoreSearchList().subscribe(data => {
+      this.ToStoreList = data;
+      //console.log(this.ToStoreList);
+    });
+  }
+  getPharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
+    }
+    this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
+      this.FromStoreList1 = data;
+      //console.log(this.FromStoreList);
+      this._IssueToDep.NewIssueGroup.get('FromStoreId').setValue(this.FromStoreList1[0])
+    });
+  }
+  onAdd($event){
+    this.dsNewIssueList3.data = [];
+    this.chargeslist = this.dsTempItemNameList.data;
+    this.chargeslist.push(
+      {
+        ItemId: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId || 0,
+        ItemName: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemName || '',
+        BatchNo: this.vBatchNo,
+        BalanceQty: this.vBalanceQty || 0,
+        Qty: this.vQty || 0,
+        UnitRate: this.vUnitMRP || 0,
+        TotalAmount: this.vTotalAmount || 0,
+      });
+    console.log(this.chargeslist);
+    this.dsNewIssueList3.data = this.chargeslist
+    this.ItemReset();
+    this.itemid.nativeElement.focus();
+    this._IssueToDep.NewIssueGroup.get('ItemID').setValue(''); 
+  }
 
-  vBatchNo: any;
-  vBatchExpDate: any;
-  vUnitMRP: any;
-  vQty: any = 0;
-  IssQty: any;
-  vBal: any;
-  StoreName: any;
-  GSTPer: any;
-  vMRP: any;
-  DiscPer: any = 0;
-  vDiscAmt: any = 0;
-  vNetAmt: any = 0;
-  vTotalMRP: any = 0;
-  vBalanceQty:any;
-  currentDate = new Date();
+  ItemReset(){
+    this.ItemName = " ";
+    this.vItemID = 0;
+    this.vBatchNo = " ";
+    this.vBalanceQty = 0;
+    this.vQty = 0;
+    this.vUnitMRP = 0;
+    this.vTotalAmount = 0;
+  }
+  CalculateTotalAmt(){
+    if(this.vQty > this.vBalanceQty){
+      Swal.fire("Enter Qty less than Balance");
+      this._IssueToDep.NewIssueGroup.get('Qty').setValue(0);
+    }
+    if(this.vQty && this.vUnitMRP){
+      this.vTotalAmount = (parseInt(this.vQty) * parseInt(this.vUnitMRP)).toFixed(2);
+    }
+  }
 
-  vVatPer: any;
-  vCgstPer: any;
-  vSgstPer: any;
-  vIgstPer: any;
-  vTotalAmount:any;
-  vVatAmount: any;
-  vStockId: any;
-  vStoreId: any;
-  vLandedRate: any;
-  vPurchaseRate: any;
-  vItemObj: NewIssueList3;
+  getTotalAmount(): number {
+    this.vFinalTotalAmount = 0;
+    for (let i = 0; i < this.chargeslist.length; i++) {
+      this.vFinalTotalAmount  += this.chargeslist[i].TotalAmount;
+    }
+   return  this.vFinalTotalAmount ;
+    
+  }
+  OnSave(){
 
+  }
+  OnReset(){
+    this._IssueToDep.NewIssueGroup.reset();
+  }
+  @ViewChild('itemid') itemid: ElementRef;
+  @ViewChild('Batchno') Batchno: ElementRef;
+  @ViewChild('Rate') Rate: ElementRef;
+  @ViewChild('BalQuantity') BalQuantity: ElementRef;
+  @ViewChild('Quantity') Quantity: ElementRef;
+
+  public onEnterFromstore(event): void {
+    if (event.which === 13) {
+      this.itemid.nativeElement.focus();
+    }
+  }
+  public onEnteritemid(event): void {
+    if (event.which === 13) {
+      this.Batchno.nativeElement.focus();
+    }
+  }
+  public onEnterBatchNo(event): void {
+    if (event.which === 13) {
+      this.BalQuantity.nativeElement.focus();
+    }
+  }
+  public onEnterBalQty(event): void {
+    if (event.which === 13) {
+      this.Quantity.nativeElement.focus();
+    }
+  }
+  public onEnterQty(event): void {
+    if (event.which === 13) {
+      this.Rate.nativeElement.focus();
+    }
+  }
   getBatch() {
     this.Quantity.nativeElement.focus();
     const dialogRef = this._matDialog.open(SalePopupComponent,
@@ -285,73 +388,6 @@ export class IssueToDepartmentComponent implements OnInit {
       this.vPurchaseRate = result.PurchaseRate;
       this.vUnitMRP = result.UnitMRP;
     });
-
-    // this.Quantity.nativeElement.focus();
-  }
-  getToStoreList() {
-    this._IssueToDep.getToStoreSearchList().subscribe(data => {
-      this.ToStoreList = data;
-      //console.log(this.ToStoreList);
-    });
-  }
-  getPharStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
-    }
-    this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
-      this.FromStoreList = data;
-      //console.log(this.FromStoreList);
-      this._IssueToDep.NewIssueGroup.get('FromStoreId').setValue(this.FromStoreList[0])
-    });
-  }
-  @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('Batchno') Batchno: ElementRef;
-  @ViewChild('Rate') Rate: ElementRef;
-  @ViewChild('BalQuantity') BalQuantity: ElementRef;
-  @ViewChild('Quantity') Quantity: ElementRef;
-
-  public onEnterFromstore(event): void {
-    if (event.which === 13) {
-      this.itemid.nativeElement.focus();
-    }
-  }
-  public onEnteritemid(event): void {
-    if (event.which === 13) {
-      this.Batchno.nativeElement.focus();
-    }
-  }
-  public onEnterBatchNo(event): void {
-    if (event.which === 13) {
-      this.BalQuantity.nativeElement.focus();
-    }
-  }
-  public onEnterBalQty(event): void {
-    if (event.which === 13) {
-      this.Quantity.nativeElement.focus();
-    }
-  }
-  public onEnterQty(event): void {
-    if (event.which === 13) {
-      this.Rate.nativeElement.focus();
-    }
-  }
-  onAdd($event){
-    
-  }
-  CalculateTotalAmt(){
-    if(this.vQty > this.vBalanceQty){
-      Swal.fire("Enter Qty less than Balance");
-      this._IssueToDep.NewIssueGroup.get('Qty').setValue(0);
-    }
-    if(this.vQty && this.vUnitMRP){
-      this.vTotalAmount = (parseInt(this.vQty) * parseInt(this.vUnitMRP)).toFixed(2);
-    }
-  }
-  OnSave(){
-
-  }
-  OnReset(){
-    this._IssueToDep.NewIssueGroup.reset();
   }
   // public onEnterBatchno(event): void {
   //   if (event.which === 13) {

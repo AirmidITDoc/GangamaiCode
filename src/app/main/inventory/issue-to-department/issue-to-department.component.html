@@ -374,7 +374,7 @@
                                             <mat-label>To Store</mat-label>
                                             <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                 <mat-option></mat-option>
-                                                <mat-option *ngFor="let m of FromStoreList" [value]="m">
+                                                <mat-option *ngFor="let m of FromStoreList1" [value]="m">
                                                     {{m.StoreName}}
                                                 </mat-option>
                                             </mat-select>
@@ -399,9 +399,9 @@
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
 
-                                            <mat-form-field appearance="outline" fxFlex="22%">
+                                            <mat-form-field appearance="outline" fxFlex="30%">
                                                 <mat-label>ItemName</mat-label>
-                                                <input type="text" name="ItemID" formControlName="ItemID" #itemid
+                                                <input type="text" name="ItemID" formControlName="ItemID" #itemid  [(ngModel)]="vItemID"
                                                     placeholder="Item Name (enter 2 char)  " matInput [matAutocomplete]="auto"
                                                     (input)="getSearchItemList()" (keydown)="onEnteritemid($event)">
                                                 <span matSuffix style="display: flex;">
@@ -427,14 +427,14 @@
 
                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>Batch No</mat-label>
-                                                <input name="BatchNo" formControlName="BatchNO" required
+                                                <input name="BatchNo" formControlName="BatchNO" required readonly
                                                  matInput #Batchno [(ngModel)]="vBatchNo" (keydown)="onEnterBatchNo($event)" >
                                             </mat-form-field>
 
                 
                                             <mat-form-field appearance="outline" fxFlex="6%">
                                                 <mat-label>Balance Qty</mat-label>
-                                                <input name="BalanceQty" formControlName="BalanceQty" matInput 
+                                                <input name="BalanceQty" formControlName="BalanceQty" matInput  required readonly
                                                  #BalQuantity (keydown)="onEnterBalQty($event)" [(ngModel)]="vBalanceQty">
                                             </mat-form-field>
 
@@ -449,18 +449,18 @@
                                                 <mat-label>Unit Rate</mat-label>
                                                 <input name="UnitRate" formControlName="UnitRate" matInput #Rate [(ngModel)]="vUnitMRP"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                                required (keyup)="CalculateTotalAmt()">
+                                                required (keyup)="CalculateTotalAmt()" autocomplete="off">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>Total Amount</mat-label>
                                                 <input name="TotalAmount" formControlName="TotalAmount" matInput [(ngModel)]="vTotalAmount"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                                >
+                                                readonly required>
                                             </mat-form-field>
 
                                         <div matTooltip="Select All Value to enable this button!!">
-                                            <button mat-raised-button fxLayoutAlign="center center" #addbutton
+                                            <button mat-raised-button fxLayoutAlign="center center"  
                                                 (click)="onAdd($event)" [disabled]="_IssueToDep.NewIssueGroup.invalid"
                                                 style="background-color: blue; color: white; width: 70px;margin-left: 15px;margin-top: 10px; ">
                                                 <mat-icon> add </mat-icon> &nbsp;Add
@@ -615,19 +615,19 @@
 
                                                     <ng-container matColumnDef="BatchNO">
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                            BatchNO</mat-header-cell>
+                                                            BatchNo</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.BatchNO}}
+                                                            {{contact.BatchNo}}
                                                         </mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="ExpDate">
+                                                    <!-- <ng-container matColumnDef="ExpDate">
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                             Exp Date</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                             {{contact.ExpDate}}
                                                         </mat-cell>
-                                                    </ng-container>
+                                                    </ng-container> -->
 
                                                     <ng-container matColumnDef="BalanceQty">
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -706,18 +706,18 @@
                             <div fxLayout="row" fxLayoutGap="10px" style="margin-top: 10px;">
                             <mat-form-field appearance="outline" fxFlex="40%" >
                                 <mat-label>Remark</mat-label>
-                                <input type="text" name="Remark" formControlName="Remark" matInput required #remark>
+                                <input type="text" name="Remark" formControlName="Remark" matInput   #remark>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="15%">
                                 <mat-label>GST Amount</mat-label>
-                                <input type="text" name="GST Amount" formControlName="GSTAmount" matInput required #GSTAmount>
+                                <input type="text" name="GST Amount" formControlName="GSTAmount" matInput   #GSTAmount>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="15%">
                                 <mat-label>Total Amount</mat-label>
                                 <input type="text" name="Total Amount" formControlName="FinalTotalAmount" 
-                                #FinalTotalAmount matInput required>
+                                #FinalTotalAmount matInput [(ngModel)]="vFinalTotalAmount">
                             </mat-form-field>
 
                             <!-- <div class="footer-navigation-container" fxLayout.gt-xs="row">
