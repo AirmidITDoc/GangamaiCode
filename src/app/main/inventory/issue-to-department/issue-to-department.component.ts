@@ -11,6 +11,8 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
+import { ToastrService } from 'ngx-toastr';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-issue-to-department',
@@ -52,7 +54,9 @@ export class IssueToDepartmentComponent implements OnInit {
     'BalanceQty',
     'Qty',
     'UnitRate',
-    'TotalAmount'
+    'GSTAmount',
+    'TotalAmount',
+    'Action'
   ];
   displayedNewIssuesList1: string[] = [
     'ItemName',
@@ -80,7 +84,38 @@ export class IssueToDepartmentComponent implements OnInit {
   filteredOptionsItem: any;
   ItemId: any;
   BalanceQty: any;
-
+  vBatchNo: any;
+  vBatchExpDate: any;
+  vUnitMRP: any;
+  vQty: any = 0;
+  IssQty: any;
+  vBal: any;
+  StoreName: any;
+  GSTPer: any;
+  vMRP: any;
+  DiscPer: any = 0;
+  vDiscAmt: any = 0;
+  vNetAmt: any = 0;
+  vTotalMRP: any = 0;
+  vBalanceQty: any;
+  currentDate = new Date();
+  vVatPer: any;
+  vCgstPer: any;
+  vSgstPer: any;
+  vIgstPer: any;
+  vTotalAmount: any;
+  vVatAmount: any;
+  vStockId: any;
+  vStoreId: any;
+  vLandedRate: any;
+  vPurchaseRate: any;
+  vItemObj: NewIssueList3;
+  chargeslist: any = [];
+  vItemID: any;
+  FromStoreList1: any = [];
+  ToStoreList1:any= [];
+  vFinalTotalAmount: any;
+  vFinalGSTAmount:any;
 
   dsIssueToDep = new MatTableDataSource<IssueToDep>();
 
@@ -89,6 +124,7 @@ export class IssueToDepartmentComponent implements OnInit {
   dsNewIssueList1 = new MatTableDataSource<NewIssueList1>();
   dsNewIssueList2 = new MatTableDataSource<NewIssueList2>();
   dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
+  dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
 
 
 
@@ -101,6 +137,7 @@ export class IssueToDepartmentComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    public toastr: ToastrService,
     private accountService: AuthenticationService,
     private _loggedService: AuthenticationService
 
@@ -126,6 +163,7 @@ export class IssueToDepartmentComponent implements OnInit {
   getToStoreSearchList() {
     this._IssueToDep.getToStoreSearchList().subscribe(data => {
       this.ToStoreList = data;
+      this._IssueToDep.IssueSearchGroup.get('ToStoreId').setValue(this.ToStoreList[0]);
       //console.log(this.ToStoreList);
     });
   }
@@ -137,10 +175,9 @@ export class IssueToDepartmentComponent implements OnInit {
     this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
       this.FromStoreList = data;
       //console.log(this.FromStoreList);
-      this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
+      this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0])
     });
   }
-
   getIssueToDepList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
@@ -179,69 +216,230 @@ export class IssueToDepartmentComponent implements OnInit {
     //console.log(Param.IssueId);
     this.getIssueItemList(Param.IssueId)
   }
+
+  //second tab
   getSearchItemList() {
     var m_data = {
       "ItemName": `${this._IssueToDep.NewIssueGroup.get('ItemID').value}%`,
       "StoreId": this._IssueToDep.NewIssueGroup.get('FromStoreId').value.storeid
     }
     console.log(m_data);
-      this._IssueToDep.getItemlist(m_data).subscribe(data => {
-        this.filteredOptionsItem = data;
-        console.log(this.filteredOptionsItem);
-        this.filteredOptionsItem = data;
-        if (this.filteredOptionsItem.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    
+    this._IssueToDep.getItemlist(m_data).subscribe(data => {
+      this.filteredOptionsItem = data;
+      console.log(this.filteredOptionsItem);
+      this.filteredOptionsItem = data;
+      if (this.filteredOptionsItem.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+
   }
   getOptionItemText(option) {
-    this.ItemId = option.ItemID;
+    this.vItemID = option.ItemID;
     if (!option) return '';
     return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
- 
+
   getSelectedObjItem(obj) {
     // console.log(obj);
-      // this.registerObj = obj;
-      this.ItemName = obj.ItemName;
-      this.ItemId = obj.ItemId;
-      this.BalanceQty = obj.BalanceQty;
-      if (this.BalanceQty > 0) {
-        this.getBatch();
-      } 
+    // this.registerObj = obj;
+    this.ItemName = obj.ItemName;
+    this.ItemId = obj.ItemId;
+    this.BalanceQty = obj.BalanceQty;
+    if (this.BalanceQty > 0) {
+      this.getBatch();
+    }
+  }
+  getToStoreList() {
+    this._IssueToDep.getToStoreSearchList().subscribe(data => {
+      this.ToStoreList1 = data;
+      //console.log(this.ToStoreList);
+    });
+  }
+  getPharStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
+    }
+    this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
+      this.FromStoreList1 = data;
+      //console.log(this.FromStoreList);
+      this._IssueToDep.NewIssueGroup.get('FromStoreId').setValue(this.FromStoreList1[0])
+    });
   }
 
-  vBatchNo: any;
-  vBatchExpDate: any;
-  vUnitMRP: any;
-  vQty: any = 0;
-  IssQty: any;
-  vBal: any;
-  StoreName: any;
-  GSTPer: any;
-  vMRP: any;
-  DiscPer: any = 0;
-  vDiscAmt: any = 0;
-  vNetAmt: any = 0;
-  vTotalMRP: any = 0;
-  vBalanceQty:any;
-  currentDate = new Date();
+  onRepeat() {
+    if (this.chargeslist.length > 0) {
+      this.chargeslist.forEach((element) => {
+        if (element.ItemId == this.ItemId) {
+          this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          this.ItemReset();
+        } else {
+          this.onAdd();
+        }
+      });
+    } else {
+      this.onAdd();
+    }
+  }
+  onAdd() {
+    let gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
+    this.dsNewIssueList3.data = [];
+    this.chargeslist = this.dsTempItemNameList.data;
+    this.chargeslist.push(
+      {
+        ItemId: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId || 0,
+        ItemName: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemName || '',
+        BatchNo: this.vBatchNo,
+        BatchExpDate: this.vBatchExpDate || '01/01/1900',
+        BalanceQty: this.vBalanceQty || 0,
+        Qty: this.vQty || 0,
+        UnitRate: this.vUnitMRP || 0,
+        GSTAmount: (((this.vTotalAmount) * (gstper))/ 100).toFixed(2),
+        TotalAmount: this.vTotalAmount || 0,
+      });
+    console.log(this.chargeslist);
+    this.dsNewIssueList3.data = this.chargeslist
+    this.ItemReset();
+    this.itemid.nativeElement.focus();
+    this._IssueToDep.NewIssueGroup.get('ItemID').setValue('');
+    this.addbutton = false;
+  }
+  deleteTableRow(element) {
+    let index = this.chargeslist.indexOf(element);
+    if (index >= 0) {
+      this.chargeslist.splice(index, 1);
+      this.dsNewIssueList3.data = [];
+      this.dsNewIssueList3.data = this.chargeslist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
+  ItemReset() {
+    this.ItemName = " ";
+    this.vItemID = 0;
+    this.vBatchNo = " ";
+    this.vBalanceQty = 0;
+    this.vQty = " ";
+    this.vUnitMRP = 0;
+    this.vTotalAmount = 0;
+  }
+  CalculateTotalAmt() {
+    if (this.vQty > this.vBalanceQty) {
+      Swal.fire("Enter Qty less than Balance");
+      this._IssueToDep.NewIssueGroup.get('Qty').setValue(0);
+    }
+    if (this.vQty && this.vUnitMRP) {
+      this.vTotalAmount = (parseInt(this.vQty) * parseInt(this.vUnitMRP)).toFixed(2);
+    }
+ 
+  }
+   getTotalamt(element) {
+    this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
+    this.vFinalGSTAmount = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
 
-  vVatPer: any;
-  vCgstPer: any;
-  vSgstPer: any;
-  vIgstPer: any;
-  vTotalAmount:any;
-  vVatAmount: any;
-  vStockId: any;
-  vStoreId: any;
-  vLandedRate: any;
-  vPurchaseRate: any;
-  vItemObj: NewIssueList3;
+    return this.vFinalTotalAmount;
+  }
+ 
+  OnSave() {
+    let insertheaderObj = {};
+    insertheaderObj['itemid'] =  this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId;
+    insertheaderObj['ItemName'] =  this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId;
+    insertheaderObj['BatchNo'] =  this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId;
+    insertheaderObj['BatchExpDate'] = this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId;
 
+     let isertItemdetailsObj = [];
+    this.dsNewIssueList3.data.forEach(element => {
+      let insertitemdetail = {} ;
+      insertitemdetail['itemid'] = element.ItemId;
+      insertitemdetail['ItemName'] = element.ItemName;
+      insertitemdetail['BatchNo'] = element.BatchNo;
+      insertitemdetail['BatchExpDate'] = element.BatchExpDate;
+      insertitemdetail['BalanceQty'] = element.BalanceQty;
+      insertitemdetail['Qty'] = element.Qty;
+      insertitemdetail['UnitRate'] = element.UnitRate;
+      insertitemdetail['GSTAmount'] = element.GSTAmount;
+      insertitemdetail['TotalAmount'] = element.TotalAmount;
+      isertItemdetailsObj.push(insertitemdetail);
+    });
+    let submitData = {
+      "isertItemdetailsObj": isertItemdetailsObj,
+      "insertheaderObj": insertheaderObj,
+    };
+
+    console.log(submitData);
+
+    this._IssueToDep.IssuetodepSave(submitData).subscribe(response => {
+      if (response) {
+        this.toastr.success('Record New Issue To Department Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        //this._matDialog.closeAll();
+        this.OnReset();
+
+      } else {
+        this.toastr.error('New Issue To Department Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    }, error => {
+      this.toastr.error('New Issue To Department Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });
+  }
+  OnReset() {
+    this._IssueToDep.NewIssueGroup.reset();
+    this.dsNewIssueList1.data = [];
+    this.dsNewIssueList2.data = [];
+    this.dsNewIssueList3.data = [];
+  }
+
+  @ViewChild('itemid') itemid: ElementRef;
+  @ViewChild('Batchno') Batchno: ElementRef;
+  @ViewChild('Rate') Rate: ElementRef;
+  @ViewChild('BalQuantity') BalQuantity: ElementRef;
+  @ViewChild('Quantity') Quantity: ElementRef;
+  addbutton: Boolean = false;
+  // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  public onEnterFromstore(event): void {
+    if (event.which === 13) {
+      this.itemid.nativeElement.focus();
+    }
+  }
+  public onEnteritemid(event): void {
+    if (event.which === 13) {
+      this.Batchno.nativeElement.focus();
+    }
+  }
+  public onEnterBatchNo(event): void {
+    if (event.which === 13) {
+      this.BalQuantity.nativeElement.focus();
+    }
+  }
+  public onEnterBalQty(event): void {
+    if (event.which === 13) {
+      this.Quantity.nativeElement.focus();
+    }
+  }
+  public onEnterQty(event): void {
+    if (event.which === 13) {
+      this.Rate.nativeElement.focus();
+     // this.addbutton = false;
+
+    }
+  }
+  public onEnterRate(event): void {
+    if (event.which === 13) {
+      // this.Rate.nativeElement.focus();
+      // this.addbutton.focus();
+      //this.addbutton = true;
+    }
+  }
   getBatch() {
     this.Quantity.nativeElement.focus();
     const dialogRef = this._matDialog.open(SalePopupComponent,
@@ -257,8 +455,8 @@ export class IssueToDepartmentComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-       console.log(result);
-      
+      console.log(result);
+
       this.vBatchNo = result.BatchNo;
       this.vBatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       this.vMRP = result.UnitMRP;
@@ -285,73 +483,6 @@ export class IssueToDepartmentComponent implements OnInit {
       this.vPurchaseRate = result.PurchaseRate;
       this.vUnitMRP = result.UnitMRP;
     });
-
-    // this.Quantity.nativeElement.focus();
-  }
-  getToStoreList() {
-    this._IssueToDep.getToStoreSearchList().subscribe(data => {
-      this.ToStoreList = data;
-      //console.log(this.ToStoreList);
-    });
-  }
-  getPharStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
-    }
-    this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
-      this.FromStoreList = data;
-      //console.log(this.FromStoreList);
-      this._IssueToDep.NewIssueGroup.get('FromStoreId').setValue(this.FromStoreList[0])
-    });
-  }
-  @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('Batchno') Batchno: ElementRef;
-  @ViewChild('Rate') Rate: ElementRef;
-  @ViewChild('BalQuantity') BalQuantity: ElementRef;
-  @ViewChild('Quantity') Quantity: ElementRef;
-
-  public onEnterFromstore(event): void {
-    if (event.which === 13) {
-      this.itemid.nativeElement.focus();
-    }
-  }
-  public onEnteritemid(event): void {
-    if (event.which === 13) {
-      this.Batchno.nativeElement.focus();
-    }
-  }
-  public onEnterBatchNo(event): void {
-    if (event.which === 13) {
-      this.BalQuantity.nativeElement.focus();
-    }
-  }
-  public onEnterBalQty(event): void {
-    if (event.which === 13) {
-      this.Quantity.nativeElement.focus();
-    }
-  }
-  public onEnterQty(event): void {
-    if (event.which === 13) {
-      this.Rate.nativeElement.focus();
-    }
-  }
-  onAdd($event){
-    
-  }
-  CalculateTotalAmt(){
-    if(this.vQty > this.vBalanceQty){
-      Swal.fire("Enter Qty less than Balance");
-      this._IssueToDep.NewIssueGroup.get('Qty').setValue(0);
-    }
-    if(this.vQty && this.vUnitMRP){
-      this.vTotalAmount = (parseInt(this.vQty) * parseInt(this.vUnitMRP)).toFixed(2);
-    }
-  }
-  OnSave(){
-
-  }
-  OnReset(){
-    this._IssueToDep.NewIssueGroup.reset();
   }
   // public onEnterBatchno(event): void {
   //   if (event.which === 13) {
@@ -362,7 +493,7 @@ export class IssueToDepartmentComponent implements OnInit {
   // lastDay: string = '';
   // ExpDate:any;
   // calculateLastDay(inputDate: string) {
-  
+
   //   if (inputDate && inputDate.length === 6) {
   //     const month = +inputDate.substring(0, 2);
   //     const year = +inputDate.substring(2, 6);
@@ -381,7 +512,7 @@ export class IssueToDepartmentComponent implements OnInit {
   //     this.lastDay = 'Invalid input';
   //   } 
   // }
-  
+
   // getLastDayOfMonth(month: number, year: number): number {
   //   return new Date(year, month, 0).getDate();
   // }
@@ -403,7 +534,7 @@ export class NewIssueList3 {
   TotalAmount: any;
   BatchNo: string;
   BatchExpDate: any;
-  QtyPerDay:any;
+  QtyPerDay: any;
   UnitMRP: any;
   Bal: number;
   StoreId: any;
@@ -440,7 +571,7 @@ export class NewIssueList3 {
     this.TotalAmount = NewIssueList3.TotalAmount || 0;
     this.BatchExpDate = NewIssueList3.BatchExpDate || "";
     this.UnitMRP = NewIssueList3.UnitMRP || "";
-    this.QtyPerDay=NewIssueList3.QtyPerDay || 0;
+    this.QtyPerDay = NewIssueList3.QtyPerDay || 0;
     this.Bal = NewIssueList3.Bal || 0;
     this.StoreId = NewIssueList3.StoreId || 0;
     this.StoreName = NewIssueList3.StoreName || '';

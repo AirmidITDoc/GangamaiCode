@@ -200,7 +200,76 @@
   width: 100%;
   margin-left: 0px;
 
-
+  .mat-column-ItemId{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    justify-content:left; 
+  }
+  .mat-column-ItemName{
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
+    text-align: left;
+    justify-content: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow: hidden !important;
+    display: inline-flex;
+    display: inline;
+    margin-right: 10px;
+    margin-top: 20px;
+  }
+  .mat-column-BatchNO{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    align-items: left;
+    justify-content:left;
+  }
+  .mat-column-ExpDate{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    align-items: left;
+    justify-content:left;
+  }
+  .mat-column-BalanceQty{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    align-items: left;
+    justify-content:left;
+  }
+  .mat-column-Qty{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left; 
+  }
+  .mat-column-UnitRate{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left;
+  }
+  .mat-column-TotalAmount{
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    align-items: left;
+    justify-content:left;
+  }
+  .mat-column-Action{
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    align-items: left;
+    justify-content:left;
+  }
 }
 .footer-navigation-container {
   text-align: right;

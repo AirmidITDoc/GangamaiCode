@@ -43,8 +43,7 @@ export class IssueToDepartmentService {
       Remark:[''],
       GSTAmount:[''],
       FinalTotalAmount:[''],
-      Exp:[''],
-      ExpDatess:['']
+      
     });
 
   }
@@ -70,6 +69,9 @@ export class IssueToDepartmentService {
   }
   public getBatchList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
+  }
+  public IssuetodepSave(Param){
+    return this._httpClient.post("Generic/GetByProc?procName",Param);
   }
 
 
