@@ -82,7 +82,10 @@
                                 Clear
                             </button>
 
-
+                            <button mat-raised-button style="width: 100px;"
+                            (click)="viewgetOPDDailycollectionReportPdf()" matTooltip="Pdf">
+                            <mat-icon class="searchiconbutton">book</mat-icon>
+                        </button>
                         </div>
                         <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;">
                             Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
@@ -141,7 +144,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="RegNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg No
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg Id
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.RegNo}}

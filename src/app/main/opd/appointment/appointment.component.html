@@ -337,6 +337,27 @@
                             </button>
                           </mat-cell>
                         </ng-container>
+
+                        <ng-container matColumnDef="action1" stickyEnd>
+                          <mat-header-cell *matHeaderCellDef class="table-actions"
+                              fxShow.gt-sm></mat-header-cell>
+                          <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                              <div fxFlex="row" fxLayoutAlign="center center">
+                                  <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                      (click)="$event.stopPropagation();">
+                                      <mat-icon class="secondary-text">more_vert</mat-icon>
+                                  </button>
+                                  <mat-menu #moreMenu="matMenu">
+                                      <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                                          <button mat-menu-item aria-label="remove"
+                                              (click)="getRecord(contact,m)">
+                                              <span>{{m}}</span>
+                                          </button>
+                                      </ng-container>
+                                  </mat-menu>
+                              </div>
+                          </mat-cell>
+                      </ng-container>
                         
                         <ng-container matColumnDef="loading">
                           <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -1008,7 +1029,7 @@
               <div style="float: right;">
                 <!-- (click)="nextClicked(VisitFormGroup)" -->
                 <button class="next-btn" color="accent" (click)="onSave()"
-                  [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid" style="border-radius: 16px;">
+                  [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid" style="border-radius: 16px;margin-right:20px ;">
                   <span style="display: flex;justify-content: center;">
                     <span style="margin-left: 6px;">Save</span>
                   </span>
@@ -1124,6 +1145,7 @@
                 </mat-cell>
               </ng-container>
 
+             
               <!-- <ng-container matColumnDef="loading">
                     <mat-footer-cell *matFooterCellDef colspan="6">
                       loading data...
