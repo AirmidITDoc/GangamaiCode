@@ -1,6 +1,6 @@
 @import "src/@fuse/scss/fuse";
 // .vertical-layout-1
-$sidebarWidth : 280px;
+$sidebarWidth: 250px;
 vertical-layout-1 {
     display: flex;
     flex: 1 1 auto;
@@ -35,14 +35,15 @@ vertical-layout-1 {
                 flex-direction: column;
                 min-width: 0;
                 transition: 150ms;
-                &.p-left{
+                &.p-left {
                     padding-left: $sidebarWidth;
                 }
-                &.p-right{
+                &.p-right {
                     padding-right: $sidebarWidth;
                 }
                 @include media-breakpoint("lt-lg") {
-                    &.p-left,&.p-right{
+                    &.p-left,
+                    &.p-right {
                         padding: 0px;
                     }
                 }

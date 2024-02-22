@@ -1,6 +1,6 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll appointment-section"
     fusePerfectScrollbar>
-    <mat-toolbar class="accent opd-header">
+    <mat-toolbar class="accent opd-header" fusePerfectScrollbar>
         <div fxLayout="row" style="align-items: center;">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
                 style="color: white;">
@@ -9,13 +9,13 @@
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+            <span class="logo-text h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Appointment List
             </span>
 
         </div>
 
-        <div fxLayout="row" fxLayoutGap="5px" style="margin-left:2% !important; ">
+        <div fxLayout="row" fxLayoutGap="5px">
             <app-common-date [screenFrom]="screenFromString" style="float:right"
                 (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
             <button mat-raised-button (click)="newappointment()" style="margin-left:8% !important">New Appointment
@@ -90,26 +90,6 @@
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Doctor Name</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"
-                                            matInput formControlName="DoctorId" [matAutocomplete]="autoSearchDoctor">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_AppointmentSreviceService.myFilterform.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_AppointmentSreviceService.myFilterform.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoSearchDoctor="matAutocomplete"
-                                            [displayWith]="getOptionTextDoctor">
-                                            <mat-option *ngFor="let option of filteredOptionsDoctor| async"
-                                                [value]="option" (onSelectionChange)="getVisitList()">
-                                                {{option.DoctorName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
-
                                     <!-- <mat-slide-toggle name="IsDischarge" (change)="onChangeIsactive($event)"
                       formControlName="IsDischarge" [(ngModel)]="isChecked">
                       IsDischarge</mat-slide-toggle> -->
@@ -156,11 +136,12 @@
                                             <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                                 class="appointment-table" id="app-table"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
+
                                                 <ng-container matColumnDef="PatientOldNew">
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-90">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-110">
                                                         <span class="mat-header-text">Patient</span>
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" class="w-90">
+                                                    <mat-cell *matCellDef="let contact" class="w-110">
                                                         <div class="patient-column gap-12" fxLayout="row">
                                                             <div class="patient-old-new" fxLayout="row"
                                                                 fxLayoutAlign="center">
@@ -186,6 +167,14 @@
                                                                     matTooltip="Did not Generated Bill"
                                                                     class=" white-600 s-16">
                                                                     circle</mat-icon>
+                                                            </div>
+                                                            <div class="phone-app" fxLayout="row"
+                                                                fxLayoutAlign="center">
+                                                                <mat-icon style="border-radius:100% ;"
+                                                                    *ngIf="contact.PhoneAppId !==null"
+                                                                    matTooltip="Phone Appointment"
+                                                                    class=" cyan-600 s-16">circle
+                                                                </mat-icon>
                                                             </div>
                                                         </div>
                                                     </mat-cell>
@@ -226,6 +215,7 @@
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container> -->
+
                                                 <ng-container matColumnDef="RegNoWithPrefix">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                         class="w-100">
@@ -236,24 +226,35 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="PhoneAppId">
+                                                <ng-container matColumnDef="CrossConsultation">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <button mat-icon-button matTooltip="CrossConsultation"
+                                                            (click)="NewCrossConsultation(contact)">
+                                                            <mat-icon>contacts</mat-icon>
+                                                        </button>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="PhoneAppId" *ngIf="false">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
                                                         <mat-icon
                                                             style="font-size:60px;width: 20px !important; height:20px !important;border-radius:100% ;"
                                                             *ngIf="contact.PhoneAppId !==null"
-                                                            matTooltip="Phone Appointment"
-                                                            class=" cyan-600 s-16">circle</mat-icon>
+                                                            matTooltip="Phone Appointment" class=" cyan-600 s-16">circle
+                                                        </mat-icon>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="PatientName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                        class="w-150">
+                                                        class="w-200">
                                                         <span class="mat-header-text">Patient Name</span>
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                         <span> {{contact.PatientName}} </span>
                                                     </mat-cell>
                                                 </ng-container>
@@ -323,12 +324,13 @@
 
                                                 <ng-container matColumnDef="CompanyName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-md>
+                                                        class="w-150" fxShow.gt-md>
                                                         <span class="mat-header-text">Company Name</span>
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
-                                                        style="margin-top: 1px;">
-                                                        {{contact.CompanyName}}
+                                                        class="w-150">
+                                                        <span>{{contact.CompanyName ? contact.CompanyName :
+                                                            '--'}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -343,11 +345,11 @@
                                                     </mat-cell>
                                                 </ng-container>
                                                 <!-- stickyEnd -->
-                                                <ng-container matColumnDef="action">
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-120">
+                                                <ng-container matColumnDef="action" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-150">
                                                         <span class="mat-header-text">Action</span>
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let row" class="w-120">
+                                                    <mat-cell *matCellDef="let row" class="w-150">
                                                         <button mat-icon-button matTooltip="how_to_reg"
                                                             (click)="getRecord(row,m)">
                                                             <mat-icon>how_to_reg</mat-icon>
@@ -363,6 +365,10 @@
                                                         <button mat-icon-button matTooltip="Bill"
                                                             (click)="Billpayment(row)">
                                                             <mat-icon>payment</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button matTooltip="CrossConsultation"
+                                                            (click)="NewCrossConsultation(row)">
+                                                            <mat-icon>contacts</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
@@ -381,13 +387,16 @@
                                                     </mat-footer-cell>
                                                 </ng-container>
 
-                                                <mat-header-row class="table-header-offwhite"
+                                                <mat-header-row #table1HeaderRow
+                                                    class="table-header-offwhite table1-header-row"
                                                     *matHeaderRowDef="displayedColumns; sticky: true">
                                                 </mat-header-row>
-                                                <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                                <mat-row class="table1-row" #table1Row
+                                                    *matRowDef="let contact; columns: displayedColumns;"
                                                     [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"
                                                     [@animate]="{value:'*',params:{y:'100%'}}">
                                                 </mat-row>
+
                                                 <mat-footer-row *matFooterRowDef="['loading']"
                                                     [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
                                                 <mat-footer-row *matFooterRowDef="['noData']"
@@ -568,28 +577,6 @@
                                     </mat-expansion-panel-header>
                                     <form [formGroup]="personalFormGroup">
                                         <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="18px grid">
-                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
-                                                fxFlex.sm="33%">
-                                                <mat-label>Prefix</mat-label>
-                                                <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Select Prefix" matInput
-                                                    (keydown)="onEnterprefix($event)" formControlName="PrefixID"
-                                                    [matAutocomplete]="autoPrefix" required>
-                                                <span matSuffix style="display: flex;">
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="personalFormGroup.get('PrefixID').setValue(''); isPrefixSelected = false;">close</mat-icon>
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="personalFormGroup.get('PrefixID').setValue(''); isPrefixSelected = false;">search</mat-icon>
-                                                </span>
-                                                <mat-autocomplete #autoPrefix="matAutocomplete"
-                                                    [displayWith]="getOptionTextPrefix">
-                                                    <mat-option *ngFor="let option of filteredOptionsPrefix | async"
-                                                        [value]="option"
-                                                        (onSelectionChange)="onChangeGenderList(option)">
-                                                        {{option.PrefixName}}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field>
                                             <form [formGroup]="personalFormGroup">
                                                 <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="18px grid">
                                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
@@ -1145,184 +1132,6 @@
                             </div>
                         </div>
                     </div>
-                    <mat-expansion-panel expanded>
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                Visit Details
-                            </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <form [formGroup]="VisitFormGroup">
-
-                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="18px grid">
-
-                                <!-- <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-label>Hospital Name </mat-label>
-                        <mat-select formControlName="HospitalId" required #hname (keydown)="onEnterhname($event)">
-                          <mat-option *ngFor="let Doc of HospitalList1" [value]="Doc">
-                            {{Doc.HospitalName}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field> -->
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Patient Type</mat-label>
-                                    <mat-select formControlName="PatientTypeID"
-                                        (selectionChange)="onChangePatient($event.value)" #ptype
-                                        (keydown)="onEnterptype($event)" required>
-                                        <mat-option *ngFor="let Doc of PatientTypeList" [value]="Doc">
-                                            {{Doc.PatientType}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Tariff Name</mat-label>
-                                    <mat-select formControlName="TariffId" required #tariff
-                                        (keydown)="onEnterptariff($event)">
-                                        <mat-option *ngFor="let Doc of TariffList" [value]="Doc">
-                                            {{Doc.TariffName}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                                    *ngIf="isCompanySelected">
-                                    <mat-label>Company Name </mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Company"
-                                        matInput formControlName="CompanyId" [matAutocomplete]="autoCompany" required>
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoCompany="matAutocomplete"
-                                        [displayWith]="getOptionTextCompany">
-                                        <mat-option *ngFor="let option of filteredOptionsCompany | async"
-                                            [value]="option">
-                                            {{option.CompanyName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                                    *ngIf="isCompanySelected">
-                                    <mat-label>Sub Company Name </mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select SubCompany"
-                                        matInput formControlName="SubCompanyId" [matAutocomplete]="autoSubCompany"
-                                        required>
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoSubCompany="matAutocomplete"
-                                        [displayWith]="getOptionTextSubCompany">
-                                        <mat-option *ngFor="let option of filteredOptionsSubCompany | async"
-                                            [value]="option">
-                                            {{option.CompanyName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Department</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Department"
-                                        matInput #dept (keydown)="onEnterdept($event)" formControlName="Departmentid"
-                                        [matAutocomplete]="autoDep" required>
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                    </span>
-
-                                    <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                                        <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                                            (onSelectionChange)="OnChangeDoctorList(option)">
-                                            {{option.departmentName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>&nbsp;
-
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Doctor Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput
-                                        #deptdoc (keydown)="onEnterdeptdoc($event)" formControlName="DoctorID"
-                                        [matAutocomplete]="autoDoctor" required>
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                                    </span>
-
-                                    <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
-                                        <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
-                                            (onSelectionChange)="isDoctorSelected = true;">
-                                            {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b>
-                                            {{option.DoctorId
-                                            }}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Ref Doctor Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor "
-                                        matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="RefDocId"
-                                        [matAutocomplete]="autoRefdoc">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('RefDocId').setValue(''); isRefDoctorSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('RefDocId').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
-                                        <mat-option *ngFor="let option of filteredOptionsRefDoc | async"
-                                            [value]="option">
-                                            {{option.DoctorName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Purpose</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Purpose"
-                                        matInput #purpose formControlName="PurposeId" [matAutocomplete]="autoPurpose">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('PurposeId').setValue(''); isPurposeSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="VisitFormGroup.get('PurposeId').setValue(''); isPurposeSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoPurpose="matAutocomplete"
-                                        [displayWith]="getOptionTextPurpose">
-                                        <mat-option *ngFor="let option of filteredOptionsPurpose | async"
-                                            [value]="option">
-                                            {{option.PurposeName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-                            </div>
-                        </form>
-                    </mat-expansion-panel>
-                    <div style="float: right;">
-                        <!-- (click)="nextClicked(VisitFormGroup)" -->
-                        <button class="next-btn" color="accent" (click)="onSave()"
-                            [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid"
-                            style="border-radius: 16px;">
-                            <span style="display: flex;justify-content: center;">
-                                <span style="margin-left: 6px;">Save</span>
-                            </span>
-                        </button>
-                        <button class="footer-btn" (click)="onClose()">Reset</button>
-                        &nbsp;
-                    </div>
                 </div>
                 <!-- </mat-card-content> -->
                 <!-- </mat-drawer> -->
@@ -1361,7 +1170,8 @@
                     </mat-form-field>
                     <span style="margin-left: 20px;font-size: medium;font-weight: bold;color: blue;">RegId:{{RegId}} |
                         Patient
-                        Name : {{PatientName}} | VisitId: {{VisitId}} </span>
+                        Name : {{PatientName}} | VisitId: {{VisitId}}
+                    </span>
                 </form>
 
                 <form [formGroup]="imageForm">
@@ -1462,8 +1272,6 @@
             <!-- </div> -->
         </mat-tab>
     </mat-tab-group>
-    <!-- </mat-drawer> -->
-    <!-- </mat-drawer-container> -->
 </div>
 
 

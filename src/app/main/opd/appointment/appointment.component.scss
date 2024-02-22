@@ -92,7 +92,15 @@ app-appointment {
     justify-content: space-between;
     // width:150px;
 }
-
+.appointment-table {
+    .table1-header-row,
+    .table1-row {
+        min-width: 1500px;
+        @include media-breakpoint("lt-lg") {
+            min-width: 500px;
+        }
+    }
+}
 .table2 {
     height: 380px !important;
 
@@ -225,11 +233,6 @@ app-appointment {
     font-size: 18px;
 }
 //   https://stackoverflow.com/questions/68504360/show-images-as-grid-ngfor-in-angular
-
-body.theme-default .accent {
-    // background-color: #0479b4 !important;
-    // color: black !important;
-}
 
 .autocomplete-item {
     height: 50px;

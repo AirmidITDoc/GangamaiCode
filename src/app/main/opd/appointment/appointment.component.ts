@@ -248,10 +248,10 @@ export class AppointmentComponent implements OnInit {
   displayedColumns = [
     "PatientOldNew",
     // "MPbillNo",
-    "CrossConsultation",
+    // "CrossConsultation",
     // "Edit",
-    "Bill",
-    "PhoneAppId",
+    // "Bill",
+    // "PhoneAppId",
     "RegNoWithPrefix",
     "PatientName",
     "DVisitDate",

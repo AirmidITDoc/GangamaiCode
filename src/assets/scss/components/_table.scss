@@ -25,7 +25,7 @@
             word-break: break-word;
             line-height: 20px;
             &:not(:first-of-type) {
-                // padding: 10px;
+                padding: 7px 0px;
             }
             .mat-icon-button {
                 height: 25px;
@@ -39,9 +39,7 @@
                 }
             }
             span {
-                @include media-breakpoint('lt-lg'){
-                    @include line-clamp(1);
-                }
+                @include line-clamp(1);
             }
         }
         &:hover {
