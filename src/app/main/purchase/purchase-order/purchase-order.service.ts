@@ -107,6 +107,8 @@ export class PurchaseOrderService {
       ToMailId: [''],
       Subject: [''],
       Body: [''],
+      CCName: [''],
+      bccName: ['']
     })
   }
 
@@ -191,7 +193,9 @@ export class PurchaseOrderService {
   return this._httpClient.post("WhatsappEmail/WhatsappSalesSave", emp);
 }
 
-
+public EmailSendInsert(emp){
+  return this._httpClient.post("WhatsappEmail/EmailSave", emp);
+}
   populateForm(employee) {
     // this.PurchaseStoreFrom.patchValue(employee);
   }

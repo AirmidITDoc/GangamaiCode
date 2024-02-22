@@ -20,6 +20,7 @@ import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { GrnemailComponent } from './grnemail/grnemail.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { EmailComponent } from '../purchase-order/email/email.component';
 
 @Component({
   selector: 'app-good-receiptnote',
@@ -1069,10 +1070,10 @@ export class GoodReceiptnoteComponent implements OnInit {
   }  
   GRNEmail(contact) {
     console.log(contact)
-    const dialogRef = this._matDialog.open(GrnemailComponent,
+    const dialogRef = this._matDialog.open(EmailComponent,
       {
         maxWidth: "100%",
-        height: '55%',
+        height: '75%',
         width: '55%',
         data: {
           Obj:contact
@@ -1178,16 +1179,16 @@ export class GoodReceiptnoteComponent implements OnInit {
 
 
   getWhatsappshareSales(el) {
-    
+    debugger
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": 22,//el.RegNo,
         "smsString": "Dear" + el.PatientName + ",Your GRN has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
         "isSent": 0,
-        "smsType": 'WhatsApp',
+        "smsType": 'GRN',
         "smsFlag": 0,
         "smsDate": this.currentDate,
-        "tranNo": el.GrnId,
+        "tranNo": el.GRNID,
         "PatientType":2,//el.PatientType,
         "templateId": 0,
         "smSurl": "info@gmail.com",
@@ -1221,6 +1222,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 export class GRNList {
   GrnNumber: number;
   GRNDate: number;
+  GRNTime:any;
   InvoiceNo: number;
   SupplierName: string;
   TotalAmount: any;
@@ -1264,6 +1266,7 @@ export class GRNList {
     {
       this.GrnNumber = GRNList.GrnNumber || 0;
       this.GRNDate = GRNList.GRNDate || 0;
+      this.GRNTime = GRNList.GRNTime || '';
       this.InvoiceNo = GRNList.InvoiceNo || 0;
       this.SupplierName = GRNList.SupplierName || "";
       this.TotalAmount = GRNList.TotalAmount || 0;

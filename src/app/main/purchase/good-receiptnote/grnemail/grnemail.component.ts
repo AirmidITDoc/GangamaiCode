@@ -37,7 +37,8 @@ export class GrnemailComponent implements OnInit {
       this.vSubject = "we rise purchase order ";
       this.vSubject =this.registerObj.SupplierName;
       this.vBody = " we rise purchase order "
-      }
+     
+    }
   }
 
   OnSend(){

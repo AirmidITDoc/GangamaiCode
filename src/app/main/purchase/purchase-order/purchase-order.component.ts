@@ -368,12 +368,14 @@ export class PurchaseOrderComponent implements OnInit {
     });
     this.getPurchaseOrderList();
   }
+
+  
   POEmail(contact) {
     console.log(contact)
     const dialogRef = this._matDialog.open(EmailComponent,
       {
         maxWidth: "100%",
-        height: '55%',
+        height: '75%',
         width: '55%',
         data: {
           Obj:contact
@@ -453,7 +455,7 @@ export class PurchaseOrderComponent implements OnInit {
         "mobileNumber": 11,//el.RegNo,
         "smsString": "Dear" + el.PatientName + ",Your Sales Bill has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
         "isSent": 0,
-        "smsType": 'WhatsApp',
+        "smsType": 'Purchase',
         "smsFlag": 0,
         "smsDate": this.currentDate,
         "tranNo": el.PurchaseID,
