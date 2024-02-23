@@ -55,4 +55,10 @@ export class BrowseOPBillService {
   return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
 }
 
+public getDailycollectionview(FromDate,ToDate,AddedById){
+  
+  return this._httpClient.get("OutPatient/view-OPD-daily-collection?FromDate=" + FromDate+"&ToDate="+ToDate+ "&AddedById="+AddedById);
+}
+
+
 }

@@ -307,8 +307,8 @@ export class AdmissionComponent implements OnInit {
 
     if (this._ActRoute.url == '/ipd/admission') {
 
-      this.menuActions.push('Edit Admission');
-      this.menuActions.push('View Admission');
+      // this.menuActions.push('Edit Admission');
+      // this.menuActions.push('View Admission');
       // this.menuActions.push('Update MLC Information');
       this.menuActions.push('Update TPA Company Information');
       this.menuActions.push('Print Patient Card');
@@ -1527,7 +1527,7 @@ export class AdmissionComponent implements OnInit {
 
   
   getAdmittedPatientCasepaperview(row) {
-    
+    this.sIsLoading = 'loading-data';
     setTimeout(() => {
       this.SpinLoading =true;
      this.AdList=true;
@@ -1547,7 +1547,7 @@ export class AdmissionComponent implements OnInit {
 
         matDialog.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          this.sIsLoading = ' ';
         });
     });
    

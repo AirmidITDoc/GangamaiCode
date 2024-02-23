@@ -381,7 +381,34 @@ getBrowseOPDBillsList() {
   // this.onClear();
 }
 
-
+viewgetOPDDailycollectionReportPdf(){
+  this.sIsLoading == 'loading-data'
+  let start =  this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+  let end =  this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+  setTimeout(() => {
+    this.SpinLoading =true;
+  //  this.AdList=true;
+  this._BrowseOPDBillsService.getDailycollectionview(
+    start,end,0
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "95vw",
+        height: '850px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Day Wise Stock Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        this.sIsLoading = '';
+      });
+   
+  });
+ 
+  },100);
+}
 
 ngOnChanges(changes: SimpleChanges) {
 

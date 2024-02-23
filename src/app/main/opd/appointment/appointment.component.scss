@@ -17,14 +17,14 @@ app-appointment{
 }
 .mat-header-row {
     width: 100%;
-    min-width: 1800px;  
+    min-width: 1900px;  
     min-height: 30px; 
       
 }
 
 .mat-row {
     width: 100%;
-    min-width: 1800px;      
+    min-width: 1900px;      
     min-height: 30px;  
    
 }
@@ -239,6 +239,17 @@ Ta
     justify-content:left; 
     
 }
+.table-action1{
+  color: white !important;
+  width:100px;
+  max-width: 100px;
+  min-width: 100px;
+  text-align: left;
+  justify-content:left; 
+  
+}
+
+
 
 .mat-header-cell{
   
