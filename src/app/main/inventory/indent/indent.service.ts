@@ -30,7 +30,7 @@ export class IndentService {
       FromStoreId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      Status:['0'],
+      Status:['false'],
     });
   }
   createnewindentfrom() {
@@ -45,7 +45,7 @@ export class IndentService {
   }
   
   public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IndentList_by_ID",Param);
   }
 
   public getIndentList(Param){
@@ -71,5 +71,7 @@ export class IndentService {
   public InsertIndentUpdate(Param){
     return this._httpClient.post("InventoryTransaction/IndentUpdate", Param)
   }
-
+  populateForm(employee) {
+    this.newIndentFrom.patchValue(employee);
+}
 }

@@ -13,6 +13,9 @@ import Swal from 'sweetalert2';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
+import { FormControl } from '@angular/forms';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-issue-to-department',
@@ -131,7 +134,9 @@ export class IssueToDepartmentComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-
+  public ToStoreFilterCtrl: FormControl = new FormControl();
+  public filteredToStore: ReplaySubject<any> = new ReplaySubject<any>(1);
+  private _onDestroy = new Subject<void>();
   constructor(
     public _IssueToDep: IssueToDepartmentService,
     public _matDialog: MatDialog,
@@ -149,6 +154,13 @@ export class IssueToDepartmentComponent implements OnInit {
     this.gePharStoreList();
     this.getToStoreList();
     this.getPharStoreList();
+
+    this.ToStoreFilterCtrl.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.filterServicename();
+    });
+
   }
 
   toggleSidebar(name): void {
@@ -163,7 +175,7 @@ export class IssueToDepartmentComponent implements OnInit {
   getToStoreSearchList() {
     this._IssueToDep.getToStoreSearchList().subscribe(data => {
       this.ToStoreList = data;
-      this._IssueToDep.IssueSearchGroup.get('ToStoreId').setValue(this.ToStoreList[0]);
+      //this._IssueToDep.IssueSearchGroup.get('ToStoreId').setValue(this.ToStoreList[0]);
       //console.log(this.ToStoreList);
     });
   }
@@ -252,9 +264,29 @@ export class IssueToDepartmentComponent implements OnInit {
       this.getBatch();
     }
   }
+    // Service name filter
+    private filterServicename() {
+      if (!this.ToStoreList1) {
+  
+        return;
+      }
+      // get the search keyword
+      let search = this.ToStoreFilterCtrl.value;
+      if (!search) {
+        this.filteredToStore.next(this.ToStoreList1.slice());
+        return;
+      } else {
+        search = search.toLowerCase();
+      }
+      // filter the banks
+      this.filteredToStore.next(
+        this.ToStoreList1.filter(bank => bank.StoreName.toLowerCase().indexOf(search) > -1)
+      );
+    }
   getToStoreList() {
     this._IssueToDep.getToStoreSearchList().subscribe(data => {
       this.ToStoreList1 = data;
+      this.filteredToStore.next(this.ToStoreList1.slice());
       //console.log(this.ToStoreList);
     });
   }

@@ -54,7 +54,7 @@
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>To Store</mat-label>
+                                            <mat-label>From Store</mat-label>
                                             <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of FromStoreList" [value]="m">
@@ -64,7 +64,7 @@
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>From Store</mat-label>
+                                            <mat-label>To Store</mat-label>
                                             <mat-select formControlName="ToStoreId" name="ToStoreId"
                                                 (select)='getIssueToDepList()'>
                                                 <mat-option></mat-option>
@@ -371,7 +371,7 @@
 
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                     <mat-form-field appearance="outline" fxFlex="30%">
-                                        <mat-label>To Store</mat-label>
+                                        <mat-label>From Store</mat-label>
                                         <mat-select formControlName="FromStoreId" name="FromStoreId">
                                             <mat-option></mat-option>
                                             <mat-option *ngFor="let m of FromStoreList1" [value]="m">
@@ -381,7 +381,7 @@
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="30%">
-                                        <mat-label>From Store</mat-label>
+                                        <mat-label>To Store</mat-label>
                                         <mat-select formControlName="ToStoreId" name="ToStoreId" required>
                                             <mat-option></mat-option>
                                             <mat-option *ngFor="let m of ToStoreList1" [value]="m">

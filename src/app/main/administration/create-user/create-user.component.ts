@@ -187,9 +187,9 @@ export class CreateUserComponent implements OnInit {
   addUserDetails() {
     const dialogRef = this._matDialog.open(UserDetailComponent,
       {
-        maxWidth: "75vw",
+        maxWidth: "85vw",
         // maxHeight: "95vh", 
-        height: "600px",
+        height: "650px",
         width: '100%',
         // height: "100%"
       });

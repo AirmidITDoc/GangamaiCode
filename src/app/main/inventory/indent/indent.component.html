@@ -1,4 +1,4 @@
-<mat-tab-group style="width: 100%;">
+<mat-tab-group style="width: 100%;" #tabGroup>
 
     <mat-tab label="Indent List">
         <div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" style="height: 100%;"
@@ -63,12 +63,27 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>To Store</mat-label>
                                             <mat-select formControlName="ToStoreId" name="ToStoreId">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of ToStoreList" [value]="m">
                                                     {{m.StoreName}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="outline" fxFlex="30%">
+                                            <mat-label>To Store</mat-label>
+                                            <mat-select formControlName="ToStoreId" placeholder="Select Store"
+                                             #singleSelect required>
+                                                <mat-option>
+                                                    <ngx-mat-select-search [formControl]="ToStoreFilterCtrl"
+                                                        [placeholderLabel]="'Search'"></ngx-mat-select-search>
+                                                </mat-option>
+                                                <mat-option *ngFor="let element of filteredToStore | async"
+                                                    [value]="element">
+                                                    {{element.StoreName}}
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>
@@ -86,8 +101,7 @@
                                                 <mat-icon class="cleariconbutton">close</mat-icon>
                                             </button>&nbsp;
                                             <button mat-raised-button class="searchButton" (click)="getIndentID()"
-                                                matTooltip="search"
-                                                [disabled]="_IndentService.IndentSearchGroup.invalid">
+                                                matTooltip="search" >
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>
                                         </div>
@@ -131,7 +145,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Indent Date </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.IndentDate}}
+                                                    {{contact.IndentDate | date:'dd/MM/YYYY'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -176,6 +190,10 @@
                                                     style="color: white;">Action
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row">
+                                                    <button mat-icon-button (click)="OnEdit(row,tabGroup)"
+                                                    matTooltip="Edit">
+                                                    <mat-icon style="color: black;">edit</mat-icon>
+                                                </button>
                                                     <button mat-icon-button (click)="getPrint(contact)"
                                                         matTooltip="Print">
                                                         <mat-icon style="color: black;">print</mat-icon>
@@ -226,7 +244,7 @@
                                                     <div class="spinner-border text-danger"></div>
                                                 </div>
                                                 <!-- sppinner -->
-                                                <mat-table #table class="table1" matSort
+                                                <mat-table #table class="table2" matSort
                                                     [dataSource]="dsIndentDetailsSearchList"
                                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
                                                     <ng-container matColumnDef="ItemName">
@@ -342,12 +360,27 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="30%">
+                                        <!-- <mat-form-field appearance="outline" fxFlex="30%">
                                             <mat-label>To Store</mat-label>
                                             <mat-select formControlName="ToStoreId" name="ToStoreId" required>
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of ToStoreList" [value]="m">
                                                     {{m.StoreName}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="outline" fxFlex="30%">
+                                            <mat-label>To Store</mat-label>
+                                            <mat-select formControlName="ToStoreId" placeholder="Select Store"  
+                                             #singleSelect required>
+                                                <mat-option>
+                                                    <ngx-mat-select-search [formControl]="ToStoreFilterCtrl"
+                                                        [placeholderLabel]="'Search'"></ngx-mat-select-search>
+                                                </mat-option>
+                                                <mat-option *ngFor="let element of filteredToStore | async"
+                                                    [value]="element">
+                                                    {{element.StoreName}}
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>
@@ -388,7 +421,8 @@
                                         <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>Qty</mat-label>
                                             <input name="Qty" formControlName="Qty" matInput [(ngModel)]="vQty"
-                                                (keydown)="onEnterqty($event)" required #qty>
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
+                                                (keydown)="onEnterqty($event)" required #qty type="number">
                                         </mat-form-field>&nbsp;&nbsp;
 
                                         <div matTooltip="Select All Value to enable this button!!">
