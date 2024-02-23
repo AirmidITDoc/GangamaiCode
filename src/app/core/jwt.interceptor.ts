@@ -44,9 +44,9 @@ export class JwtInterceptor implements HttpInterceptor {
 
 
         
-        //    request = request.clone({ url: this.config.apiEndpoint +`/${request.url}` });
+           request = request.clone({ url: this.config.apiEndpoint +`/${request.url}` });
                             // Local Link
-     request = request.clone({ url: `http://localhost:63750/api/${request.url}` });
+    //  request = request.clone({ url: `http://localhost:63750/api/${request.url}` });
 
    
    
