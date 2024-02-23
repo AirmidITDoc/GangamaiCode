@@ -49,7 +49,6 @@
                         <div class="nav material2">
                             <form [formGroup]="_AppointmentSreviceService.myFilterform">
                                 <div fxLayout="column" fxLayoutAlign="start none">
-
                                     <mat-form-field appearance="outline">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
@@ -69,6 +68,12 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>First Name</mat-label>
                                         <input name="FirstName" formControlName="FirstName" matInput
+                                            (keyup)="getVisitList()">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Last Name</mat-label>
+                                        <input name="LastName" formControlName="LastName" matInput
                                             (keyup)="getVisitList()">
                                     </mat-form-field>
 
@@ -95,8 +100,8 @@
                       IsDischarge</mat-slide-toggle> -->
 
                                     <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-                                        <button mat-raised-button (click)="getVisitList()" class="facility-search"
-                                            matTooltip="search">
+                                        <button mat-raised-button (click)="getVisitList()"
+                                            class="facility-search accent" matTooltip="search">
                                             <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
                                             Search
                                         </button>
@@ -125,13 +130,12 @@
                                 <div fxFlex.gt-sm="100%" fxFlex>
                                     <div fxlayout="row">
                                         <div style="width: 100%;">
-                                            <div style="margin-bottom: 0px;">
-                                                <!-- <button mat-raised-button (click)="exportReportExcel()"
-                                                  style="background-color: #8e67e0;color: white; margin-right: 15px;">Export Table(Excel)
-                                                </button>
-                                                <button mat-raised-button (click)="exportReportPdf()"
-                                                  style="background-color: #8e67e0;color: white;">Export Table(PDF)
-                                                </button> -->
+                                            <div class="table-spinner">
+                                                <div matColumnDef="loading"
+                                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                                    class="backgroundBlur" style="height: 100%;">
+                                                    <div class="spinner-border text-danger"></div>
+                                                </div>
                                             </div>
                                             <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                                 class="appointment-table" id="app-table"
@@ -145,36 +149,42 @@
                                                         <div class="patient-column gap-12" fxLayout="row">
                                                             <div class="patient-old-new" fxLayout="row"
                                                                 fxLayoutAlign="center">
-                                                                <mat-icon style="border-radius:100% ;"
-                                                                    *ngIf="contact.PatientOldNew=='2' || contact.PatientOldNew=='2'"
-                                                                    matTooltip="PatientNew"
-                                                                    class="green-600 s-16">circle</mat-icon>
-                                                                <mat-icon style="border-radius:100% ;"
-                                                                    *ngIf="contact.PatientOldNew=='1' "
-                                                                    matTooltip="PatientOld"
-                                                                    class=" orange-600 s-16">circle
-                                                                </mat-icon>
+                                                                <div class="pill-icon">
+                                                                    <mat-icon style="border-radius:100% ;"
+                                                                        *ngIf="contact.PatientOldNew=='2' || contact.PatientOldNew=='2'"
+                                                                        matTooltip="PatientNew"
+                                                                        class="green-600 s-16">circle</mat-icon>
+                                                                    <mat-icon style="border-radius:100% ;"
+                                                                        *ngIf="contact.PatientOldNew=='1' "
+                                                                        matTooltip="PatientOld"
+                                                                        class=" orange-600 s-16">circle
+                                                                    </mat-icon>
+                                                                </div>
                                                             </div>
                                                             <div class="mp-bill-no" fxLayout="row"
                                                                 fxLayoutAlign="center">
-                                                                <mat-icon style=" border-radius:100% ;"
-                                                                    *ngIf="contact.MPbillNo=='1'|| contact.MPbillNo=='2' "
-                                                                    matTooltip="Bill Generated"
-                                                                    class=" red-600 s-16">circle</mat-icon>
-                                                                <mat-icon
-                                                                    style=" border: black 1px solid; border-radius:100% ;"
-                                                                    *ngIf="contact.MPbillNo=='0' "
-                                                                    matTooltip="Did not Generated Bill"
-                                                                    class=" white-600 s-16">
-                                                                    circle</mat-icon>
+                                                                <div class="pill-icon">
+                                                                    <mat-icon style=" border-radius:100% ;"
+                                                                        *ngIf="contact.MPbillNo=='1'|| contact.MPbillNo=='2' "
+                                                                        matTooltip="Bill Generated"
+                                                                        class=" red-600 s-16">circle</mat-icon>
+                                                                    <mat-icon
+                                                                        style=" border: black 1px solid; border-radius:100% ;"
+                                                                        *ngIf="contact.MPbillNo=='0' "
+                                                                        matTooltip="Did not Generated Bill"
+                                                                        class=" white-600 s-16">
+                                                                        circle</mat-icon>
+                                                                </div>
                                                             </div>
                                                             <div class="phone-app" fxLayout="row"
                                                                 fxLayoutAlign="center">
-                                                                <mat-icon style="border-radius:100% ;"
-                                                                    *ngIf="contact.PhoneAppId !==null"
-                                                                    matTooltip="Phone Appointment"
-                                                                    class=" cyan-600 s-16">circle
-                                                                </mat-icon>
+                                                                <div class="pill-icon">
+                                                                    <mat-icon style="border-radius:100% ;"
+                                                                        *ngIf="contact.PhoneAppId !==null"
+                                                                        matTooltip="Phone Appointment"
+                                                                        class=" cyan-600 s-16">circle
+                                                                    </mat-icon>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </mat-cell>
@@ -350,17 +360,17 @@
                                                         <span class="mat-header-text">Action</span>
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let row" class="w-150">
-                                                        <button mat-icon-button matTooltip="how_to_reg"
+                                                        <button *ngIf="false" mat-icon-button matTooltip="how_to_reg"
                                                             (click)="getRecord(row,m)">
                                                             <mat-icon>how_to_reg</mat-icon>
                                                         </button>
-                                                        <button mat-icon-button matTooltip="print"
-                                                            (click)="getPrint(row,m)">
-                                                            <mat-icon>print</mat-icon>
-                                                        </button>
-                                                        <button mat-icon-button matTooltip="Edit"
+                                                        <button *ngIf="false" mat-icon-button matTooltip="Edit"
                                                             (click)="Billpayment(row)">
                                                             <mat-icon>edit</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button matTooltip="print"
+                                                            (click)="viewgetPatientAppointmentReportPdf(row,m)">
+                                                            <mat-icon>print</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="Bill"
                                                             (click)="Billpayment(row)">
@@ -425,32 +435,23 @@
             <ng-template mat-tab-label>
                 New Appointment
             </ng-template>
-            <!-- <mat-drawer-container class="example-container"> -->
-            <!-- <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true" style="width:17%;font-size:18px;"> -->
-
-            <!-- <mat-card-content style="width: 100%" fusePerfectScrollbar> -->
-            <div fxLayout="column">
+            <div fxLayout="column" class="new-appointment-section">
                 <div fxLayout="row" style="width: 100%;">
                     <div fxFlex fxFlex.gt-sm fxLayout="row" fxLayout.gt-xs="column" style="overflow: auto ;"
                         fusePerfectScrollbar class="newappointment-body">
                         <form [formGroup]="searchFormGroup">
-                            <!-- <span class="material-icons" (click)="drawer1.toggle()"
-              style="cursor: pointer;color: #6b6565;">
-              notifications_none -->
-                            <!-- </span> -->
-                            <div fxLayout="row" fxLayoutAlign="space-between" class="appointment-header">
+                            <div fxLayout="row" fxLayoutAlign="space-between center" class="appointment-header">
                                 <div class="redio-container">
                                     <mat-radio-group aria-label="Select an option" formControlName="regRadio"
                                         name="regRadio" (change)="onChangeReg($event)">
-                                        <mat-radio-button value="registration" style="margin-top: 10px;">New
+                                        <mat-radio-button value="registration">New
                                             Registration
                                         </mat-radio-button>
                                         <mat-radio-button value="registrered">Registered</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
                                 <div fxLayout="row" fxLayoutGap="18px" fxLayoutAlign="center center">
-                                    <mat-form-field class=searchRegId appearance="outline"
-                                        style="width:600px !important;margin-left:20px;" *ngIf="Regflag">
+                                    <mat-form-field class=searchRegId appearance="outline" fxflex="30" *ngIf="Regflag">
                                         <input type="text" name="RegId" formControlName="RegId"
                                             placeholder="Patient Name (enter 2 char) " matInput [matAutocomplete]="auto"
                                             (input)="getSearchList()" maxlength="10">
@@ -470,11 +471,10 @@
                                             </mat-option>
                                         </mat-autocomplete>
                                         <!-- <mat-error *ngIf="searchFormGroup.get('ItemId').hasError('required')">
-                      Required field cannot be left blank
-                    </mat-error> -->
+                                                                Required field cannot be left blank
+                                                              </mat-error> -->
                                     </mat-form-field>
-                                    <!-- -->
-                                    <mat-form-field appearance="outline" *ngIf="isRegSearchDisabled">
+                                    <mat-form-field appearance="outline" fxflex="30">
                                         <mat-label>Phone Appointment : First Name / Last Name / Mobile No </mat-label>
                                         <input type="text" name="RegId" formControlName="RegId" matInput
                                             [matAutocomplete]="auto" (input)="getPhoneAppointmentList()">
@@ -497,72 +497,20 @@
                                             Required field cannot be left blank
                                         </mat-error>
                                     </mat-form-field>
+                                    <form [formGroup]="VisitFormGroup">
+                                        <mat-form-field appearance="outline" fxflex="30">
+                                            <mat-label>Unit Name </mat-label>
+                                            <mat-select formControlName="HospitalId" required #hname
+                                                (keydown)="onEnterhname($event)">
+                                                <mat-option *ngFor="let Doc of HospitalList1" [value]="Doc">
+                                                    {{Doc.HospitalName}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </form>
                                 </div>
                             </div>
                         </form>
-                        <!-- //visit Details -->
-                        <!-- <div class="personal-panel" *ngIf="VisitFlagDisp">
-              <mat-accordion multi>
-                <mat-expansion-panel>
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      Visit Information
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <div>
-                    <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"
-                        style="overflow:auto;margin-top: 10px;height: 100px !important;" class="mat-elevation-z8 sale-table">
-                
-                        <ng-container matColumnDef="VisitId">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                VisitId </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                {{element.VisitId}} </mat-cell>
-                        </ng-container>
-                
-                        <ng-container matColumnDef="VisitTime" style="background-color: rgb(157, 164, 164);">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                VisitDate
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                {{element.VisitTime | date:'shortDate'}}
-                            </mat-cell>
-                        </ng-container>
-                
-                        <ng-container matColumnDef="DocName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                DoctorName </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                {{element.DocName }} </mat-cell>
-                        </ng-container>
-                
-                        <ng-container matColumnDef="loading">
-                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                loading data...
-                            </mat-footer-cell>
-                        </ng-container>
-                
-                        <ng-container matColumnDef="noData">
-                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                no data found...
-                            </mat-footer-cell>
-                        </ng-container>
-                
-                        <mat-header-row class="accent" *matHeaderRowDef="tableColumns; sticky: true">
-                        </mat-header-row>
-                        <mat-row *matRowDef="let row; columns: tableColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
-                            (click)="getVisitRecord(row)"></mat-row>
-                
-                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
-                        </mat-footer-row>
-                        <mat-footer-row *matFooterRowDef="['noData']"
-                            [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
-                        </mat-footer-row>
-                    </mat-table>
-                </div>
-                </mat-expansion-panel>
-              </mat-accordion>
-            </div> -->
                         <div class="personal-panel">
                             <mat-accordion multi>
                                 <mat-expansion-panel expanded>
@@ -571,14 +519,14 @@
                                             Personal Information :
                                             <span style="font-size: large;color: rgb(6, 106, 124);margin-left: 800px;">
                                                 {{RegOrPhoneflag}} <mat-icon style="margin-left:10px;"
-                                                    *ngIf="vPhoneFlage">settings_phone</mat-icon></span>
-
+                                                    *ngIf="vPhoneFlage">settings_phone</mat-icon>
+                                            </span>
                                         </mat-panel-title>
                                     </mat-expansion-panel-header>
                                     <form [formGroup]="personalFormGroup">
-                                        <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="18px grid">
+                                        <div fxFlex="100" fxLayout="row wrap">
                                             <form [formGroup]="personalFormGroup">
-                                                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="18px grid">
+                                                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
                                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
                                                         fxFlex.sm="33%">
                                                         <mat-label>Prefix</mat-label>
@@ -697,9 +645,6 @@
                                                         <mat-datepicker #picker1></mat-datepicker>
                                                     </mat-form-field>
 
-
-
-
                                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
                                                         fxFlex.sm="33%">
                                                         <mat-label>Age (Y)</mat-label>
@@ -714,7 +659,6 @@
                                                             *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
                                                             enter Age Year </mat-error>
                                                     </mat-form-field>
-
 
                                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
                                                         fxFlex.sm="33%">
@@ -757,11 +701,6 @@
                                                             digits Pan Card No is required</mat-error>
                                                     </mat-form-field>
 
-
-                                                    <!-- </div> -->
-
-                                                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                          style="padding-bottom: 10px;"> -->
                                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
                                                         fxFlex.sm="33%">
                                                         <mat-label>Address</mat-label>
@@ -773,7 +712,6 @@
                                                             *ngIf="personalFormGroup.get('Address').invalid && personalFormGroup.get('Address').touched">Please
                                                             enter Address </mat-error>
                                                     </mat-form-field>
-
 
                                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
                                                         fxFlex.sm="33%">
@@ -798,7 +736,6 @@
                                                         </mat-autocomplete>
                                                     </mat-form-field>
 
-
                                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
                                                         fxFlex.sm="33%">
                                                         <mat-label>City</mat-label>
@@ -822,9 +759,6 @@
                                                             </mat-option>
                                                         </mat-autocomplete>
                                                     </mat-form-field>
-
-
-
 
                                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
                                                         fxFlex.sm="33%">
@@ -899,8 +833,6 @@
                                                         </mat-autocomplete>
                                                     </mat-form-field>
 
-
-
                                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
                                                         fxFlex.sm="33%">
                                                         <mat-label>Religion Name</mat-label>
@@ -924,8 +856,6 @@
                                                             </mat-option>
                                                         </mat-autocomplete>
                                                     </mat-form-field>
-
-
                                                     <!-- </div> -->
                                                 </div>
                                             </form>
@@ -940,8 +870,7 @@
                                         </mat-panel-title>
                                     </mat-expansion-panel-header>
                                     <form [formGroup]="VisitFormGroup">
-
-                                        <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="18px grid">
+                                        <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
 
                                             <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
                                                 fxFlex.sm="33%">
@@ -1045,7 +974,6 @@
                                                 </mat-autocomplete>
                                             </mat-form-field>&nbsp;
 
-
                                             <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
                                                 fxFlex.sm="33%">
                                                 <mat-label>Doctor Name</mat-label>
@@ -1070,7 +998,6 @@
                                                     </mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
-
 
                                             <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
                                                 fxFlex.sm="33%">
@@ -1118,24 +1045,17 @@
                                     </form>
                                 </mat-expansion-panel>
                             </mat-accordion>
-                            <div style="float: right;">
+                            <div class="new-appointment-actions gap-8" fxLayout="row" fxLayoutAlign="end center">
                                 <!-- (click)="nextClicked(VisitFormGroup)" -->
-                                <button class="next-btn" color="accent" (click)="OnSaveAppointmentwithoutphoto()"
-                                    [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid"
-                                    style="border-radius: 16px;">
-                                    <span style="display: flex;justify-content: center;">
-                                        <span style="margin-left: 6px;">Save</span>
-                                    </span>
+                                <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+                                <button class="btn btn-primary " color="accent" (click)="OnSaveAppointmentwithoutphoto()"
+                                    [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid">
+                                    <span>Save</span>
                                 </button>
-                                <button class="footer-btn" (click)="onClose()">Reset</button>
-                                &nbsp;
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- </mat-card-content> -->
-                <!-- </mat-drawer> -->
-                <!-- </mat-drawer-container> -->
             </div>
         </mat-tab>
 

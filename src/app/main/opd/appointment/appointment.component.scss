@@ -32,6 +32,9 @@ app-appointment {
 .active-icon {
     border-radius: 50%;
 }
+.mat-form-field-wrapper {
+    padding-bottom: 15px;
+}
 
 //Document upload
 .upload-container {
@@ -92,12 +95,22 @@ app-appointment {
     justify-content: space-between;
     // width:150px;
 }
+// By nikunj
 .appointment-table {
     .table1-header-row,
     .table1-row {
         min-width: 1500px;
         @include media-breakpoint("lt-lg") {
             min-width: 500px;
+        }
+    }
+    .patient-column {
+        .pill-icon {
+            height: 16px;
+            width: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 }

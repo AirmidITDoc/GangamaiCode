@@ -9,9 +9,13 @@
                 width: 100%;
             }
         }
+        .content-card{
+            position: relative;
+        }
     }
     .opd-header{
         height: auto;
+        min-height: 50px;
         display: flex;
         justify-content: space-between;
         align-items: center;

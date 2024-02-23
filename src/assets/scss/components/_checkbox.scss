@@ -90,3 +90,36 @@
 //     transform: scale(0.9);
 //   }
 // }
+// Default checkbox color
+.mat-typography {
+    @include themed() {
+        .mat-checkbox {
+            &.mat-checkbox-indeterminate.mat-accent {
+                .mat-checkbox-background {
+                    background-color: $primary-600;
+                }
+            }
+            &.mat-checkbox-checked.mat-accent {
+                .mat-checkbox-background {
+                    background-color: $primary-600;
+                }
+            }
+            &.mat-checkbox-checked {
+                &:not(.mat-checkbox-disabled).mat-accent {
+                    .mat-ripple-element {
+                        background: $primary-600;
+                    }
+                }
+            }
+            &:active {
+                &:not(.mat-checkbox-disabled).mat-accent {
+                    .mat-ripple-element {
+                        background: $primary-600;
+                    }
+                }
+            }
+        }
+
+        // Styles for the checkbox container
+    }
+}
