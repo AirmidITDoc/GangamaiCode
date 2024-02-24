@@ -72,10 +72,11 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
         </mat-footer-cell>
     </ng-container>
     <!-- [ngClass]="row.BatchExpDate > minDate ? 'make-green' : 'cyan'" -->
+    <!-- [ngClass]="(minDate - row.BatchExpDate) >= 1 ? 'pink' : 'cyan'"  -->
     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"
    ></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
-    [ngClass]="(minDate - row.BatchExpDate) >= 1 ? 'pink' : 'cyan'" 
+    
         (click)="selectedRow('', row)"
         tabindex="999"
         (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)"
