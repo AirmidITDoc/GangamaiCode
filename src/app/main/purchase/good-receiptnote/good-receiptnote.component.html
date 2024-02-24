@@ -134,10 +134,10 @@
                                 <div fxlayout="row" style="padding-bottom: 10px;">
                                     <div style="width: 100%;">
                                         <div matColumnDef="loading"
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                        class="backgroundBlur"  style="height: 100%;">
-                                        <div class="spinner-border text-danger"></div>
-                                    </div>
+                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur"
+                                            style="height: 100%;">
+                                            <div class="spinner-border text-danger"></div>
+                                        </div>
                                         <mat-table #table matSort class="table1" [dataSource]="dsGRNList"
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
 
@@ -283,8 +283,13 @@
                                                     style="color: white;">Action
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row">
-                                                    <button mat-icon-button matTooltip="print" (click)="viewgetCurrentstockReportPdf(row)">
+                                                    <button mat-icon-button matTooltip="print"
+                                                        (click)="viewgetCurrentstockReportPdf(row)">
                                                         <mat-icon>print</mat-icon>
+                                                    </button>
+                                                    <button mat-icon-button matTooltip="print QR Code"
+                                                        (click)="openQrCodePrintDialog(row)">
+                                                        <mat-icon>qr_code</mat-icon>
                                                     </button>
                                                     <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit">
                                                         <mat-icon title="Edit Menu" *ngIf="row.IsVerified==1"
@@ -307,10 +312,10 @@
                                                             title="Email Menu">mail</mat-icon>
                                                     </button>
                                                     <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                                    (click)="getWhatsappshareSales(row)">
-                                                    <img width="100" height="20px"
-                                                        src="assets/images/logos/WhatsApp.png">
-                                            </button> 
+                                                        (click)="getWhatsappshareSales(row)">
+                                                        <img width="100" height="20px"
+                                                            src="assets/images/logos/WhatsApp.png">
+                                                    </button>
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="loading">
@@ -839,7 +844,8 @@
             <td colspan="3" style="border: 1px solid gray;vertical-align: top;
             padding: 15px;text-align: left;"> Grand Total Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-            padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.GrandTotalAount | currency:'INR':'symbol-narrow':'0.2'}}</td>
+            padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.GrandTotalAount |
+                currency:'INR':'symbol-narrow':'0.2'}}</td>
         </tr>
         <tr>
             <td colspan="7" style="border: 1px solid gray;vertical-align: top;
@@ -848,7 +854,8 @@
             <td colspan="3" style="border: 1px solid gray;vertical-align: top;
              padding: 15px;text-align: left;"> Discount Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.TotalDiscAmount | currency:'INR':'symbol-narrow':'0.2'}}
+             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.TotalDiscAmount |
+                currency:'INR':'symbol-narrow':'0.2'}}
             </td>
         </tr>
         <tr>
@@ -879,7 +886,8 @@
             <td colspan="3" style="border: 1px solid gray;vertical-align: top;
              padding: 15px;text-align: left;"> GST Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
-             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.TotalVATAmount | currency:'INR':'symbol-narrow':'0.2'}}</td>
+             padding: 15px;height: 20px;text-align: right;">{{reportPrintObjList[0]?.TotalVATAmount |
+                currency:'INR':'symbol-narrow':'0.2'}}</td>
         </tr>
 
         <tr>
@@ -897,10 +905,11 @@
 
     <div style="display: flex;">
         <div>
-            <span style="font-weight: 500;margin-left: 51px;">{{reportPrintObjList[0]?.AddedByName | uppercase}}</span><br>
+            <span style="font-weight: 500;margin-left: 51px;">{{reportPrintObjList[0]?.AddedByName |
+                uppercase}}</span><br>
             <span style="font-weight: 500;margin-left: 42px;"> Added By</span>
         </div>
-        
+
         <span style="margin-left: 670px; font-weight: 500;">Authorized Signature</span>
     </div><br>
 
