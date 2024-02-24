@@ -100,14 +100,18 @@ export class GoodReceiptnoteComponent implements OnInit {
     "ConversionFactor",
     "ReceiveQty",
     "FreeQty",
-    "TotalQty",
     "MRP",
     "Rate",
-    //"TotalAmount",
+    "TotalAmount",
     "VatPercentage",
     "DiscPercentage",
-    //"LandedRate",
+    "LandedRate",
     "NetAmount",
+    "TotalQty",
+    "stockid",
+    "IsVerified",
+    "IsVerifiedDatetime",
+    "IsVerifiedUserId"
 
   ];
 
@@ -123,7 +127,8 @@ export class GoodReceiptnoteComponent implements OnInit {
   ]
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+ // @ViewChild(MatPaginator) paginator: MatPaginator;
   filteredOptions: any;
   noOptionFound: boolean;
   ItemName: any;
@@ -537,7 +542,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       this.dsGrnItemList.sort = this.sort;
       this.dsGrnItemList.paginator = this.paginator;
       this.sIsLoading = '';
-      //console.log(this.dsGrnItemList.data)
+     // console.log(this.dsGrnItemList.data)
     },
       error => {
         this.sIsLoading = '';
@@ -1240,9 +1245,19 @@ export class GoodReceiptnoteComponent implements OnInit {
     this.IsLoading = false;
     el.button.disable = false;
   }
-
-  onScroll() {
-  }
+  deleteRow(row) {
+    // debugger
+    // const index = this.dsGRNList.data.indexOf(row);
+    // if (index >= 0) {
+    //   this.dsGRNList.data.splice(index, 1);
+    //   // this.grntablelist.data = [];
+    //   // this.grntablelist = this.dsItemNameList.data;
+    // }
+    // this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+    //   toastClass: 'tostr-tost custom-toast-success',
+    // });
+    // this.getGRNList();
+}
 }
 
 export class GRNList {

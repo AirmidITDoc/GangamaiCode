@@ -448,7 +448,14 @@ export class UpdatePurchaseorderComponent implements OnInit {
     }
   }
   OnSaveEdit() {
-    debugger
+    if ((!this.dsItemNameList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this._PurchaseOrder.FinalPurchaseform.valid){
+    // debugger
     let updatePurchaseOrderHeaderObj = {};
     updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date;
     updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
@@ -535,9 +542,16 @@ export class UpdatePurchaseorderComponent implements OnInit {
       });
     });
   }
+  }
 
   OnSavenew() {
-
+    if ((!this.dsItemNameList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this._PurchaseOrder.FinalPurchaseform.valid){
     let purchaseHeaderInsertObj = {};
     purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
     purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
@@ -616,6 +630,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
+  }
   }
   editedFinalQty: any = 0;
   editedFinalRate: any = 0;
