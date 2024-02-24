@@ -193,19 +193,19 @@ export class IssueToDepartmentComponent implements OnInit {
   getIssueToDepList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "FromStoreId": this._IssueToDep.IssueSearchGroup.get('ToStoreId').value.StoreId,
-      "ToStoreId": this._loggedService.currentUserValue.user.storeId || 1,
+      "FromStoreId": this._loggedService.currentUserValue.user.storeId,
+      "ToStoreId": this._IssueToDep.IssueSearchGroup.get('ToStoreId').value.StoreId || 0,
       "From_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "IsVerify": 0,
     }
-    //console.log(vdata)
+    console.log(vdata)
     this._IssueToDep.getIssueToDepList(vdata).subscribe(data => {
       this.dsIssueToDep.data = data as IssueToDep[];
       this.dsIssueToDep.sort = this.sort;
       this.dsIssueToDep.paginator = this.paginator;
       this.sIsLoading = '';
-      // console.log(this.dsIssueToDep.data);
+      console.log(this.dsIssueToDep.data);
     },
       error => {
         this.sIsLoading = '';
@@ -248,8 +248,14 @@ export class IssueToDepartmentComponent implements OnInit {
     });
 
   }
+  // getOptionItemText(option) {
+  //   this.vItemID = option.ItemId;
+  //   if (!option) return '';
+  //   return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
+  // }
+  ItemID:any;
   getOptionItemText(option) {
-    this.vItemID = option.ItemID;
+    this.ItemID = option.ItemId;
     if (!option) return '';
     return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
@@ -258,7 +264,7 @@ export class IssueToDepartmentComponent implements OnInit {
     // console.log(obj);
     // this.registerObj = obj;
     this.ItemName = obj.ItemName;
-    this.ItemId = obj.ItemId;
+    this.ItemID = obj.ItemId;
     this.BalanceQty = obj.BalanceQty;
     if (this.BalanceQty > 0) {
       this.getBatch();
