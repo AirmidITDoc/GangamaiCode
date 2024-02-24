@@ -38,6 +38,11 @@ import { GoodReceiptnoteComponent } from '../good-receiptnote/good-receiptnote.c
 import { UpdateGRNComponent } from './update-grn/update-grn.component';
 import { PurchaseorderComponent } from './update-grn/purchaseorder/purchaseorder.component';
 import { GrnemailComponent } from './grnemail/grnemail.component';
+import { QrcodegeneratorComponent } from './qrcodegenerator/qrcodegenerator.component';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import {NgxPrintModule} from 'ngx-print';
+
+
 const routes: Routes = [
   { 
       path: '**', 
@@ -51,7 +56,7 @@ const routes: Routes = [
     UpdateGRNComponent,
     PurchaseorderComponent,
     GrnemailComponent,
-  
+    QrcodegeneratorComponent
   ],
   imports: [
     CommonModule,
@@ -93,8 +98,9 @@ const routes: Routes = [
     MatSelectModule,
     MatChipsModule,
     // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule
-        
+    MatTooltipModule,
+    NgxQRCodeModule,
+    NgxPrintModule
   ],
   providers: [
     

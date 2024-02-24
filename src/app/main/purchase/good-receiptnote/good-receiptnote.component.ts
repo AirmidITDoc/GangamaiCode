@@ -21,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import { GrnemailComponent } from './grnemail/grnemail.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { EmailComponent } from '../purchase-order/email/email.component';
+import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrcodegenerator/qrcodegenerator.component';
 
 @Component({
   selector: 'app-good-receiptnote',
@@ -63,7 +64,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   IGSTFinalAmount: any;
   TotalFinalAmount: any;
   chkNewGRN: any;
-  SpinLoading:boolean=false;
+  SpinLoading: boolean = false;
   dsGRNList = new MatTableDataSource<GRNList>();
 
   dsGrnItemList = new MatTableDataSource<GrnItemList>();
@@ -121,7 +122,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     'MRP',
     'Rate',
     'discpercentage',
-   // 'DiscAmount',
+    // 'DiscAmount',
     'VatPercentage'
   ]
 
@@ -180,9 +181,9 @@ export class GoodReceiptnoteComponent implements OnInit {
     private accountService: AuthenticationService,
 
   ) { }
-   
+
   ngOnInit(): void {
- 
+
     // this.OnReset();
     this.getToStoreSearchList();
     // this.getSupplierSearchList();
@@ -469,7 +470,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
 
   getGRNItemList() {
-   // debugger
+    // debugger
     var m_data = {
       "ItemName": `${this._GRNService.userFormGroup.get('ItemName').value}%`,
       "StoreId": this._GRNService.GRNStoreForm.get('StoreId').value.storeid || 0
@@ -616,33 +617,28 @@ export class GoodReceiptnoteComponent implements OnInit {
   TotalRate: any = 0;
   TotalNetAmt: any = 0;
   TotalDiscPer: any = 0;
-  TotalCGSTPer:any = 0;
-  TotalSGSTPer :any =0;
+  TotalCGSTPer: any = 0;
+  TotalSGSTPer: any = 0;
   TotalGSTAmt: any = 0;
-  TotalCGSTAmt:any = 0;
-  TotalSGSTAmt :any =0;
-  TotalNetAmount:any=0;
-  TotalOtherCharge:any=0;
-  finalamt:any=0;
-  
-   
-  viewgetCurrentstockReportPdf(row) {
-  
+  TotalCGSTAmt: any = 0;
+  TotalSGSTAmt: any = 0;
+  TotalNetAmount: any = 0;
+  TotalOtherCharge: any = 0;
+  finalamt: any = 0;
+  openQrCodePrintDialog(row) {
+
     setTimeout(() => {
-      this.SpinLoading =true;
-   this._GRNService.getGRNreportview(
-    row.GRNID
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "GRN REPORT Viewer"
-          }
-        });
+      this.SpinLoading = true;
+      this._GRNService.getGRNreportview(
+        row.GRNID
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(QrcodegeneratorComponent,
+          {
+            data: {
+              base64: res["base64"] as string,
+              title: "GRN REPORT Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
           // this.AdList=false;
           this.SpinLoading = false;
@@ -651,16 +647,46 @@ export class GoodReceiptnoteComponent implements OnInit {
           // this.AdList=false;
           this.SpinLoading = false;
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
+  }
+
+  viewgetCurrentstockReportPdf(row) {
+
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._GRNService.getGRNreportview(
+        row.GRNID
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "GRN REPORT Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
   }
 
   getPrint(el) {
     var m_data = {
       "GRNID": el.GRNID
     }
-     //console.log(m_data);
+    //console.log(m_data);
     this._GRNService.getPrintGRNList(m_data).subscribe(data => {
       this.reportPrintObjList = data as GRNList[];
       // const toword =require('num-words')
@@ -668,7 +694,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       setTimeout(() => {
         this.print3();
       }, 1000);
-      
+
     })
 
   }
@@ -710,7 +736,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     popupWin.document.close();
   }
   LastThreeItemList(contact) {
-   // console.log(contact);
+    // console.log(contact);
     var vdata = {
       'ItemId': contact.ItemId,
     }
@@ -730,7 +756,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   OnSavenew() {
-   // debugger
+    // debugger
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1072,7 +1098,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       this.getGRNList();
     });
     this.getGRNList();
-  }  
+  }
   GRNEmail(contact) {
     console.log(contact)
     const dialogRef = this._matDialog.open(EmailComponent,
@@ -1081,7 +1107,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         height: '75%',
         width: '55%',
         data: {
-          Obj:contact
+          Obj: contact
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -1194,7 +1220,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         "smsFlag": 0,
         "smsDate": this.currentDate,
         "tranNo": el.GRNID,
-        "PatientType":2,//el.PatientType,
+        "PatientType": 2,//el.PatientType,
         "templateId": 0,
         "smSurl": "info@gmail.com",
         "filePath": this.Filepath || '',
@@ -1237,7 +1263,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 export class GRNList {
   GrnNumber: number;
   GRNDate: number;
-  GRNTime:any;
+  GRNTime: any;
   InvoiceNo: number;
   SupplierName: string;
   TotalAmount: any;
@@ -1252,26 +1278,26 @@ export class GRNList {
   ReceivedBy: any;
   IsClosed: any;
   GSTNo: any;
-  Remark:any;
-  Mobile:any;
-  Address:any;
-  Email:any;
-  Phone:any;
-  PONo:any;
+  Remark: any;
+  Mobile: any;
+  Address: any;
+  Email: any;
+  Phone: any;
+  PONo: any;
   EwayBillNo: any;
   EwayBillDate: Date;
-  OtherCharge:any;
+  OtherCharge: any;
   Rate: any;
-  CGSTPer:any;
-  SGSTPer:any;
-  CGSTAmt:any;
-  SGSTAmt:any;
-  NetPayble:any
-  AddedByName:any;
-  GrandTotalAount:any;
-  TotCGSTAmt:any;
-  TotSGSTAmt:any;
- 
+  CGSTPer: any;
+  SGSTPer: any;
+  CGSTAmt: any;
+  SGSTAmt: any;
+  NetPayble: any
+  AddedByName: any;
+  GrandTotalAount: any;
+  TotCGSTAmt: any;
+  TotSGSTAmt: any;
+
   /**
    * Constructor
    *
@@ -1428,21 +1454,15 @@ export class ItemNameList {
   TotalQty: any;
   UnitofMeasurementName: number;
   UnitofMeasurementId: any;
-  POBalQty:any;
-  PurchaseId:any;
-  IsClosed:boolean;
-  PurDetId:any;
-  LandedRate:any;
-  PurUnitRate:any;
-  PurUnitRateWF:any;
-  BatchExpDate:any;
-  POQty:any;
-  UOMID:any;
-  PurchaseID:any;
-  ItemDiscAmount:any;
-  ItemTotalAmount:any;
-  DiscPer:any;
-  GrandTotalAmount:any;
+  POBalQty: any;
+  PurchaseId: any;
+  IsClosed: boolean;
+  PurDetId: any;
+  LandedRate: any;
+  PurUnitRate: any;
+  PurUnitRateWF: any;
+  BatchExpDate: any;
+  POQty: any;
   /**
    * Constructor
    *
