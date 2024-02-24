@@ -380,7 +380,7 @@
                                         </mat-select>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="30%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="30%">
                                         <mat-label>To Store</mat-label>
                                         <mat-select formControlName="ToStoreId" name="ToStoreId" required>
                                             <mat-option></mat-option>
@@ -389,6 +389,20 @@
                                             </mat-option>
                                         </mat-select>
                                        
+                                    </mat-form-field> -->
+                                    <mat-form-field appearance="outline" fxFlex="30%">
+                                        <mat-label>To Store</mat-label>
+                                        <mat-select formControlName="ToStoreId" placeholder="Select Store"  
+                                         #singleSelect required>
+                                            <mat-option>
+                                                <ngx-mat-select-search [formControl]="ToStoreFilterCtrl"
+                                                    [placeholderLabel]="'Search'"></ngx-mat-select-search>
+                                            </mat-option>
+                                            <mat-option *ngFor="let element of filteredToStore | async"
+                                                [value]="element">
+                                                {{element.StoreName}}
+                                            </mat-option>
+                                        </mat-select>
                                     </mat-form-field>
 
                                     <div style="padding: 8px;">
@@ -768,7 +782,7 @@
                             -->
                                 <div matTooltip="Select All Value to enable this button!!">
                                     <button class="next-btn" style="width: 80px;border-radius: 16px;margin-left: 120px;"
-                                        (click)="OnSave()" [disabled]="_IssueToDep.NewIssueGroup.invalid">Save</button>
+                                        (click)="OnSave()">Save</button>
                                     <button class="footer-btn" style="width: 80px;border-radius: 16px;"
                                         (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                 </div>

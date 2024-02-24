@@ -138,11 +138,13 @@ export class IndentComponent implements OnInit {
     var Param = {
       "IndentId": Params.IndentId
     }
+    console.log(Param)
     this._IndentService.getIndentList(Param).subscribe(data => {
       this.dsIndentDetailsSearchList.data = data as IndentList[];
       this.dsIndentDetailsSearchList.sort = this.sort;
       this.dsIndentDetailsSearchList.paginator = this.paginator;
       this.sIsLoading = '';
+      console.log(this.dsIndentDetailsSearchList)
     },
       error => {
         this.sIsLoading = '';
@@ -344,7 +346,7 @@ export class IndentComponent implements OnInit {
    
     const tabIndex = row === 'tab1' ? 0 : 1;
     tabGroup.selectedIndex = tabIndex;
-     console.log(row)
+    console.log(row)
      var  vdata={
       ToStoreId: row.ToStoreId,
       StoreName: row.ToStoreName
@@ -358,8 +360,44 @@ export class IndentComponent implements OnInit {
     
        console.log(selectedToStore);
        console.log(row.ToStoreId)
+       this.getupdateIndentList(row);
 
   }
+  getupdateIndentList(Params) {
+    var Param = {
+      "IndentId": Params.IndentId
+    }
+    console.log(Param)
+      this._IndentService.getIndentList(Param).subscribe(data => {
+      this.dsIndentNameList.data = data as IndentNameList[];
+      this.chargeslist = data as IndentNameList[];
+      this.dsIndentNameList.sort = this.sort;
+      this.dsIndentNameList.paginator = this.paginator;
+      this.sIsLoading = '';
+      console.log(this.dsIndentNameList)
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+//   OnEdit(row,tabGroup:MatTabGroup) {
+//     var m_data = {
+//       ToStoreId: row.ToStoreName,
+//      // StoreName: row.ToStoreName
+//       //   CategoryName: row.CategoryName.trim(),
+//       //   IsDeleted: JSON.stringify(row.Isdeleted),
+//       //   UpdatedBy: row.UpdatedBy,
+//     };
+//     console.log(m_data)
+//     console.log(row);
+//     const tabIndex = row === 'tab1' ? 0 : 1;
+//     tabGroup.selectedIndex = tabIndex;
+//     this._IndentService.populateForm(m_data);
+//     const selectedToStore = this.ToStoreList.filter(c => c.StoreId == row.ToStoreId);
+//     this._IndentService.newIndentFrom.get('ToStoreId').setValue(selectedToStore);
+//     console.log(selectedToStore);
+//     console.log(row.ToStoreId)
+// }
     OnReset() {
       this._IndentService.newIndentFrom.reset();
       this.dsIndentNameList.data = [];

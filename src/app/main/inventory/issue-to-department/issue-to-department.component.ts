@@ -119,6 +119,7 @@ export class IssueToDepartmentComponent implements OnInit {
   ToStoreList1:any= [];
   vFinalTotalAmount: any;
   vFinalGSTAmount:any;
+  ItemID:any;
 
   dsIssueToDep = new MatTableDataSource<IssueToDep>();
 
@@ -135,8 +136,8 @@ export class IssueToDepartmentComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   public ToStoreFilterCtrl: FormControl = new FormControl();
-  public filteredToStore: ReplaySubject<any> = new ReplaySubject<any>(1);
-  private _onDestroy = new Subject<void>();
+    public filteredToStore: ReplaySubject<any> = new ReplaySubject<any>(1);
+    private _onDestroy = new Subject<void>();
   constructor(
     public _IssueToDep: IssueToDepartmentService,
     public _matDialog: MatDialog,
@@ -158,8 +159,9 @@ export class IssueToDepartmentComponent implements OnInit {
     this.ToStoreFilterCtrl.valueChanges
     .pipe(takeUntil(this._onDestroy))
     .subscribe(() => {
-      this.filterServicename();
+      this.filterTostore();
     });
+
 
   }
 
@@ -248,14 +250,10 @@ export class IssueToDepartmentComponent implements OnInit {
     });
 
   }
-  // getOptionItemText(option) {
-  //   this.vItemID = option.ItemId;
-  //   if (!option) return '';
-  //   return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
-  // }
-  ItemID:any;
+ 
+ 
   getOptionItemText(option) {
-    this.ItemID = option.ItemId;
+   // this.ItemID = option.ItemId;
     if (!option) return '';
     return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
@@ -270,25 +268,23 @@ export class IssueToDepartmentComponent implements OnInit {
       this.getBatch();
     }
   }
-    // Service name filter
-    private filterServicename() {
-      if (!this.ToStoreList1) {
-  
-        return;
-      }
-      // get the search keyword
-      let search = this.ToStoreFilterCtrl.value;
-      if (!search) {
-        this.filteredToStore.next(this.ToStoreList1.slice());
-        return;
-      } else {
-        search = search.toLowerCase();
-      }
-      // filter the banks
-      this.filteredToStore.next(
-        this.ToStoreList1.filter(bank => bank.StoreName.toLowerCase().indexOf(search) > -1)
-      );
+  private filterTostore() {
+    if (!this.ToStoreList1) {
+      return;
     }
+    // get the search keyword
+    let search = this.ToStoreFilterCtrl.value;
+    if (!search) {
+      this.filteredToStore.next(this.ToStoreList1.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the banks
+    this.filteredToStore.next(
+      this.ToStoreList1.filter(bank => bank.StoreName.toLowerCase().indexOf(search) > -1)
+    );
+  }
   getToStoreList() {
     this._IssueToDep.getToStoreSearchList().subscribe(data => {
       this.ToStoreList1 = data;
@@ -310,7 +306,7 @@ export class IssueToDepartmentComponent implements OnInit {
   onRepeat() {
     if (this.chargeslist.length > 0) {
       this.chargeslist.forEach((element) => {
-        if (element.ItemId == this.ItemId) {
+        if (element.ItemId == this.ItemID) {
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
@@ -384,6 +380,13 @@ export class IssueToDepartmentComponent implements OnInit {
   }
  
   OnSave() {
+    if ((!this.dsNewIssueList3.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this._IssueToDep.NewIssueGroup.valid){
     let insertheaderObj = {};
     insertheaderObj['itemid'] =  this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId;
     insertheaderObj['ItemName'] =  this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId;
@@ -429,6 +432,13 @@ export class IssueToDepartmentComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
+  }else{
+    error => {
+      this.toastr.error('New Issue To Department Data not saved !, Please check Vallidation..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    };
+  }
   }
   OnReset() {
     this._IssueToDep.NewIssueGroup.reset();

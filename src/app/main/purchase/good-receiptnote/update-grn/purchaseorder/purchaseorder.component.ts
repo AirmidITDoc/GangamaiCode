@@ -32,17 +32,27 @@ export class PurchaseorderComponent implements OnInit {
   ];
   displayedColumns1 = [
     'Action',
-    'PurchaseId',
+    'ItemId',
     'ItemName',
+    'UOMID',
+    'UnitofMeasurementName',
     'Qty',
     'MRP',
     'Rate',
-    'DiscPer',
-    'DiscAmount',
+    'TotalAmount',
     'VatPer',
     'VatAmount',
-    'TotalAmount',
+    'DiscPer',
+    'DiscAmount',
+    'LandedRate',
     'GrandTotalAmount',
+    'GrossAmount',
+    'POQty',
+    'PurchaseId',
+    'PurDetId',
+    'CGSTPer',
+    'SGSTPer',
+    'IGSTPer'
   ];
 
   sIsLoading: string = '';
@@ -58,7 +68,8 @@ export class PurchaseorderComponent implements OnInit {
   dsPOList = new MatTableDataSource<POList>();
   dsPODetailList = new MatTableDataSource<PODetailList>();
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
   
   constructor(
     public _GRNList: GoodReceiptnoteService,
@@ -138,7 +149,7 @@ export class PurchaseorderComponent implements OnInit {
   }
   getPOList(Params){
       var Param = {
-        "PurchaseId": Params.PurchaseID
+        "PurchaseID": Params.PurchaseID
       }
       //console.log(Params)
       this._GRNList.getPurchaseItemList(Param).subscribe(data => {
@@ -146,7 +157,7 @@ export class PurchaseorderComponent implements OnInit {
         this.dsPODetailList.sort = this.sort;
         this.dsPODetailList.paginator = this.paginator;
         this.sIsLoading = '';
-      // console.log(this.dsPODetailList);
+       //console.log(this.dsPODetailList);
       },
         error => {
           this.sIsLoading = '';
@@ -157,7 +168,7 @@ export class PurchaseorderComponent implements OnInit {
   interimArray: any = [];
   tableElementChecked(event, element) {
 
-   // debugger
+   debugger
     if (event.checked) {
       this.interimArray.push(element);
     }
@@ -169,7 +180,7 @@ export class PurchaseorderComponent implements OnInit {
     //   }
     // }
 
-    //console.log(this.interimArray)
+    console.log(this.interimArray)
   }
 
   OnAddgrn( ) { 

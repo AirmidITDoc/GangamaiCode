@@ -121,9 +121,9 @@ app-good-receiptnote {
         text-align: left;
       }
       .mat-column-Action1 {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
+        width: 230px;
+        max-width: 230px;
+        min-width: 230px;
         text-align: left;
     }
 
@@ -199,15 +199,15 @@ app-good-receiptnote {
         text-align: left;
       }
       .mat-column-MRP {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
         text-align: left;
       }
       .mat-column-Rate {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
         text-align: left;
       }
       .mat-column-TotalAmount {
@@ -240,18 +240,41 @@ app-good-receiptnote {
         min-width: 100px;
         text-align: left;
       }
-      // .mat-header-row {
-      //   width: 100%;
-      //   min-width: 1400px;  
-      //   min-height: 30px; 
-      //   background-color: blue;
-      // }
+      .mat-column-stockid {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left;
+      }
+      .mat-column-IsVerified {
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
+        text-align: left;
+      }
+      .mat-column-IsVerifiedDatetime {
+        width: 130px;
+        max-width: 130px;
+        min-width: 130px;
+        text-align: left;
+      }
+      .mat-column-IsVerifiedUserId {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        text-align: left;
+      }
+      .mat-header-row {
+        width: 1560px;
+        min-width: 1560px;  
+        // min-height: 30px; 
+      }
   
-      // .mat-row {
-      // width: 100%;
-      // min-width: 1400px;  
+      .mat-row {
+      width: 1560px;
+      min-width: 1560px;  
       // min-height: 30px; 
-      // }
+      }
     
       
     }
