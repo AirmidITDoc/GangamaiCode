@@ -139,10 +139,6 @@
                                             style="height: 100%;">
                                             <div class="spinner-border text-danger"></div>
                                         </div>
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur"
-                                            style="height: 100%;">
-                                            <div class="spinner-border text-danger"></div>
-                                        </div>
                                         <mat-table #table matSort class="table1" [dataSource]="dsGRNList"
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
 
@@ -317,10 +313,18 @@
                                                             title="Email Menu">mail</mat-icon>
                                                     </button>
                                                     <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                                    (click)="getWhatsappshareSales(row)">
-                                                    <img width="100" height="20px"
-                                                        src="assets/images/logos/WhatsApp.png">
-                                            </button> 
+                                                        (click)="getWhatsappshareSales(row)">
+                                                        <img width="100" height="20px"
+                                                            src="assets/images/logos/WhatsApp.png">
+                                                    </button>
+
+                                                    <button mat-icon-button (click)="deleteRow(row)">
+                                                        <mat-icon *ngIf="row.IsVerified==1" [disabled]="row.disabled"
+                                                            class="disabled-icon"
+                                                            title="Cancle">highlight_off</mat-icon>
+                                                        <mat-icon *ngIf="row.IsVerified==0"
+                                                            title="Cancle">highlight_off</mat-icon>
+                                                    </button>
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="loading">
