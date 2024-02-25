@@ -33,6 +33,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OnlinePaymentService } from 'app/main/shared/services/online-payment.service';
 import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { MatDrawer } from '@angular/material/sidenav';
+import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
 
 @Component({
   selector: 'app-sales',
@@ -307,6 +308,7 @@ showTable: boolean = false
   isPaymentSuccess: boolean = false;
   newDateTimeObj: any = {};
   constructor(
+    public _BrowsSalesBillService: BrowsSalesBillService,
     public _salesService: SalesService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
@@ -1382,12 +1384,8 @@ loadingarry:any=[];
   }
 
   Addrepeat(row){
-    debugger
-    
    this.repeatItemList = row.value;
-
     this.Itemchargeslist=[];
-
     this.repeatItemList.forEach((element) => {
       let Qty = parseInt(element.Qty.toString())
       // this.LandedRateandedTotal = (parseInt(element.Qty) * (element.LandedRate)).toFixed(2);
@@ -2055,21 +2053,21 @@ loadingarry:any=[];
       "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
       "salesPayment": PaymentInsertobj
     };
-    console.log(submitData);
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
-       
         this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        debugger
         this.GSalesNo=response;
+        console.log(this.MobileNo);
+        this.getWhatsappshareSales(response);
         this.getPrint3(response);
-        if( this.GSalesNo !=0){
-          if(this.Functionflag ==1){
-            this. getWhatsappshare();
-            }
-          }
+       
+        // if( this.GSalesNo !=0){
+        //   if(this.Functionflag ==1){
+        //     this. getWhatsappshare();
+        //     }
+        //   }
         this.Itemchargeslist = [];
         this._matDialog.closeAll();
       
@@ -2304,6 +2302,37 @@ loadingarry:any=[];
         }, 1000);
       })
     );
+  }
+
+  getWhatsappshareSales(el) {
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": this.ItemSubform.get('MobileNo').value,
+        "smsString": "Dear" + this.ItemSubform.get('PatientName').value + ",Your Sales Bill has been successfully completed. UHID is " + el+ " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+        "isSent": 0,
+        "smsType": 'Sales',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType":2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": this.Filepath || '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._BrowsSalesBillService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('Bill Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+    this.IsLoading = false;
   }
 
   print3() {
