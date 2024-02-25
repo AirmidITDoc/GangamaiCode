@@ -1176,7 +1176,6 @@ if (event.keyCode === 120) {
 
 loadingarry:any=[];
   getWhatsappshare() {
-    debugger
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": 0,
@@ -1682,10 +1681,10 @@ loadingarry:any=[];
   }
 
   getFinalDiscAmount() {
-    console.log("total disc");
+    // console.log("total disc");
     let totDiscAmt = this.ItemSubform.get('FinalDiscAmt').value
-    console.log(totDiscAmt);
-    console.log(this.FinalDiscAmt);
+    // console.log(totDiscAmt);
+    // console.log(this.FinalDiscAmt);
     if (totDiscAmt > 0) {
       this.FinalNetAmount = ((this.FinalNetAmount) - (this.FinalDiscAmt)).toFixed(2);
       this.ConShow = true
@@ -1850,7 +1849,7 @@ loadingarry:any=[];
       let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + element.ItemId + ""
       // and LandedRate = " & dgvSales.Item(10, J).Value & " and PurUnitRateWF = " & dgvSales.Item(13, J).Value & ""
       
-      console.log(SelectQuery);
+      // console.log(SelectQuery);
 
       this._salesService.getchargesList(SelectQuery).subscribe(data => {
 
@@ -1914,7 +1913,7 @@ loadingarry:any=[];
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-    console.log(this.newDateTimeObj);
+    // console.log(this.newDateTimeObj);
 
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
@@ -2053,33 +2052,24 @@ loadingarry:any=[];
       "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
       "salesPayment": PaymentInsertobj
     };
+    let vMobileNo=this.MobileNo;
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
         this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        this.GSalesNo=response;
-        console.log(this.MobileNo);
-        this.getWhatsappshareSales(response);
         this.getPrint3(response);
-       
-        // if( this.GSalesNo !=0){
-        //   if(this.Functionflag ==1){
-        //     this. getWhatsappshare();
-        //     }
-        //   }
+        this.getWhatsappshareSales(response,vMobileNo);
         this.Itemchargeslist = [];
         this._matDialog.closeAll();
       
       } else {
-      
         this.toastr.error('API Error!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
       this.sIsLoading = '';
     }, error => {
-      
       this.toastr.error('API Error!', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
@@ -2089,8 +2079,8 @@ loadingarry:any=[];
     this.patientDetailsFormGrp.reset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
-    this.PatientName = '';
-    this.MobileNo = '';
+    // this.PatientName = '';
+    // this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
     // }
   }
@@ -2111,13 +2101,6 @@ loadingarry:any=[];
       });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
-      // let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
-      // let dateobj=this.datePipe.transform( result.submitDataPay.ipPaymentInsert.PaymentDate, 'MM/dd/yyyy')
-      
-      // if(CurrDate == dateobj){
-    //   if(this.dateTimeObj.date == result.submitDataPay.ipPaymentInsert.PaymentDate)
-    // {
       if (result?.IsSubmitFlag == true) {
         let cashpay = result.submitDataPay.ipPaymentInsert.CashPayAmount;
         let chequepay = result.submitDataPay.ipPaymentInsert.ChequePayAmount;
@@ -2232,23 +2215,16 @@ loadingarry:any=[];
             "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
             "salesPayment": result.submitDataPay.ipPaymentInsert
           };
-          console.log(submitData);
+          let vMobileNo=this.MobileNo;
           this._salesService.InsertCashSales(submitData).subscribe(response => {
             if (response) {
               this.toastr.success('Record Saved Successfully.', 'Save !', {
                 toastClass: 'tostr-tost custom-toast-success',
               });
-              this.GSalesNo=response;
               this.getPrint3(response);
-              if( this.GSalesNo !=0){
-                if(this.Functionflag ==1){
-                  this. getWhatsappshare();
-                  }
-                }
+              this.getWhatsappshareSales(response,vMobileNo)
               this.Itemchargeslist = [];
               this._matDialog.closeAll();
-
-            
             } else {
               this.toastr.error('API Error!', 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
@@ -2304,11 +2280,11 @@ loadingarry:any=[];
     );
   }
 
-  getWhatsappshareSales(el) {
+  getWhatsappshareSales(el,vmono) {
     var m_data = {
       "insertWhatsappsmsInfo": {
-        "mobileNumber": this.ItemSubform.get('MobileNo').value,
-        "smsString": "Dear" + this.ItemSubform.get('PatientName').value + ",Your Sales Bill has been successfully completed. UHID is " + el+ " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+        "mobileNumber": vmono || 0,
+        "smsString": "Dear" + vmono + ",Your Sales Bill has been successfully completed. UHID is " + el + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
         "isSent": 0,
         "smsType": 'Sales',
         "smsFlag": 0,
@@ -2373,7 +2349,6 @@ loadingarry:any=[];
   }
 
   getDiscountCellCal(contact,DiscPer){
-debugger
 // let DiscOld=DiscPer;
     let DiscAmt;
     let TotalMRP=contact.TotalMRP;
@@ -2416,11 +2391,11 @@ debugger
 
   getCellCalculation(contact, Qty) {
     if (contact.Qty != 0 && contact.Qty != null) {
-      console.log(contact.Qty);
+      // console.log(contact.Qty);
       this.BalChkList = [];
       this.StoreId = this._loggedService.currentUserValue.user.storeId
       let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
-      console.log(SelectQuery);
+      // console.log(SelectQuery);
       this._salesService.getchargesList(SelectQuery).subscribe(data => {
         this.BalChkList = data;
         // console.log(this.BalChkList);
@@ -2688,7 +2663,7 @@ debugger
     this.Itemchargeslist=[];
 
     let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
-    console.log(strSql);
+    // console.log(strSql);
     this._salesService.getchargesList(strSql).subscribe(data => {
       this.tempDatasource.data = data as any;
       // console.log(this.tempDatasource.data);
@@ -2721,12 +2696,12 @@ debugger
       }
 
       this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
-        console.log(draftdata)
+        // console.log(draftdata)
         this.Itemchargeslist1=draftdata as any;
         let ItemID;
         this.Itemchargeslist1.forEach((element) => {
         
-          console.log(element)
+          // console.log(element)
           if(ItemID !=element.ItemId){
             this.QtyBalchk =0;
           }
@@ -2777,7 +2752,6 @@ debugger
         
         // if (this.ItemName && (parseInt(contact.Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
           // this.saleSelectedDatasource.data = [];
-         debugger
           this.Itemchargeslist.push(
             {
               ItemId: contact.ItemId,
@@ -2895,7 +2869,7 @@ debugger
       "salesDraftbillDetailInsert": salesDetailInsertarr
     
     };
-    console.log(submitData);
+    // console.log(submitData);
     this._salesService.InsertSalesDraftBill(submitData).subscribe(response => {
       if (response) {
        
