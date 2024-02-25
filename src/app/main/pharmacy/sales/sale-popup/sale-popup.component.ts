@@ -3,7 +3,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { SalesService } from '../sales.service';
-import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-sale-popup',
   templateUrl: './sale-popup.component.html',
@@ -27,17 +26,16 @@ export class SalePopupComponent implements OnInit {
   dataSource = new MatTableDataSource<SalesList>();
   selectedRowIndex: number = 0;
   screenFromString = 'admission-form';
-  minDate = this.datePipe.transform(new Date(),'dd/MM/yyyy','en_US');
+
   
   
   constructor(
     private dialogRef: MatDialogRef<SalePopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public datePipe: DatePipe,
     public salesService: SalesService,
   ) {
-    console.log(this.minDate);
     
+
    }
 
   // const ESCAPE_KEYCODE = 27;
@@ -81,14 +79,11 @@ export class SalePopupComponent implements OnInit {
   }
 
   getSalesData() {
-
     this.isLoadingStr = 'loading';
     var reqData = {
       "ItemId": this.data.ItemId,
       "StoreId": this.data.StoreId
     }
-
-    console.log(reqData)
     this.salesService.getBatchList(reqData).subscribe((res: any) => {
       if (res && res.length > 0) {
         res.forEach((element, index) => {
