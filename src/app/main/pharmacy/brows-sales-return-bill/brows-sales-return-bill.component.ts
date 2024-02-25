@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { AcceptMaterialListPopupComponent } from './accept-material-list-popup/accept-material-list-popup.component';
 
 
 @Component({
@@ -23,11 +24,11 @@ export class BrowsSalesReturnBillComponent implements OnInit {
 
   sIsLoading: string = '';
   isLoading = true;
-  Store1List:any=[];
+  Store1List: any = [];
   screenFromString = 'admission-form';
 
   labelPosition: 'before' | 'after' = 'after';
-  
+
   DsIssuetodept = new MatTableDataSource<Issuetodept>();
 
   dsItemList = new MatTableDataSource<ItemList>();
@@ -39,18 +40,21 @@ export class BrowsSalesReturnBillComponent implements OnInit {
     'ToStoreName',
     'NetAmount',
     'Remark',
-    'Receivedby',
+    // 'Receivedby',
+    'IsAccepted',
+    'AcceptedBy',
+    'AcceptedDatetime',
     'action',
   ];
 
   displayedColumns1 = [
-   'ItemName',
-   'BatchNo',
-   'BatchExpDate',
-   'IssueQty',
-   'PerUnitLandedRate',
-   'LandedTotalAmount',
-   'VatPercentage'
+    'ItemName',
+    'BatchNo',
+    'BatchExpDate',
+    'IssueQty',
+    'PerUnitLandedRate',
+    'LandedTotalAmount',
+    'VatPercentage'
   ];
 
   @ViewChild(MatSort) sort: MatSort;
@@ -63,40 +67,35 @@ export class BrowsSalesReturnBillComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
-    
+
   ) { }
 
   ngOnInit(): void {
     this.getIndentStoreList();
-    this.getIssueTodept() 
+    this.getIssueTodept()
   }
-  
+
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
- 
+
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
 
- 
-  getIssueTodept() {
-    // this.sIsLoading = 'loading-data';
-    var Param = {
-      
-      "FromStoreId":2,// this._BrowsSalesBillService.formReturn.get('StoreId').value.storeid || 0  ,// this._SalesReturn.MaterialReturnFrDept.get('FromStoreId').value.StoreId || 1,
-      "ToStoreId ":10017,//this._SalesReturn.MaterialReturnFrDept.get('ToStoreId').value.StoreId || 1,
 
-       "From_Dt":  this.datePipe.transform(this._SalesReturn.MaterialReturnFrDept.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._SalesReturn.MaterialReturnFrDept.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "IsVerify ": 0//this._SalesReturn.MaterialReturnFrDept.get("Status").value || 1,
+  getIssueTodept() {
+    var Param = {
+      "ToStoreId ": this._SalesReturn.MaterialReturnFrDept.get('ToStoreId').value.storeid || 0,
+      "From_Dt": this.datePipe.transform(this._SalesReturn.MaterialReturnFrDept.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "To_Dt": this.datePipe.transform(this._SalesReturn.MaterialReturnFrDept.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "IsVerify ": 0
     }
-      this._SalesReturn.getIssuetodeptlist(Param).subscribe(data => {
+    this._SalesReturn.getIssuetodeptlist(Param).subscribe(data => {
       this.DsIssuetodept.data = data as Issuetodept[];
-     
       this.DsIssuetodept.sort = this.sort;
       this.DsIssuetodept.paginator = this.paginator;
       this.sIsLoading = '';
@@ -106,12 +105,11 @@ export class BrowsSalesReturnBillComponent implements OnInit {
       });
   }
 
-  getItemList(Params){
-    
+  getItemList(Params) {
     var Param = {
       "IssueId": Params.IssueId
     }
-      this._SalesReturn.getItemdetailList(Param).subscribe(data => {
+    this._SalesReturn.getItemdetailList(Param).subscribe(data => {
       this.dsItemList.data = data as ItemList[];
       this.dsItemList.sort = this.sort;
       this.dsItemList.paginator = this.paginator;
@@ -122,34 +120,49 @@ export class BrowsSalesReturnBillComponent implements OnInit {
       });
   }
 
+  onEdit(contact) {
+    console.log(contact);
+    const dialogRef = this._matDialog.open(AcceptMaterialListPopupComponent,
+      {
+        maxWidth: "95vw",
+        height: '650px',
+        width: '100%',
+        data: {
+          Obj: contact,
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getIssueTodept();
+    });
+  }
 
-  
-onclickrow(contact){
-// Swal.fire("Row selected :" + contact)
-}
-  getIndentStoreList(){
-   var vdata={
-          Id : this._loggedService.currentUserValue.user.storeId
-     }
-     this._SalesReturn.getLoggedStoreList(vdata).subscribe(data => {
-     this.Store1List = data;
-     this._SalesReturn.MaterialReturnFrDept.get('FromStoreId').setValue(this.Store1List[0]);
-          
-        });
-  
-      }
 
-  onClear(){
-    
+  onclickrow(contact) {
+    // Swal.fire("Row selected :" + contact)
+  }
+  getIndentStoreList() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
+    }
+    this._SalesReturn.getLoggedStoreList(vdata).subscribe(data => {
+      this.Store1List = data;
+      this._SalesReturn.MaterialReturnFrDept.get('ToStoreId').setValue(this.Store1List[0]);
+    });
+
+  }
+
+  onClear() {
+
   }
 }
 
 export class ItemList {
   ItemName: string;
   IssueQty: number;
-  Bal:number;
-  StoreId:any;
-  StoreName:any;
+  Bal: number;
+  StoreId: any;
+  StoreName: any;
   /**
    * Constructor
    *
@@ -159,9 +172,9 @@ export class ItemList {
     {
       this.ItemName = ItemList.ItemName || "";
       this.IssueQty = ItemList.IssueQty || 0;
-      this.Bal = ItemList.Bal|| 0;
+      this.Bal = ItemList.Bal || 0;
       this.StoreId = ItemList.StoreId || 0;
-      this.StoreName =ItemList.StoreName || '';
+      this.StoreName = ItemList.StoreName || '';
     }
   }
 }
@@ -173,9 +186,9 @@ export class Issuetodept {
   ToStoreName: any;
   NetAmount: any;
   Remark: any;
-  Receivedby:any;
+  Receivedby: any;
   FromStoreId: any;
-  
+
   /**
    * Constructor
    *
@@ -190,7 +203,7 @@ export class Issuetodept {
       this.NetAmount = Issuetodept.NetAmount || 0;
       this.Remark = Issuetodept.Remark || "";
       this.Receivedby = Issuetodept.Receivedby || "";
-      
+
     }
   }
 }
