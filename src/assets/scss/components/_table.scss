@@ -35,7 +35,7 @@
                 align-items: center;
                 line-height: 25px;
                 .material-icons {
-                    font-size: 1.5rem;
+                    @include font-size(18px);
                 }
             }
             span {

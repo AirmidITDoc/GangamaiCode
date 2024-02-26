@@ -1,0 +1,28 @@
+.image-view-section {
+    .image-view-header {
+    }
+    .webcam-header {
+    }
+    .webcam-section {
+        .webcam-video-container {
+            border-radius: 4px;
+            border: 1px solid $primary-50;
+            height: 100%;
+            .webcam-video {
+            }
+            .webcam-button {
+            }
+        }
+        .webcam-result {
+            border-radius: 4px;
+            border: 1px solid $primary-50;
+            height: 100%;
+            .webcam-result-image {
+            }
+            .webcam-upload-button {
+            }
+        }
+    }
+    .webcam-footer {
+    }
+}

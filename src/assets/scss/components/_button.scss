@@ -37,9 +37,14 @@
             display: flex;
             align-items: center;
             &.btn-icon {
-                height: 16px;
-                width: 16px;
+                // height: 16px;
+                // width: 16px;
                 margin-right: 8px;
+            }
+            .mat-icon{
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
     }
