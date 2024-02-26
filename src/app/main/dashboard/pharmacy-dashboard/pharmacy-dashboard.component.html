@@ -261,7 +261,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>NetColAmt
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.NetColAmount}}
+                                        {{contact.NetColAmount | currency:'INR'}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -444,7 +444,7 @@
                                    [legend]="widget6.showLegend" [explodeSlices]="widget6.explodeSlices"
                                    [labels]="widget6.labels" [doughnut]="widget6.doughnut"
                                    [gradient]="widget6.gradient" (select)="widget6.onSelect($event)"
-                                   [view]="[containerRef1.offsetWidth, 400]">
+                                   [view]="[containerRef1.offsetWidth, 300]">
                                </ngx-charts-pie-chart>
                            </div>
                            <div style="text-align: center;" *ngIf="DashChartCurStk.length == 0">No Data Found </div>
@@ -511,7 +511,7 @@
                                  [legend]="widget6.showLegend" [explodeSlices]="widget6.explodeSlices"
                                  [labels]="widget6.labels" [doughnut]="widget6.doughnut"
                                  [gradient]="widget6.gradient" (select)="widget6.onSelect($event)"
-                                 [view]="[containerRef1.offsetWidth, 400]">
+                                 [view]="[containerRef1.offsetWidth, 300]">
                              </ngx-charts-pie-chart>
                          </div>
                          <div style="text-align: center;" *ngIf="DashChartCustomer.length == 0">No Data Found </div>
