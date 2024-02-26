@@ -44,6 +44,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-summary.component';
 // import { Component } from '@angular/core';
 
  
@@ -54,7 +55,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
   declarations: [
     DailyDashboardComponent,
     BedOccupancyComponent,
-    PharmacyDashboardComponent
+    PharmacyDashboardComponent,
+    SalesSummaryComponent
   ],
   imports: [
     CommonModule,
