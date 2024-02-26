@@ -174,7 +174,13 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             IsAccepted</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IsAccepted}}
+                                            <!-- <mat-icon *ngIf="IsAccepted == 0" style="color: green">check_circle</mat-icon>
+                                            <mat-icon *ngIf="IsAccepted == 1" style="color: red">check_circle</mat-icon> -->
+                                            <!-- {{contact.IsAccepted}} -->
+                                            <mat-icon *ngIf="contact.IsAccepted"
+                                            class="active-icon green-600 s-16">check_circle</mat-icon>
+                                        <mat-icon *ngIf="!contact.IsAccepted"
+                                            class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="AcceptedBy">

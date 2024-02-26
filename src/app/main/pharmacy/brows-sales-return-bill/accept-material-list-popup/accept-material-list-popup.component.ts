@@ -1,19 +1,26 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { BrowsSalesReturnBillService } from '../brows-sales-return-bill.service';
+import { fuseAnimations } from '@fuse/animations';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-accept-material-list-popup',
   templateUrl: './accept-material-list-popup.component.html',
-  styleUrls: ['./accept-material-list-popup.component.scss']
+  styleUrls: ['./accept-material-list-popup.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
+
 })
 export class AcceptMaterialListPopupComponent implements OnInit {
 
   displayedColumns = [
+    'Action',
+    'Status',
     'ItemName',
     'BatchNo',
     'BatchExpDate',
@@ -43,17 +50,19 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       setTimeout(() => {
       }, 2000);
     }
+   
   }
   onClose() {
     this.dialogRef.close();
   }
   getItemList(Params) {
-    debugger
+   // debugger
     var Param = {
       "IssueId": Params
     }
     this._SalesReturn.getItemdetailList(Param).subscribe(data => {
       this.dsItemList.data = data as ItemList[];
+      console.log(this.dsItemList);
       this.dsItemList.sort = this.sort;
       this.dsItemList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -61,9 +70,104 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       error => {
         this.sIsLoading = '';
       });
+
+      this.SelectedRowData=this.dsItemList;
+      this.temparray = this.dsItemList;
+      console.log(this.SelectedRowData);
+  }
+  masterCheckbox: boolean = false;
+  selected: boolean = true;
+  
+  checkUncheckAll(contact) {
+    this.dsItemList.data.forEach(contact => contact.selected = this.masterCheckbox);
+
+      this.SelectedRowData.push(contact);
+      console.log(this.SelectedRowData);
+    
+   
+  }
+
+  SelectedRowData:any=[];
+  temparray:any=[];
+  
+  tableElementChecked(event ,contact){
+    debugger
+    if(contact.selected){
+      contact.Status = 'Accepted'
+      this.SelectedRowData.push(contact);
+      console.log(this.SelectedRowData);
+      // this.temparray = this.S.data;
+    }else{
+
+      
+      contact.Status = 'Rejected'
+      contact.selected=false;
+      debugger
+    
+      //let index = this.temparray.indexOf(contact);
+      let index1 = this.temparray.data.indexOf(contact);
+         if (index1 >= 0) {
+        this.temparray.data.splice(index1, 1);
+        
+        this.SelectedRowData.data = [];
+        this.SelectedRowData.data = this.temparray.data;
+      }
+
+      
+      console.log(this.SelectedRowData.data);
+
+      
+    }
+    this.dsItemList= this.SelectedRowData;
+    console.log(this.dsItemList);
   }
   onSubmit(){
+    debugger
+    console.log(this.SelectedRowData);
+    if ((!this.dsItemList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    let materialAcceptIssueHeader = {};
+    materialAcceptIssueHeader['issueId'] =this.data.Obj.IssueId; 
+    materialAcceptIssueHeader['acceptedBy'] = 1 ;
 
+    let materialAcceptIssueDetails = [];
+    this.SelectedRowData.data.forEach((element) => {
+      let statuschk
+      if(element.Status == 'Accepted'){
+        statuschk = 1;
+      }else if(element.Status == 'Rejected')
+        {
+          statuschk = 0;
+        }
+      
+      let materialAcceptIssueDetailsObj = {};
+
+      materialAcceptIssueDetailsObj['issueId'] = element.IssueId; 
+      materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId ;
+      materialAcceptIssueDetailsObj['status'] = statuschk ;
+      materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
+    });
+    let submitData = {
+      "materialAcceptIssueHeader": materialAcceptIssueHeader,
+      "materialAcceptIssueDetails": materialAcceptIssueDetails,
+    };
+    console.log(submitData);
+    this._SalesReturn.AcceptmaterialSave(submitData).subscribe(response => {
+      if (response) {
+        this.toastr.success('Record Accept material Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this._matDialog.closeAll();
+      } else {
+        this.toastr.error('New Accept material Data not saved !, Please check  error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
   }
 
 }
@@ -73,6 +177,7 @@ export class ItemList {
   Bal: number;
   StoreId: any;
   StoreName: any;
+  selected:any;
   /**
    * Constructor
    *
@@ -85,6 +190,7 @@ export class ItemList {
       this.Bal = ItemList.Bal || 0;
       this.StoreId = ItemList.StoreId || 0;
       this.StoreName = ItemList.StoreName || '';
+      this.selected = ItemList.selected || true;
     }
   }
 }
