@@ -20,7 +20,7 @@ app-update-grn {
     display: inline-flex;
     display: inline;
     margin-right: 10px;
-    margin-top: 20px;
+    margin-top: 5px;
   }
   .mat-column-UOMId{
     width: 50px;
@@ -52,6 +52,7 @@ app-update-grn {
     max-width: 90px;
     min-width: 90px;
     text-align: left;
+    margin-right: 5px;
   }
   .mat-column-Qty {
     width: 50px;
@@ -262,7 +263,7 @@ app-update-grn {
         display: inline-flex;
         display: inline;
         margin-right: 10px;
-        margin-top: 20px;
+        margin-top: 5px;
       }
      
       .mat-column-ReceiveQty {

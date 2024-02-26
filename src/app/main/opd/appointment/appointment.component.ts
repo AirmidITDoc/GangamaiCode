@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation, } from "@angular/core";
+import { ChangeDetectorRef, Component, ElementRef, HostListener, Inject, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation, } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -45,8 +45,7 @@ import { MatAccordion } from "@angular/material/expansion";
 import { CrossConsultationComponent } from "./cross-consultation/cross-consultation.component";
 import { ThisReceiver } from "@angular/compiler";
 import { ToastrService } from "ngx-toastr";
-
-
+import { NewOPBillingComponent } from "../OPBilling/new-opbilling/new-opbilling.component";
 
 export class DocData {
   doc: any;
@@ -224,8 +223,8 @@ export class AppointmentComponent implements OnInit {
   FimeName: any;
   VisitFlag = 0;
   vPhoneFlage = 0;
-  vPhoneAppId: any=0;
-  vOPDNo:any=0;
+  vPhoneAppId: any = 0;
+  vOPDNo: any = 0;
 
   VisitFlagDisp: boolean = false;
   DoctorId: any;
@@ -252,6 +251,7 @@ export class AppointmentComponent implements OnInit {
     // "Edit",
     // "Bill",
     // "PhoneAppId",
+    'CrossConsultation',
     "RegNoWithPrefix",
     "PatientName",
     "DVisitDate",
@@ -263,6 +263,7 @@ export class AppointmentComponent implements OnInit {
     "CompanyName",
     'TariffName',
     "action",
+    // "action1"
   ];
 
   dataSource = new MatTableDataSource<VisitMaster>();
@@ -331,12 +332,12 @@ export class AppointmentComponent implements OnInit {
 
     if (this._ActRoute.url == "/opd/appointment") {
 
-      this.menuActions.push("Update Registration");
+      // this.menuActions.push("Update Registration");
       this.menuActions.push("Update Consultant Doctor");
       this.menuActions.push("Update Referred Doctor");
-      this.menuActions.push("Upload Documents");
-      this.menuActions.push("Capture Photo");
-      this.menuActions.push("Generate Patient Barcode");
+      // this.menuActions.push("Upload Documents");
+      // this.menuActions.push("Capture Photo");
+      // this.menuActions.push("Generate Patient Barcode");
 
     }
 
@@ -868,7 +869,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   onChangePatient(value) {
-debugger
+    debugger
     if (value.PatientTypeId !== 1) {
       this._opappointmentService.getCompanyCombo();
       this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
@@ -884,7 +885,7 @@ debugger
 
     if (value.PatientTypeId == 2) {
       this.patienttype = 2;
-    }else if(value.PatientTypeId !== 2){
+    } else if (value.PatientTypeId !== 2) {
       this.patienttype = 1;
     }
 
@@ -1388,7 +1389,7 @@ debugger
     this.vPhoneFlage = 1;
     this.registerObj = obj;
 
-    this.registerObj.DateofBirth=this.currentDate;
+    this.registerObj.DateofBirth = this.currentDate;
     this.PatientName = obj.PatientName;
     this.RegId = obj.RegId;
     this.RegNo = obj.RegNo;
@@ -1407,7 +1408,7 @@ debugger
     this.registerObj = obj;
     this.PatientName = obj.PatientName;
     this.RegId = obj.RegId;
-    
+
     this.setDropdownObjs();
 
     // this.getVistDetailsList();
@@ -1450,26 +1451,27 @@ debugger
 
   onSave() {
     debugger
-    if (( !this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-     
-    if (this.searchFormGroup.get('regRadio').value == "registration") {
+    if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
 
-      if (this.vPhoneAppId == 0 && this.Regflag ==false) {
-        this.OnsaveNewRegister();
+      if (this.searchFormGroup.get('regRadio').value == "registration") {
+
+        if (this.vPhoneAppId == 0 && this.Regflag == false) {
+          this.OnsaveNewRegister();
+        }
+        if (this.RegNo !== "" && this.vPhoneAppId != 0) {
+          this.OnsaveNewRegister();
+        }
+        else if (this.RegNo == "" && this.vPhoneAppId != 0) {
+          this.onSaveRegistered();
+        }
       }
-      if (this.RegNo !== "" && this.vPhoneAppId != 0) {
-        this.OnsaveNewRegister();
-      }
-      else if (this.RegNo == "" && this.vPhoneAppId != 0) {
+      else if (this.searchFormGroup.get('regRadio').value == "registrered") {
         this.onSaveRegistered();
+        this.onClose();
       }
+      // this.onClose();
     }
-      this.onClose();
-    }
-    else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-      this.onSaveRegistered();
-      this.onClose();
-    }
+  
 
     // 
     // if (this.RegNo !== "" && this.PhoneAppId != 0) {
@@ -1485,7 +1487,7 @@ debugger
 
 
   OnsaveNewRegister() {
-debugger
+    debugger
     if (this.patienttype != 2) {
       this.CompanyId = 0;
     } else if (this.patienttype == 2) {
@@ -1561,7 +1563,7 @@ debugger
         visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;// ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitSave['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',// this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
         visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
-        visitSave['PhoneAppId'] =this.vPhoneAppId,
+        visitSave['PhoneAppId'] = this.vPhoneAppId,
 
 
         submissionObj['visitSave'] = visitSave;
@@ -1572,30 +1574,30 @@ debugger
       console.log(submissionObj)
 
       const formData = new FormData();
-   
+
       this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
         if (response) {
           debugger
-          if (this.vPhoneAppId !==0) {
-          Swal.fire('Congratulations !', 'New Appoinment from Phone save Successfully !', 'success').then((result) => {
-          
-          });
-        }else{
-          Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
-          
-          });
-        }
+          if (this.vPhoneAppId !== 0) {
+            Swal.fire('Congratulations !', 'New Appoinment from Phone save Successfully !', 'success').then((result) => {
+
+            });
+          } else {
+            Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
+
+            });
+          }
         } else {
           Swal.fire('Error !', 'Appoinment not saved', 'error');
         }
         this.isLoading = '';
       });
     }
-
+    this.onClose();
   }
 
   onSaveRegistered() {
-debugger
+    debugger
     if (this.patienttype != 2) {
       this.CompanyId = 0;
     } else if (this.patienttype == 2) {
@@ -1646,8 +1648,8 @@ debugger
     visitUpdate['VisitId'] = 0;
     visitUpdate['RegID'] = this.registerObj.RegId;
     visitUpdate['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-    visitUpdate['VisitTime'] = this.dateTimeObj.time,
-    visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
+      visitUpdate['VisitTime'] = this.dateTimeObj.time,
+      visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
     visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
     visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
     visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
@@ -1656,18 +1658,18 @@ debugger
     visitUpdate['CompanyId'] = this.CompanyId;//this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
     visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
     visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
-    visitUpdate['IsCancelled'] = 0;
+      visitUpdate['IsCancelled'] = 0;
     visitUpdate['IsCancelledBy'] = 0;
     visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
 
-    visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
+      visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
     visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
     visitUpdate['PatientOldNew'] = this.Patientnewold;
     visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
     visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-    visitUpdate['crossConsulFlag'] = 0,
-    visitUpdate['PhoneAppId'] = this.vPhoneAppId,
+      visitUpdate['crossConsulFlag'] = 0,
+      visitUpdate['PhoneAppId'] = this.vPhoneAppId,
       submissionObj['visitUpdate'] = visitUpdate;
 
 
@@ -1677,11 +1679,11 @@ debugger
     console.log(submissionObj);
     this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
       if (response) {
-        if (this.vPhoneAppId !=0) {
+        if (this.vPhoneAppId != 0) {
           Swal.fire('Congratulations !', 'Phone Registered Appoinment Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
               this.getPrint(response);
-              
+
             }
             this.getVisitList();
 
@@ -2559,7 +2561,7 @@ debugger
     this.VisitFormGroup.get('SubCompanyId').clearValidators();
     this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
     this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
-    
+
 
     const todayDate = new Date();
     const dob = new Date(this.currentDate);
@@ -3046,6 +3048,34 @@ debugger
     Swal.fire(this.departmentId, this.DoctorId)
     this.VisitFlagDisp = false;
   }
+
+
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+   debugger
+    // f10
+    // if (event.keyCode === 121) {
+    //     this.NewOPBill();
+    // }
+  // f8
+    if (event.keyCode === 119) {
+      this.NewOPBill();
+  }
+}
+
+NewOPBill(){
+  
+    const dialogRef = this._matDialog.open(NewOPBillingComponent, 
+     {  maxWidth: "99%",
+    
+    height: '995px !important',
+    
+   });
+   dialogRef.afterClosed().subscribe(result => {
+     console.log('The dialog was closed - Insert Action', result);
+    
+  });
+}
+
 }
 
 export class DocumentUpload {
@@ -3106,7 +3136,7 @@ export class VisitMaster {
   AddedBy: number;
   MPbillNo: number;
   RegNo: any;
-  PhoneAppId:any;
+  PhoneAppId: any;
   /**
    * Constructor
    *
@@ -3138,7 +3168,7 @@ export class VisitMaster {
       this.AddedBy = VisitMaster.AddedBy || "";
       this.MPbillNo = VisitMaster.MPbillNo || "";
       this.RegNo = VisitMaster.RegNo || "";
-      this.PhoneAppId =VisitMaster.PhoneAppId || 0
+      this.PhoneAppId = VisitMaster.PhoneAppId || 0
     }
   }
 }

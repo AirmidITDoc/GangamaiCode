@@ -128,7 +128,7 @@
                                                             *ngIf="ItemSubform.get('PatientType').value == 'External'">
                                                             <mat-label>Address</mat-label>
                                                             <input matInput placeholder="extAddress"
-                                                                [(ngModel)]="extAddress"
+                                                                [(ngModel)]="vextAddress"
                                                                 (keydown)="onEnterAddress($event)" #address
                                                                 formControlName="extAddress">
                                                         </mat-form-field>
@@ -500,7 +500,7 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.Qty" type="number" (keyup)="getCellCalculation(contact,contact.Qty)" (keypress)="keyPressAlphanumeric($event)" readonly>
+                                                        <input matInput [(ngModel)]="contact.Qty" type="number" (keyup)="getCellCalculation(contact,contact.Qty)" (keypress)="keyPressAlphanumeric($event)" >
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -556,7 +556,7 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.DiscPer" (keyup)="getDiscountCellCal(contact,contact.DiscPer)" (keypress)="keyPressAlphanumeric($event)" readonly>
+                                                        <input matInput [(ngModel)]="contact.DiscPer" (keyup)="getDiscountCellCal(contact,contact.DiscPer)" (keypress)="keyPressAlphanumeric($event)" >
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -1274,11 +1274,11 @@
                                 </mat-cell>
                             </ng-container> -->
                 
-                            <ng-container matColumnDef="RegID">
+                            <ng-container matColumnDef="extMobileNo">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Mobile No
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.RegID}}
+                                    {{contact.extMobileNo}}
                                 </mat-cell>
                             </ng-container>
                 

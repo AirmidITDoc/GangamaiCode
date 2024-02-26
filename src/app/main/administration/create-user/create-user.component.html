@@ -1,23 +1,26 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
     <!-- HEADER -->
-    <mat-toolbar matDialogTitle class="mat-accent m-0">
+    <mat-toolbar style="background-color:accent !important; height:50px; justify-content: space-between;width: 100%;"
+    fusePerfectScrollbar>
         <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
-                style="color: white;">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
-
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="width: 40px;color: white;">
+                style="color: white;">
                 Create User
             </span>
         </div>
-        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" class="left-icon">
+        <div fxLayout="row" fxLayoutAlign="end"  class="left-icon">
             <button mat-raised-button (click)="addUserDetails()" fxLayoutAlign="center center">
-                <mat-icon color="warn">how_to_reg</mat-icon>
+                <mat-icon color="warn">how_to_reg</mat-icon>&nbsp;New
             </button>
         </div>
     </mat-toolbar>
+  
 
     <!-- / HEADER -->
 
@@ -48,9 +51,9 @@
                         <!-- / SIDEBAR HEADER -->
 
                         <!-- SIDEBAR CONTENT -->
-                        <div class="content py-16 pl-10 p-12" fusePerfectScrollbar>
+                       
                             <div class="nav material2">
-                                <form [formGroup]="_UserService.myformSearch">
+                                <form [formGroup]="_UserService.myformSearch" style="padding: 6px 6px 5px 5px;">
                                     <div fxLayout="column" fxLayoutAlign="start none">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>User Name</mat-label>
@@ -59,7 +62,7 @@
 
                                         <div style="margin-top: 10px;">
                                             <button mat-raised-button (click)="onClear()" class="clearbutton">
-                                               <mat-icon class="cleariconbutton">close</mat-icon></button>
+                                               <mat-icon class="cleariconbutton">close</mat-icon></button>&nbsp;
                                             <button mat-raised-button class="searchButton" (click)="onShow($event)"
                                                 [disabled]="click">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
@@ -68,7 +71,7 @@
                                     </div>
                                 </form>
                             </div>
-                        </div>
+                     
                     </div>
                 </div>
                 <!-- / SIDEBAR CONTENT -->
@@ -90,7 +93,7 @@
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"
-                                    style="overflow:auto;width: 100%;height: 600px !important;">
+                                    style="overflow:auto;width: 100%;height: 650px !important;">
 
                                     <ng-container matColumnDef="UserName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> User
@@ -300,6 +303,9 @@
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-md> Action </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button>
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
                                         </mat-cell>
                                     </ng-container>
 

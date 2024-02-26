@@ -820,6 +820,7 @@ export class ChargesList {
   ChargesAddedName: string;
   BalanceQty:any;
   IsStatus:any;
+  extMobileNo:any;
 
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
@@ -841,6 +842,7 @@ export class ChargesList {
     this.ChargesAddedName = ChargesList.ChargesAddedName || '';
     this.BalanceQty=ChargesList.BalanceQty || 0;
     this.IsStatus=ChargesList.IsStatus || 0;
+    this.extMobileNo=ChargesList.extMobileNo || ''
   }
 }
 export class AdvanceHeader {
