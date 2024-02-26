@@ -47,8 +47,6 @@ import { ThisReceiver } from "@angular/compiler";
 import { ToastrService } from "ngx-toastr";
 import { NewOPBillingComponent } from "../OPBilling/new-opbilling/new-opbilling.component";
 
-
-
 export class DocData {
   doc: any;
   type: string = '';
@@ -253,6 +251,7 @@ export class AppointmentComponent implements OnInit {
     // "Edit",
     // "Bill",
     // "PhoneAppId",
+    'CrossConsultation',
     "RegNoWithPrefix",
     "PatientName",
     "DVisitDate",
@@ -264,7 +263,7 @@ export class AppointmentComponent implements OnInit {
     "CompanyName",
     'TariffName',
     "action",
-    "action1"
+    // "action1"
   ];
 
   dataSource = new MatTableDataSource<VisitMaster>();
