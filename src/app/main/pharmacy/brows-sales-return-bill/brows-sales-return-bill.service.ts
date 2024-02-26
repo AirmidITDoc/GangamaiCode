@@ -21,8 +21,7 @@ export class BrowsSalesReturnBillService {
 
   IndentSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:'',
+      ToStoreId: 0,
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
@@ -37,12 +36,11 @@ export class BrowsSalesReturnBillService {
       StoreName:'',
       PreNo:'',
       IsActive: '',
-      
     });
   }
  
   public getIssuetodeptlist(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IssueToDep_list_by_Name",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ReceiveIssueToDep_list_by_Name",Param);
   }
 
 

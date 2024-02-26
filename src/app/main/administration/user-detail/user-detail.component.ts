@@ -28,7 +28,7 @@ export class UserDetailComponent implements OnInit {
    msg:any;
    
    snackmessage:any;
-screenFromString = 'admission-form';
+    screenFromString = 'admission-form';
    //doctorone filter
 public doctorFilterCtrl: FormControl = new FormControl();
 public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);

@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdmissionService } from '../admission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Admission } from '../admission.component';
 
@@ -30,6 +30,13 @@ export class SubCompanyTPAInfoComponent implements OnInit {
   public value = new Date();
   CompanyList:any=[];
   cityList:any=[];
+  filteredOptionsCity: Observable<string[]>;
+  optionsCity: any[] = [];
+  optionsCompany: any[] = [];
+  isCitySelected: boolean = false;
+  isCompanyselected: boolean = false;
+  filteredOptionsCompany: Observable<string[]>;
+  
   //company filter
   public companyFilterCtrl: FormControl = new FormControl();
   public filteredCompany: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -63,17 +70,7 @@ export class SubCompanyTPAInfoComponent implements OnInit {
       console.log(this.selectedAdvanceObj);
     }
 
-    this.cityFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterCity();
-    });
-
-    this.companyFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterCompany();
-    });
+   
   }
 
   createmlcForm() {
@@ -93,58 +90,95 @@ export class SubCompanyTPAInfoComponent implements OnInit {
     });
   }
 
-  private filterCity() {
-    // debugger;
-    if (!this.cityList) {
-      return;
+  @ViewChild('phone') phone: ElementRef;
+@ViewChild('mobile') mobile: ElementRef;
+@ViewChild('company') company: ElementRef;
+@ViewChild('fax') fax: ElementRef;
+@ViewChild('pin') pin: ElementRef;
+
+
+ 
+  
+  public onEntercity(event): void {
+    if (event.which === 13) {
+      // if(this.company) this.company.focus();
+      this.company.nativeElement.focus();
     }
-    // get the search keyword
-    let search = this.cityFilterCtrl.value;
-    if (!search) {
-      this.filteredCity.next(this.cityList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCity.next(
-      this.cityList.filter(bank => bank.CityName.toLowerCase().indexOf(search) > -1)
-    );
   }
 
-
-   // company filter code  
-   private filterCompany() {
-
-    if (!this.CompanyList) {
-      return;
+  public onEntercompany(event): void {
+    if (event.which === 13) {
+      this.phone.nativeElement.focus();
+      
     }
-    // get the search keyword
-    let search = this.companyFilterCtrl.value;
-    if (!search) {
-      this.filteredCompany.next(this.CompanyList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCompany.next(
-      this.CompanyList.filter(bank => bank.CompanyName.toLowerCase().indexOf(search) > -1)
-    );
-
   }
+  
+  public onEnterphone(event): void {
+    if (event.which === 13) {
+      this.mobile.nativeElement.focus();
+    }
+  }
+  public onEntermobile(event): void {
+    if (event.which === 13) {
+    this.fax.nativeElement.focus();
+    }
+  }
+  
+  
+  public onEnterfax(event): void {
+    if (event.which === 13) {
+      this.pin.nativeElement.focus();
+    }
+  }
+  
   getCompanyList() {
-    this._AdmissionService.getCompanyCombo().subscribe(data => { this.CompanyList = data; })
-  }
-
-  getCityList() {
-    let cData = this._AdmissionService.getCityList().subscribe(data => {
-      this.cityList = data;
-      this.filteredCity.next(this.cityList.slice());
+    this._AdmissionService.getCompanyCombo().subscribe(data => {
+      this.CompanyList = data;
+      this.optionsCompany = this.CompanyList.slice();
+      this.filteredOptionsCompany = this.SubcompanyFormGroup.get('CompanyId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCompany(value) : this.CompanyList.slice()),
+      );
+      
     });
   }
+  private _filterCompany(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
+            return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+    }
+
+  }
+  getOptionTextCompany(option) {
+    return option && option.CompanyName ? option.CompanyName : '';
+  }
+
+  
+  getCityList() {
+    this._AdmissionService.getCityList().subscribe(data => {
+      this.cityList = data;
+      this.optionsCity = this.cityList.slice();
+      this.filteredOptionsCity = this.SubcompanyFormGroup.get('CityId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterCity(value) : this.cityList.slice()),
+      );
+    });
+
+  }
+
+  
+  private _filterCity(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
+      return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  getOptionTextCity(option) {
+    return option.CityName;
+  }
+
   onClose() {
     this.dialogRef.close();
   }

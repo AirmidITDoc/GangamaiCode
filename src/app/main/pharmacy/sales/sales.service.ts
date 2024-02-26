@@ -96,7 +96,7 @@ export class SalesService {
   }
 
   public InsertCreditSales  (employee){
-    return this._httpClient.post("Pharmacy/SalesSaveWithPayment", employee)
+    return this._httpClient.post("Pharmacy/SalesSaveWithCredit", employee)
   }
 
   public InsertSalesDraftBill(employee){

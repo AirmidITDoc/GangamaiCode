@@ -297,8 +297,10 @@
                                                     (keydown.enter)="focusNextService()">
                                                     <mat-icon> add </mat-icon> &nbsp;Add
                                                 </button>-->
+
+                                                <!-- [disabled]="!add"  -->
                                                 <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                                                    class="add-btn" [disabled]="!add" (click)="onAddCharges()">
+                                                    class="add-btn" (click)="onAddCharges()">
                                                     <mat-icon> add </mat-icon>
                                                     Add
                                                 </button>

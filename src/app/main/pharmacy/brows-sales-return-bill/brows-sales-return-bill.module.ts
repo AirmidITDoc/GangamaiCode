@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { BrowsSalesReturnBillComponent } from './brows-sales-return-bill.component';
+import { AcceptMaterialListPopupComponent } from './accept-material-list-popup/accept-material-list-popup.component';
 
 const routes: Routes = [
   { 
@@ -46,6 +47,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     BrowsSalesReturnBillComponent,
+    AcceptMaterialListPopupComponent,
   
   ],
   imports: [

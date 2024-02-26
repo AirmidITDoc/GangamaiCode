@@ -444,12 +444,15 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   onSaveOPBill2() {
+
+
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
+
     this.saveclick = true;
     let disamt = this.BillingForm.get('concessionAmt').value;
 
@@ -806,6 +809,13 @@ debugger
 
   onAddCharges() {
 
+    debugger
+    if ((this.serviceId == 0 || this.b_price == null || this.b_qty == "" || this.b_totalAmount ==0 )) {
+      this.toastr.warning('Please select Item Detail', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }else{
     if (this.registeredForm.get("DoctorID").value) {
       this.DoctornewId = this.registeredForm.get("DoctorID").value.DoctorID;
       this.ChargesDoctorname = this.registeredForm.get("DoctorID").value.DoctorName || '';
@@ -848,7 +858,7 @@ debugger
       this.getTotalNetAmount();
       this.isDoctor = false;
     }
-
+  }
 
 
     this.itemid.nativeElement.focus();

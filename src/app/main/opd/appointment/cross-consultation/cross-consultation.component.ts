@@ -199,7 +199,7 @@ export class CrossConsultationComponent implements OnInit {
       crossConsult['UnitId'] = this.PatientHeaderObj.HospitalId;
       crossConsult['PatientTypeId'] = this.PatientHeaderObj.PatientTypeId;
       crossConsult['ConsultantDocId'] = this.InfoFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
-      crossConsult['RefDocId'] = this.PatientHeaderObj.RefDoctorId;
+      crossConsult['RefDocId'] = this.PatientHeaderObj.RefDoctorId || 0;
 
       crossConsult['TariffId'] = this.PatientHeaderObj.TariffId;
       crossConsult['CompanyId'] = this.PatientHeaderObj.CompanyId || 0;
@@ -215,6 +215,8 @@ export class CrossConsultationComponent implements OnInit {
       crossConsult['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
       crossConsult['appPurposeId'] = 0,//this.PatientHeaderObj.App
       crossConsult['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+      crossConsult['PhoneAppId'] = 0,//this.PatientHeaderObj.App
+      
       crossConsult['CrossConsulFlag'] = 1
 
 

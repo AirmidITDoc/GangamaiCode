@@ -33,6 +33,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OnlinePaymentService } from 'app/main/shared/services/online-payment.service';
 import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { MatDrawer } from '@angular/material/sidenav';
+import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
 
 @Component({
   selector: 'app-sales',
@@ -283,7 +284,7 @@ showTable: boolean = false
   
   DraftSaleDisplayedCol = [
     // 'DSalesId',
-    'RegID',
+    'extMobileNo',
     'buttons'
   ];
 
@@ -306,7 +307,11 @@ showTable: boolean = false
   vAdmissionID: any;
   isPaymentSuccess: boolean = false;
   newDateTimeObj: any = {};
+  vextAddress:any = '';
+
+
   constructor(
+    public _BrowsSalesBillService: BrowsSalesBillService,
     public _salesService: SalesService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
@@ -1177,7 +1182,7 @@ loadingarry:any=[];
     debugger
     var m_data = {
       "insertWhatsappsmsInfo": {
-        "mobileNumber": 0,
+        "mobileNumber": this.MobileNo,
         "smsString": 'PatientDetail' || '',
         "isSent": 0,
         "smsType": 'bulk',
@@ -1385,11 +1390,12 @@ loadingarry:any=[];
     debugger
     
    this.repeatItemList = row.value;
-
     this.Itemchargeslist=[];
-
     this.repeatItemList.forEach((element) => {
       let Qty = parseInt(element.Qty.toString())
+      let UnitMrp= element.UnitMRP.split('|')[0];
+      console.log(UnitMrp)
+ 
       // this.LandedRateandedTotal = (parseInt(element.Qty) * (element.LandedRate)).toFixed(2);
       // this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
       // this.PurTotAmt = (parseInt(element.Qty) * (this.PurchaseRate)).toFixed(2);
@@ -1397,16 +1403,19 @@ loadingarry:any=[];
       let CGSTAmt = (((element.UnitMRP) * (this.CgstPer) / 100) * (Qty)).toFixed(2);
       let SGSTAmt = (((element.UnitMRP) * (this.SgstPer) / 100) * (Qty)).toFixed(2);
       let IGSTAmt = (((element.UnitMRP) * (this.IgstPer) / 100) * (Qty)).toFixed(2);
-
+      
+    
+      this.NetAmt = ((UnitMrp) * (element.Qty)).toFixed(2);
+      // this.v_marginamt =Math.round(this.NetAmt);
 
   this.Itemchargeslist.push(
     {
       ItemId: element.ItemId,
       ItemName: element.ItemShortName,
       BatchNo: element.BatchNo,
-      BatchExpDate: this.datePipe.transform(element.BatchExpDate , 'DD/MM/YYYY'),
+      BatchExpDate: this.datePipe.transform(element.BatchExpDate , 'dd/MM/YYYY'),
       Qty: element.Qty,
-      UnitMRP: element.UnitMRP,
+      UnitMRP: UnitMrp || element.UnitMRP,
       TotalMRP: element.TotalAmount,
       GSTPer: row.GSTPer || 0,
       GSTAmount: row.GSTAmount || 0,
@@ -1684,10 +1693,10 @@ loadingarry:any=[];
   }
 
   getFinalDiscAmount() {
-    console.log("total disc");
+    // console.log("total disc");
     let totDiscAmt = this.ItemSubform.get('FinalDiscAmt').value
-    console.log(totDiscAmt);
-    console.log(this.FinalDiscAmt);
+    // console.log(totDiscAmt);
+    // console.log(this.FinalDiscAmt);
     if (totDiscAmt > 0) {
       this.FinalNetAmount = ((this.FinalNetAmount) - (this.FinalDiscAmt)).toFixed(2);
       this.ConShow = true
@@ -1852,7 +1861,7 @@ loadingarry:any=[];
       let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + element.ItemId + ""
       // and LandedRate = " & dgvSales.Item(10, J).Value & " and PurUnitRateWF = " & dgvSales.Item(13, J).Value & ""
       
-      console.log(SelectQuery);
+      // console.log(SelectQuery);
 
       this._salesService.getchargesList(SelectQuery).subscribe(data => {
 
@@ -1902,12 +1911,14 @@ loadingarry:any=[];
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashOnlinePaySave()
     }
-    else if (this.ItemSubform.get('CashPay').value == 'Credit') {
-      this.onCreditpaySave()
-    }
+    // else if (this.ItemSubform.get('CashPay').value == 'Credit') {
+    //   this.onCreditpaySave()
+    // }
     else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
       this.onSavePayOption()
     }
+    
+    
   }
 
 
@@ -1916,7 +1927,7 @@ loadingarry:any=[];
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-    console.log(this.newDateTimeObj);
+    // console.log(this.newDateTimeObj);
 
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
@@ -1968,12 +1979,14 @@ loadingarry:any=[];
 
     let salesDetailInsertarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
-      // console.log(element);
+
+      console.log(element);
+      // "2025-06-01"
       let salesDetailInsert = {};
       salesDetailInsert['salesID'] = 0;
       salesDetailInsert['itemId'] = element.ItemId;
       salesDetailInsert['batchNo'] = element.BatchNo;
-      salesDetailInsert['batchExpDate'] = element.BatchExpDate;
+      salesDetailInsert['batchExpDate'] =element.BatchExpDate;// this.datePipe.transform(element.BatchExpDate,"yyyy/MM/dd");
       salesDetailInsert['unitMRP'] = element.UnitMRP;
       salesDetailInsert['qty'] = element.Qty;
       salesDetailInsert['totalAmount'] = element.TotalMRP;
@@ -2055,33 +2068,24 @@ loadingarry:any=[];
       "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
       "salesPayment": PaymentInsertobj
     };
-    console.log(submitData);
+    let vMobileNo=this.MobileNo;
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
-       
         this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        debugger
-        this.GSalesNo=response;
         this.getPrint3(response);
-        if( this.GSalesNo !=0){
-          if(this.Functionflag ==1){
-            this. getWhatsappshare();
-            }
-          }
+        this.getWhatsappshareSales(response,vMobileNo);
         this.Itemchargeslist = [];
         this._matDialog.closeAll();
       
       } else {
-      
         this.toastr.error('API Error!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
       this.sIsLoading = '';
     }, error => {
-      
       this.toastr.error('API Error!', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
@@ -2091,8 +2095,8 @@ loadingarry:any=[];
     this.patientDetailsFormGrp.reset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
-    this.PatientName = '';
-    this.MobileNo = '';
+    // this.PatientName = '';
+    // this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
     // }
   }
@@ -2187,7 +2191,7 @@ loadingarry:any=[];
             salesDetailInsert['salesID'] = 0;
             salesDetailInsert['itemId'] = element.ItemId;
             salesDetailInsert['batchNo'] = element.BatchNo;
-            salesDetailInsert['batchExpDate'] = element.BatchExpDate;
+            salesDetailInsert['batchExpDate'] =  this.datePipe.transform(element.BatchExpDate,"yyyy/mm/dd");//element.BatchExpDate;
             salesDetailInsert['unitMRP'] = element.UnitMRP;
             salesDetailInsert['qty'] = element.Qty;
             salesDetailInsert['totalAmount'] = element.TotalMRP;
@@ -2234,23 +2238,16 @@ loadingarry:any=[];
             "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
             "salesPayment": result.submitDataPay.ipPaymentInsert
           };
-          console.log(submitData);
+          let vMobileNo=this.MobileNo;
           this._salesService.InsertCashSales(submitData).subscribe(response => {
             if (response) {
               this.toastr.success('Record Saved Successfully.', 'Save !', {
                 toastClass: 'tostr-tost custom-toast-success',
               });
-              this.GSalesNo=response;
               this.getPrint3(response);
-              if( this.GSalesNo !=0){
-                if(this.Functionflag ==1){
-                  this. getWhatsappshare();
-                  }
-                }
+              this.getWhatsappshareSales(response,vMobileNo)
               this.Itemchargeslist = [];
               this._matDialog.closeAll();
-
-            
             } else {
               this.toastr.error('API Error!', 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
@@ -2279,11 +2276,10 @@ loadingarry:any=[];
           });
         }
       }
-    
-    // }
-      // else{
-      //   Swal.fire("Plzc hk Payment Date !");
-      // }
+    else{
+      this.onCreditpaySave();
+        // Swal.fire("Plzc hk Payment Date !");
+      }
     })
   
   }
@@ -2304,6 +2300,37 @@ loadingarry:any=[];
         }, 1000);
       })
     );
+  }
+
+  getWhatsappshareSales(el,vmono) {
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": "Dear" + vmono + ",Your Sales Bill has been successfully completed. UHID is " + el + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+        "isSent": 0,
+        "smsType": 'Sales',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType":2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": this.Filepath || '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._BrowsSalesBillService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('Bill Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+    this.IsLoading = false;
   }
 
   print3() {
@@ -2375,7 +2402,14 @@ debugger
       
       if (parseFloat(m_marginamt) <= parseFloat(LandedTotalAmount)) {
         Swal.fire('Discount amount greater than Purchase amount, Please check !');
-        contact.DiscPer=this.DiscOld;
+        
+        contact.DiscPer= this.DiscOld;
+        DiscAmt = 0// ((contact.TotalMRP * (this.DiscOld)) / 100).toFixed(2);
+        let NetAmt = parseFloat(contact.TotalMRP);
+
+        contact.DiscAmt= DiscAmt || 0,
+         contact.NetAmt= NetAmt
+
       } else {
         // this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
       }
@@ -2386,8 +2420,11 @@ debugger
   }
 
   getCellCalculation(contact, Qty) {
+    debugger
+    this.StockId=contact.StockId;
+    this.Qty=Qty;
     if (contact.Qty != 0 && contact.Qty != null) {
-      console.log(contact.Qty);
+      // console.log(contact.Qty);
       this.BalChkList = [];
       this.StoreId = this._loggedService.currentUserValue.user.storeId
       let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
@@ -2398,14 +2435,14 @@ debugger
         if (this.BalChkList.length > 0) {
           if (this.BalChkList[0].BalanceQty >= contact.Qty) {
             this.QtyBalchk = 1;
-            // console.log('222222')
+            
             this.tblCalucation(contact,contact.Qty)
           }
           else {
             this.QtyBalchk = 1;
             Swal.fire("Please Enter Qty Less than Balance Qty :" + contact.ItemName + " . Available Balance Qty :" + this.BalChkList[0].BalanceQty)
             contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
-            // console.log('222222  : ' + contact.Qty)
+            contact.Qty=this.Qty;
             this.tblCalucation(contact,contact.Qty)
           }
         }
@@ -2534,7 +2571,7 @@ debugger
       salesDetailInsertCredit['salesID'] = 0;
       salesDetailInsertCredit['itemId'] = element.ItemId;
       salesDetailInsertCredit['batchNo'] = element.BatchNo;
-      salesDetailInsertCredit['batchExpDate'] = element.BatchExpDate;
+      salesDetailInsertCredit['batchExpDate'] =  element.BatchExpDate;//this.datePipe.transform(element.BatchExpDate,"yyyy/mm/dd");// element.BatchExpDate;
       salesDetailInsertCredit['unitMRP'] = element.UnitMRP;
       salesDetailInsertCredit['qty'] = element.Qty;
       salesDetailInsertCredit['totalAmount'] = element.TotalMRP;
@@ -2584,34 +2621,36 @@ debugger
       "cal_DiscAmount_SalesCredit": cal_DiscAmount_SalesCredit,
       "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
     };
-    // console.log(submitData);
-    // 
+    let vMobileNo=this.mobileno;
     this._salesService.InsertCreditSales(submitData).subscribe(response => {
       if (response) {
-        Swal.fire('Credit Sales!', 'Data saved Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this.GSalesNo=response;
-            this.getPrint3(response);
-            if( this.GSalesNo !=0){
-              if(this.Functionflag ==1){
-                this. getWhatsappshare();
-                }
-              }
-            this.Itemchargeslist = [];
-            this._matDialog.closeAll();
-          }
+        this.toastr.success('Record Saved Successfully.', 'Credit Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
         });
+        this.getPrint3(response);
+        this.getWhatsappshareSales(response,vMobileNo);
+        this.Itemchargeslist = [];
+        this._matDialog.closeAll();
+      
       } else {
-        Swal.fire('Error !', 'Sale Credit data not saved', 'error');
+      
+        this.toastr.error('API Error!', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
       }
       this.sIsLoading = '';
+    }, error => {
+      
+      this.toastr.error('API Error!', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
     });
     this.ItemFormreset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.getConcessionReasonList();
     this.PatientName = '';
-    this.MobileNo = '';
+    // this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
     this.saleSelectedDatasource.data = [];
 
@@ -2652,17 +2691,17 @@ debugger
     
  }
   onAddDraftList(contact) {
-    
+    console.log(contact)
     this.DraftID=contact.DSalesId;
     this.saleSelectedDatasource.data = [];
     this.Itemchargeslist1=[];
     this.Itemchargeslist=[];
 
     let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
-    console.log(strSql);
+    // console.log(strSql);
     this._salesService.getchargesList(strSql).subscribe(data => {
       this.tempDatasource.data = data as any;
-      // console.log(this.tempDatasource.data);
+      console.log(this.tempDatasource.data);
       if (this.tempDatasource.data.length >= 1) {
         this.tempDatasource.data.forEach((element) => {
           this.DraftQty = element.QtyPerDay
@@ -2676,11 +2715,12 @@ debugger
 
 
   onAddDraftListTosale(contact,DraftQty) {
-
+    console.log(contact)
     this.Itemchargeslist1=[];
     this.QtyBalchk = 0;
     this.PatientName = this.dataSource1.data[0]["PatientName"];
-    this.MobileNo = this.dataSource1.data[0]["MobileNo"];
+    this.MobileNo = this.dataSource1.data[0]["extMobileNo"];
+    this.vextAddress = this.dataSource1.data[0]["extAddress"];
     this.DoctorName = this.dataSource1.data[0]["AdmDoctorName"];
 
   
@@ -2694,10 +2734,19 @@ debugger
       this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
         console.log(draftdata)
         this.Itemchargeslist1=draftdata as any;
+        if(this.Itemchargeslist1.length == 0){
+          Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:"  )
+          // this.PatientName = '';
+          // this.vextAddress=" ";
+          // this.MobileNo =' ';
+          // this.DoctorName=" ";
+        }
+        else if(this.Itemchargeslist1.length > 0){
+      
         let ItemID;
         this.Itemchargeslist1.forEach((element) => {
         
-          console.log(element)
+          // console.log(element)
           if(ItemID !=element.ItemId){
             this.QtyBalchk =0;
           }
@@ -2715,7 +2764,7 @@ debugger
             }
           }
         });
-
+      }
 
       });
 
@@ -2832,7 +2881,9 @@ debugger
     SalesInsert['creditReasonID'] = 0;
     SalesInsert['wardId'] = 0;
     SalesInsert['bedId'] = 0;
-    SalesInsert['discper_H'] = 0;
+    SalesInsert['extMobileNo'] = this.MobileNo;
+    SalesInsert['extAddress'] = this.vextAddress;
+
     SalesInsert['DsalesId'] = 0;
    
     let salesDetailInsertarr = [];
@@ -2866,7 +2917,7 @@ debugger
       "salesDraftbillDetailInsert": salesDetailInsertarr
     
     };
-    console.log(submitData);
+    // console.log(submitData);
     this._salesService.InsertSalesDraftBill(submitData).subscribe(response => {
       if (response) {
        

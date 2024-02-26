@@ -163,7 +163,8 @@ export class UpdateGRNComponent implements OnInit {
   ]
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+ // @ViewChild(MatPaginator) paginator: MatPaginator;
   filteredOptions: any;
   noOptionFound: boolean;
   ItemName: any;
@@ -231,7 +232,7 @@ export class UpdateGRNComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
   ) { }
   @ViewChild('picker') datePickerElement = MatDatepicker;
-  Cahchecked: any = 1;
+  Cahchecked: any = 0;
   Grntypechecked: any = 1;
   selectedAdvanceObj: PODetailList;
   ngOnInit(): void {
@@ -314,13 +315,15 @@ export class UpdateGRNComponent implements OnInit {
         
         // this.calculateDiff(this.lastDay);
         this._GRNList.userFormGroup.get('ExpDatess').setValue(this.lastDay)
+       // Swal.fire('Item Expired in next 3 Months');
         this.qty.nativeElement.focus();
       } else {
         this.lastDay = 'Invalid month';
       }
     } else {
-      this.lastDay = 'Invalid input';
+      this.lastDay = '';
     }
+    
   }
 
   getLastDayOfMonth(month: number, year: number): number {
@@ -348,7 +351,7 @@ export class UpdateGRNComponent implements OnInit {
         this.lastDay = 'Invalid month';
       }
     } else {
-      this.lastDay = 'Invalid input';
+      this.lastDay = ' ';
     }
   }
 
@@ -1085,7 +1088,8 @@ export class UpdateGRNComponent implements OnInit {
 
       this.NetAmount = (totalamt + parseFloat(this.GSTAmount)).toFixed(2);
       this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
-    } else {
+    } 
+    else if (event.value.Name == "GST Before Disc") {
       this.GST = ((parseFloat(this.CGST)) + (parseFloat(this.SGST)) + (parseFloat(this.IGST)));
       this.CGSTAmount = ((this.TotalAmount * parseFloat(this.CGST)) / 100).toFixed(2);
       this.SGSTAmount = ((this.TotalAmount * parseFloat(this.SGST)) / 100).toFixed(2);
@@ -1096,6 +1100,17 @@ export class UpdateGRNComponent implements OnInit {
       this.NetAmount = (parseFloat(this.TotalAmount) - parseFloat(this._GRNList.userFormGroup.get('DisAmount').value) + parseFloat(this.GSTAmount)).toFixed(2);
       this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
     }
+    // else if (event.value.Name == "GST On MRP") {
+    //   this.GST = ((parseFloat(this.CGST)) + (parseFloat(this.SGST)) + (parseFloat(this.IGST)));
+    //   this.CGSTAmount = ((this.TotalAmount * parseFloat(this.CGST)) / 100).toFixed(2);
+    //   this.SGSTAmount = ((this.TotalAmount * parseFloat(this.SGST)) / 100).toFixed(2);
+    //   this.IGSTAmount = ((this.TotalAmount * parseFloat(this.IGST)) / 100).toFixed(2);
+    //   this.GSTAmount = ((parseFloat(this.CGSTAmount)) + (parseFloat(this.SGSTAmount)) + (parseFloat(this.IGSTAmount))).toFixed(2);
+
+    //   this.GSTAmt = ((this.TotalAmount * parseFloat(this.GSTPer)) / 100).toFixed(2);
+    //   this.NetAmount = (parseFloat(this.TotalAmount) - parseFloat(this._GRNList.userFormGroup.get('DisAmount').value) + parseFloat(this.GSTAmount)).toFixed(2);
+    //   this._GRNList.userFormGroup.get('NetAmount').setValue(this.NetAmount);
+    // }
   }
   gePharStoreList() {
     var vdata = {
@@ -1124,7 +1139,7 @@ export class UpdateGRNComponent implements OnInit {
     this.MRP = obj.UnitMRP || 0;
     this.Specification = obj.Specification;
     this._GRNList.userFormGroup.get('Disc').setValue('');
-    //this.itemname.nativeElement.focus();
+    this.batchno.nativeElement.focus();
     this.getLastThreeItemInfo();
   }
 
@@ -1229,6 +1244,13 @@ export class UpdateGRNComponent implements OnInit {
     }
   }
   OnSavePO() {
+    if ((!this.dsItemNameList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this._GRNList.GRNFinalForm.valid){
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
@@ -1350,9 +1372,7 @@ export class UpdateGRNComponent implements OnInit {
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray,
       "update_POHeader_Status_AganistGRN": update_POHeader_Status_AganistGRN
     };
-
     console.log(submitData);
-
     this._GRNList.GRNSave(submitData).subscribe(response => {
       if (response) {
         this.toastr.success('Record PO TO GRN Saved Successfully.', 'Saved !', {
@@ -1360,7 +1380,6 @@ export class UpdateGRNComponent implements OnInit {
         });
         this._matDialog.closeAll();
         this.OnReset();
-
       } else {
         this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -1371,13 +1390,27 @@ export class UpdateGRNComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
-  }
+  
+} else{
+  error => {
+    this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  };
+}
+}
 
   OnSavenew() {
+    if ((!this.dsItemNameList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this._GRNList.GRNFinalForm.valid){
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-
 
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
@@ -1398,7 +1431,6 @@ export class UpdateGRNComponent implements OnInit {
     grnSaveObj['isVerified'] = false;
     grnSaveObj['isClosed'] = false;
     grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
-
     grnSaveObj['invDate'] = this.datePipe.transform(this._GRNList.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd");
     grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
     grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
@@ -1416,7 +1448,7 @@ export class UpdateGRNComponent implements OnInit {
 
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
-
+debugger
       console.log(element);
 
       let grnDetailSaveObj = {};
@@ -1453,8 +1485,6 @@ export class UpdateGRNComponent implements OnInit {
         console.log(this.vExpDate)
       }
 
-
-
       grnDetailSaveObj['batchExpDate'] = this.vExpDate;
       grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
       grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
@@ -1490,9 +1520,7 @@ export class UpdateGRNComponent implements OnInit {
       "grnDetailSave": SavegrnDetailObj,
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray
     };
-
     console.log(submitData);
-
     this._GRNList.GRNSave(submitData).subscribe(response => {
       if (response) {
         this.toastr.success('Record Saved Successfully.', 'Saved !', {
@@ -1511,12 +1539,26 @@ export class UpdateGRNComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
+  
+}else{
+  error => {
+    this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  };
+}
 
   }
 
 
-  OnSaveEdit() {
-
+OnSaveEdit() {
+  if ((!this.dsItemNameList.data.length)) {
+    this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if(this._GRNList.GRNFinalForm.valid){
     let updateGRNHeaderObj = {};
     updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
     updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
@@ -1562,7 +1604,6 @@ export class UpdateGRNComponent implements OnInit {
         console.log(this.vExpDate)
       }
 
-
       let grnDetailSaveObj = {};
       grnDetailSaveObj['grnDetID'] = 0;
       grnDetailSaveObj['grnId'] = this.registerObj.GRNID;
@@ -1601,37 +1642,37 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['isVerifiedUserId'] = 0
 
       SavegrnDetailObj.push(grnDetailSaveObj);
-
     });
-
     let delete_GRNDetailsobj = {}
     delete_GRNDetailsobj["GRNId"] = this.registerObj.GRNID;
-
 
     let submitData = {
       "updateGRNHeader": updateGRNHeaderObj,
       "delete_GRNDetails": delete_GRNDetailsobj,
       "grnDetailSave": SavegrnDetailObj
     };
-
     console.log(submitData);
-    //
     this._GRNList.GRNEdit(submitData).subscribe(response => {
       if (response) {
         this.toastr.success('Record Updated Successfully.', 'Updated !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-
         this._matDialog.closeAll();
         this.OnReset()
       }
-
     }, error => {
       this.toastr.error('New GRN Data not Updated !, Please check API error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
-  }
+}else{
+  error => {
+    this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  };
+}
+}
 
   // PaymentTypeChk() {
   //   if (this._GRNList.userFormGroup.get('PaymentType').value == 'Credit') {
@@ -1926,6 +1967,7 @@ export class UpdateGRNComponent implements OnInit {
       });
 
     _dialogRef.afterClosed().subscribe(result => {
+      debugger
       console.log(result)
 
 
@@ -1939,7 +1981,7 @@ export class UpdateGRNComponent implements OnInit {
       // this.dsItemNameList[0].PurUnitRate= (parseInt(result[i].TotalAmount) / parseInt(result[i].ReceiveQty) * parseInt(result[i].ConversionFactor)) || 0
       // this.dsItemNameList[0].PurUnitRateWF = (parseInt(this.TotalAmount) / parseInt(result[i].TotalQty) * parseInt(result[i].ConversionFactor)) || 0
       // }
-      this.vPurchaseId = result[0].PurchaseId;
+      this.vPurchaseId = result[0].PurchaseID;
       this.vpoBalQty = result[0].ReceiveQty;
       // console.log(this.vpoBalQty)
       let other = result[0].FreightCharges + result[0].HandlingCharges + result[0].TransportChanges + result[0].OctriAmount
