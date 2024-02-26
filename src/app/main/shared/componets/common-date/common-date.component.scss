@@ -10,13 +10,15 @@
 }
 
 .dateField ::ng-deep .mat-form-field-flex {
-    height: 42px;
-    width: 119px;
+    // height: 42px;
+    height: auto;
+    width: 130px;
     align-items: center;
 }
 
 .timeField ::ng-deep .mat-form-field-flex {
-    height: 42px;
+    // height: 42px;
+    height: auto;
     width: 119px;
     align-items: center;
 }

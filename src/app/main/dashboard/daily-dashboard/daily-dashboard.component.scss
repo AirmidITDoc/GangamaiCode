@@ -1,6 +1,6 @@
 #dashboard-project {
     .mat-display-1, .mat-typography .mat-display-1 {
-        font: 300 25px/40px Muli, Helvetica Neue, Arial, sans-serif;
+        // font: 300 25px/40px Muli, Helvetica Neue, Arial, sans-serif;
         letter-spacing: normal;
         margin: 0 0 64px;
     }
@@ -14,10 +14,11 @@
     > .center {
 
         > .header {
-            height: 80px;
-            min-height: 80px;
+            // height: 80px;
+            // min-height: 80px;
+            height: 75px;
+            min-height: 75px;
             max-height: 160px;
-
             .selected-project {
                 background: rgba(0, 0, 0, 0.12);
                 color: #FFFFFF;
@@ -175,12 +176,20 @@
 .icon-div {
     padding: 8px;
     border-radius: 5px;
+    height: 45px;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .labels-div {
     text-align: end;
     color: black;
     font-weight: bold;
-    font-size: 18px;
+    // font-size: 16px;
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
 }
 .icon-1 {
     background-color: #9661db;

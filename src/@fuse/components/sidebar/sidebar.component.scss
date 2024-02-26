@@ -1,4 +1,5 @@
 @import "src/@fuse/scss/fuse";
+$sidebarWidth:250px;
 
 fuse-sidebar {
     display: flex;
@@ -10,13 +11,13 @@ fuse-sidebar {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    width: 280px;
-    min-width: 280px;
-    max-width: 280px;
+    width: $sidebarWidth;
+    min-width: $sidebarWidth;
+    max-width: $sidebarWidth;
     z-index: 1000;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.35);
 
-    @include media-breakpoint('xs') {
+    @include media-breakpoint("xs") {
         min-width: 0 !important;
         max-width: 80vw !important;
         width: 80vw !important;
@@ -43,10 +44,13 @@ fuse-sidebar {
 
     &.folded {
         position: absolute !important;
+        // position: relative !important;
         top: 0;
         bottom: 0;
     }
-
+    &.fixed { //For overriding
+        position: fixed !important;
+    }
     &.animations-enabled {
         transition-property: transform, width, min-width, max-width;
         transition-duration: 150ms;

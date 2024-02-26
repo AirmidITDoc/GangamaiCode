@@ -248,11 +248,11 @@ export class AppointmentComponent implements OnInit {
 
   displayedColumns = [
     "PatientOldNew",
-    "MPbillNo",
-    "CrossConsultation",
+    // "MPbillNo",
+    // "CrossConsultation",
     // "Edit",
-    "Bill",
-    "PhoneAppId",
+    // "Bill",
+    // "PhoneAppId",
     "RegNoWithPrefix",
     "PatientName",
     "DVisitDate",
@@ -260,7 +260,6 @@ export class AppointmentComponent implements OnInit {
     "OPDNo",
     "Doctorname",
     "RefDocName",
-
     "PatientType",
     "CompanyName",
     'TariffName',
@@ -380,7 +379,6 @@ export class AppointmentComponent implements OnInit {
       startWith(''),
       map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
     );
-
 
 
     this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(

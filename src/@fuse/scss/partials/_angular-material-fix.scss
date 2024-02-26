@@ -28,7 +28,12 @@ button {
 
 // Fix: "Icon button ripple radius is not correct on Edge & Safari"
 .mat-icon-button {
-
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 30px;
     .mat-button-ripple {
         border-radius: 50%;
     }

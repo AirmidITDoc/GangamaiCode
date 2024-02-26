@@ -1,0 +1,73 @@
+@import "src/@fuse/scss/fuse";
+// .vertical-layout-1
+$sidebarWidth: 250px;
+vertical-layout-1 {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+
+    .main-layout {
+        position: relative;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        min-width: 0;
+        // Container 1
+        .layout-wrapper {
+            position: relative;
+            display: flex;
+            flex: 1 1 0%;
+            width: 100%;
+            min-height: 0;
+            min-width: 0;
+            // Sidebar section
+            .navbar-fuse-sidebar {
+            }
+            // dashboard panel
+            .dashboard-panel {
+                position: relative;
+                display: flex;
+                flex: 1 1 0%;
+                flex-direction: column;
+                min-width: 0;
+                transition: 150ms;
+                &.p-left {
+                    padding-left: $sidebarWidth;
+                }
+                &.p-right {
+                    padding-right: $sidebarWidth;
+                }
+                @include media-breakpoint("lt-lg") {
+                    &.p-left,
+                    &.p-right {
+                        padding: 0px;
+                    }
+                }
+                // Container 3 (Scrollable)
+                .container {
+                    position: relative;
+                    display: flex;
+                    flex: 1 1 0%;
+                    flex-direction: column;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    -webkit-overflow-scrolling: touch;
+                    // Content component
+                    content {
+                        &.inner-scroll {
+                            flex: 1 1 0%;
+                            min-height: 0;
+                            > *:not(router-outlet) {
+                                flex: 1 1 0%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

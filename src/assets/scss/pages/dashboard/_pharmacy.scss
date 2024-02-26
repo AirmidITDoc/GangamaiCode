@@ -1,0 +1,65 @@
+.pharmacy-dashboard {
+    .center {
+        .header {
+            padding: 0px 20px;
+            .mat-form-field {
+                .mat-form-field-infix {
+                    padding-bottom: 10px;
+                }
+            }
+        }
+        .dashboard-container {
+            .mat-card {
+                // height: 340px !important;
+                padding: 20px 30px;
+                height: 100%;
+                position: relative;
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    width: 100%;
+                    align-items: center;
+                    min-height: 60px;
+                }
+                .card-title {
+                    @include font-size(30px);
+                }
+                .card-chart-per {
+                    span {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+                .cash-header {
+                }
+                .cash-body {
+                    flex-wrap: wrap;
+                    gap: 25px;
+                    .cash-col-left {
+                        display: flex;
+                        flex-flow: column;
+                        gap: 20px;
+                        .gross-amount {
+                        }
+                        .total-amount-in {
+                        }
+                        .total-amount-out {
+                            display: flex;
+                            gap: 25px;
+                        }
+                    }
+                    .cash-col-right {
+                    }
+                }
+                .pharmacy-db-spinnner {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+        }
+    }
+}

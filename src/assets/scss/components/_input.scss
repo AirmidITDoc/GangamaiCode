@@ -1,0 +1,171 @@
+// form {
+//   // ensure enough room at the bottom of any form to display a one-line bmd-help
+// //   margin-bottom: $line-height-base;
+//   .card & {
+//     margin: 0;
+//   }
+//   // reverse the above for navbars (no help expected in a navbar form)
+//   .navbar & {
+//     margin-bottom: 0; // only adjust bottom so that pull-xs-right flexed margin-left: auto works
+//     .bmd-form-group {
+//       display: inline-block;
+//       padding-top: 0;
+//     }
+//     .btn {
+//       margin-bottom: 0;
+//     }
+//   }
+// }
+// .form-group {
+//   margin-bottom: 1.375rem;
+//   margin-bottom: 1.5rem;
+//   padding-top: 1rem;
+//   position: relative;
+//   .form-error {
+//     display: block;
+//     position: absolute;
+//     top: calc(100% + 6px);
+//     @include font-size(12px);
+//   }
+//   .control-label {
+//     font-family: $inter-medium;
+//     // margin-bottom: 0.375rem;
+//     // @include font-size(12px);
+//     @include margin-bottom(8px);
+//     @include font-size(18px);
+//     color: $gray-600;
+//     font-family: $inter-medium;
+//   }
+//   @include themed() {
+//     $background: t($bg-color);
+//     // color: t($text-color);
+//     .control-label {
+//       color: t($input-control-label);
+//     }
+//   }
+// }
+// // Inputs
+// .form-control,
+// .form-group .form-control {
+//   // border: 1px solid rgba(0, 0, 0, 0.2);
+//   background-size: 0 2px, 100% 1px;
+//   background-repeat: no-repeat;
+//   background-position: center bottom, center calc(100% - 1px);
+//   transition: background 0s ease-out;
+//   float: none;
+//   // padding: 0.7815rem 1rem;
+//   @include padding(17px 25px);
+//   border-radius: 8px;
+//   font-family: $inter-medium;
+//   @include line-height(20px);
+//   @include font-size(14px);
+//   &.form-control-xl{
+//     @include padding(21px 25px);
+//   }
+//   // Placeholders and and labels-as-placeholders should look the same
+//   @include material-placeholder {
+//     font-family: $inter-light;
+//   }
+//   &:focus {
+//     outline: none;
+//     box-shadow: none;
+//     transition-duration: 0.3s;
+//   }
+//   @include themed() {
+//     color: t($text-color);
+//     background-color: $primary-25;
+//     border-color: t($input-border);
+//     box-shadow: 0px 1px 2px 0px transparentize($gray-900, 0.95);
+//     @include material-placeholder {
+//       color: $gray-500;
+//     }
+//     &[readonly],
+//     &[disabled] {
+//       background: t($input-border);
+//     }
+//     &[disabled] {
+//       background: transparentize(t($input-border), 0.85);
+//     }
+//     &:focus {
+//       border-color: $primary-600;
+//       box-shadow: 0px 0px 0px 4px $primary-100,
+//         0px 1px 2px 0px transparentize($gray-900, 0.95);
+//     }
+//     // &.ng-touched {
+//     //   color: t($text-color);
+//     // }
+//     // &.ng-invalid {
+//     //   color: t($text-color);
+//     // }
+//     // &.ng-valid {
+//     //   color: t($text-color);
+//     // }
+//     &.ng-dirty {
+//       &.ng-invalid {
+//         &.ng-touched {
+//           border-color: $red-300;
+//           &:focus {
+//             border-color: $red-300;
+//             box-shadow: 0px 0px 0px 4px $red-100,
+//               0px 1px 2px 0px transparentize($gray-900, 0.95);
+//           }
+//         }
+//       }
+//     }
+//     //  ng-dirty ng-invalid
+//     @include placeholder();
+//   }
+// }
+// textarea.form-control {
+//   min-height: 98px;
+//   resize: none;
+// }
+// @include media-breakpoint('xs') {
+//   .form-group {
+//     margin-bottom: 1.375rem;
+//     padding-top: 1rem;
+//     .form-error {
+//       top: calc(100% + 6px);
+//       @include font-size(8px);
+//     }
+//     .control-label {
+//       // margin-bottom: 0.375rem;
+//       @include font-size(16px);
+//     }
+//   }
+//   // Inputs
+//   .form-control,
+//   .form-group .form-control {
+//     // padding: 0.6rem 0.75rem;
+//     // @include padding(14px 25px);
+//     @include font-size(14px);
+//     // @include material-placeholder {
+//     //   @include themed() {
+//     //     color: t($text-color);
+//     //   }
+//     // }
+//     &:textarea {
+//       height: 40px;
+//     }
+//   }
+// }
+
+// Override styles for elements within mat-form-field
+.mat-form-field {
+    @include font-size(11px);
+    .mat-form-field-wrapper{
+        .mat-form-field-flex {
+            .mat-form-field-outline{
+                
+            }
+            .mat-form-field-infix{
+                .mat-form-field-label-wrapper{
+                    .mat-form-field-label{
+                        // color: $primary-25;
+                    }
+                }
+            }
+        }
+    }
+  }
+  

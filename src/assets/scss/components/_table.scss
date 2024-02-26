@@ -1,0 +1,55 @@
+.mat-table {
+    .mat-header-row {
+        min-height: auto;
+        height: auto;
+        .mat-header-cell {
+            @include font-size(13px);
+            color: inherit;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &:not(:first-of-type) {
+                padding: 10px 0px;
+            }
+            .mat-sort-header-button,
+            .mat-sort-header-arrow {
+                color: inherit;
+            }
+        }
+    }
+    .mat-row {
+        min-height: auto;
+        height: auto;
+        .mat-cell {
+            @include font-size(12px);
+            word-break: break-word;
+            line-height: 20px;
+            &:not(:first-of-type) {
+                padding: 7px 0px;
+            }
+            .mat-icon-button {
+                height: 25px;
+                width: 25px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                line-height: 25px;
+                .material-icons {
+                    font-size: 1.5rem;
+                }
+            }
+            span {
+                @include line-clamp(1);
+            }
+        }
+        &:hover {
+            background: #d7d7d7;
+        }
+        &:active {
+            background: #d7d7d7;
+        }
+        &.self-row {
+            background-color: $primary-50;
+        }
+    }
+}

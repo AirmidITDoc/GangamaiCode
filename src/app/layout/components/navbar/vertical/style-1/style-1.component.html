@@ -18,7 +18,7 @@
 <div class="navbar-scroll-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground" fusePerfectScrollbar
     [fusePerfectScrollbarOptions]="{ suppressScrollX: true }">
     <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
-        <div class="h3 username">
+        <div class="h4 username">
             {{ user && user.user && user.user.firstName }} {{ user && user.user && user.user.lastName }}
         </div>
         <div class="h5 email hint-text mt-8">{{ user && user.user && user.user.email }}</div>

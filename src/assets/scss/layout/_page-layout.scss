@@ -1,0 +1,37 @@
+.page-layout {
+    .center{
+        .header {
+            height: 70px ;
+            .welcome-message{
+                @include font-size(20px);
+            }
+            .header-row {
+                width: 100%;
+            }
+        }
+        .content-card{
+            position: relative;
+        }
+    }
+    .opd-header{
+        height: auto;
+        min-height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 16px;
+        .date-time-container{
+            .mat-form-field{
+                .mat-form-field-wrapper{
+                    margin: 0;
+                    padding: 0;
+                    .mat-form-field-flex{
+                        .mat-form-field-infix{
+                            padding:0.7em 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

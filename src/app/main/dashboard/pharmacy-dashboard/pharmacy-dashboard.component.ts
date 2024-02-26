@@ -65,6 +65,7 @@ export class PharmacyDashboardComponent implements OnInit {
     showYAxis: true,
     gradient: false,
     showLegend: true,
+    legendPosition:'below', // right or below
     showXAxisLabel: true,
     xAxisLabel: 'Store',
     showYAxisLabel: true,

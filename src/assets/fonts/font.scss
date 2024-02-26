@@ -1,0 +1,29 @@
+@font-face {
+    font-family: "inter";
+    src: url("./inter-regular.ttf");
+}
+@font-face {
+    font-family: "inter-medium";
+    src: url("./inter-medium.ttf");
+}
+@font-face {
+    font-family: "inter-bold";
+    src: url("./inter-bold.ttf");
+}
+@font-face {
+    font-family: "inter-semibold";
+    src: url("./inter-semibold.ttf");
+}
+@font-face {
+    font-family: "inter-light";
+    src: url("./inter-light.ttf");
+}
+
+$inter: "inter", sans-serif;
+$inter-medium: "inter-medium", sans-serif;
+$inter-bold: "inter-bold", sans-serif;
+$inter-semibold: "inter-semibold", sans-serif;
+$inter-light: "inter-light", sans-serif;
+
+$roboto: Roboto, "Helvetica Neue", sans-serif ;
+$muli: Muli, Helvetica Neue, Arial, sans-serif ;
