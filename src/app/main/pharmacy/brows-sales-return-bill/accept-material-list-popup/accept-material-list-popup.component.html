@@ -16,6 +16,33 @@
                 <div fxlayout="row">
                     <div style="width: 100%">
                         <mat-table #table matSort [dataSource]="dsItemList" style="overflow: auto">
+
+                            <ng-container matColumnDef="Action">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    <span class="material-icons" >
+                                        <mat-checkbox aria-label="Checked" [(ngModel)]="masterCheckbox" (change)="checkUncheckAll(contact)" checked>
+                                        </mat-checkbox>
+                                        cached
+                                    </span>
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"
+                                    [(ngModel)]="contact.selected">
+                                    </mat-checkbox>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Status">
+                                <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                            
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <mat-icon [style.color]="contact.selected ? 'green' : 'red'" >
+                                        {{contact.selected ? 'check_circle' : 'cancel'}}
+                                      </mat-icon>
+                                    {{contact.Status}}
+                                </mat-cell>
+                              </ng-container>
+                              
                             <ng-container matColumnDef="ItemName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                     ItemName
