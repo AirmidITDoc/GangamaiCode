@@ -8,15 +8,34 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 export class DashboardService {
   UseFrom: FormGroup;
+  DayWiseFrom:FormGroup;
+  MonthWiseFrom:FormGroup;
   constructor(public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
-  ) { this.UseFrom = this.createUseFrom() }
+  ) { this.UseFrom = this.createUseFrom();
+    this.DayWiseFrom = this.createDaywisefrom();
+    this.MonthWiseFrom = this.createMonthwiseFrom();
+  }
 
   createUseFrom() {
     return this._formBuilder.group({
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
       StoreId: ''
+    });
+  }
+  createDaywisefrom(){
+    return this._formBuilder.group({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      FromStoreId: ''
+    });
+  }
+  createMonthwiseFrom(){
+    return this._formBuilder.group({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      FromStoreId: ''
     });
   }
 
@@ -62,6 +81,10 @@ export class DashboardService {
 
   public getPharDashboardPeichart(spname, params) {
     return this._httpClient.post("Dashboard/get-pie-chart-date?procName=" + spname, params)
+  }
+   //logged Store
+   public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
 
   public getPharDashboardBarchart(spname, params) {
@@ -118,6 +141,11 @@ export class DashboardService {
   {
      return this._httpClient.post("Generic/GetByProc?procName=m_dash_PharUserCountStoreWise",{})
   }
+
+
+
+
+
   
 }
 
