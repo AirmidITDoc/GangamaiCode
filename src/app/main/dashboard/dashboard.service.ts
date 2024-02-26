@@ -105,5 +105,19 @@ export class DashboardService {
   {
      return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryMonthWiseDashboard",x)
   }
+
+  public getPharPaymentSummary(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_dash_PharPaymentSummary",x)
+  }
+  public getPharUserInfoStoreWise(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_dash_PharUserInfoStoreWise",x)
+  }
+  public getPharUserCountStoreWise()
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_dash_PharUserCountStoreWise",{})
+  }
+  
 }
 

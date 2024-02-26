@@ -39,26 +39,19 @@ export class PharmacyDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getPharDashboardSalesSummary();
     this.getPharmStoreList();
-    this.getPharStockValueSumData();
     this.fetchStaticData();
     this.fetchThreeMonSalesSumData();
     this.getPharCollSummStoreWiseDashboard();
 
     this.getOPChartData();
     this.getPieChartPharCurrentValueData();
-
+    this.getPharUserInfoStoreWise();
     this.createForm();
     this.createForm1();
 
   var myCurrentDate=new Date(); 
   var myPastDate=new Date(myCurrentDate);
   myPastDate.setDate(myPastDate.getDate() - 1);
-  
-  // let m_data = {
-  //   "FromDate": myPastDate, //this.datePipe.transform(this.rangeFormGroup.get('myPastDate').value,"MM-dd-yyyy") || '01/01/2021',
-  //   "ToDate": this.datePipe.transform(this.rangeFormGroup.get('endDate').value,"MM-dd-yyyy") || '01/11/2021'
-  // }
-  // this.getTableData(m_data);
 
   var myCurrentDate1=new Date(); 
     var myPastDate1=new Date(myCurrentDate1);
@@ -67,8 +60,8 @@ export class PharmacyDashboardComponent implements OnInit {
       "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy"),
       "ToDate": this.datePipe.transform(this.rangeFormGroup1.get('endDate').value,"MM-dd-yyyy")
     }
-    // console.log(m_data1);
     this.getPharmsaleTableData(m_data1);
+    this.getPharPaymentSummary(m_data1);
 
     setTimeout(() => {
       this.widget6 = {
@@ -188,13 +181,8 @@ export class PharmacyDashboardComponent implements OnInit {
     this.fetchStaticData();
     this.fetchThreeMonSalesSumData();
     this.getPieChartPharCurrentValueData();
+    
   }
-  // displayedColumns = [
-  //   'StoreName',
-  //   'CollectionAmount',
-  //   'RefundAmount',
-  //   'NetAmount',
-  // ];
 
   public getOPChartData() {
     var m_data = {
@@ -250,6 +238,22 @@ export class PharmacyDashboardComponent implements OnInit {
       'BillCount'
     ];
 
+  
+    dsPaymentSummary = new MatTableDataSource<PaymentSummary>();
+    displayedColumnsPaySum = [
+      'StoreName',
+      'CashPay',
+      'ChequePay',
+      'OnlinePay',
+      'NetColAmt'
+    ];  
+
+    dsEmployee = new MatTableDataSource<Employee>();
+    displayedColumnsEmp = [
+      'StoreName',
+      'EmpCount',
+    ];
+
   dataSourceTable1 = new MatTableDataSource<PathCateSummary>();
   displayedColumns1 = [
       'PathDate',
@@ -301,29 +305,45 @@ export class PharmacyDashboardComponent implements OnInit {
       "ToDate": this.datePipe.transform(this.rangeFormGroup.get('endDate').value,"MM-dd-yyyy") || '01/11/2021'
     }
     this.getPharmsaleTableData(m_data);
+    this.getPharPaymentSummary(m_data);
   }
-
-  // PharmsalesonDateChange(event) {
-  //   let m_data = {
-  //     "FromDate": this.datePipe.transform(this.rangeFormGroup1.get('startDate').value,"MM-dd-yyyy") ,
-  //     "ToDate": this.datePipe.transform(this.rangeFormGroup1.get('endDate').value,"MM-dd-yyyy")
-  //     }
-  //   this.getPharmsaleTableData(m_data);
-  // }
 
   getPharmsaleTableData(params_sd) {
     this.sIsLoading = 'loading-data';
     this._DashboardService.getPharmacyCollectionStoreandDateWise(params_sd).subscribe((response: any) => {
       this.dataSourceTable.data = response;
-      // this.dataSourceTable1.sort = this.sort;
-      // this.dataSourceTable1.paginator = this.paginator;
-      // console.log(this.dataSourceTable.data);
       this.sIsLoading = '';
     },
     error => {
       this.sIsLoading = '';
     });
   }
+
+  getPharPaymentSummary(params_sd) {
+    this.sIsLoading = 'loading-data';
+    this._DashboardService.getPharPaymentSummary(params_sd).subscribe((response: any) => {
+      this.dsPaymentSummary.data = response;
+      this.sIsLoading = '';
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+
+  getPharUserInfoStoreWise() {
+    // var m_data = {
+    //   "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0, // this.pieChartCurStkData.currentRange,
+    // }
+    this.sIsLoading = 'loading-data';
+    this._DashboardService.getPharUserCountStoreWise().subscribe((response: any) => {
+      this.dsEmployee.data = response;
+      this.sIsLoading = '';
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+
   OnPopSalesSummary(contact){
     const dialogRef = this._matDialog.open(SalesSummaryComponent,
       {
@@ -545,66 +565,67 @@ export class PharmacyDashboardComponent implements OnInit {
   //     });
   // }
 
-  getPharStockValueSumData() {
-    this.isCollectionLoad = 'pharStockLoading';
-    let req = { StoreId: 10016 };
-    this._DashboardService.getPharStockColSumData('m_pharCurStockValueSummaryDashboard ', req).subscribe((respo: any) => {
-      if (respo && respo.length > 0) {
-        this.isCollectionLoad = 'pharStockLoaded';
-        respo.forEach((element) => {
-          this.pharCustStockLabels.push(element.StoreName);
-          this.pharCustStockData.push(element.CurValueWithMRP);
-        });
-      }
-    }, error => {
-      this.sIsLoading = 'no';
-    });
-  }
-
-  getPharPayModeColSumData() {
-    //bar chart pending
-    let req = { StoreId: 10035 };
-    this._DashboardService.getPharStockColSumData('m_pharPayModeColSummaryDashboard ', req).subscribe(data => {
-      // this.BardataList = data;
-      console.log(data);
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-  // BarChart(BarlabelData:any,BarchartData:any){
-
-  //   const Barchart = new Chart('BarChart', {
-  //     type: 'bar',
-  //     data: {
-  //       labels:BarlabelData ,//['Apple', 'Banana', 'Kiwifruit', 'Blueberry', 'Orange', 'Grapes'],
-  //       datasets: [
-  //         { data: BarchartData, label:'jan' },
-  //         { data: BarchartData, label: 'Dec' },
-  //         { data: BarchartData, label: 'Nov' },
-  //       ],
-
-
-  //     },
-  //     options: {  responsive: true,
-  //       plugins: {
-  //         legend: true,
-
-  //         tooltip: {
-  //           enabled: true,
-  //         },
-  //         backgroundColor: [
-
-  //         ],
-  //       },
-  //     },
-  //   })
-
+  // getPharStockValueSumData() {
+  //   this.isCollectionLoad = 'pharStockLoading';
+  //   let req = { StoreId: 10016 };
+  //   this._DashboardService.getPharStockColSumData('m_pharCurStockValueSummaryDashboard ', req).subscribe((respo: any) => {
+  //     if (respo && respo.length > 0) {
+  //       this.isCollectionLoad = 'pharStockLoaded';
+  //       respo.forEach((element) => {
+  //         this.pharCustStockLabels.push(element.StoreName);
+  //         this.pharCustStockData.push(element.CurValueWithMRP);
+  //       });
+  //     }
+  //   }, error => {
+  //     this.sIsLoading = 'no';
+  //   });
   // }
+
+  // getPharPayModeColSumData() {
+  //   //bar chart pending
+  //   let req = { StoreId: 10035 };
+  //   this._DashboardService.getPharStockColSumData('m_pharPayModeColSummaryDashboard ', req).subscribe(data => {
+  //     // this.BardataList = data;
+  //     console.log(data);
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+  // }
+  // // BarChart(BarlabelData:any,BarchartData:any){
+
+  // //   const Barchart = new Chart('BarChart', {
+  // //     type: 'bar',
+  // //     data: {
+  // //       labels:BarlabelData ,//['Apple', 'Banana', 'Kiwifruit', 'Blueberry', 'Orange', 'Grapes'],
+  // //       datasets: [
+  // //         { data: BarchartData, label:'jan' },
+  // //         { data: BarchartData, label: 'Dec' },
+  // //         { data: BarchartData, label: 'Nov' },
+  // //       ],
+
+
+  // //     },
+  // //     options: {  responsive: true,
+  // //       plugins: {
+  // //         legend: true,
+
+  // //         tooltip: {
+  // //           enabled: true,
+  // //         },
+  // //         backgroundColor: [
+
+  // //         ],
+  // //       },
+  // //     },
+  // //   })
+
+  // // }
 
   onDateRangeChanged() {
     this.fetchStaticData();
     this.getPharDashboardSalesSummary();
+    // this.getPharPaymentSummary();
   }
 
 
@@ -731,6 +752,33 @@ export class PathTestSummary {
     this.NetAmount = PathTestSummary.NetAmount || 0;
     this.BillCount = PathTestSummary.BillCount || 0;
     }
+}
+
+export class PaymentSummary {
+  StoreName: string;
+  CashPay: number;
+  ChequePay: number;
+  OnlinePay :number;
+  NetColAmt: number;
+  
+  constructor(PaymentSummary) {
+    this.StoreName = PaymentSummary.StoreName || '';
+    this.CashPay = PaymentSummary.CashPay || 0;
+    this.ChequePay = PaymentSummary.ChequePay || 0;
+    this.OnlinePay = PaymentSummary.OnlinePay || 0;
+    this.NetColAmt = PaymentSummary.NetColAmt || 0;
+    
+    }
+}
+
+export class Employee {
+  StoreName: string;
+  EmpCount: number;
+
+  constructor(Employee) {
+    this.StoreName = Employee.StoreName || '';
+    this.EmpCount = Employee.EmpCount || 0;
+  }
 }
 
 export class PathCateSummary {
