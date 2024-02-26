@@ -57,7 +57,7 @@
 
 
                                     <div fxLayout="row">
-                                        <mat-form-field appearance="outline" fxFlex="15%">
+                                        <mat-form-field appearance="outline" fxFlex="13%">
                                             <mat-label>Supplier Name | Code</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 [(ngModel)]="registerObj.SupplierId" (keydown)="onEnterSupplier($event)"
@@ -117,7 +117,7 @@
 
                                         </div>
 
-                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                        <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>InvoiceDate</mat-label>
                                             <input name="DateOfInvoice" matInput [matDatepicker]="picker11" (keydown)="onEnterDateOfInvoice($event)"
                                                 formControlName="DateOfInvoice" [(ngModel)]="registerObj.InvDate" #DateOfInvoice>
@@ -209,6 +209,7 @@
                                         <input matInput [(ngModel)]="BatchNo" name="BatchNo" formControlName="BatchNo"
                                             id="BatchNo" #batchno (keydown)="onEnterBatchNo($event)" required>
                                     </mat-form-field>&nbsp;
+                                    
                                     <!-- [max]="maxDate"  -->
                                     <!-- <mat-form-field appearance="outline" fxFlex="9%">
                                         <mat-label>Exp date</mat-label>
@@ -256,14 +257,14 @@
 
                                     <mat-form-field appearance="outline" fxFlex="7%">
                                         <mat-label>MRP</mat-label>
-                                        <input matInput [(ngModel)]="MRP" name="MRP" type="number"
+                                        <input matInput [(ngModel)]="MRP" name="MRP" 
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                                             formControlName="MRP" id="MRP" (keydown)="onEnterMRP($event)" #mrp required>
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="7%">
                                         <mat-label>Rate </mat-label>
-                                        <input matInput [(ngModel)]="Rate" name="Rate" type="number"
+                                        <input matInput [(ngModel)]="Rate" name="Rate" 
                                             (keyup)="calculateTotalamt()" formControlName="Rate" id="Rate"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                                             (keydown)="onEnterRate($event)" (keyup)="OnchekPurchaserateValidation()"
@@ -373,9 +374,9 @@
 
                                     <div matTooltip="Select All Value to enable this button!!">
                                         <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                                            (click)="onAdd($event)" [disabled]="_GRNList.userFormGroup.invalid"
-                                            style="background-color: blue; color: white; width: 70px;margin-left: 15px;margin-top: 10px; ">
-                                            <mat-icon> add </mat-icon> &nbsp;Add
+                                            (click)="onAdd($event)" 
+                                            style="background-color: blue; color: white; width: 70px;margin-left: 15px;margin-top: 5px;height: 35px; ">
+                                            <mat-icon>add</mat-icon>Add
                                         </button>
                                     </div>
 
