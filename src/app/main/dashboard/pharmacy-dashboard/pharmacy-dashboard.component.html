@@ -131,7 +131,7 @@
 
                         <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
                             <div class="h3"> Collection Summary</div>
-                            <mat-form-field style="width: 184px;">
+                            <!-- <mat-form-field style="width: 184px;">
                                 <mat-label>Enter a date range</mat-label>
                                 <mat-date-range-input [formGroup]="rangeFormGroup" [rangePicker]="picker">
                                     <input matStartDate placeholder="Start date" formControlName="startDate" readonly>
@@ -140,7 +140,7 @@
                                 </mat-date-range-input>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field>
+                            </mat-form-field> -->
                         </div>
 
                         <div class="table-container">
@@ -483,14 +483,14 @@
 
                      <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
                          <div class="h3">Customer Summary</div>
-                         <!-- <mat-form-field>
-                             <mat-select class="simplified" [(ngModel)]="pieChartCurStkData.currentRange"
-                                 (selectionChange)="onSelectPieOptionOP($event.value)" aria-label="Change range">
-                                 <mat-option *ngFor="let range of pieChartMaster | keys" [value]="range.key">
+                         <mat-form-field>
+                             <mat-select class="simplified" [(ngModel)]="pieChartCustomerData.currentRange"
+                                 (selectionChange)="onSelectPieOptionCustomer($event.value)" aria-label="Change range">
+                                 <mat-option *ngFor="let range of pieChartCustomerMaster | keys" [value]="range.key">
                                      {{range.value}}
                                  </mat-option>
                              </mat-select>
-                         </mat-form-field> -->
+                         </mat-form-field>
                          <form [formGroup]="_DashboardService.UseFrom">
                              <mat-form-field>
                                  <mat-select formControlName="StoreId" name="StoreId"
@@ -505,16 +505,16 @@
                      </div>
 
                      <div class="h-400">
-                         <div #containerRef1 *ngIf="DashChartCurStk.length > 0">
+                         <div #containerRef1 *ngIf="DashChartCustomer.length > 0">
                              <ngx-charts-pie-chart *fuseIfOnDom
-                                 [results]="this.pieChartCurStkData.mainChart[pieChartCurStkData.currentRange]"
+                                 [results]="this.pieChartCustomerData.mainChart[pieChartCustomerData.currentRange]"
                                  [legend]="widget6.showLegend" [explodeSlices]="widget6.explodeSlices"
                                  [labels]="widget6.labels" [doughnut]="widget6.doughnut"
                                  [gradient]="widget6.gradient" (select)="widget6.onSelect($event)"
                                  [view]="[containerRef1.offsetWidth, 400]">
                              </ngx-charts-pie-chart>
                          </div>
-                         <div style="text-align: center;" *ngIf="DashChartCurStk.length == 0">No Data Found </div>
+                         <div style="text-align: center;" *ngIf="DashChartCustomer.length == 0">No Data Found </div>
                      </div>
 
                      <div class="py-8 mh-16 border-top" fxLayout="row wrap" fxLayoutAlign="start center">
@@ -522,20 +522,20 @@
                          <div class="py-8 border-right" fxLayout="column" fxLayoutAlign="center center" fxFlex="100"
                              fxFlex.gt-sm="50">
                              <span class="mat-display-1 mb-0">
-                                 {{pieChartCurStkData.footerLeft.count | currency:'INR'}}
+                                 {{pieChartCustomerData.footerLeft.count}}
                              </span>
                              <span class="h4">
-                                 {{pieChartCurStkData.footerLeft.title}}
+                                 {{pieChartCustomerData.footerLeft.title}}
                              </span>
                          </div>
 
                          <div class="py-8" fxLayout="column" fxLayoutAlign="center center" fxFlex="100"
                              fxFlex.gt-sm="50">
                              <span class="mat-display-1 mb-0">
-                                 {{pieChartCurStkData.footerRight.count | currency:'INR'}}
+                                 {{pieChartCustomerData.footerRight.count}}
                              </span>
                              <span class="h4">
-                                 {{pieChartCurStkData.footerRight.title}}
+                                 {{pieChartCustomerData.footerRight.title}}
                              </span>
                          </div>
                      </div>
