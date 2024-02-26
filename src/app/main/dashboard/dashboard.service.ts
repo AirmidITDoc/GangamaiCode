@@ -95,5 +95,15 @@ export class DashboardService {
   {
      return this._httpClient.post("Generic/GetByProc?procName=dash_PathCateWiseCnt",x)
   }
+
+  //Pharmacy Dashboard
+  public getPharDayWiseDashboard(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDayWiseDashboard",x)
+  }
+  public getPharMonthWiseDashboard(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryMonthWiseDashboard",x)
+  }
 }
 

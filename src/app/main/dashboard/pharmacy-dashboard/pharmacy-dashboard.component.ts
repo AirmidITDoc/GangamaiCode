@@ -9,6 +9,8 @@ import { Label } from 'ng2-charts';
 import Chart from 'chart.js';
 import { element } from 'protractor';
 import { filter, map } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { SalesSummaryComponent } from './sales-summary/sales-summary.component';
 
 @Component({
   selector: 'app-pharmacy-dashboard',
@@ -28,6 +30,84 @@ export class PharmacyDashboardComponent implements OnInit {
 
   DashChartOP: any = [];
   DashChartCurStk: any = [];
+  constructor(
+    public _DashboardService: DashboardService,
+    public datePipe: DatePipe,
+    private formBuilder: FormBuilder,
+    public _matDialog: MatDialog,
+  ) { }
+  ngOnInit(): void {
+    this.getPharDashboardSalesSummary();
+    this.getPharmStoreList();
+    this.getPharStockValueSumData();
+    this.fetchStaticData();
+    this.fetchThreeMonSalesSumData();
+    this.getPharCollSummStoreWiseDashboard();
+
+    this.getOPChartData();
+    this.getPieChartPharCurrentValueData();
+
+    this.createForm();
+    this.createForm1();
+
+  var myCurrentDate=new Date(); 
+  var myPastDate=new Date(myCurrentDate);
+  myPastDate.setDate(myPastDate.getDate() - 1);
+  
+  // let m_data = {
+  //   "FromDate": myPastDate, //this.datePipe.transform(this.rangeFormGroup.get('myPastDate').value,"MM-dd-yyyy") || '01/01/2021',
+  //   "ToDate": this.datePipe.transform(this.rangeFormGroup.get('endDate').value,"MM-dd-yyyy") || '01/11/2021'
+  // }
+  // this.getTableData(m_data);
+
+  var myCurrentDate1=new Date(); 
+    var myPastDate1=new Date(myCurrentDate1);
+    myPastDate1.setDate(myPastDate1.getDate() - 1);
+    let m_data1 = {
+      "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy"),
+      "ToDate": this.datePipe.transform(this.rangeFormGroup1.get('endDate').value,"MM-dd-yyyy")
+    }
+    // console.log(m_data1);
+    this.getPharmsaleTableData(m_data1);
+
+    setTimeout(() => {
+      this.widget6 = {
+        // currentRange: 'Todays',
+        legend: false,
+        explodeSlices: false,
+        labels: true,
+        doughnut: true,
+        gradient: true,
+        // scheme: {
+        //   domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']
+        // },
+        onSelect: (ev) => {
+          console.log(ev);
+        }
+      };
+    }, 1);
+
+    setTimeout(() => {
+      this.widget7 = {
+        // currentRange: 'Todays',
+        legend: false,
+        explodeSlices: false,
+        labels: true,
+        doughnut: true,
+        gradient: true,
+        // scheme: {
+        //   domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']
+        // },
+        onSelect: (ev) => {
+          console.log(ev);
+        }
+      };
+
+    
+
+    }, 1);
+    
+  }
 
   StaticChartConfig: any = {
     gradient: true,
@@ -65,7 +145,6 @@ export class PharmacyDashboardComponent implements OnInit {
     showYAxis: true,
     gradient: false,
     showLegend: true,
-    legendPosition:'below', // right or below
     showXAxisLabel: true,
     xAxisLabel: 'Store',
     showYAxisLabel: true,
@@ -245,7 +324,21 @@ export class PharmacyDashboardComponent implements OnInit {
       this.sIsLoading = '';
     });
   }
-
+  OnPopSalesSummary(contact){
+    const dialogRef = this._matDialog.open(SalesSummaryComponent,
+      {
+        maxWidth: "80vw",
+        height: '650px',
+        width: '100%',
+        data: {
+          Obj: contact,
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      // this.getIssueTodept();
+    });
+  }
   // getTableData(params) {
   //   this.sIsLoading = 'loading-data';
   //   this._DashboardService.getPathtestSummaryDateWise(params).subscribe((response: any) => {
@@ -385,84 +478,7 @@ export class PharmacyDashboardComponent implements OnInit {
   widget6: any = {};
   widget7: any = {};
 
-  constructor(
-    public _DashboardService: DashboardService,
-    public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
-  ) { }
-  ngOnInit(): void {
-    this.getPharDashboardSalesSummary();
-    this.getPharmStoreList();
-    this.getPharStockValueSumData();
-    this.fetchStaticData();
-    this.fetchThreeMonSalesSumData();
-    this.getPharCollSummStoreWiseDashboard();
-
-    this.getOPChartData();
-    this.getPieChartPharCurrentValueData();
-
-    this.createForm();
-    this.createForm1();
-
-  var myCurrentDate=new Date(); 
-  var myPastDate=new Date(myCurrentDate);
-  myPastDate.setDate(myPastDate.getDate() - 1);
   
-  // let m_data = {
-  //   "FromDate": myPastDate, //this.datePipe.transform(this.rangeFormGroup.get('myPastDate').value,"MM-dd-yyyy") || '01/01/2021',
-  //   "ToDate": this.datePipe.transform(this.rangeFormGroup.get('endDate').value,"MM-dd-yyyy") || '01/11/2021'
-  // }
-  // this.getTableData(m_data);
-
-  var myCurrentDate1=new Date(); 
-    var myPastDate1=new Date(myCurrentDate1);
-    myPastDate1.setDate(myPastDate1.getDate() - 1);
-    let m_data1 = {
-      "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy"),
-      "ToDate": this.datePipe.transform(this.rangeFormGroup1.get('endDate').value,"MM-dd-yyyy")
-    }
-    // console.log(m_data1);
-    this.getPharmsaleTableData(m_data1);
-
-    setTimeout(() => {
-      this.widget6 = {
-        // currentRange: 'Todays',
-        legend: false,
-        explodeSlices: false,
-        labels: true,
-        doughnut: true,
-        gradient: true,
-        // scheme: {
-        //   domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']
-        // },
-        onSelect: (ev) => {
-          console.log(ev);
-        }
-      };
-    }, 1);
-
-    setTimeout(() => {
-      this.widget7 = {
-        // currentRange: 'Todays',
-        legend: false,
-        explodeSlices: false,
-        labels: true,
-        doughnut: true,
-        gradient: true,
-        // scheme: {
-        //   domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']
-        // },
-        onSelect: (ev) => {
-          console.log(ev);
-        }
-      };
-
-    
-
-    }, 1);
-    
-  }
-
   
   
   // getThreeMonSalesSumData() {
