@@ -2074,14 +2074,8 @@ loadingarry:any=[];
         this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        debugger
-        this.GSalesNo=response;
         this.getPrint3(response);
-        if( this.GSalesNo !=0){
-          if(this.Functionflag ==1){
-            this. getWhatsappshare();
-            }
-          }
+        this.getWhatsappshareSales(response,vMobileNo);
         this.Itemchargeslist = [];
         this._matDialog.closeAll();
       
@@ -2523,8 +2517,6 @@ debugger
   }
 
   onCreditpaySave() {
-
-    debugger
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
@@ -2629,42 +2621,14 @@ debugger
       "cal_DiscAmount_SalesCredit": cal_DiscAmount_SalesCredit,
       "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
     };
-    console.log(submitData);
-    // 
+    let vMobileNo=this.mobileno;
     this._salesService.InsertCreditSales(submitData).subscribe(response => {
-      // if (response) {
-      //   Swal.fire('Credit Sales!', 'Data saved Successfully !', 'success').then((result) => {
-      //     if (result.isConfirmed) {
-      //       this.GSalesNo=response;
-      //       this.getPrint3(response);
-      //       if( this.GSalesNo !=0){
-      //         if(this.Functionflag ==1){
-      //           this. getWhatsappshare();
-      //           }
-      //         }
-      //       this.Itemchargeslist = [];
-      //       this._matDialog.closeAll();
-      //     }
-      //   });
-      // } else {
-      //   Swal.fire('Error !', 'Sale Credit data not saved', 'error');
-      // }
-      // this.sIsLoading = '';
-
       if (response) {
-       
         this.toastr.success('Record Saved Successfully.', 'Credit Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        
-        this.GSalesNo=response;
         this.getPrint3(response);
-        if( this.GSalesNo !=0){
-          if(this.Functionflag ==1){
-            
-            this.getWhatsappshare();
-            }
-          }
+        this.getWhatsappshareSales(response,vMobileNo);
         this.Itemchargeslist = [];
         this._matDialog.closeAll();
       
