@@ -162,7 +162,7 @@ export class SalesComponent implements OnInit {
   OP_IP_Type: any;
   // payment code
   DiscId: any;
-DraftID:any;
+DraftID:any=0;
   DiffNetRoundAmt:any=0;
   roundoffAmt: any;
   Functionflag=0;
@@ -243,7 +243,7 @@ v_PaidbacktoPatient:any=0;
 loadingRow: number | null = null
 IsLoading:boolean=false;
 showTable: boolean = false
-
+vPatientType:any;
 
 
   displayedColumns = [
@@ -1986,7 +1986,7 @@ loadingarry:any=[];
       salesDetailInsert['salesID'] = 0;
       salesDetailInsert['itemId'] = element.ItemId;
       salesDetailInsert['batchNo'] = element.BatchNo;
-      salesDetailInsert['batchExpDate'] =element.BatchExpDate;// this.datePipe.transform(element.BatchExpDate,"yyyy/MM/dd");
+      salesDetailInsert['batchExpDate'] =element.BatchExpDate; //|| this.datePipe.transform(element.BatchExpDate,"yyyy/MM/dd");
       salesDetailInsert['unitMRP'] = element.UnitMRP;
       salesDetailInsert['qty'] = element.Qty;
       salesDetailInsert['totalAmount'] = element.TotalMRP;
@@ -2025,6 +2025,12 @@ loadingarry:any=[];
 
     let cal_GSTAmount_Sales = {};
     cal_GSTAmount_Sales['salesID'] = 0;
+
+
+    
+    let salesDraftStatusUpdate = {};
+    salesDraftStatusUpdate['DSalesId'] = this.DraftID || 0;
+    salesDraftStatusUpdate['IsClosed'] =1
 
     let PaymentInsertobj = {};
    
@@ -2066,8 +2072,10 @@ loadingarry:any=[];
       "updateCurStkSales": updateCurStkSalestarr,
       "cal_DiscAmount_Sales": cal_DiscAmount_Sales,
       "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
+      "salesDraftStatusUpdate":salesDraftStatusUpdate,
       "salesPayment": PaymentInsertobj
     };
+    console.log(submitData)
     let vMobileNo=this.MobileNo;
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
@@ -2101,6 +2109,9 @@ loadingarry:any=[];
     // }
   }
   onSavePayOption() {
+
+
+    this.vPatientType=this.ItemSubform.get('PatientType').value;
 
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] =  this.dateTimeObj.date;
@@ -2191,7 +2202,7 @@ loadingarry:any=[];
             salesDetailInsert['salesID'] = 0;
             salesDetailInsert['itemId'] = element.ItemId;
             salesDetailInsert['batchNo'] = element.BatchNo;
-            salesDetailInsert['batchExpDate'] =  this.datePipe.transform(element.BatchExpDate,"yyyy/mm/dd");//element.BatchExpDate;
+            salesDetailInsert['batchExpDate'] =element.BatchExpDate;// this.datePipe.transform(element.BatchExpDate,"yyyy/mm/dd");//element.BatchExpDate;
             salesDetailInsert['unitMRP'] = element.UnitMRP;
             salesDetailInsert['qty'] = element.Qty;
             salesDetailInsert['totalAmount'] = element.TotalMRP;
@@ -2230,15 +2241,22 @@ loadingarry:any=[];
           let cal_GSTAmount_Sales = {};
           cal_GSTAmount_Sales['salesID'] = 0;
 
+           
+    let salesDraftStatusUpdate = {};
+    salesDraftStatusUpdate['DSalesId'] = this.DraftID || 0;
+    salesDraftStatusUpdate['IsClosed'] =1
+
           let submitData = {
             "salesInsert": SalesInsert,
             "salesDetailInsert": salesDetailInsertarr,
             "updateCurStkSales": updateCurStkSalestarr,
             "cal_DiscAmount_Sales": cal_DiscAmount_Sales,
             "cal_GSTAmount_Sales": cal_GSTAmount_Sales,
+            "salesDraftStatusUpdate":salesDraftStatusUpdate,
             "salesPayment": result.submitDataPay.ipPaymentInsert
           };
           let vMobileNo=this.MobileNo;
+          console.log(submitData)
           this._salesService.InsertCashSales(submitData).subscribe(response => {
             if (response) {
               this.toastr.success('Record Saved Successfully.', 'Save !', {
@@ -2277,9 +2295,18 @@ loadingarry:any=[];
         }
       }
     else{
-      this.onCreditpaySave();
-        // Swal.fire("Plzc hk Payment Date !");
-      }
+      debugger
+      if(this.vPatientType =='External'){
+        // Swal.fire("Plz Chk Payment Data !");
+      }else{
+        Swal.fire('Do You Want to generate Credit Bill ?').then((result) => {
+          if (result.isConfirmed) {
+            this.onCreditpaySave();
+          }
+        });
+     
+      
+      }}
     })
   
   }
