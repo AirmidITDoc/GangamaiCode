@@ -284,7 +284,7 @@ showTable: boolean = false
   
   DraftSaleDisplayedCol = [
     // 'DSalesId',
-    'RegID',
+    'extMobileNo',
     'buttons'
   ];
 
@@ -307,6 +307,9 @@ showTable: boolean = false
   vAdmissionID: any;
   isPaymentSuccess: boolean = false;
   newDateTimeObj: any = {};
+  vextAddress:any = '';
+
+
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
     public _salesService: SalesService,
@@ -1176,9 +1179,10 @@ if (event.keyCode === 120) {
 
 loadingarry:any=[];
   getWhatsappshare() {
+    debugger
     var m_data = {
       "insertWhatsappsmsInfo": {
-        "mobileNumber": 0,
+        "mobileNumber": this.MobileNo,
         "smsString": 'PatientDetail' || '',
         "isSent": 0,
         "smsType": 'bulk',
@@ -1383,10 +1387,15 @@ loadingarry:any=[];
   }
 
   Addrepeat(row){
+    debugger
+    
    this.repeatItemList = row.value;
     this.Itemchargeslist=[];
     this.repeatItemList.forEach((element) => {
       let Qty = parseInt(element.Qty.toString())
+      let UnitMrp= element.UnitMRP.split('|')[0];
+      console.log(UnitMrp)
+ 
       // this.LandedRateandedTotal = (parseInt(element.Qty) * (element.LandedRate)).toFixed(2);
       // this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
       // this.PurTotAmt = (parseInt(element.Qty) * (this.PurchaseRate)).toFixed(2);
@@ -1394,16 +1403,19 @@ loadingarry:any=[];
       let CGSTAmt = (((element.UnitMRP) * (this.CgstPer) / 100) * (Qty)).toFixed(2);
       let SGSTAmt = (((element.UnitMRP) * (this.SgstPer) / 100) * (Qty)).toFixed(2);
       let IGSTAmt = (((element.UnitMRP) * (this.IgstPer) / 100) * (Qty)).toFixed(2);
-
+      
+    
+      this.NetAmt = ((UnitMrp) * (element.Qty)).toFixed(2);
+      // this.v_marginamt =Math.round(this.NetAmt);
 
   this.Itemchargeslist.push(
     {
       ItemId: element.ItemId,
       ItemName: element.ItemShortName,
       BatchNo: element.BatchNo,
-      BatchExpDate: this.datePipe.transform(element.BatchExpDate , 'DD/MM/YYYY'),
+      BatchExpDate: this.datePipe.transform(element.BatchExpDate , 'dd/MM/YYYY'),
       Qty: element.Qty,
-      UnitMRP: element.UnitMRP,
+      UnitMRP: UnitMrp || element.UnitMRP,
       TotalMRP: element.TotalAmount,
       GSTPer: row.GSTPer || 0,
       GSTAmount: row.GSTAmount || 0,
@@ -1899,12 +1911,14 @@ loadingarry:any=[];
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashOnlinePaySave()
     }
-    else if (this.ItemSubform.get('CashPay').value == 'Credit') {
-      this.onCreditpaySave()
-    }
+    // else if (this.ItemSubform.get('CashPay').value == 'Credit') {
+    //   this.onCreditpaySave()
+    // }
     else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
       this.onSavePayOption()
     }
+    
+    
   }
 
 
@@ -1965,12 +1979,14 @@ loadingarry:any=[];
 
     let salesDetailInsertarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
-      // console.log(element);
+
+      console.log(element);
+      // "2025-06-01"
       let salesDetailInsert = {};
       salesDetailInsert['salesID'] = 0;
       salesDetailInsert['itemId'] = element.ItemId;
       salesDetailInsert['batchNo'] = element.BatchNo;
-      salesDetailInsert['batchExpDate'] = element.BatchExpDate;
+      salesDetailInsert['batchExpDate'] =element.BatchExpDate;// this.datePipe.transform(element.BatchExpDate,"yyyy/MM/dd");
       salesDetailInsert['unitMRP'] = element.UnitMRP;
       salesDetailInsert['qty'] = element.Qty;
       salesDetailInsert['totalAmount'] = element.TotalMRP;
@@ -2058,8 +2074,14 @@ loadingarry:any=[];
         this.toastr.success('Record Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
+        debugger
+        this.GSalesNo=response;
         this.getPrint3(response);
-        this.getWhatsappshareSales(response,vMobileNo);
+        if( this.GSalesNo !=0){
+          if(this.Functionflag ==1){
+            this. getWhatsappshare();
+            }
+          }
         this.Itemchargeslist = [];
         this._matDialog.closeAll();
       
@@ -2101,6 +2123,13 @@ loadingarry:any=[];
       });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+      // let CurrDate = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
+      // let dateobj=this.datePipe.transform( result.submitDataPay.ipPaymentInsert.PaymentDate, 'MM/dd/yyyy')
+      
+      // if(CurrDate == dateobj){
+    //   if(this.dateTimeObj.date == result.submitDataPay.ipPaymentInsert.PaymentDate)
+    // {
       if (result?.IsSubmitFlag == true) {
         let cashpay = result.submitDataPay.ipPaymentInsert.CashPayAmount;
         let chequepay = result.submitDataPay.ipPaymentInsert.ChequePayAmount;
@@ -2168,7 +2197,7 @@ loadingarry:any=[];
             salesDetailInsert['salesID'] = 0;
             salesDetailInsert['itemId'] = element.ItemId;
             salesDetailInsert['batchNo'] = element.BatchNo;
-            salesDetailInsert['batchExpDate'] = element.BatchExpDate;
+            salesDetailInsert['batchExpDate'] =  this.datePipe.transform(element.BatchExpDate,"yyyy/mm/dd");//element.BatchExpDate;
             salesDetailInsert['unitMRP'] = element.UnitMRP;
             salesDetailInsert['qty'] = element.Qty;
             salesDetailInsert['totalAmount'] = element.TotalMRP;
@@ -2253,11 +2282,10 @@ loadingarry:any=[];
           });
         }
       }
-    
-    // }
-      // else{
-      //   Swal.fire("Plzc hk Payment Date !");
-      // }
+    else{
+      this.onCreditpaySave();
+        // Swal.fire("Plzc hk Payment Date !");
+      }
     })
   
   }
@@ -2349,6 +2377,7 @@ loadingarry:any=[];
   }
 
   getDiscountCellCal(contact,DiscPer){
+debugger
 // let DiscOld=DiscPer;
     let DiscAmt;
     let TotalMRP=contact.TotalMRP;
@@ -2379,7 +2408,14 @@ loadingarry:any=[];
       
       if (parseFloat(m_marginamt) <= parseFloat(LandedTotalAmount)) {
         Swal.fire('Discount amount greater than Purchase amount, Please check !');
-        contact.DiscPer=this.DiscOld;
+        
+        contact.DiscPer= this.DiscOld;
+        DiscAmt = 0// ((contact.TotalMRP * (this.DiscOld)) / 100).toFixed(2);
+        let NetAmt = parseFloat(contact.TotalMRP);
+
+        contact.DiscAmt= DiscAmt || 0,
+         contact.NetAmt= NetAmt
+
       } else {
         // this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
       }
@@ -2390,26 +2426,29 @@ loadingarry:any=[];
   }
 
   getCellCalculation(contact, Qty) {
+    debugger
+    this.StockId=contact.StockId;
+    this.Qty=Qty;
     if (contact.Qty != 0 && contact.Qty != null) {
       // console.log(contact.Qty);
       this.BalChkList = [];
       this.StoreId = this._loggedService.currentUserValue.user.storeId
       let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
-      // console.log(SelectQuery);
+      console.log(SelectQuery);
       this._salesService.getchargesList(SelectQuery).subscribe(data => {
         this.BalChkList = data;
         // console.log(this.BalChkList);
         if (this.BalChkList.length > 0) {
           if (this.BalChkList[0].BalanceQty >= contact.Qty) {
             this.QtyBalchk = 1;
-            // console.log('222222')
+            
             this.tblCalucation(contact,contact.Qty)
           }
           else {
             this.QtyBalchk = 1;
             Swal.fire("Please Enter Qty Less than Balance Qty :" + contact.ItemName + " . Available Balance Qty :" + this.BalChkList[0].BalanceQty)
             contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
-            // console.log('222222  : ' + contact.Qty)
+            contact.Qty=this.Qty;
             this.tblCalucation(contact,contact.Qty)
           }
         }
@@ -2484,6 +2523,8 @@ loadingarry:any=[];
   }
 
   onCreditpaySave() {
+
+    debugger
     // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
     let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
     let ConcessionId = 0;
@@ -2538,7 +2579,7 @@ loadingarry:any=[];
       salesDetailInsertCredit['salesID'] = 0;
       salesDetailInsertCredit['itemId'] = element.ItemId;
       salesDetailInsertCredit['batchNo'] = element.BatchNo;
-      salesDetailInsertCredit['batchExpDate'] = element.BatchExpDate;
+      salesDetailInsertCredit['batchExpDate'] =  element.BatchExpDate;//this.datePipe.transform(element.BatchExpDate,"yyyy/mm/dd");// element.BatchExpDate;
       salesDetailInsertCredit['unitMRP'] = element.UnitMRP;
       salesDetailInsertCredit['qty'] = element.Qty;
       salesDetailInsertCredit['totalAmount'] = element.TotalMRP;
@@ -2588,34 +2629,64 @@ loadingarry:any=[];
       "cal_DiscAmount_SalesCredit": cal_DiscAmount_SalesCredit,
       "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
     };
-    // console.log(submitData);
+    console.log(submitData);
     // 
     this._salesService.InsertCreditSales(submitData).subscribe(response => {
+      // if (response) {
+      //   Swal.fire('Credit Sales!', 'Data saved Successfully !', 'success').then((result) => {
+      //     if (result.isConfirmed) {
+      //       this.GSalesNo=response;
+      //       this.getPrint3(response);
+      //       if( this.GSalesNo !=0){
+      //         if(this.Functionflag ==1){
+      //           this. getWhatsappshare();
+      //           }
+      //         }
+      //       this.Itemchargeslist = [];
+      //       this._matDialog.closeAll();
+      //     }
+      //   });
+      // } else {
+      //   Swal.fire('Error !', 'Sale Credit data not saved', 'error');
+      // }
+      // this.sIsLoading = '';
+
       if (response) {
-        Swal.fire('Credit Sales!', 'Data saved Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this.GSalesNo=response;
-            this.getPrint3(response);
-            if( this.GSalesNo !=0){
-              if(this.Functionflag ==1){
-                this. getWhatsappshare();
-                }
-              }
-            this.Itemchargeslist = [];
-            this._matDialog.closeAll();
-          }
+       
+        this.toastr.success('Record Saved Successfully.', 'Credit Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
         });
+        
+        this.GSalesNo=response;
+        this.getPrint3(response);
+        if( this.GSalesNo !=0){
+          if(this.Functionflag ==1){
+            
+            this.getWhatsappshare();
+            }
+          }
+        this.Itemchargeslist = [];
+        this._matDialog.closeAll();
+      
       } else {
-        Swal.fire('Error !', 'Sale Credit data not saved', 'error');
+      
+        this.toastr.error('API Error!', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
       }
       this.sIsLoading = '';
+    }, error => {
+      
+      this.toastr.error('API Error!', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
     });
     this.ItemFormreset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.getConcessionReasonList();
     this.PatientName = '';
-    this.MobileNo = '';
+    // this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
     this.saleSelectedDatasource.data = [];
 
@@ -2656,7 +2727,7 @@ loadingarry:any=[];
     
  }
   onAddDraftList(contact) {
-    
+    console.log(contact)
     this.DraftID=contact.DSalesId;
     this.saleSelectedDatasource.data = [];
     this.Itemchargeslist1=[];
@@ -2666,7 +2737,7 @@ loadingarry:any=[];
     // console.log(strSql);
     this._salesService.getchargesList(strSql).subscribe(data => {
       this.tempDatasource.data = data as any;
-      // console.log(this.tempDatasource.data);
+      console.log(this.tempDatasource.data);
       if (this.tempDatasource.data.length >= 1) {
         this.tempDatasource.data.forEach((element) => {
           this.DraftQty = element.QtyPerDay
@@ -2680,11 +2751,12 @@ loadingarry:any=[];
 
 
   onAddDraftListTosale(contact,DraftQty) {
-
+    console.log(contact)
     this.Itemchargeslist1=[];
     this.QtyBalchk = 0;
     this.PatientName = this.dataSource1.data[0]["PatientName"];
-    this.MobileNo = this.dataSource1.data[0]["MobileNo"];
+    this.MobileNo = this.dataSource1.data[0]["extMobileNo"];
+    this.vextAddress = this.dataSource1.data[0]["extAddress"];
     this.DoctorName = this.dataSource1.data[0]["AdmDoctorName"];
 
   
@@ -2696,8 +2768,17 @@ loadingarry:any=[];
       }
 
       this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
-        // console.log(draftdata)
+        console.log(draftdata)
         this.Itemchargeslist1=draftdata as any;
+        if(this.Itemchargeslist1.length == 0){
+          Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:"  )
+          // this.PatientName = '';
+          // this.vextAddress=" ";
+          // this.MobileNo =' ';
+          // this.DoctorName=" ";
+        }
+        else if(this.Itemchargeslist1.length > 0){
+      
         let ItemID;
         this.Itemchargeslist1.forEach((element) => {
         
@@ -2719,7 +2800,7 @@ loadingarry:any=[];
             }
           }
         });
-
+      }
 
       });
 
@@ -2752,6 +2833,7 @@ loadingarry:any=[];
         
         // if (this.ItemName && (parseInt(contact.Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
           // this.saleSelectedDatasource.data = [];
+         debugger
           this.Itemchargeslist.push(
             {
               ItemId: contact.ItemId,
@@ -2835,7 +2917,9 @@ loadingarry:any=[];
     SalesInsert['creditReasonID'] = 0;
     SalesInsert['wardId'] = 0;
     SalesInsert['bedId'] = 0;
-    SalesInsert['discper_H'] = 0;
+    SalesInsert['extMobileNo'] = this.MobileNo;
+    SalesInsert['extAddress'] = this.vextAddress;
+
     SalesInsert['DsalesId'] = 0;
    
     let salesDetailInsertarr = [];
