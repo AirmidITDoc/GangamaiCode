@@ -95,6 +95,12 @@
             background: transparent;
             color: $primary-600;
             border-color: $primary-600;
+            &.btn-hover {
+                &:hover{
+                    background-color: $primary-600;
+                    color: $primary-25;
+                }
+            }
         }
         &.btn-danger-outline {
             background: transparent;
