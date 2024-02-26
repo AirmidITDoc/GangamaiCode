@@ -39,8 +39,8 @@ import { UpdateGRNComponent } from './update-grn/update-grn.component';
 import { PurchaseorderComponent } from './update-grn/purchaseorder/purchaseorder.component';
 import { GrnemailComponent } from './grnemail/grnemail.component';
 import { QrcodegeneratorComponent } from './qrcodegenerator/qrcodegenerator.component';
-// import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
-// import {NgxPrintModule} from 'ngx-print';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import {NgxPrintModule} from 'ngx-print';
 
 
 const routes: Routes = [
@@ -99,8 +99,8 @@ const routes: Routes = [
     MatChipsModule,
     // NgMultiSelectDropDownModule.forRoot(),
     MatTooltipModule,
-    // NgxQRCodeModule,
-    // NgxPrintModule
+    NgxQRCodeModule,
+    NgxPrintModule
   ],
   providers: [
     
