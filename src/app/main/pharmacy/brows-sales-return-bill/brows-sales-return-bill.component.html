@@ -196,12 +196,19 @@
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <button mat-icon-button (click)="onEdit(contact)" matTooltip="Edit">
+                                        <mat-cell *matCellDef="let row">
+                                            <!-- <button mat-icon-button (click)="onEdit(contact)" matTooltip="Edit">
                                                 <mat-icon title="Edit Menu" *ngIf="contact.IsAccepted==1"
                                                     [disabled]="contact.disabled" class="disabled-icon">
                                                     edit</mat-icon>
                                                 <mat-icon title="Edit Menu" *ngIf="contact.IsAccepted==0">
+                                                    edit</mat-icon>
+                                            </button> -->
+                                            <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit">
+                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted==1"
+                                                    [disabled]="row.disabled" class="disabled-icon">
+                                                    edit</mat-icon>
+                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted==0">
                                                     edit</mat-icon>
                                             </button>
                                         </mat-cell>

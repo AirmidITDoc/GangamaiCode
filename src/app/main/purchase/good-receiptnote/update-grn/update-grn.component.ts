@@ -454,7 +454,7 @@ export class UpdateGRNComponent implements OnInit {
     //   console.log(this.lastDay)
     // }
 
-    debugger
+    //debugger
     // console.log(this.lastDay)
     
     //   const day = +this.lastDay.substring(0, 2);
@@ -465,7 +465,7 @@ export class UpdateGRNComponent implements OnInit {
     //   console.log(this.vExpDate)
     
 
-
+if(this.Qty > 0 && this.IGST >= 0){
     this.dsItemNameList.data = [];
     this.chargeslist = this.dsTempItemNameList.data;
 
@@ -520,6 +520,11 @@ export class UpdateGRNComponent implements OnInit {
     this._GRNList.userFormGroup.get('ItemName').setValue('');
     this.NetAmount = 0;
     this.itemid.nativeElement.focus();
+}else{
+  this.toastr.warning('Data is not available in Required Fields ,please add data in the fields.', 'Warning !', {
+    toastClass: 'tostr-tost custom-toast-warning',
+  });
+}
   }
   ItemReset() {
     this.ItemName = " ";
@@ -1139,6 +1144,7 @@ export class UpdateGRNComponent implements OnInit {
     this.MRP = obj.UnitMRP || 0;
     this.Specification = obj.Specification;
     this._GRNList.userFormGroup.get('Disc').setValue('');
+    this._GRNList.userFormGroup.get('IGST').setValue('');
     this.batchno.nativeElement.focus();
     this.getLastThreeItemInfo();
   }
