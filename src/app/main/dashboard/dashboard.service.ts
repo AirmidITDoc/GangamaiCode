@@ -141,11 +141,10 @@ export class DashboardService {
   {
      return this._httpClient.post("Generic/GetByProc?procName=m_dash_PharUserCountStoreWise",{})
   }
-
-
-
-
-
+  public getPieChartpharCustomerCount(m_data)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_dash_pharCustomerCount",m_data)
+  }
   
 }
 

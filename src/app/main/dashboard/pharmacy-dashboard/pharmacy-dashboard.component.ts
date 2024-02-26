@@ -30,6 +30,10 @@ export class PharmacyDashboardComponent implements OnInit {
 
   DashChartOP: any = [];
   DashChartCurStk: any = [];
+
+  DashChartCustomer: any = [];
+  pieChartCustomerData = new pieChartCustomerData();
+
   constructor(
     public _DashboardService: DashboardService,
     public datePipe: DatePipe,
@@ -45,6 +49,7 @@ export class PharmacyDashboardComponent implements OnInit {
 
     this.getOPChartData();
     this.getPieChartPharCurrentValueData();
+    this.getPieChartCustomerCountData();
     this.getPharUserInfoStoreWise();
     this.createForm();
     this.createForm1();
@@ -60,8 +65,8 @@ export class PharmacyDashboardComponent implements OnInit {
       "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy"),
       "ToDate": this.datePipe.transform(this.rangeFormGroup1.get('endDate').value,"MM-dd-yyyy")
     }
-    this.getPharmsaleTableData(m_data1);
-    this.getPharPaymentSummary(m_data1);
+    this.getPharmsaleTableData();
+    this.getPharPaymentSummary();
 
     setTimeout(() => {
       this.widget6 = {
@@ -181,6 +186,7 @@ export class PharmacyDashboardComponent implements OnInit {
     this.fetchStaticData();
     this.fetchThreeMonSalesSumData();
     this.getPieChartPharCurrentValueData();
+    this.getPieChartCustomerCountData();
     
   }
 
@@ -228,6 +234,31 @@ export class PharmacyDashboardComponent implements OnInit {
     });
   }
 
+  public getPieChartCustomerCountData() {
+    var m_data = {
+      "DateRange": this.pieChartCustomerData.currentRange,
+      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0, 
+    }
+    console.log(m_data);
+    this._DashboardService.getPieChartpharCustomerCount(m_data).subscribe(data => {
+      this.DashChartCustomer = data;
+      console.log(this.DashChartCustomer);
+      if (this.DashChartCustomer && this.DashChartCustomer.length > 0) {
+        this.pieChartCustomerData['footerLeft'].title = 'New Customer';
+        this.pieChartCustomerData['footerLeft'].count = this.DashChartCustomer[0]['AvgOrderValue'];
+        this.pieChartCustomerData['footerRight'].title = 'Repeat Customer';
+        this.pieChartCustomerData['footerRight'].count = this.DashChartCustomer[0]['AvgOrderValue'];
+        this.pieChartCustomerData.mainChart[this.pieChartCustomerData.currentRange] = [];
+        this.DashChartCustomer.forEach(element => {
+          this.pieChartCustomerData.mainChart[this.pieChartCustomerData.currentRange].push(element);
+        });
+      } else {
+        this.pieChartCustomerData['footerLeft'].count = 0;
+        this.pieChartCustomerData['footerRight'].count = 0;
+      }
+    });
+  }
+
   dataSourceTable = new MatTableDataSource<PathTestSummary>();
   displayedColumns = [
       // 'PathDate',
@@ -266,6 +297,13 @@ export class PharmacyDashboardComponent implements OnInit {
     'Last Weeks': 'Last Week',
     'Last Month': 'Last Month'
   };
+
+  pieChartCustomerMaster = {
+    'Todays': 'Today',
+    'Last Weeks': 'Last Week',
+    'Current Month': 'Current Month',
+    'Last Month': 'Last Month'
+  };
   
   pieChartCurrValMaster = {
     'Todays': 'Today',
@@ -299,18 +337,22 @@ export class PharmacyDashboardComponent implements OnInit {
     });
   }
 
-  onDateChange(event) {
-    let m_data = {
-      "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy") || '01/01/2021',
-      "ToDate": this.datePipe.transform(this.rangeFormGroup.get('endDate').value,"MM-dd-yyyy") || '01/11/2021'
-    }
-    this.getPharmsaleTableData(m_data);
-    this.getPharPaymentSummary(m_data);
-  }
+  // onDateChange(event) {
+  //   let m_data = {
+  //     "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy") || '01/01/2021',
+  //     "ToDate": this.datePipe.transform(this.rangeFormGroup.get('endDate').value,"MM-dd-yyyy") || '01/11/2021'
+  //   }
+  //   this.getPharmsaleTableData(m_data);
+  //   this.getPharPaymentSummary(m_data);
+  // }
 
-  getPharmsaleTableData(params_sd) {
+  getPharmsaleTableData() {
+    var vdata = {
+      "FromDate": this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '12/25/2023',
+      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '12/30/2023'
+    }
     this.sIsLoading = 'loading-data';
-    this._DashboardService.getPharmacyCollectionStoreandDateWise(params_sd).subscribe((response: any) => {
+    this._DashboardService.getPharmacyCollectionStoreandDateWise(vdata).subscribe((response: any) => {
       this.dataSourceTable.data = response;
       this.sIsLoading = '';
     },
@@ -319,9 +361,13 @@ export class PharmacyDashboardComponent implements OnInit {
     });
   }
 
-  getPharPaymentSummary(params_sd) {
+  getPharPaymentSummary() {
+    var vdata = {
+      "FromDate": this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '12/25/2023',
+      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '12/30/2023'
+    }
     this.sIsLoading = 'loading-data';
-    this._DashboardService.getPharPaymentSummary(params_sd).subscribe((response: any) => {
+    this._DashboardService.getPharPaymentSummary(vdata).subscribe((response: any) => {
       this.dsPaymentSummary.data = response;
       this.sIsLoading = '';
     },
@@ -376,6 +422,11 @@ export class PharmacyDashboardComponent implements OnInit {
   onSelectPieOptionOP(value) {
     this.pieChartOPData.currentRange = value;
     this.getOPChartData();
+  }
+
+  onSelectPieOptionCustomer(value) {
+    this.pieChartCustomerData.currentRange = value;
+    this.getPieChartCustomerCountData();
   }
 
   onSelectPieOptionCurVal(value) {
@@ -625,7 +676,8 @@ export class PharmacyDashboardComponent implements OnInit {
   onDateRangeChanged() {
     this.fetchStaticData();
     this.getPharDashboardSalesSummary();
-    // this.getPharPaymentSummary();
+    this.getPharPaymentSummary();
+    this.getPharmsaleTableData();
   }
 
 
@@ -710,6 +762,24 @@ export class PieChartOPData {
   mainChart = {
     'Todays': [],
     'Last Weeks': [],
+    'Last Month': []
+  };
+  footerLeft = {
+    title: '',
+    count: 0
+  };
+  footerRight = {
+    title: '',
+    count: 0
+  };
+}
+
+export class pieChartCustomerData {
+  currentRange = 'Todays';
+  mainChart = {
+    'Todays': [],
+    'Last Weeks': [],
+    'Current Month': [],
     'Last Month': []
   };
   footerLeft = {
