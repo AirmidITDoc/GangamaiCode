@@ -9,6 +9,8 @@ import { Label } from 'ng2-charts';
 import Chart from 'chart.js';
 import { element } from 'protractor';
 import { filter, map } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { SalesSummaryComponent } from './sales-summary/sales-summary.component';
 
 @Component({
   selector: 'app-pharmacy-dashboard',
@@ -28,6 +30,82 @@ export class PharmacyDashboardComponent implements OnInit {
 
   DashChartOP: any = [];
   DashChartCurStk: any = [];
+
+  DashChartCustomer: any = [];
+  pieChartCustomerData = new pieChartCustomerData();
+
+  constructor(
+    public _DashboardService: DashboardService,
+    public datePipe: DatePipe,
+    private formBuilder: FormBuilder,
+    public _matDialog: MatDialog,
+  ) { }
+  ngOnInit(): void {
+    this.getPharDashboardSalesSummary();
+    this.getPharmStoreList();
+    this.fetchStaticData();
+    this.fetchThreeMonSalesSumData();
+    this.getPharCollSummStoreWiseDashboard();
+
+    this.getOPChartData();
+    this.getPieChartPharCurrentValueData();
+    this.getPieChartCustomerCountData();
+    this.getPharUserInfoStoreWise();
+    this.createForm();
+    this.createForm1();
+
+  var myCurrentDate=new Date(); 
+  var myPastDate=new Date(myCurrentDate);
+  myPastDate.setDate(myPastDate.getDate() - 1);
+
+  var myCurrentDate1=new Date(); 
+    var myPastDate1=new Date(myCurrentDate1);
+    myPastDate1.setDate(myPastDate1.getDate() - 1);
+    let m_data1 = {
+      "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy"),
+      "ToDate": this.datePipe.transform(this.rangeFormGroup1.get('endDate').value,"MM-dd-yyyy")
+    }
+    this.getPharmsaleTableData();
+    this.getPharPaymentSummary();
+
+    setTimeout(() => {
+      this.widget6 = {
+        // currentRange: 'Todays',
+        legend: false,
+        explodeSlices: false,
+        labels: true,
+        doughnut: true,
+        gradient: true,
+        // scheme: {
+        //   domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']
+        // },
+        onSelect: (ev) => {
+          console.log(ev);
+        }
+      };
+    }, 1);
+
+    setTimeout(() => {
+      this.widget7 = {
+        // currentRange: 'Todays',
+        legend: false,
+        explodeSlices: false,
+        labels: true,
+        doughnut: true,
+        gradient: true,
+        // scheme: {
+        //   domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']
+        // },
+        onSelect: (ev) => {
+          console.log(ev);
+        }
+      };
+
+    
+
+    }, 1);
+    
+  }
 
   StaticChartConfig: any = {
     gradient: true,
@@ -65,7 +143,6 @@ export class PharmacyDashboardComponent implements OnInit {
     showYAxis: true,
     gradient: false,
     showLegend: true,
-    legendPosition:'below', // right or below
     showXAxisLabel: true,
     xAxisLabel: 'Store',
     showYAxisLabel: true,
@@ -109,13 +186,9 @@ export class PharmacyDashboardComponent implements OnInit {
     this.fetchStaticData();
     this.fetchThreeMonSalesSumData();
     this.getPieChartPharCurrentValueData();
+    this.getPieChartCustomerCountData();
+    
   }
-  // displayedColumns = [
-  //   'StoreName',
-  //   'CollectionAmount',
-  //   'RefundAmount',
-  //   'NetAmount',
-  // ];
 
   public getOPChartData() {
     var m_data = {
@@ -161,6 +234,31 @@ export class PharmacyDashboardComponent implements OnInit {
     });
   }
 
+  public getPieChartCustomerCountData() {
+    var m_data = {
+      "DateRange": this.pieChartCustomerData.currentRange,
+      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0, 
+    }
+    console.log(m_data);
+    this._DashboardService.getPieChartpharCustomerCount(m_data).subscribe(data => {
+      this.DashChartCustomer = data;
+      console.log(this.DashChartCustomer);
+      if (this.DashChartCustomer && this.DashChartCustomer.length > 0) {
+        this.pieChartCustomerData['footerLeft'].title = 'New Customer';
+        this.pieChartCustomerData['footerLeft'].count = this.DashChartCustomer[0]['AvgOrderValue'];
+        this.pieChartCustomerData['footerRight'].title = 'Repeat Customer';
+        this.pieChartCustomerData['footerRight'].count = this.DashChartCustomer[0]['AvgOrderValue'];
+        this.pieChartCustomerData.mainChart[this.pieChartCustomerData.currentRange] = [];
+        this.DashChartCustomer.forEach(element => {
+          this.pieChartCustomerData.mainChart[this.pieChartCustomerData.currentRange].push(element);
+        });
+      } else {
+        this.pieChartCustomerData['footerLeft'].count = 0;
+        this.pieChartCustomerData['footerRight'].count = 0;
+      }
+    });
+  }
+
   dataSourceTable = new MatTableDataSource<PathTestSummary>();
   displayedColumns = [
       // 'PathDate',
@@ -169,6 +267,22 @@ export class PharmacyDashboardComponent implements OnInit {
       'RefundAmount',
       'NetAmount',
       'BillCount'
+    ];
+
+  
+    dsPaymentSummary = new MatTableDataSource<PaymentSummary>();
+    displayedColumnsPaySum = [
+      'StoreName',
+      'CashPay',
+      'ChequePay',
+      'OnlinePay',
+      'NetColAmt'
+    ];  
+
+    dsEmployee = new MatTableDataSource<Employee>();
+    displayedColumnsEmp = [
+      'StoreName',
+      'EmpCount',
     ];
 
   dataSourceTable1 = new MatTableDataSource<PathCateSummary>();
@@ -181,6 +295,13 @@ export class PharmacyDashboardComponent implements OnInit {
   pieChartMaster = {
     'Todays': 'Today',
     'Last Weeks': 'Last Week',
+    'Last Month': 'Last Month'
+  };
+
+  pieChartCustomerMaster = {
+    'Todays': 'Today',
+    'Last Weeks': 'Last Week',
+    'Current Month': 'Current Month',
     'Last Month': 'Last Month'
   };
   
@@ -216,29 +337,23 @@ export class PharmacyDashboardComponent implements OnInit {
     });
   }
 
-  onDateChange(event) {
-    let m_data = {
-      "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy") || '01/01/2021',
-      "ToDate": this.datePipe.transform(this.rangeFormGroup.get('endDate').value,"MM-dd-yyyy") || '01/11/2021'
-    }
-    this.getPharmsaleTableData(m_data);
-  }
-
-  // PharmsalesonDateChange(event) {
+  // onDateChange(event) {
   //   let m_data = {
-  //     "FromDate": this.datePipe.transform(this.rangeFormGroup1.get('startDate').value,"MM-dd-yyyy") ,
-  //     "ToDate": this.datePipe.transform(this.rangeFormGroup1.get('endDate').value,"MM-dd-yyyy")
-  //     }
+  //     "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy") || '01/01/2021',
+  //     "ToDate": this.datePipe.transform(this.rangeFormGroup.get('endDate').value,"MM-dd-yyyy") || '01/11/2021'
+  //   }
   //   this.getPharmsaleTableData(m_data);
+  //   this.getPharPaymentSummary(m_data);
   // }
 
-  getPharmsaleTableData(params_sd) {
+  getPharmsaleTableData() {
+    var vdata = {
+      "FromDate": this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '12/25/2023',
+      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '12/30/2023'
+    }
     this.sIsLoading = 'loading-data';
-    this._DashboardService.getPharmacyCollectionStoreandDateWise(params_sd).subscribe((response: any) => {
+    this._DashboardService.getPharmacyCollectionStoreandDateWise(vdata).subscribe((response: any) => {
       this.dataSourceTable.data = response;
-      // this.dataSourceTable1.sort = this.sort;
-      // this.dataSourceTable1.paginator = this.paginator;
-      // console.log(this.dataSourceTable.data);
       this.sIsLoading = '';
     },
     error => {
@@ -246,6 +361,50 @@ export class PharmacyDashboardComponent implements OnInit {
     });
   }
 
+  getPharPaymentSummary() {
+    var vdata = {
+      "FromDate": this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '12/25/2023',
+      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '12/30/2023'
+    }
+    this.sIsLoading = 'loading-data';
+    this._DashboardService.getPharPaymentSummary(vdata).subscribe((response: any) => {
+      this.dsPaymentSummary.data = response;
+      this.sIsLoading = '';
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+
+  getPharUserInfoStoreWise() {
+    // var m_data = {
+    //   "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0, // this.pieChartCurStkData.currentRange,
+    // }
+    this.sIsLoading = 'loading-data';
+    this._DashboardService.getPharUserCountStoreWise().subscribe((response: any) => {
+      this.dsEmployee.data = response;
+      this.sIsLoading = '';
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+
+  OnPopSalesSummary(contact){
+    const dialogRef = this._matDialog.open(SalesSummaryComponent,
+      {
+        maxWidth: "80vw",
+        height: '650px',
+        width: '100%',
+        data: {
+          Obj: contact,
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      // this.getIssueTodept();
+    });
+  }
   // getTableData(params) {
   //   this.sIsLoading = 'loading-data';
   //   this._DashboardService.getPathtestSummaryDateWise(params).subscribe((response: any) => {
@@ -263,6 +422,11 @@ export class PharmacyDashboardComponent implements OnInit {
   onSelectPieOptionOP(value) {
     this.pieChartOPData.currentRange = value;
     this.getOPChartData();
+  }
+
+  onSelectPieOptionCustomer(value) {
+    this.pieChartCustomerData.currentRange = value;
+    this.getPieChartCustomerCountData();
   }
 
   onSelectPieOptionCurVal(value) {
@@ -385,84 +549,7 @@ export class PharmacyDashboardComponent implements OnInit {
   widget6: any = {};
   widget7: any = {};
 
-  constructor(
-    public _DashboardService: DashboardService,
-    public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
-  ) { }
-  ngOnInit(): void {
-    this.getPharDashboardSalesSummary();
-    this.getPharmStoreList();
-    this.getPharStockValueSumData();
-    this.fetchStaticData();
-    this.fetchThreeMonSalesSumData();
-    this.getPharCollSummStoreWiseDashboard();
-
-    this.getOPChartData();
-    this.getPieChartPharCurrentValueData();
-
-    this.createForm();
-    this.createForm1();
-
-  var myCurrentDate=new Date(); 
-  var myPastDate=new Date(myCurrentDate);
-  myPastDate.setDate(myPastDate.getDate() - 1);
   
-  // let m_data = {
-  //   "FromDate": myPastDate, //this.datePipe.transform(this.rangeFormGroup.get('myPastDate').value,"MM-dd-yyyy") || '01/01/2021',
-  //   "ToDate": this.datePipe.transform(this.rangeFormGroup.get('endDate').value,"MM-dd-yyyy") || '01/11/2021'
-  // }
-  // this.getTableData(m_data);
-
-  var myCurrentDate1=new Date(); 
-    var myPastDate1=new Date(myCurrentDate1);
-    myPastDate1.setDate(myPastDate1.getDate() - 1);
-    let m_data1 = {
-      "FromDate": this.datePipe.transform(this.rangeFormGroup.get('startDate').value,"MM-dd-yyyy"),
-      "ToDate": this.datePipe.transform(this.rangeFormGroup1.get('endDate').value,"MM-dd-yyyy")
-    }
-    // console.log(m_data1);
-    this.getPharmsaleTableData(m_data1);
-
-    setTimeout(() => {
-      this.widget6 = {
-        // currentRange: 'Todays',
-        legend: false,
-        explodeSlices: false,
-        labels: true,
-        doughnut: true,
-        gradient: true,
-        // scheme: {
-        //   domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']
-        // },
-        onSelect: (ev) => {
-          console.log(ev);
-        }
-      };
-    }, 1);
-
-    setTimeout(() => {
-      this.widget7 = {
-        // currentRange: 'Todays',
-        legend: false,
-        explodeSlices: false,
-        labels: true,
-        doughnut: true,
-        gradient: true,
-        // scheme: {
-        //   domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']
-        // },
-        onSelect: (ev) => {
-          console.log(ev);
-        }
-      };
-
-    
-
-    }, 1);
-    
-  }
-
   
   
   // getThreeMonSalesSumData() {
@@ -529,66 +616,68 @@ export class PharmacyDashboardComponent implements OnInit {
   //     });
   // }
 
-  getPharStockValueSumData() {
-    this.isCollectionLoad = 'pharStockLoading';
-    let req = { StoreId: 10016 };
-    this._DashboardService.getPharStockColSumData('m_pharCurStockValueSummaryDashboard ', req).subscribe((respo: any) => {
-      if (respo && respo.length > 0) {
-        this.isCollectionLoad = 'pharStockLoaded';
-        respo.forEach((element) => {
-          this.pharCustStockLabels.push(element.StoreName);
-          this.pharCustStockData.push(element.CurValueWithMRP);
-        });
-      }
-    }, error => {
-      this.sIsLoading = 'no';
-    });
-  }
-
-  getPharPayModeColSumData() {
-    //bar chart pending
-    let req = { StoreId: 10035 };
-    this._DashboardService.getPharStockColSumData('m_pharPayModeColSummaryDashboard ', req).subscribe(data => {
-      // this.BardataList = data;
-      console.log(data);
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-  // BarChart(BarlabelData:any,BarchartData:any){
-
-  //   const Barchart = new Chart('BarChart', {
-  //     type: 'bar',
-  //     data: {
-  //       labels:BarlabelData ,//['Apple', 'Banana', 'Kiwifruit', 'Blueberry', 'Orange', 'Grapes'],
-  //       datasets: [
-  //         { data: BarchartData, label:'jan' },
-  //         { data: BarchartData, label: 'Dec' },
-  //         { data: BarchartData, label: 'Nov' },
-  //       ],
-
-
-  //     },
-  //     options: {  responsive: true,
-  //       plugins: {
-  //         legend: true,
-
-  //         tooltip: {
-  //           enabled: true,
-  //         },
-  //         backgroundColor: [
-
-  //         ],
-  //       },
-  //     },
-  //   })
-
+  // getPharStockValueSumData() {
+  //   this.isCollectionLoad = 'pharStockLoading';
+  //   let req = { StoreId: 10016 };
+  //   this._DashboardService.getPharStockColSumData('m_pharCurStockValueSummaryDashboard ', req).subscribe((respo: any) => {
+  //     if (respo && respo.length > 0) {
+  //       this.isCollectionLoad = 'pharStockLoaded';
+  //       respo.forEach((element) => {
+  //         this.pharCustStockLabels.push(element.StoreName);
+  //         this.pharCustStockData.push(element.CurValueWithMRP);
+  //       });
+  //     }
+  //   }, error => {
+  //     this.sIsLoading = 'no';
+  //   });
   // }
+
+  // getPharPayModeColSumData() {
+  //   //bar chart pending
+  //   let req = { StoreId: 10035 };
+  //   this._DashboardService.getPharStockColSumData('m_pharPayModeColSummaryDashboard ', req).subscribe(data => {
+  //     // this.BardataList = data;
+  //     console.log(data);
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+  // }
+  // // BarChart(BarlabelData:any,BarchartData:any){
+
+  // //   const Barchart = new Chart('BarChart', {
+  // //     type: 'bar',
+  // //     data: {
+  // //       labels:BarlabelData ,//['Apple', 'Banana', 'Kiwifruit', 'Blueberry', 'Orange', 'Grapes'],
+  // //       datasets: [
+  // //         { data: BarchartData, label:'jan' },
+  // //         { data: BarchartData, label: 'Dec' },
+  // //         { data: BarchartData, label: 'Nov' },
+  // //       ],
+
+
+  // //     },
+  // //     options: {  responsive: true,
+  // //       plugins: {
+  // //         legend: true,
+
+  // //         tooltip: {
+  // //           enabled: true,
+  // //         },
+  // //         backgroundColor: [
+
+  // //         ],
+  // //       },
+  // //     },
+  // //   })
+
+  // // }
 
   onDateRangeChanged() {
     this.fetchStaticData();
     this.getPharDashboardSalesSummary();
+    this.getPharPaymentSummary();
+    this.getPharmsaleTableData();
   }
 
 
@@ -685,6 +774,24 @@ export class PieChartOPData {
   };
 }
 
+export class pieChartCustomerData {
+  currentRange = 'Todays';
+  mainChart = {
+    'Todays': [],
+    'Last Weeks': [],
+    'Current Month': [],
+    'Last Month': []
+  };
+  footerLeft = {
+    title: '',
+    count: 0
+  };
+  footerRight = {
+    title: '',
+    count: 0
+  };
+}
+
 export class pieChartCurStkData {
   currentRange = 'Todays';
   mainChart = {
@@ -715,6 +822,33 @@ export class PathTestSummary {
     this.NetAmount = PathTestSummary.NetAmount || 0;
     this.BillCount = PathTestSummary.BillCount || 0;
     }
+}
+
+export class PaymentSummary {
+  StoreName: string;
+  CashPay: number;
+  ChequePay: number;
+  OnlinePay :number;
+  NetColAmt: number;
+  
+  constructor(PaymentSummary) {
+    this.StoreName = PaymentSummary.StoreName || '';
+    this.CashPay = PaymentSummary.CashPay || 0;
+    this.ChequePay = PaymentSummary.ChequePay || 0;
+    this.OnlinePay = PaymentSummary.OnlinePay || 0;
+    this.NetColAmt = PaymentSummary.NetColAmt || 0;
+    
+    }
+}
+
+export class Employee {
+  StoreName: string;
+  EmpCount: number;
+
+  constructor(Employee) {
+    this.StoreName = Employee.StoreName || '';
+    this.EmpCount = Employee.EmpCount || 0;
+  }
 }
 
 export class PathCateSummary {

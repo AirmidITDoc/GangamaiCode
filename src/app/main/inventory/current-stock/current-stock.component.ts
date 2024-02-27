@@ -152,7 +152,6 @@ export class CurrentStockComponent implements OnInit {
      "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
     }
     setTimeout(() => {
-      
       this._CurrentStockService.getDayWiseStockList(vdata).subscribe(
         (Visit) => {
           this.dsDaywiseStock.data = Visit as DayWiseStockList[];
@@ -171,7 +170,6 @@ export class CurrentStockComponent implements OnInit {
   } 
   
   getItemWiseStockList() {
-    debugger
     this.sIsLoading = 'loading-data';
     var vdata = {
      "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',

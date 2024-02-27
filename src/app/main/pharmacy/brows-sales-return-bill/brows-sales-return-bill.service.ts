@@ -59,5 +59,7 @@ export class BrowsSalesReturnBillService {
   public getLoggedStoreList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
   }
-  
+  public AcceptmaterialSave(Param){
+    return this._httpClient.post("Pharmacy/UpdateMaterialAcceptance",Param);
+  }
 }

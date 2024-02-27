@@ -8,15 +8,34 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 export class DashboardService {
   UseFrom: FormGroup;
+  DayWiseFrom:FormGroup;
+  MonthWiseFrom:FormGroup;
   constructor(public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
-  ) { this.UseFrom = this.createUseFrom() }
+  ) { this.UseFrom = this.createUseFrom();
+    this.DayWiseFrom = this.createDaywisefrom();
+    this.MonthWiseFrom = this.createMonthwiseFrom();
+  }
 
   createUseFrom() {
     return this._formBuilder.group({
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
       StoreId: ''
+    });
+  }
+  createDaywisefrom(){
+    return this._formBuilder.group({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      FromStoreId: ''
+    });
+  }
+  createMonthwiseFrom(){
+    return this._formBuilder.group({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      FromStoreId: ''
     });
   }
 
@@ -63,6 +82,10 @@ export class DashboardService {
   public getPharDashboardPeichart(spname, params) {
     return this._httpClient.post("Dashboard/get-pie-chart-date?procName=" + spname, params)
   }
+   //logged Store
+   public getLoggedStoreList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+  }
 
   public getPharDashboardBarchart(spname, params) {
     return this._httpClient.post("Dashboard/get-bar-chart-date?procName=" + spname, params)
@@ -95,5 +118,33 @@ export class DashboardService {
   {
      return this._httpClient.post("Generic/GetByProc?procName=dash_PathCateWiseCnt",x)
   }
+
+  //Pharmacy Dashboard
+  public getPharDayWiseDashboard(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDayWiseDashboard",x)
+  }
+  public getPharMonthWiseDashboard(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryMonthWiseDashboard",x)
+  }
+
+  public getPharPaymentSummary(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_dash_PharPaymentSummary",x)
+  }
+  public getPharUserInfoStoreWise(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_dash_PharUserInfoStoreWise",x)
+  }
+  public getPharUserCountStoreWise()
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_dash_PharUserCountStoreWise",{})
+  }
+  public getPieChartpharCustomerCount(m_data)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_dash_pharCustomerCount",m_data)
+  }
+  
 }
 
