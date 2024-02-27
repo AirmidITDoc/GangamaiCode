@@ -631,8 +631,9 @@ export class GoodReceiptnoteComponent implements OnInit {
       const dialogRef = this._matDialog.open(QrcodegeneratorComponent,
         {
           data: {
-            QrCodeData: row.GRNDetID,
-            title: "GRN REPORT Viewer"
+            QrCodeData: row.stockid,
+            Qty:row.ReceiveQty,
+            title: "Grn QR"
           }
         });
       dialogRef.afterClosed().subscribe(result => {

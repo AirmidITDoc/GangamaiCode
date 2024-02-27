@@ -4,7 +4,7 @@
         <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="font-size: 20px;width: 70%; font-weight: 400;">
-                QR Code Print
+               {{Title}}
             </span>
             <div fxLayout="column" fxLayout.gt-xs="row">
                 <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
@@ -22,7 +22,7 @@
                         <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
                             <form [formGroup]="qrCodeForm" style="overflow:hidden;padding: 0px 0px 0px 0px;">
                                 <ngx-qrcode elementType="url" [value]="QrCode" cssClass="aclass"
-                                    errorCorrectionLevel="L">
+                                    errorCorrectionLevel="L" style="display: block;" [alt]="QrCode">
                                 </ngx-qrcode>
                                 <div fxLayout="row">
                                     <mat-form-field appearance="outline">
@@ -43,15 +43,15 @@
                                         [useExistingCss]="true" [disabled]="qrCodeForm.invalid" printSectionId="dvPrint"
                                         ngxPrint>Print</button>
                                 </div>
-                                  
+
                                 <div id="dvPrint" style="width: 700px;display: none;">
                                     <mat-grid-list cols="2" rowHeight="2:1">
                                         <mat-grid-tile *ngFor="let item of [].constructor(Qty); let i = index">
-                                            <ngx-qrcode elementType="url" [value]="QrCode" cssClass="aclass" [width]="Width"
-                                                errorCorrectionLevel="L">
+                                            <ngx-qrcode elementType="url" [value]="QrCode" cssClass="aclass"
+                                                [width]="Width" errorCorrectionLevel="L">
                                             </ngx-qrcode>
                                         </mat-grid-tile>
-                                      </mat-grid-list>
+                                    </mat-grid-list>
                                 </div>
                             </form>
                         </div>
