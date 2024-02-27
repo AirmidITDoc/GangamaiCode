@@ -288,10 +288,6 @@
                                                         (click)="viewgetCurrentstockReportPdf(row)">
                                                         <mat-icon>print</mat-icon>
                                                     </button>
-                                                    <button mat-icon-button matTooltip="print QR Code"
-                                                        (click)="openQrCodePrintDialog(row)">
-                                                        <mat-icon>qr_code</mat-icon>
-                                                    </button>
                                                     <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit">
                                                         <mat-icon title="Edit Menu" *ngIf="row.IsVerified==1"
                                                             [disabled]="row.disabled" class="disabled-icon">
@@ -369,14 +365,16 @@
                                     <div style="width: 65%;">
                                         <mat-table #table matSort class="table2" [dataSource]="dsGrnItemList"
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;">
-
-
                                             <ng-container matColumnDef="ItemName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                     ItemName
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.ItemName}}
+                                                    <button mat-icon-button matTooltip="print QR Code"
+                                                        (click)="openQrCodePrintDialog(contact)">
+                                                        <mat-icon>qr_code</mat-icon>
+                                                    </button>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -519,22 +517,12 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="loading">
-                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                <mat-header-cell *matFooterCellDef colspan="10" style="display: none;">
                                                 </mat-header-cell>
                                             </ng-container>
 
-                                            <!-- <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            <mat-spinner style="float:left;"
-                                                *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                            </mat-spinner>
-                                            <span *ngIf="isLoadingStr=='no-data'">No data
-                                                found...</span>
-                                        </mat-footer-cell>
-                                    </ng-container> -->
-
                                             <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                <mat-footer-cell *matFooterCellDef colspan="10">
                                                     no data found...
                                                 </mat-footer-cell>
                                             </ng-container>

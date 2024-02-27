@@ -112,7 +112,6 @@ export class GoodReceiptnoteComponent implements OnInit {
     "IsVerified",
     "IsVerifiedDatetime",
     "IsVerifiedUserId"
-
   ];
 
   displayedColumns3 = [
@@ -128,7 +127,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
- // @ViewChild(MatPaginator) paginator: MatPaginator;
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
   filteredOptions: any;
   noOptionFound: boolean;
   ItemName: any;
@@ -542,7 +541,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       this.dsGrnItemList.sort = this.sort;
       this.dsGrnItemList.paginator = this.paginator;
       this.sIsLoading = '';
-     // console.log(this.dsGrnItemList.data)
+      // console.log(this.dsGrnItemList.data)
     },
       error => {
         this.sIsLoading = '';
@@ -626,29 +625,25 @@ export class GoodReceiptnoteComponent implements OnInit {
   TotalOtherCharge: any = 0;
   finalamt: any = 0;
   openQrCodePrintDialog(row) {
-
+    debugger
     setTimeout(() => {
       this.SpinLoading = true;
-      this._GRNService.getGRNreportview(
-        row.GRNID
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(QrcodegeneratorComponent,
-          {
-            data: {
-              base64: res["base64"] as string,
-              title: "GRN REPORT Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
+      const dialogRef = this._matDialog.open(QrcodegeneratorComponent,
+        {
+          data: {
+            QrCodeData: row.stockid,
+            Qty:row.ReceiveQty,
+            title: "Grn QR"
+          }
         });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
-        });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
       });
-
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
     }, 100);
   }
 
@@ -1257,7 +1252,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     //   toastClass: 'tostr-tost custom-toast-success',
     // });
     // this.getGRNList();
-}
+  }
 }
 
 export class GRNList {
