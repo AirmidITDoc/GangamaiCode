@@ -19,7 +19,12 @@ export class QrcodegeneratorComponent implements OnInit {
   Width=100;
   Height=100;
   Qty=1;
+  QrCode="";
   ngOnInit(): void {
+    debugger
+    if (this.data) {
+      this.QrCode = this.data.QrCodeData.toString();
+    }
   }
   OnPrint() {
     debugger

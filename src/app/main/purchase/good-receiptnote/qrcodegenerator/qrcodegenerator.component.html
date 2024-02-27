@@ -21,12 +21,9 @@
                     <div class="nav material2">
                         <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
                             <form [formGroup]="qrCodeForm" style="overflow:hidden;padding: 0px 0px 0px 0px;">
-                                <ngx-qrcode 
-                                elementType="url" 
-                                [value]="'Test'"
-                                cssClass="aclass"
-                                errorCorrectionLevel="L">
-                            </ngx-qrcode>
+                                <ngx-qrcode elementType="url" [value]="QrCode" cssClass="aclass"
+                                    errorCorrectionLevel="L">
+                                </ngx-qrcode>
                                 <div fxLayout="row">
                                     <mat-form-field appearance="outline">
                                         <mat-label>Qty</mat-label>
@@ -37,25 +34,24 @@
                                 <div fxLayout="row">
                                     <mat-form-field appearance="outline">
                                         <mat-label>Width</mat-label>
-                                        <input [(ngModel)]="Width" matInput name="Width" type="number" autocomplete="off"
-                                            formControlName="Width" id="Width" required>
+                                        <input [(ngModel)]="Width" matInput name="Width" type="number"
+                                            autocomplete="off" formControlName="Width" id="Width" required>
                                     </mat-form-field>
                                 </div>
                                 <div fxLayout="row">
                                     <button class="next-btn" style="border-radius: 14px;height:45px"
-                                    [useExistingCss]="true"
-                                        [disabled]="qrCodeForm.invalid" printSectionId="dvPrint" ngxPrint>Print</button>
+                                        [useExistingCss]="true" [disabled]="qrCodeForm.invalid" printSectionId="dvPrint"
+                                        ngxPrint>Print</button>
                                 </div>
+                                  
                                 <div id="dvPrint" style="width: 700px;display: none;">
-                                    <div style="display: inline;" *ngFor="let item of [].constructor(Qty); let i = index">
-                                        <ngx-qrcode 
-                                        elementType="url" 
-                                        [value]="'Test'"
-                                        cssClass="aclass"
-                                        [width]="Width"
-                                        errorCorrectionLevel="L">
-                                    </ngx-qrcode>
-                                    </div>
+                                    <mat-grid-list cols="2" rowHeight="2:1">
+                                        <mat-grid-tile *ngFor="let item of [].constructor(Qty); let i = index">
+                                            <ngx-qrcode elementType="url" [value]="QrCode" cssClass="aclass" [width]="Width"
+                                                errorCorrectionLevel="L">
+                                            </ngx-qrcode>
+                                        </mat-grid-tile>
+                                      </mat-grid-list>
                                 </div>
                             </form>
                         </div>
