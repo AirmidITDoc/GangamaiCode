@@ -1408,7 +1408,7 @@ export class SalesComponent implements OnInit {
 
       this.NetAmt = ((UnitMrp) * (element.Qty)).toFixed(2);
       // this.v_marginamt =Math.round(this.NetAmt);
-      debugger
+     // debugger
       this.Itemchargeslist.push(
         {
           ItemId: element.ItemId,
@@ -2425,7 +2425,7 @@ else{
   }
 
   getDiscountCellCal(contact, DiscPer) {
-    debugger
+   // debugger
 
 
     // let DiscOld=DiscPer;
@@ -2488,7 +2488,7 @@ else{
   }
 
   getCellCalculation(contact, Qty) {
-    debugger
+   // debugger
     let Qtyfinal=this.Qty;
     console.log(contact)
     this.StockId = contact.StockId;
@@ -2523,7 +2523,7 @@ else{
         //   }
         // }
 
-        debugger
+       // debugger
         if (this.BalChkList.length > 0) {
           let AllQty = 0;
           this.BalChkList.forEach((element) => {
@@ -2587,7 +2587,7 @@ else{
       TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
       let LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
       let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-      debugger
+     // debugger
       this.PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
       let NetAmt
       let DiscAmt

@@ -169,7 +169,7 @@
                                     <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dssaleList!=null && dssaleList.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons>
                                 </mat-paginator>
                                 </div>
                                 <div fxFlex.gt-sm="40%" fxFlex>
@@ -213,7 +213,7 @@
                                         <ng-container matColumnDef="ItemName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ItemName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                 {{contact.ItemName}}
                                             </mat-cell>
                                         </ng-container>
@@ -221,7 +221,7 @@
                                         <ng-container matColumnDef="BatchNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">BatchNo
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                                 {{contact.BatchNo}}
                                             </mat-cell>
                                         </ng-container>
@@ -481,15 +481,15 @@
                                     <ng-container matColumnDef="BatchNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">BatchNo
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                             {{contact.BatchNo}}
                                         </mat-cell>
                                     </ng-container>
                         
                                     <ng-container matColumnDef="BatchExpDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">ExpDate
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ExpDate
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                             {{contact.BatchExpDate}}
                                         </mat-cell>
                                     </ng-container>

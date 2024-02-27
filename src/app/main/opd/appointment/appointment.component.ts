@@ -251,7 +251,7 @@ export class AppointmentComponent implements OnInit {
     // "Edit",
     // "Bill",
     // "PhoneAppId",
-    'CrossConsultation',
+    // 'CrossConsultation',
     "RegNoWithPrefix",
     "PatientName",
     "DVisitDate",
@@ -311,7 +311,7 @@ export class AppointmentComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private reportDownloadService: ExcelDownloadService,
     private _Activatedroute: ActivatedRoute,
-    private changeDetectorRefs: ChangeDetectorRef,
+    private changeDetectorRefs: ChangeDetectorRef
   ) {
     this.getVisitList();
     this.configService.configParams.DepartmentId;
@@ -762,7 +762,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   onChangeReg(event) {
-    debugger
+    // debugger
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
       this.personalFormGroup.reset();
@@ -869,7 +869,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   onChangePatient(value) {
-    debugger
+    // debugger
     if (value.PatientTypeId !== 1) {
       this._opappointmentService.getCompanyCombo();
       this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
@@ -1357,7 +1357,7 @@ export class AppointmentComponent implements OnInit {
 
 
   getPhoneAppointmentList() {
-    debugger
+    // debugger
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}`
     }
@@ -1450,7 +1450,7 @@ export class AppointmentComponent implements OnInit {
 
 
   onSave() {
-    debugger
+    // debugger
     if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
 
       if (this.searchFormGroup.get('regRadio').value == "registration") {
@@ -1487,7 +1487,7 @@ export class AppointmentComponent implements OnInit {
 
 
   OnsaveNewRegister() {
-    debugger
+    // debugger
     if (this.patienttype != 2) {
       this.CompanyId = 0;
     } else if (this.patienttype == 2) {
@@ -1577,7 +1577,7 @@ export class AppointmentComponent implements OnInit {
 
       this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
         if (response) {
-          debugger
+        //   debugger
           if (this.vPhoneAppId !== 0) {
             Swal.fire('Congratulations !', 'New Appoinment from Phone save Successfully !', 'success').then((result) => {
 
@@ -1597,7 +1597,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   onSaveRegistered() {
-    debugger
+    // debugger
     if (this.patienttype != 2) {
       this.CompanyId = 0;
     } else if (this.patienttype == 2) {
@@ -2135,7 +2135,45 @@ export class AppointmentComponent implements OnInit {
     //Reset Page
     this.onClose();
   }
+  objICard={};
+  QrCode="";
+  printIcard(row){
+    debugger
+    this.objICard=row;
+    this.QrCode=row.RegId.toString();
+    setTimeout(() => {
+      this.OnPrint();      
+    }, 100);
+  }
+  OnPrint() {
+    debugger
+    const printContents = document.getElementById("i-card").innerHTML;
+    const pageContent = `<!DOCTYPE html><html><head></head><body onload="window.print()">${printContents}</html>`;
+    let popupWindow: Window;
+    if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+      popupWindow = window.open(
+        '',
+        '_blank',
+        'width=600,height=600,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no'
+      );
+      popupWindow.window.focus();
+      popupWindow.document.write(pageContent);
+      popupWindow.document.close();
+      popupWindow.onbeforeunload = event => {
+        popupWindow.close();
+      };
+      popupWindow.onabort = event => {
+        popupWindow.document.close();
+        popupWindow.close();
+      };
+    } else {
+      popupWindow = window.open('', '_blank', 'width=600,height=600');
+      popupWindow.document.open();
+      popupWindow.document.write(pageContent);
+      popupWindow.document.close();
+    }
 
+  }
   onChangeCityList(CityObj) {
     if (CityObj) {
       this._opappointmentService.getStateList(CityObj.CityId).subscribe((data: any) => {
@@ -2702,8 +2740,9 @@ export class AppointmentComponent implements OnInit {
     let fileType;
     const dialogRef = this.matDialog.open(ImageViewComponent,
       {
-        width: '800px',
+        width: '750px',
         height: '550px',
+    
         data: {
           docData: type == 'camera' ? 'camera' : '',
           type: type == 'camera' ? 'camera' : '',
@@ -3051,7 +3090,7 @@ export class AppointmentComponent implements OnInit {
 
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-   debugger
+//    debugger
     // f10
     // if (event.keyCode === 121) {
     //     this.NewOPBill();

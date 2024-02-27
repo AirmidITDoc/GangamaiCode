@@ -11,9 +11,17 @@
     cursor: pointer;
 }
 
-.view-image{
+.view-image {
     height: calc(100% - 37px);
     width: 100%;
     object-fit: contain;
-    background: rgba(0,0,0,.7);
+    background: rgba(0, 0, 0, 0.7);
+}
+.image-view-section{
+    .webcam-section {
+        video{
+            height: 100%;
+            width: 100%;
+        }
+    }
 }
