@@ -93,616 +93,623 @@
 
                         <div>
                             <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                                <mat-table matSort [dataSource]="dssaleList" [@animateStagger]="{value:'50'}"
-                                style="overflow:auto; height: 200px !important;width:70%;" >
+                                <div fxFlex.gt-sm="60%" fxFlex>
+                                    <mat-table #table matSort [dataSource]="dssaleList" [@animateStagger]="{value:'50'}">
+    
+                                    <ng-container matColumnDef="Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.Date | date:'ddMMyyyy'}}
+                                        </mat-cell>
+                                    </ng-container>
+    
+                                    <ng-container matColumnDef="SalesNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesNo
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.SalesNo}}
+                                        </mat-cell>
+                                    </ng-container>
+    
+                                    <ng-container matColumnDef="RegNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.RegNo}}
+                                        </mat-cell>
+                                    </ng-container>
+    
+                                    <ng-container matColumnDef="PatientName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.PatientName}}
+                                        </mat-cell>
+                                    </ng-container>
+    
+                                    <ng-container matColumnDef="TotalAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalAmount
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.TotalAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+    
+                                    <ng-container matColumnDef="PaidType">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Status
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.PaidType}}
+                                        </mat-cell>
+                                    </ng-container>
+    
+                                    
+    
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+    
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                            </mat-spinner>
+                                            <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
+    
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                        [ngClass]="{'row-blue': contact.PaidType == 'Credit'}"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect(contact)"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleList!=null}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dssaleList!=null && dssaleList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
+                                </mat-paginator>
+                                </div>
+                                <div fxFlex.gt-sm="40%" fxFlex>
+                                    <mat-table matSort [dataSource]="dssaleDetailList" [@animateStagger]="{value:'100'}" >
 
-                                <ng-container matColumnDef="Date">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.Date | date:'ddMMyyyy'}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="SalesNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesNo
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.SalesNo}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="RegNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.RegNo}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="PatientName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientName
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.PatientName}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="TotalAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalAmount
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.TotalAmount}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="PaidType">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Status
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.PaidType}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                    </mat-header-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                        </mat-spinner>
-                                        <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                                </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                    [ngClass]="{'row-blue': contact.PaidType == 'Credit'}"
-                                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect(contact)"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleList!=null}">
-                                </mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dssaleList!=null && dssaleList.data.length==0)}">
-                                </mat-footer-row>
-                            </mat-table>
+                                        <!-- <ng-container matColumnDef="SalesId">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header>SalesId</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact">
+                                                {{contact.SalesId}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="SalesDetId">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesDetId
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.SalesDetId}}
+                                            </mat-cell>
+                                        </ng-container> -->
+                                        <!-- <ng-container matColumnDef="SalesNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesNo
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.SalesNo}}
+                                            </mat-cell>
+                                        </ng-container> -->
+                                        <!-- <ng-container matColumnDef="OP_IP_ID">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>OP_IP_ID
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.OP_IP_ID}}
+                                            </mat-cell>
+                                        </ng-container> -->
+                                        <!-- <ng-container matColumnDef="ItemId">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemId
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.ItemId}}
+                                            </mat-cell>
+                                        </ng-container> -->
+                                        <ng-container matColumnDef="ItemName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ItemName
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.ItemName}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="BatchNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">BatchNo
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.BatchNo}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <!-- <ng-container matColumnDef="BatchExpDate">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BatchExpDate
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.BatchExpDate}}
+                                            </mat-cell>
+                                        </ng-container> -->
+        
+                                        <ng-container matColumnDef="UnitMRP">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UnitMRP
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.UnitMRP}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="Qty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.Qty}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <!-- <ng-container matColumnDef="ReturnQty" hidden="true"> 
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReturnQty
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.Qty}}
+                                            </mat-cell>
+                                        </ng-container> -->
+        
+                                        <ng-container matColumnDef="TotalAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalAmt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.TotalAmount}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <!-- <ng-container matColumnDef="VatPer">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>VatPer
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.VatPer}}
+                                            </mat-cell>
+                                        </ng-container> -->
+        
+                                        <!-- <ng-container matColumnDef="VatAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>VatAmt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.VatAmount}}
+                                            </mat-cell>
+                                        </ng-container> -->
+        
+                                        <ng-container matColumnDef="DiscPer">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscPer
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.DiscPer}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <!-- <ng-container matColumnDef="DiscAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscAmt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.DiscAmount}}
+                                            </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="GrossAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GrossAmt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.GrossAmount}}
+                                            </mat-cell>
+                                        </ng-container>
+                                      <ng-container matColumnDef="LandedPrice">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>LandedPrice
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.LandedPrice}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                         <ng-container matColumnDef="TotalLandedAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotLandedAmt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.TotalLandedAmount}}
+                                            </mat-cell>
+                                        </ng-container> -->
+                                       <!--    <ng-container matColumnDef="IsBatchRequired">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsBatchRequired
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.IsBatchRequired}}
+                                            </mat-cell>
+                                        </ng-container>-->
+        
+                                        <!-- <ng-container matColumnDef="PurRateWf">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PurRateWf
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.PurRateWf}}
+                                            </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="PurTotAmt">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PurTotAmt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.PurTotAmt}}
+                                            </mat-cell>
+                                        </ng-container> -->
+        
+                                       <!--    <ng-container matColumnDef="IsPrescription">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPrescription
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.IsPrescription}}
+                                            </mat-cell>
+                                        </ng-container> -->
+                                        <!-- <ng-container matColumnDef="CGSTPer">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CGST%
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.CGSTPer}}
+                                            </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="SGSTPer">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SGST%
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.SGSTPer}}
+                                            </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="IGSTPer">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IGST%
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.IGSTPer}}
+                                            </mat-cell>
+                                        </ng-container> -->
+                                        <!-- <ng-container matColumnDef="IsPurRate">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPurRate
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.IsPurRate}}
+                                            </mat-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="StkID">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>StkID
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.StkID}}
+                                            </mat-cell>
+                                        </ng-container> -->
+        
+                                        <ng-container matColumnDef="loading">
+                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                            </mat-header-cell>
+                                        </ng-container>
+        
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                                </mat-spinner>
+                                                <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                            </mat-footer-cell>
+                                        </ng-container>
+        
+                                        <mat-header-row class="accent" *matHeaderRowDef="dspSalesDetColumns; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let contact; columns: dspSalesDetColumns;"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"  (click)="SelectedItem(contact)"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleDetailList!=null}">
+                                        </mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dssaleDetailList!=null && dssaleDetailList.data.length==0)}">
+                                        </mat-footer-row>
+                                    </mat-table>
+                                </div>
+                               
                             </div>
                            
 
                         </div>
                         <hr>
 
-                        <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                            <mat-table matSort [dataSource]="dssaleDetailList" [@animateStagger]="{value:'100'}" >
-
-                                <!-- <ng-container matColumnDef="SalesId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>SalesId</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact">
-                                        {{contact.SalesId}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="SalesDetId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesDetId
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.SalesDetId}}
-                                    </mat-cell>
-                                </ng-container> -->
-                                <!-- <ng-container matColumnDef="SalesNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesNo
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.SalesNo}}
-                                    </mat-cell>
-                                </ng-container> -->
-                                <!-- <ng-container matColumnDef="OP_IP_ID">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>OP_IP_ID
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.OP_IP_ID}}
-                                    </mat-cell>
-                                </ng-container> -->
-                                <!-- <ng-container matColumnDef="ItemId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemId
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.ItemId}}
-                                    </mat-cell>
-                                </ng-container> -->
-                                <ng-container matColumnDef="ItemName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemName
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.ItemName}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="BatchNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BatchNo
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.BatchNo}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <!-- <ng-container matColumnDef="BatchExpDate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BatchExpDate
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.BatchExpDate}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-                                <ng-container matColumnDef="UnitMRP">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UnitMRP
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.UnitMRP}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="Qty">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.Qty}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <!-- <ng-container matColumnDef="ReturnQty" hidden="true"> 
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReturnQty
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.Qty}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-                                <ng-container matColumnDef="TotalAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.TotalAmount}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <!-- <ng-container matColumnDef="VatPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>VatPer
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.VatPer}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-                                <!-- <ng-container matColumnDef="VatAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>VatAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.VatAmount}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-                                <ng-container matColumnDef="DiscPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscPer
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.DiscPer}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <!-- <ng-container matColumnDef="DiscAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.DiscAmount}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="GrossAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GrossAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.GrossAmount}}
-                                    </mat-cell>
-                                </ng-container>
-                              <ng-container matColumnDef="LandedPrice">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>LandedPrice
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.LandedPrice}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                 <ng-container matColumnDef="TotalLandedAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotLandedAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.TotalLandedAmount}}
-                                    </mat-cell>
-                                </ng-container> -->
-                               <!--    <ng-container matColumnDef="IsBatchRequired">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsBatchRequired
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.IsBatchRequired}}
-                                    </mat-cell>
-                                </ng-container>-->
-
-                                <!-- <ng-container matColumnDef="PurRateWf">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PurRateWf
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.PurRateWf}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="PurTotAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PurTotAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.PurTotAmt}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-                               <!--    <ng-container matColumnDef="IsPrescription">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPrescription
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.IsPrescription}}
-                                    </mat-cell>
-                                </ng-container> -->
-                                <!-- <ng-container matColumnDef="CGSTPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CGST%
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.CGSTPer}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="SGSTPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SGST%
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.SGSTPer}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="IGSTPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IGST%
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.IGSTPer}}
-                                    </mat-cell>
-                                </ng-container> -->
-                                <!-- <ng-container matColumnDef="IsPurRate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPurRate
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.IsPurRate}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="StkID">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>StkID
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.StkID}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                    </mat-header-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                        </mat-spinner>
-                                        <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <mat-header-row class="accent" *matHeaderRowDef="dspSalesDetColumns; sticky: true">
-                                </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: dspSalesDetColumns;"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"  (click)="SelectedItem(contact)"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleDetailList!=null}">
-                                </mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dssaleDetailList!=null && dssaleDetailList.data.length==0)}">
-                                </mat-footer-row>
-                            </mat-table>
-
-
-                            <mat-table matSort [dataSource]="selectedssaleDetailList"
-                                [@animateStagger]="{value:'100'}">
-
-                                <ng-container matColumnDef="buttons">
-                                    <mat-header-cell *matHeaderCellDef class="table-actions" style="color: red;">
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact">
-                                        <ng-container class="actions">
-                                          
-                                            <span class="material-icons" style="cursor: pointer;color: #5b5858;"
-                                                (click)="deleteTableRow(contact)">
-                                                delete
-                                            </span>
-                                        </ng-container>
-    
-                                    </mat-cell>
-                                </ng-container>
-                                <!-- <ng-container matColumnDef="SalesId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>SalesId</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact">
-                                        {{contact.SalesId}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="SalesDetId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesDetId
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.SalesDetId}}
-                                    </mat-cell>
-                                </ng-container> -->
-                                <!-- <ng-container matColumnDef="SalesNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesNo
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.SalesNo}}
-                                    </mat-cell>
-                                </ng-container> -->
-                                <!-- <ng-container matColumnDef="OP_IP_ID">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>OP_IP_ID
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.OP_IP_ID}}
-                                    </mat-cell>
-                                </ng-container> -->
-                                <!-- <ng-container matColumnDef="ItemId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemId
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.ItemId}}
-                                    </mat-cell>
-                                </ng-container> -->
-                                <ng-container matColumnDef="ItemName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemName
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.ItemName}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="BatchNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BatchNo
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.BatchNo}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="BatchExpDate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ExpDate
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.BatchExpDate}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="UnitMRP">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UnitMRP
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.UnitMRP}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="Qty">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.Qty}}
-                                    </mat-cell>
-                                </ng-container>
-                                
-                                <ng-container matColumnDef="ReturnQty">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReturnQty
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        <mat-form-field appearance="legacy">
-                                            <input matInput [(ngModel)]="contact.ReturnQty" (keyup)="getCellCalculation(contact,contact.ReturnQty)" #ReturnQty type="number" autocomplete="off">
-                                        </mat-form-field>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="TotalAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.TotalAmount}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="VatPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GST%
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.VatPer}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                 <!-- <ng-container matColumnDef="VatAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>VatAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.VatAmount}}
-                                    </mat-cell>
-                                </ng-container>  -->
-
-                                <ng-container matColumnDef="DiscPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscPer
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.DiscPer}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="DiscAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.DiscAmount}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="GrossAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GrossAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.GrossAmount}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="LandedPrice">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>LandedPrice
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.LandedPrice}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                 <ng-container matColumnDef="TotalLandedAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotLandedAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.TotalLandedAmount}}
-                                    </mat-cell>
-                                </ng-container>
-                                <!-- <ng-container matColumnDef="IsBatchRequired">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsBatchRequired
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.IsBatchRequired}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-                                <!-- <ng-container matColumnDef="PurRateWf">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PurRateWf
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.PurRateWf}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="PurTotAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PurTotAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.PurTotAmt}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-                                <!-- <ng-container matColumnDef="IsPrescription">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPrescription
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.IsPrescription}}
-                                    </mat-cell>
-                                </ng-container> -->
-                                <ng-container matColumnDef="CGSTPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CGST%
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.CGSTPer}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="CGSTAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CGSTAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.CGSTAmount}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="SGSTPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SGST%
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.SGSTPer}}
-                                    </mat-cell>
-                                </ng-container>
-                               
-                                <ng-container matColumnDef="SGSTAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SGSTAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.SGSTAmount}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="CGSTAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CGSTAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.CGSTAmount}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="IGSTPer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IGST%
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.IGSTPer}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="IGSTAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IGSTAmt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.IGSTAmount}}
-                                    </mat-cell>
-                                </ng-container>
-                                <!-- <ng-container matColumnDef="IsPurRate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPurRate
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.IsPurRate}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-                                <!-- <ng-container matColumnDef="StkID">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>StkID
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.StkID}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-
-
-                                <!-- <ng-container matColumnDef="loading">
-                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                    </mat-header-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                        </mat-spinner>
-                                        <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                    </mat-footer-cell>
-                                </ng-container> -->
-
-                                <mat-header-row class="accent" *matHeaderRowDef="dspSalesDetselectedColumns; sticky: true">
-                                </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: dspSalesDetselectedColumns;"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleList!=null}">
-                                </mat-footer-row> -->
-                                <!-- <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dssaleList!=null && dssaleList.data.length==0)}">
-                                </mat-footer-row> -->
-
-                              
-                            </mat-table>
-
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                            <div fxFlex.gt-sm="100%" fxFlex>
+                                <mat-table #table matSort [dataSource]="selectedssaleDetailList" [@animateStagger]="{value:'100'}">
+                        
+                                    <ng-container matColumnDef="buttons">
+                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: red;">
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <ng-container class="actions">
+                        
+                                                <span class="material-icons" style="cursor: pointer;color: #5b5858;"
+                                                    (click)="deleteTableRow(contact)">
+                                                    delete
+                                                </span>
+                                            </ng-container>
+                        
+                                        </mat-cell>
+                                    </ng-container>
+                                    <!-- <ng-container matColumnDef="SalesId">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>SalesId</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact">
+                                                                {{contact.SalesId}}
+                                                            </mat-cell>
+                                                        </ng-container>
+                        
+                                                        <ng-container matColumnDef="SalesDetId">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesDetId
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                {{contact.SalesDetId}}
+                                                            </mat-cell>
+                                                        </ng-container> -->
+                                    <!-- <ng-container matColumnDef="SalesNo">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SalesNo
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                {{contact.SalesNo}}
+                                                            </mat-cell>
+                                                        </ng-container> -->
+                                    <!-- <ng-container matColumnDef="OP_IP_ID">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>OP_IP_ID
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                {{contact.OP_IP_ID}}
+                                                            </mat-cell>
+                                                        </ng-container> -->
+                                    <!-- <ng-container matColumnDef="ItemId">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemId
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                {{contact.ItemId}}
+                                                            </mat-cell>
+                                                        </ng-container> -->
+                                    <ng-container matColumnDef="ItemName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ItemName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                            {{contact.ItemName}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="BatchNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">BatchNo
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.BatchNo}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="BatchExpDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">ExpDate
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.BatchExpDate}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="UnitMRP">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UnitMRP
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.UnitMRP}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="Qty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.Qty}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="ReturnQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReturnQty
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-form-field appearance="legacy">
+                                                <input matInput [(ngModel)]="contact.ReturnQty"
+                                                    (keyup)="getCellCalculation(contact,contact.ReturnQty)" #ReturnQty type="number"
+                                                    autocomplete="off">
+                                            </mat-form-field>
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="TotalAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalAmt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.TotalAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="VatPer">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GST%
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.VatPer}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <!-- <ng-container matColumnDef="VatAmount">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>VatAmt
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                {{contact.VatAmount}}
+                                                            </mat-cell>
+                                                        </ng-container>  -->
+                        
+                                    <ng-container matColumnDef="DiscPer">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscPer
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.DiscPer}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="DiscAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscAmt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.DiscAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="GrossAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GrossAmt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.GrossAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="LandedPrice">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>LandedPrice
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.LandedPrice}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="TotalLandedAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotLandedAmt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.TotalLandedAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <!-- <ng-container matColumnDef="IsBatchRequired">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsBatchRequired
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                {{contact.IsBatchRequired}}
+                                                            </mat-cell>
+                                                        </ng-container> -->
+                        
+                                    <!-- <ng-container matColumnDef="PurRateWf">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PurRateWf
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                {{contact.PurRateWf}}
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="PurTotAmt">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PurTotAmt
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                {{contact.PurTotAmt}}
+                                                            </mat-cell>
+                                                        </ng-container> -->
+                        
+                                    <!-- <ng-container matColumnDef="IsPrescription">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPrescription
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                {{contact.IsPrescription}}
+                                                            </mat-cell>
+                                                        </ng-container> -->
+                                    <ng-container matColumnDef="CGSTPer">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CGST%
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.CGSTPer}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="CGSTAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CGSTAmt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.CGSTAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="SGSTPer">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SGST%
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.SGSTPer}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="SGSTAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SGSTAmt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.SGSTAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="CGSTAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CGSTAmt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.CGSTAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="IGSTPer">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IGST%
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IGSTPer}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="IGSTAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IGSTAmt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IGSTAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <!-- <ng-container matColumnDef="IsPurRate">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsPurRate
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                {{contact.IsPurRate}}
+                                                            </mat-cell>
+                                                        </ng-container> -->
+                        
+                                    <!-- <ng-container matColumnDef="StkID">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>StkID
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                {{contact.StkID}}
+                                                            </mat-cell>
+                                                        </ng-container> -->
+                        
+                        
+                        
+                                    <!-- <ng-container matColumnDef="loading">
+                                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                            </mat-header-cell>
+                                                        </ng-container>
+                        
+                                                        <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                                                </mat-spinner>
+                                                                <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                                            </mat-footer-cell>
+                                                        </ng-container> -->
+                        
+                                    <mat-header-row class="accent" *matHeaderRowDef="dspSalesDetselectedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: dspSalesDetselectedColumns;"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleList!=null}">
+                                                        </mat-footer-row> -->
+                                    <!-- <mat-footer-row *matFooterRowDef="['noData']"
+                                                            [ngClass]="{'hide':!(dssaleList!=null && dssaleList.data.length==0)}">
+                                                        </mat-footer-row> -->
+                        
+                        
+                                </mat-table>
+                            </div>
+                        
                         </div>
 
                         <div>

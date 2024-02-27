@@ -18,8 +18,8 @@ export class SalePopupComponent implements OnInit {
     'MRP',
     'PurPrice',
     'ConversionFactor',
-    'LandedRate'
-    // 'ItemName',
+    'LandedRate',
+    'ExpDays'
     // 'ItemCode',
   ];;
   isLoadingStr: string = '';
