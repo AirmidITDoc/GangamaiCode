@@ -20,19 +20,29 @@ import { fuseAnimations } from '@fuse/animations';
 export class SalesSummaryComponent implements OnInit {
   displayedColumns: string[] = [
     'Date',
-    'StoreName',
+    // 'StoreName',
+    'TargetValue',
     'CollectionAmount',
+    'OldPay',
     'RefundAmount',
     'NetAmount',
-    'BillCount'
+    'BillCount',
+    'UnAchievedAmount',
+    'UnAchievedPercantage',
+    'AvgBillPer'
   ];
   displayedColumns1: string[] = [
     'Date',
-    'StoreName',
+    // 'StoreName',
+    'TargetValue',
     'CollectionAmount',
+    'OldPay',
     'RefundAmount',
     'NetAmount',
-    'BillCount'
+    // 'BillCount',
+    'UnAchievedAmount',
+    'UnAchievedPercantage',
+    // 'AvgBillPer'
   ];
   dsDayWiseList = new MatTableDataSource<DayWiseList>();
   dsMonthWiseList = new MatTableDataSource<MonthWiseList>();
@@ -41,6 +51,7 @@ export class SalesSummaryComponent implements OnInit {
   
   rangeFormGroup: FormGroup;
   FromStoreList:any=[];
+  PharmStoreList: any = [];
 
   constructor(
     public _matDialog: MatDialog,
@@ -53,41 +64,51 @@ export class SalesSummaryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data.Obj.IssueId);
+    // console.log(this.data.Obj);
     if (this.data) {
-      this.getPharDayWiseData(this.data.Obj.IssueId);
+      //this.getPharDayWiseData(this.data.Obj);
       setTimeout(() => {
       }, 2000);
     }
     this.getPharStoreList();
+    this.getPharmStoreList();
+    this.getPharDayWiseData();
+    this.getPharMonthWiseData();
   }
   onClose() {
     this.dialogRef.close();
   }
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
+ 
   getPharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
     }
     this._DashboardService.getLoggedStoreList(vdata).subscribe(data => {
       this.FromStoreList = data;
-     // console.log(this.FromStoreList);
       this._DashboardService.DayWiseFrom.get('FromStoreId').setValue(this.FromStoreList[0]);
       this._DashboardService.MonthWiseFrom.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
-  getPharDayWiseData(Params) {
+
+  onDateChange(){
+    this.getPharDayWiseData();
+    this.getPharMonthWiseData();
+  }
+  getPharmStoreList() {
+    this._DashboardService.getPharmStoreList().subscribe(data => {
+      this.PharmStoreList = data;
+    });
+  }
+
+  getPharDayWiseData() {
     var Param = {
       "FromDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('start').value,"MM-dd-yyyy"),
       "ToDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('end').value,"MM-dd-yyyy"),
       "StoreId": this._loggedService.currentUserValue.user.storeId
     }
-   // console.log(Param);
     this._DashboardService.getPharDayWiseDashboard(Param).subscribe(data => {
       this.dsDayWiseList.data = data as DayWiseList[];
-     // console.log(this.dsDayWiseList);
+      // console.log(this.dsDayWiseList.data);
       this.dsDayWiseList.sort = this.sort;
       this.dsDayWiseList.paginator = this.paginator;
     },
@@ -95,15 +116,15 @@ export class SalesSummaryComponent implements OnInit {
         // this.sIsLoading = '';
       });
   }
-  getPharMonthWiseData(Params) {
+  getPharMonthWiseData() {
     var Param = {
-      "FromDate": this.datePipe.transform(this._DashboardService.MonthWiseFrom.get('startDate').value,"MM-dd-yyyy"),
-      "ToDate": this.datePipe.transform(this._DashboardService.MonthWiseFrom.get('endDate').value,"MM-dd-yyyy"),
-      "StoreId":  this._loggedService.currentUserValue.user.storeId
+      "FromDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('start').value,"MM-dd-yyyy"),
+      "ToDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('end').value,"MM-dd-yyyy"),
+      "StoreId": this._loggedService.currentUserValue.user.storeId
     }
     this._DashboardService.getPharMonthWiseDashboard(Param).subscribe(data => {
       this.dsMonthWiseList.data = data as MonthWiseList[];
-      console.log(this.dsMonthWiseList);
+      // console.log(this.dsMonthWiseList);
       this.dsMonthWiseList.sort = this.sort;
       this.dsMonthWiseList.paginator = this.paginator;
     },
