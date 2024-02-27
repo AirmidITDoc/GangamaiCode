@@ -129,6 +129,7 @@ export class SalesList {
   ItemName: string;
   ConversionFactor: string;
   position: number;
+  DaysFlag:any;
   // Bal:number;
   // StoreId:any;
   // StoreName:any;
@@ -147,7 +148,7 @@ export class SalesList {
       this.position = IndentList.position || 0;
       this.ItemName = IndentList.ItemName || "";
       this.ConversionFactor = IndentList.ConversionFactor || '';
-      // this.Bal = IndentList.Bal|| 0;
+      this.DaysFlag = IndentList.DaysFlag|| 0;
       // this.StoreId = IndentList.StoreId || 0;
       // this.StoreName =IndentList.StoreName || '';
     }

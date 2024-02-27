@@ -30,9 +30,17 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
         <mat-cell *matCellDef="let element"> {{element.BatchNo}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="BatchExpDate">
+    <!-- <ng-container matColumnDef="BatchExpDate">
         <mat-header-cell *matHeaderCellDef> Exp Date </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.BatchExpDate | date: 'MM/yyyy'}} </mat-cell>
+    </ng-container> -->
+    <!-- A TO Z NS DROP 15ML -->
+    <ng-container matColumnDef="BatchExpDate" sticky>
+        <mat-header-cell *matHeaderCellDef>BatchExpDate
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="{' red-600 s-16': element.DaysFlag ==1}">
+            {{element.BatchExpDate | date: 'MM/yyyy'}} 
+        </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="BalanceQty">
