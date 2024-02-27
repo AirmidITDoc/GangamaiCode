@@ -6,7 +6,7 @@
     padding: 7px 20px 0 0;
 }
 .date-field {
-    margin-right: 5px;
+    margin-right: 8px;
 }
 
 .dateField ::ng-deep .mat-form-field-flex {
@@ -28,3 +28,10 @@
     overflow: hidden;
 }
 // }
+.mat-form-field {
+    .material-icons {
+        color: #989898;
+        cursor: pointer;
+        font-size: 18px;
+    }
+}
