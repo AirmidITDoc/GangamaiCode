@@ -91,38 +91,40 @@ export class AcceptMaterialListPopupComponent implements OnInit {
   temparray:any=[];
   
   tableElementChecked(event ,contact){
-    debugger
     if(contact.selected){
       contact.Status = 'Accepted'
       this.SelectedRowData.push(contact);
       console.log(this.SelectedRowData);
       // this.temparray = this.S.data;
-    }else{
-
-      
-      contact.Status = 'Rejected'
-      contact.selected=false;
-      debugger
-    
-      //let index = this.temparray.indexOf(contact);
-      let index1 = this.temparray.data.indexOf(contact);
-         if (index1 >= 0) {
-        this.temparray.data.splice(index1, 1);
-        
-        this.SelectedRowData.data = [];
-        this.SelectedRowData.data = this.temparray.data;
-      }
-
-      
-      console.log(this.SelectedRowData.data);
-
-      
     }
-    this.dsItemList= this.SelectedRowData;
-    console.log(this.dsItemList);
+    else{
+
+    }
+    // else{
+    //   contact.Status = 'Rejected'
+    //   contact.selected=false;
+    //   debugger
+    
+    //   //let index = this.temparray.indexOf(contact);
+    //   let index1 = this.temparray.data.indexOf(contact);
+    //      if (index1 >= 0) {
+    //     this.temparray.data.splice(index1, 1);
+        
+    //     //this.SelectedRowData.data = [];
+    //    this.temparray.data =  this.SelectedRowData.data ;
+    //   }
+
+    //   console.log(this.temparray.data);
+    //   console.log(this.SelectedRowData.data);
+
+      
+    // }
+    // this.dsItemList= this.SelectedRowData;
+    // console.log(this.dsItemList);
+
   }
   onSubmit(){
-    debugger
+    // debugger
     console.log(this.SelectedRowData);
     if ((!this.dsItemList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -130,24 +132,27 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       });
       return;
     }
+    
     let materialAcceptIssueHeader = {};
     materialAcceptIssueHeader['issueId'] =this.data.Obj.IssueId; 
     materialAcceptIssueHeader['acceptedBy'] = 1 ;
 
     let materialAcceptIssueDetails = [];
     this.SelectedRowData.data.forEach((element) => {
-      let statuschk
-      if(element.Status == 'Accepted'){
-        statuschk = 1;
-      }else if(element.Status == 'Rejected')
-        {
-          statuschk = 0;
-        }
-      
+     
       let materialAcceptIssueDetailsObj = {};
 
       materialAcceptIssueDetailsObj['issueId'] = element.IssueId; 
       materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId ;
+      let statuschk
+      debugger
+      if(element.selected == 1){
+        statuschk = 1;
+      }else if(element.selected != 1)
+        {
+          statuschk = 0;
+        }
+      
       materialAcceptIssueDetailsObj['status'] = statuschk ;
       materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
     });
@@ -167,7 +172,11 @@ export class AcceptMaterialListPopupComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
-    });
+    },error => {
+      this.toastr.error('Category not saved !, Please check API error..', 'Error !', {
+       toastClass: 'tostr-tost custom-toast-error',
+     });
+   });
   }
 
 }

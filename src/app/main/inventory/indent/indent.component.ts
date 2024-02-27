@@ -13,8 +13,8 @@ import Swal from 'sweetalert2';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { ToastrService } from 'ngx-toastr';
-import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
@@ -25,6 +25,27 @@ import { MatTabGroup } from '@angular/material/tabs';
   animations: fuseAnimations,
 })
 export class IndentComponent implements OnInit {
+  displayedColumns = [
+    'IndentNo',
+    'IndentDate',
+    'FromStoreName',
+    'ToStoreName',
+    'Addedby',
+    'IsInchargeVerify',
+    'action',
+  ];
+  displayedColumns1 = [
+    'ItemName',
+    'Qty',
+    'IssQty',
+    'Bal',
+  ];
+  displayedColumns2 = [
+    'ItemID',
+    'ItemName',
+    'IndentQuantity',
+    'Action'
+  ];
   isItemIdSelected: boolean = false;
   sIsLoading: string = '';
   isLoading = true;
@@ -40,6 +61,11 @@ export class IndentComponent implements OnInit {
   ItemName: any;
   vQty: any;
   chargeslist: any = [];
+  ToStoreList1:any=[];
+  isStoreSelected:boolean =false;
+  filteredOptionsStore: Observable<string[]>;
+  filteredOptionsStoreList: Observable<string[]>;
+  vRemark:any;
 
   dsIndentSearchList = new MatTableDataSource<IndentID>();
 
@@ -47,29 +73,7 @@ export class IndentComponent implements OnInit {
 
   dsIndentNameList = new MatTableDataSource<IndentNameList>();
   dsTempItemNameList = new MatTableDataSource<IndentNameList>();
-  displayedColumns = [
-    'IndentNo',
-    'IndentDate',
-    'FromStoreName',
-    'ToStoreName',
-    'Addedby',
-    'IsInchargeVerify',
-    'action',
-  ];
-
-  displayedColumns1 = [
-    'ItemName',
-    'Qty',
-    'IssQty',
-    'Bal',
-  ];
-
-  displayedColumns2 = [
-    'ItemID',
-    'ItemName',
-    'IndentQuantity',
-    'Action'
-  ];
+ 
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -89,20 +93,22 @@ export class IndentComponent implements OnInit {
 
   ) { }
 
-
   ngOnInit(): void {
-    // this.getFromStoreSearchList();
     this.getIndentItemName();
     this.getToStoreSearchList();
     this.getFromStoreSearchList();
     this.getIndentID();
     this.getTostoreListCombobox();
 
-    this.ToStoreFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterServicename();
-    });
+    this.filteredOptionsStore = this._IndentService.newIndentFrom.get('ToStoreId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterToStore(value)),
+    );
+    this.filteredOptionsStoreList = this._IndentService.IndentSearchGroup.get('ToStoreId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterToStoreList(value)),
+      
+    );
 
   }
   toggleSidebar(name): void {
@@ -153,9 +159,18 @@ export class IndentComponent implements OnInit {
 
   getToStoreSearchList() {
     this._IndentService.getToStoreNameSearch().subscribe(data => {
-      this.ToStoreList = data;
+      this.ToStoreList1 = data;
      // console.log(this.ToStoreList);
     });
+  }
+  private _filterToStoreList(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+      return this.ToStoreList1.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+    }
+  }
+  getOptionTextStoresList(option) {
+    return option && option.StoreName ? option.StoreName : '';
   }
   getFromStoreSearchList() {
     var data = {
@@ -164,41 +179,31 @@ export class IndentComponent implements OnInit {
     this._IndentService.getFromStoreNameSearch(data).subscribe(data => {
       this.FromStoreList = data;
       this._IndentService.IndentSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
-      this._IndentService.newIndentFrom.get('FromStoreId').setValue(this.FromStoreList[0]);
+      this._IndentService.StoreFrom.get('FromStoreId').setValue(this.FromStoreList[0]);
 
     });
   }
-    // Service name filter
-    private filterServicename() {
-      if (!this.ToStoreList) {
-  
-        return;
-      }
-      // get the search keyword
-      let search = this.ToStoreFilterCtrl.value;
-      if (!search) {
-        this.filteredToStore.next(this.ToStoreList.slice());
-        return;
-      } else {
-        search = search.toLowerCase();
-      }
-      // filter the banks
-      this.filteredToStore.next(
-        this.ToStoreList.filter(bank => bank.StoreName.toLowerCase().indexOf(search) > -1)
-      );
-    }
+    
     getTostoreListCombobox() {
       this._IndentService.getToStoreNameSearch().subscribe(data => {
         this.ToStoreList = data;
-        this.filteredToStore.next(this.ToStoreList.slice());
       });
+    }
+    private _filterToStore(value: any): string[] {
+      if (value) {
+        const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+        return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+      }
+    }
+    getOptionTextStores(option) {
+      return option && option.StoreName ? option.StoreName : '';
     }
 
   getIndentItemName() {
    // debugger
     var Param = {
       "ItemName": `${this._IndentService.newIndentFrom.get('ItemName').value}%`,
-      "StoreId":this._loggedService.currentUserValue.user.storeId,
+      "StoreId":this._loggedService.currentUserValue.user.storeId
     }
     //console.log(Param)
     this._IndentService.getIndentNameList(Param).subscribe(data => {
@@ -236,12 +241,15 @@ export class IndentComponent implements OnInit {
         }
       });
     } else {
+      this.toastr.warning('Please Selecte all values', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
       this.onAdd();
     }
-  }
+    }
 
   onAdd() {
-    if(this.vQty > 0){
+ if(this._IndentService.newIndentFrom.valid && this.vQty > 0){
     this.dsIndentNameList.data = [];
     this.chargeslist = this.dsTempItemNameList.data;
     this.chargeslist.push(
@@ -253,10 +261,8 @@ export class IndentComponent implements OnInit {
    // console.log(this.chargeslist);
     this.dsIndentNameList.data = this.chargeslist;
     this.ItemReset();
+ }
     this.itemname.nativeElement.focus();
-    }else{
-      Swal.fire('Please Enter Qty');
-    }
 
   }
 
@@ -275,7 +281,7 @@ export class IndentComponent implements OnInit {
   ItemReset() {
     this.vItemId =  0;
     this.ItemName = '';
-    this.vItemName = ' ';
+    this.vItemName = 0;
     // this._IndentService.newIndentFrom.get('ItemName').setValue('');
     this.vQty = 0;
   }
@@ -287,7 +293,8 @@ export class IndentComponent implements OnInit {
     });
     return;
   }
-    if (this._IndentService.newIndentFrom.valid) {
+    if(!this._IndentService.newIndentFrom.get('').value){
+    if(this._IndentService.newIndentFrom.valid){
       let InsertIndentObj = {};
       InsertIndentObj['indentDate'] = this.dateTimeObj.date;
       InsertIndentObj['indentTime'] = this.dateTimeObj.time;
@@ -329,14 +336,64 @@ export class IndentComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-error',
         });
       });
+    }else{
+      this.toastr.warning('Please check from is invalid ,please select all required fields.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
+  }else{
    
-    } else {
-      error => {
-        this.toastr.error('New Issue Indent Data not saved !, Please check Validation ..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
+      if(this._IndentService.newIndentFrom.valid){
+        let updateIndent = {};
+        updateIndent['indentId'] = this.dateTimeObj.time;
+        updateIndent['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
+        updateIndent['toStoreId'] = this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId;
+  
+        let insertIndentDetail = [];
+        this.dsIndentNameList.data.forEach((element) => {
+          let insertIndentDetailobj = {};
+          insertIndentDetailobj['indentId'] = 0;
+          insertIndentDetailobj['itemId'] = element.ItemID;
+          insertIndentDetailobj['qty'] = element.IndentQuantity;
+          insertIndentDetail.push(insertIndentDetailobj);
+        });
+
+       let deleteIndent ={};
+       deleteIndent['indentId'] = 0;
+
+        let submitData = {
+          "updateIndent": updateIndent,
+          "insertIndentDetail": insertIndentDetail,
+          "deleteIndent":deleteIndent
+        };
+  
+        console.log(submitData);
+  
+        this._IndentService.InsertIndentSave(submitData).subscribe(response => {
+          if (response) {
+            this.toastr.success('Record New Indent Saved Successfully.', 'Saved !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+            //this._matDialog.closeAll();
+            this.OnReset();
+  
+          } else {
+            this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        }, error => {
+          this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        });
+      }else{
+        this.toastr.warning('Please check from is invalid ,please select all required fields.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
         });
       }
     }
+  
   }
   
   selectedIndex: string = '';
@@ -354,7 +411,7 @@ export class IndentComponent implements OnInit {
       console.log(vdata)
       this._IndentService.populateForm(vdata);
   
-     
+     this.vRemark =row.Remark;
       const selectedToStore = this.ToStoreList.filter(c => c.StoreId == row.ToStoreId);
       this._IndentService.newIndentFrom.get('ToStoreId').setValue(selectedToStore);
     

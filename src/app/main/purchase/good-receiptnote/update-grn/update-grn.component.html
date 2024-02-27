@@ -374,7 +374,7 @@
 
                                     <div matTooltip="Select All Value to enable this button!!">
                                         <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                                            (click)="onAdd($event)" 
+                                            (click)="onAdd($event)" [disabled]="_GRNList.userFormGroup.invalid"
                                             style="background-color: blue; color: white; width: 70px;margin-left: 15px;margin-top: 5px;height: 35px; ">
                                             <mat-icon>add</mat-icon>Add
                                         </button>

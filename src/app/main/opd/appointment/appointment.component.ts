@@ -251,7 +251,7 @@ export class AppointmentComponent implements OnInit {
     // "Edit",
     // "Bill",
     // "PhoneAppId",
-    'CrossConsultation',
+    // 'CrossConsultation',
     "RegNoWithPrefix",
     "PatientName",
     "DVisitDate",
@@ -762,7 +762,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   onChangeReg(event) {
-    debugger
+    // debugger
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
       this.personalFormGroup.reset();
@@ -869,7 +869,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   onChangePatient(value) {
-    debugger
+    // debugger
     if (value.PatientTypeId !== 1) {
       this._opappointmentService.getCompanyCombo();
       this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
@@ -1357,7 +1357,7 @@ export class AppointmentComponent implements OnInit {
 
 
   getPhoneAppointmentList() {
-    debugger
+    // debugger
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}`
     }
@@ -1450,7 +1450,7 @@ export class AppointmentComponent implements OnInit {
 
 
   onSave() {
-    debugger
+    // debugger
     if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
 
       if (this.searchFormGroup.get('regRadio').value == "registration") {
@@ -1487,7 +1487,7 @@ export class AppointmentComponent implements OnInit {
 
 
   OnsaveNewRegister() {
-    debugger
+    // debugger
     if (this.patienttype != 2) {
       this.CompanyId = 0;
     } else if (this.patienttype == 2) {
@@ -1577,7 +1577,7 @@ export class AppointmentComponent implements OnInit {
 
       this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
         if (response) {
-          debugger
+        //   debugger
           if (this.vPhoneAppId !== 0) {
             Swal.fire('Congratulations !', 'New Appoinment from Phone save Successfully !', 'success').then((result) => {
 
@@ -1597,7 +1597,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   onSaveRegistered() {
-    debugger
+    // debugger
     if (this.patienttype != 2) {
       this.CompanyId = 0;
     } else if (this.patienttype == 2) {
@@ -2740,8 +2740,9 @@ export class AppointmentComponent implements OnInit {
     let fileType;
     const dialogRef = this.matDialog.open(ImageViewComponent,
       {
-        width: '800px',
+        width: '750px',
         height: '550px',
+    
         data: {
           docData: type == 'camera' ? 'camera' : '',
           type: type == 'camera' ? 'camera' : '',
@@ -3089,7 +3090,7 @@ export class AppointmentComponent implements OnInit {
 
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-   debugger
+//    debugger
     // f10
     // if (event.keyCode === 121) {
     //     this.NewOPBill();

@@ -264,12 +264,19 @@
                                                     (keydown)="onEnterSpecification($event)">
                                             </mat-form-field>&nbsp;&nbsp;
 
-                                            <div matTooltip="Select Item name to enable this button!!">
+                                            <!-- <div matTooltip="Select Item name to enable this button!!">
                                                 <button mat-raised-button fxLayoutAlign="center center" #addbutton
                                                     class="add-btn" 
                                                     (click)="onAdd($event)">
                                                     <mat-icon> add </mat-icon>
                                                     Add
+                                                </button>
+                                            </div> -->
+                                            <div matTooltip="Select All Value to enable this button!!">
+                                                <button mat-raised-button fxLayoutAlign="center center" (click)="onRepeat()"
+                                                    [disabled]="_PurchaseOrder.userFormGroup.invalid"
+                                                    style="background-color: blue; color: white;height: 35px;margin-left:5px; ">
+                                                    <mat-icon> add </mat-icon> &nbsp;Add
                                                 </button>
                                             </div>
                                         </div>

@@ -37,9 +37,14 @@
             display: flex;
             align-items: center;
             &.btn-icon {
-                height: 16px;
-                width: 16px;
+                // height: 16px;
+                // width: 16px;
                 margin-right: 8px;
+            }
+            .mat-icon{
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
     }
@@ -95,6 +100,12 @@
             background: transparent;
             color: $primary-600;
             border-color: $primary-600;
+            &.btn-hover {
+                &:hover{
+                    background-color: $primary-600;
+                    color: $primary-25;
+                }
+            }
         }
         &.btn-danger-outline {
             background: transparent;
