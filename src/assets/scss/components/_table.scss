@@ -1,4 +1,5 @@
 .mat-table {
+    border-radius: 4px;
     .mat-header-row {
         min-height: auto;
         height: auto;
@@ -9,7 +10,13 @@
             overflow: hidden;
             text-overflow: ellipsis;
             &:not(:first-of-type) {
-                padding: 10px 0px;
+                padding: 10px 10px;
+            }
+            &:first-of-type{
+                border-radius: 4px 0 0 4px;
+            }
+            &:last-of-type{
+                border-radius: 0 4px 4px 0;
             }
             .mat-sort-header-button,
             .mat-sort-header-arrow {
@@ -25,7 +32,7 @@
             word-break: break-word;
             line-height: 20px;
             &:not(:first-of-type) {
-                padding: 7px 0px;
+                padding: 7px 10px;
             }
             .mat-icon-button {
                 height: 25px;
