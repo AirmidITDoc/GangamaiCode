@@ -304,9 +304,22 @@ export class UpdatePurchaseorderComponent implements OnInit {
       this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.NetAmount);
     }
   }
-
-  onAdd(event) {
-
+  onRepeat(){
+        if (this.chargeslist.length > 0) {
+          this.chargeslist.forEach((element) => {
+            if (element.ItemId == this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemID) {
+              this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+              });
+              this.ItemFormreset();
+            } else {
+              this.onAdd();
+            }
+          });
+        } 
+  }
+  onAdd() {
+    if(this._PurchaseOrder.userFormGroup.valid){
     this.dsItemNameList.data = [];
 
     if (this.chargeslist.length == 0) {
@@ -338,6 +351,11 @@ export class UpdatePurchaseorderComponent implements OnInit {
       });
     //console.log(this.NetAmount);
     this.dsItemNameList.data = this.chargeslist;
+    }else{
+      this.toastr.warning('Please Selecte all values', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
     this.itemid.nativeElement.focus();
     this.add = false;
     this.ItemFormreset();
@@ -419,13 +437,14 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.Rate = obj.PurchaseRate;
     this.Dis = '';
     this.TotalAmount = (parseInt(this.Qty) * parseFloat(this.Rate)).toFixed(2);
-    this.NetAmount = this.TotalAmount || 0;
-    this.VatPercentage = obj.VatPercentage || 0;
+    this.NetAmount = this.TotalAmount ;
+    this.VatPercentage = obj.VatPercentage ;
     this.GSTPer = (obj.SGSTPer + obj.CGSTPer);
     this.GSTAmount = 0;
-    this.MRP = obj.UnitMRP || 0;
+    this.MRP = obj.UnitMRP;
     this.Specification = obj.Specification || '';
     this.getLastThreeItemInfo();
+    this.qty.nativeElement.focus();
   }
   getLastThreeItemInfo() {
     var vdata = {
@@ -850,9 +869,9 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.UOM = 0;
     this.Rate = 0;
     this.TotalAmount = 0;
-    this.Dis = 0;
+    this.Dis = '';
     this.DiscAmt = 0;
-    this.GSTPer = 0;
+    this.GSTPer = '';
     this.GSTAmt = 0;
     this.NetAmount = 0;
     this.MRP = 0;
@@ -972,36 +991,42 @@ export class UpdatePurchaseorderComponent implements OnInit {
     if (event.which === 13) {
       //if(this.Qty) this.Qty.focus();
       this.mrp.nativeElement.focus();
+      this.add = false;
     }
   }
   public onEnterMRP(event): void {
     if (event.which === 13) {
       //if(this.MRP) this.MRP.focus();
       this.rate.nativeElement.focus();
+      this.add = false;
     }
   }
   public onEnterRate(event): void {
     if (event.which === 13) {
       //if(this.Rate) this.Rate.focus();
       this.dis.nativeElement.focus();
+      this.add = false;
     }
   }
   public onEnterTotal(event): void {
     if (event.which === 13) {
       //if(this.Rate) this.Rate.focus();
       this.dis.nativeElement.focus();
+      this.add = false;
     }
   }
   public onEnterDis(event): void {
     if (event.which === 13) {
       //if(this.Dis) this.Dis.focus();
       this.gst.nativeElement.focus();
+      this.add = false;
     }
   }
   public onEnterGST(event): void {
     if (event.which === 13) {
       //  if(this.GSTPer) this.GSTPer.focus();
       this.specification.nativeElement.focus();
+      this.add = false;
     }
   }
 
@@ -1009,11 +1034,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     // debugger
     if (event.which === 13) {
 
-      // setTimeout(() => {
-      // this.add = true;
-      // this.addbutton.focus();
-
-      // }, 300);
+      this.add = false;
     }
   }
 

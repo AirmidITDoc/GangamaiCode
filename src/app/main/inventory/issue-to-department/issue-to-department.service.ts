@@ -9,6 +9,7 @@ export class IssueToDepartmentService {
 
   NewIssueGroup: FormGroup;
   IssueSearchGroup :FormGroup;
+  StoreFrom:FormGroup;
   
 
   constructor(
@@ -17,7 +18,7 @@ export class IssueToDepartmentService {
   ) { 
     this.NewIssueGroup = this.getNewIssueForm();
     this.IssueSearchGroup= this.IssueSearchFrom();
-  
+    this.StoreFrom = this.CreateStoreFrom();
   }
 
   IssueSearchFrom() {
@@ -43,9 +44,13 @@ export class IssueToDepartmentService {
       Remark:[''],
       GSTAmount:[''],
       FinalTotalAmount:[''],
-      
+      FinalNetAmount:['']  
     });
-
+  }
+  CreateStoreFrom(){
+    return this._formBuilder.group({
+      FromStoreId:'',
+    });
   }
 
  
@@ -71,7 +76,7 @@ export class IssueToDepartmentService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
   }
   public IssuetodepSave(Param){
-    return this._httpClient.post("Generic/GetByProc?procName",Param);
+    return this._httpClient.post("InventoryTransaction/IssuetoDepartmentSave",Param);
   }
 
 

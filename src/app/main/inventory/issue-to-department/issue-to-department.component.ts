@@ -7,15 +7,15 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
+import { difference, values } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
 import { FormControl } from '@angular/forms';
-import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { map, startWith, takeUntil } from "rxjs/operators";
 
 @Component({
   selector: 'app-issue-to-department',
@@ -57,6 +57,7 @@ export class IssueToDepartmentComponent implements OnInit {
     'BalanceQty',
     'Qty',
     'UnitRate',
+    'GSTPer',
     'GSTAmount',
     'TotalAmount',
     'Action'
@@ -78,7 +79,7 @@ export class IssueToDepartmentComponent implements OnInit {
   FromStoreList: any = [];
   screenFromString = 'admission-form';
   filteredOptions: any;
-
+  isStoreSelected:boolean = false;
   showAutocomplete = false;
   noOptionFound: boolean = false;
   ItemCode: any;
@@ -118,9 +119,11 @@ export class IssueToDepartmentComponent implements OnInit {
   FromStoreList1: any = [];
   ToStoreList1:any= [];
   vFinalTotalAmount: any;
+  vFinalNetAmount:any;
   vFinalGSTAmount:any;
   ItemID:any;
-
+  filteredOptionsStore: Observable<string[]>;
+  filteredOptionsStoreList: Observable<string[]>;
   dsIssueToDep = new MatTableDataSource<IssueToDep>();
 
   dsIssueItemList = new MatTableDataSource<IssueItemList>();
@@ -155,12 +158,25 @@ export class IssueToDepartmentComponent implements OnInit {
     this.gePharStoreList();
     this.getToStoreList();
     this.getPharStoreList();
+    this.getIssueToDepList();
 
-    this.ToStoreFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterTostore();
-    });
+    // this.ToStoreFilterCtrl.valueChanges
+    // .pipe(takeUntil(this._onDestroy))
+    // .subscribe(() => {
+    //   this.filterTostore();
+    // });
+
+    this.filteredOptionsStore = this._IssueToDep.NewIssueGroup.get('ToStoreId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterToStore(value)),
+     // map(value => this._filterToStore(value)),
+    );
+    this.filteredOptionsStoreList = this._IssueToDep.IssueSearchGroup.get('ToStoreId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterToStoreList(value)),
+     // map(value => this._filterToStore(value)),
+      
+    );
 
 
   }
@@ -173,6 +189,15 @@ export class IssueToDepartmentComponent implements OnInit {
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
+  }
+  private _filterToStoreList(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+      return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+    }
+  }
+  getOptionTextStoresList(option) {
+    return option && option.StoreName ? option.StoreName : '';
   }
   getToStoreSearchList() {
     this._IssueToDep.getToStoreSearchList().subscribe(data => {
@@ -235,7 +260,7 @@ export class IssueToDepartmentComponent implements OnInit {
   getSearchItemList() {
     var m_data = {
       "ItemName": `${this._IssueToDep.NewIssueGroup.get('ItemID').value}%`,
-      "StoreId": this._IssueToDep.NewIssueGroup.get('FromStoreId').value.storeid
+      "StoreId": this._IssueToDep.StoreFrom.get('FromStoreId').value.storeid
     }
     console.log(m_data);
     this._IssueToDep.getItemlist(m_data).subscribe(data => {
@@ -248,10 +273,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.noOptionFound = false;
       }
     });
-
   }
- 
- 
   getOptionItemText(option) {
    // this.ItemID = option.ItemId;
     if (!option) return '';
@@ -268,29 +290,39 @@ export class IssueToDepartmentComponent implements OnInit {
       this.getBatch();
     }
   }
-  private filterTostore() {
-    if (!this.ToStoreList1) {
-      return;
-    }
-    // get the search keyword
-    let search = this.ToStoreFilterCtrl.value;
-    if (!search) {
-      this.filteredToStore.next(this.ToStoreList1.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredToStore.next(
-      this.ToStoreList1.filter(bank => bank.StoreName.toLowerCase().indexOf(search) > -1)
-    );
-  }
+  // private filterTostore() {
+  //   if (!this.ToStoreList1) {
+  //     return;
+  //   }
+  //   // get the search keyword
+  //   let search = this.ToStoreFilterCtrl.value;
+  //   if (!search) {
+  //     this.filteredToStore.next(this.ToStoreList1.slice());
+  //     return;
+  //   } else {
+  //     search = search.toLowerCase();
+  //   }
+  //   // filter the banks
+  //   this.filteredToStore.next(
+  //     this.ToStoreList1.filter(bank => bank.StoreName.toLowerCase().indexOf(search) > -1)
+  //   );
+  // }
   getToStoreList() {
     this._IssueToDep.getToStoreSearchList().subscribe(data => {
       this.ToStoreList1 = data;
-      this.filteredToStore.next(this.ToStoreList1.slice());
-      //console.log(this.ToStoreList);
+      //this.filteredToStore.next(this.ToStoreList1.slice());
+      console.log(this.ToStoreList);
     });
+  }
+  private _filterToStore(value: any): string[] {
+    // debugger
+    if (value) {
+      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+      return this.ToStoreList1.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+    }
+  }
+  getOptionTextStores(option) {
+    return option && option.StoreName ? option.StoreName : '';
   }
   getPharStoreList() {
     var vdata = {
@@ -299,12 +331,12 @@ export class IssueToDepartmentComponent implements OnInit {
     this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
       this.FromStoreList1 = data;
       //console.log(this.FromStoreList);
-      this._IssueToDep.NewIssueGroup.get('FromStoreId').setValue(this.FromStoreList1[0])
+      this._IssueToDep.StoreFrom.get('FromStoreId').setValue(this.FromStoreList1[0])
     });
   }
 
   onRepeat() {
-    if (this.chargeslist.length > 0) {
+    if (this.chargeslist.length > 0) {  
       this.chargeslist.forEach((element) => {
         if (element.ItemId == this.ItemID) {
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
@@ -316,6 +348,9 @@ export class IssueToDepartmentComponent implements OnInit {
         }
       });
     } else {
+      this.toastr.warning('Please Selecte all values', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
       this.onAdd();
     }
   }
@@ -332,7 +367,8 @@ export class IssueToDepartmentComponent implements OnInit {
         BalanceQty: this.vBalanceQty || 0,
         Qty: this.vQty || 0,
         UnitRate: this.vUnitMRP || 0,
-        GSTAmount: (((this.vTotalAmount) * (gstper))/ 100).toFixed(2),
+        VatPer : gstper || 0,
+        VatAmount: (((this.vTotalAmount) * (gstper))/ 100).toFixed(2),
         TotalAmount: this.vTotalAmount || 0,
       });
     console.log(this.chargeslist);
@@ -374,8 +410,8 @@ export class IssueToDepartmentComponent implements OnInit {
   }
    getTotalamt(element) {
     this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
-    this.vFinalGSTAmount = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
-
+    this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+    this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
     return this.vFinalTotalAmount;
   }
  
@@ -386,30 +422,55 @@ export class IssueToDepartmentComponent implements OnInit {
       });
       return;
     }
-    if(this._IssueToDep.NewIssueGroup.valid){
+   // debugger
+   if(this._IssueToDep.NewIssueGroup.valid){
     let insertheaderObj = {};
-    insertheaderObj['itemid'] =  this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId;
-    insertheaderObj['ItemName'] =  this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId;
-    insertheaderObj['BatchNo'] =  this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId;
-    insertheaderObj['BatchExpDate'] = this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId;
+    insertheaderObj['issueDate'] =  this.dateTimeObj.date;
+    insertheaderObj['issueTime'] =  this.dateTimeObj.time;
+    insertheaderObj['fromStoreId'] =   this._loggedService.currentUserValue.user.storeId
+    insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
+    insertheaderObj['totalAmount'] =  this._IssueToDep.NewIssueGroup.get('FinalTotalAmount').value || 0;
+    insertheaderObj['totalVatAmount'] =  this._IssueToDep.NewIssueGroup.get('GSTAmount').value || 0;
+    insertheaderObj['netAmount'] =  this._IssueToDep.NewIssueGroup.get('FinalNetAmount').value || 0 ;
+    insertheaderObj['remark'] = this._IssueToDep.NewIssueGroup.get('Remark').value || '';
+    insertheaderObj['addedby'] = this.accountService.currentUserValue.user.id || 0;
+    insertheaderObj['isVerified'] = false;
+    insertheaderObj['isclosed'] = false;
+    insertheaderObj['indentId'] = 0 ;
+    insertheaderObj['issueId'] =  0;
 
      let isertItemdetailsObj = [];
     this.dsNewIssueList3.data.forEach(element => {
       let insertitemdetail = {} ;
-      insertitemdetail['itemid'] = element.ItemId;
-      insertitemdetail['ItemName'] = element.ItemName;
-      insertitemdetail['BatchNo'] = element.BatchNo;
-      insertitemdetail['BatchExpDate'] = element.BatchExpDate;
-      insertitemdetail['BalanceQty'] = element.BalanceQty;
-      insertitemdetail['Qty'] = element.Qty;
-      insertitemdetail['UnitRate'] = element.UnitRate;
-      insertitemdetail['GSTAmount'] = element.GSTAmount;
-      insertitemdetail['TotalAmount'] = element.TotalAmount;
+      insertitemdetail['issueId'] = 0;
+      insertitemdetail['itemId'] = element.ItemId;
+      insertitemdetail['batchNo'] = element.BatchNo;
+      insertitemdetail['batchExpDate'] = element.BatchExpDate;
+      insertitemdetail['issueQty'] = element.Qty;
+      insertitemdetail['perUnitLandedRate'] = 0;
+      insertitemdetail['unitMRP'] = element.UnitRate;
+      insertitemdetail['mrpTotalAmount'] = element.TotalAmount;
+      insertitemdetail['unitPurRate'] = 0;
+      insertitemdetail['purTotalAmount'] =0;
+      insertitemdetail['vatPercentage'] = element.VatPer || 0;
+      insertitemdetail['vatAmount'] = element.VatAmount || 0;
+      insertitemdetail['stkId'] = 0;
       isertItemdetailsObj.push(insertitemdetail);
     });
+    let updateissuetoDepartmentStock = [];
+    this.dsNewIssueList3.data.forEach(element => {
+      let updateitemdetail = {} ;
+      updateitemdetail['itemId'] = element.ItemId;
+      updateitemdetail['issueQty'] = element.BalanceQty;
+      updateitemdetail['stkId'] = 0;
+      updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
+      updateissuetoDepartmentStock.push(updateitemdetail);
+    });
+
     let submitData = {
-      "isertItemdetailsObj": isertItemdetailsObj,
-      "insertheaderObj": insertheaderObj,
+      "insertIssuetoDepartmentHeader": insertheaderObj,
+      "insertIssuetoDepartmentDetail": isertItemdetailsObj,
+      "updateissuetoDepartmentStock": updateissuetoDepartmentStock
     };
 
     console.log(submitData);
@@ -421,9 +482,10 @@ export class IssueToDepartmentComponent implements OnInit {
         });
         //this._matDialog.closeAll();
         this.OnReset();
+        this.getIssueToDepList();
 
       } else {
-        this.toastr.error('New Issue To Department Data not saved !, Please check API error..', 'Error !', {
+        this.toastr.error('New Issue To Department Data not saved !, Please check validation error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
@@ -432,12 +494,11 @@ export class IssueToDepartmentComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
-  }else{
-    error => {
-      this.toastr.error('New Issue To Department Data not saved !, Please check Vallidation..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
-    };
+  }
+  else{
+    this.toastr.warning('Please check from is invalid ,please select all required fields.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
   }
   }
   OnReset() {
@@ -454,6 +515,8 @@ export class IssueToDepartmentComponent implements OnInit {
   @ViewChild('Quantity') Quantity: ElementRef;
   addbutton: Boolean = false;
   // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+
+
   public onEnterFromstore(event): void {
     if (event.which === 13) {
       this.itemid.nativeElement.focus();
@@ -499,7 +562,7 @@ export class IssueToDepartmentComponent implements OnInit {
         disableClose: true,
         data: {
           "ItemId": this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId,
-          "StoreId": this._IssueToDep.NewIssueGroup.get('FromStoreId').value.storeid
+          "StoreId": this._IssueToDep.StoreFrom.get('FromStoreId').value.storeid
         }
       });
     dialogRef.afterClosed().subscribe(result => {

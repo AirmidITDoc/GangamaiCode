@@ -15,6 +15,7 @@ export class IndentService {
 
   IndentSearchGroup :FormGroup;
   newIndentFrom: FormGroup;
+  StoreFrom:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
@@ -22,6 +23,7 @@ export class IndentService {
   ) { 
     this.IndentSearchGroup= this.IndentSearchFrom();
     this.newIndentFrom = this.createnewindentfrom();
+    this.StoreFrom = this.CreateStoreFrom();
   }
 
   IndentSearchFrom() {
@@ -43,6 +45,13 @@ export class IndentService {
       Remark:[''],
     });
   }
+  
+  CreateStoreFrom(){
+    return this._formBuilder.group({
+      FromStoreId:'',
+    });
+  }
+
   
   public getIndentID(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IndentList_by_ID",Param);
