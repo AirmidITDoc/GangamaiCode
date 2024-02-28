@@ -192,29 +192,29 @@
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                            <ng-container matColumnDef="PurchaseTime">
+                                                            <!-- <ng-container matColumnDef="PurchaseTime">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
                                                                     Purchase Time</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.PurchaseTime | date:'shortDate'}}
                                                                 </mat-cell>
-                                                            </ng-container>
+                                                            </ng-container> -->
 
-                                                            <ng-container matColumnDef="StoreName">
+                                                            <!-- <ng-container matColumnDef="StoreName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm>
                                                                     Store Name</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.StoreName}}
                                                                 </mat-cell>
-                                                            </ng-container>
+                                                            </ng-container> -->
 
                                                             <ng-container matColumnDef="SupplierName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm>
+                                                                    fxShow.gt-sm  class="w-200">
                                                                     SupplierName </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-200">
                                                                     {{contact.SupplierName}}
                                                                 </mat-cell>
                                                             </ng-container>
@@ -300,7 +300,7 @@
                                                         </mat-table>
 
                                                         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
-                                                            [pageSize]="16" showFirstLastButtons>
+                                                            [pageSize]="7" showFirstLastButtons>
                                                         </mat-paginator>
                                                     </div>
                                                 </div>
@@ -317,17 +317,15 @@
                                                                     <div class="spinner-border text-danger"></div>
                                                                 </div>
                                                                 <!-- sppinner -->
-                                                                <mat-table #table class="table2" matSort
-                                                                    [dataSource]="dsPurchaseItemList"
-                                                                    [@animateStagger]="{value:'50'}"
+                                                                <mat-table matSort [dataSource]="dsPurchaseItemList" [@animateStagger]="{value:'50'}"
                                                                     style="overflow:auto;">
                                                                     <ng-container matColumnDef="ItemName">
                                                                         <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm>
+                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-200">
                                                                             ItemName
                                                                         </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
-                                                                            fxShow.gt-sm>
+                                                                            fxShow.gt-sm class="w-200">
                                                                             {{contact.ItemName}}
                                                                         </mat-cell>
                                                                     </ng-container>
