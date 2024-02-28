@@ -41,7 +41,7 @@ import { GrnemailComponent } from './grnemail/grnemail.component';
 import { QrcodegeneratorComponent } from './qrcodegenerator/qrcodegenerator.component';
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import {NgxPrintModule} from 'ngx-print';
-import { MatGridListModule } from '@angular/material/grid-list';
+//import { MatGridListModule } from '@angular/material/grid-list';
 
 
 const routes: Routes = [
@@ -102,7 +102,7 @@ const routes: Routes = [
     MatTooltipModule,
     NgxQRCodeModule,
     NgxPrintModule,
-    MatGridListModule
+    //MatGridListModule
   ],
   providers: [
     

@@ -439,15 +439,18 @@
 
                                                 <!-- [disabled]="!add" -->
                                                 <div matTooltip="Select  name to enable this button!!"
-                                                    [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid"
-                                                    [matTooltipPosition]="'above'">
-                                                    <button mat-raised-button fxLayoutAlign="center center" #addbutton
-                                                        class="add-btn"  (click)="OnAddUpdate($event)">
+                                                [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid"
+                                                [matTooltipPosition]="'above'">
+                                                <button fxLayoutAlign="center center" #addbutton
+                                                    class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
+                                                    (click)="OnAddUpdate($event)">
+                                                    <span class="btn-icon">
                                                         <mat-icon> add </mat-icon>
-                                                        Add
-                                                    </button>
-                                                    <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
-                                                </div>
+                                                    </span>
+                                                    <span>Add</span>
+                                                </button>
+                                                <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
+                                            </div>
                                             </div>
                                         </form>
                                     </div>
@@ -760,14 +763,15 @@
                                                                 formControlName="referanceNo" readonly>
                                                         </mat-form-field>&nbsp;
 
-                                                        <!-- [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0" -->
-                                                        <button class="next-btn" (click)="onSave()"
-                                                            style="margin-right: 8px; width: 80px;border-radius: 16px;"
-                                                          >Save</button>
-                                                        <button class="footer-btn"
-                                                            (click)="onClose()" (keydown.enter)="onF6Reset($event)">Reset</button>&nbsp;
-                                                        <button class="footer-btn" *ngIf="IsOnlineRefNo"
-                                                            (click)="payOnline()">Online</button>
+                                                        <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                                            <button class="btn btn-primary " (click)="onSave()"
+                                                                [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save</button>
+                                                            <button class="btn btn-primary-outline"
+                                                                *ngIf="IsOnlineRefNo"
+                                                                (click)="payOnline()">Online</button>
+                                                            <button class="btn btn-danger-outline" (click)="onClose()"
+                                                                (keydown.enter)="onF6Reset($event)">Reset</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

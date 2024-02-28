@@ -138,9 +138,7 @@
                     
                                              </div>
 
-                                            <mat-table class="Table1" matSort [dataSource]="dssaleList1"
-                                                [@animateStagger]="{value:'50'}" style="overflow: auto;">
-
+                                            <mat-table matSort [dataSource]="dssaleList1" [@animateStagger]="{value:'50'}">
                                                 <ng-container matColumnDef="action">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">
@@ -282,7 +280,7 @@
                                              </mat-footer-row> -->
 
                                             </mat-table>
-                                            <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
+                                            <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="10"
                                                 showFirstLastButtons> </mat-paginator>
 
 
