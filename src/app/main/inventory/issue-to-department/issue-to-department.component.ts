@@ -335,26 +335,16 @@ export class IssueToDepartmentComponent implements OnInit {
     });
   }
 
-  onRepeat() {
-    if (this.chargeslist.length > 0) {  
-      this.chargeslist.forEach((element) => {
-        if (element.ItemId == this.ItemID) {
-          this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          this.ItemReset();
-        } else {
-          this.onAdd();
-        }
-      });
-    } else {
-      this.toastr.warning('Please Selecte all values', 'Warning !', {
+  onAdd() {
+    
+    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+      this.toastr.warning('Please enter a Qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      this.onAdd();
+      return;
     }
-  }
-  onAdd() {
+    const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId );
+    if (!isDuplicate) {
     let gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
     this.dsNewIssueList3.data = [];
     this.chargeslist = this.dsTempItemNameList.data;
@@ -373,6 +363,11 @@ export class IssueToDepartmentComponent implements OnInit {
       });
     console.log(this.chargeslist);
     this.dsNewIssueList3.data = this.chargeslist
+    } else {
+      this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
     this.ItemReset();
     this.itemid.nativeElement.focus();
     this._IssueToDep.NewIssueGroup.get('ItemID').setValue('');
@@ -394,7 +389,7 @@ export class IssueToDepartmentComponent implements OnInit {
     this.vItemID = 0;
     this.vBatchNo = " ";
     this.vBalanceQty = 0;
-    this.vQty = " ";
+    this.vQty = 0;
     this.vUnitMRP = 0;
     this.vTotalAmount = 0;
   }
@@ -406,7 +401,6 @@ export class IssueToDepartmentComponent implements OnInit {
     if (this.vQty && this.vUnitMRP) {
       this.vTotalAmount = (parseInt(this.vQty) * parseInt(this.vUnitMRP)).toFixed(2);
     }
- 
   }
    getTotalamt(element) {
     this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
@@ -422,8 +416,12 @@ export class IssueToDepartmentComponent implements OnInit {
       });
       return;
     }
-   // debugger
-   if(this._IssueToDep.NewIssueGroup.valid){
+    if (this._IssueToDep.NewIssueGroup.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     let insertheaderObj = {};
     insertheaderObj['issueDate'] =  this.dateTimeObj.date;
     insertheaderObj['issueTime'] =  this.dateTimeObj.time;
@@ -494,12 +492,6 @@ export class IssueToDepartmentComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
-  }
-  else{
-    this.toastr.warning('Please check from is invalid ,please select all required fields.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-  }
   }
   OnReset() {
     this._IssueToDep.NewIssueGroup.reset();

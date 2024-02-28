@@ -457,7 +457,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Batch No</mat-label>
-                                        <input name="BatchNo" formControlName="BatchNO" required readonly matInput
+                                        <input name="BatchNo" formControlName="BatchNO"   readonly matInput
                                             #Batchno [(ngModel)]="vBatchNo" (keydown)="onEnterBatchNo($event)">
                                     </mat-form-field>
 
@@ -471,7 +471,7 @@
                                     <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Qty</mat-label>
                                         <input name="Qty" formControlName="Qty" matInput #Quantity
-                                            (keydown)="onEnterQty($event)"
+                                            (keydown)="onEnterQty($event)" required
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                             required (keyup)="CalculateTotalAmt()" [(ngModel)]="vQty"
                                             autocomplete="off">
@@ -494,11 +494,17 @@
                                             readonly required>
                                     </mat-form-field>
 
-                                    <div matTooltip="Select All Value to enable this button!!">
+                                    <!-- <div matTooltip="Select All Value to enable this button!!">
                                         <button mat-raised-button fxLayoutAlign="center center" (click)="onRepeat()"
                                         [disabled]="_IssueToDep.NewIssueGroup.invalid"  
                                             style="background-color: blue; color: white;margin-left: 15px;height: 35px; ">
                                             <mat-icon> add </mat-icon> &nbsp;Add
+                                        </button>
+                                    </div> -->
+
+                                    <div matTooltip="Select All Value to enable this button!!">
+                                        <button class="next-btn" (click)="onAdd()">
+                                            Add
                                         </button>
                                     </div>
                                     <!-- <mat-form-field appearance="outline">
