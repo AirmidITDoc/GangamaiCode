@@ -92,8 +92,7 @@
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
                                 </div>
-                                <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"
-                                    style="overflow:auto;width: 100%;height: 650px !important;">
+                                <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 
                                     <ng-container matColumnDef="UserName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> User
