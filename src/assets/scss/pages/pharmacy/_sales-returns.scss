@@ -1,0 +1,19 @@
+$table-row-width: 2000px;
+$table-row-width-small: 450px;
+
+.sales-return-section {
+    .mat-table {
+        height: calc(100vh - 660px);
+        min-height: 200px;
+        overflow: auto;
+        .mat-header-row,
+        .mat-row {
+            &.table-right-row {
+                min-width: $table-row-width;
+            }
+            &.table-left-row{
+                min-width: $table-row-width-small;
+            }
+        }
+    }
+}
