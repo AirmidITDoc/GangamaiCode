@@ -67,11 +67,11 @@ export class AdministrationService {
     
      
     public UserInsert(employee) {
-      return this._httpClient.post("DoctorMaster/DoctorSave", employee);
+      return this._httpClient.post("Administration/InsertUser", employee);
     }
     
     public UserUpdate(employee) {
-      return this._httpClient.post("DoctorMaster/DoctorUpdate", employee);
+      return this._httpClient.post("Administration/UpdateLoginUser", employee);
     }
     public getLoggedStoreList(Param){
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);

@@ -1447,6 +1447,15 @@ export class SalesComponent implements OnInit {
   }
 
   onAdd() {
+
+    if ((this.ItemId == 0 || this.Qty == null || this.MRP == "" || this.TotalMRP ==0 )) {
+      this.toastr.warning('Please select Item Detail', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+else{
+
     this.sIsLoading = 'save';
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (this.ItemName && (parseInt(Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
@@ -1490,7 +1499,7 @@ export class SalesComponent implements OnInit {
     this.itemid.nativeElement.focus();
     this.add = false;
   }
-
+  }
 
   getBatch() {
     this.Quantity.nativeElement.focus();
@@ -1901,6 +1910,22 @@ export class SalesComponent implements OnInit {
 
 
   onSave() {
+    if (this.PatientName == 0 || this.MobileNo == null || this.DoctorName == "" ) {
+      this.toastr.warning('Please select All Customer Detail', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+debugger
+    if(this.saleSelectedDatasource.data.length ==0 || this.FinalTotalAmt == 0 || this.FinalNetAmount==0  || this.roundoffAmt ==0 ){
+        this.toastr.warning('Please select All Bill Detail', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+    }
+else{
+
+
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     if ((patientTypeValue == 'OP' || patientTypeValue == 'IP')
       && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
@@ -1921,7 +1946,7 @@ export class SalesComponent implements OnInit {
 
 
   }
-
+  }
 
   onCashOnlinePaySave() {
 
