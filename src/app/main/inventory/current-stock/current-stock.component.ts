@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
@@ -23,6 +23,9 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
   
 })
 export class CurrentStockComponent implements OnInit {
+  isStoreSelected: boolean = false;
+  filteredOptionsStorename: Observable<string[]>;
+  
   displayedColumns = [
     // 'action',
   
@@ -57,6 +60,17 @@ export class CurrentStockComponent implements OnInit {
     
   ];
 
+  displayedColumnsIssueWiseItem = [
+    //  'action',
+      'ItemName',
+      'ConversionFactor',
+      'Current_BalQty',
+      'Received_Qty',
+      'Sales_Qty',
+      
+    ];
+
+    
   isLoadingStr: string = '';
   isLoading: String = '';
   sIsLoading: string = "";
@@ -69,6 +83,7 @@ export class CurrentStockComponent implements OnInit {
   dsCurrentStock= new MatTableDataSource<CurrentStockList>();
   dsDaywiseStock= new MatTableDataSource<DayWiseStockList>();
   dsItemwiseStock= new MatTableDataSource<ItemWiseStockList>();
+  dsIssuewissueItemStock= new MatTableDataSource<ItemWiseStockList>();
   printflag:boolean=false;
   
   @ViewChild(MatSort) sort: MatSort;
@@ -118,6 +133,41 @@ export class CurrentStockComponent implements OnInit {
      this._CurrentStockService.ItemWiseFrom.get('StoreId').setValue(this.Store1List[0]);
     });
   }
+
+
+  StoreId:any;
+  gePharStoreList1() {
+    var vdata = {
+      Id: this._loggedService.currentUserValue.user.storeId
+    } 
+  this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
+    this.Store1List = data;
+    console.log(data)
+    // if (this.data) {
+      const ddValue = this.Store1List.filter(c => c.StoreId == this.StoreId);
+      this._CurrentStockService.ItemWiseFrom.get('StoreId').setValue(ddValue[0]);
+    this._CurrentStockService.ItemWiseFrom.updateValueAndValidity();
+      return;
+    // } 
+  });
+  
+}
+
+
+private _filterStore(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+
+    return this.Store1List.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+  }
+
+}
+
+getOptionTextStoreName(option) {
+  return option && option.StoreName ? option.StoreName : '';
+
+}
+
 
   getCurrentStockList() {
     this.sIsLoading = 'loading-data';
@@ -195,6 +245,33 @@ export class CurrentStockComponent implements OnInit {
    
   }
 
+  
+  getIssueWiseItemStockList() {
+    this.sIsLoading = 'loading-data';
+    var vdata = {
+     "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+     "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+     "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
+    }
+    setTimeout(() => {
+      // this.isLoadingStr = 'loading';
+      this._CurrentStockService.getIssueWiseItemStockList(vdata).subscribe(
+        (Visit) => {
+          this.dsIssuewissueItemStock.data = Visit as ItemWiseStockList[];
+          this.dsIssuewissueItemStock.sort = this.sort;
+          this.dsIssuewissueItemStock.paginator = this.secondPaginator;
+          this.sIsLoading = '';
+          this.isLoadingStr = this.dsIssuewissueItemStock.data.length == 0 ? 'no-data' : '';
+        },
+        (error) => {
+           this.isLoadingStr = 'no-data';
+        }
+      );
+    }, 1000);
+   
+   
+  }
+
 
   @ViewChild('ItemWiseStockTemplate') ItemWiseStockTemplate: ElementRef;
   reportPrintObjList: ItemWiseStockList[] = [];
@@ -227,6 +304,15 @@ export class CurrentStockComponent implements OnInit {
     this.sIsLoading == 'loading-data'
     let exportHeaders = ['StoreName', 'ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty'];
     this.reportDownloadService.getExportJsonData(this.dsCurrentStock.data, exportHeaders, 'CurrentStock');
+    this.dsCurrentStock.data=[];
+    this.sIsLoading = '';
+  }
+
+
+  exportIssuewiseItemReportExcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['StoreName', 'ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty'];
+    this.reportDownloadService.getExportJsonData(this.dsIssuewissueItemStock.data, exportHeaders, 'Issuw Wise Item Stock');
     this.dsCurrentStock.data=[];
     this.sIsLoading = '';
   }

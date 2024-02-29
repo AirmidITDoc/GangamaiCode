@@ -104,11 +104,11 @@ export class IndentComponent implements OnInit {
       startWith(''),
       map(value => this._filterToStore(value)),
     );
-    this.filteredOptionsStoreList = this._IndentService.IndentSearchGroup.get('ToStoreId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterToStoreList(value)),
+    // this.filteredOptionsStoreList = this._IndentService.IndentSearchGroup.get('ToStoreId').valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filterToStoreList(value)),
       
-    );
+    // );
 
   }
   toggleSidebar(name): void {
@@ -156,11 +156,16 @@ export class IndentComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
-
+  vStoreId2:any=0
   getToStoreSearchList() {
     this._IndentService.getToStoreNameSearch().subscribe(data => {
       this.ToStoreList1 = data;
-     // console.log(this.ToStoreList);
+      if (this.vStoreId2) {
+        const ddValue = this.ToStoreList1.filter(c => c.DoctorID == this.ToStoreList1);
+        this.ToStoreList1.get('ToStoreId').setValue(ddValue[0]);
+      this.ToStoreList1.updateValueAndValidity();
+        return;
+      } 
     });
   }
   private _filterToStoreList(value: any): string[] {
@@ -415,6 +420,13 @@ export class IndentComponent implements OnInit {
       const selectedToStore = this.ToStoreList.filter(c => c.StoreId == row.ToStoreId);
       this._IndentService.newIndentFrom.get('ToStoreId').setValue(selectedToStore);
     
+
+      this.getToStoreSearchList()
+      // this.filteredOptionsStore = this._IndentService.newIndentFrom.get('ToStoreId').valueChanges.pipe(
+      //   startWith(''),
+      //   map(value => this._filterToStore(value)),
+      // );
+
        console.log(selectedToStore);
        console.log(row.ToStoreId)
        this.getupdateIndentList(row);

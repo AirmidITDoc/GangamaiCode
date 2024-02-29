@@ -65,9 +65,12 @@ export class AdministrationService {
       return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
     }
     
+    public getwebRoleCombobox() {
+      return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_WebRoleList", {})
+    }
      
     public UserInsert(employee) {
-      return this._httpClient.post("Administration/InsertUser", employee);
+      return this._httpClient.post("Administration/InsertLoginUser", employee);
     }
     
     public UserUpdate(employee) {
