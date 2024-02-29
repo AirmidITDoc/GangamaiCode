@@ -1221,8 +1221,7 @@
                         <mat-card style="height: calc(100vh - 95px - 48px);overflow: auto;">
                             <div class="sales-table-right-box">
                                 <mat-table class="sales-table-right" #table matSort [dataSource]="dataSource1"
-                                    [@animateStagger]="{value:'50'}"
-                                    style="overflow:auto; height:400px !important;border-radius:2px;margin-top: 10px;">
+                                    [@animateStagger]="{value:'50'}">
                                     <ng-container matColumnDef="extMobileNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Mobile No
                                         </mat-header-cell>

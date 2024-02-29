@@ -122,18 +122,16 @@ export class IssueToDepartmentComponent implements OnInit {
   vFinalNetAmount:any;
   vFinalGSTAmount:any;
   ItemID:any;
+  dateTimeObj: any;
   filteredOptionsStore: Observable<string[]>;
   filteredOptionsStoreList: Observable<string[]>;
+
   dsIssueToDep = new MatTableDataSource<IssueToDep>();
-
   dsIssueItemList = new MatTableDataSource<IssueItemList>();
-
   dsNewIssueList1 = new MatTableDataSource<NewIssueList1>();
   dsNewIssueList2 = new MatTableDataSource<NewIssueList2>();
   dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
   dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
-
-
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -153,41 +151,26 @@ export class IssueToDepartmentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.getToStoreSearchList();
     this.gePharStoreList();
     this.getToStoreList();
     this.getPharStoreList();
     this.getIssueToDepList();
 
-    // this.ToStoreFilterCtrl.valueChanges
-    // .pipe(takeUntil(this._onDestroy))
-    // .subscribe(() => {
-    //   this.filterTostore();
-    // });
-
     this.filteredOptionsStore = this._IssueToDep.NewIssueGroup.get('ToStoreId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterToStore(value)),
-     // map(value => this._filterToStore(value)),
     );
     this.filteredOptionsStoreList = this._IssueToDep.IssueSearchGroup.get('ToStoreId').valueChanges.pipe(
       startWith(''),
-      map(value => this._filterToStoreList(value)),
-     // map(value => this._filterToStore(value)),
-      
+      map(value => this._filterToStoreList(value)),      
     );
-
-
   }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-
-  dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
   private _filterToStoreList(value: any): string[] {
@@ -202,18 +185,14 @@ export class IssueToDepartmentComponent implements OnInit {
   getToStoreSearchList() {
     this._IssueToDep.getToStoreSearchList().subscribe(data => {
       this.ToStoreList = data;
-      //this._IssueToDep.IssueSearchGroup.get('ToStoreId').setValue(this.ToStoreList[0]);
-      //console.log(this.ToStoreList);
     });
   }
-
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
     }
     this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
       this.FromStoreList = data;
-      //console.log(this.FromStoreList);
       this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0])
     });
   }
@@ -226,13 +205,11 @@ export class IssueToDepartmentComponent implements OnInit {
       "To_Dt": this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "IsVerify": 0,
     }
-    console.log(vdata)
     this._IssueToDep.getIssueToDepList(vdata).subscribe(data => {
       this.dsIssueToDep.data = data as IssueToDep[];
       this.dsIssueToDep.sort = this.sort;
       this.dsIssueToDep.paginator = this.paginator;
       this.sIsLoading = '';
-      console.log(this.dsIssueToDep.data);
     },
       error => {
         this.sIsLoading = '';
@@ -240,7 +217,6 @@ export class IssueToDepartmentComponent implements OnInit {
   }
 
   getIssueItemList(Param) {
-
     var vdata = {
       "IssueId": Param
     }
@@ -248,11 +224,9 @@ export class IssueToDepartmentComponent implements OnInit {
       this.dsIssueItemList.data = data as IssueItemList[];
       this.dsIssueItemList.sort = this.sort;
       this.dsIssueItemList.paginator = this.paginator;
-      // console.log(this.dsIssueItemList.data);
     });
   }
   OnSelect(Param) {
-    //console.log(Param.IssueId);
     this.getIssueItemList(Param.IssueId)
   }
 
@@ -262,10 +236,8 @@ export class IssueToDepartmentComponent implements OnInit {
       "ItemName": `${this._IssueToDep.NewIssueGroup.get('ItemID').value}%`,
       "StoreId": this._IssueToDep.StoreFrom.get('FromStoreId').value.storeid
     }
-    console.log(m_data);
     this._IssueToDep.getItemlist(m_data).subscribe(data => {
       this.filteredOptionsItem = data;
-      console.log(this.filteredOptionsItem);
       this.filteredOptionsItem = data;
       if (this.filteredOptionsItem.length == 0) {
         this.noOptionFound = true;
@@ -275,14 +247,10 @@ export class IssueToDepartmentComponent implements OnInit {
     });
   }
   getOptionItemText(option) {
-   // this.ItemID = option.ItemId;
     if (!option) return '';
     return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
   }
-
   getSelectedObjItem(obj) {
-    // console.log(obj);
-    // this.registerObj = obj;
     this.ItemName = obj.ItemName;
     this.ItemID = obj.ItemId;
     this.BalanceQty = obj.BalanceQty;
@@ -290,32 +258,12 @@ export class IssueToDepartmentComponent implements OnInit {
       this.getBatch();
     }
   }
-  // private filterTostore() {
-  //   if (!this.ToStoreList1) {
-  //     return;
-  //   }
-  //   // get the search keyword
-  //   let search = this.ToStoreFilterCtrl.value;
-  //   if (!search) {
-  //     this.filteredToStore.next(this.ToStoreList1.slice());
-  //     return;
-  //   } else {
-  //     search = search.toLowerCase();
-  //   }
-  //   // filter the banks
-  //   this.filteredToStore.next(
-  //     this.ToStoreList1.filter(bank => bank.StoreName.toLowerCase().indexOf(search) > -1)
-  //   );
-  // }
   getToStoreList() {
     this._IssueToDep.getToStoreSearchList().subscribe(data => {
       this.ToStoreList1 = data;
-      //this.filteredToStore.next(this.ToStoreList1.slice());
-      console.log(this.ToStoreList);
     });
   }
   private _filterToStore(value: any): string[] {
-    // debugger
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
       return this.ToStoreList1.filter(option => option.StoreName.toLowerCase().includes(filterValue));
@@ -330,31 +278,25 @@ export class IssueToDepartmentComponent implements OnInit {
     }
     this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
       this.FromStoreList1 = data;
-      //console.log(this.FromStoreList);
       this._IssueToDep.StoreFrom.get('FromStoreId').setValue(this.FromStoreList1[0])
     });
   }
 
-  onRepeat() {
-    if (this.chargeslist.length > 0) {  
-      this.chargeslist.forEach((element) => {
-        if (element.ItemId == this.ItemID) {
-          this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          this.ItemReset();
-        } else {
-          this.onAdd();
-        }
-      });
-    } else {
-      this.toastr.warning('Please Selecte all values', 'Warning !', {
+  onAdd() {
+    if ((this.vItemID == '' || this.vItemID == null || this.vItemID == undefined)) {
+      this.toastr.warning('Please enter a item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      this.onAdd();
+      return;
     }
-  }
-  onAdd() {
+    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+      this.toastr.warning('Please enter a Qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId );
+    if (!isDuplicate) {
     let gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
     this.dsNewIssueList3.data = [];
     this.chargeslist = this.dsTempItemNameList.data;
@@ -373,10 +315,14 @@ export class IssueToDepartmentComponent implements OnInit {
       });
     console.log(this.chargeslist);
     this.dsNewIssueList3.data = this.chargeslist
+    } else {
+      this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
     this.ItemReset();
     this.itemid.nativeElement.focus();
     this._IssueToDep.NewIssueGroup.get('ItemID').setValue('');
-    this.addbutton = false;
   }
   deleteTableRow(element) {
     let index = this.chargeslist.indexOf(element);
@@ -394,19 +340,20 @@ export class IssueToDepartmentComponent implements OnInit {
     this.vItemID = 0;
     this.vBatchNo = " ";
     this.vBalanceQty = 0;
-    this.vQty = " ";
+    this.vQty = 0;
     this.vUnitMRP = 0;
     this.vTotalAmount = 0;
   }
   CalculateTotalAmt() {
     if (this.vQty > this.vBalanceQty) {
-      Swal.fire("Enter Qty less than Balance");
+      this.toastr.warning('Enter Qty less than Balance', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
       this._IssueToDep.NewIssueGroup.get('Qty').setValue(0);
     }
     if (this.vQty && this.vUnitMRP) {
       this.vTotalAmount = (parseInt(this.vQty) * parseInt(this.vUnitMRP)).toFixed(2);
     }
- 
   }
    getTotalamt(element) {
     this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
@@ -422,8 +369,12 @@ export class IssueToDepartmentComponent implements OnInit {
       });
       return;
     }
-   // debugger
-   if(this._IssueToDep.NewIssueGroup.valid){
+    if (this._IssueToDep.NewIssueGroup.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     let insertheaderObj = {};
     insertheaderObj['issueDate'] =  this.dateTimeObj.date;
     insertheaderObj['issueTime'] =  this.dateTimeObj.time;
@@ -480,7 +431,6 @@ export class IssueToDepartmentComponent implements OnInit {
         this.toastr.success('Record New Issue To Department Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-        //this._matDialog.closeAll();
         this.OnReset();
         this.getIssueToDepList();
 
@@ -495,12 +445,6 @@ export class IssueToDepartmentComponent implements OnInit {
       });
     });
   }
-  else{
-    this.toastr.warning('Please check from is invalid ,please select all required fields.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-  }
-  }
   OnReset() {
     this._IssueToDep.NewIssueGroup.reset();
     this.dsNewIssueList1.data = [];
@@ -513,9 +457,6 @@ export class IssueToDepartmentComponent implements OnInit {
   @ViewChild('Rate') Rate: ElementRef;
   @ViewChild('BalQuantity') BalQuantity: ElementRef;
   @ViewChild('Quantity') Quantity: ElementRef;
-  addbutton: Boolean = false;
-  // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-
 
   public onEnterFromstore(event): void {
     if (event.which === 13) {
@@ -540,15 +481,11 @@ export class IssueToDepartmentComponent implements OnInit {
   public onEnterQty(event): void {
     if (event.which === 13) {
       this.Rate.nativeElement.focus();
-     // this.addbutton = false;
 
     }
   }
   public onEnterRate(event): void {
     if (event.which === 13) {
-      // this.Rate.nativeElement.focus();
-      // this.addbutton.focus();
-      //this.addbutton = true;
     }
   }
   getBatch() {
@@ -574,19 +511,15 @@ export class IssueToDepartmentComponent implements OnInit {
       this.vQty = '';
       this.vBal = result.BalanceAmt;
       this.GSTPer = result.VatPercentage;
-
       this.vTotalMRP = this.vQty * this.vMRP;
       this.vDiscAmt = 0;
       this.vNetAmt = this.vTotalMRP;
       this.vBalanceQty = result.BalanceQty;
       this.vItemObj = result;
-
       this.vVatPer = result.VatPercentage;
-      // console.log(this.VatPer);
       this.vCgstPer = result.CGSTPer;
       this.vSgstPer = result.SGSTPer;
       this.vIgstPer = result.IGSTPer;
-
       this.vVatAmount = result.VatPercentage;
       this.vStockId = result.StockId
       this.vStoreId = result.StoreId;
@@ -595,43 +528,6 @@ export class IssueToDepartmentComponent implements OnInit {
       this.vUnitMRP = result.UnitMRP;
     });
   }
-  // public onEnterBatchno(event): void {
-  //   if (event.which === 13) {
-  //     this.InvoiceNo1.nativeElement.focus()
-  //   }
-  // }
-
-  // lastDay: string = '';
-  // ExpDate:any;
-  // calculateLastDay(inputDate: string) {
-
-  //   if (inputDate && inputDate.length === 6) {
-  //     const month = +inputDate.substring(0, 2);
-  //     const year = +inputDate.substring(2, 6);
-
-  //     if (month >= 1 && month <= 12) {
-  //       const lastDay = this.getLastDayOfMonth(month, year);
-  //       this.lastDay = `${lastDay}/${this.pad(month)}/${year}`;
-  //       // this.ExpDate =new Date(this.lastDay);
-  //       console.log(this.lastDay )
-  //      this._IssueToDep.NewIssueGroup.get('ExpDatess').setValue(this.lastDay)
-  //      // this.ExpDate = this.lastDay;
-  //     } else {
-  //       this.lastDay = 'Invalid month';
-  //     }
-  //   } else {
-  //     this.lastDay = 'Invalid input';
-  //   } 
-  // }
-
-  // getLastDayOfMonth(month: number, year: number): number {
-  //   return new Date(year, month, 0).getDate();
-  // }
-
-  // pad(n: number): string {
-  //   return n < 10 ? '0' + n : n.toString();
-  // }
-
 }
 export class NewIssueList3 {
 

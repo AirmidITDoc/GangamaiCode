@@ -61,11 +61,12 @@ export class IndentComponent implements OnInit {
   ItemName: any;
   vQty: any;
   chargeslist: any = [];
-  ToStoreList1:any=[];
-  isStoreSelected:boolean =false;
+  ToStoreList1: any = [];
+  isStoreSelected: boolean = false;
   filteredOptionsStore: Observable<string[]>;
   filteredOptionsStoreList: Observable<string[]>;
-  vRemark:any;
+  vRemark: any;
+  vIndentId: any;
 
   dsIndentSearchList = new MatTableDataSource<IndentID>();
 
@@ -73,14 +74,14 @@ export class IndentComponent implements OnInit {
 
   dsIndentNameList = new MatTableDataSource<IndentNameList>();
   dsTempItemNameList = new MatTableDataSource<IndentNameList>();
- 
+
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-    //service filter
-    public ToStoreFilterCtrl: FormControl = new FormControl();
-    public filteredToStore: ReplaySubject<any> = new ReplaySubject<any>(1);
-    private _onDestroy = new Subject<void>();
+  //service filter
+  public ToStoreFilterCtrl: FormControl = new FormControl();
+  public filteredToStore: ReplaySubject<any> = new ReplaySubject<any>(1);
+  private _onDestroy = new Subject<void>();
   constructor(
     public _IndentService: IndentService,
     public _matDialog: MatDialog,
@@ -94,7 +95,6 @@ export class IndentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getIndentItemName();
     this.getToStoreSearchList();
     this.getFromStoreSearchList();
     this.getIndentID();
@@ -104,11 +104,11 @@ export class IndentComponent implements OnInit {
       startWith(''),
       map(value => this._filterToStore(value)),
     );
-    // this.filteredOptionsStoreList = this._IndentService.IndentSearchGroup.get('ToStoreId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterToStoreList(value)),
-      
-    // );
+    this.filteredOptionsStoreList = this._IndentService.IndentSearchGroup.get('ToStoreId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterToStoreList(value)),
+
+    );
 
   }
   toggleSidebar(name): void {
@@ -119,16 +119,13 @@ export class IndentComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   getIndentID() {
-    // this.sIsLoading = 'loading-data';
     var Param = {
-      "FromStoreId":this._loggedService.currentUserValue.user.storeId,
-      "ToStoreId":this._IndentService.IndentSearchGroup.get('ToStoreId').value.StoreId || 0,
+      "FromStoreId": this._loggedService.currentUserValue.user.storeId,
+      "ToStoreId": this._IndentService.IndentSearchGroup.get('ToStoreId').value.StoreId || 0,
       "From_Dt": this.datePipe.transform(this._IndentService.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._IndentService.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "Status": this._IndentService.IndentSearchGroup.get("Status").value,
     }
-
-    //console.log(Param);
     this._IndentService.getIndentID(Param).subscribe(data => {
       this.dsIndentSearchList.data = data as IndentID[];
       this.dsIndentSearchList.sort = this.sort;
@@ -140,17 +137,14 @@ export class IndentComponent implements OnInit {
       });
   }
   getIndentList(Params) {
-    // this.sIsLoading = 'loading-data';
     var Param = {
       "IndentId": Params.IndentId
     }
-    console.log(Param)
     this._IndentService.getIndentList(Param).subscribe(data => {
       this.dsIndentDetailsSearchList.data = data as IndentList[];
       this.dsIndentDetailsSearchList.sort = this.sort;
       this.dsIndentDetailsSearchList.paginator = this.paginator;
       this.sIsLoading = '';
-      console.log(this.dsIndentDetailsSearchList)
     },
       error => {
         this.sIsLoading = '';
@@ -160,12 +154,6 @@ export class IndentComponent implements OnInit {
   getToStoreSearchList() {
     this._IndentService.getToStoreNameSearch().subscribe(data => {
       this.ToStoreList1 = data;
-      if (this.vStoreId2) {
-        const ddValue = this.ToStoreList1.filter(c => c.DoctorID == this.ToStoreList1);
-        this.ToStoreList1.get('ToStoreId').setValue(ddValue[0]);
-      this.ToStoreList1.updateValueAndValidity();
-        return;
-      } 
     });
   }
   private _filterToStoreList(value: any): string[] {
@@ -185,35 +173,30 @@ export class IndentComponent implements OnInit {
       this.FromStoreList = data;
       this._IndentService.IndentSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
       this._IndentService.StoreFrom.get('FromStoreId').setValue(this.FromStoreList[0]);
-
     });
   }
-    
-    getTostoreListCombobox() {
-      this._IndentService.getToStoreNameSearch().subscribe(data => {
-        this.ToStoreList = data;
-      });
+  getTostoreListCombobox() {
+    this._IndentService.getToStoreNameSearch().subscribe(data => {
+      this.ToStoreList = data;
+    });
+  }
+  private _filterToStore(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+      return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
     }
-    private _filterToStore(value: any): string[] {
-      if (value) {
-        const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-        return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-      }
-    }
-    getOptionTextStores(option) {
-      return option && option.StoreName ? option.StoreName : '';
-    }
+  }
+  getOptionTextStores(option) {
+    return option && option.StoreName ? option.StoreName : '';
+  }
 
   getIndentItemName() {
-   // debugger
     var Param = {
       "ItemName": `${this._IndentService.newIndentFrom.get('ItemName').value}%`,
-      "StoreId":this._loggedService.currentUserValue.user.storeId
+      "StoreId": this._IndentService.StoreFrom.get('FromStoreId').value.storeid
     }
-    //console.log(Param)
     this._IndentService.getIndentNameList(Param).subscribe(data => {
       this.filteredOptions = data;
-      //console.log(this.filteredOptions)
       if (this.filteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {
@@ -227,48 +210,42 @@ export class IndentComponent implements OnInit {
     return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
   }
   getSelectedObj(obj) {
-   // console.log(obj)
     this.vItemId = obj.ItemID,
-      this.ItemName = obj.ItemName;
-    this.vQty = 0;
+    this.ItemName = obj.ItemName;
+    this.vQty = '';
     this.qty.nativeElement.focus();
   }
-  onRepeat() {
-    if (this.chargeslist.length > 0) {
-      this.chargeslist.forEach((element) => {
-        if (element.ItemID == this.vItemId) {
-          this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          this.ItemReset();
-        } else {
-          this.onAdd();
-        }
-      });
-    } else {
-      this.toastr.warning('Please Selecte all values', 'Warning !', {
+  onAdd() {
+    if ((this.vItemName == '' || this.vItemName == null || this.vItemName == undefined)) {
+      this.toastr.warning('Please enter a item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      this.onAdd();
+      return;
     }
-    }
-
-  onAdd() {
- if(this._IndentService.newIndentFrom.valid && this.vQty > 0){
-    this.dsIndentNameList.data = [];
-    this.chargeslist = this.dsTempItemNameList.data;
-    this.chargeslist.push(
-      {
-        ItemID: this._IndentService.newIndentFrom.get('ItemId').value || 0,
-        ItemName: this._IndentService.newIndentFrom.get('ItemName').value.ItemName,
-        IndentQuantity: this._IndentService.newIndentFrom.get('Qty').value || 0,
+    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+      this.toastr.warning('Please enter a Qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
       });
-   // console.log(this.chargeslist);
-    this.dsIndentNameList.data = this.chargeslist;
+      return;
+    }
+    const isDuplicate = this.dsIndentNameList.data.some(item => item.ItemID === this._IndentService.newIndentFrom.get('ItemName').value.ItemID);
+    if (!isDuplicate) {
+      this.dsIndentNameList.data = [];
+      this.chargeslist = this.dsTempItemNameList.data;
+      this.chargeslist.push(
+        {
+          ItemID: this._IndentService.newIndentFrom.get('ItemName').value.ItemID || 0,
+          ItemName: this._IndentService.newIndentFrom.get('ItemName').value.ItemName,
+          IndentQuantity: this._IndentService.newIndentFrom.get('Qty').value || 0,
+        });
+      this.dsIndentNameList.data = this.chargeslist;
+    } else {
+      this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
     this.ItemReset();
- }
     this.itemname.nativeElement.focus();
-
   }
 
   deleteTableRow(element) {
@@ -284,104 +261,55 @@ export class IndentComponent implements OnInit {
   }
   vItemName: any;
   ItemReset() {
-    this.vItemId =  0;
+    this.vItemId = '';
     this.ItemName = '';
     this.vItemName = 0;
-    // this._IndentService.newIndentFrom.get('ItemName').setValue('');
     this.vQty = 0;
   }
   OnSave() {
-   // debugger
-   if ((!this.dsIndentNameList.data.length)) {
-    this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
-    if(!this._IndentService.newIndentFrom.get('').value){
-    if(this._IndentService.newIndentFrom.valid){
-      let InsertIndentObj = {};
-      InsertIndentObj['indentDate'] = this.dateTimeObj.date;
-      InsertIndentObj['indentTime'] = this.dateTimeObj.time;
-      InsertIndentObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
-      InsertIndentObj['toStoreId'] = this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId;
-      InsertIndentObj['addedby'] = this.accountService.currentUserValue.user.id;
-
-      let InsertIndentDetObj = [];
-      this.dsIndentNameList.data.forEach((element) => {
-        let IndentDetInsertObj = {};
-        IndentDetInsertObj['indentId'] = 0;
-        IndentDetInsertObj['itemId'] = element.ItemID;
-        IndentDetInsertObj['qty'] = element.IndentQuantity;
-        InsertIndentDetObj.push(IndentDetInsertObj);
-      });
-
-      let submitData = {
-        "insertIndent": InsertIndentObj,
-        "insertIndentDetail": InsertIndentDetObj,
-      };
-
-      console.log(submitData);
-
-      this._IndentService.InsertIndentSave(submitData).subscribe(response => {
-        if (response) {
-          this.toastr.success('Record New Indent Saved Successfully.', 'Saved !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          //this._matDialog.closeAll();
-          this.OnReset();
-
-        } else {
-          this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
-      }, error => {
-        this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      });
-    }else{
-      this.toastr.warning('Please check from is invalid ,please select all required fields.', 'Warning !', {
+    if ((!this.dsIndentNameList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
+      return;
     }
-  }else{
-   
-      if(this._IndentService.newIndentFrom.valid){
-        let updateIndent = {};
-        updateIndent['indentId'] = this.dateTimeObj.time;
-        updateIndent['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
-        updateIndent['toStoreId'] = this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId;
-  
-        let insertIndentDetail = [];
+    if (this._IndentService.newIndentFrom.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this._IndentService.newIndentFrom.get('IndentId').value) {
+        let InsertIndentObj = {};
+        InsertIndentObj['indentDate'] = this.dateTimeObj.date;
+        InsertIndentObj['indentTime'] = this.dateTimeObj.time;
+        InsertIndentObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
+        InsertIndentObj['toStoreId'] = this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId;
+        InsertIndentObj['addedby'] = this.accountService.currentUserValue.user.id;
+
+        let InsertIndentDetObj = [];
         this.dsIndentNameList.data.forEach((element) => {
-          let insertIndentDetailobj = {};
-          insertIndentDetailobj['indentId'] = 0;
-          insertIndentDetailobj['itemId'] = element.ItemID;
-          insertIndentDetailobj['qty'] = element.IndentQuantity;
-          insertIndentDetail.push(insertIndentDetailobj);
+          let IndentDetInsertObj = {};
+          IndentDetInsertObj['indentId'] = 0;
+          IndentDetInsertObj['itemId'] = element.ItemID;
+          IndentDetInsertObj['qty'] = element.IndentQuantity;
+          InsertIndentDetObj.push(IndentDetInsertObj);
         });
 
-       let deleteIndent ={};
-       deleteIndent['indentId'] = 0;
-
         let submitData = {
-          "updateIndent": updateIndent,
-          "insertIndentDetail": insertIndentDetail,
-          "deleteIndent":deleteIndent
+          "insertIndent": InsertIndentObj,
+          "insertIndentDetail": InsertIndentDetObj,
         };
-  
+
         console.log(submitData);
-  
+
         this._IndentService.InsertIndentSave(submitData).subscribe(response => {
           if (response) {
             this.toastr.success('Record New Indent Saved Successfully.', 'Saved !', {
               toastClass: 'tostr-tost custom-toast-success',
             });
-            //this._matDialog.closeAll();
             this.OnReset();
-  
+
           } else {
             this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
               toastClass: 'tostr-tost custom-toast-error',
@@ -392,44 +320,74 @@ export class IndentComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-error',
           });
         });
-      }else{
-        this.toastr.warning('Please check from is invalid ,please select all required fields.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
+    } else {
+        let updateIndent = {};
+        updateIndent['indentId'] = this.dateTimeObj.time;
+        updateIndent['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
+        updateIndent['toStoreId'] = this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId;
+
+        let insertIndentDetail = [];
+        this.dsIndentNameList.data.forEach((element) => {
+          let insertIndentDetailobj = {};
+          insertIndentDetailobj['indentId'] = 0;
+          insertIndentDetailobj['itemId'] = element.ItemID;
+          insertIndentDetailobj['qty'] = element.IndentQuantity;
+          insertIndentDetail.push(insertIndentDetailobj);
         });
-      }
+
+        let deleteIndent = {};
+        deleteIndent['indentId'] = 0;
+
+        let submitData = {
+          "updateIndent": updateIndent,
+          "insertIndentDetail": insertIndentDetail,
+          "deleteIndent": deleteIndent
+        };
+
+        console.log(submitData);
+
+        this._IndentService.InsertIndentSave(submitData).subscribe(response => {
+          if (response) {
+            this.toastr.success('Record New Indent Saved Successfully.', 'Saved !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+            this.OnReset();
+
+          } else {
+            this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        }, error => {
+          this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        });
     }
-  
+
   }
-  
+
   selectedIndex: string = '';
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
-  OnEdit(row,tabGroup: MatTabGroup){
-    // debugger
-   
+  OnEdit(row, tabGroup: MatTabGroup) {
+
     const tabIndex = row === 'tab1' ? 0 : 1;
     tabGroup.selectedIndex = tabIndex;
-    console.log(row)
-     var  vdata={
+    // console.log(row)
+    var vdata = {
       ToStoreId: row.ToStoreId,
       StoreName: row.ToStoreName
-      }
-      console.log(vdata)
-      this._IndentService.populateForm(vdata);
-  
-     this.vRemark =row.Remark;
-      const selectedToStore = this.ToStoreList.filter(c => c.StoreId == row.ToStoreId);
-      this._IndentService.newIndentFrom.get('ToStoreId').setValue(selectedToStore);
-    
+    }
+    // console.log(vdata)
+    this._IndentService.populateForm(vdata);
 
-      this.getToStoreSearchList()
-      // this.filteredOptionsStore = this._IndentService.newIndentFrom.get('ToStoreId').valueChanges.pipe(
-      //   startWith(''),
-      //   map(value => this._filterToStore(value)),
-      // );
+    this.vRemark = row.Remark;
+    const selectedToStore = this.ToStoreList.filter(c => c.StoreId == row.ToStoreId);
+    this._IndentService.newIndentFrom.get('ToStoreId').setValue(selectedToStore);
 
-       console.log(selectedToStore);
-       console.log(row.ToStoreId)
-       this.getupdateIndentList(row);
+    // console.log(selectedToStore);
+    // console.log(row.ToStoreId)
+    this.getupdateIndentList(row);
 
   }
   getupdateIndentList(Params) {
@@ -437,7 +395,7 @@ export class IndentComponent implements OnInit {
       "IndentId": Params.IndentId
     }
     console.log(Param)
-      this._IndentService.getIndentList(Param).subscribe(data => {
+    this._IndentService.getIndentList(Param).subscribe(data => {
       this.dsIndentNameList.data = data as IndentNameList[];
       this.chargeslist = data as IndentNameList[];
       this.dsIndentNameList.sort = this.sort;
@@ -449,35 +407,17 @@ export class IndentComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
-//   OnEdit(row,tabGroup:MatTabGroup) {
-//     var m_data = {
-//       ToStoreId: row.ToStoreName,
-//      // StoreName: row.ToStoreName
-//       //   CategoryName: row.CategoryName.trim(),
-//       //   IsDeleted: JSON.stringify(row.Isdeleted),
-//       //   UpdatedBy: row.UpdatedBy,
-//     };
-//     console.log(m_data)
-//     console.log(row);
-//     const tabIndex = row === 'tab1' ? 0 : 1;
-//     tabGroup.selectedIndex = tabIndex;
-//     this._IndentService.populateForm(m_data);
-//     const selectedToStore = this.ToStoreList.filter(c => c.StoreId == row.ToStoreId);
-//     this._IndentService.newIndentFrom.get('ToStoreId').setValue(selectedToStore);
-//     console.log(selectedToStore);
-//     console.log(row.ToStoreId)
-// }
-    OnReset() {
-      this._IndentService.newIndentFrom.reset();
-      this.dsIndentNameList.data = [];
-    }
-    onClear(){
-      this._IndentService.IndentSearchGroup.reset();
-    }
+  OnReset() {
+    this._IndentService.newIndentFrom.reset();
+    this.dsIndentNameList.data = [];
+  }
+  onClear() {
+    this._IndentService.IndentSearchGroup.reset();
+  }
 
-    @ViewChild('itemname') itemname: ElementRef;
-    @ViewChild('qty') qty: ElementRef;
- 
+  @ViewChild('itemname') itemname: ElementRef;
+  @ViewChild('qty') qty: ElementRef;
+
   public onEnteritemid(event): void {
     if (event.which === 13) {
       this.itemname.nativeElement.focus();

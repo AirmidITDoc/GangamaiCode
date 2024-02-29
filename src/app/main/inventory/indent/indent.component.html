@@ -63,7 +63,7 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                      
+
 
                                         <mat-form-field appearance="outline" fxFlex="30%" style="margin-right: 10px;">
                                             <mat-label>To Store</mat-label>
@@ -361,9 +361,9 @@
 
                                         <mat-form-field appearance="outline" fxFlex="30%" style="margin-right: 10px;">
                                             <mat-label>To Store</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
+                                            <input matAutocompletePosition="below" type="text" required
                                                 placeholder="Select Store" matInput formControlName="ToStoreId"
-                                                [matAutocomplete]="auto2">
+                                                [matAutocomplete]="auto2" >
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_IndentService.newIndentFrom.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
@@ -387,19 +387,21 @@
 
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px">
+                                        <input name="IndentId" type="hidden" formControlName="IndentId"
+                                            [(ngModel)]="vIndentId" matInput>
 
-                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                        <!-- <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>Item Code</mat-label>
                                             <input name="ItemId" formControlName="ItemId" matInput [(ngModel)]="vItemId"
                                                 (keydown)="onEnteritemid($event)" required>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
 
                                         <mat-form-field appearance="outline" fxFlex="30%">
                                             <mat-label>Item Name</mat-label>
                                             <input type="text" name="ItemName" formControlName="ItemName"
                                                 placeholder="Item Name" matInput [matAutocomplete]="auto"
                                                 (input)="getIndentItemName()" #itemname [(ngModel)]="vItemName"
-                                                (keydown)="onEnteritemName($event)" required>
+                                                (keydown)="onEnteritemName($event)">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_IndentService.newIndentFrom.get('ItemName').setValue(''); isItemIdSelected = false;">close</mat-icon>
@@ -422,10 +424,8 @@
                                         </mat-form-field>&nbsp;&nbsp;
 
                                         <div matTooltip="Select All Value to enable this button!!">
-                                            <button mat-raised-button fxLayoutAlign="center center" (click)="onRepeat()"
-                                                [disabled]="_IndentService.newIndentFrom.invalid" 
-                                                style="background-color: blue; color: white;height: 35px;margin-left: 15px; ">
-                                                <mat-icon> add </mat-icon> &nbsp;Add
+                                            <button class="next-btn" (click)="onAdd()">
+                                                Add
                                             </button>
                                         </div>
 
@@ -521,18 +521,14 @@
                                     <input name="Remark" formControlName="Remark" [(ngModel)]="vRemark" matInput>
                                 </mat-form-field>
 
-                                <div style="float: right;">
-                                    <div class="footer-navigation-container" style="margin-left:800px;"
-                                        fxLayout.gt-xs="row">
+                                
+                                    <div class="footer-navigation-container" fxLayout.gt-xs="row" style="margin-left: 500px;">
                                         <div matTooltip="Select All Value to enable this button!!">
-                                            <button class="next-btn"
-                                                style="width: 80px;border-radius: 16px;margin-left: 120px;"
-                                                (click)="OnSave()">Save</button>
-                                            <button class="footer-btn" style="width: 80px;border-radius: 16px;"
-                                                (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                                            <button class="next-btn" (click)="OnSave()"  style="margin-left: 750px;">Save</button>
+                                            <button class="footer-btn" (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                         </div>
                                     </div>
-                                </div>
+                               
 
                             </div>
                         </form>

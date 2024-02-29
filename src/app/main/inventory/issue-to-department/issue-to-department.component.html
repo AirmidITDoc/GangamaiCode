@@ -457,7 +457,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Batch No</mat-label>
-                                        <input name="BatchNo" formControlName="BatchNO" required readonly matInput
+                                        <input name="BatchNo" formControlName="BatchNO"   readonly matInput
                                             #Batchno [(ngModel)]="vBatchNo" (keydown)="onEnterBatchNo($event)">
                                     </mat-form-field>
 
@@ -471,7 +471,7 @@
                                     <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Qty</mat-label>
                                         <input name="Qty" formControlName="Qty" matInput #Quantity
-                                            (keydown)="onEnterQty($event)"
+                                            (keydown)="onEnterQty($event)" required
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                             required (keyup)="CalculateTotalAmt()" [(ngModel)]="vQty"
                                             autocomplete="off">
@@ -493,24 +493,12 @@
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                             readonly required>
                                     </mat-form-field>
-
+                                    
                                     <div matTooltip="Select All Value to enable this button!!">
-                                        <button mat-raised-button fxLayoutAlign="center center" (click)="onRepeat()"
-                                        [disabled]="_IssueToDep.NewIssueGroup.invalid"  
-                                            style="background-color: blue; color: white;margin-left: 15px;height: 35px; ">
-                                            <mat-icon> add </mat-icon> &nbsp;Add
+                                        <button class="next-btn" (click)="onAdd()">
+                                            Add
                                         </button>
                                     </div>
-                                    <!-- <mat-form-field appearance="outline">
-                                            <mat-label>Enter month and year (MMYYYY)</mat-label>
-                                            <input matInput #inputField (keyup.enter)="calculateLastDay(inputField.value)" 
-                                            formControlName="ExpDatess" value="lastDay" [ngmodel]="lastDay">
-                                           
-                                          </mat-form-field> 
-                                          
-                                          <p *ngIf="lastDay">Last day of entered month and year: {{ lastDay }}</p> -->
-
-
                                 </div>
                                 <!-- </mat-card> -->
 
@@ -801,15 +789,6 @@
                                         | currency:'INR' }}</span> -->
                                 </div>
 
-                                <!-- <div class="footer-navigation-container" fxLayout.gt-xs="row">
-
-                                <div style="margin-top: 10px; margin-right: 10px; ">
-                                    <button class="next-btn" color="accent"
-                                        style="border-radius: 16px; width: 80px;">Save</button>
-                                    <button class="footer-btn" id="btncancel">Close</button>
-                                </div>
-                            </div>
-                            -->
                                 <div matTooltip="Select All Value to enable this button!!">
                                     <button class="next-btn" style="width: 80px;border-radius: 16px;margin-left: 120px;"
                                         (click)="OnSave()">Save</button>

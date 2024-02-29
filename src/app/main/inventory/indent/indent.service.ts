@@ -37,9 +37,10 @@ export class IndentService {
   }
   createnewindentfrom() {
     return this._formBuilder.group({
+      IndentId:[''],
       ToStoreId: '',
       FromStoreId:'',
-      ItemId:[''],
+      // ItemId:[''],
       ItemName:[''],
       Qty:[''],
       Remark:[''],

@@ -1597,6 +1597,7 @@ else{
     this.ItemSubform.get('ConcessionId').disable();
 
     this.saleSelectedDatasource.data = [];
+    this.getDraftorderList();
   }
 
   getGSTAmtSum(element) {
@@ -1898,8 +1899,6 @@ else{
   // }
 
   DeleteDraft() {
-
-
     let Query = "delete T_SalesDraftHeader where DSalesId=" + this.DraftID + "";
     this._salesService.getDelDrat(Query).subscribe(data => {
       if (data) {
@@ -1916,16 +1915,12 @@ else{
       });
       return;
     }
-debugger
     if(this.saleSelectedDatasource.data.length ==0 || this.FinalTotalAmt == 0 || this.FinalNetAmount==0  || this.roundoffAmt ==0 ){
         this.toastr.warning('Please select All Bill Detail', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
     }
-else{
-
-
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     if ((patientTypeValue == 'OP' || patientTypeValue == 'IP')
       && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
@@ -1943,9 +1938,7 @@ else{
     else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
       this.onSavePayOption()
     }
-
-
-  }
+    this.getDraftorderList();
   }
 
   onCashOnlinePaySave() {
@@ -2055,6 +2048,7 @@ else{
 
 
     let salesDraftStatusUpdate = {};
+    console.log(this.DraftID);
     salesDraftStatusUpdate['DSalesId'] = this.DraftID || 0;
     salesDraftStatusUpdate['IsClosed'] = 1
 
@@ -2132,6 +2126,7 @@ else{
     // this.PatientName = '';
     // this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
+ 
     // }
   }
   onSavePayOption() {
@@ -2772,21 +2767,17 @@ else{
 
 
   getDraftorderList() {
-
     this.chargeslist1 = [];
     this.dataSource1.data = [];
-
     let currentDate = new Date();
     var m = {
-
       "FromDate": this.datePipe.transform(currentDate, "MM/dd/yyyy") || "01/01/1900",
       "ToDate": this.datePipe.transform(currentDate, "MM/dd/yyyy") || "01/01/1900",
     }
-    console.log(m)
     this._salesService.getDraftList(m).subscribe(data => {
       this.chargeslist1 = data as ChargesList[];
       this.dataSource1.data = this.chargeslist1;
-
+      console.log(this.dataSource1.data)
     },
       (error) => {
 
@@ -2807,11 +2798,9 @@ else{
       this.tempDatasource.data = data as any;
       console.log(this.tempDatasource.data);
       if (this.tempDatasource.data.length >= 1) {
-
         this.tempDatasource.data.forEach((element) => {
-          this.DraftQty = element.QtyPerDay
-
-          this.onAddDraftListTosale(element, this.DraftQty);
+        this.DraftQty = element.QtyPerDay
+        this.onAddDraftListTosale(element, this.DraftQty);
         });
       }
     });
@@ -2823,10 +2812,10 @@ else{
     console.log(contact)
     this.Itemchargeslist1 = [];
     this.QtyBalchk = 0;
-    this.PatientName = this.dataSource1.data[0]["PatientName"];
-    this.MobileNo = this.dataSource1.data[0]["extMobileNo"];
-    this.vextAddress = this.dataSource1.data[0]["extAddress"];
-    this.DoctorName = this.dataSource1.data[0]["AdmDoctorName"];
+    this.PatientName = this.tempDatasource.data[0]["PatientName"];
+    this.MobileNo = this.tempDatasource.data[0]["extMobileNo"];
+    this.vextAddress = this.tempDatasource.data[0]["extAddress"];
+    this.DoctorName = this.tempDatasource.data[0]["AdmDoctorName"];
 
 
     // if (this.tempDatasource.data.length > 0) {
