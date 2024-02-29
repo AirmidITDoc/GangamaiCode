@@ -285,7 +285,7 @@ export class SalesComponent implements OnInit {
 
   DraftSaleDisplayedCol = [
     // 'DSalesId',
-    'extMobileNo',
+    'ExtMobileNo',
     'buttons'
   ];
 
@@ -2777,7 +2777,7 @@ else{
     this._salesService.getDraftList(m).subscribe(data => {
       this.chargeslist1 = data as ChargesList[];
       this.dataSource1.data = this.chargeslist1;
-      console.log(this.dataSource1.data)
+    
     },
       (error) => {
 
@@ -2786,17 +2786,20 @@ else{
 
   }
   onAddDraftList(contact) {
-    console.log(contact)
+     console.log(contact)
+    this.PatientName = contact.PatientName;
+    this.MobileNo = contact.ExtMobileNo;
+    this.vextAddress = contact.extAddress;
+    this.DoctorName = contact.AdmDoctorName;
     this.DraftID = contact.DSalesId;
     this.saleSelectedDatasource.data = [];
     this.Itemchargeslist1 = [];
     this.Itemchargeslist = [];
 
     let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
-    console.log(strSql);
     this._salesService.getchargesList(strSql).subscribe(data => {
       this.tempDatasource.data = data as any;
-      console.log(this.tempDatasource.data);
+      // console.log(this.tempDatasource.data);
       if (this.tempDatasource.data.length >= 1) {
         this.tempDatasource.data.forEach((element) => {
         this.DraftQty = element.QtyPerDay
@@ -2812,36 +2815,25 @@ else{
     console.log(contact)
     this.Itemchargeslist1 = [];
     this.QtyBalchk = 0;
-    this.PatientName = this.tempDatasource.data[0]["PatientName"];
-    this.MobileNo = this.tempDatasource.data[0]["extMobileNo"];
-    this.vextAddress = this.tempDatasource.data[0]["extAddress"];
-    this.DoctorName = this.tempDatasource.data[0]["AdmDoctorName"];
-
-
+    // this.PatientName = contact.patientname;
+    // this.MobileNo = this.tempDatasource.data[0]["ExtMobileNo"];
+    // this.vextAddress = this.tempDatasource.data[0]["extAddress"];
+    // this.DoctorName = this.tempDatasource.data[0]["AdmDoctorName"];
     // if (this.tempDatasource.data.length > 0) {
-
     var m_data = {
       "ItemId": contact.ItemId,
       "StoreId": this._loggedService.currentUserValue.user.storeId || 0
     }
-
     this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
-      console.log(draftdata)
+      // console.log(draftdata)
       this.Itemchargeslist1 = draftdata as any;
       if (this.Itemchargeslist1.length == 0) {
         Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
-        // this.PatientName = '';
-        // this.vextAddress=" ";
-        // this.MobileNo =' ';
-        // this.DoctorName=" ";
       }
       else if (this.Itemchargeslist1.length > 0) {
-
         let ItemID;
         this.Itemchargeslist1.forEach((element) => {
-
-          console.log(element)
-
+          // console.log(element)
           if (ItemID != element.ItemId) {
             this.QtyBalchk = 0;
           }
@@ -2856,7 +2848,7 @@ else{
             else {
               Swal.fire("Balance Qty is :", element.BalanceQty)
               this.QtyBalchk = 0;
-              Swal.fire("Balance Qty is Less than Selected Item Qty for Item :", element.ItemId + "Balance Qty:", element.BalanceQty)
+              Swal.fire("Balance Qty is Less than Selected Item Qty for Item :"+ element.ItemId + "Balance Qty:", element.BalanceQty)
             }
           }
         });
@@ -3363,6 +3355,8 @@ export class DraftSale {
   WardId: any;
   BedId: any;
   IsPrescription: any;
+  ExtMobileNo:any;
+  extAddress:any;
 
   /**
    * Constructor
@@ -3381,6 +3375,8 @@ export class DraftSale {
       this.WardId = DraftSale.WardId || "";
       this.BedId = DraftSale.BedId || "";
       this.IsPrescription = DraftSale.IsPrescription || "";
+      this.ExtMobileNo = DraftSale.ExtMobileNo || "";
+      this.extAddress = DraftSale.extAddress || "";
 
     }
   }
