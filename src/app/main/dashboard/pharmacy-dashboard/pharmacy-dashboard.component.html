@@ -131,7 +131,7 @@
 
                         <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
                             <div class="h3"> Collection Summary</div>
-                            <!-- <mat-form-field style="width: 184px;">
+                            <mat-form-field style="width: 184px;">
                                 <mat-label>Enter a date range</mat-label>
                                 <mat-date-range-input [formGroup]="rangeFormGroup" [rangePicker]="picker">
                                     <input matStartDate placeholder="Start date" formControlName="startDate" readonly>
@@ -140,7 +140,7 @@
                                 </mat-date-range-input>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field> -->
+                            </mat-form-field>
                         </div>
 
                         <div class="table-container">
@@ -261,7 +261,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>NetColAmt
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.NetColAmount | currency:'INR'}}
+                                        {{contact.NetColAmount}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -404,6 +404,160 @@
 
             </div>
         </div>
+        <!-- Customer count  -->
+        <div class="content" dynamicHeight>
+            <!-- New Table -->
+            <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom [@animateStagger]="{value:'50'}">
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="33"
+                    >
+                    <!-- fxFlex.gt-sm="33" -->
+                    <div class="fuse-widget-front">
+                        <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">Customer Count</div>
+                            <!-- <form [formGroup]="_DashboardService.UseFrom"> -->
+                                <mat-form-field>
+                                    <mat-select name="customerCount" (selectionChange)="onChangeCustCount()" [(value)]="custCountSelected">
+                                        <mat-option *ngFor="let m of chartFilterOptions" [value]="m">
+                                            {{m}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            <!-- </form> -->
+                        </div>
+        
+                        <div class="h-350 p-20">
+                            <div *ngIf="sCustCountChart === 'cust-count-loaded'" fxLayout="row">
+                                <div fxLayout="column">
+                                    <div>
+                                        <span class="cust-lables">Customers</span>
+                                    </div>
+                                    <div>
+                                        <span class="cust-labels-value">{{totalCustCount}}</span>
+                                    </div>
+                                    <div>
+                                        <ngx-charts-pie-chart  [view]="[200, 200]"
+                                            [results]="customerCountData"
+                                            [legend]="true"
+                                            [labels]="false"
+                                            [doughnut]="true"
+                                            [legendPosition] = "'bottom'"
+                                            [legendTitle]="''">
+                                        </ngx-charts-pie-chart>
+                                    </div>
+                                </div>
+                                <div fxLayout="column">
+                                    <div>
+                                        <div>
+                                            <span class="cust-lables">Avg Order Value</span>
+                                        </div>
+                                        <div>
+                                            <span class="cust-labels-value">{{avgOrderValue}}</span>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <div>
+                                            <span class="cust-lables">{{customerCountData[0].name}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="cust-labels-value">{{customerCountData[0]?.value}}</span>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <div>
+                                            <span class="cust-lables">{{customerCountData[1].name}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="cust-labels-value">{{customerCountData[1].value}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex;justify-content: center;" *ngIf="sCustCountChart === 'cust-count-loading'">
+                                <mat-spinner [diameter]="20"></mat-spinner>
+                            </div>
+                            <div style="text-align: center;" *ngIf="sCustCountChart === 'cust-count-no-data'">No Data Found </div>
+                        </div>
+                    </div>
+                    <!-- / Front -->
+                </fuse-widget>
+                <!-- Collection Summary -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="33">
+                    <!-- fxFlex.gt-sm="33" -->
+                    <div class="fuse-widget-front">
+                        <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">Collection Summary</div>
+                                <mat-form-field>
+                                    <mat-select name="customerCount" (selectionChange)="onChangeCustCount()" [(value)]="custCountSelected">
+                                        <mat-option *ngFor="let m of chartFilterOptions" [value]="m">
+                                            {{m}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                        </div>
+                        <div class="h-350 p-20">
+                            <div *ngIf="sCustCollSum === 'coll-summ-loaded'" fxLayout="row">
+                                <div fxLayout="column" style="margin-right: 20px;">
+                                    <div>
+                                        <span class="cust-lables">Cash-In-Hand</span>
+                                    </div>
+                                    <div>
+                                        <span class="cust-labels-value">{{totalCashInHand}}</span>
+                                    </div>
+                                    <div *ngFor="let item of collectionSumData[0] | keyvalue">
+                                        <mat-progress-bar mode="determinate" [value]="item.value"></mat-progress-bar>
+                                        <br>
+                                    </div>
+                                </div>
+                                <div fxLayout="column">
+                                    <div>
+                                        <div>
+                                            <span class="cust-lables">Cash Pay</span>
+                                        </div>
+                                        <div>
+                                            <span class="cust-labels-value">{{collectionSumData[0].CashPay}}</span>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <div>
+                                            <span class="cust-lables">Cheque Pay</span>
+                                        </div>
+                                        <div>
+                                            <span class="cust-labels-value">{{collectionSumData[0].ChequePay}}</span>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <div>
+                                            <span class="cust-lables">NetColAmount</span>
+                                        </div>
+                                        <div>
+                                            <span class="cust-labels-value">{{collectionSumData[0].NetColAmount}}</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <span class="cust-lables">Online Pay</span>
+                                        </div>
+                                        <div>
+                                            <span class="cust-labels-value">{{collectionSumData[0].OnlinePay}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex;justify-content: center;" *ngIf="sCustCollSum === 'coll-summ-loading'">
+                                <mat-spinner [diameter]="20"></mat-spinner>
+                            </div>
+                            <div style="text-align: center;" *ngIf="sCustCollSum === 'coll-summ-no-data'">No Data Found </div>
+                        </div>
+                    </div>
+                    <!-- / Front -->
+                </fuse-widget>
+                <!-- End - Collection Summary -->
+            </div>
+        </div>
         <div class="content" dynamicHeight>
             <!-- New Table -->
             <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
@@ -444,7 +598,7 @@
                                    [legend]="widget6.showLegend" [explodeSlices]="widget6.explodeSlices"
                                    [labels]="widget6.labels" [doughnut]="widget6.doughnut"
                                    [gradient]="widget6.gradient" (select)="widget6.onSelect($event)"
-                                   [view]="[containerRef1.offsetWidth, 300]">
+                                   [view]="[containerRef1.offsetWidth, 400]">
                                </ngx-charts-pie-chart>
                            </div>
                            <div style="text-align: center;" *ngIf="DashChartCurStk.length == 0">No Data Found </div>
@@ -483,14 +637,14 @@
 
                      <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
                          <div class="h3">Customer Summary</div>
-                         <mat-form-field>
-                             <mat-select class="simplified" [(ngModel)]="pieChartCustomerData.currentRange"
-                                 (selectionChange)="onSelectPieOptionCustomer($event.value)" aria-label="Change range">
-                                 <mat-option *ngFor="let range of pieChartCustomerMaster | keys" [value]="range.key">
+                         <!-- <mat-form-field>
+                             <mat-select class="simplified" [(ngModel)]="pieChartCurStkData.currentRange"
+                                 (selectionChange)="onSelectPieOptionOP($event.value)" aria-label="Change range">
+                                 <mat-option *ngFor="let range of pieChartMaster | keys" [value]="range.key">
                                      {{range.value}}
                                  </mat-option>
                              </mat-select>
-                         </mat-form-field>
+                         </mat-form-field> -->
                          <form [formGroup]="_DashboardService.UseFrom">
                              <mat-form-field>
                                  <mat-select formControlName="StoreId" name="StoreId"
@@ -505,16 +659,16 @@
                      </div>
 
                      <div class="h-400">
-                         <div #containerRef1 *ngIf="DashChartCustomer.length > 0">
+                         <div #containerRef1 *ngIf="DashChartCurStk.length > 0">
                              <ngx-charts-pie-chart *fuseIfOnDom
-                                 [results]="this.pieChartCustomerData.mainChart[pieChartCustomerData.currentRange]"
+                                 [results]="this.pieChartCurStkData.mainChart[pieChartCurStkData.currentRange]"
                                  [legend]="widget6.showLegend" [explodeSlices]="widget6.explodeSlices"
                                  [labels]="widget6.labels" [doughnut]="widget6.doughnut"
                                  [gradient]="widget6.gradient" (select)="widget6.onSelect($event)"
-                                 [view]="[containerRef1.offsetWidth, 300]">
+                                 [view]="[containerRef1.offsetWidth, 400]">
                              </ngx-charts-pie-chart>
                          </div>
-                         <div style="text-align: center;" *ngIf="DashChartCustomer.length == 0">No Data Found </div>
+                         <div style="text-align: center;" *ngIf="DashChartCurStk.length == 0">No Data Found </div>
                      </div>
 
                      <div class="py-8 mh-16 border-top" fxLayout="row wrap" fxLayoutAlign="start center">
@@ -522,20 +676,20 @@
                          <div class="py-8 border-right" fxLayout="column" fxLayoutAlign="center center" fxFlex="100"
                              fxFlex.gt-sm="50">
                              <span class="mat-display-1 mb-0">
-                                 {{pieChartCustomerData.footerLeft.count}}
+                                 {{pieChartCurStkData.footerLeft.count | currency:'INR'}}
                              </span>
                              <span class="h4">
-                                 {{pieChartCustomerData.footerLeft.title}}
+                                 {{pieChartCurStkData.footerLeft.title}}
                              </span>
                          </div>
 
                          <div class="py-8" fxLayout="column" fxLayoutAlign="center center" fxFlex="100"
                              fxFlex.gt-sm="50">
                              <span class="mat-display-1 mb-0">
-                                 {{pieChartCustomerData.footerRight.count}}
+                                 {{pieChartCurStkData.footerRight.count | currency:'INR'}}
                              </span>
                              <span class="h4">
-                                 {{pieChartCustomerData.footerRight.title}}
+                                 {{pieChartCurStkData.footerRight.title}}
                              </span>
                          </div>
                      </div>

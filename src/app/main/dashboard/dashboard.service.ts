@@ -145,6 +145,15 @@ export class DashboardService {
   {
      return this._httpClient.post("Generic/GetByProc?procName=m_dash_pharCustomerCount",m_data)
   }
+  public getCustomerCount(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_dash_pharCustomerCount",x)
+  }
+
+  public getCollectionSum(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_dash_PharCollectionSummary",x)
+  }
   
 }
 

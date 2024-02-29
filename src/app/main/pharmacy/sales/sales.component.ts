@@ -1645,7 +1645,7 @@ else{
       } else {
         this.NetAmt = (this.TotalMRP - (this._salesService.IndentSearchGroup.get('DiscAmt').value)).toFixed(2);
         this.add = true;
-        this.addbutton.focus();
+        // this.addbutton.focus();
       }
     }
     else if (parseFloat(this.DiscAmt) > parseFloat(this.NetAmt)) {
@@ -1659,7 +1659,7 @@ else{
       this.ConShow = false;
       this.ItemSubform.get('ConcessionId').clearValidators();
       this.ItemSubform.get('ConcessionId').updateValueAndValidity();
-      this.addbutton.focus();
+      // this.addbutton.focus();
     }
   }
   getDiscPer() {
@@ -3051,8 +3051,13 @@ else{
   @ViewChild('patientname') patientname: ElementRef;
   @ViewChild('address') address: ElementRef;
   @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-
+  // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  @ViewChild('addbutton') addbutton: ElementRef;
+  // showSearch(){
+  //   this.add = !this.add;    
+  //   this.searchElement.nativeElement.focus();
+  //   alert("focus");
+  // }
 
   public onEnterqty(event): void {
     if (event.which === 13) {
@@ -3081,7 +3086,8 @@ else{
   }
   public onEnterdiscAmount(event): void {
     if (event.which === 13) {
-      this.addbutton.focus();
+      // this.addbutton.focus();
+      this.addbutton.nativeElement.focus();
     }
   }
 
