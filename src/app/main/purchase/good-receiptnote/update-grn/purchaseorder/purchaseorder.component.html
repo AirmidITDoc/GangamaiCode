@@ -10,7 +10,7 @@
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Purchase Order List
             </span>
-            <app-common-date [screenFrom]="screenFromString" style="margin-left: 1030px;"
+            <app-common-date [screenFrom]="screenFromString" style="margin-left: 830px;"
                 (dateTimeEventEmitter)="getDateTime($event)">
             </app-common-date>
 
@@ -403,7 +403,7 @@
 
                                         <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
                                             [@animate]="{value:'*',params:{y:'100%'}}"
-                                            (click)="getPOList(contact)"></mat-row>
+                                            ></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"
@@ -417,11 +417,9 @@
                             </div>
                             <hr>
                             <div matTooltip="Select Check Box  to enable this button!!"
-                              fxFlexAlign="start end" style="float: right;">
-                                <button class="next-btn" style="border-radius: 20px; width: 110px;height:45px;" 
-                                     (click)="OnAddgrn()">OK</button>
-                                <button class="footer-btn" style="border-radius: 20px;width: 110px;height:45px;"
-                                    (click)="onClose()"> PO Close</button>
+                              fxFlexAlign="start end">
+                                <button class="next-btn"  (click)="OnAddgrn()">OK</button>
+                                <button class="footer-btn" style="width: 100px;" (click)="onClose()"> PO Close</button>
                             </div>
                             
                         </div>

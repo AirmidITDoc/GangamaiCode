@@ -304,15 +304,13 @@ export class PurchaseOrderComponent implements OnInit {
 
     });
   }
-
-
   private _filterSupplier(value: any): string[] {
+    debugger
     if (value) {
       const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
       return this.optionsMarital.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
     }
   }
-
   private _filterPayment(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();

@@ -1450,7 +1450,7 @@ export class ItemNameList {
   UnitofMeasurementName: number;
   UnitofMeasurementId: any;
   POBalQty: any;
-  PurchaseId: any;
+  PurchaseID: any;
   IsClosed: boolean;
   PurDetId: any;
   LandedRate: any;
@@ -1458,6 +1458,11 @@ export class ItemNameList {
   PurUnitRateWF: any;
   BatchExpDate: any;
   POQty: any;
+  ItemDiscAmount:any;
+  DiscPer:any;
+  ItemTotalAmount:any;
+  UOMID:any;
+  GrandTotalAmount:any;
   /**
    * Constructor
    *
@@ -1520,6 +1525,12 @@ export class ItemNameList {
       this.PurUnitRate = ItemNameList.PurUnitRate || 0;
       this.PurUnitRateWF = ItemNameList.PurUnitRateWF || 0;
       this.BatchExpDate = ItemNameList.BatchExpDate || 0;
+      this.PurchaseID = ItemNameList.PurchaseID || 0;
+      this.ItemDiscAmount = ItemNameList.ItemDiscAmount || 0;
+      this.DiscPer = ItemNameList.DiscPer || 0;
+      this.ItemTotalAmount = ItemNameList.ItemTotalAmount || 0;
+      this.UOMID = ItemNameList.UOMID || 0;
+      this.GrandTotalAmount = ItemNameList.GrandTotalAmount || 0;
     }
   }
 }
