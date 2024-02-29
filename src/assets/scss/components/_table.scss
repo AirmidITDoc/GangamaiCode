@@ -59,4 +59,20 @@
             background-color: $primary-50;
         }
     }
+    .mat-form-field {
+        &.mat-form-field-appearance-legacy {
+            .mat-form-field-wrapper {
+                padding: 0;
+                .mat-form-field-flex {
+                    .mat-form-field-infix {
+                        width: auto;
+                        border: 0;
+                    }
+                }
+                .mat-form-field-underline {
+                    bottom: 0;
+                }
+            }
+        }
+    }
 }
