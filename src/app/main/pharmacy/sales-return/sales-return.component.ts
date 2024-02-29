@@ -218,7 +218,7 @@ export class SalesReturnComponent implements OnInit {
     this.Itemselectedlist.data = [];
     this.Itemselectedlist = [];
 
-    debugger
+     // debugger
     var vdata = {
       F_Name: this.SearchForm.get('F_Name').value + '%' || '%',
       L_Name: this.SearchForm.get('L_Name').value + '%' || '%',

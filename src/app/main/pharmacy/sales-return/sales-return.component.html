@@ -1,6 +1,6 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll sales-return-section">
     <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+    <div class="header accent p-16 p-sm-24 top-header" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
 
         <!-- APP TITLE -->
@@ -12,7 +12,7 @@
                     Sales Return : {{vStoreName}}
                 </span>
                 <span style="margin-left: 800px;">
-                    <app-common-date [screenFrom]="screenFromString" style="float:right;padding-bottom:50px;"
+                    <app-common-date [screenFrom]="screenFromString" style="float:right;"
                     (dateTimeEventEmitter)="getDateTime($event)" ></app-common-date></span>
                 <!-- <span style="font-weight: 400;font-size: medium;margin-right: 10px !important;"> {{StoreName}}</span> -->
             </div>
@@ -399,13 +399,13 @@
                                             </mat-footer-cell>
                                         </ng-container>
         
-                                        <mat-header-row class="accent" *matHeaderRowDef="dspSalesDetColumns; sticky: true">
+                                        <mat-header-row class="accent table-right-row" *matHeaderRowDef="dspSalesDetColumns; sticky: true">
                                         </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: dspSalesDetColumns;"
+                                        <mat-row class="table-right-row" *matRowDef="let contact; columns: dspSalesDetColumns;"
                                             [@animate]="{value:'*',params:{y:'100%'}}"  (click)="SelectedItem(contact)"></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleDetailList!=null}">
+                                        <mat-footer-row class="table-right-row" *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleDetailList!=null}">
                                         </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                        <mat-footer-row class="table-right-row" *matFooterRowDef="['noData']"
                                             [ngClass]="{'hide':!(dssaleDetailList!=null && dssaleDetailList.data.length==0)}">
                                         </mat-footer-row>
                                     </mat-table>
@@ -577,9 +577,9 @@
                                     </ng-container>
                         
                                     <ng-container matColumnDef="TotalLandedAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotLandedAmt
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">TotLandedAmt
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                             {{contact.TotalLandedAmount}}
                                         </mat-cell>
                                     </ng-container>
@@ -696,9 +696,9 @@
                                                             </mat-footer-cell>
                                                         </ng-container> -->
                         
-                                    <mat-header-row class="accent" *matHeaderRowDef="dspSalesDetselectedColumns; sticky: true">
+                                    <mat-header-row class="accent table-row-lg" *matHeaderRowDef="dspSalesDetselectedColumns; sticky: true" >
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: dspSalesDetselectedColumns;"
+                                    <mat-row *matRowDef="let contact; columns: dspSalesDetselectedColumns;" class="table-row-lg"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dssaleList!=null}">
                                                         </mat-footer-row> -->
@@ -749,13 +749,7 @@
 
                             </form>
                         </div>
-
-
-
-
                     </div>
-
-
                 </div>
             </div>
             <!-- / CONTENT -->

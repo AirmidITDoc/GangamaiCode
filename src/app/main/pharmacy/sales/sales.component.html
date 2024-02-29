@@ -481,12 +481,12 @@
                                     <mat-card>
                                         <mat-table class="sales-table" #table matSort
                                             [dataSource]="saleSelectedDatasource" [@animateStagger]="{value:'50'}"
-                                            style="overflow:auto; height: 300px !important;">
+                                            style="overflow:auto;">
                                             <ng-container matColumnDef="ItemName">
-                                                <mat-header-cell *matHeaderCellDef
+                                                <mat-header-cell *matHeaderCellDef class="w-180"
                                                     mat-sort-header>ItemName</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact">
-                                                    {{contact.ItemName}}
+                                                <mat-cell *matCellDef="let contact" class="w-180">
+                                                    <span>{{contact.ItemName}}</span>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -565,10 +565,10 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="DiscAmt">
-                                                <mat-header-cell class="w-80" *matHeaderCellDef mat-sort-header
+                                                <mat-header-cell class="" *matHeaderCellDef mat-sort-header
                                                     fxShow.gt-sm>Disc.Amount
                                                 </mat-header-cell>
-                                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell class="" *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.DiscAmt | currency:'INR' }}
                                                 </mat-cell>
                                             </ng-container>
