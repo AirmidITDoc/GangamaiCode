@@ -1222,11 +1222,11 @@
                             <div class="sales-table-right-box">
                                 <mat-table class="sales-table-right" #table matSort [dataSource]="dataSource1"
                                     [@animateStagger]="{value:'50'}">
-                                    <ng-container matColumnDef="extMobileNo">
+                                    <ng-container matColumnDef="ExtMobileNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Mobile No
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.extMobileNo}}
+                                            {{contact.ExtMobileNo}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -1261,7 +1261,7 @@
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: DraftSaleDisplayedCol;"
                                         [ngClass]="{'row-yellow': QtyBalchk ==0}"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onAddDraftList()"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onAddDraftList(contact)"></mat-row>
                                     <!-- (click)="deleteTableRow($event,contact)"  -->
                                     <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
                                      (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
