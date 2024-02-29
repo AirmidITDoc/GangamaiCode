@@ -36,7 +36,7 @@
                 <mat-label>First Name</mat-label>
                 <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
                 <input name="FirstName" formControlName="FirstName" matInput required
-                [(ngModel)]="registerObj.FirstName" #fname (keydown)="onEnterfname($event)">
+                  [(ngModel)]="registerObj.FirstName" #fname (keydown)="onEnterfname($event)">
                 <mat-error class="error" *ngIf="UserForm.get('FirstName').invalid && UserForm.get('FirstName').touched">
                   FirstName is required
                 </mat-error>
@@ -45,8 +45,8 @@
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Last Name</mat-label>
                 <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
-                <input name="LastName" formControlName="LastName" matInput required
-                [(ngModel)]="registerObj.LastName" #lname (keydown)="onEnterlname($event)">
+                <input name="LastName" formControlName="LastName" matInput required [(ngModel)]="registerObj.LastName"
+                  #lname (keydown)="onEnterlname($event)">
                 <mat-error class="error" *ngIf="UserForm.get('LastName').invalid && UserForm.get('LastName').touched">
                   LastName is required
                 </mat-error>
@@ -72,7 +72,7 @@
                 <mat-label>User Name</mat-label>
                 <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
                 <input name="LoginName" formControlName="LoginName" matInput required
-                [(ngModel)]="registerObj.UserLoginName" #loginname (keydown)="onEnterloginname($event)">
+                  [(ngModel)]="registerObj.UserLoginName" #loginname (keydown)="onEnterloginname($event)">
                 <mat-error class="error" *ngIf="UserForm.get('LoginName').invalid && UserForm.get('LoginName').touched">
                   LoginName is required
                 </mat-error>
@@ -82,7 +82,7 @@
                 <mat-label>Password</mat-label>
                 <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
                 <input name="Password" formControlName="Password" matInput type="password" required
-                [(ngModel)]="registerObj.Password" #password (keydown)="onEnterpassword($event)">
+                  [(ngModel)]="registerObj.Password" #password (keydown)="onEnterpassword($event)">
                 <mat-error class="error" *ngIf="UserForm.get('Password').invalid && UserForm.get('Password').touched">
                   Password is required
                 </mat-error>
@@ -92,7 +92,7 @@
                 <mat-label>Mail Id</mat-label>
                 <mat-icon matSuffix class="secondary-text">email</mat-icon>
                 <input name="MailId" formControlName="MailId" matInput type="email" required
-                [(ngModel)]="registerObj.MailId" #mailid (keydown)="onEntermailid($event)">
+                  [(ngModel)]="registerObj.MailId" #mailid (keydown)="onEntermailid($event)">
                 <mat-error class="error" *ngIf="UserForm.get('MailId').invalid && UserForm.get('MailId').touched">
                   MailId is required
                 </mat-error>
@@ -108,41 +108,64 @@
               <mat-form-field appearance="outline" fxFlex style="margin-right: 10px;">
                 <mat-label>RoleName</mat-label>
                 <input matAutocompletePosition="below" type="text" placeholder="Select RoleName" matInput #role
-                    formControlName="RoleId" [matAutocomplete]="autoRoleName" required (keydown)="onEnterrole($event)"
-                    #role (keydown)="onEnterrole($event)">
+                  formControlName="RoleId" [matAutocomplete]="autoRoleName" required (keydown)="onEnterrole($event)"
+                  #role (keydown)="onEnterrole($event)">
                 <span matSuffix style="display: flex;">
-                    <mat-icon class="mat-icon-close"
-                        (click)="UserForm.get('RoleId').setValue(''); isRoleSelected = false;">close</mat-icon>
-                    <mat-icon class="mat-icon-close"
-                        (click)="UserForm.get('RoleId').setValue(''); isRoleSelected = false;">search</mat-icon>
+                  <mat-icon class="mat-icon-close"
+                    (click)="UserForm.get('RoleId').setValue(''); isRoleSelected = false;">close</mat-icon>
+                  <mat-icon class="mat-icon-close"
+                    (click)="UserForm.get('RoleId').setValue(''); isRoleSelected = false;">search</mat-icon>
                 </span>
                 <mat-autocomplete #autoRoleName="matAutocomplete" [displayWith]="getOptionTextRoleName">
-                    <mat-option *ngFor="let option of filteredOptionsRole| async" [value]="option">
-                        {{option.RoleName}}
-                    </mat-option>
+                  <mat-option *ngFor="let option of filteredOptionsRole| async" [value]="option">
+                    {{option.RoleName}}
+                  </mat-option>
                 </mat-autocomplete>
-            </mat-form-field>
+              </mat-form-field>
 
+
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Store Name</mat-label>
+                <input matAutocompletePosition="below" type="text" placeholder="Select Store Name" matInput #role
+                  formControlName="StoreId" [matAutocomplete]="autoStoreName" required (keydown)="onEnterStore($event)"
+                  #role>
+                <span matSuffix style="display: flex;">
+                  <mat-icon class="mat-icon-close"
+                    (click)="UserForm.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                  <mat-icon class="mat-icon-close"
+                    (click)="UserForm.get('StoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+                </span>
+                <mat-autocomplete #autoStoreName="matAutocomplete" [displayWith]="getOptionTextStoreName">
+                  <mat-option *ngFor="let option of filteredOptionsStorename| async" [value]="option">
+                    {{option.StoreName}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
 
             </div>
 
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-              <!-- <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Docotor Name</mat-label>
-                        <mat-select formControlName="DoctorId" placeholder="Bank"  required>
-                          <mat-option>
-                            <ngx-mat-select-search [formControl]="doctorFilterCtrl" [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                          </mat-option>
-                          <mat-option *ngFor="let element of filteredDoctor" [value]="element">
-                            {{element.DoctorName}}
-                          </mat-option>
-                        </mat-select>
-    
-                      </mat-form-field>&nbsp; -->
+              <mat-form-field appearance="outline" fxFlex style="margin-right: 10px;">
+                <mat-label>Web Role Name</mat-label>
+                <input matAutocompletePosition="below" type="text" placeholder="Select RoleName" matInput #webrole
+                  formControlName="WebroleId" [matAutocomplete]="autowebrole" >
+                <span matSuffix style="display: flex;">
+                  <mat-icon class="mat-icon-close"
+                    (click)="UserForm.get('WebroleId').setValue(''); iswebrollSelected = false;">close</mat-icon>
+                  <mat-icon class="mat-icon-close"
+                    (click)="UserForm.get('WebroleId').setValue(''); iswebrollSelected = false;">search</mat-icon>
+                </span>
+                <mat-autocomplete #autowebrole="matAutocomplete" [displayWith]="getOptionTextwebroleName">
+                  <mat-option *ngFor="let option of filteredOptionswebrollName | async" [value]="option">
+                    {{option.RoleName}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
 
               <div fxLayoutAlign="left left" style="width: 120px;">
-                <mat-checkbox [checked] style="margin-right: 2px;" formControlName="Status">IsDoctor
+                <mat-checkbox style="margin-right: 2px;" formControlName="IsDoctor"
+                  (change)="chkdoctor($event)">IsDoctor
                 </mat-checkbox>
               </div>
               <!-- <mat-form-field appearance="outline" fxFlex>
@@ -155,24 +178,24 @@
                 </mat-select>
               </mat-form-field> -->
 
-              
-              <mat-form-field appearance="outline" fxFlex style="margin-right: 10px;">
+
+              <mat-form-field appearance="outline" fxFlex style="margin-right: 10px;" *ngIf="docflag">
                 <mat-label>Docotor Name</mat-label>
                 <input matAutocompletePosition="below" type="text" placeholder="Select RoleName" matInput #docname
-                    formControlName="DoctorId" [matAutocomplete]="autoDocName" required (keydown)="onEnterdocName($event)">
+                  formControlName="DoctorId" [matAutocomplete]="autoDocName" required
+                  (keydown)="onEnterdocName($event)">
                 <span matSuffix style="display: flex;">
-                    <mat-icon class="mat-icon-close"
-                        (click)="UserForm.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                    <mat-icon class="mat-icon-close"
-                        (click)="UserForm.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                  <mat-icon class="mat-icon-close"
+                    (click)="UserForm.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                  <mat-icon class="mat-icon-close"
+                    (click)="UserForm.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
                 </span>
                 <mat-autocomplete #autoDocName="matAutocomplete" [displayWith]="getOptionTextDoctorName">
-                    <mat-option *ngFor="let option of filteredOptionsDoctorName| async" [value]="option"
-                        >
-                        {{option.DoctorName}}
-                    </mat-option>
+                  <mat-option *ngFor="let option of filteredOptionsDoctorName| async" [value]="option">
+                    {{option.DoctorName}}
+                  </mat-option>
                 </mat-autocomplete>
-            </mat-form-field>
+              </mat-form-field>
 
 
 
@@ -183,24 +206,25 @@
             </div>
 
 
-            <div fxLayout="column" style="padding: 10px;border: 1px solid gray; width:100%;height:60px;margin-bottom:10px;">
+            <div fxLayout="column"
+              style="padding: 10px;border: 1px solid gray; width:100%;height:60px;margin-bottom:10px;">
               <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                 <!-- [checked] -->
                 <div fxLayout="row" fxLayoutAlign="start start">
-                  <mat-checkbox  style="margin-right:50px;margin-left: 10px;"
-                    formControlName="Ipoverify" [(ngModel)]="registerObj.IsPOVerify">Incharge
+                  <mat-checkbox style="margin-right:50px;margin-left: 10px;" formControlName="Ipoverify"
+                    [(ngModel)]="registerObj.IsPOVerify">Incharge
                     PO Verify</mat-checkbox>
-                  <mat-checkbox  style="margin-right:50px;" formControlName="Poverify"
-                  [(ngModel)]="registerObj.IsPOVerify">PO
+                  <mat-checkbox style="margin-right:50px;" formControlName="Poverify"
+                    [(ngModel)]="registerObj.IsPOVerify">PO
                     Verify</mat-checkbox>
-                  <mat-checkbox  style="margin-right:50px;" formControlName="Grnverify"
-                  [(ngModel)]="registerObj.IsGRNVerify">GRN
+                  <mat-checkbox style="margin-right:50px;" formControlName="Grnverify"
+                    [(ngModel)]="registerObj.IsGRNVerify">GRN
                     Verify</mat-checkbox>
-                  <mat-checkbox  style="margin-right:50px;" formControlName="Indentverify"
-                  [(ngModel)]="registerObj.IsIndentVerify">Indent
+                  <mat-checkbox style="margin-right:50px;" formControlName="Indentverify"
+                    [(ngModel)]="registerObj.IsIndentVerify">Indent
                     Verify</mat-checkbox>
-                  <mat-checkbox  style="margin-right:50px;" formControlName="IIverify"
-                  [(ngModel)]="registerObj.IsInchIndVfy">Incharge
+                  <mat-checkbox style="margin-right:50px;" formControlName="IIverify"
+                    [(ngModel)]="registerObj.IsInchIndVfy">Incharge
                     Indent Verify</mat-checkbox>
                 </div>
               </div>
@@ -208,42 +232,58 @@
             </div>
 
 
-            <div fxLayout="column" style="padding: 10px;border: 1px solid gray; width:100%;height: 100px;">
+            <div fxLayout="column" style="padding: 10px;border: 1px solid gray; width:100%;height:150px;">
 
               <mat-label style="font-weight: 480px;margin-bottom: 10px;">Icon Info.</mat-label>
-            
+
               <div fxLayout="row" fxLayoutAlign="start start">
                 <mat-checkbox style="margin-right:70px;" formControlName="CollectionInformation"
-                [(ngModel)]="registerObj.IsCollection">
+                  [(ngModel)]="registerObj.IsCollection">
                   Collection Information</mat-checkbox>
-                <mat-checkbox  style="margin-right:70px;" formControlName="BedStatus"
-                [(ngModel)]="registerObj.IsBedStatus">
-                  Bed Status</mat-checkbox>
-                <mat-checkbox  style="margin-right:70px;" formControlName="CurrentStock"
-                [(ngModel)]="registerObj.IsIndentVerify">
-                  Is Pharmacy Bal Clearnace</mat-checkbox>
-                <mat-checkbox  style="margin-right:70px;" formControlName="ViewBrowseBill"
-                [(ngModel)]="registerObj.IsIndentVerify">
+                <mat-checkbox style="margin-right:90px;" formControlName="PatientInformation"
+                  [(ngModel)]="registerObj.IsPatientInfo">
+                  PatientInformation</mat-checkbox>
+                <mat-checkbox style="margin-right:70px;" formControlName="ViewBrowseBill"
+                  [(ngModel)]="registerObj.IsIndentVerify">
                   ViewBrowseBill</mat-checkbox>
+
+                <mat-form-field appearance="outline" style="width:150px;">
+                  <mat-label>Browse Days </mat-label>
+                  <input name="bdays" formControlName="bdays" matInput required [(ngModel)]="registerObj.bdays" #bdays>
+                  <mat-error class="error" *ngIf="UserForm.get('bdays').invalid && UserForm.get('bdays').touched">
+                    bdays is required
+                  </mat-error>
+                </mat-form-field>
+
+
               </div>
 
               <div fxLayout="row" fxLayoutAlign="start start">
-                <mat-checkbox  style="margin-right:90px;" formControlName="PatientInformation"
-                [(ngModel)]="registerObj.IsPatientInfo">
-                  PatientInformation</mat-checkbox>
-                <mat-checkbox  style="margin-right:50px;" formControlName="IsPharmacyBalClearnace"
-                [(ngModel)]="registerObj.IsCurrentStk">
+
+                <mat-checkbox style="margin-right:70px;" formControlName="BedStatus"
+                  [(ngModel)]="registerObj.IsBedStatus">
+                  Bed Status</mat-checkbox>
+                <mat-checkbox style="margin-right:70px;" formControlName="CurrentStock"
+                  [(ngModel)]="registerObj.IsIndentVerify">
+                  Is Pharmacy Bal Clearnace</mat-checkbox>
+
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="start start">
+
+
+                <mat-checkbox style="margin-right:50px;" formControlName="IsPharmacyBalClearnace"
+                  [(ngModel)]="registerObj.IsCurrentStk">
                   Current Stock
                 </mat-checkbox>
-                <mat-checkbox  formControlName="IsAddChargeDelete"
-                [(ngModel)]="registerObj.AddChargeIsDelete">
+                <mat-checkbox formControlName="IsAddChargeDelete" [(ngModel)]="registerObj.AddChargeIsDelete">
                   IsAddChargeDelete</mat-checkbox>
               </div>
             </div>
 
             <div style="float: right; margin-top:20px;">
-              <mat-checkbox  style="margin-right: 2px;" formControlName="Status"
-                style="margin-right: 20px;" [(ngModel)]="registerObj.IsActive">Active
+              <mat-checkbox style="margin-right: 2px;" formControlName="IsActive" style="margin-right: 20px;"
+                [(ngModel)]="registerObj.IsActive">Active
               </mat-checkbox>
               <button class="next-btn" color="accent" (click)="Save()" style="border-radius: 16px;"
                 [disabled]="UserForm.invalid">Save</button>

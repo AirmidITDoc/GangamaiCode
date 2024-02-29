@@ -46,6 +46,8 @@ export class CurrentStockService {
     })
   }
  
+
+
   public getCurrentStockList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_Storewise_CurrentStock",Param);
   }
@@ -61,6 +63,10 @@ export class CurrentStockService {
   public getItemWiseStockListPrint(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWiseSalesReport", Param)
   }
+  public getIssueWiseItemStockList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWiseSalesReport", Param)
+  }
+  
 
   public getDaywisestockview(LedgerDate,StoreId){
     return this._httpClient.get("InventoryTransaction/view-InvDaywiseStock?LedgerDate=" + LedgerDate+"&StoreId="+StoreId);

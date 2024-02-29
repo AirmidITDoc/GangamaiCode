@@ -35,6 +35,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatIconModule} from '@angular/material/icon';
+import { EditPaymentmodeComponent } from './edit-paymentmode/edit-paymentmode.component';
  
 
 const routes: Routes = [
@@ -45,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [PaymentmodechangesforPharmacyComponent],
+  declarations: [PaymentmodechangesforPharmacyComponent, EditPaymentmodeComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
