@@ -2767,21 +2767,17 @@ else{
 
 
   getDraftorderList() {
-
     this.chargeslist1 = [];
     this.dataSource1.data = [];
-
     let currentDate = new Date();
     var m = {
-
       "FromDate": this.datePipe.transform(currentDate, "MM/dd/yyyy") || "01/01/1900",
       "ToDate": this.datePipe.transform(currentDate, "MM/dd/yyyy") || "01/01/1900",
     }
-    console.log(m)
     this._salesService.getDraftList(m).subscribe(data => {
       this.chargeslist1 = data as ChargesList[];
       this.dataSource1.data = this.chargeslist1;
-
+      console.log(this.dataSource1.data)
     },
       (error) => {
 
