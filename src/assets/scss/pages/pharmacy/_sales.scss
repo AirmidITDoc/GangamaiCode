@@ -1,0 +1,26 @@
+
+.sales-section {
+    .mat-table {
+        overflow: auto;
+        &.sales-table {
+            height: calc(100vh - 535px);
+            min-height: 220px;
+            // .mat-form-field {
+            //     &.mat-form-field-appearance-legacy {
+            //         .mat-form-field-wrapper {
+            //             padding: 0;
+            //             .mat-form-field-flex {
+            //                 .mat-form-field-infix {
+            //                     width: auto;
+            //                     border: 0;
+            //                 }
+            //             }
+            //             .mat-form-field-underline {
+            //                 bottom: 0;
+            //             }
+            //         }
+            //     }
+            // }
+        }
+    }
+}

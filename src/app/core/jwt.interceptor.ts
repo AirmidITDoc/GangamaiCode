@@ -9,6 +9,7 @@ import { Observable } from "rxjs";
 
 import { AppConfig, APP_CONFIG } from './../app-config.module';
 import { AuthenticationService } from "./services/authentication.service";
+import { mainModule } from "process";
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -44,6 +45,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
 
         
+    //    main
            request = request.clone({ url: this.config.apiEndpoint +`/${request.url}` });
                             // Local Link
     //  request = request.clone({ url: `http://localhost:63750/api/${request.url}` });
@@ -51,7 +53,7 @@ export class JwtInterceptor implements HttpInterceptor {
    
    
    
-     //    request = request.clone({ url: `http://103.113.29.249:7001/api/${request.url}` });
+        // request = request.clone({ url: `http://122.169.42.110:1820/api/${request.url}` });
         return next.handle(request);
     }
 }

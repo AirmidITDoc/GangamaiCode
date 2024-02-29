@@ -333,9 +333,24 @@
                                             </mat-card>
                                         </form>
                                         <!-- Item Search  Option  -->
+
+                                        <div fxLayoutAlign="left left" style="width: 120px;">
+                                            <!-- <mat-checkbox style="margin-right: 2px;" formControlName="IsBarcode"
+                                              (change)="chkbarcode($event)">IsBarcode
+                                            </mat-checkbox> -->
+                                          </div>
                                         <form [formGroup]="_salesService.IndentSearchGroup">
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px"
                                                 fusePerfectScrollbar>
+
+                                                <mat-form-field appearance="outline" fxFlex="7%" *ngIf="barcodeflag">
+                                                    <mat-label>Barcode No</mat-label>
+                                                    <input matInput placeholder="Placeholder" [(ngModel)]="Barcode"
+                                                        formControlName="Barcode" (click)="barcodeItemfetch()">
+                                                </mat-form-field>
+
+
+
                                                 <mat-form-field appearance="outline" class="itemclass"
                                                     style="width:60% !important;margin-left:20px;">
                                                     <input type="text" name="ItemId" formControlName="ItemId" #itemid
@@ -441,13 +456,19 @@
                                                 <div matTooltip="Select  name to enable this button!!"
                                                 [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid"
                                                 [matTooltipPosition]="'above'">
-                                                <button fxLayoutAlign="center center" #addbutton
+                                                <!-- <button fxLayoutAlign="center center" #addbutton
                                                     class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
                                                     (click)="OnAddUpdate($event)">
                                                     <span class="btn-icon">
                                                         <mat-icon> add </mat-icon>
                                                     </span>
                                                     <span>Add</span>
+                                                </button> -->
+
+                                                <button (click) ="OnAddUpdate($event)"  class="btn btn-primary btn-with-icon py-8"  [disabled]="!add" #addbutton>
+                                                    <span class="btn-icon">
+                                                        <mat-icon> add </mat-icon>
+                                                    </span>
                                                 </button>
                                                 <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
                                             </div>
@@ -460,12 +481,12 @@
                                     <mat-card>
                                         <mat-table class="sales-table" #table matSort
                                             [dataSource]="saleSelectedDatasource" [@animateStagger]="{value:'50'}"
-                                            style="overflow:auto; height: 300px !important;">
+                                            style="overflow:auto;">
                                             <ng-container matColumnDef="ItemName">
-                                                <mat-header-cell *matHeaderCellDef
+                                                <mat-header-cell *matHeaderCellDef class="w-180"
                                                     mat-sort-header>ItemName</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact">
-                                                    {{contact.ItemName}}
+                                                <mat-cell *matCellDef="let contact" class="w-180">
+                                                    <span>{{contact.ItemName}}</span>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -544,10 +565,10 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="DiscAmt">
-                                                <mat-header-cell class="w-80" *matHeaderCellDef mat-sort-header
+                                                <mat-header-cell class="" *matHeaderCellDef mat-sort-header
                                                     fxShow.gt-sm>Disc.Amount
                                                 </mat-header-cell>
-                                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell class="" *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.DiscAmt | currency:'INR' }}
                                                 </mat-cell>
                                             </ng-container>
@@ -1221,13 +1242,12 @@
                         <mat-card style="height: calc(100vh - 95px - 48px);overflow: auto;">
                             <div class="sales-table-right-box">
                                 <mat-table class="sales-table-right" #table matSort [dataSource]="dataSource1"
-                                    [@animateStagger]="{value:'50'}"
-                                    style="overflow:auto; height:400px !important;border-radius:2px;margin-top: 10px;">
-                                    <ng-container matColumnDef="extMobileNo">
+                                    [@animateStagger]="{value:'50'}">
+                                    <ng-container matColumnDef="ExtMobileNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Mobile No
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.extMobileNo}}
+                                            {{contact.ExtMobileNo}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -1262,7 +1282,7 @@
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: DraftSaleDisplayedCol;"
                                         [ngClass]="{'row-yellow': QtyBalchk ==0}"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onAddDraftList()"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onAddDraftList(contact)"></mat-row>
                                     <!-- (click)="deleteTableRow($event,contact)"  -->
                                     <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
                                      (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->

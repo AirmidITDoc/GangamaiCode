@@ -545,7 +545,7 @@
 
 
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>From Store</mat-label>
                                             <mat-select name="StoreId" formControlName="StoreId">
 
@@ -554,7 +554,28 @@
                                                 </mat-option>
 
                                             </mat-select>
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="outline" fxFlex style="margin-right: 10px;">
+                                            <mat-label>Store Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select RoleName" matInput #role
+                                                formControlName="StoreId" [matAutocomplete]="autoStoreName" required #role >
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_CurrentStockService.ItemWiseFrom.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_CurrentStockService.ItemWiseFrom.get('StoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoStoreName="matAutocomplete"
+                                                [displayWith]="getOptionTextStoreName">
+                                                <mat-option *ngFor="let option of filteredOptionsStorename| async"
+                                                    [value]="option">
+                                                    {{option.StoreName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
                                         </mat-form-field>
+
 
                                         <div style="margin-top: 10px;">
                                             <button mat-raised-button (click)="onClear()" class="clearbutton"
@@ -703,6 +724,216 @@
         </div>
     </mat-tab>
 
+
+    <mat-tab label="Issue Wise Item Summary">
+        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+            <mat-toolbar class="accent"
+                style="height:50px; justify-content: space-between;width: 100%;">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                        style="color: white;">account_box
+                    </mat-icon>
+                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                        style="color: white;">
+                        Issue Wise Item  Summary
+                    </span>
+                </div>
+            </mat-toolbar>
+
+            <div class="content">
+                <!-- SIDEBAR -->
+                <fuse-sidebar name="app-main2" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
+                              margin-left:12px; background-color: white;height:100%;">
+                    <div>
+                        <!-- SIDEBAR HEADER -->
+                        <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
+                            style="margin-top: 3%">
+                            <span class="h5" style="font-size: 17px;">Search Facility</span>
+                            <!-- / USER -->
+                        </div>
+                        <!-- / SIDEBAR HEADER -->
+                        <!-- SIDEBAR CONTENT -->
+                        <div>
+                            <div class="nav material2">
+
+                                <form [formGroup]="_CurrentStockService.ItemWiseFrom" style="padding: 10px 6px 5px 5px;"
+                                    fusePerfectScrollbar>
+                                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                                        <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                            <mat-label>Enter a date range</mat-label>
+                                            <mat-date-range-input [rangePicker]="picker">
+                                                <input matStartDate formControlName="start1" placeholder="Start date"
+                                                    required>
+                                                <input matEndDate formControlName="end1" placeholder="End date"
+                                                    required>
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #picker></mat-date-range-picker>
+                                        </mat-form-field>
+
+
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>From Store</mat-label>
+                                            <mat-select name="StoreId" formControlName="StoreId">
+
+                                                <mat-option *ngFor="let m of Store1List" [value]="m">
+                                                    {{m.StoreName}}
+                                                </mat-option>
+
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <div style="margin-top: 10px;">
+                                            <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                                matTooltip="close">
+                                                <mat-icon class="cleariconbutton">close</mat-icon>
+                                            </button>&nbsp;
+                                            <button mat-raised-button class="searchButton"
+                                                (click)="getIssueWiseItemStockList()" matTooltip="search">
+                                                <mat-icon class="searchiconbutton">search</mat-icon>
+                                            </button>&nbsp;&nbsp;&nbsp;
+                                            <!-- <button mat-raised-button matTooltip="Print"
+                                                style="font-weight: bold;font-size: medium;" (click)="getPrint()"
+                                                [disabled]="_CurrentStockService.ItemWiseFrom.invalid">Print
+                                            </button> -->
+
+                                            <!-- <button class="next-btn" (click)="viewgetItemwisestockReportPdf()"
+                                            style="margin-right: 8px; width: 80px;border-radius: 16px;"
+                                            [disabled]="printflag">Print</button> -->
+                                            <!-- <button mat-raised-button style="width: 100px;"
+                                                (click)="viewgetIssuewiseItemstockReportPdf()" matTooltip="Pdf">
+                                                <mat-icon class="searchiconbutton">book</mat-icon>
+                                            </button> -->
+                                            <br/>
+                                            <button mat-raised-button (click)="exportIssuewiseItemReportExcel()" [disabled]="!(dsIssuewissueItemStock.data.length > 0)"
+                                            style="background-color: #8e67e0;color: white; margin-right: 15px;margin-top: 10px;">Export Table(Excel)
+                                             </button>
+                                        </div>
+
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </fuse-sidebar>
+
+                <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+                    <div class="content-card" style="border-radius:4px; ">
+
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                            <div fxFlex.gt-sm="100%" fxFlex>
+
+                                <div fxlayout="row">
+                                    <div style="width: 100%;">
+                                        <div matColumnDef="loading"
+                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                            class="backgroundBlur">
+                                            <div class="spinner-border text-danger"></div>
+
+                                        </div>
+
+                                        <mat-table #table class="table3" matSort [dataSource]="dsIssuewissueItemStock"
+                                            [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
+
+
+                                            <ng-container matColumnDef="ItemName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    ItemName </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.ItemName}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="ConversionFactor">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Conversion Factor
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.ConversionFactor }}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Current_BalQty">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Current BalQty
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.Current_BalQty}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Received_Qty">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    ReceivedQty
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.Received_Qty}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Sales_Qty">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Sales Qty
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.Sales_Qty }}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                          
+
+                                            <ng-container matColumnDef="loading">
+                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                </mat-header-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    <!-- <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
+                                                        [diameter]='30'>
+                                                    </mat-spinner> -->
+                                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                                </mat-footer-cell>
+                                            </ng-container>
+
+                                            <mat-header-row class="accent"
+                                                *matHeaderRowDef="displayedColumnsIssueWiseItem; sticky: true">
+                                            </mat-header-row>
+                                            <mat-row *matRowDef="let contact; columns: displayedColumnsIssueWiseItem;"
+                                                class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                appHighlight></mat-row>
+                                            <mat-footer-row *matFooterRowDef="['loading']"
+                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                            </mat-footer-row>
+                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                [ngClass]="{'hide':!(dsIssuewissueItemStock!=null && dsIssuewissueItemStock.data.length==0)}">
+                                            </mat-footer-row>
+
+                                        </mat-table>
+
+                                        <mat-paginator #secondPaginator [pageSizeOptions]="[10, 25, 100]"
+                                            [pageSize]="10" showFirstLastButtons>
+                                        </mat-paginator>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
 </mat-tab-group>
 <!-- 
 <div class="loading" *ngIf="_loaderShow">Loading</div>

@@ -170,7 +170,7 @@ export class CreateUserComponent implements OnInit {
       const dialogRef = this._matDialog.open(UserDetailComponent,
         {
           maxWidth: "65vw",
-          height: "600px",
+          height: "700px",
           width: '100%',
           data : {
             registerObj : m,

@@ -150,7 +150,7 @@ export class IndentComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
-
+  vStoreId2:any=0
   getToStoreSearchList() {
     this._IndentService.getToStoreNameSearch().subscribe(data => {
       this.ToStoreList1 = data;

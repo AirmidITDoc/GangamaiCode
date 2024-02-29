@@ -21,6 +21,7 @@ export class SalesService {
 
   IndentSearchFrom() {
     return this._formBuilder.group({
+      Barcode:'',
       StoreId: '',
       ItemId:'',
       ItemName:'',

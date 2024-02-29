@@ -13,7 +13,7 @@
             position: relative;
         }
     }
-    .opd-header {
+    .opd-header,.top-header {
         height: auto;
         min-height: 50px;
         display: flex;
@@ -39,6 +39,9 @@
                 .material-icons{
                     color: $gray-200;
                 }
+            }
+            &.padding-div{
+                padding: 0;
             }
         }
     }
