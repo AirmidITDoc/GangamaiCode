@@ -49,6 +49,8 @@ import { VisitDetailsComponent } from './visit-details/visit-details.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { CrossConsultationComponent } from './cross-consultation/cross-consultation.component';
 // import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import {NgxPrintModule} from 'ngx-print';
 
 const routes: Routes = [
     {
@@ -109,7 +111,9 @@ const routes: Routes = [
         MatListModule,
         WebcamModule,
         ScrollingModule,
-        MatSidenavModule 
+        MatSidenavModule,
+        NgxQRCodeModule,
+        NgxPrintModule
     ],
     providers: [DatePipe],
     entryComponents: [AppointmentComponent],

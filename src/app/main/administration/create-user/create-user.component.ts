@@ -138,46 +138,49 @@ export class CreateUserComponent implements OnInit {
   onresultentry(c,m) {
     console.log(m);
      let xx = {
-      UserLoginName: m.UserLoginName,
-      RoleName: m.RoleName,
-      UserName: m.UserName,
-      StoreName:m. StoreName,
-      DoctorName:m.DoctorName,
-      IsDateIntervalDays: m.IsDateIntervalDays,
-      MailDomain:m.MailDomain,
-      MailId:m.MailId,
-      IsActive:m. IsActive,
-      AddChargeIsDelete:m. AddChargeIsDelete,
-      IsBedStatus: m.IsBedStatus,
-      IsCollection: m.IsCollection,
-      IsCurrentStk:m.IsCurrentStk,
-      IsDateInterval:m.IsDateInterval,
+      UserId:m.UserId,
+      FirstName:m.FirstName,
+      LastName:m.LastName,
+      UserLoginName:m.UserLoginName,
+      IsActive:m.IsActive,
+      AddedBy:m.AddedBy,
+      RoleName:m.RoleName,
+      RoleId:m.RoleId,
+      UserName:m.UserName,
+      StoreId:m.StoreId,
+      StoreName:m.StoreName,
       IsDoctorType:m.IsDoctorType,
-      IsGRNVerify:m.IsGRNVerify,
-      IsInchIndVfy:m.IsInchIndVfy,
-      IsIndentVerify:m.IsIndentVerify,
+      DoctorID:m.DoctorID,
+      DoctorName:m.DoctorName,
       IsPOVerify:m.IsPOVerify,
+      IsGRNVerify:m.IsGRNVerify,
+      IsCollection:m.IsCollection,
+      IsBedStatus:m.IsBedStatus,
+      IsCurrentStk:m.IsCurrentStk,
       IsPatientInfo:m.IsPatientInfo,
-      UserId :m.UserId,
-      IsPurchaseRequestionVerify:m.IsPurchaseRequestionVerify,
-      IsPathAuthorizationVerify:m.IsPathAuthorizationVerify,
-      IsCreditBillScroll:m.IsCreditBillScroll,
-      IsCollectionInformation:m.IsCollectionInformation,
-      IsViewBrowseBill:m.IsViewBrowseBill,
+      IsDateInterval:m.IsDateInterval,
+      IsDateIntervalDays:m.IsDateIntervalDays,
+      MailId:m.MailId,
+      MailDomain:m.MailDomain,
+      AddChargeIsDelete:m.AddChargeIsDelete,
+      IsIndentVerify:m.IsIndentVerify,
+      IsInchIndVfy:m.IsInchIndVfy,
      };
       this.advanceDataStored.storage = new UserList(xx);
-           const dialogRef = this._matDialog.open(MyprofileComponent, 
-             {  
-              panelClass: 'contact-form-dialog',
-              // maxWidth: "55vw",
-              // maxHeight: "100vh", 
-              // width: '100%',
-              // height: "90%",
-              maxWidth: "100%",
-              height: '90%',
-              width: '90%',
-
-           });
+      const dialogRef = this._matDialog.open(UserDetailComponent,
+        {
+          maxWidth: "65vw",
+          height: "700px",
+          width: '100%',
+          data : {
+            registerObj : m,
+          }
+          
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        
+      });
            dialogRef.afterClosed().subscribe(result => {
              console.log('The dialog was closed - Insert Action', result);
            });
@@ -187,9 +190,9 @@ export class CreateUserComponent implements OnInit {
   addUserDetails() {
     const dialogRef = this._matDialog.open(UserDetailComponent,
       {
-        maxWidth: "85vw",
+        maxWidth: "65vw",
         // maxHeight: "95vh", 
-        height: "650px",
+        height: "600px",
         width: '100%',
         // height: "100%"
       });

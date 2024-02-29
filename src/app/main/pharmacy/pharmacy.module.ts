@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { PharmItemSummaryComponent } from './pharm-item-summary/pharm-item-summary.component';
 
 
 const appRoutes: Routes = [
@@ -26,11 +27,11 @@ const appRoutes: Routes = [
   },
   {
     path:"ippharmacyadvancereturn",
-    loadChildren: () => import("./ip-pharmacy-advance-return/ip-pharmacy-advance-return.module").then((m)=>m.IpPharmacyAdvanceReturnModule),
+    loadChildren: () => import("./pharm-item-summary/pharmaitemsummary.module").then((m)=>m.PharmaitemsummaryModule),
   },
   {
     path:"ipsalesreturn",
-    loadChildren:() => import("./ip-sales-return/ip-sales-return.module").then((m)=>m.IpSalesReturnModule),
+    loadChildren:() => import("./pharm-item-summary/pharmaitemsummary.module").then((m)=>m.PharmaitemsummaryModule),
   },
    {
      path:"pharmacyclearence",

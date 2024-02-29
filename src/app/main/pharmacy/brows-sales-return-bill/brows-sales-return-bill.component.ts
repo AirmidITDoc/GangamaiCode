@@ -124,7 +124,7 @@ export class BrowsSalesReturnBillComponent implements OnInit {
     console.log(contact);
     const dialogRef = this._matDialog.open(AcceptMaterialListPopupComponent,
       {
-        maxWidth: "95vw",
+        maxWidth: "75vw",
         height: '650px',
         width: '100%',
         data: {

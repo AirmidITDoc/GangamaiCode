@@ -63,29 +63,26 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>To Store</mat-label>
-                                            <mat-select formControlName="ToStoreId" name="ToStoreId">
-                                                <mat-option></mat-option>
-                                                <mat-option *ngFor="let m of ToStoreList" [value]="m">
-                                                    {{m.StoreName}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field> -->
 
-                                        <mat-form-field appearance="outline" fxFlex="30%">
+
+                                        <mat-form-field appearance="outline" fxFlex="30%" style="margin-right: 10px;">
                                             <mat-label>To Store</mat-label>
-                                            <mat-select formControlName="ToStoreId" placeholder="Select Store"
-                                             #singleSelect required>
-                                                <mat-option>
-                                                    <ngx-mat-select-search [formControl]="ToStoreFilterCtrl"
-                                                        [placeholderLabel]="'Search'"></ngx-mat-select-search>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Store" matInput formControlName="ToStoreId"
+                                                [matAutocomplete]="auto1">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IndentService.IndentSearchGroup.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IndentService.IndentSearchGroup.get('ToStoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #auto1="matAutocomplete"
+                                                [displayWith]="getOptionTextStoresList">
+                                                <mat-option *ngFor="let option of filteredOptionsStoreList | async"
+                                                    [value]="option">
+                                                    {{option.StoreName}}
                                                 </mat-option>
-                                                <mat-option *ngFor="let element of filteredToStore | async"
-                                                    [value]="element">
-                                                    {{element.StoreName}}
-                                                </mat-option>
-                                            </mat-select>
+                                            </mat-autocomplete>
                                         </mat-form-field>
 
                                         <mat-radio-group name="Status" value="false" formControlName="Status">
@@ -101,7 +98,7 @@
                                                 <mat-icon class="cleariconbutton">close</mat-icon>
                                             </button>&nbsp;
                                             <button mat-raised-button class="searchButton" (click)="getIndentID()"
-                                                matTooltip="search" >
+                                                matTooltip="search">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>
                                         </div>
@@ -191,9 +188,9 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row">
                                                     <button mat-icon-button (click)="OnEdit(row,tabGroup)"
-                                                    matTooltip="Edit">
-                                                    <mat-icon style="color: black;">edit</mat-icon>
-                                                </button>
+                                                        matTooltip="Edit">
+                                                        <mat-icon style="color: black;">edit</mat-icon>
+                                                    </button>
                                                     <button mat-icon-button (click)="getPrint(contact)"
                                                         matTooltip="Print">
                                                         <mat-icon style="color: black;">print</mat-icon>
@@ -261,7 +258,7 @@
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                             Qty</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.Qty}}
+                                                            {{contact.IndentQuantity}}
                                                         </mat-cell>
                                                     </ng-container>
 
@@ -350,40 +347,39 @@
                                 <div fxLayout="column" fxLayoutAlign="start none">
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                                        <mat-form-field appearance="outline" fxFlex="30%">
-                                            <mat-label>From Store</mat-label>
-                                            <mat-select formControlName="FromStoreId" name="FromStoreId">
-                                                <mat-option></mat-option>
-                                                <mat-option *ngFor="let m of FromStoreList" [value]="m">
-                                                    {{m.StoreName}}
+                                        <from [formGroup]="_IndentService.StoreFrom">
+                                            <mat-form-field appearance="outline" fxFlex="300px">
+                                                <mat-label>From Store</mat-label>
+                                                <mat-select formControlName="FromStoreId" name="FromStoreId">
+                                                    <mat-option></mat-option>
+                                                    <mat-option *ngFor="let m of FromStoreList" [value]="m">
+                                                        {{m.StoreName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </from>
+
+                                        <mat-form-field appearance="outline" fxFlex="30%" style="margin-right: 10px;">
+                                            <mat-label>To Store</mat-label>
+                                            <input matAutocompletePosition="below" type="text" required
+                                                placeholder="Select Store" matInput formControlName="ToStoreId"
+                                                [matAutocomplete]="auto2" >
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IndentService.newIndentFrom.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IndentService.newIndentFrom.get('ToStoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #auto2="matAutocomplete"
+                                                [displayWith]="getOptionTextStores">
+                                                <mat-option *ngFor="let option of filteredOptionsStore | async"
+                                                    [value]="option">
+                                                    {{option.StoreName}}
                                                 </mat-option>
-                                            </mat-select>
+                                            </mat-autocomplete>
                                         </mat-form-field>
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex="30%">
-                                            <mat-label>To Store</mat-label>
-                                            <mat-select formControlName="ToStoreId" name="ToStoreId" required>
-                                                <mat-option></mat-option>
-                                                <mat-option *ngFor="let m of ToStoreList" [value]="m">
-                                                    {{m.StoreName}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field> -->
 
-                                        <mat-form-field appearance="outline" fxFlex="30%">
-                                            <mat-label>To Store</mat-label>
-                                            <mat-select formControlName="ToStoreId" placeholder="Select Store"  
-                                             #singleSelect required>
-                                                <mat-option>
-                                                    <ngx-mat-select-search [formControl]="ToStoreFilterCtrl"
-                                                        [placeholderLabel]="'Search'"></ngx-mat-select-search>
-                                                </mat-option>
-                                                <mat-option *ngFor="let element of filteredToStore | async"
-                                                    [value]="element">
-                                                    {{element.StoreName}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
 
                                         <app-common-date style="margin-left:120px;" [screenFrom]="screenFromString"
                                             (dateTimeEventEmitter)="getDateTime($event)">
@@ -391,19 +387,21 @@
 
                                     </div>
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px">
+                                        <input name="IndentId" type="hidden" formControlName="IndentId"
+                                            [(ngModel)]="vIndentId" matInput>
 
-                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                        <!-- <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>Item Code</mat-label>
                                             <input name="ItemId" formControlName="ItemId" matInput [(ngModel)]="vItemId"
                                                 (keydown)="onEnteritemid($event)" required>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
 
                                         <mat-form-field appearance="outline" fxFlex="30%">
                                             <mat-label>Item Name</mat-label>
                                             <input type="text" name="ItemName" formControlName="ItemName"
                                                 placeholder="Item Name" matInput [matAutocomplete]="auto"
                                                 (input)="getIndentItemName()" #itemname [(ngModel)]="vItemName"
-                                                (keydown)="onEnteritemName($event)" required>
+                                                (keydown)="onEnteritemName($event)">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_IndentService.newIndentFrom.get('ItemName').setValue(''); isItemIdSelected = false;">close</mat-icon>
@@ -421,15 +419,13 @@
                                         <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>Qty</mat-label>
                                             <input name="Qty" formControlName="Qty" matInput [(ngModel)]="vQty"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                                 (keydown)="onEnterqty($event)" required #qty type="number">
                                         </mat-form-field>&nbsp;&nbsp;
 
                                         <div matTooltip="Select All Value to enable this button!!">
-                                            <button mat-raised-button fxLayoutAlign="center center" 
-                                                [disabled]="_IndentService.newIndentFrom.invalid" (click)="onRepeat()"
-                                                style="background-color: blue; color: white; width: 80px;margin-left: 15px;margin-top: 10px; ">
-                                                <mat-icon> add </mat-icon> &nbsp;Add
+                                            <button class="next-btn" (click)="onAdd()">
+                                                Add
                                             </button>
                                         </div>
 
@@ -522,22 +518,17 @@
 
                                 <mat-form-field appearance="outline" fxFlex="30%">
                                     <mat-label>Remark</mat-label>
-                                    <input name="Remark" formControlName="Remark" matInput>
+                                    <input name="Remark" formControlName="Remark" [(ngModel)]="vRemark" matInput>
                                 </mat-form-field>
 
-                                <div style="float: right;">
-                                    <div class="footer-navigation-container" style="margin-left:800px;"
-                                        fxLayout.gt-xs="row">
+                                
+                                    <div class="footer-navigation-container" fxLayout.gt-xs="row" style="margin-left: 500px;">
                                         <div matTooltip="Select All Value to enable this button!!">
-                                            <button class="next-btn"
-                                                style="width: 80px;border-radius: 16px;margin-left: 120px;"
-                                                (click)="OnSave()"
-                                                >Save</button>
-                                            <button class="footer-btn" style="width: 80px;border-radius: 16px;"
-                                                (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                                            <button class="next-btn" (click)="OnSave()"  style="margin-left: 750px;">Save</button>
+                                            <button class="footer-btn" (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                         </div>
                                     </div>
-                                </div>
+                               
 
                             </div>
                         </form>

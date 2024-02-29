@@ -20,8 +20,8 @@
                             <ng-container matColumnDef="Action">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                     <span class="material-icons" >
-                                        <mat-checkbox aria-label="Checked" [(ngModel)]="masterCheckbox" (change)="checkUncheckAll(contact)" checked>
-                                        </mat-checkbox>
+                                        <!-- <mat-checkbox aria-label="Checked" [(ngModel)]="masterCheckbox" (change)="checkUncheckAll(contact)" checked>
+                                        </mat-checkbox> -->
                                         cached
                                     </span>
                                 </mat-header-cell>
@@ -39,7 +39,7 @@
                                     <mat-icon [style.color]="contact.selected ? 'green' : 'red'" >
                                         {{contact.selected ? 'check_circle' : 'cancel'}}
                                       </mat-icon>
-                                    {{contact.Status}}
+                                    <!-- {{contact.Status}} -->
                                 </mat-cell>
                               </ng-container>
                               

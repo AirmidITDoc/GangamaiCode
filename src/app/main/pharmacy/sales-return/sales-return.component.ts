@@ -159,7 +159,9 @@ export class SalesReturnComponent implements OnInit {
   dssaleDetailList = new MatTableDataSource<SalesDetailList>();
   selectedssaleDetailList = new MatTableDataSource<SalesDetailList>();
 
-
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  
   constructor(
     public _SalesReturnService: SalesReturnService,
     public _matDialog: MatDialog,
@@ -231,9 +233,9 @@ export class SalesReturnComponent implements OnInit {
       this._SalesReturnService.getSalesBillList(vdata).subscribe(
         (data) => {
           this.dssaleList.data = data as SaleBillList[];
-          console.log(this.dssaleList.data);
-          // this.dataSource.sort = this.sort;
-          // this.dataSource.paginator = this.paginator;
+          // console.log(this.dssaleList.data);
+          this.dssaleList.sort = this.sort;
+          this.dssaleList.paginator = this.paginator;
           this.isLoadingStr = this.dssaleList.data.length == 0 ? 'no-data' : '';
         },
         (error) => {

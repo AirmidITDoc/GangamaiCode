@@ -246,7 +246,7 @@
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
-                                                <!-- 
+                                                                                                <!-- 
                                                 <ng-container matColumnDef="PhoneAppId" *ngIf="false">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
                                                     </mat-header-cell>
@@ -380,6 +380,10 @@
                                                             (click)="NewCrossConsultation(row)">
                                                             <mat-icon>contacts</mat-icon>
                                                         </button>
+                                                        <button mat-icon-button matTooltip="print i card"
+                                                            (click)="printIcard(row)">
+                                                            <mat-icon>print</mat-icon>
+                                                        </button>
                                                         <button mat-icon-button [matMenuTriggerFor]="moreMenu"
                                                             aria-label="More" (click)="$event.stopPropagation();">
                                                             <mat-icon class="secondary-text">more_vert</mat-icon>
@@ -428,6 +432,37 @@
                                             <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
                                                 showFirstLastButtons>
                                             </mat-paginator>
+                                            <div style="display: none;">
+                                                <div id="i-card" *ngIf="objICard">
+                                                    <div style="width: 225px;padding: 4px;margin: 0 auto;background-color: #1f1f1f;border-radius: 5px;position: relative;">
+                                                        <div
+                                                            style="background-color: #fff;padding: 10px;border-radius: 10px;text-align: center;box-shadow: 0 0 1.5px 0px #b9b9b9;">
+                                                            <div>
+                                                                <img style="width: 100px;margin-top: 15px;"
+                                                                    src="/assets/images/logos/Airmid_NewLogo.jpeg">
+                                                            </div>
+                                                            <div>
+                                                                <ngx-qrcode elementType="url" width="210"
+                                                                    [value]="QrCode" cssClass="profile-img"
+                                                                    errorCorrectionLevel="L"
+                                                                    style="width: 80px;margin-top: 15px;"
+                                                                    [alt]="QrCode">
+                                                                </ngx-qrcode>
+                                                            </div>
+                                                            <h2 style="font-size: 15px;margin: 5px 0;">
+                                                                {{objICard.PatientName}}</h2>
+                                                            <h3
+                                                                style="font-size: 12px;margin: 2.5px 0;font-weight: 300;">
+                                                                {{objICard.Doctorname}}</h3>
+                                                            <h3
+                                                                style="font-size: 12px;margin: 2.5px 0;font-weight: 300;">
+                                                                {{objICard.OPDNo}}</h3>
+                                                            <hr>
+                                                            <p><strong>{{objICard.HospitalName}}</strong></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

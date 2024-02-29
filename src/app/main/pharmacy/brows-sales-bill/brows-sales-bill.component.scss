@@ -1,371 +1,371 @@
 
-.loading-spinner {
-  font-size: 50px;
-  color: #319fc0;
-}
+// .loading-spinner {
+//   font-size: 50px;
+//   color: #319fc0;
+// }
 
-.loading-overlay {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  z-index: 2;
-}
+// .loading-overlay {
+//   align-items: center;
+//   display: flex;
+//   justify-content: center;
+//   z-index: 2;
+// }
 
-.container {
-  width: 100%;
-}  
-.Table1 {
-  .mat-header-row {
-    width: fit-content;
-  }
-  .mat-row {
-    width: fit-content;
-  }
-  .mat-column-action{
-    width: 150px;
-    max-width: 150px;
-    min-width: 150px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-payment{
-    width: 70px;
-    max-width: 70px;
-    min-width: 70px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-Date{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-SalesNo{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-RegNo{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-PatientName{
-    width: 300px;
-    max-width: 300px;
-    min-width: 300px;
-    align-items: left;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
-    justify-content:left; 
-  }
-  .mat-column-NetAmt{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-BalAmt{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-PaidAmt{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-PaidType{
+// .container {
+//   width: 100%;
+// }  
+// .Table1 {
+//   .mat-header-row {
+//     width: fit-content;
+//   }
+//   .mat-row {
+//     width: fit-content;
+//   }
+//   .mat-column-action{
+//     width: 150px;
+//     max-width: 150px;
+//     min-width: 150px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-payment{
+//     width: 70px;
+//     max-width: 70px;
+//     min-width: 70px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-Date{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-SalesNo{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-RegNo{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-PatientName{
+//     width: 300px;
+//     max-width: 300px;
+//     min-width: 300px;
+//     align-items: left;
+//     white-space: nowrap; 
+//     overflow: hidden;
+//     text-overflow: ellipsis; 
+//     overflow: hidden !important;
+//     justify-content:left; 
+//   }
+//   .mat-column-NetAmt{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-BalAmt{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-PaidAmt{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-PaidType{
     
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-IPNo{
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
-    align-items: left;
-    justify-content:left; 
-  }
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-IPNo{
+//     width: 120px;
+//     max-width: 120px;
+//     min-width: 120px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
   
-  height: 300px;
-  max-height: 300px;
-  min-height: 300px;
-}
+//   height: 300px;
+//   max-height: 300px;
+//   min-height: 300px;
+// }
 
-.Table2 {
+// .Table2 {
 
-  .mat-column-ItemName{
-    width: 390px;
-    max-width: 390px;
-    align-items: left;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
-    justify-content:left; 
+//   .mat-column-ItemName{
+//     width: 390px;
+//     max-width: 390px;
+//     align-items: left;
+//     white-space: nowrap; 
+//     overflow: hidden;
+//     text-overflow: ellipsis; 
+//     overflow: hidden !important;
+//     justify-content:left; 
 
-  }
-  .mat-column-BatchNo{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-Expdate{
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-Qty{
-    width: 80px;
-    max-width: 80px;
-    min-width: 80px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-MRP{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-TotalMRP{
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-DiscPer{
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-DiscAmt{
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-GrossAmt{
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-GST{
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-CGST{
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-SGST{
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-IGST{
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
-    align-items: left;
-    justify-content:left; 
-  }
-  height: 300px;
-  max-height: 300px;
-  min-height: 300px;
-}
+//   }
+//   .mat-column-BatchNo{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-Expdate{
+//     width: 110px;
+//     max-width: 110px;
+//     min-width: 110px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-Qty{
+//     width: 80px;
+//     max-width: 80px;
+//     min-width: 80px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-MRP{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-TotalMRP{
+//     width: 110px;
+//     max-width: 110px;
+//     min-width: 110px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-DiscPer{
+//     width: 90px;
+//     max-width: 90px;
+//     min-width: 90px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-DiscAmt{
+//     width: 90px;
+//     max-width: 90px;
+//     min-width: 90px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-GrossAmt{
+//     width: 90px;
+//     max-width: 90px;
+//     min-width: 90px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-GST{
+//     width: 90px;
+//     max-width: 90px;
+//     min-width: 90px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-CGST{
+//     width: 90px;
+//     max-width: 90px;
+//     min-width: 90px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-SGST{
+//     width: 90px;
+//     max-width: 90px;
+//     min-width: 90px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-IGST{
+//     width: 90px;
+//     max-width: 90px;
+//     min-width: 90px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   height: 300px;
+//   max-height: 300px;
+//   min-height: 300px;
+// }
 
-.Table3 {
+// .Table3 {
 
-  .mat-column-action{
-    width: 150px;
-    max-width: 150px;
-    min-width: 150px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-SalesDate{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-SalesNo{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-RegNo{
-    width: 80px;
-    max-width: 80px;
-    min-width: 80px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-PatientName{
-    width: 300px;
-    max-width: 300px;
-    min-width: 300px;
-    align-items: left;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
-    justify-content:left; 
-  }
-  .mat-column-NetAmt{
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
-    align-items: left;
-    margin-left: 10px;
-    justify-content:left; 
-  }
-  .mat-column-BalAmt{
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-PaidAmt{
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-Type{
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
-    align-items: left;
-    justify-content:left; 
-  }
-  height: 300px;
-  max-height: 300px;
-  min-height: 300px;
-}
+//   .mat-column-action{
+//     width: 150px;
+//     max-width: 150px;
+//     min-width: 150px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-SalesDate{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-SalesNo{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-RegNo{
+//     width: 80px;
+//     max-width: 80px;
+//     min-width: 80px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-PatientName{
+//     width: 300px;
+//     max-width: 300px;
+//     min-width: 300px;
+//     align-items: left;
+//     white-space: nowrap; 
+//     overflow: hidden;
+//     text-overflow: ellipsis; 
+//     overflow: hidden !important;
+//     justify-content:left; 
+//   }
+//   .mat-column-NetAmt{
+//     width: 110px;
+//     max-width: 110px;
+//     min-width: 110px;
+//     align-items: left;
+//     margin-left: 10px;
+//     justify-content:left; 
+//   }
+//   .mat-column-BalAmt{
+//     width: 120px;
+//     max-width: 120px;
+//     min-width: 120px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-PaidAmt{
+//     width: 120px;
+//     max-width: 120px;
+//     min-width: 120px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-Type{
+//     width: 200px;
+//     max-width: 200px;
+//     min-width: 200px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   height: 300px;
+//   max-height: 300px;
+//   min-height: 300px;
+// }
 
-.Table4{
+// .Table4{
 
-  .mat-column-ItemName{
-    width: 250px;
-    max-width: 250px;
-    min-width: 250px;
-    align-items: left;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
-    justify-content:left; 
-  }
-  .mat-column-BatchNo{
-    width: 150px;
-    max-width: 150px;
-    min-width: 150px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-Expdate{
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-Qty{
-    width: 70px;
-    max-width: 70px;
-    min-width: 70px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-MRP{
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-TotalMRP{
-    width: 150px;
-    max-width: 150px;
-    min-width: 150px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-GST{
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-CGST{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-SGST{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  .mat-column-IGST{
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    align-items: left;
-    justify-content:left; 
-  }
-  // height: 300px;
-  // max-height: 300px;
-  // min-height: 300px;
-}
+//   .mat-column-ItemName{
+//     width: 250px;
+//     max-width: 250px;
+//     min-width: 250px;
+//     align-items: left;
+//     white-space: nowrap; 
+//     overflow: hidden;
+//     text-overflow: ellipsis; 
+//     overflow: hidden !important;
+//     justify-content:left; 
+//   }
+//   .mat-column-BatchNo{
+//     width: 150px;
+//     max-width: 150px;
+//     min-width: 150px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-Expdate{
+//     width: 200px;
+//     max-width: 200px;
+//     min-width: 200px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-Qty{
+//     width: 70px;
+//     max-width: 70px;
+//     min-width: 70px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-MRP{
+//     width: 120px;
+//     max-width: 120px;
+//     min-width: 120px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-TotalMRP{
+//     width: 150px;
+//     max-width: 150px;
+//     min-width: 150px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-GST{
+//     width: 120px;
+//     max-width: 120px;
+//     min-width: 120px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-CGST{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-SGST{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   .mat-column-IGST{
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     align-items: left;
+//     justify-content:left; 
+//   }
+//   // height: 300px;
+//   // max-height: 300px;
+//   // min-height: 300px;
+// }
  
 
 
