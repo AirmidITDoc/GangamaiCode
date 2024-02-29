@@ -1,5 +1,5 @@
 $table-row-width: 2000px;
-$table-row-width-small: 450px;
+$table-row-width-small: 600px;
 
 .sales-return-section {
     .mat-table {
@@ -8,12 +8,16 @@ $table-row-width-small: 450px;
         overflow: auto;
         .mat-header-row,
         .mat-row {
-            &.table-right-row {
+            &.table-left-row {
                 min-width: $table-row-width;
             }
-            &.table-left-row{
+            &.table-right-row{
                 min-width: $table-row-width-small;
             }
+            &.table-row-lg{
+                min-width: $table-row-width;
+            }
+
         }
     }
 }
