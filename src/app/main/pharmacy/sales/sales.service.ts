@@ -132,6 +132,11 @@ export class SalesService {
   public InsertWhatsappSms(emp){
     return this._httpClient.post("InPatient/WhatsappSMSoutgoingSave", emp);
   }
+
+  public getCurrentStockItem(){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrive_CurrentStock_ItemList",{});
+  }
+  
   // public getDelDrat(query) {
   //   return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   // }

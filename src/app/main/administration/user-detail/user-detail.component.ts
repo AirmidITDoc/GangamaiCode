@@ -10,6 +10,7 @@ import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-user-detail',
@@ -280,12 +281,12 @@ export class UserDetailComponent implements OnInit {
     this._UserService.getwebRoleCombobox().subscribe(data => {
       this.WebRoleNameList = data;
       console.log(data)
-      if (this.data) {
-        const ddValue = this.WebRoleNameList.filter(c => c.RoleId == this.registerObj.WebRoleId);
-        this.UserForm.get('WebRoleId').setValue(ddValue[0]);
-        this.UserForm.updateValueAndValidity();
-        return;
-      }
+      // if (this.data) {
+      //   const ddValue = this.WebRoleNameList.filter(c => c.RoleId == this.registerObj.WebRoleId);
+      //   this.UserForm.get('WebRoleId').setValue(ddValue[0]);
+      //   this.UserForm.updateValueAndValidity();
+      //   return;
+      // }
     });
 
   }
@@ -372,13 +373,16 @@ export class UserDetailComponent implements OnInit {
     }
   }
 
+  DoctorId:any=0;
   docflag: boolean = false;
   chkdoctor(event) {
     debugger
-    if (event.checked == true) {
-      this.docflag = true
+    if (this.UserForm.get('IsDoctor').value  == true) {
+      this.DoctorId =this.UserForm.get('DoctorId').value.DoctorId;
+      
     }else{
       this.docflag = false
+      this.DoctorId=0;
     }
   }
   onClose() {
@@ -386,6 +390,16 @@ export class UserDetailComponent implements OnInit {
   }
 
   Save() {
+debugger
+
+    if (this.UserForm.get('IsDoctor').value == true) {
+      this.docflag = true
+      
+    }else{
+      this.docflag = false
+      this.DoctorId=0;
+    }
+
 
     if (this.vUserId == 0) {
       this.isLoading = 'submit';
@@ -400,8 +414,8 @@ export class UserDetailComponent implements OnInit {
           "isActive": true,
           "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
-          "isDoctorType": true,
-          "doctorID": this.UserForm.get('DoctorId').value.DoctorId || 0,
+          "isDoctorType": this.UserForm.get('IsDoctor').value || 0,
+          "doctorID":  this.DoctorId ,
           "Status": this.UserForm.get('Status').value || '',
           "isPOVerify": this.UserForm.get('poverify').value || 0,
           "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
@@ -438,6 +452,7 @@ export class UserDetailComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-error',
           });
         }
+        this._matDialog.closeAll();
       });
     }
     else {
@@ -451,10 +466,10 @@ export class UserDetailComponent implements OnInit {
           // "Password": this.UserForm.get('Password').value || 0,
           "addedBy": this._loggedService.currentUserValue.user.id,
           "isActive": true,
-          "StoreId": this._loggedService.currentUserValue.user.storeId || this.UserForm.get('StoreId').value.StoreId || 0,
+          "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
-          "isDoctorType": true,
-          "doctorID": this.UserForm.get('DoctorId').value.DoctorId || 0,
+          "isDoctorType":this.UserForm.get('IsDoctor').value || 0,
+          "doctorID":  this.DoctorId ,
           "Status": this.UserForm.get('Status').value || '',
           "isPOVerify": this.UserForm.get('poverify').value || 0,
           "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
@@ -492,6 +507,8 @@ export class UserDetailComponent implements OnInit {
           });
         }
       });
+
+      this._matDialog.closeAll();
     }
   }
 

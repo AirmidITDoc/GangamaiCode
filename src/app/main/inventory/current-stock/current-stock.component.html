@@ -328,7 +328,7 @@
                                                 (click)="viewgetDaywisestockReportPdf()" matTooltip="Pdf">
                                                 <mat-icon class="searchiconbutton">book</mat-icon>
                                             </button>
-                                            <br/>
+                                      
                                             <button mat-raised-button (click)="exportDayReportExcel()" [disabled]="! (dsDaywiseStock.data.length > 0)"
                                             style="background-color: #8e67e0;color: white; margin-right: 15px;margin-top: 10px;">Export Table(Excel)
                                              </button>
@@ -597,7 +597,7 @@
                                                 (click)="viewgetItemwisestockReportPdf()" matTooltip="Pdf">
                                                 <mat-icon class="searchiconbutton">book</mat-icon>
                                             </button>
-                                            <br/>
+                                         
                                             <button mat-raised-button (click)="exportItemReportExcel()" [disabled]="!(dsItemwiseStock.data.length > 0)"
                                             style="background-color: #8e67e0;color: white; margin-right: 15px;margin-top: 10px;">Export Table(Excel)
                                              </button>
@@ -758,7 +758,7 @@
                         <div>
                             <div class="nav material2">
 
-                                <form [formGroup]="_CurrentStockService.ItemWiseFrom" style="padding: 10px 6px 5px 5px;"
+                                <form [formGroup]="_CurrentStockService.PurchaseItem" style="padding: 10px 6px 5px 5px;"
                                     fusePerfectScrollbar>
                                     <div fxLayout="column" fxLayoutAlign="start none">
 
@@ -804,11 +804,11 @@
                                             <!-- <button class="next-btn" (click)="viewgetItemwisestockReportPdf()"
                                             style="margin-right: 8px; width: 80px;border-radius: 16px;"
                                             [disabled]="printflag">Print</button> -->
-                                            <!-- <button mat-raised-button style="width: 100px;"
-                                                (click)="viewgetIssuewiseItemstockReportPdf()" matTooltip="Pdf">
+                                            <button mat-raised-button style="width: 100px;"
+                                                (click)="viewgetItemWisePurchaseReportPdf()" matTooltip="Pdf">
                                                 <mat-icon class="searchiconbutton">book</mat-icon>
-                                            </button> -->
-                                            <br/>
+                                            </button>
+                                           
                                             <button mat-raised-button (click)="exportIssuewiseItemReportExcel()" [disabled]="!(dsIssuewissueItemStock.data.length > 0)"
                                             style="background-color: #8e67e0;color: white; margin-right: 15px;margin-top: 10px;">Export Table(Excel)
                                              </button>

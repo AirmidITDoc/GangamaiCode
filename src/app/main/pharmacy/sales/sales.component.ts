@@ -3229,7 +3229,7 @@ else{
   }
   Barcode:any;
   barcodeflag: boolean = false;
-  chkdoctor(event) {
+  chkbarcode(event) {
     debugger
     if (event.checked == true) {
       this.barcodeflag = true
@@ -3237,8 +3237,19 @@ else{
       this.barcodeflag = false
     }
   }
-  barcodeItemfetch(){
 
+  barcodeItemfetch(){
+    this._salesService.getCurrentStockItem().subscribe(data => {
+      this.tempDatasource.data = data as any;
+      // console.log(this.tempDatasource.data);
+      if (this.tempDatasource.data.length >= 1) {
+        this.tempDatasource.data.forEach((element) => {
+        // this.DraftQty = element.QtyPerDay
+        this.DraftQty=1;
+        this.onAddDraftListTosale(element, this.DraftQty);
+        });
+      }
+    });
   }
 
 }

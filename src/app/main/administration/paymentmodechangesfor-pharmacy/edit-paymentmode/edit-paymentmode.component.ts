@@ -24,16 +24,18 @@ export class EditPaymentmodeComponent implements OnInit {
   vpaymentId:any=0;
   filteredOptionsBank1: Observable<string[]>;
   optionsBank1: any[] = [];
-  isBank1elected1: boolean = false;
+  isBank1elected: boolean = false;
   filteredOptionsBank2: Observable<string[]>;
   optionsBank2: any[] = [];
-  isBank1elected2: boolean = false;
+  isBank2elected: boolean = false;
   filteredOptionsBank3: Observable<string[]>;
   optionsBank3: any[] = [];
-  isBank1elected3: boolean = false;
+  // isBank1elected3: boolean = false;
   filteredOptionsBank4: Observable<string[]>;
   optionsBank4: any[] = [];
   isBank1elected4: boolean = false;
+  isBank3elected: boolean = false;
+
 
   BankNameList1: any = [];
   BankNameList2: any = [];
@@ -187,15 +189,15 @@ export class EditPaymentmodeComponent implements OnInit {
   getOptionTextBank2(option) {
     return option && option.BankName ? option.BankName : '';
   }
-  // getOptionTextBank3(option) {
+  getOptionTextBank3(option) {
+    return option && option.BankName ? option.BankName : '';
+  }
+  // getOptionTextBank4(option) {
   //   return option && option.BankName ? option.BankName : '';
   // }
-  getOptionTextBank4(option) {
-    return option && option.BankName ? option.BankName : '';
-  }
-  getOptionTextBank5(option) {
-    return option && option.BankName ? option.BankName : '';
-  }
+  // getOptionTextBank5(option) {
+  //   return option && option.BankName ? option.BankName : '';
+  // }
 
   
   getBankNameList2() {
