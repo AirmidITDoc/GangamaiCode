@@ -441,13 +441,19 @@
                                                 <div matTooltip="Select  name to enable this button!!"
                                                 [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid"
                                                 [matTooltipPosition]="'above'">
-                                                <button fxLayoutAlign="center center" #addbutton
+                                                <!-- <button fxLayoutAlign="center center" #addbutton
                                                     class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
                                                     (click)="OnAddUpdate($event)">
                                                     <span class="btn-icon">
                                                         <mat-icon> add </mat-icon>
                                                     </span>
                                                     <span>Add</span>
+                                                </button> -->
+
+                                                <button (click) ="OnAddUpdate()"  class="btn btn-primary btn-with-icon py-8"  [disabled]="!add" #addbutton>
+                                                    <span class="btn-icon">
+                                                        <mat-icon> add </mat-icon>
+                                                    </span>
                                                 </button>
                                                 <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
                                             </div>
