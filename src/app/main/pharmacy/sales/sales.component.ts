@@ -3227,6 +3227,20 @@ else{
       }
     });
   }
+  Barcode:any;
+  barcodeflag: boolean = false;
+  chkdoctor(event) {
+    debugger
+    if (event.checked == true) {
+      this.barcodeflag = true
+    }else{
+      this.barcodeflag = false
+    }
+  }
+  barcodeItemfetch(){
+
+  }
+
 }
 
 

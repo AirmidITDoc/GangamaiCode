@@ -333,9 +333,24 @@
                                             </mat-card>
                                         </form>
                                         <!-- Item Search  Option  -->
+
+                                        <div fxLayoutAlign="left left" style="width: 120px;">
+                                            <mat-checkbox style="margin-right: 2px;" formControlName="IsBarcode"
+                                              (change)="chkbarcode($event)">IsBarcode
+                                            </mat-checkbox>
+                                          </div>
                                         <form [formGroup]="_salesService.IndentSearchGroup">
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px"
                                                 fusePerfectScrollbar>
+
+                                                <mat-form-field appearance="outline" fxFlex="7%" *ngIf="barcodeflag">
+                                                    <mat-label>Barcode No</mat-label>
+                                                    <input matInput placeholder="Placeholder" [(ngModel)]="Barcode"
+                                                        formControlName="Barcode" (click)="barcodeItemfetch()">
+                                                </mat-form-field>
+
+
+
                                                 <mat-form-field appearance="outline" class="itemclass"
                                                     style="width:60% !important;margin-left:20px;">
                                                     <input type="text" name="ItemId" formControlName="ItemId" #itemid
@@ -450,7 +465,7 @@
                                                     <span>Add</span>
                                                 </button> -->
 
-                                                <button (click) ="OnAddUpdate()"  class="btn btn-primary btn-with-icon py-8"  [disabled]="!add" #addbutton>
+                                                <button (click) ="OnAddUpdate($event)"  class="btn btn-primary btn-with-icon py-8"  [disabled]="!add" #addbutton>
                                                     <span class="btn-icon">
                                                         <mat-icon> add </mat-icon>
                                                     </span>
