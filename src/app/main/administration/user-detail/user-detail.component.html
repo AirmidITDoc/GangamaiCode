@@ -249,7 +249,7 @@
 
                 <mat-form-field appearance="outline" style="width:150px;">
                   <mat-label>Browse Days </mat-label>
-                  <input name="bdays" formControlName="bdays" matInput required [(ngModel)]="registerObj.bdays" #bdays>
+                  <input name="bdays" formControlName="bdays" matInput [(ngModel)]="registerObj.bdays" #bdays>
                   <mat-error class="error" *ngIf="UserForm.get('bdays').invalid && UserForm.get('bdays').touched">
                     bdays is required
                   </mat-error>

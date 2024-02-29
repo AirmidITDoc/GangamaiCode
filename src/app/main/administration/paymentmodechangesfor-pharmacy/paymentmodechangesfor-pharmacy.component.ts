@@ -189,6 +189,11 @@ export class PaymentPharmayList {
   PaymentId :any;
   TarrifName:any;
   NetAmount:any;
+
+  CashAmt:any;
+  ChequeAmt:any;
+  CardAmt:any;
+  NeftPay:any;
   // PaidAmount:any;
 
   constructor(PaymentPharmayList) {
@@ -215,6 +220,10 @@ export class PaymentPharmayList {
       this.PayTMTranNo  = PaymentPharmayList.PayTMTranNo  || 0;
       this.TarrifName = PaymentPharmayList.TarrifName || 0;
       this.NetAmount = PaymentPharmayList.NetAmount || 0;
+      this.CashAmt = PaymentPharmayList.CashAmt || 0;
+      this.ChequeAmt  = PaymentPharmayList.ChequeAmt  || 0;
+      this.CardAmt = PaymentPharmayList.CardAmt || 0;
+      this.NeftPay = PaymentPharmayList.NeftPay || 0;
       // this.PaidAmount = PaymentPharmayList.PaidAmount || 0;
     }
   }
