@@ -51,7 +51,6 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.getSalesList();
   }
 
@@ -74,15 +73,12 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       'ToDate':this.datePipe.transform(this._PaymentmodechangeforpharmacyService.userFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       'Reg_No':this._PaymentmodechangeforpharmacyService.userFormGroup.get('RegNo').value || 0,
       'SalesNo':this._PaymentmodechangeforpharmacyService.userFormGroup.get('SalesNo').value || 0,
-      //'StoreId':this._PaymentmodechangeforpharmacyService.userFormGroup.get('StoreId').value.storeid || 0,
     }   
-    console.log(vdata);
     this._PaymentmodechangeforpharmacyService.getIpPharAdvanceList(vdata).subscribe(data =>{
       this.dsPaymentPharmacyList.data= data as PaymentPharmayList [];
       this.dsPaymentPharmacyList.sort = this.sort;
       this.dsPaymentPharmacyList.paginator = this.paginator;
       this.sIsLoading = '';
-      console.log(this.dsPaymentPharmacyList.data);
     } ,
     error => {
       this.sIsLoading = '';
@@ -93,20 +89,17 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
     var vdata={
       'F_Name':this._PaymentmodechangeforpharmacyService.userFormGroup.get('FirstName').value || '%',
       'L_Name':this._PaymentmodechangeforpharmacyService.userFormGroup.get('LastName').value   || '%', 
-      'FromDate':'01/01/2023',// this.datePipe.transform(this._PaymentmodechangeforpharmacyService.userFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      'ToDate': '01/11/2023',//this.datePipe.transform(this._PaymentmodechangeforpharmacyService.userFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      'FromDate':this.datePipe.transform(this._PaymentmodechangeforpharmacyService.userFormGroup.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      'ToDate': this.datePipe.transform(this._PaymentmodechangeforpharmacyService.userFormGroup.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       'Reg_No':this._PaymentmodechangeforpharmacyService.userFormGroup.get('RegNo').value || 0,
       'SalesNo':this._PaymentmodechangeforpharmacyService.userFormGroup.get('SalesNo').value || 0,
      // 'StoreId':this._PaymentmodechangeforpharmacyService.userFormGroup.get('StoreId').value.storeid || 0,
     }   
-    console.log(vdata);
     this._PaymentmodechangeforpharmacyService.getSalesNoList(vdata).subscribe(data =>{
-      console.log(data)
       this.dsPaymentPharmacyList.data= data as PaymentPharmayList [];
       this.dsPaymentPharmacyList.sort = this.sort;
       this.dsPaymentPharmacyList.paginator = this.paginator;
       this.sIsLoading = '';
-      console.log(this.dsPaymentPharmacyList.data);
     } ,
     error => {
       this.sIsLoading = '';
