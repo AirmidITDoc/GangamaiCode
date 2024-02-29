@@ -148,16 +148,19 @@ export class PurchaseorderComponent implements OnInit {
         });
   }
   getPOList(Params){
-      var Param = {
+
+    debugger
+      var data1 = {
         "PurchaseID": Params.PurchaseID
       }
-      //console.log(Params)
-      this._GRNList.getPurchaseItemList(Param).subscribe(data => {
+      console.log(data1)
+      this._GRNList.getPurchaseItemList(data1).subscribe(data => {
         this.dsPODetailList.data = data as PODetailList[];
+        
         this.dsPODetailList.sort = this.sort;
         this.dsPODetailList.paginator = this.paginator;
         this.sIsLoading = '';
-       //console.log(this.dsPODetailList);
+       console.log(this.dsPODetailList);
       },
         error => {
           this.sIsLoading = '';
@@ -167,7 +170,7 @@ export class PurchaseorderComponent implements OnInit {
   }
   interimArray: any = [];
   tableElementChecked(event, element) {
-
+console.log(element)
    debugger
     if (event.checked) {
       this.interimArray.push(element);
@@ -184,13 +187,18 @@ export class PurchaseorderComponent implements OnInit {
   }
 
   OnAddgrn( ) { 
-   
+    if ((!this.dsPODetailList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
    // console.log(this.interimArray)
     // this.advanceDataStored.storage = new PODetailList(this.interimArray[0]);
     // console.log(this.advanceDataStored.storage)
    
     this._dialogRef.close(this.interimArray);
-    // this._dialogRef.close(this.interimArray)
+    console.log(this.interimArray)
   }
  
 
