@@ -149,7 +149,7 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DirectPOList_by_Name",Param);
   }
   public getPurchaseItemList(Param) { //m_Retrieve_PurchaseItemList
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemList_by_Supplier_Name", Param);
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemList_by_Supplier_Name", Param);
   }
   public getGRNList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name",Param);

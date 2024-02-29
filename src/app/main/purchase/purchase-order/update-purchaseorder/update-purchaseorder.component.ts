@@ -240,10 +240,12 @@ export class UpdatePurchaseorderComponent implements OnInit {
       this._PurchaseOrder.StoreFormGroup.get('StoreId').setValue(this.StoreList[0]);
     });
   }
+
   getSupplierSearchCombo() {
     this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
-      this.optionsupplier = this.SupplierList.slice();
+      // console.log(data);
+      this.optionsMarital = this.SupplierList.slice();
       this.filteredoptionsSupplier = this._PurchaseOrder.userFormGroup.get('SupplierId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
@@ -258,6 +260,14 @@ export class UpdatePurchaseorderComponent implements OnInit {
         this.vEmail = toSelectSUpplierId.Email;
       }
     });
+ 
+  }
+  private _filterSupplier(value: any): string[] {
+    debugger
+    if (value) {
+      const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
+      return this.optionsMarital.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
+    }
   }
   getSelectedSupplierObj(obj) {
     this.SupplierID = obj.SupplierId;
@@ -833,14 +843,6 @@ export class UpdatePurchaseorderComponent implements OnInit {
   getOptionTextItemName(option) {
     return option && option.ItemName ? option.ItemName : '';
   }
-
-  private _filterSupplier(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-      return this.optionsMarital.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
-    }
-  }
-
   private _filterPayment(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
