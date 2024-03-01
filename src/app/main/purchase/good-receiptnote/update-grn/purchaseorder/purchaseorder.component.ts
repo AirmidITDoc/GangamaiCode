@@ -69,7 +69,6 @@ export class PurchaseorderComponent implements OnInit {
   dsPODetailList = new MatTableDataSource<PODetailList>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
   
   constructor(
     public _GRNList: GoodReceiptnoteService,
@@ -92,7 +91,6 @@ export class PurchaseorderComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
   private _filterSupplier(value: any): string[] {
@@ -105,7 +103,6 @@ export class PurchaseorderComponent implements OnInit {
 
     this._GRNList.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
-      // console.log(data);
       this.optionsSupplier = this.SupplierList.slice();
       this.filteredoptionsSupplier = this._GRNList.GRNSearchGroup.get('SupplierId').valueChanges.pipe(
         startWith(''),
@@ -117,7 +114,6 @@ export class PurchaseorderComponent implements OnInit {
     return option && option.SupplierName ? option.SupplierName : '';
   } 
   gePharStoreList() {
-
     var vdata = {
       Id: this.accountService.currentUserValue.user.storeId
     }
@@ -135,12 +131,10 @@ export class PurchaseorderComponent implements OnInit {
         "Status": this._GRNList.POFrom.get("Status").value || 0,
         "SupplierId": this._GRNList.POFrom.get('SupplierId').value.SupplierId || 0,
       }
-      //console.log(Param);
       this._GRNList.getDirectPOList(Param).subscribe(data => {
         this.dsPOList.data = data as POList[];
         this.dsPOList.sort = this.sort;
         this.dsPOList.paginator = this.paginator;
-       // console.log(this.dsPOList);
         this.sIsLoading = '';
       },
         error => {
@@ -148,42 +142,26 @@ export class PurchaseorderComponent implements OnInit {
         });
   }
   getPOList(Params){
-
-    debugger
       var data1 = {
         "PurchaseID": Params.PurchaseID
       }
-      console.log(data1)
       this._GRNList.getPurchaseItemList(data1).subscribe(data => {
         this.dsPODetailList.data = data as PODetailList[];
         
         this.dsPODetailList.sort = this.sort;
         this.dsPODetailList.paginator = this.paginator;
         this.sIsLoading = '';
-       console.log(this.dsPODetailList);
       },
         error => {
           this.sIsLoading = '';
         });
-   // this.onClose();
    
   }
   interimArray: any = [];
   tableElementChecked(event, element) {
-console.log(element)
-   debugger
     if (event.checked) {
       this.interimArray.push(element);
     }
-    
-    // else if (this.interimArray.length > 0) {
-    //   let index = this.interimArray.indexOf(element);
-    //   if (index !== -1) {
-    //     this.interimArray.splice(index, 1);
-    //   }
-    // }
-
-    console.log(this.interimArray)
   }
 
   OnAddgrn( ) { 
@@ -193,20 +171,13 @@ console.log(element)
       });
       return;
     }
-   // console.log(this.interimArray)
-    // this.advanceDataStored.storage = new PODetailList(this.interimArray[0]);
-    // console.log(this.advanceDataStored.storage)
-   
     this._dialogRef.close(this.interimArray);
-    console.log(this.interimArray)
-  }
- 
-
- 
-  onClear(){
   }
   onClose() {
     this._dialogRef.close();
+  }
+  onClear(){
+    
   }
 } 
 export class PODetailList{

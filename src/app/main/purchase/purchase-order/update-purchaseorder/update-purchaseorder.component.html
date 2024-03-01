@@ -123,7 +123,7 @@
                                                 <mat-form-field appearance="outline" style="width: 180px;">
                                                     <mat-label>-- Select Status3 --</mat-label>
                                                     <mat-select formControlName="Status3" name="Status3" required
-                                                        (selectionChange)="calculateGSTType($event)">
+                                                        (selectionChange)="calculateGSTType($event)" #gsttype  (keydown)="onEnterGSTType($event)">
                                                         <mat-option></mat-option>
                                                         <mat-option *ngFor="let m of GSTTypeList" [value]="m">
                                                             {{m.Name}}

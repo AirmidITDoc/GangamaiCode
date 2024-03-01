@@ -858,6 +858,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   }
 
   @ViewChild('SupplierId') SupplierId: MatSelect;
+  @ViewChild('gsttype') gsttype: ElementRef;
   @ViewChild('Freight1') Freight1: ElementRef;
   @ViewChild('DeliveryDate1') DeliveryDate1: ElementRef;
   @ViewChild('PaymentMode') PaymentMode: MatSelect;
@@ -887,7 +888,12 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
   public onEnterSupplier(event): void {
     if (event.which === 13) {
-      this.Freight1.nativeElement.focus();
+      this.gsttype.nativeElement.focus();
+    }
+  }
+  public onEnterGSTType(event): void {
+    if (event.which === 13) {
+      this.itemid.nativeElement.focus();
     }
   }
   public onEnterDeliveryDate(event): void {
