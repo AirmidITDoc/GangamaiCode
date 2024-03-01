@@ -23,7 +23,6 @@ export class UserDetailComponent implements OnInit {
 
   submitted = false;
   data1: [];
-
   StoreList: any = [];
   RoleList: any = [];
   DoctortypecmbList: any = [];
@@ -66,27 +65,21 @@ export class UserDetailComponent implements OnInit {
   ngOnInit(): void {
 
     this.UserForm = this.createPesonalForm();
-
     if (this.data) {
       this.registerObj = this.data.registerObj;
-      console.log(this.registerObj);
       this.vUserId = this.registerObj.UserId;
     }
 
     this.getDoctorlist1();
     this.getRoleNamelist1();
     this.getwebRoleNamelist1();
-    this.gePharStoreList();
-    // this.getRolelist();
-    // this.getDoctorlist();
+    this.gePharStoreList1();
 
-    debugger
     this.filteredOptionsRole = this.UserForm.get('RoleId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterRole(value)),
 
     );
-
 
     this.filteredOptionswebrollName = this.UserForm.get('WebroleId').valueChanges.pipe(
       startWith(''),
@@ -97,10 +90,7 @@ export class UserDetailComponent implements OnInit {
     this.filteredOptionsDoctorName = this.UserForm.get('DoctorId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterDoctor(value)),
-
     );
-
-
   }
 
   createPesonalForm() {
@@ -168,12 +158,8 @@ export class UserDetailComponent implements OnInit {
 
   StoreId: any;
   gePharStoreList1() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
-    }
-    this._UserService.getLoggedStoreList(vdata).subscribe(data => {
+    this._UserService.getStoreList().subscribe(data => {
       this.Store1List = data;
-      console.log(data)
       // if (this.data) {
       const ddValue = this.Store1List.filter(c => c.StoreId == this.StoreId);
       this.UserForm.get('StoreId').setValue(ddValue[0]);
@@ -181,17 +167,13 @@ export class UserDetailComponent implements OnInit {
       return;
       // } 
     });
-
   }
-
 
   private _filterStore(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-
       return this.Store1List.filter(option => option.StoreName.toLowerCase().includes(filterValue));
     }
-
   }
 
   getOptionTextStoreName(option) {
@@ -434,7 +416,7 @@ debugger
           // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
           "addChargeIsDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
           "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
-
+          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId 
 
         }
       }
@@ -488,7 +470,7 @@ debugger
           // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
           "addChargeIsDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
           "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
-
+          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId 
 
         }
       }

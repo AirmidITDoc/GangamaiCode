@@ -1907,7 +1907,7 @@ else{
 
 
   onSave() {
-    if (this.PatientName == 0 || this.MobileNo == null || this.DoctorName == "" ) {
+    if (this.PatientName == "" || this.MobileNo == null || this.DoctorName == "" ) {
       this.toastr.warning('Please select All Customer Detail', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
