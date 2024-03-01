@@ -138,7 +138,7 @@
                     
                                              </div>
 
-                                            <mat-table matSort [dataSource]="dssaleList1" [@animateStagger]="{value:'50'}">
+                                            <mat-table #table matSort [dataSource]="dssaleList1" [@animateStagger]="{value:'50'}">
                                                 <ng-container matColumnDef="action">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">

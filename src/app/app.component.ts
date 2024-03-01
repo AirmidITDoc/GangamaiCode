@@ -202,7 +202,7 @@ export class AppComponent implements OnInit, OnDestroy {
             });
         var user = JSON.parse(localStorage.getItem("currentUser"));
         if (user?.user?.roleId ?? 0 > 0)
-            await this.authService.getNavigationData(user.user.roleId);
+            await this.authService.getNavigationData(user.user.webRoleId);
 
         this.globalEvent$.spinner.subscribe(x => {
             if (x.toUpperCase() == 'SHOW') {

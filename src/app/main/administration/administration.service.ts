@@ -76,8 +76,8 @@ export class AdministrationService {
     public UserUpdate(employee) {
       return this._httpClient.post("Administration/UpdateLoginUser", employee);
     }
-    public getLoggedStoreList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+    public getStoreList(){
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
     }
      // Doctor Master Combobox List
   public getAdmittedDoctorCombo() {

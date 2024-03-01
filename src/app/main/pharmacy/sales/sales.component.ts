@@ -1389,14 +1389,12 @@ export class SalesComponent implements OnInit {
 
   Addrepeat(row) {
     console.log(row)
-
     this.repeatItemList = row.value;
     this.Itemchargeslist = [];
     this.repeatItemList.forEach((element) => {
       let Qty = parseInt(element.Qty.toString())
       let UnitMrp = element.UnitMRP.split('|')[0];
       console.log(UnitMrp)
-
       // this.LandedRateandedTotal = (parseInt(element.Qty) * (element.LandedRate)).toFixed(2);
       // this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
       // this.PurTotAmt = (parseInt(element.Qty) * (this.PurchaseRate)).toFixed(2);
@@ -1909,13 +1907,13 @@ else{
 
 
   onSave() {
-    if (this.PatientName == 0 || this.MobileNo == null || this.DoctorName == "" ) {
+    if (this.PatientName == "" || this.MobileNo == null || this.DoctorName == "" ) {
       this.toastr.warning('Please select All Customer Detail', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(this.saleSelectedDatasource.data.length ==0 || this.FinalTotalAmt == 0 || this.FinalNetAmount==0  || this.roundoffAmt ==0 ){
+    if(this.saleSelectedDatasource.data.length ==0 || this.FinalTotalAmt == 0 || this.FinalNetAmount==0   ){
         this.toastr.warning('Please select All Bill Detail', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -2796,6 +2794,7 @@ else{
     this.Itemchargeslist1 = [];
     this.Itemchargeslist = [];
 
+    debugger;
     let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
     this._salesService.getchargesList(strSql).subscribe(data => {
       this.tempDatasource.data = data as any;
@@ -2815,11 +2814,6 @@ else{
     console.log(contact)
     this.Itemchargeslist1 = [];
     this.QtyBalchk = 0;
-    // this.PatientName = contact.patientname;
-    // this.MobileNo = this.tempDatasource.data[0]["ExtMobileNo"];
-    // this.vextAddress = this.tempDatasource.data[0]["extAddress"];
-    // this.DoctorName = this.tempDatasource.data[0]["AdmDoctorName"];
-    // if (this.tempDatasource.data.length > 0) {
     var m_data = {
       "ItemId": contact.ItemId,
       "StoreId": this._loggedService.currentUserValue.user.storeId || 0
@@ -2838,9 +2832,7 @@ else{
             this.QtyBalchk = 0;
           }
           if (this.QtyBalchk != 1) {
-
             if (DraftQty <= element.BalanceQty) {
-
               this.QtyBalchk = 1;
               this.getFinalCalculation(element, DraftQty);
               ItemID = element.ItemId;
@@ -2861,22 +2853,24 @@ else{
   }
 
   getFinalCalculation(contact, DraftQty) {
-
+    console.log(contact)
     // if (parseInt(contact.BalanceQty) > parseInt(this.)) {
     this.RQty = parseInt(DraftQty);
     if (this.RQty && contact.UnitMRP) {
       this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
       this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
-      this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
       this.PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
+
+      this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
+
       this.GSTAmount = (((contact.UnitMRP) * (contact.VatPercentage) / 100) * parseInt(this.RQty)).toFixed(2);
       this.CGSTAmt = (((contact.UnitMRP) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
       this.SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
       this.IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      this.NetAmt = (parseFloat(this.TotalMRP) + parseFloat(this.GSTAmount)).toFixed(2);
+      
+      this.NetAmt = (parseFloat(this.TotalMRP)- 0).toFixed(2);
 
       if (contact.DiscPer > 0) {
-
         this.DiscAmt = ((this.TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
         this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
 
@@ -3229,7 +3223,7 @@ else{
   }
   Barcode:any;
   barcodeflag: boolean = false;
-  chkdoctor(event) {
+  chkbarcode(event) {
     debugger
     if (event.checked == true) {
       this.barcodeflag = true
@@ -3237,8 +3231,19 @@ else{
       this.barcodeflag = false
     }
   }
-  barcodeItemfetch(){
 
+  barcodeItemfetch(){
+    this._salesService.getCurrentStockItem().subscribe(data => {
+      this.tempDatasource.data = data as any;
+      // console.log(this.tempDatasource.data);
+      if (this.tempDatasource.data.length >= 1) {
+        this.tempDatasource.data.forEach((element) => {
+        // this.DraftQty = element.QtyPerDay
+        this.DraftQty=1;
+        this.onAddDraftListTosale(element, this.DraftQty);
+        });
+      }
+    });
   }
 
 }

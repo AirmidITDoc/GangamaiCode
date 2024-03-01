@@ -131,6 +131,7 @@ export class CurrentStockComponent implements OnInit {
      this._CurrentStockService.SearchGroup.get('StoreId').setValue(this.Store1List[0]);
      this._CurrentStockService.userFormGroup.get('StoreId').setValue(this.Store1List[0]);
      this._CurrentStockService.ItemWiseFrom.get('StoreId').setValue(this.Store1List[0]);
+     this._CurrentStockService.PurchaseItem.get('StoreId').setValue(this.Store1List[0]);
     });
   }
 
@@ -255,9 +256,13 @@ getOptionTextStoreName(option) {
     }
     setTimeout(() => {
       // this.isLoadingStr = 'loading';
+
+      console.log(vdata)
       this._CurrentStockService.getIssueWiseItemStockList(vdata).subscribe(
         (Visit) => {
           this.dsIssuewissueItemStock.data = Visit as ItemWiseStockList[];
+
+          console.log(Visit)
           this.dsIssuewissueItemStock.sort = this.sort;
           this.dsIssuewissueItemStock.paginator = this.secondPaginator;
           this.sIsLoading = '';
@@ -311,7 +316,7 @@ getOptionTextStoreName(option) {
 
   exportIssuewiseItemReportExcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['StoreName', 'ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty'];
+    let exportHeaders = ['StoreName', 'ItemName', 'Received_Qty', 'Sales_Qty', 'Current_BalQty'];
     this.reportDownloadService.getExportJsonData(this.dsIssuewissueItemStock.data, exportHeaders, 'Issuw Wise Item Stock');
     this.dsCurrentStock.data=[];
     this.sIsLoading = '';
@@ -400,6 +405,37 @@ getOptionTextStoreName(option) {
         });
     });
     },1000);
+  }
+
+
+  viewgetItemWisePurchaseReportPdf() {
+    this.sIsLoading == 'loading-data'
+    let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    let todate =this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    let StoreId =this._loggedService.currentUserValue.user.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
+    setTimeout(() => {
+      this.SpinLoading =true;
+    //  this.AdList=true;
+    this._CurrentStockService.ItemWisePurchaseView(
+      FromDate,todate,StoreId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Day Wise Stock Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.sIsLoading = '';
+        });
+     
+    });
+   
+    },100);
   }
 }
  

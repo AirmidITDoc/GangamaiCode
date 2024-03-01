@@ -526,6 +526,15 @@
                                                 </mat-cell>
                                             </ng-container>
 
+                                            <ng-container matColumnDef="TotalMRP">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total
+                                                    MRP
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.TotalMRP | currency:'INR' }}
+                                                </mat-cell>
+                                            </ng-container>
+
                                             <ng-container matColumnDef="GSTPer">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GST %
                                                 </mat-header-cell>
@@ -540,15 +549,6 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.GSTAmount | currency:'INR' }}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="TotalMRP">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total
-                                                    MRP
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.TotalMRP | currency:'INR' }}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -1282,7 +1282,7 @@
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: DraftSaleDisplayedCol;"
                                         [ngClass]="{'row-yellow': QtyBalchk ==0}"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onAddDraftList(contact)"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <!-- (click)="deleteTableRow($event,contact)"  -->
                                     <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
                                      (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->

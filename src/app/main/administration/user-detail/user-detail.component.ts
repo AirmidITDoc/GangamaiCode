@@ -10,6 +10,7 @@ import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-user-detail',
@@ -22,7 +23,6 @@ export class UserDetailComponent implements OnInit {
 
   submitted = false;
   data1: [];
-
   StoreList: any = [];
   RoleList: any = [];
   DoctortypecmbList: any = [];
@@ -65,27 +65,21 @@ export class UserDetailComponent implements OnInit {
   ngOnInit(): void {
 
     this.UserForm = this.createPesonalForm();
-
     if (this.data) {
       this.registerObj = this.data.registerObj;
-      console.log(this.registerObj);
       this.vUserId = this.registerObj.UserId;
     }
 
     this.getDoctorlist1();
     this.getRoleNamelist1();
     this.getwebRoleNamelist1();
-    this.gePharStoreList();
-    // this.getRolelist();
-    // this.getDoctorlist();
+    this.gePharStoreList1();
 
-    debugger
     this.filteredOptionsRole = this.UserForm.get('RoleId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterRole(value)),
 
     );
-
 
     this.filteredOptionswebrollName = this.UserForm.get('WebroleId').valueChanges.pipe(
       startWith(''),
@@ -96,10 +90,7 @@ export class UserDetailComponent implements OnInit {
     this.filteredOptionsDoctorName = this.UserForm.get('DoctorId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterDoctor(value)),
-
     );
-
-
   }
 
   createPesonalForm() {
@@ -167,12 +158,8 @@ export class UserDetailComponent implements OnInit {
 
   StoreId: any;
   gePharStoreList1() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
-    }
-    this._UserService.getLoggedStoreList(vdata).subscribe(data => {
+    this._UserService.getStoreList().subscribe(data => {
       this.Store1List = data;
-      console.log(data)
       // if (this.data) {
       const ddValue = this.Store1List.filter(c => c.StoreId == this.StoreId);
       this.UserForm.get('StoreId').setValue(ddValue[0]);
@@ -180,17 +167,13 @@ export class UserDetailComponent implements OnInit {
       return;
       // } 
     });
-
   }
-
 
   private _filterStore(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-
       return this.Store1List.filter(option => option.StoreName.toLowerCase().includes(filterValue));
     }
-
   }
 
   getOptionTextStoreName(option) {
@@ -280,12 +263,12 @@ export class UserDetailComponent implements OnInit {
     this._UserService.getwebRoleCombobox().subscribe(data => {
       this.WebRoleNameList = data;
       console.log(data)
-      if (this.data) {
-        const ddValue = this.WebRoleNameList.filter(c => c.RoleId == this.registerObj.WebRoleId);
-        this.UserForm.get('WebRoleId').setValue(ddValue[0]);
-        this.UserForm.updateValueAndValidity();
-        return;
-      }
+      // if (this.data) {
+      //   const ddValue = this.WebRoleNameList.filter(c => c.RoleId == this.registerObj.WebRoleId);
+      //   this.UserForm.get('WebRoleId').setValue(ddValue[0]);
+      //   this.UserForm.updateValueAndValidity();
+      //   return;
+      // }
     });
 
   }
@@ -372,13 +355,16 @@ export class UserDetailComponent implements OnInit {
     }
   }
 
+  DoctorId:any=0;
   docflag: boolean = false;
   chkdoctor(event) {
     debugger
-    if (event.checked == true) {
-      this.docflag = true
+    if (this.UserForm.get('IsDoctor').value  == true) {
+      this.DoctorId =this.UserForm.get('DoctorId').value.DoctorId;
+      
     }else{
       this.docflag = false
+      this.DoctorId=0;
     }
   }
   onClose() {
@@ -386,6 +372,16 @@ export class UserDetailComponent implements OnInit {
   }
 
   Save() {
+debugger
+
+    if (this.UserForm.get('IsDoctor').value == true) {
+      this.docflag = true
+      
+    }else{
+      this.docflag = false
+      this.DoctorId=0;
+    }
+
 
     if (this.vUserId == 0) {
       this.isLoading = 'submit';
@@ -400,8 +396,8 @@ export class UserDetailComponent implements OnInit {
           "isActive": true,
           "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
-          "isDoctorType": true,
-          "doctorID": this.UserForm.get('DoctorId').value.DoctorId || 0,
+          "isDoctorType": this.UserForm.get('IsDoctor').value || 0,
+          "doctorID":  this.DoctorId ,
           "Status": this.UserForm.get('Status').value || '',
           "isPOVerify": this.UserForm.get('poverify').value || 0,
           "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
@@ -420,7 +416,7 @@ export class UserDetailComponent implements OnInit {
           // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
           "addChargeIsDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
           "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
-
+          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId 
 
         }
       }
@@ -438,6 +434,7 @@ export class UserDetailComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-error',
           });
         }
+        this._matDialog.closeAll();
       });
     }
     else {
@@ -451,10 +448,10 @@ export class UserDetailComponent implements OnInit {
           // "Password": this.UserForm.get('Password').value || 0,
           "addedBy": this._loggedService.currentUserValue.user.id,
           "isActive": true,
-          "StoreId": this._loggedService.currentUserValue.user.storeId || this.UserForm.get('StoreId').value.StoreId || 0,
+          "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
-          "isDoctorType": true,
-          "doctorID": this.UserForm.get('DoctorId').value.DoctorId || 0,
+          "isDoctorType":this.UserForm.get('IsDoctor').value || 0,
+          "doctorID":  this.DoctorId ,
           "Status": this.UserForm.get('Status').value || '',
           "isPOVerify": this.UserForm.get('poverify').value || 0,
           "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
@@ -473,7 +470,7 @@ export class UserDetailComponent implements OnInit {
           // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
           "addChargeIsDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
           "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
-
+          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId 
 
         }
       }
@@ -492,6 +489,8 @@ export class UserDetailComponent implements OnInit {
           });
         }
       });
+
+      this._matDialog.closeAll();
     }
   }
 

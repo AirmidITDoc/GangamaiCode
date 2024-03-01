@@ -22,6 +22,7 @@ import { GrnemailComponent } from './grnemail/grnemail.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { EmailComponent } from '../purchase-order/email/email.component';
 import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrcodegenerator/qrcodegenerator.component';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-good-receiptnote',
@@ -53,6 +54,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   ];
 
   displayedColumns1 = [
+    "select",
     "ItemName",
     "BatchNo",
     "BatchExpDate",
@@ -268,6 +270,62 @@ export class GoodReceiptnoteComponent implements OnInit {
       return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
     }
   }
+
+  private _filterItemName(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.ItemName ? value.ItemName.toLowerCase() : value.toLowerCase();
+      return this.optionsItemName.filter(option => option.ItemName.toLowerCase().includes(filterValue));
+    }
+  }
+  selection = new SelectionModel<GrnItemList>(true, []);
+  printBulkQrCode(){
+    debugger
+    setTimeout(() => {
+      this.SpinLoading = true;
+      let data=[];
+      this.selection.selected.forEach(element => {
+        data.push({QrCodeData:element["stockid"].toString(),Qty:element.ReceiveQty,Width:250});
+      });
+      const dialogRef = this._matDialog.open(QrcodegeneratorComponent,
+        {
+          data: {
+            QrData:data,
+            title: "Grn QR"
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+    }, 100);
+  }
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dsGrnItemList.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    // if there is a selection then clear that selection
+    if (this.isSomeSelected()) {
+      this.selection.clear();
+    } else {
+      this.isAllSelected()
+        ? this.selection.clear()
+        : this.dsGrnItemList.data.forEach(row => this.selection.select(row));
+    }
+  }
+
+  isSomeSelected() {
+    console.log(this.selection.selected);
+    return this.selection.selected.length > 0;
+  }
   getGrnItemDetailList(Params) {
     this.sIsLoading = 'loading-data';
     var Param = {
@@ -323,7 +381,6 @@ export class GoodReceiptnoteComponent implements OnInit {
   TotalOtherCharge: any = 0;
   finalamt: any = 0;
   openQrCodePrintDialog(row) {
-    debugger
     setTimeout(() => {
       this.SpinLoading = true;
       const dialogRef = this._matDialog.open(QrcodegeneratorComponent,

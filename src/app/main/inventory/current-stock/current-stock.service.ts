@@ -10,7 +10,7 @@ export class CurrentStockService {
   userFormGroup: FormGroup;
   SearchGroup :FormGroup;
   ItemWiseFrom:FormGroup;
-
+  PurchaseItem:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
@@ -19,6 +19,7 @@ export class CurrentStockService {
     this.userFormGroup = this.createUserForm();
     this.SearchGroup= this.createSearchFrom();
     this.ItemWiseFrom = this.createItemWiseFrom();
+    this.PurchaseItem=this.PurchaseItemWiseFrom();
   }
 
   createSearchFrom() {
@@ -46,7 +47,13 @@ export class CurrentStockService {
     })
   }
  
-
+  PurchaseItemWiseFrom(){
+    return this._formBuilder.group({
+      start1: [(new Date()).toISOString()],
+      end1: [(new Date()).toISOString()],
+      StoreId:'',
+    })
+  }
 
   public getCurrentStockList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_Storewise_CurrentStock",Param);
@@ -64,7 +71,7 @@ export class CurrentStockService {
     return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWiseSalesReport", Param)
   }
   public getIssueWiseItemStockList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWiseSalesReport", Param)
+    return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWisePurchaseReport", Param)
   }
   
 
@@ -78,5 +85,9 @@ export class CurrentStockService {
 
   public getItemwisestockview(FromDate,todate,StoreId){
     return this._httpClient.get("InventoryTransaction/view-InvItemwiseStock?FromDate=" + FromDate+"&todate="+todate +"&StoreId="+StoreId);
+  }
+
+  public ItemWisePurchaseView(FromDate,todate,StoreId){
+    return this._httpClient.get("InventoryTransaction/view-ItemWisePurchase?FromDate=" + FromDate+"&todate="+todate +"&StoreId="+StoreId);
   }
 }
