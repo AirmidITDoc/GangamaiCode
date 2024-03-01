@@ -1913,7 +1913,7 @@ else{
       });
       return;
     }
-    if(this.saleSelectedDatasource.data.length ==0 || this.FinalTotalAmt == 0 || this.FinalNetAmount==0  || this.roundoffAmt ==0 ){
+    if(this.saleSelectedDatasource.data.length ==0 || this.FinalTotalAmt == 0 || this.FinalNetAmount==0   ){
         this.toastr.warning('Please select All Bill Detail', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
