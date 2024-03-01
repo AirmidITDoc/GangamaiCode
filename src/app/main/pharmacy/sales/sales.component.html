@@ -1282,7 +1282,7 @@
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: DraftSaleDisplayedCol;"
                                         [ngClass]="{'row-yellow': QtyBalchk ==0}"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onAddDraftList(contact)"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <!-- (click)="deleteTableRow($event,contact)"  -->
                                     <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
                                      (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
