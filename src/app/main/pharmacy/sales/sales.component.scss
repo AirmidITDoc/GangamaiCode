@@ -1,4 +1,4 @@
-$table-row-width: 1300px;
+
 
 app-sales {
     // .mat-row, .mat-footer-row {
@@ -304,12 +304,6 @@ button:disabled {
     .nav {
         form {
             padding-inline: 0;
-        }
-    }
-    .sales-table {
-        .mat-header-row,
-        .mat-row {
-            min-width: $table-row-width;
         }
     }
     .footer-container {

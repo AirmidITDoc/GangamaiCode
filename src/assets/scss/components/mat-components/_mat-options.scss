@@ -1,3 +1,7 @@
-.mat-option{
-    @include font-size(13px);
-}   
+.mat-typography {
+    &.theme-default {
+        .mat-option {
+            @include font-size(13px);
+        }
+    }
+}

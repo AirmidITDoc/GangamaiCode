@@ -338,7 +338,7 @@
                                             <!-- <mat-checkbox style="margin-right: 2px;" formControlName="IsBarcode"
                                               (change)="chkbarcode($event)">IsBarcode
                                             </mat-checkbox> -->
-                                          </div>
+                                        </div>
                                         <form [formGroup]="_salesService.IndentSearchGroup">
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px"
                                                 fusePerfectScrollbar>
@@ -396,7 +396,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="5%">
                                                     <mat-label>Qty</mat-label>
-                                                    <input matInput #Quantity formControlName="Qty"  #qty
+                                                    <input matInput #Quantity formControlName="Qty" #qty
                                                         autocomplete="off" [(ngModel)]="Qty"
                                                         (keyup)="calculateTotalAmt()" (keydown)="onEnterqty($event)"
                                                         type="text" onlyNumber
@@ -406,7 +406,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="6%">
                                                     <mat-label>MRP </mat-label>
                                                     <input matInput placeholder="Placeholder" formControlName="MRP"
-                                                        [(ngModel)]="MRP"  readonly type="number">
+                                                        [(ngModel)]="MRP" readonly type="number">
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="7%">
@@ -454,9 +454,9 @@
 
                                                 <!-- [disabled]="!add" -->
                                                 <div matTooltip="Select  name to enable this button!!"
-                                                [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid"
-                                                [matTooltipPosition]="'above'">
-                                                <!-- <button fxLayoutAlign="center center" #addbutton
+                                                    [matTooltipDisabled]="!_salesService.IndentSearchGroup.invalid"
+                                                    [matTooltipPosition]="'above'">
+                                                    <!-- <button fxLayoutAlign="center center" #addbutton
                                                     class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
                                                     (click)="OnAddUpdate($event)">
                                                     <span class="btn-icon">
@@ -465,13 +465,15 @@
                                                     <span>Add</span>
                                                 </button> -->
 
-                                                <button (click) ="OnAddUpdate($event)"  class="btn btn-primary btn-with-icon py-8"  [disabled]="!add" #addbutton>
-                                                    <span class="btn-icon">
-                                                        <mat-icon> add </mat-icon>
-                                                    </span>
-                                                </button>
-                                                <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
-                                            </div>
+                                                    <button (click)="OnAddUpdate($event)"
+                                                        class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
+                                                        #addbutton>
+                                                        <span class="btn-icon">
+                                                            <mat-icon> add </mat-icon>
+                                                        </span>
+                                                    </button>
+                                                    <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -499,15 +501,16 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="BatchExpDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >Exp.Date
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Exp.Date
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm >
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.BatchExpDate}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="Qty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-80">Qty
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                    class="w-80">Qty
                                                 </mat-header-cell>
                                                 <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
@@ -1300,16 +1303,22 @@
                                     <mat-spinner [diameter]='30' style="margin: auto;"></mat-spinner>
                                 </div>
                                 <div *ngFor="let item of salesIdWiseObj | keyvalue">
-                                    <div>
-                                        <h3>Sales No: {{item.key}} <button class="btn btn-primary btn-xs"
-                                                style="margin-left: 10px;" (click)="Addrepeat(item)">repeat</button>
-                                        </h3>
-
+                                    <div class="sale-detail-box">
+                                        <div class="sale-detail">
+                                            <div class="sale-no h5">
+                                                <span>Sales No: </span>
+                                                <span>{{item.key}} </span>
+                                            </div>
+                                            <div class="sale-info" *ngFor="let ele of item.value">
+                                                {{ele.ItemShortName}} | {{ele.Qty}} | {{ele.UnitMRP}}
+                                            </div>
+                                        </div>
+                                        <div class="repeat-button">
+                                            <button class="btn btn-primary btn-xs"
+                                                (click)="Addrepeat(item)">repeat
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div *ngFor="let ele of item.value">
-                                        {{ele.ItemShortName}} | {{ele.Qty}} | {{ele.UnitMRP}}
-                                    </div>
-
                                     <hr>
                                 </div>
                             </div>

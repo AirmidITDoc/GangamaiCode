@@ -3,7 +3,7 @@ $table-row-width-small: 600px;
 
 .sales-return-section {
     .mat-table {
-        height: calc(100vh - 660px);
+        height: calc(100vh - 675px);
         min-height: 200px;
         overflow: auto;
         .mat-header-row,
@@ -11,13 +11,18 @@ $table-row-width-small: 600px;
             &.table-left-row {
                 min-width: $table-row-width;
             }
-            &.table-right-row{
+            &.table-right-row {
                 min-width: $table-row-width-small;
             }
-            &.table-row-lg{
+            &.table-row-lg {
                 min-width: $table-row-width;
             }
-
+        }
+    }
+    .searchButton {
+        .mat-icon {
+            margin: 0;
+            color: $primary-600;
         }
     }
 }
