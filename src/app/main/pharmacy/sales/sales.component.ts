@@ -1389,14 +1389,12 @@ export class SalesComponent implements OnInit {
 
   Addrepeat(row) {
     console.log(row)
-
     this.repeatItemList = row.value;
     this.Itemchargeslist = [];
     this.repeatItemList.forEach((element) => {
       let Qty = parseInt(element.Qty.toString())
       let UnitMrp = element.UnitMRP.split('|')[0];
       console.log(UnitMrp)
-
       // this.LandedRateandedTotal = (parseInt(element.Qty) * (element.LandedRate)).toFixed(2);
       // this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
       // this.PurTotAmt = (parseInt(element.Qty) * (this.PurchaseRate)).toFixed(2);
@@ -2796,6 +2794,7 @@ else{
     this.Itemchargeslist1 = [];
     this.Itemchargeslist = [];
 
+    debugger;
     let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
     this._salesService.getchargesList(strSql).subscribe(data => {
       this.tempDatasource.data = data as any;
@@ -2815,11 +2814,6 @@ else{
     console.log(contact)
     this.Itemchargeslist1 = [];
     this.QtyBalchk = 0;
-    // this.PatientName = contact.patientname;
-    // this.MobileNo = this.tempDatasource.data[0]["ExtMobileNo"];
-    // this.vextAddress = this.tempDatasource.data[0]["extAddress"];
-    // this.DoctorName = this.tempDatasource.data[0]["AdmDoctorName"];
-    // if (this.tempDatasource.data.length > 0) {
     var m_data = {
       "ItemId": contact.ItemId,
       "StoreId": this._loggedService.currentUserValue.user.storeId || 0
@@ -2838,9 +2832,7 @@ else{
             this.QtyBalchk = 0;
           }
           if (this.QtyBalchk != 1) {
-
             if (DraftQty <= element.BalanceQty) {
-
               this.QtyBalchk = 1;
               this.getFinalCalculation(element, DraftQty);
               ItemID = element.ItemId;
@@ -2861,22 +2853,24 @@ else{
   }
 
   getFinalCalculation(contact, DraftQty) {
-
+    console.log(contact)
     // if (parseInt(contact.BalanceQty) > parseInt(this.)) {
     this.RQty = parseInt(DraftQty);
     if (this.RQty && contact.UnitMRP) {
       this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
       this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
-      this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
       this.PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
+
+      this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
+
       this.GSTAmount = (((contact.UnitMRP) * (contact.VatPercentage) / 100) * parseInt(this.RQty)).toFixed(2);
       this.CGSTAmt = (((contact.UnitMRP) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
       this.SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
       this.IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      this.NetAmt = (parseFloat(this.TotalMRP) + parseFloat(this.GSTAmount)).toFixed(2);
+      
+      this.NetAmt = (parseFloat(this.TotalMRP)- 0).toFixed(2);
 
       if (contact.DiscPer > 0) {
-
         this.DiscAmt = ((this.TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
         this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
 
