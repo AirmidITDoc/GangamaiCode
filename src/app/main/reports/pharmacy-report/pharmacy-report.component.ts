@@ -276,13 +276,14 @@ export class PharmacyReportComponent implements OnInit {
 
 
   viewDailyCollectionPdf(){
-     setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-     this.AdList=true;
+    setTimeout(() => {
+    this.sIsLoading = 'loading-data';
+    this.AdList=true;
     this._BrowsSalesBillService.getSalesDailyCollectionNew(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this._loggedUser.currentUserValue.user.storeId, this.UserId 
+      this._loggedUser.currentUserValue.user.storeId, 
+      this._BrowsSalesBillService.userForm.get('UserId').value.UserId //this.UserId 
     ).subscribe(res=>{
     const dialogRef = this._matDialog.open(PdfviewerComponent, 
       {   maxWidth: "95vw",
