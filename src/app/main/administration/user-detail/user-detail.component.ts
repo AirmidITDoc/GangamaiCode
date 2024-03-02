@@ -67,7 +67,7 @@ export class UserDetailComponent implements OnInit {
       this.registerObj = this.data.registerObj;
       this.vUserId = this.registerObj.UserId;
     }
-
+      console.log(this.registerObj)
     this.getDoctorlist1();
     this.getRoleNamelist1();
    this.getwebRoleNamelist1();
@@ -108,10 +108,11 @@ export class UserDetailComponent implements OnInit {
         "",
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
     ],
-      MailDomain: '',
+    RoleId: '',
+    WebroleId:'',
       DoctorId: '',
       IsDoctor: '',
-      RoleId: '',
+      
       RoleName: '',
       Status: '1',
       poverify: '',
@@ -127,8 +128,7 @@ export class UserDetailComponent implements OnInit {
       IsAddChargeDelete: '',
       IsPharmacyBalClearnace: '',
       BedStatus: '',
-      IsActive: 'true',
-      WebroleId: ''
+      IsActive: 'true'
     });
 
   }
@@ -191,7 +191,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   getRoleNamelist1() {
-    debugger
+    // debugger
     this._UserService.getRoleCombobox().subscribe(data => {
       this.RoleNameList = data;
       if (this.data) {
@@ -339,12 +339,12 @@ export class UserDetailComponent implements OnInit {
       });
       return;
     }
-    if ((this.vPassword == '' || this.vPassword == null || this.vPassword == undefined)) {
-      this.toastr.warning('Please enter a Password', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if ((this.vPassword == '' || this.vPassword == null || this.vPassword == undefined)) {
+    //   this.toastr.warning('Please enter a Password', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     if ((this.vEmail == '' || this.vEmail == null || this.vEmail == undefined)) {
       this.toastr.warning('Please enter a Email', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -446,7 +446,7 @@ export class UserDetailComponent implements OnInit {
           "isDateInterval": true,
           "isDateIntervalDays": 0,
           "mailId": this.UserForm.get('MailId').value || 0,
-          "MailDomain": this.UserForm.get('MailDomain').value || 0,
+          "MailDomain": '',//this.UserForm.get('MailDomain').value || 0,
           // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
           "addChargeIsDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
           "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,

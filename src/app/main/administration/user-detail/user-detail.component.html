@@ -45,8 +45,8 @@
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Last Name</mat-label>
                 <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
-                <input name="LastName" formControlName="LastName" matInput required [(ngModel)]="registerObj.LastName"
-                  #lname (keydown)="onEnterlname($event)" [(ngModel)]="vLastName">
+                <input name="LastName" formControlName="LastName" matInput required [(ngModel)]="vLastName"
+                 [(ngModel)]="registerObj.LastName" #lname (keydown)="onEnterlname($event)" >
                 <mat-error class="error" *ngIf="UserForm.get('LastName').invalid && UserForm.get('LastName').touched">
                   LastName is required
                 </mat-error>
