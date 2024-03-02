@@ -75,7 +75,7 @@ export class PaymentmodechangesforpharmacyService {
       return this._httpClient.post("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
     }
     
-    public PaymentmodeUpdate(employee) {
-      return this._httpClient.post("Administration/UpdateLoginUser", employee);
+    public PaymentmodeUpdate(employee) {//Administration/UpdateLoginUser
+      return this._httpClient.post("Pharmacy/UpdatePharmPaymentMode", employee);
     }
 }

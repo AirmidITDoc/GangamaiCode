@@ -192,7 +192,7 @@
                             <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                             </mat-header-row>
                             <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                [@animate]="{value:'*',params:{y:'100%'}}" (click)="OnSelect(contact)"
+                                [@animate]="{value:'*',params:{y:'100%'}}" 
                                 appHighlight></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
