@@ -35,6 +35,7 @@ import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.componen
 import { MatDrawer } from '@angular/material/sidenav';
 import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
 import { ConcessionReasonMasterModule } from 'app/main/setup/billing/concession-reason-master/concession-reason-master.module';
+import { SubstitutesComponent } from './substitutes/substitutes.component';
 
 @Component({
   selector: 'app-sales',
@@ -155,7 +156,7 @@ export class SalesComponent implements OnInit {
   chargeslist = new MatTableDataSource<IndentList>();
 
   dataSource1 = new MatTableDataSource<DraftSale>();
-
+  dsBalAvaListStore = new MatTableDataSource<BalAvaListStore>();
   // vSalesDetails: any = [];
   vSalesDetails: Printsal[] = [];
   vSalesIdList: any = [];
@@ -281,10 +282,12 @@ export class SalesComponent implements OnInit {
     'buttons'
   ];
 
-
+  DraftAvbStkListDisplayedCol = [
+    'StoreName',
+    'BalQty'
+  ];
 
   DraftSaleDisplayedCol = [
-    // 'DSalesId',
     'ExtMobileNo',
     'buttons'
   ];
@@ -364,9 +367,6 @@ export class SalesComponent implements OnInit {
     this.getBankNameList4();
     this.getDraftorderList();
   }
-
-
-
 
 
   createForm() {
@@ -1055,6 +1055,7 @@ export class SalesComponent implements OnInit {
     if (this.BalanceQty > 0) {
       this.getBatch();
     }
+    this.m_getBalAvaListStore(obj.ItemId)
   }
 
   gePharStoreList() {
@@ -1163,16 +1164,13 @@ export class SalesComponent implements OnInit {
     }
     // f8
     if (event.keyCode === 119) {
-      this.onSave();
+      // this.onSave();
+      this.onsubstitutes();
     }
     // f9
     if (event.keyCode === 120) {
       this.Functionflag = 1
       this.onSave();
-
-      // if(this.GSalesNo !=0){
-      // this. getWhatsappshare();
-      // }
     }
 
   }
@@ -1213,6 +1211,17 @@ export class SalesComponent implements OnInit {
     // el.button.disbled=false;
   }
 
+   onsubstitutes() {
+    const dialogRef = this._matDialog.open(SubstitutesComponent,
+      {
+        maxWidth: "65vw",
+        height: '650px',
+        width: '60%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
 
   onClear() {
 
@@ -1269,9 +1278,6 @@ export class SalesComponent implements OnInit {
     this.sIsLoading = 'save';
     if (this.Itemchargeslist.length > 0) {
       this.Itemchargeslist.forEach((element) => {
-        // console.log(element.StockId)  
-        // console.log(this.StockId)
-        // Swal.fire(element.StockId +'Added Item ' + this.StockId);
         if (element.StockId == this.StockId) {
           // Swal.fire('Selected Item already added in the list');
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
@@ -1568,6 +1574,7 @@ else{
     this.v_marginamt = 0;
     this._salesService.IndentSearchGroup.get('ItemId').reset('');
     this.filteredOptions = [];
+    this.dsBalAvaListStore.data =[];
 
     // this.add=false;
     this.getPharItemList();
@@ -1907,14 +1914,14 @@ else{
 
 
   onSave() {
-    if (this.PatientName == "" || this.MobileNo == null || this.DoctorName == "" ) {
-      this.toastr.warning('Please select All Customer Detail', 'Warning !', {
+    if (this.PatientName == "" || this.MobileNo == "" || this.DoctorName == "" ) {
+      this.toastr.warning('Please select Customer Detail', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(this.saleSelectedDatasource.data.length ==0 || this.FinalTotalAmt == 0 || this.FinalNetAmount==0   ){
-        this.toastr.warning('Please select All Bill Detail', 'Warning !', {
+    if(this.FinalTotalAmt == 0 || this.FinalNetAmount == 0 ){
+        this.toastr.warning('Please check Sales total Amount', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
@@ -2775,14 +2782,24 @@ else{
     this._salesService.getDraftList(m).subscribe(data => {
       this.chargeslist1 = data as ChargesList[];
       this.dataSource1.data = this.chargeslist1;
-    
     },
       (error) => {
-
       });
-
-
   }
+
+  m_getBalAvaListStore(Param) {
+    this.dataSource1.data = [];
+    var m = {
+      "ItemId": Param
+    }
+    this._salesService.getBalAvaListStore(m).subscribe(data => {
+      this.dsBalAvaListStore.data = data as BalAvaListStore[];
+    },
+      (error) => {
+      });
+  }
+
+
   onAddDraftList(contact) {
      console.log(contact)
     this.PatientName = contact.PatientName;
@@ -3369,6 +3386,22 @@ export class IndentID {
   }
 }
 
+export class BalAvaListStore {
+  StoreName: any;
+  BalQty: any;
+
+  /**
+   * Constructor
+   *
+   * @param BalAvaListStore
+   */
+  constructor(BalAvaListStore) {
+    {
+      this.StoreName = BalAvaListStore.StoreName || "";
+      this.BalQty = BalAvaListStore.BalQty || 0;
+    }
+  }
+}
 export class DraftSale {
   DSalesId: any;
   PatientName: any;

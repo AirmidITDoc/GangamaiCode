@@ -37,6 +37,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { SalesComponent } from './sales.component';
 import { SalePopupComponent } from './sale-popup/sale-popup.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { SubstitutesComponent } from './substitutes/substitutes.component';
 
 
 const routes: Routes = [
@@ -50,6 +51,7 @@ const routes: Routes = [
   declarations: [
     SalesComponent,
     SalePopupComponent,
+    SubstitutesComponent,
   ],
   imports: [
     CommonModule,

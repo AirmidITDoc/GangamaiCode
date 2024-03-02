@@ -1,0 +1,98 @@
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout simple right-sidebar"
+    style="height: 530px !important;">
+    <div class="center" fusePerfectScrollbar style="overflow: auto;">
+
+        <mat-toolbar matDialogTitle class="mat-accent m-0">
+            <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+                <h3>Substitutes List</h3>
+                <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+
+        <div>
+            <form [formGroup]="IssueSearchGroup">
+
+                <mat-form-field appearance="outline" fxflex="30">
+                    <mat-label>Item Name </mat-label>
+                    <input type="text" name="ToStoreId" formControlName="ToStoreId" matInput
+                        [matAutocomplete]="auto" (input)="getPhoneAppointmentList()">
+                    <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                            (click)="IssueSearchGroup.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                            (click)="IssueSearchGroup.get('ToStoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+                    </span>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                        (optionSelected)='getSelectedObjPhone($event.option.value)'>
+                        <mat-option *ngFor="let option of PatientListfilteredOptions"
+                            [value]="option">
+                            {{option.ItemName}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="IssueSearchGroup.get('ToStoreId').hasError('required')">
+                        Required field cannot be left blank
+                    </mat-error>
+                </mat-form-field>
+         
+                <mat-form-field appearance="outline" fxflex="30">
+                    <mat-label>Generic Name </mat-label>
+                    <input type="text" name="FromStoreId" formControlName="FromStoreId" matInput
+                        [matAutocomplete]="autoItem" (input)="getGenericList()">
+                    <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                            (click)="IssueSearchGroup.get('FromStoreId').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                            (click)="IssueSearchGroup.get('FromStoreId').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                    </span>
+                    <mat-autocomplete #autoItem="matAutocomplete" [displayWith]="getOptionTextGeneric"
+                        (optionSelected)='getSelectedObjGeneric($event.option.value)'>
+                        <mat-option *ngFor="let option of GenericListfilteredOptions"
+                            [value]="option">
+                            {{option.ItemGenericName}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="IssueSearchGroup.get('ToStoreId').hasError('required')">
+                        Required field cannot be left blank
+                    </mat-error>
+                </mat-form-field>
+        </form>
+        </div>
+
+        <div style="padding:10px; height: 100%;" fxLayoutGap="2px">
+            <div class="dialog-content-wrapper" style="align-items: flex-end;margin-right:10px;">
+                <div fxlayout="row">
+                    <div style="width: 100%">
+                        <mat-table #table matSort [dataSource]="dsItemList" style="overflow: auto">
+
+                            <ng-container matColumnDef="ItemName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    ItemName
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.ItemName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ItemGenericName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    ItemGenericName</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.ItemGenericName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns;sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let row;columns: displayedColumns" class="element"
+                                [@animate]="{value: '*',params: { y: '100%' }}"></mat-row>
+                        </mat-table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
+                        </mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

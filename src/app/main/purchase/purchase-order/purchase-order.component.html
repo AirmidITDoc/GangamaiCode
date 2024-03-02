@@ -192,23 +192,9 @@
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                            <!-- <ng-container matColumnDef="PurchaseTime">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm>
-                                                                    Purchase Time</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.PurchaseTime | date:'shortDate'}}
-                                                                </mat-cell>
-                                                            </ng-container> -->
+                                                           
 
-                                                            <!-- <ng-container matColumnDef="StoreName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm>
-                                                                    Store Name</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.StoreName}}
-                                                                </mat-cell>
-                                                            </ng-container> -->
+                                                          
 
                                                             <ng-container matColumnDef="SupplierName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -225,6 +211,42 @@
                                                                     Total Amt </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                                     {{contact.TotalAmount | number:'1.2-2'}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="DiscAmount">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm>
+                                                                    DiscAmount</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                    {{contact.DiscAmount | date:'shortDate'}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="GrandTotal">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm>
+                                                                    Net Amount</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                    {{contact.GrandTotal}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Remarks">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm>
+                                                                    Remarks</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                    {{contact.Remarks}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="AddedByName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm>
+                                                                    AddedByName</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                    {{contact.AddedByName}}
                                                                 </mat-cell>
                                                             </ng-container>
 
