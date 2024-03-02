@@ -119,12 +119,14 @@ export class PurchaseOrderComponent implements OnInit {
 
   displayedColumns = [
     'Status',
-    // 'PurchaseNo',
+    'PurchaseNo',
     'PurchaseDate',
-    // 'PurchaseTime',
-    // 'StoreName',
     'SupplierName',
     'TotalAmount',
+    'DiscAmount',
+    'GrandTotal',
+    'Remarks',
+    'AddedByName',
     'action',
   ];
 
