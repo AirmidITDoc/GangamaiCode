@@ -203,7 +203,6 @@ export class PurchaseOrderComponent implements OnInit {
 
 
   getPurchaseOrderList() {
-
     var Param = {
       "ToStoreId": this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').value.storeid || 0,
       "From_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-10-01 00:00:00.000',
@@ -211,10 +210,8 @@ export class PurchaseOrderComponent implements OnInit {
       "IsVerify": this._PurchaseOrder.PurchaseSearchGroup.get("Status").value,
       "Supplier_Id": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
-    // console.log(Param);
     this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data as PurchaseOrder[];
-      //console.log(this.dsPurchaseOrder);
       this.dsPurchaseOrder.sort = this.sort;
       this.dsPurchaseOrder.paginator = this.paginator;
       this.sIsLoading = '';
@@ -234,7 +231,6 @@ export class PurchaseOrderComponent implements OnInit {
       this.dsPurchaseItemList.sort = this.sort;
       this.dsPurchaseItemList.paginator = this.paginator;
       this.sIsLoading = '';
-     // console.log(this.dsPurchaseItemList);
     },
       error => {
         this.sIsLoading = '';
@@ -307,7 +303,6 @@ export class PurchaseOrderComponent implements OnInit {
     });
   }
   private _filterSupplier(value: any): string[] {
-    debugger
     if (value) {
       const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
       return this.optionsMarital.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
@@ -449,7 +444,6 @@ export class PurchaseOrderComponent implements OnInit {
  
   
   getWhatsappshareSales(el) {
-    debugger
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": 11,//el.RegNo,
