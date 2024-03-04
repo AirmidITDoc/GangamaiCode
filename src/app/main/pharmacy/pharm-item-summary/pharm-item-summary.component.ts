@@ -200,7 +200,7 @@ export class PharmItemSummaryComponent implements OnInit {
     var vdata = {
      "ExpMonth":this._PharmaitemsummaryService.userFormGroup.get("ExpMonth").value || 0,
      "ExpYear": this._PharmaitemsummaryService.userFormGroup.get("ExpYear").value || 0,     
-     "StoreID": this.accountService.currentUserValue.user.storeId || 1        
+     "StoreID": this.accountService.currentUserValue.user.storeId || 0        
     }
     setTimeout(() => {
       this._PharmaitemsummaryService.getItemexpdatewise(vdata).subscribe(

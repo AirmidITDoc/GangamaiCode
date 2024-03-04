@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PurchaseOrderService } from '../purchase-order.service';
 import { FormBuilder, FormControl } from '@angular/forms';
@@ -420,6 +420,16 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this._PurchaseOrder.getLastThreeItemInfo(vdata).subscribe(data => {
       this.dsLastThreeItemList.data = data as LastThreeItemList[]; this.sIsLoading = '';
     });
+  }
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'F4') {
+      // Save functionality
+      this.OnSavenew();
+    } else if (event.key === 'F5') {
+      // Edit functionality
+      this.OnSaveEdit();
+    }
   }
   OnSave() {
     if (!this.registerObj.PurchaseID) {
@@ -996,6 +1006,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       this.OctriAmount.nativeElement.focus();
     }
   }
+ 
 
   onEdit(contact) {
     const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,

@@ -30,12 +30,14 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
     'ChequeAmt',
     'CardAmt',
     'NeftPay',
-    // 'PayAtm'
+     'PayAtm'
     
   ];
 
   sIsLoading: string = '';
   isLoading = true;
+  dateTimeObj: any;
+
 
   dsPaymentPharmacyList = new MatTableDataSource<PaymentPharmayList>();
  
@@ -58,12 +60,9 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-  dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
-  }
-       
+  }     
   getIPPharAdvanceList(){
     this.sIsLoading = 'loading-data';
     var vdata={
@@ -105,10 +104,8 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       this.sIsLoading = '';
     });
    }
-  
-
    onEdit(m) {
-    console.log(m);
+   // console.log(m);
      let xx = {
       UserId:m.UserId,
       FirstName:m.FirstName,
@@ -141,7 +138,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       this.advanceDataStored.storage = new PaymentPharmayList(xx);
       const dialogRef = this._matDialog.open(EditPaymentmodeComponent,
         {
-          maxWidth: "85vw",
+          maxWidth: "65vw",
           height: "700px",
           width: '100%',
           data : {
@@ -156,6 +153,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              console.log('The dialog was closed - Insert Action', result);
            });
+           this.getIPPharAdvanceList();
                
  }
    
