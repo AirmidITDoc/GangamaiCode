@@ -23,7 +23,6 @@ export class UserDetailComponent implements OnInit {
 
   submitted = false;
   data1: [];
-
   StoreList: any = [];
   RoleList: any = [];
   DoctortypecmbList: any = [];
@@ -49,8 +48,6 @@ export class UserDetailComponent implements OnInit {
   Store1List: any = [];
   isLoading: string;
 
-
-
   constructor(public _UserService: AdministrationService,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
@@ -66,27 +63,21 @@ export class UserDetailComponent implements OnInit {
   ngOnInit(): void {
 
     this.UserForm = this.createPesonalForm();
-
     if (this.data) {
       this.registerObj = this.data.registerObj;
-      console.log(this.registerObj);
       this.vUserId = this.registerObj.UserId;
     }
-
+      console.log(this.registerObj)
     this.getDoctorlist1();
     this.getRoleNamelist1();
-    this.getwebRoleNamelist1();
-    this.gePharStoreList();
-    // this.getRolelist();
-    // this.getDoctorlist();
+   this.getwebRoleNamelist1();
+    this.gePharStoreList1();
 
-    debugger
     this.filteredOptionsRole = this.UserForm.get('RoleId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterRole(value)),
 
     );
-
 
     this.filteredOptionswebrollName = this.UserForm.get('WebroleId').valueChanges.pipe(
       startWith(''),
@@ -94,13 +85,16 @@ export class UserDetailComponent implements OnInit {
 
     );
 
-    this.filteredOptionsDoctorName = this.UserForm.get('DoctorId').valueChanges.pipe(
+    this.filteredOptionsStorename = this.UserForm.get('StoreId').valueChanges.pipe(
       startWith(''),
-      map(value => this._filterDoctor(value)),
+      map(value => this._filterStore(value)),
 
     );
 
-
+    this.filteredOptionsDoctorName = this.UserForm.get('DoctorId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterDoctor(value)),
+    );
   }
 
   createPesonalForm() {
@@ -114,10 +108,11 @@ export class UserDetailComponent implements OnInit {
         "",
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
     ],
-      MailDomain: '',
+    RoleId: '',
+    WebroleId:'',
       DoctorId: '',
       IsDoctor: '',
-      RoleId: '',
+      
       RoleName: '',
       Status: '1',
       poverify: '',
@@ -133,30 +128,18 @@ export class UserDetailComponent implements OnInit {
       IsAddChargeDelete: '',
       IsPharmacyBalClearnace: '',
       BedStatus: '',
-      IsActive: 'true',
-      WebroleId: ''
+      IsActive: 'true'
     });
 
   }
-
-
-
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
     }
-    console.log(vdata);
     this._BatchAndExpDateAdjustmentService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
-      // console.log(this.StoreList);
       this.UserForm.get('StoreId').setValue(this.StoreList[0]);
     });
-  }
-  getRolelist() {
-    this._UserService.getRoleCombobox().subscribe(data => {
-      this.RoleList = data;
-      // this.filteredRole.next(this.RoleList.slice());
-    })
   }
 
   getDoctorlist() {
@@ -165,52 +148,28 @@ export class UserDetailComponent implements OnInit {
       // this.filteredDoctor.next(this.DoctortypecmbList.slice());
     })
   }
-
   StoreId: any;
   gePharStoreList1() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
-    }
-    this._UserService.getLoggedStoreList(vdata).subscribe(data => {
+    this._UserService.getStoreList().subscribe(data => {
       this.Store1List = data;
-      console.log(data)
-      // if (this.data) {
-      const ddValue = this.Store1List.filter(c => c.StoreId == this.StoreId);
+      if (this.data) {
+      const ddValue = this.Store1List.filter(c => c.StoreId == this.registerObj.StoreId);
       this.UserForm.get('StoreId').setValue(ddValue[0]);
       this.UserForm.updateValueAndValidity();
       return;
-      // } 
+      } 
     });
-
   }
-
-
   private _filterStore(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-
       return this.Store1List.filter(option => option.StoreName.toLowerCase().includes(filterValue));
     }
-
   }
-
   getOptionTextStoreName(option) {
     return option && option.StoreName ? option.StoreName : '';
-
   }
-
-
-  // getDoctorlist1(){
-  //   this._UserService.getDoctorMasterCombo().subscribe(data => {
-  //      this.DocotorList = data; 
-  //      //console.log(this.DocotorList);
-
-  //   })
-  // }
-
-
   getDoctorlist1() {
-
     this._UserService.getDoctorMasterCombo().subscribe(data => {
       this.DocotorList = data;
       if (this.data) {
@@ -220,37 +179,21 @@ export class UserDetailComponent implements OnInit {
         return;
       }
     });
-
   }
-
-
   private _filterDoctor(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-
       return this.DocotorList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
     }
-
   }
-
   getOptionTextDoctorName(option) {
     return option && option.DoctorName ? option.DoctorName : '';
-
   }
-  // getRoleNamelist1(){
-  //   this._UserService.getRoleCombobox().subscribe(data => {
-  //      this.RoleNameList = data; 
-  //      console.log(this.RoleNameList);
-
-  //   })
-  // }
-
 
   getRoleNamelist1() {
-    debugger
+    // debugger
     this._UserService.getRoleCombobox().subscribe(data => {
       this.RoleNameList = data;
-      console.log(data)
       if (this.data) {
         const ddValue = this.RoleNameList.filter(c => c.RoleId == this.registerObj.RoleId);
         this.UserForm.get('RoleId').setValue(ddValue[0]);
@@ -258,54 +201,42 @@ export class UserDetailComponent implements OnInit {
         return;
       }
     });
-
   }
-
-
+//role master
   private _filterRole(value: any): string[] {
     if (value) {
       const filterValue = value && value.RoleName ? value.RoleName.toLowerCase() : value.toLowerCase();
 
       return this.RoleNameList.filter(option => option.RoleName.toLowerCase().includes(filterValue));
     }
-
   }
-
   getOptionTextRoleName(option) {
     return option && option.RoleName ? option.RoleName : '';
-
   }
 
   getwebRoleNamelist1() {
-    
     this._UserService.getwebRoleCombobox().subscribe(data => {
       this.WebRoleNameList = data;
       console.log(data)
-      // if (this.data) {
-      //   const ddValue = this.WebRoleNameList.filter(c => c.RoleId == this.registerObj.WebRoleId);
-      //   this.UserForm.get('WebRoleId').setValue(ddValue[0]);
-      //   this.UserForm.updateValueAndValidity();
-      //   return;
-      // }
+      if (this.data) {
+        const ddValue = this.WebRoleNameList.filter(c => c.RoleId == this.registerObj.WebRoleId);
+        this.UserForm.get('WebroleId').setValue(ddValue[0]);
+        this.UserForm.updateValueAndValidity();
+        return;
+      }
     });
-
   }
-
-
+//web role master
   private _filterwebRole(value: any): string[] {
     if (value) {
       const filterValue = value && value.RoleName ? value.RoleName.toLowerCase() : value.toLowerCase();
-
       return this.WebRoleNameList.filter(option => option.RoleName.toLowerCase().includes(filterValue));
     }
-
   }
 
   getOptionTextwebroleName(option) {
     return option && option.RoleName ? option.RoleName : '';
-
   }
-
   @ViewChild('fname') fname: ElementRef;
   @ViewChild('lname') lname: ElementRef;
   @ViewChild('loginname') loginname: ElementRef;
@@ -317,59 +248,44 @@ export class UserDetailComponent implements OnInit {
   @ViewChild('webrole') webrole: ElementRef;
   // @ViewChild('Fax') Fax: ElementRef;
 
-
-
   onEnterfname(event) {
     if (event.which === 13) {
       this.lname.nativeElement.focus();
-
     }
   }
 
   onEnterlname(event) {
     if (event.which === 13) {
       this.loginname.nativeElement.focus();
-
     }
   }
 
   onEnterloginname(event) {
     if (event.which === 13) {
       this.password.nativeElement.focus();
-
     }
   }
-
   onEnterpassword(event) {
     if (event.which === 13) {
       this.mailid.nativeElement.focus();
-
     }
   }
   onEntermailid(event) {
     if (event.which === 13) {
       this.role.nativeElement.focus();
-
     }
   }
 
   onEnterrole(event) {
     if (event.which === 13) {
-      this.docname.nativeElement.focus();
-
     }
   }
   onEnterdocName(event) {
     if (event.which === 13) {
-      // this.suppliertype.nativeElement.focus();
-
     }
   }
-
   onEnterStore(event) {
     if (event.which === 13) {
-      // this.suppliertype.nativeElement.focus();
-
     }
   }
 
@@ -388,9 +304,15 @@ export class UserDetailComponent implements OnInit {
   onClose() {
     this.dialogRef.close();
   }
-
+  vFirstName:any;
+  vLastName:any;
+  vUserName:any;
+  vPassword:any;
+  vEmail:any;
+  vStoreId:any;
+  vRoleName:any;
   Save() {
-debugger
+// debugger
 
     if (this.UserForm.get('IsDoctor').value == true) {
       this.docflag = true
@@ -399,8 +321,48 @@ debugger
       this.docflag = false
       this.DoctorId=0;
     }
-
-
+    if ((this.vFirstName == '' || this.vFirstName == null || this.vFirstName == undefined)) {
+      this.toastr.warning('Please enter a FirstName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vLastName == '' || this.vLastName == null || this.vLastName == undefined)) {
+      this.toastr.warning('Please enter a LastName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vUserName == '' || this.vUserName == null || this.vUserName == undefined)) {
+      this.toastr.warning('Please enter a UserName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    // if ((this.vPassword == '' || this.vPassword == null || this.vPassword == undefined)) {
+    //   this.toastr.warning('Please enter a Password', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    if ((this.vEmail == '' || this.vEmail == null || this.vEmail == undefined)) {
+      this.toastr.warning('Please enter a Email', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vStoreId == '' || this.vStoreId == null || this.vStoreId == undefined)) {
+      this.toastr.warning('Please enter a StoreId', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vRoleName == '' || this.vRoleName == null || this.vRoleName == undefined)) {
+      this.toastr.warning('Please enter a RoleName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (this.vUserId == 0) {
       this.isLoading = 'submit';
 
@@ -434,7 +396,7 @@ debugger
           // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
           "addChargeIsDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
           "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
-
+          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId 
 
         }
       }
@@ -484,11 +446,11 @@ debugger
           "isDateInterval": true,
           "isDateIntervalDays": 0,
           "mailId": this.UserForm.get('MailId').value || 0,
-          "MailDomain": this.UserForm.get('MailDomain').value || 0,
+          "MailDomain": '',//this.UserForm.get('MailDomain').value || 0,
           // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
           "addChargeIsDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
           "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
-
+          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId 
 
         }
       }
@@ -498,7 +460,7 @@ debugger
       this._UserService.UserUpdate(m_data1).subscribe(response => {
         console.log(response);
         if (response) {
-          this.toastr.success('User Detail Update', 'Save !', {
+          this.toastr.success('User Detail Update', 'Updated !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
         } else {

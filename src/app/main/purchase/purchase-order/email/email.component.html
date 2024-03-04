@@ -12,8 +12,11 @@
             </span>
             <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
             style="border-color: red;"></app-common-date> -->
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+            <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
                 style="margin-left: 660px;">
+                <mat-icon>close</mat-icon>
+            </button> -->
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
         </div>
@@ -71,6 +74,7 @@
                                     <button class="footer-btn" style="border-radius: 16px;"
                                         (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                 </div>
+                                
 
                             </div>
                         </form>

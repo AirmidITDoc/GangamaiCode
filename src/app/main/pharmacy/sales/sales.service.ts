@@ -119,6 +119,9 @@ export class SalesService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SalesDraftBillList",emp);
   }
 
+  public getBalAvaListStore(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_getBalAvaListStore",Param);
+  }
   public getchargesList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
@@ -137,8 +140,14 @@ export class SalesService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrive_CurrentStock_ItemList",{});
   }
   
-  // public getDelDrat(query) {
-  //   return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
-  // }
-
+  public getSubstitutes(emp) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_Item_Generic_ByName",emp);
+  }
+  public getItemListSearchList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",Param);
+  }
+  public getGenericNameList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemGenericName",Param);
+  }
+  
 }

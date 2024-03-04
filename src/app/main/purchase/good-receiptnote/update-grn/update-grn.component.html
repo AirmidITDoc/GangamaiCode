@@ -277,7 +277,7 @@
                                         <input matInput [(ngModel)]="vDisc2" name="Disc2" type="number"
                                             autocomplete="off"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                            (keyup)="calculateDiscperAmount()" formControlName="Disc2" id="Disc2"
+                                            (keyup)="calculateDiscper2Amt()" formControlName="Disc2" id="Disc2"
                                             (keydown)="onEnterDisc2($event)" #disc2>
                                     </mat-form-field>&nbsp;
 
@@ -440,22 +440,14 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <!-- <ng-container matColumnDef="Qty">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Qty</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
-                                            style="text-decoration: underline;"
-                                                (input)="OnCellEditCalu($event, contact)"> {{contact.ReceiveQty}}
-                                            </mat-cell>
-                                        </ng-container> -->
-
                                         <ng-container matColumnDef="Qty">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-80">Qty
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-80">Qty
                                             </mat-header-cell>
                                             <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.ReceiveQty" type="number"
-                                                        (keyup)="getCellCalculation(contact,contact.ReceiveQty)"
+                                                        (keyup.enter)="getCellCalculation(contact,contact.ReceiveQty)"
                                                         (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
                                             </mat-cell>
@@ -488,17 +480,12 @@
                                         <ng-container matColumnDef="Rate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Rate</mat-header-cell>
-                                            <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
-                                                style="text-decoration: underline;"
-                                                (input)="OnCellEditCalu($event, contact)"> {{contact.Rate |
-                                                number:'1.2-2' }}
-                                            </mat-cell> -->
                                             <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                                            <mat-form-field appearance="legacy">
-                                                <input matInput [(ngModel)]="contact.Rate" type="number"
-                                                    (keyup)="getCellCalculation(contact,contact.Rate)"
-                                                    (keypress)="keyPressAlphanumeric($event)">
-                                            </mat-form-field>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.Rate" type="number"
+                                                        (keyup.enter)="getCellCalculation(contact,contact.Rate)"
+                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
@@ -513,16 +500,12 @@
                                         <ng-container matColumnDef="Disc">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Disc%</mat-header-cell>
-                                            <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
-                                                style="text-decoration: underline;"
-                                                (input)="OnCellEditCalu($event, contact)"> {{contact.DiscPercentage}}
-                                            </mat-cell> -->
                                             <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                                            <mat-form-field appearance="legacy">
-                                                <input matInput [(ngModel)]="contact.DiscPercentage" type="number"
-                                                    (keyup)="getCellCalculation(contact,contact.DiscPercentage)"
-                                                    (keypress)="keyPressAlphanumeric($event)">
-                                            </mat-form-field>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.DiscPercentage" type="number"
+                                                        (keyup.enter)="getCellCalculation(contact,contact.DiscPercentage)"
+                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
@@ -569,16 +552,12 @@
                                         <ng-container matColumnDef="CGST">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 CGST</mat-header-cell>
-                                            <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
-                                                style="text-decoration: underline;"
-                                                (input)="OnCellEditCalu($event, contact)"> {{contact.CGSTPer}}
-                                            </mat-cell> -->
-                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                                            <mat-form-field appearance="legacy">
-                                                <input matInput [(ngModel)]="contact.CGSTPer" type="number"
-                                                    (keyup)="getCellCalculation(contact,contact.CGSTPer)"
-                                                    (keypress)="keyPressAlphanumeric($event)">
-                                            </mat-form-field>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.CGSTPer" type="number"
+                                                        (keyup.enter)="getCellCalculation(contact,contact.CGSTPer)"
+                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
@@ -593,16 +572,12 @@
                                         <ng-container matColumnDef="SGST">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 SGST</mat-header-cell>
-                                            <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
-                                                style="text-decoration: underline;"
-                                                (input)="OnCellEditCalu($event, contact)"> {{contact.SGSTPer}}
-                                            </mat-cell> -->
-                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                                            <mat-form-field appearance="legacy">
-                                                <input matInput [(ngModel)]="contact.SGSTPer" type="number"
-                                                    (keyup)="getCellCalculation(contact,contact.SGSTPer)"
-                                                    (keypress)="keyPressAlphanumeric($event)">
-                                            </mat-form-field>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.SGSTPer" type="number"
+                                                        (keyup.enter)="getCellCalculation(contact,contact.SGSTPer)"
+                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
@@ -617,16 +592,12 @@
                                         <ng-container matColumnDef="IGST">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 IGST</mat-header-cell>
-                                            <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
-                                                style="text-decoration: underline;"
-                                                (input)="onIGSTEdit($event, contact)"> {{contact.IGSTPer}}
-                                            </mat-cell> -->
-                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                                            <mat-form-field appearance="legacy">
-                                                <input matInput [(ngModel)]="contact.IGSTPer" type="number"
-                                                    (keyup)="getCellCalculation(contact,contact.IGSTPer)"
-                                                    (keypress)="keyPressAlphanumeric($event)">
-                                            </mat-form-field>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.IGSTPer" type="number"
+                                                        (keyup.enter)="getCellCalculation(contact,contact.IGSTPer)"
+                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 

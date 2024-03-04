@@ -192,17 +192,6 @@
                                     <mat-table #table matSort class="table2" [dataSource]="dsPODetailList"
                                         [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
 
-                                        <!-- <ng-container matColumnDef="Action">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                Select
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                <mat-checkbox [(ngModel)]="contact.checked" 
-                                                (change)="toggleSelection(contact)"></mat-checkbox>
-                                            </mat-cell>
-                                        </ng-container> -->
-
-
                                         <ng-container matColumnDef="Action" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
                                                 <span class="material-icons" >
