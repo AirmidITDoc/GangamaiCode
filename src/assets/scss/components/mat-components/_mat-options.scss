@@ -1,7 +1,11 @@
 .mat-typography {
-    &.theme-default {
+    &.theme-default{
         .mat-option {
             @include font-size(13px);
+            &:hover:not(.mat-option-disabled),
+            &:focus:not(.mat-option-disabled) {
+                background-color: $gray-300;
+            }
         }
     }
 }

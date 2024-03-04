@@ -254,7 +254,7 @@ button:disabled {
     // color: white !important;
     // font-size: 16px;
 }
-.patien-info-sales {
+.patient-info-sales {
     font-size: medium;
     background-color: rgb(203, 214, 214);
     padding: 15px;
@@ -310,6 +310,7 @@ button:disabled {
         .table-footer {
             .net-amt {
                 .net-amt-group {
+                    font-size: 15px;
                     .net-amt-label {
                         font-weight: 600;
                     }

@@ -127,7 +127,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientName
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.PatientName}}
+                                                <span> {{contact.PatientName}}</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -734,8 +734,7 @@
                         </div>
 
                         <div class="sr-footer">
-                            <div class="total-amount py-8" fxLayout="row" fxLayoutAlign="end center"
-                                fxLayoutGap="8px">
+                            <div class="total-amount py-8" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
                                 <span class="net-amt-label text-primary font-weight-500"> TotalAmount:</span>
                                 <span class="net-amt-value">
                                     {{getTotAmtSum(selectedssaleDetailList.data) | currency:'INR' }}
@@ -748,8 +747,8 @@
                                         <div class="net-amt">
                                             <span>Net Amount</span>
                                         </div>
-                                        <div class="sr-form-group gap-24 mt-4" fxLayout="row" >
-                                            <div class="form-input-groups gap-8" fxLayout="row" >
+                                        <div class="sr-form-group gap-24 mt-4" fxLayout="row">
+                                            <div class="form-input-groups gap-8" fxLayout="row">
                                                 <mat-form-field appearance="outline" style="width: 180px;">
                                                     <mat-label>Net Amount</mat-label>
                                                     <input matInput formControlName="NetAmt" [(ngModel)]="NetAmt"
@@ -768,11 +767,12 @@
                                                         [(ngModel)]="FinalTotalAmount" readonly required>
                                                 </mat-form-field>
                                             </div>
-                                            <div class="sr-form-button gap-8" fxLayout="row" >
+                                            <div class="sr-form-button gap-8" fxLayout="row">
                                                 <div class="action-button">
-                                                    <button class="btn btn-primary" (click)="onSave()" 
+                                                    <button class="btn btn-primary" (click)="onSave()"
                                                         [disabled]="FinalReturnform.invalid || selectedssaleDetailList.data.length == 0">Save</button>
-                                                    <button class="btn btn-danger-outline ml-8" (click)="onClose()">Reset</button>
+                                                    <button class="btn btn-danger-outline ml-8"
+                                                        (click)="onClose()">Reset</button>
                                                 </div>
                                             </div>
                                         </div>

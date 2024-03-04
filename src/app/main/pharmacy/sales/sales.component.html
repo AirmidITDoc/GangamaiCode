@@ -139,41 +139,46 @@
                                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                             fxLayoutGap="5px">
                                                             <div fxFlex.gt-sm="100%" fxFlex>
-                                                                <div fxlayout="row"
-                                                                    style="background-color: white; padding: 5px 5px 5px 5px;">
+                                                                <div fxlayout="row" style="background-color: white;">
                                                                     <!-- ================================ LABEL HEADER  -->
-                                                                    <div class="patien-info-sales">
+                                                                    <div class="patient-info-sales my-8">
                                                                         <!-- <fieldset class="fieldset-div" style="font-size: medium !important;"> -->
-                                                                        <span style="font-weight: 700;">Patient
-                                                                            Information</span>
-                                                                        <!-- <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center" formControlName="OP_IP_ID" required>
-                                                                            <div class="flex-item" style="width: 30px;">
-                                                                                <h3 class="labels-h3">OP_IP_ID</h3>
-                                                                            </div>
-                                                                            <div class="flex-item-middle">
-                                                                                <h6 class="labels-h6">:</h6>
-                                                                            </div>
-                                                                            <div class="flex-item">
-                                                                                <h6 class="labels-h6"> {{registerObj.AdmissionID}}</h6>
-                                                                            </div>
-                                                                            <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
-                                                                                OP_IP_ID is required
-                                                                            </mat-error>
-                                                                        </div> -->
-
-
-                                                                        <!-- <span style="margin-left: 650px;font-weight: bold;">AdmId:{{registerObj.AdmissionID}}</span>  -->
-                                                                        <!-- <span style="margin-left:20px;font-weight: bold;">DOA:{{registerObj.AdmissionDate | date:'shortDate'}}</span> -->
-
-                                                                        <div fxFlexFill fxLayout="row"
+                                                                        <div class="sales-patient-info-title">
+                                                                            <span style="font-weight: 700;">
+                                                                                Patient Information
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="sales-patient-info" fxFlexFill
+                                                                            fxLayout="row"
                                                                             fxLayoutAlign="space-between center"
                                                                             class="patient-info">
                                                                             <div class="patient-sub">
-                                                                                <div class="patient-info-1-111"
+                                                                                <div class="patient-info-row patient-info-1-111 pt-8"
                                                                                     fxLayout="row"
-                                                                                    fxLayoutAlign="space-between center"
-                                                                                    style="padding-top: 10px;">
-                                                                                    <div style="width:70px;">
+                                                                                    fxLayoutAlign="space-between center">
+                                                                                    <div class="patient-col">
+                                                                                        <span class="patient-col-key">Reg No</span>
+                                                                                        <span>:</span>
+                                                                                        <span class="patient-col-value">{{registerObj.RegNo}}</span>
+                                                                                    </div>
+                                                                                    <div class="patient-col">
+                                                                                        <span class="patient-col-key">Patient Name</span>
+                                                                                        <span>:</span>
+                                                                                        <span class="patient-col-value">{{PatientName}}</span>
+                                                                                    </div>
+                                                                                    <div class="patient-col">
+                                                                                        <span class="patient-col-key">Ward / Bed</span>
+                                                                                        <span>:</span>
+                                                                                        <span class="patient-col-value">{{registerObj.WardId}}/{{registerObj.BedId}}</span>
+                                                                                    </div>
+                                                                                    <div class="patient-col">
+                                                                                        <span class="patient-col-key">Admission Id</span>
+                                                                                        <span>:</span>
+                                                                                        <span class="patient-col-value">{{registerObj.AdmissionID}}</span>
+                                                                                    </div>
+                                                                                    <!-- ------------------------------------ -->
+
+                                                                                    <!-- <div>
                                                                                         <span>Reg No</span>
                                                                                     </div>
                                                                                     <div class="flex-item-middle">
@@ -181,9 +186,9 @@
                                                                                     </div>
                                                                                     <div>
                                                                                         <span>{{registerObj.RegNo}}</span>
-                                                                                    </div>
+                                                                                    </div> -->
 
-                                                                                    <div
+                                                                                    <!-- <div
                                                                                         style="width:120px;margin-left: 10px;">
                                                                                         <span>Patient Name</span>
 
@@ -193,7 +198,7 @@
                                                                                     </div>
                                                                                     <div style="width: 350px;">
                                                                                         <span>{{PatientName}}</span>
-                                                                                    </div>
+                                                                                    </div> -->
 
                                                                                     <!-- <div style="width:80px;margin-left: 10px;">
                                                                                         <span>Mobile No</span>
@@ -205,7 +210,7 @@
                                                                                         <span>{{registerObj.MobileNo}}</span>
                                                                                     </div> -->
 
-                                                                                    <div
+                                                                                    <!-- <div
                                                                                         style="width:100px;margin-left: 10px;">
                                                                                         <span>Ward /Bed</span>
                                                                                     </div>
@@ -214,9 +219,9 @@
                                                                                     </div>
                                                                                     <div style="width: 200px;">
                                                                                         <span>{{registerObj.WardId}}/{{registerObj.BedId}}</span>
-                                                                                    </div>
+                                                                                    </div> -->
 
-                                                                                    <div
+                                                                                    <!-- <div
                                                                                         style="width:100px;margin-left: 10px;">
                                                                                         <span>Admission Id</span>
                                                                                     </div>
@@ -224,13 +229,12 @@
                                                                                         <span>:</span>
                                                                                     </div>
                                                                                     <div style="width: 200px;">
-                                                                                        <span>{{registerObj.AdmissionID}}</span>
-                                                                                        <!-- <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
+                                                                                        <span>{{registerObj.AdmissionID}}</span> -->
+                                                                                    <!-- <mat-error class="error" *ngIf="ItemSubform.get('OP_IP_ID').invalid && ItemSubform.get('OP_IP_ID').touched">
                                                                                             OP_IP_ID is required
                                                                                         </mat-error> -->
-                                                                                    </div>
-
-
+                                                                                    <!-- </div> -->
+                                                                                    <!-- ------------------------------------ -->
                                                                                 </div>
                                                                                 <div class="patient-info-1-2"
                                                                                     fxLayout="row"
@@ -1244,7 +1248,7 @@
                     <div fxFlex="20%" fxFlex.sm="30%" fxFlex.xs="100%" class="table-right">
                         <mat-card style="height: calc(100vh - 95px - 48px);overflow: auto;">
                             <div class="sales-table-right-box">
-                                 <!-- Draft Bill List -->
+                                <!-- Draft Bill List -->
                                 <mat-table class="sales-table-right" #table matSort [dataSource]="dataSource1"
                                     [@animateStagger]="{value:'50'}">
                                     <ng-container matColumnDef="ExtMobileNo">
@@ -1297,14 +1301,15 @@
                                         [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
-                                
+
                                 <!-- Available Stock in Other Store -->
                                 <mat-table class="sales-table-right" #table matSort [dataSource]="dsBalAvaListStore"
                                     [@animateStagger]="{value:'50'}">
                                     <ng-container matColumnDef="StoreName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">Store Name
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="w-190">Store Name
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-190">
                                             {{contact.StoreName}}
                                         </mat-cell>
                                     </ng-container>
@@ -1362,8 +1367,7 @@
                                             </div>
                                         </div>
                                         <div class="repeat-button">
-                                            <button class="btn btn-primary btn-xs"
-                                                (click)="Addrepeat(item)">repeat
+                                            <button class="btn btn-primary btn-xs" (click)="Addrepeat(item)">repeat
                                             </button>
                                         </div>
                                     </div>
