@@ -104,58 +104,50 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       this.sIsLoading = '';
     });
    }
-   onEdit(m) {
-   // console.log(m);
-     let xx = {
-      UserId:m.UserId,
-      FirstName:m.FirstName,
-      LastName:m.LastName,
-      UserLoginName:m.UserLoginName,
-      IsActive:m.IsActive,
-      AddedBy:m.AddedBy,
-      RoleName:m.RoleName,
-      RoleId:m.RoleId,
-      UserName:m.UserName,
-      StoreId:m.StoreId,
-      StoreName:m.StoreName,
-      IsDoctorType:m.IsDoctorType,
-      DoctorID:m.DoctorID,
-      DoctorName:m.DoctorName,
-      IsPOVerify:m.IsPOVerify,
-      IsGRNVerify:m.IsGRNVerify,
-      IsCollection:m.IsCollection,
-      IsBedStatus:m.IsBedStatus,
-      IsCurrentStk:m.IsCurrentStk,
-      IsPatientInfo:m.IsPatientInfo,
-      IsDateInterval:m.IsDateInterval,
-      IsDateIntervalDays:m.IsDateIntervalDays,
-      MailId:m.MailId,
-      MailDomain:m.MailDomain,
-      AddChargeIsDelete:m.AddChargeIsDelete,
-      IsIndentVerify:m.IsIndentVerify,
-      IsInchIndVfy:m.IsInchIndVfy,
-     };
-      this.advanceDataStored.storage = new PaymentPharmayList(xx);
-      const dialogRef = this._matDialog.open(EditPaymentmodeComponent,
-        {
-          maxWidth: "65vw",
-          height: "700px",
-          width: '100%',
-          data : {
-            registerObj : m,
-          }
-          
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        
+  onEdit(m) {
+    let xx = {
+      UserId: m.UserId,
+      FirstName: m.FirstName,
+      LastName: m.LastName,
+      UserLoginName: m.UserLoginName,
+      IsActive: m.IsActive,
+      AddedBy: m.AddedBy,
+      RoleName: m.RoleName,
+      RoleId: m.RoleId,
+      UserName: m.UserName,
+      StoreId: m.StoreId,
+      StoreName: m.StoreName,
+      IsDoctorType: m.IsDoctorType,
+      DoctorID: m.DoctorID,
+      DoctorName: m.DoctorName,
+      IsPOVerify: m.IsPOVerify,
+      IsGRNVerify: m.IsGRNVerify,
+      IsCollection: m.IsCollection,
+      IsBedStatus: m.IsBedStatus,
+      IsCurrentStk: m.IsCurrentStk,
+      IsPatientInfo: m.IsPatientInfo,
+      IsDateInterval: m.IsDateInterval,
+      IsDateIntervalDays: m.IsDateIntervalDays,
+      MailId: m.MailId,
+      MailDomain: m.MailDomain,
+      AddChargeIsDelete: m.AddChargeIsDelete,
+      IsIndentVerify: m.IsIndentVerify,
+      IsInchIndVfy: m.IsInchIndVfy,
+    };
+    this.advanceDataStored.storage = new PaymentPharmayList(xx);
+    const dialogRef = this._matDialog.open(EditPaymentmodeComponent,
+      {
+        maxWidth: "65vw",
+        height: "700px",
+        width: '100%',
+        data: {
+          registerObj: m,
+        }
       });
-           dialogRef.afterClosed().subscribe(result => {
-             console.log('The dialog was closed - Insert Action', result);
-           });
-           this.getIPPharAdvanceList();
-               
- }
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
    
 
 }

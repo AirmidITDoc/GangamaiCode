@@ -85,7 +85,6 @@ export class EditPaymentmodeComponent implements OnInit {
 
     if (this.data) {
       this.registerObj = this.data.registerObj;
-     // console.log(this.registerObj);
       this.vpaymentId = this.registerObj.PaymentId;
       this.vnetPayAmt = this.registerObj.PaidAmount;
       this.vbalanceAmt = this.registerObj.PaidAmount;
@@ -204,13 +203,13 @@ export class EditPaymentmodeComponent implements OnInit {
     paymentModeUpdateObj['cashPayAmt'] = this._Paymentmodesevice.paymentform.get('CashPayAmt').value || 0;
     paymentModeUpdateObj['cardPayAmt'] = this._Paymentmodesevice.paymentform.get('CardPayAmt').value || 0;
     paymentModeUpdateObj['cardNo'] = this._Paymentmodesevice.paymentform.get('CardNo').value || 0;
-    paymentModeUpdateObj['cardBankName'] = this._Paymentmodesevice.paymentform.get('CardBankName').value.BankName || " ";
+    paymentModeUpdateObj['cardBankName'] = this._Paymentmodesevice.paymentform.get('CardBankName').value.BankName || "";
     paymentModeUpdateObj['chequePayAmt'] = this._Paymentmodesevice.paymentform.get('ChequePayAmt').value || 0;
     paymentModeUpdateObj['chequeNo'] = this._Paymentmodesevice.paymentform.get('ChequeNo').value || 0;
-    paymentModeUpdateObj['chequeBankName'] = this._Paymentmodesevice.paymentform.get('ChequeBankName').value.BankName || " ";
+    paymentModeUpdateObj['chequeBankName'] = this._Paymentmodesevice.paymentform.get('ChequeBankName').value.BankName || "";
     paymentModeUpdateObj['neftPayAmount'] = this._Paymentmodesevice.paymentform.get('NEFTPayAmount').value || 0;
     paymentModeUpdateObj['neftNo'] = this._Paymentmodesevice.paymentform.get('NEFTNo').value || 0;
-    paymentModeUpdateObj['neftBankMaster'] = this._Paymentmodesevice.paymentform.get('NEFTBankName').value.BankName  || " ";
+    paymentModeUpdateObj['neftBankMaster'] = this._Paymentmodesevice.paymentform.get('NEFTBankName').value.BankName || "";
     paymentModeUpdateObj['payTMAmount'] = this._Paymentmodesevice.paymentform.get('PayTMAmount').value || 0;
     paymentModeUpdateObj['payTMTranNo'] = this._Paymentmodesevice.paymentform.get('PayTMTranNo').value || 0;
 
@@ -218,7 +217,6 @@ export class EditPaymentmodeComponent implements OnInit {
       "paymentModeUpdate": paymentModeUpdateObj
     }
     console.log(submitData);
-
     this._Paymentmodesevice.PaymentmodeUpdate(submitData).subscribe(response => {
       console.log(response);
       if (response) {
