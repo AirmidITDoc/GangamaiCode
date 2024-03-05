@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 import { Observable, Subscription } from 'rxjs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { map, startWith } from 'rxjs/operators';
+import { ItemMovementSummeryComponent } from './item-movement-summery/item-movement-summery.component';
 
 @Component({
   selector: 'app-current-stock',
@@ -29,7 +31,7 @@ export class CurrentStockComponent implements OnInit {
   displayedColumns = [
     // 'action',
   
-    'ToStoreName',
+    //'ToStoreName',
     'ItemName',
     'ReceivedQty',
     'IssueQty',
@@ -37,18 +39,16 @@ export class CurrentStockComponent implements OnInit {
     // 'GenericName'
   ];
   displayedColumnsDayWise = [
-    // 'action',
-    'BatchNo',
-    'BatchExpDate',
     'LedgerDate',
     'ItemName',
+    'BatchNo',
+    'BatchExpDate',
     'UnitMRP',
+    'PurUnitRate',
+    'LandedRate',
     'ReceivedQty',
     'IssueQty',
     'BalanceQty',
-   
-   
-    
   ];
   displayedColumnsItemWise = [
   //  'action',
@@ -70,7 +70,7 @@ export class CurrentStockComponent implements OnInit {
       
     ];
 
-    
+
   isLoadingStr: string = '';
   isLoading: String = '';
   sIsLoading: string = "";
@@ -80,6 +80,8 @@ export class CurrentStockComponent implements OnInit {
   FromDate:any;
   Todate:any;
   SpinLoading:boolean=false;
+  isItemSelected:boolean=false;
+
   dsCurrentStock= new MatTableDataSource<CurrentStockList>();
   dsDaywiseStock= new MatTableDataSource<DayWiseStockList>();
   dsItemwiseStock= new MatTableDataSource<ItemWiseStockList>();
@@ -108,6 +110,7 @@ export class CurrentStockComponent implements OnInit {
 
   ngOnInit(): void {
     this.gePharStoreList();
+    //this.getCrrentStkItemSearchList();
     
   }
   
@@ -161,21 +164,110 @@ private _filterStore(value: any): string[] {
 
     return this.Store1List.filter(option => option.StoreName.toLowerCase().includes(filterValue));
   }
-
 }
-
 getOptionTextStoreName(option) {
   return option && option.StoreName ? option.StoreName : '';
+}
+filteredOptions:any;
+ItemListfilteredOptions:any;
+noOptionFound:boolean=false;
+DaywiseItemListfilteredOptions:any;
+ItemwiseItemListfilteredOptions:any;
+IssuewiseItemListfilteredOptions:any;
 
+getStockItemList() {
+  var m_data = {
+    "ItemName": `${this._CurrentStockService.SearchGroup.get('ItemCategory').value}%` 
+  }
+  if (this._CurrentStockService.SearchGroup.get('ItemCategory').value.length >= 1) {
+    this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
+      this.filteredOptions = resData;
+      console.log(this.filteredOptions)
+      this.ItemListfilteredOptions = resData;
+      if (this.filteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+  }
+}
+getDaywiseStockItemList() {
+  var m_data = {
+    "ItemName": `${this._CurrentStockService.userFormGroup.get('ItemCategory').value}%` 
+  }
+  if (this._CurrentStockService.userFormGroup.get('ItemCategory').value.length >= 1) {
+    this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
+      this.filteredOptions = resData;
+      console.log(this.filteredOptions)
+      this.DaywiseItemListfilteredOptions = resData;
+      if (this.filteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+  }
+}
+getitemwiseStockItemList() {
+  var m_data = {
+    "ItemName": `${this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value}%` 
+  }
+  if (this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value.length >= 1) {
+    this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
+      this.filteredOptions = resData;
+      console.log(this.filteredOptions)
+      this.ItemwiseItemListfilteredOptions = resData;
+      if (this.filteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+  }
+}
+getissuwiseStockItemList() {
+  var m_data = {
+    "ItemName": `${this._CurrentStockService.PurchaseItem.get('ItemCategory').value}%` 
+  }
+  if (this._CurrentStockService.PurchaseItem.get('ItemCategory').value.length >= 1) {
+    this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
+      this.filteredOptions = resData;
+      console.log(this.filteredOptions)
+      this.IssuewiseItemListfilteredOptions = resData;
+      if (this.filteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+  }
+}
+getOptionTextItemList(option) {
+  if (!option) return '';
+  return option.ItemName;
+}
+getOptionTextDaywiseItemList(option) {
+  if (!option) return '';
+  return option.ItemName;
+}
+getOptionTextItemwiseItemList(option) {
+  if (!option) return '';
+  return option.ItemName;
+}
+getOptionTextPurchaseItemList(option) {
+  if (!option) return '';
+  return option.ItemName;
 }
 
 
   getCurrentStockList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "ItemName":'%',
+      "ItemName": this._CurrentStockService.SearchGroup.get('ItemCategory').value.ItemName || '%',
       "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
     }
+    console.log(vdata)
       this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
       this.dsCurrentStock.data = data as CurrentStockList[];
       this.dsCurrentStock.sort = this.sort;
@@ -196,12 +288,15 @@ getOptionTextStoreName(option) {
     this._CurrentStockService.SearchGroup.get('ItemCategory').reset();
     
   }  
+
   getDayWiseStockList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
      "LedgerDate": this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
+     "StoreId": this._loggedService.currentUserValue.user.storeId || 0   ,
+     "ItemId":this._CurrentStockService.userFormGroup.get('ItemCategory').value.ItemID  || 0,   
     }
+   // console.log(vdata)
     setTimeout(() => {
       this._CurrentStockService.getDayWiseStockList(vdata).subscribe(
         (Visit) => {
@@ -217,21 +312,23 @@ getOptionTextStoreName(option) {
       );
     }, 1000);
 
- 
   } 
-  
+      
   getItemWiseStockList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
      "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
      "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
+     "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
+     "ItemId": this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value.ItemID || 0 
     }
+   // console.log(vdata)
     setTimeout(() => {
       // this.isLoadingStr = 'loading';
       this._CurrentStockService.getItemWiseStockList(vdata).subscribe(
         (Visit) => {
           this.dsItemwiseStock.data = Visit as ItemWiseStockList[];
+        //  console.log(this.dsItemwiseStock);
           this.dsItemwiseStock.sort = this.sort;
           this.dsItemwiseStock.paginator = this.secondPaginator;
           this.sIsLoading = '';
@@ -245,24 +342,19 @@ getOptionTextStoreName(option) {
    
    
   }
-
-  
+   
   getIssueWiseItemStockList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
      "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
      "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "StoreId": this._loggedService.currentUserValue.user.storeId|| 1        
+     "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
+      "ItemId": this._CurrentStockService.PurchaseItem.get('ItemCategory').value.ItemID || 0
     }
     setTimeout(() => {
-      // this.isLoadingStr = 'loading';
-
-      console.log(vdata)
       this._CurrentStockService.getIssueWiseItemStockList(vdata).subscribe(
         (Visit) => {
           this.dsIssuewissueItemStock.data = Visit as ItemWiseStockList[];
-
-          console.log(Visit)
           this.dsIssuewissueItemStock.sort = this.sort;
           this.dsIssuewissueItemStock.paginator = this.secondPaginator;
           this.sIsLoading = '';
@@ -276,7 +368,22 @@ getOptionTextStoreName(option) {
    
    
   }
-
+  getItemdetails(contact){
+    console.log(contact)
+    const dialogRef = this._matDialog.open(ItemMovementSummeryComponent,
+      {
+        maxWidth: "100%",
+        height: '85%',
+        width: '85%',
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getCurrentStockList();
+    });
+  }
 
   @ViewChild('ItemWiseStockTemplate') ItemWiseStockTemplate: ElementRef;
   reportPrintObjList: ItemWiseStockList[] = [];
