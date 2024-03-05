@@ -146,7 +146,6 @@ export class CurrentStockComponent implements OnInit {
     } 
   this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
     this.Store1List = data;
-    console.log(data)
     // if (this.data) {
       const ddValue = this.Store1List.filter(c => c.StoreId == this.StoreId);
       this._CurrentStockService.ItemWiseFrom.get('StoreId').setValue(ddValue[0]);
@@ -182,7 +181,6 @@ getStockItemList() {
   if (this._CurrentStockService.SearchGroup.get('ItemCategory').value.length >= 1) {
     this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
       this.filteredOptions = resData;
-      console.log(this.filteredOptions)
       this.ItemListfilteredOptions = resData;
       if (this.filteredOptions.length == 0) {
         this.noOptionFound = true;
@@ -199,7 +197,6 @@ getDaywiseStockItemList() {
   if (this._CurrentStockService.userFormGroup.get('ItemCategory').value.length >= 1) {
     this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
       this.filteredOptions = resData;
-      console.log(this.filteredOptions)
       this.DaywiseItemListfilteredOptions = resData;
       if (this.filteredOptions.length == 0) {
         this.noOptionFound = true;
@@ -216,7 +213,6 @@ getitemwiseStockItemList() {
   if (this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value.length >= 1) {
     this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
       this.filteredOptions = resData;
-      console.log(this.filteredOptions)
       this.ItemwiseItemListfilteredOptions = resData;
       if (this.filteredOptions.length == 0) {
         this.noOptionFound = true;
@@ -233,7 +229,6 @@ getissuwiseStockItemList() {
   if (this._CurrentStockService.PurchaseItem.get('ItemCategory').value.length >= 1) {
     this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
       this.filteredOptions = resData;
-      console.log(this.filteredOptions)
       this.IssuewiseItemListfilteredOptions = resData;
       if (this.filteredOptions.length == 0) {
         this.noOptionFound = true;
@@ -267,7 +262,6 @@ getOptionTextPurchaseItemList(option) {
       "ItemName": this._CurrentStockService.SearchGroup.get('ItemCategory').value.ItemName || '%',
       "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
     }
-    console.log(vdata)
       this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
       this.dsCurrentStock.data = data as CurrentStockList[];
       this.dsCurrentStock.sort = this.sort;
@@ -294,9 +288,8 @@ getOptionTextPurchaseItemList(option) {
     var vdata = {
      "LedgerDate": this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
      "StoreId": this._loggedService.currentUserValue.user.storeId || 0   ,
-     "ItemId":this._CurrentStockService.userFormGroup.get('ItemCategory').value.ItemID  || 0,   
+     "ItemId":this._CurrentStockService.userFormGroup.get('ItemCategory').value.ItemID || 0,   
     }
-   // console.log(vdata)
     setTimeout(() => {
       this._CurrentStockService.getDayWiseStockList(vdata).subscribe(
         (Visit) => {
@@ -322,13 +315,11 @@ getOptionTextPurchaseItemList(option) {
      "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
      "ItemId": this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value.ItemID || 0 
     }
-   // console.log(vdata)
     setTimeout(() => {
       // this.isLoadingStr = 'loading';
       this._CurrentStockService.getItemWiseStockList(vdata).subscribe(
         (Visit) => {
           this.dsItemwiseStock.data = Visit as ItemWiseStockList[];
-        //  console.log(this.dsItemwiseStock);
           this.dsItemwiseStock.sort = this.sort;
           this.dsItemwiseStock.paginator = this.secondPaginator;
           this.sIsLoading = '';
