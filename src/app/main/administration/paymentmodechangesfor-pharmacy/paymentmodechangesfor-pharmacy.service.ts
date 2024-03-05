@@ -59,6 +59,7 @@ export class PaymentmodechangesforpharmacyService {
         IsPayTMpay:'',
         PaidAmount:'',
         BalAmount:''
+        
       })
     }
 
