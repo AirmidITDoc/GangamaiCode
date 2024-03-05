@@ -1169,7 +1169,7 @@ export class SalesComponent implements OnInit {
     }
     // f9
     if (event.keyCode === 120) {
-      this.Functionflag = 1
+      // this.Functionflag = 1
       this.onSave();
     }
 
@@ -1400,7 +1400,6 @@ export class SalesComponent implements OnInit {
     this.repeatItemList.forEach((element) => {
       let Qty = parseInt(element.Qty.toString())
       let UnitMrp = element.UnitMRP.split('|')[0];
-      console.log(UnitMrp)
       // this.LandedRateandedTotal = (parseInt(element.Qty) * (element.LandedRate)).toFixed(2);
       // this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
       // this.PurTotAmt = (parseInt(element.Qty) * (this.PurchaseRate)).toFixed(2);
@@ -1944,6 +1943,7 @@ else{
       this.onSavePayOption()
     }
     this.getDraftorderList();
+    this.mobileno.nativeElement.focus();
   }
 
   onCashOnlinePaySave() {
@@ -2131,6 +2131,7 @@ else{
     // this.PatientName = '';
     // this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
+    
  
     // }
   }

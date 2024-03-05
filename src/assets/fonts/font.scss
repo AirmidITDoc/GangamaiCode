@@ -1,29 +1,29 @@
 @font-face {
-    font-family: "inter";
+    font-family: "Lato";
     src: url("./inter-regular.ttf");
 }
 @font-face {
-    font-family: "inter-medium";
+    font-family: "Lato-medium";
     src: url("./inter-medium.ttf");
 }
 @font-face {
-    font-family: "inter-bold";
+    font-family: "Lato-bold";
     src: url("./inter-bold.ttf");
 }
 @font-face {
-    font-family: "inter-semibold";
+    font-family: "Lato-semibold";
     src: url("./inter-semibold.ttf");
 }
 @font-face {
-    font-family: "inter-light";
+    font-family: "Lato-light";
     src: url("./inter-light.ttf");
 }
 
-$inter: "inter", sans-serif;
-$inter-medium: "inter-medium", sans-serif;
-$inter-bold: "inter-bold", sans-serif;
-$inter-semibold: "inter-semibold", sans-serif;
-$inter-light: "inter-light", sans-serif;
+$inter: "Lato", Lato;
+$inter-medium: "Lato-medium", Lato;
+$inter-bold: "Lato-bold", Lato;
+$inter-semibold: "Lato-semibold", Lato;
+$inter-light: "Lato-light", Lato;
 
-$roboto: Roboto, "Helvetica Neue", sans-serif ;
-$muli: Muli, Helvetica Neue, Arial, sans-serif ;
+$roboto: Roboto, "Helvetica Neue", Lato ;
+$muli: Muli, Helvetica Neue, Arial, Lato ;
