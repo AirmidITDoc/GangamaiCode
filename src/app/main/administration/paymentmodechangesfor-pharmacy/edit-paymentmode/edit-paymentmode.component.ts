@@ -198,18 +198,30 @@ export class EditPaymentmodeComponent implements OnInit {
   }
 
   Save() {
+    let CardBank = 0;
+    if (this._Paymentmodesevice.paymentform.get('CardBankName').value)
+    CardBank = this._Paymentmodesevice.paymentform.get('CardBankName').value.BankName;
+
+    let ChequeBank = 0;
+    if (this._Paymentmodesevice.paymentform.get('ChequeBankName').value)
+    ChequeBank = this._Paymentmodesevice.paymentform.get('ChequeBankName').value.BankName;
+
+    let NFTBank = 0;
+    if (this._Paymentmodesevice.paymentform.get('NEFTBankName').value)
+    NFTBank = this._Paymentmodesevice.paymentform.get('NEFTBankName').value.BankName;
+
     let paymentModeUpdateObj = {};
     paymentModeUpdateObj['paymentId'] = this.registerObj.PaymentId;
     paymentModeUpdateObj['cashPayAmt'] = this._Paymentmodesevice.paymentform.get('CashPayAmt').value || 0;
     paymentModeUpdateObj['cardPayAmt'] = this._Paymentmodesevice.paymentform.get('CardPayAmt').value || 0;
     paymentModeUpdateObj['cardNo'] = this._Paymentmodesevice.paymentform.get('CardNo').value || 0;
-    paymentModeUpdateObj['cardBankName'] = this._Paymentmodesevice.paymentform.get('CardBankName').value.BankName || "";
+    paymentModeUpdateObj['cardBankName'] = CardBank || '' //this._Paymentmodesevice.paymentform.get('CardBankName').value.BankName || "";
     paymentModeUpdateObj['chequePayAmt'] = this._Paymentmodesevice.paymentform.get('ChequePayAmt').value || 0;
     paymentModeUpdateObj['chequeNo'] = this._Paymentmodesevice.paymentform.get('ChequeNo').value || 0;
-    paymentModeUpdateObj['chequeBankName'] = this._Paymentmodesevice.paymentform.get('ChequeBankName').value.BankName || "";
+    paymentModeUpdateObj['chequeBankName'] = ChequeBank || ''//this._Paymentmodesevice.paymentform.get('ChequeBankName').value.BankName || "";
     paymentModeUpdateObj['neftPayAmount'] = this._Paymentmodesevice.paymentform.get('NEFTPayAmount').value || 0;
     paymentModeUpdateObj['neftNo'] = this._Paymentmodesevice.paymentform.get('NEFTNo').value || 0;
-    paymentModeUpdateObj['neftBankMaster'] = this._Paymentmodesevice.paymentform.get('NEFTBankName').value.BankName || "";
+    paymentModeUpdateObj['neftBankMaster'] = NFTBank || ''//this._Paymentmodesevice.paymentform.get('NEFTBankName').value.BankName || "";
     paymentModeUpdateObj['payTMAmount'] = this._Paymentmodesevice.paymentform.get('PayTMAmount').value || 0;
     paymentModeUpdateObj['payTMTranNo'] = this._Paymentmodesevice.paymentform.get('PayTMTranNo').value || 0;
 
@@ -368,6 +380,17 @@ export class EditPaymentmodeComponent implements OnInit {
         });
         return;
       }
+      this._Paymentmodesevice.paymentform.get('NEFTBankName').reset();
+      this._Paymentmodesevice.paymentform.get('NEFTBankName').clearValidators();
+      this._Paymentmodesevice.paymentform.get('NEFTBankName').updateValueAndValidity();
+
+      this._Paymentmodesevice.paymentform.get('CardBankName').reset();
+      this._Paymentmodesevice.paymentform.get('CardBankName').clearValidators();
+      this._Paymentmodesevice.paymentform.get('CardBankName').updateValueAndValidity();
+
+      this._Paymentmodesevice.paymentform.get('ChequeBankName').reset();
+      this._Paymentmodesevice.paymentform.get('ChequeBankName').clearValidators();
+      this._Paymentmodesevice.paymentform.get('ChequeBankName').updateValueAndValidity();
       this.PayTMTranNo.nativeElement.focus();
     } else {
       this.vpaytmpay = 0;
