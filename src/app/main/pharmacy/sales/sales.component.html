@@ -157,24 +157,36 @@
                                                                                     fxLayout="row"
                                                                                     fxLayoutAlign="space-between center">
                                                                                     <div class="patient-col">
-                                                                                        <span class="patient-col-key">Reg No</span>
+                                                                                        <span
+                                                                                            class="patient-col-key">Reg
+                                                                                            No</span>
                                                                                         <span>:</span>
-                                                                                        <span class="patient-col-value">{{registerObj.RegNo}}</span>
+                                                                                        <span
+                                                                                            class="patient-col-value">{{registerObj.RegNo}}</span>
                                                                                     </div>
                                                                                     <div class="patient-col">
-                                                                                        <span class="patient-col-key">Patient Name</span>
+                                                                                        <span
+                                                                                            class="patient-col-key">Patient
+                                                                                            Name</span>
                                                                                         <span>:</span>
-                                                                                        <span class="patient-col-value">{{PatientName}}</span>
+                                                                                        <span
+                                                                                            class="patient-col-value">{{PatientName}}</span>
                                                                                     </div>
                                                                                     <div class="patient-col">
-                                                                                        <span class="patient-col-key">Ward / Bed</span>
+                                                                                        <span
+                                                                                            class="patient-col-key">Ward
+                                                                                            / Bed</span>
                                                                                         <span>:</span>
-                                                                                        <span class="patient-col-value">{{registerObj.WardId}}/{{registerObj.BedId}}</span>
+                                                                                        <span
+                                                                                            class="patient-col-value">{{registerObj.WardId}}/{{registerObj.BedId}}</span>
                                                                                     </div>
                                                                                     <div class="patient-col">
-                                                                                        <span class="patient-col-key">Admission Id</span>
+                                                                                        <span
+                                                                                            class="patient-col-key">Admission
+                                                                                            Id</span>
                                                                                         <span>:</span>
-                                                                                        <span class="patient-col-value">{{registerObj.AdmissionID}}</span>
+                                                                                        <span
+                                                                                            class="patient-col-value">{{registerObj.AdmissionID}}</span>
                                                                                     </div>
                                                                                     <!-- ------------------------------------ -->
 
@@ -676,8 +688,10 @@
                                                         </span>
                                                     </div>
                                                     <div class="net-amt-group net-amount">
-                                                        <span class="net-amt-label"> NetAmount:</span>
-                                                        <span class="net-amt-value">
+                                                        <span class="net-amt-label"
+                                                            style="background-color: aquamarine;"> Net Amount:</span>
+                                                        <span class="net-amt-value"
+                                                            style="background-color: aquamarine;">
                                                             {{getNetAmtSum(saleSelectedDatasource.data) | currency:'INR'
                                                             }}
                                                         </span>
@@ -793,7 +807,7 @@
 
                                                         <div class="sales-footer-buttons gap-8" fxLayout="row">
                                                             <button class="btn btn-primary " (click)="onSave()"
-                                                                [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save</button>
+                                                                [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save(F9)</button>
                                                             <button class="btn btn-primary-outline"
                                                                 *ngIf="IsOnlineRefNo"
                                                                 (click)="payOnline()">Online</button>

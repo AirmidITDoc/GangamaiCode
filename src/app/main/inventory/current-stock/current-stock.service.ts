@@ -11,6 +11,7 @@ export class CurrentStockService {
   SearchGroup :FormGroup;
   ItemWiseFrom:FormGroup;
   PurchaseItem:FormGroup;
+  ItemSummeryFrom:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
@@ -20,6 +21,7 @@ export class CurrentStockService {
     this.SearchGroup= this.createSearchFrom();
     this.ItemWiseFrom = this.createItemWiseFrom();
     this.PurchaseItem=this.PurchaseItemWiseFrom();
+    this.ItemSummeryFrom =this.createItemSummeryFrom();
   }
 
   createSearchFrom() {
@@ -36,6 +38,7 @@ export class CurrentStockService {
     return this._formBuilder.group({
       start: [(new Date()).toISOString()],
       StoreId:'',
+      ItemCategory:'',
       
     });
   }
@@ -44,6 +47,7 @@ export class CurrentStockService {
       start1: [(new Date()).toISOString()],
       end1: [(new Date()).toISOString()],
       StoreId:'',
+      ItemCategory:'',
     })
   }
  
@@ -52,7 +56,17 @@ export class CurrentStockService {
       start1: [(new Date()).toISOString()],
       end1: [(new Date()).toISOString()],
       StoreId:'',
+      ItemCategory:'',
     })
+  }
+ 
+  createItemSummeryFrom() {
+    return this._formBuilder.group({
+      start: [''],
+      end: [(new Date()).toISOString()],
+      StoreId:'',
+      ItemCategory:'',
+    });
   }
 
   public getCurrentStockList(Param){
@@ -67,14 +81,17 @@ export class CurrentStockService {
   public getItemWiseStockList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWiseSalesReport",Param)
   }
-  public getItemWiseStockListPrint(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWiseSalesReport", Param)
-  }
   public getIssueWiseItemStockList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWisePurchaseReport", Param)
   }
+  public getItemMovementsummeryList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Phar_ItemMovementReport", Param)
+  }
   
-
+  
+  public getItemFormList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",param);
+  }
   public getDaywisestockview(LedgerDate,StoreId){
     return this._httpClient.get("InventoryTransaction/view-InvDaywiseStock?LedgerDate=" + LedgerDate+"&StoreId="+StoreId);
   }

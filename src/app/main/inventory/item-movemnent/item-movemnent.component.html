@@ -1,5 +1,5 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <mat-toolbar style="background-color: #039be5 !important; height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar style=" height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
@@ -65,15 +65,45 @@
                                 </mat-select>
                             </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex>
+                            <!-- <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ItemName</mat-label>
-                                <mat-select formControlName="ItemID" name="ItemID" >
-                                    <mat-option></mat-option>
-                                    <mat-option *ngFor="let m of ItemList" [value]="m">
-                                        {{m.ItemName}}
+                                <input matAutocompletePosition="below" type="text" required
+                                    placeholder="Select Item" matInput formControlName="ItemID"
+                                    [matAutocomplete]="auto2" >
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_ItemMovemnentService.ItemSearchGroup.get('ItemID').setValue(''); isItemSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_ItemMovemnentService.ItemSearchGroup.get('ItemID').setValue(''); isItemSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto2="matAutocomplete"
+                                    [displayWith]="getOptionTextItemList">
+                                    <mat-option *ngFor="let option of filteredOptionsItem | async"
+                                        [value]="option">
+                                        {{option.ItemName}}
                                     </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                                </mat-autocomplete>
+                            </mat-form-field> -->
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>ItemName</mat-label>
+                                <input matAutocompletePosition="below" type="text" required
+                                    placeholder="Select Item" matInput formControlName="ItemID"
+                                    [matAutocomplete]="auto2" (input)="getStockItemList()">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_ItemMovemnentService.ItemSearchGroup.get('ItemID').setValue(''); isItemSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_ItemMovemnentService.ItemSearchGroup.get('ItemID').setValue(''); isItemSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto2="matAutocomplete"
+                                    [displayWith]="getOptionTextItemList">
+                                    <mat-option *ngFor="let option of ItemListfilteredOptions"
+                                        [value]="option">
+                                        {{option.ItemName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field> 
 
 
                             <div style="margin-top: 10px;">

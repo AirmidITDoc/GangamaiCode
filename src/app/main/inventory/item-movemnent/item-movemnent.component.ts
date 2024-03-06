@@ -10,9 +10,9 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-item-movemnent',
@@ -42,6 +42,7 @@ export class ItemMovemnentComponent implements OnInit {
   StoreList: any = []; 
   sIsLoading: string = '';
   isLoading = true;
+  isItemSelected:boolean=false;
 
 
  
@@ -66,15 +67,9 @@ export class ItemMovemnentComponent implements OnInit {
   ngOnInit(): void {
     this.getTOStoreList();
     // this.getItemMovement();
-     this.getItemListto();
      this.gePharStoreList();
     //  this.getFormStoreList();
-     
-    this.ItemNameFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterItem();
-    });
+   
   }
   
   toggleSidebar(name): void {
@@ -117,34 +112,31 @@ export class ItemMovemnentComponent implements OnInit {
       // console.log(this.Store1List);
      });
   }
-
-  private filterItem() {
-    if (!this.ItemList) {
-      return;
+  
+filteredOptions:any;
+ItemListfilteredOptions:any;
+noOptionFound:boolean=false;
+  getStockItemList() {
+    var m_data = {
+      "ItemName": `${this._ItemMovemnentService.ItemSearchGroup.get('ItemID').value}%` 
     }
-    // get the search keyword
-    let search = this.ItemNameFilterCtrl.value;
-    if (!search) {
-      this.filteredItem.next(this.ItemList.slice());
-      return;
+    if (this._ItemMovemnentService.ItemSearchGroup.get('ItemID').value.length >= 1) {
+      this._ItemMovemnentService.getItemFormList(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        console.log(this.filteredOptions)
+        this.ItemListfilteredOptions = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
     }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredItem.next(
-      this.ItemList.filter(bank => bank.ItemName.toLowerCase().indexOf(search) > -1)
-    );
   }
-
-  getItemListto() {
-    this._ItemMovemnentService.getItemFormList().subscribe(data => {
-      this.ItemList = data;
-      this.filteredItem.next(this.ItemList.slice());
-      console.log(this.ItemList);
-      
-    });
-  }
+  getOptionTextItemList(option) {
+    if (!option) return '';
+    return option.ItemName;
+    }
   // getFormStoreList() {
   //   this._ItemMovemnentService.getFormStoreFormList().subscribe(data => {
   //     this.FormStore = data;

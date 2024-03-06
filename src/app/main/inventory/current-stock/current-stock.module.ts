@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { CurrentStockComponent } from './current-stock.component';
+import { ItemMovementSummeryComponent } from './item-movement-summery/item-movement-summery.component';
 
 const routes: Routes = [
   { 
@@ -46,7 +47,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     CurrentStockComponent,
-    
+    ItemMovementSummeryComponent
     
   ],
   imports: [

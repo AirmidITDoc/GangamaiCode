@@ -36,8 +36,8 @@ export class ItemMovemnentService {
   }
 
 
-  public getItemFormList(){
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",{});
+  public getItemFormList(param){//RetrieveItemMasterForCombo
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",param);
   }
 
   public getToStoreFromList(){
