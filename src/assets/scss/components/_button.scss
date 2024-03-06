@@ -1,5 +1,5 @@
 .btn {
-    font-family: $inter-medium;
+    font-family: $roboto;
     font-weight: normal;
     line-height: normal;
     border-radius: 8px;
@@ -38,14 +38,12 @@
             display: flex;
             align-items: center;
             &.btn-icon {
-                // height: 16px;
-                // width: 16px;
-                // margin-right: 8px;
-            }
-            .mat-icon {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                .mat-icon {
+                    @include font-size(16px);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
             }
         }
     }
@@ -96,6 +94,10 @@
         &.btn-warning {
             background: t($ngt-warning);
             border-color: t($ngt-warning);
+        }
+        &.btn-light {
+            background: $gray-50;
+            border-color: $gray-50;
         }
         &.btn-primary-outline {
             background: transparent;

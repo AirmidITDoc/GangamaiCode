@@ -1,20 +1,22 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll role-template-section">
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+    <div class="top-header header accent" fxLayout="row" fxLayoutAlign="start center"
         fxLayoutAlign.gt-xs="space-between center">
         <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon mr-16" [@animate]="{
+            <div class="top-header-info gap-8 logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon" [@animate]="{
                         value: '*',
                         params: { delay: '50ms', scale: '0.2' }
                     }">account_box
                 </mat-icon>
-                <span class="logo-text h1" [@animate]="{
-                        value: '*',
-                        params: { delay: '100ms', x: '-25px' }
-                    }">
-                    Role Master
-                </span>
+                <div class="top-header-title">
+                    <span class="logo-text" [@animate]="{
+                            value: '*',
+                            params: { delay: '100ms', x: '-25px' }
+                        }">
+                        Role Master
+                    </span>
+                </div>
             </div>
         </div>
         <!-- / APP TITLE -->

@@ -34,7 +34,7 @@
             word-break: break-word;
             line-height: 20px;
             &:not(:first-of-type) {
-                padding: 7px 10px;
+                padding: 5px 10px;
             }
             .mat-icon-button {
                 height: 25px;
@@ -44,7 +44,7 @@
                 align-items: center;
                 line-height: 25px;
                 .material-icons {
-                    @include font-size(18px);
+                    @include font-size(16px);
                 }
             }
             span {

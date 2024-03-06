@@ -35,6 +35,9 @@ ul {
         display: flex;
         .label-section {
             flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
         }
         .checkbox-section {
             flex: 2;

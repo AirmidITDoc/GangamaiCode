@@ -9,6 +9,16 @@
             padding: 8px 16px;
             .modal-header-title {
                 @include font-size(15px);
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 8px;
+                .title{
+                    
+                }
+                .title-icon{
+
+                }
             }
             .modal-header-icon {
                 .modal-icon{
@@ -29,5 +39,10 @@
             justify-content: flex-end;
             gap: 8px;
         }
+    }
+    .mat-icon{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

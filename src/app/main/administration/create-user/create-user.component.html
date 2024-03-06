@@ -1,21 +1,27 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll create-user-section">
     <!-- HEADER -->
-    <mat-toolbar style="background-color:accent !important; height:50px; justify-content: space-between;width: 100%;"
-        fusePerfectScrollbar>
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+    <mat-toolbar class="top-header accent" style="justify-content: space-between;width: 100%;" fusePerfectScrollbar>
+        <div class="top-header-info gap-8" fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle">
                 <mat-icon>menu</mat-icon>
             </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                Create User
-            </span>
+            <button mat-icon-button class="user-icon">
+                <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+            </button>
+            <div class="top-header-title">
+                <span class="logo-text" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Create User
+                </span>
+            </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
-            <button mat-raised-button (click)="addUserDetails()" fxLayoutAlign="center center">
-                <mat-icon color="warn">how_to_reg</mat-icon>&nbsp;New
+            <button mat-raised-button (click)="addUserDetails()" fxLayoutAlign="center center" class="btn btn-with-icon py-4">
+                <span class="btn-icon">
+                    <mat-icon color="warn">how_to_reg</mat-icon>
+                </span>
+                <span>New</span>
             </button>
         </div>
     </mat-toolbar>
@@ -31,8 +37,8 @@
     <div class="content ">
 
         <!-- SIDEBAR -->
-        <fuse-sidebar class="sidebar" name="app-main" position="left" lockedOpen="gt-sm" style=" background-color: white;
-       margin: 5px;height: 100%; ">
+        <fuse-sidebar class="fuse-search-sidebar sidebar" name="app-main" position="left" lockedOpen="gt-sm"
+            style=" background-color: white;">
 
             <!-- SIDEBAR CONTENT -->
             <div class="content">
@@ -41,10 +47,10 @@
                     <div class="card" style="height: 100%;">
 
                         <!-- SIDEBAR HEADER -->
-                        <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
+                        <div class="sidebar-header accent header" fxLayout="row" fxLayoutAlign="start center">
                             <!-- USER -->
                             <!-- <img [src]="user.avatar" class="avatar mr-16" [alt]="user.name" /> -->
-                            <span class="h5" style="color: aliceblue;font-size: 17px;">Search Facility</span>
+                            <span class="search-title">Search Facility</span>
                             <!-- / USER -->
                         </div>
                         <!-- / SIDEBAR HEADER -->
@@ -52,16 +58,16 @@
                         <!-- SIDEBAR CONTENT -->
 
                         <div class="nav material2">
-                            <form [formGroup]="_UserService.myformSearch" style="padding: 6px 6px 5px 5px;">
+                            <form [formGroup]="_UserService.myformSearch">
                                 <div fxLayout="column" fxLayoutAlign="start none">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>User Name</mat-label>
                                         <input name="UserName" formControlName="UserName" matInput>
                                     </mat-form-field>
 
-                                    <div style="margin-top: 10px;">
+                                    <div class="action-buttons">
                                         <button mat-raised-button (click)="onClear()" class="clearbutton">
-                                            <mat-icon class="cleariconbutton">close</mat-icon></button>&nbsp;
+                                            <mat-icon class="cleariconbutton">close</mat-icon></button>
                                         <button mat-raised-button class="searchButton" (click)="onShow($event)"
                                             [disabled]="click">
                                             <mat-icon class="searchiconbutton">search</mat-icon>
@@ -87,9 +93,11 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
-                                    <div class="spinner-border text-danger"></div>
+                                <div class="table-spinner">
+                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                        class="backgroundBlur">
+                                        <div class="spinner-border text-danger"></div>
+                                    </div>
                                 </div>
                                 <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 
