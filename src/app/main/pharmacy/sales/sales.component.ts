@@ -1079,9 +1079,8 @@ export class SalesComponent implements OnInit {
       if (data && data.length > 0) {
         this.reportPrintObjItemList = data as Printsal[];
         this.repeatItemList = data;
-        console.log(data)
+        // console.log(data)
         this.reportItemPrintObj = data[0] as Printsal;
-
         this.PatientName = data[0].ExternalPatientName;
         this.DoctorName = data[0].DoctorName;
         this.salesIdWiseObj = this.reportPrintObjItemList.reduce((acc, item: any) => {
@@ -1392,6 +1391,7 @@ export class SalesComponent implements OnInit {
     //   this.ItemSubform.updateValueAndValidity();
     // }
   }
+
 
   Addrepeat(row) {
     console.log(row)
@@ -2801,8 +2801,25 @@ else{
   }
 
 
+  onAddRepeat(contact){
+    this.tempDatasource.data=[];
+    this.saleSelectedDatasource.data = [];
+    this.Itemchargeslist1 = [];
+    this.Itemchargeslist = [];
+    let strSql = "Select ItemId,Qty from m_vSalesListforRepeat where SalesId=" + contact.value[0].vSalesId + " Order by ItemId "
+    this._salesService.getchargesList(strSql).subscribe(data => {
+      this.tempDatasource.data = data as any;
+      // console.log(this.tempDatasource.data);
+      if (this.tempDatasource.data.length >= 1) {
+        this.tempDatasource.data.forEach((element) => {
+        this.DraftQty = element.Qty
+        this.onAddDraftListTosale(element, this.DraftQty);
+        });
+      }
+    });
+  }
   onAddDraftList(contact) {
-     console.log(contact)
+    // console.log(contact)
     this.PatientName = contact.PatientName;
     this.MobileNo = contact.ExtMobileNo;
     this.vextAddress = contact.extAddress;
@@ -2812,7 +2829,6 @@ else{
     this.Itemchargeslist1 = [];
     this.Itemchargeslist = [];
 
-    debugger;
     let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
     this._salesService.getchargesList(strSql).subscribe(data => {
       this.tempDatasource.data = data as any;
@@ -2829,7 +2845,7 @@ else{
 
 
   onAddDraftListTosale(contact, DraftQty) {
-    console.log(contact)
+    // console.log(contact)
     this.Itemchargeslist1 = [];
     this.QtyBalchk = 0;
     var m_data = {
