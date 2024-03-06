@@ -26,12 +26,12 @@ import { MatTabGroup } from '@angular/material/tabs';
 })
 export class IndentComponent implements OnInit {
   displayedColumns = [
+    'IsInchargeVerify',
     'IndentNo',
     'IndentDate',
     'FromStoreName',
     'ToStoreName',
     'Addedby',
-    'IsInchargeVerify',
     'action',
   ];
   displayedColumns1 = [
@@ -128,6 +128,7 @@ export class IndentComponent implements OnInit {
     }
     this._IndentService.getIndentID(Param).subscribe(data => {
       this.dsIndentSearchList.data = data as IndentID[];
+     // console.log(this.dsIndentSearchList)
       this.dsIndentSearchList.sort = this.sort;
       this.dsIndentSearchList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -309,7 +310,7 @@ export class IndentComponent implements OnInit {
               toastClass: 'tostr-tost custom-toast-success',
             });
             this.OnReset();
-
+            this.getIndentID();
           } else {
             this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
               toastClass: 'tostr-tost custom-toast-error',
@@ -352,7 +353,7 @@ export class IndentComponent implements OnInit {
               toastClass: 'tostr-tost custom-toast-success',
             });
             this.OnReset();
-
+            this.getIndentID();
           } else {
             this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
               toastClass: 'tostr-tost custom-toast-error',

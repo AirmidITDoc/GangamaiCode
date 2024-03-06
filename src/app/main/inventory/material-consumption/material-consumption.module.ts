@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { MaterialConsumptionComponent } from './material-consumption.component';
+import { NewMaterialConsumptionComponent } from './new-material-consumption/new-material-consumption.component';
 
 
 const routes: Routes = [
@@ -47,6 +48,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     MaterialConsumptionComponent,
+    NewMaterialConsumptionComponent,
     
   ],
   imports: [

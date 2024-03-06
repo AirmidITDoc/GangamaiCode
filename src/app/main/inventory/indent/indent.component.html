@@ -171,14 +171,17 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="IsInchargeVerify">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    IsInchargeVerify
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm>
-                                                    <mat-icon *ngIf="contact.IsActive"
-                                                        class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                    <mat-icon *ngIf="!contact.IsActive"
-                                                        class="active-icon red-500 s-16">close</mat-icon>
+                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                    style="color: white;">Verify</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact">
+                                                    <mat-icon
+                                                        style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                        *ngIf="contact.Isverify" matTooltip="Verified"
+                                                        class=" green-600 s-16">circle</mat-icon>
+                                                    <mat-icon
+                                                        style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                        *ngIf="!contact.Isverify" matTooltip="Pending"
+                                                        class=" red-600 s-16">circle</mat-icon>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -187,13 +190,26 @@
                                                     style="color: white;">Action
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row">
-                                                    <button mat-icon-button (click)="OnEdit(row,tabGroup)"
-                                                        matTooltip="Edit">
-                                                        <mat-icon style="color: black;">edit</mat-icon>
-                                                    </button>
+
                                                     <button mat-icon-button (click)="getPrint(contact)"
                                                         matTooltip="Print">
                                                         <mat-icon style="color: black;">print</mat-icon>
+                                                    </button>
+
+                                                    <button mat-icon-button (click)="OnEdit(row,tabGroup)"
+                                                        matTooltip="Edit">
+                                                        <mat-icon title="Edit Menu" *ngIf="row.Isverify==1"
+                                                            [disabled]="row.disabled" class="disabled-icon">
+                                                            edit</mat-icon>
+                                                        <mat-icon title="Edit Menu" *ngIf="row.Isverify==0">
+                                                            edit</mat-icon>
+                                                    </button>
+                                                    <button mat-icon-button (click)="onVerify(row)" matTooltip="Verify">
+                                                        <mat-icon *ngIf="row.Isverify==1" [disabled]="row.disabled"
+                                                            class="disabled-icon"
+                                                            title="verify Menu">verified_user</mat-icon>
+                                                        <mat-icon title="verify Menu" *ngIf="row.Isverify==0">
+                                                            verified_user</mat-icon>
                                                     </button>
                                                 </mat-cell>
                                             </ng-container>
@@ -363,7 +379,7 @@
                                             <mat-label>To Store</mat-label>
                                             <input matAutocompletePosition="below" type="text" required
                                                 placeholder="Select Store" matInput formControlName="ToStoreId"
-                                                [matAutocomplete]="auto2" >
+                                                [matAutocomplete]="auto2">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_IndentService.newIndentFrom.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
@@ -521,14 +537,16 @@
                                     <input name="Remark" formControlName="Remark" [(ngModel)]="vRemark" matInput>
                                 </mat-form-field>
 
-                                
-                                    <div class="footer-navigation-container" fxLayout.gt-xs="row" style="margin-left: 500px;">
-                                        <div matTooltip="Select All Value to enable this button!!">
-                                            <button class="next-btn" (click)="OnSave()"  style="margin-left: 750px;">Save</button>
-                                            <button class="footer-btn" (click)="OnReset()">Reset</button>&nbsp;&nbsp;
-                                        </div>
+
+                                <div class="footer-navigation-container" fxLayout.gt-xs="row"
+                                    style="margin-left: 500px;">
+                                    <div matTooltip="Select All Value to enable this button!!">
+                                        <button class="next-btn" (click)="OnSave()"
+                                            style="margin-left: 750px;">Save</button>
+                                        <button class="footer-btn" (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                     </div>
-                               
+                                </div>
+
 
                             </div>
                         </form>

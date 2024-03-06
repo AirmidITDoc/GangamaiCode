@@ -26,7 +26,6 @@ import { map, startWith, takeUntil } from "rxjs/operators";
 })
 export class IssueToDepartmentComponent implements OnInit {
   displayedColumns: string[] = [
-    'action',
     'IssueNo',
     'IssueDate',
     'FromStoreName',
@@ -36,8 +35,8 @@ export class IssueToDepartmentComponent implements OnInit {
     'TotalVatAmount',
     'NetAmount',
     'Remark',
-    'Receivedby'
-
+    'Receivedby',
+    'action'
   ];
   displayedColumns1: string[] = [
     'ItemName',
@@ -222,6 +221,7 @@ export class IssueToDepartmentComponent implements OnInit {
     }
     this._IssueToDep.getIssueItemList(vdata).subscribe(data => {
       this.dsIssueItemList.data = data as IssueItemList[];
+      console.log(this.dsIssueItemList)
       this.dsIssueItemList.sort = this.sort;
       this.dsIssueItemList.paginator = this.paginator;
     });

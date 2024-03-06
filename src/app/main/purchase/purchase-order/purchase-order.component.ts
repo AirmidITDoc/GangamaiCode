@@ -207,7 +207,7 @@ export class PurchaseOrderComponent implements OnInit {
       "ToStoreId": this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').value.storeid || 0,
       "From_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-10-01 00:00:00.000',
       "To_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-10-01 00:00:00.000',
-      "IsVerify": this._PurchaseOrder.PurchaseSearchGroup.get("Status").value,
+      "IsVerify": this._PurchaseOrder.PurchaseSearchGroup.get("Status").value || 0,
       "Supplier_Id": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
     this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {

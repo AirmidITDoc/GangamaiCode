@@ -36,6 +36,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { ReturnFromDepartmentComponent } from '../return-from-department/return-from-department.component';
 import { HighlightDirective } from './directives/highlight.directive';
+import { NewRetrunFromDepartmentComponent } from './new-retrun-from-department/new-retrun-from-department.component';
 
 const routes: Routes = [
   { 
@@ -47,7 +48,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ReturnFromDepartmentComponent,
-    HighlightDirective, 
+    HighlightDirective,
+    NewRetrunFromDepartmentComponent, 
   ],
   
   imports: [

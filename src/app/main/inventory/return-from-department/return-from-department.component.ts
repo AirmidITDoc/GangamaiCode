@@ -10,6 +10,9 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { NewRetrunFromDepartmentComponent } from './new-retrun-from-department/new-retrun-from-department.component';
 
 @Component({
 
@@ -33,21 +36,19 @@ export class ReturnFromDepartmentComponent implements OnInit {
     'Addedby',
   ];
 
-  
   ToStoreList: any = [];
   StoreList: any = []; 
   sIsLoading: string = '';
   isLoading = true;
-
+  dateTimeObj: any;
+  isStoreSelected:boolean=false;
+  filteredOptionsStore: Observable<string[]>;
 
   dsReturnToDepList = new MatTableDataSource<ReturnTODepList>();
-
-
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
-
   constructor(
     public _ReturnToDepartmentList: ReturnFromDepartmentService,
     public _matDialog: MatDialog,
@@ -60,29 +61,26 @@ export class ReturnFromDepartmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.getToStoreSearchList();
-   
     this.getReturnToDepartmentList()
     this.gePharStoreList();
+
+    this.filteredOptionsStore = this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterToStore(value)),
+    );
   }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-
-
-  dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-
-
-
   getReturnToDepartmentList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "FromStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('StoreId').value.storeid || 1,
-      "ToStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.StoreId || 0,
+      "FromStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.StoreId || 0,
+      "ToStoreId":  this._loggedService.currentUserValue.user.storeId || 0,
       "From_Dt": this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     }
@@ -98,28 +96,42 @@ export class ReturnFromDepartmentComponent implements OnInit {
       this.sIsLoading = '';
     });
   }
- 
-
-
   getToStoreSearchList() {
     this._ReturnToDepartmentList.getToStoreSearchList().subscribe(data => {
       this.ToStoreList = data;
-      //console.log(this.ToStoreList);
     });
+  }
+  private _filterToStore(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+      return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+    }
+  }
+  getOptionTextStoresList(option) {
+    return option && option.StoreName ? option.StoreName : '';
   }
 
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
     }
-    // console.log(vdata);
     this._ReturnToDepartmentList.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
-      // console.log(this.StoreList);
       this._ReturnToDepartmentList.ReturnSearchGroup.get('StoreId').setValue(this.StoreList[0]);
     });
   }
-
+  NewReturnFrom(){
+    const dialogRef = this._matDialog.open(NewRetrunFromDepartmentComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getReturnToDepartmentList();
+    });
+  }
 }
 
 export class ReturnTODepList {
@@ -132,7 +144,6 @@ export class ReturnTODepList {
   Remark: String;
   Addedby: string;
   
-
   constructor(ReturnTODepList) {
     {
       this.ReturnNo = ReturnTODepList.ReturnNo || 0;
@@ -143,7 +154,6 @@ export class ReturnTODepList {
       this.TotalVatAmount = ReturnTODepList.TotalVatAmount || 0;
       this.Remark = ReturnTODepList.Remark || "";
       this.Addedby = ReturnTODepList.Addedby || "";
-      
     }
   }
 }

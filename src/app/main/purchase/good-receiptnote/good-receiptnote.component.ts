@@ -212,6 +212,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       "IsVerify": this._GRNService.GRNSearchGroup.get("Status1").value || 0,
       "Supplier_Id": this._GRNService.GRNSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
+    console.log(Param)
     this._GRNService.getGRNList(Param).subscribe(data => {
       this.dsGRNList.data = data as GRNList[];
       this.dsGRNList.sort = this.sort;
@@ -541,22 +542,47 @@ export class GoodReceiptnoteComponent implements OnInit {
       this.getGRNList();
     });
   }
-  msg: any;
+ 
   onVerify(row) {
-    var Param = {
-      "updateGRNVerifyStatus": {
-        "grnid": row.GRNID,
-        "isVerified": true,
-      }
+
+    // var Param = {
+    //   "updateGRNVerifyStatus": {
+    //     "grnid": row.GRNID,
+    //     "isVerified": true
+    //   }
+    // }
+
+    let updateGRNVerifyStatusobj ={};
+    updateGRNVerifyStatusobj['grnid'] = row.GRNID || 0 ;
+    updateGRNVerifyStatusobj['isVerified'] = 1;
+
+    let submitObj ={
+      "updateGRNVerifyStatus":updateGRNVerifyStatusobj
     }
-    this._GRNService.getVerifyGRN(Param).subscribe(data => {
-      this.msg = data;
-    }, success => {
+    console.log(submitObj)
+   
+   // console.log(submitData);
+   this._GRNService.getVerifyGRN(submitObj).subscribe(response => {
+      if (response) {
+        this.toastr.success('Record Verified Successfully.', 'Verified !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+
+      } else {
+        this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+      // this.isLoading = '';
+    },
+    success => {
       this.toastr.success('Record Verified Successfully.', 'Verified !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
-    }); this.getGRNList();
+      this.getGRNList();
+    });
   }
+ 
 
   getWhatsappshareSales(el) {
     debugger
