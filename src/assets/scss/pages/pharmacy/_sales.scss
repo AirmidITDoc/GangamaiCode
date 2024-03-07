@@ -1,26 +1,57 @@
-
+$table-row-width: 1300px;
 .sales-section {
     .mat-table {
         overflow: auto;
         &.sales-table {
             height: calc(100vh - 535px);
             min-height: 220px;
-            // .mat-form-field {
-            //     &.mat-form-field-appearance-legacy {
-            //         .mat-form-field-wrapper {
-            //             padding: 0;
-            //             .mat-form-field-flex {
-            //                 .mat-form-field-infix {
-            //                     width: auto;
-            //                     border: 0;
-            //                 }
-            //             }
-            //             .mat-form-field-underline {
-            //                 bottom: 0;
-            //             }
-            //         }
-            //     }
-            // }
+            .mat-header-row,
+            .mat-row {
+                min-width: $table-row-width;
+            }
+        }
+    }
+    .sale-detail-box{
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        flex-flow: column;
+        gap: 8px;
+        padding: 8px 0;
+        .sale-detail{
+            display: flex;
+            flex-flow: column;
+            gap: 12px;
+            .sale-no{
+                @include font-size(14px);
+                .key{
+                    @include font-size(13px);
+                    font-weight: 600;
+                }
+            }
+            .sale-info{
+                @include font-size(11px);
+            }
+        }
+    }
+    .patient-info-sales{
+        border-radius: 8px;
+        background-color: $gray-200;
+        .patient-sub{
+            .patient-info-row{
+                .patient-col{
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    @include font-size(14px);
+                    .patient-col-key{
+                        font-weight: 700;
+                    }
+                    .patient-col-value{
+                        
+                    }
+                }
+            }
         }
     }
 }

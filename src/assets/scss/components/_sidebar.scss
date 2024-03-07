@@ -1,0 +1,36 @@
+$sidebar-gap:12px;
+
+.fuse-search-sidebar{
+    margin: $sidebar-gap 0 0 $sidebar-gap;
+    border-radius: 4px;
+    font-family: $muli;
+    @include box-shadow-small();
+    .sidebar-header{
+        padding: 12px;
+        .search-title{
+            @include font-size(13px);
+            font-weight: 600;
+        }
+    }
+    .mat-form-field{
+        .mat-form-field-wrapper{
+            padding-bottom: 14px;
+        }
+    }
+    .action-buttons{
+        display: flex;
+        justify-content: flex-start;
+        gap: 12px;
+        .mat-icon{
+            margin: 0;
+            color: $primary-600;
+        }
+    }
+    .nav{
+        &.material2{
+            form{
+                padding: $sidebar-gap;
+            }
+        }
+    }
+}

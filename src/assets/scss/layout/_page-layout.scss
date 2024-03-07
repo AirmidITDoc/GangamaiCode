@@ -20,6 +20,15 @@
         justify-content: space-between;
         align-items: center;
         padding: 8px 16px;
+        .top-header-info{
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 8px;
+            .top-header-title{
+                @include font-size(16px);
+            }
+        }
         .date-time-container {
             .mat-form-field {
                 .mat-form-field-wrapper {
@@ -43,6 +52,11 @@
             &.padding-div{
                 padding: 0;
             }
+        }
+        .mat-icon{
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 }

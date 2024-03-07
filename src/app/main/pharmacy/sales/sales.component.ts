@@ -36,6 +36,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
 import { ConcessionReasonMasterModule } from 'app/main/setup/billing/concession-reason-master/concession-reason-master.module';
 import { SubstitutesComponent } from './substitutes/substitutes.component';
+import { D } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-sales',
@@ -3255,19 +3256,27 @@ else{
       }
     });
   }
-  Barcode:any;
+  vBarcode:any;
   barcodeflag: boolean = false;
+
   chkbarcode(event) {
-    debugger
     if (event.checked == true) {
       this.barcodeflag = true
+      
     }else{
       this.barcodeflag = false
     }
   }
 
   barcodeItemfetch(){
-    this._salesService.getCurrentStockItem().subscribe(data => {
+   
+    var d={
+      "StockId": this._salesService.IndentSearchGroup.get("Barcode").value || 0,
+    
+      "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+     
+    }
+    this._salesService.getCurrentStockItem(d).subscribe(data => {
       this.tempDatasource.data = data as any;
       // console.log(this.tempDatasource.data);
       if (this.tempDatasource.data.length >= 1) {
@@ -3278,8 +3287,9 @@ else{
         });
       }
     });
+    this.vBarcode='';
   }
-
+ 
 }
 
 

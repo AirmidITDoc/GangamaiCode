@@ -404,7 +404,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   viewgetCurrentstockReportPdf(row) {
-
+debugger
     setTimeout(() => {
       this.SpinLoading = true;
       this._GRNService.getGRNreportview(
@@ -553,8 +553,8 @@ export class GoodReceiptnoteComponent implements OnInit {
     // }
 
     let updateGRNVerifyStatusobj ={};
-    updateGRNVerifyStatusobj['grnid'] = row.GRNID || 0 ;
-    updateGRNVerifyStatusobj['isVerified'] = 1;
+    updateGRNVerifyStatusobj['GRNID'] = row.GRNID || 0 ;
+    updateGRNVerifyStatusobj['ISVerified'] = 1;
 
     let submitObj ={
       "updateGRNVerifyStatus":updateGRNVerifyStatusobj
