@@ -113,7 +113,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
    // console.log(obj);
  
   }
-  OnAdd(){
+  onAdd(){
     
   }
   onClose(){

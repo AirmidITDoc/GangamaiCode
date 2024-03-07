@@ -499,7 +499,6 @@ export class UpdateGRNComponent implements OnInit {
     return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
   }
   getCellCalculation(contact, ReceiveQty) {
-
     if (contact.PurchaseID > 0) {
       if (contact.ReceiveQty > contact.POQty) {
         Swal.fire("Qty Should Be less than PO Qty")
@@ -517,6 +516,7 @@ export class UpdateGRNComponent implements OnInit {
         contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100);
         let TotalAmt = ((contact.TotalAmount) - (contact.DiscAmount));
         //Gst
+        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
         contact.CGSTAmt = (((TotalAmt) * (contact.CGSTPer)) / 100);
         contact.SGSTAmt = (((TotalAmt) * (contact.SGSTPer)) / 100);
         contact.IGSTAmt = (((TotalAmt) * (contact.IGSTPer)) / 100);
@@ -535,10 +535,11 @@ export class UpdateGRNComponent implements OnInit {
           contact.PurUnitRateWF = ((TotAmtWF) / (contact.TotalQty));
         }
       } 
-      else {
+      else if(this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST Before Disc') {
         //total amt
         contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
         //Gst
+        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
         contact.CGSTAmt = (((contact.TotalAmount) * (contact.CGSTPer)) / 100);
         contact.SGSTAmt = (((contact.TotalAmount) * (contact.SGSTPer)) / 100);
         contact.IGSTAmt = (((contact.TotalAmount) * (contact.IGSTPer)) / 100);
@@ -560,7 +561,61 @@ export class UpdateGRNComponent implements OnInit {
           contact.PurUnitRateWF = ((TotAmtWF) / (contact.TotalQty));
         }
       }
-
+      else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
+      //total amt
+        contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
+        //disc 1
+        contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100)
+        let totalamt =  ((contact.TotalAmount) - (contact.DiscAmount));
+        //disc 2
+        contact.DiscAmt2 = (((totalamt) *(contact.DiscPer2)) / 100);
+        let totalamt2 =((totalamt) - (contact.DiscAmt2));
+        //GST cal
+        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        contact.CGSTAmt = (((totalamt2) * (contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((totalamt2) * (contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((totalamt2) * (contact.IGSTPer)) / 100);
+        // contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
+        contact.VatAmount = (((totalamt2) * (contact.VatPercentage)) / 100);
+        contact.NetAmount = ((totalamt2) + (contact.VatAmount)).toFixed(2);
+      }
+      else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST on MRP Plus FreeQty"){
+        let mrpTotal = ((contact.TotalQty) * (contact.ConversionFactor) * (contact.MRP));
+        let Totalmrp = ((mrpTotal * 100)/(100 + contact.VatPercentage) );
+        //GST cal
+        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        contact.CGSTAmt = (((Totalmrp) * (contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((Totalmrp) * (contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((Totalmrp) * (contact.IGSTPer)) / 100);
+       // this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
+       contact.VatAmount =  ((Totalmrp * (contact.VatPercentage)) / 100 );
+        let GrossAmt =  ((contact.TotalAmount) - (contact.DiscAmount));
+        contact.NetAmount = ((GrossAmt) + (contact.VatAmount));
+      }
+       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST on Pur Plus FreeQty"){
+        let TotalPurWf = ((contact.TotalQty) * (contact.Rate));
+        //GST cal
+        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        contact.CGSTAmt = (((TotalPurWf) * (contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((TotalPurWf) * (contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((TotalPurWf) * (contact.IGSTPer)) / 100);
+        contact.VatAmount =  ((TotalPurWf * (contact.VatPercentage)) / 100 );
+        let GrossAmt =  ((contact.TotalAmount) + (contact.VatPercentage));
+        contact.NetAmount = ((GrossAmt) - (contact.DiscAmount));
+      }
+      else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST On MRP") {
+        let mrpTotal = ((contact.ReceiveQty) * (contact.ConversionFactor) * (contact.MRP));
+        let Totalmrp = ((mrpTotal * 100)/(100 + contact.VatPercentage) );
+        //GST cal
+        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        contact.CGSTAmt = (((Totalmrp) * (contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((Totalmrp) * (contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((Totalmrp) * (contact.IGSTPer)) / 100);
+       
+        contact.VatAmount = ((Totalmrp * (contact.VatPercentage)) / 100 );
+        let GrossAmt =  ((contact.TotalAmount) - (contact.DiscAmount));
+        this.vNetAmount = ((GrossAmt) + ( contact.VatAmount));
+      }
     }
   }
   calculateTotalamt() {
@@ -609,7 +664,8 @@ export class UpdateGRNComponent implements OnInit {
         this.vIGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.vIGST)) / 100).toFixed(2);
         this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
         this.vNetAmount = ((parseFloat(TotalAmt)  + parseFloat(this.vGSTAmount))).toFixed(2);
-      } else {
+
+      } else if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST Before Disc'){
         //Gst
         this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
         this.vCGSTAmount = ((parseFloat(this.vTotalAmount) * parseFloat(this.vCGST)) / 100).toFixed(2);
@@ -623,34 +679,87 @@ export class UpdateGRNComponent implements OnInit {
 
         this.vNetAmount = (parseFloat(TotalAmt) - parseFloat(this.vDisAmount)).toFixed(2);
       }
+      else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
+        this.isDisc2Selected = true;
+        //disc 1
+        this.vDisAmount = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
+        //this.vDisAmount = ((parseFloat(this.vTotalAmount) * parseFloat(this.vDisc)) / 100).toFixed(3);
+        let totalamt =  (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
+        //disc 2
+        this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(this.vDisc2)) / 100).toFixed(2);
+        let totalamt2 =(parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
+        //GST cal
+        this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
+        this.vCGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vCGST)) / 100).toFixed(2);
+        this.vSGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vSGST)) / 100).toFixed(2);
+        this.vIGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vIGST)) / 100).toFixed(2);
+        this.vGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vGST)) / 100).toFixed(2);
+        this.vNetAmount = (parseFloat(totalamt2) + parseFloat(this.vGSTAmount)).toFixed(2);
+      }
+       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST on MRP Plus FreeQty"){
+      let mrpTotal = ((this.FinalTotalQty) * (this.vConversionFactor) * (this.vMRP));
+      let Totalmrp = ((mrpTotal * 100)/(100 + this.vGST) );
+      //GST cal
+      this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
+      this.vCGSTAmount = ((Totalmrp * parseFloat(this.vCGST)) / 100).toFixed(2);
+      this.vSGSTAmount = ((Totalmrp * parseFloat(this.vSGST)) / 100).toFixed(2);
+      this.vIGSTAmount = ((Totalmrp * parseFloat(this.vIGST)) / 100).toFixed(2);
+      this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
+      //
+      this.vGSTAmount =  ((Totalmrp * parseFloat(this.vGST)) / 100).toFixed(2);
+      let GrossAmt =  (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
+      this.vNetAmount = (parseFloat(GrossAmt) + parseFloat(this.vGSTAmount)).toFixed(2);
+    }
+     else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST on Pur Plus FreeQty"){
+      let TotalPurWf = ((this.FinalTotalQty) * (this.vRate));
+      //GST cal
+      this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
+      this.vCGSTAmount = ((TotalPurWf * parseFloat(this.vCGST)) / 100).toFixed(2);
+      this.vSGSTAmount = ((TotalPurWf * parseFloat(this.vSGST)) / 100).toFixed(2);
+      this.vIGSTAmount = ((TotalPurWf * parseFloat(this.vIGST)) / 100).toFixed(2);
+      this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
+      //
+      this.vGSTAmount =  ((TotalPurWf * parseFloat(this.vGST)) / 100).toFixed(2);
+      let GrossAmt =  (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
+      this.vNetAmount = (parseFloat(GrossAmt) - parseFloat(this.vDisAmount)).toFixed(2);
+    }
+     else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST On MRP") {
+      let mrpTotal = ((this.vQty) * (this.vConversionFactor) * (this.vMRP));
+      let Totalmrp = ((mrpTotal * 100)/(100 + this.vGST) );
+      //GST cal
+      this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
+      this.vCGSTAmount = ((Totalmrp * parseFloat(this.vCGST)) / 100).toFixed(2);
+      this.vSGSTAmount = ((Totalmrp * parseFloat(this.vSGST)) / 100).toFixed(2);
+      this.vIGSTAmount = ((Totalmrp * parseFloat(this.vIGST)) / 100).toFixed(2);
+      this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
+     
+      this.vGSTAmount = ((Totalmrp * parseFloat(this.vGST)) / 100).toFixed(2);
+      let GrossAmt =  (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
+      this.vNetAmount = (parseFloat(GrossAmt) + parseFloat(this.vGSTAmount)).toFixed(2);
+    }
     }
     this.FinalLandedrate = (parseInt(this.vNetAmount) / parseInt(this.FinalTotalQty)) || 0,
     this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / parseInt(this.vQty) * parseInt(this.vConversionFactor)) || 0
     this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty) * parseInt(this.vConversionFactor)) || 0
   }
-
-
-
-
   calculateDiscAmount() {
-
     debugger
     let IGSTPer= 0;
     this.vIGST =IGSTPer
-    let disc = this._GRNList.userFormGroup.get('DisAmount').value || 0;
-    if (disc > 0) {
+    let discAmount1 = this._GRNList.userFormGroup.get('DisAmount').value;
+    if (discAmount1 >= 100) {
       //Swal.fire("Enter Discount less than 100");
-      // this.toastr.warning('Enter Discount less than 100', 'Warning !', {
-      //   toastClass: 'tostr-tost custom-toast-warning',
-      // });
-      // this._GRNList.userFormGroup.get('Disc').setValue('');
+      this.toastr.warning('Enter Discount less than 100', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      this._GRNList.userFormGroup.get('Disc').setValue('');
     }
-    if (disc > 0) {
-      let disc = this._GRNList.userFormGroup.get('DisAmount').value;
+    if (discAmount1 >= 0) {
+      let discAmount1 = this._GRNList.userFormGroup.get('DisAmount').value;
       if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
         //disc
-        // this.vDisAmount = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
-        let TotalAmt = (parseFloat(this.vTotalAmount) - parseFloat(disc)).toFixed(2);
+        this.vDisc = ((parseFloat(discAmount1) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
+        let TotalAmt = (parseFloat(this.vTotalAmount) - parseFloat(discAmount1)).toFixed(2);
         //Gst
         this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
         this.vCGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.vCGST)) / 100).toFixed(2);
@@ -668,9 +777,9 @@ export class UpdateGRNComponent implements OnInit {
 
         let TotalAmt = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
 
-        // this.vDisAmount = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
+        this.vDisc = ((parseFloat(discAmount1) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
 
-        this.vNetAmount = (parseFloat(TotalAmt) - parseFloat(disc)).toFixed(2);
+        this.vNetAmount = (parseFloat(TotalAmt) - parseFloat(discAmount1)).toFixed(2);
       }
     }
     this.FinalLandedrate = (parseInt(this.vNetAmount) / parseInt(this.FinalTotalQty)) || 0,
@@ -678,30 +787,14 @@ export class UpdateGRNComponent implements OnInit {
     this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty) * parseInt(this.vConversionFactor)) || 0
   }
 
-  calculateDiscper2Amt() {
-    this.vDisAmount = (((this.vTotalAmount) * (this.vDisc)) / 100);
-    let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
-    //disc 2
-    this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(this.vDisc2)) / 100).toFixed(2);
 
-    if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST After TwoTime Disc') {
-      //disc 1
-      this.vDisAmount = (((this.vTotalAmount) * (this.vDisc)) / 100);
-      let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
-      //disc 2
-      this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(this.vDisc2)) / 100).toFixed(2);
-      let totalamt2 = (parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
 
-      //GST cal
-      this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
-      this.vCGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vCGST)) / 100).toFixed(2);
-      this.vSGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vSGST)) / 100).toFixed(2);
-      this.vIGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vIGST)) / 100).toFixed(2);
-      this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
 
-      this.vGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vGST)) / 100).toFixed(2);
-      this.vNetAmount = (parseFloat(totalamt2) + parseFloat(this.vGSTAmount)).toFixed(2);
-    }
+  calculateDiscAmt() {
+    let discamt1 = ((parseFloat(this.vDisAmount) / parseFloat(this.vTotalAmount)) * 100 ).toFixed(2);
+    this.vDisc = discamt1 ;
+    let discamt2 = ((parseFloat(this.vDisAmount2) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
+    this.vDisc2 = discamt2 ; 
   }
   OnchekPurchaserateValidation() {
     let mrp = this._GRNList.userFormGroup.get('MRP').value
@@ -756,9 +849,43 @@ export class UpdateGRNComponent implements OnInit {
 
     return this.vTotalFinalAmount;
   }
+  isDisc2Selected:boolean=false;
+  onChangeDisc2(event) {
+    // debugger
+    if (event.value.Name == "GST After TwoTime Disc") {
+    
+      this.isDisc2Selected = true;
+    } else {
+      // this.isDisc2Selected = false;
+      // this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
+      // this.VisitFormGroup.get('CompanyId').clearValidators();
+      // this.VisitFormGroup.get('SubCompanyId').clearValidators();
+      // this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
+      // this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
+    }
+  }
+  calculateDiscper2Amt(){
+ //disc 1
+ let totalamt =  (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
+ //disc 2
+ this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(this.vDisc2)) / 100).toFixed(2);
+ let totalamt2 =(parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
+ 
+ //let discamt = this.vDisAmount + this.vDisAmount2 
+ //GST cal
+ this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
+ this.vCGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vCGST)) / 100).toFixed(2);
+ this.vSGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vSGST)) / 100).toFixed(2);
+ this.vIGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vIGST)) / 100).toFixed(2);
+ this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
 
+ this.vGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vGST)) / 100).toFixed(2);
+ this.vNetAmount = (parseFloat(totalamt2) + parseFloat(this.vGSTAmount)).toFixed(2);
+  }
   calculateGSTType(event) {
     if (event.value.Name == "GST After Disc") {
+       
+     // this._GRNList.userFormGroup.get('').disabled();
       this.vIGST = 0;
       let totalamt = this.vTotalAmount - this._GRNList.userFormGroup.get('DisAmount').value
       this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
@@ -824,6 +951,7 @@ export class UpdateGRNComponent implements OnInit {
       this.vNetAmount = (parseFloat(GrossAmt) + parseFloat(this.vGSTAmount)).toFixed(2);
     }
     else if (event.value.Name == "GST After TwoTime Disc") {
+      this.isDisc2Selected = true;
       //disc 1
       this.vDisAmount = (((this.vTotalAmount) * (this.vDisc)) / 100);
       let totalamt =  (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
@@ -841,6 +969,10 @@ export class UpdateGRNComponent implements OnInit {
       this.vGSTAmount = ((parseFloat(totalamt2) * parseFloat(this.vGST)) / 100).toFixed(2);
       this.vNetAmount = (parseFloat(totalamt2) + parseFloat(this.vGSTAmount)).toFixed(2);
     }
+    else{
+      this.isDisc2Selected = false;
+    }
+  
   }
   gePharStoreList() {
     var vdata = {
@@ -1483,6 +1615,7 @@ OnSaveEdit() {
   public onEnterMRP(event): void {
     if (event.which === 13) {
       this.rate.nativeElement.focus();
+       this._GRNList.userFormGroup.get('Rate').setValue('');
     }
   }
 
@@ -1490,14 +1623,14 @@ OnSaveEdit() {
     //
     if (event.which === 13) {
       this.disc.nativeElement.focus();
-      this.vDisc=0;
+      this.vDisc= " ";
     }
   }
 
   public onEnterDisc(event): void {
     if (event.which === 13) {
       this.disc2.nativeElement.focus();
-      this.vDisc2=0;
+      this.vDisc2= "";
     }
   }
   public onEnterDisc2(event): void {
