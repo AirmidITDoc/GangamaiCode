@@ -497,8 +497,7 @@
                                                 MRP</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.MRP" 
-                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                    <input matInput [(ngModel)]="contact.MRP" step="0.1" type="number" autocomplete="off">
                                                 </mat-form-field>
                                                 <!-- {{contact.MRP | number:'1.2-2' }} -->
                                             </mat-cell>
@@ -509,9 +508,8 @@
                                                 Rate</mat-header-cell>
                                             <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput type="number" [(ngModel)]="contact.Rate" step="0.01" 
-                                                        (keyup.enter)="getCellCalculation(contact,contact.Rate)"
-                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                    <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1" type="number"  autocomplete="off"
+                                                        (keyup.enter)="getCellCalculation(contact,contact.Rate)">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -530,8 +528,8 @@
                                             <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.DiscPercentage" 
-                                                        (keyup.enter)="getCellCalculation(contact,contact.DiscPercentage)"
-                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                        (keyup.enter)="getCellCalculation(contact,contact.DiscPercentage)"  step="0.1" type="number"
+                                                        autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -550,8 +548,8 @@
                                             <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.DiscPer2" 
-                                                        (keyup.enter)="getCellCalculation(contact,contact.DiscPer2)"
-                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                        (keyup.enter)="getCellCalculation(contact,contact.DiscPer2)" step="0.1" type="number"
+                                                        autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
