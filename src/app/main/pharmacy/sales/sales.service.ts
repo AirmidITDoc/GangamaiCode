@@ -136,8 +136,8 @@ export class SalesService {
     return this._httpClient.post("InPatient/WhatsappSMSoutgoingSave", emp);
   }
 
-  public getCurrentStockItem(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrive_CurrentStock_ItemList",{});
+  public getCurrentStockItem(param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrive_CurrentStock_ItemList",param);
   }
   
   public getSubstitutes(emp) {
