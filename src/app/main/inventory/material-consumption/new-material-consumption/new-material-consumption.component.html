@@ -47,7 +47,7 @@
                                 <mat-form-field appearance="outline" fxFlex="30%">
                                     <mat-label>ItemName</mat-label>
                                     <input type="text" name="ItemID" formControlName="ItemID" #itemid
-                                        [(ngModel)]="vItemID" placeholder="Item Name (enter 2 char) " matInput
+                                     placeholder="Item Name (enter 2 char) " matInput
                                         [matAutocomplete]="auto" (input)="getSearchItemList()">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"

@@ -30,6 +30,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
   filteredOptionsItem:any;
   noOptionFound: boolean = false;
   isItemIdSelected:boolean=false;
+  screenFromString:'addmision-form';
 
   dsNewmaterialList = new MatTableDataSource<ItemList>();
   constructor(
