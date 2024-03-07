@@ -1,6 +1,6 @@
 <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
     <mat-toolbar class="accent"
-        style="height:50px; justify-content: space-between;width: 100%;background-color:#039be5 !important;">
+        style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12"   style="color: white;">
                 <mat-icon>menu</mat-icon>
@@ -12,6 +12,9 @@
                 Return From Department List
             </span>
         </div>
+        <button mat-raised-button (click)="NewReturnFrom()">
+            <mat-icon>add</mat-icon> Add
+        </button>
 
     </mat-toolbar>
 
@@ -24,7 +27,6 @@
                 
                 <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
                     <span class="h5" style="font-size: 17px;">Search Facility</span>
-                    <!-- / USER -->
                 </div>
               
                 <div>
@@ -50,17 +52,13 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>From Store</mat-label>
                                     <mat-select name="StoreId" formControlName="StoreId" >
-        
                                         <mat-option *ngFor="let m of StoreList" [value]="m">
                                             {{m.StoreName}}
                                         </mat-option>
-                                         
                                     </mat-select>
                                 </mat-form-field>
 
-                                
-
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>To Store</mat-label>
                                     <mat-select formControlName="ToStoreId" name="ToStoreId">
                                         <mat-option></mat-option>
@@ -68,8 +66,27 @@
                                             {{m.StoreName}}
                                         </mat-option>
                                     </mat-select>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>To Store</mat-label>
+                                    <input matAutocompletePosition="below" type="text"
+                                        placeholder="Select Store" matInput formControlName="ToStoreId"
+                                        [matAutocomplete]="auto1"   >
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #auto1="matAutocomplete"
+                                        [displayWith]="getOptionTextStoresList">
+                                        <mat-option *ngFor="let option of filteredOptionsStore | async"
+                                            [value]="option">
+                                            {{option.StoreName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
 
                                 <div style="margin-top: 10px;">
                                     <button mat-raised-button  class="clearbutton" matTooltip="close">
@@ -80,18 +97,11 @@
                                         <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
                                 </div>
-
                             </div>
-
                         </form>
-
                     </div>
                 </div>
-            
         </fuse-sidebar>
-        <!-- / SIDEBAR -->
-        <!-- CENTER -->
-        <!-- CENTER -->
 
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
@@ -106,13 +116,11 @@
                                 <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
-
                                 </div>
 
                                 <mat-table #table class="table1" matSort [dataSource]="dsReturnToDepList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
- 
                                     <ng-container matColumnDef="ReturnNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             ReturnNo
@@ -129,7 +137,6 @@
                                             {{contact.RDate}}
                                         </mat-cell>
                                     </ng-container>
-
 
                                     <ng-container matColumnDef="FromStoreName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -210,7 +217,6 @@
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dsReturnToDepList!=null && dsReturnToDepList.data.length==0)}">
                                     </mat-footer-row>
-
                                 </mat-table>
 
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
@@ -218,19 +224,9 @@
                                 </mat-paginator>
                             </div>
                         </div>
-
-
-
-
                     </div>
                 </div>
-
-
             </div>
         </div>
-
-
     </div>
-
-
 </div>

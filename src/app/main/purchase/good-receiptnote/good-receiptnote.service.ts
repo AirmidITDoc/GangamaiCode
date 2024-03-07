@@ -207,6 +207,11 @@ export class GoodReceiptnoteService {
  public InsertWhatsappGRN(emp){
   return this._httpClient.post("WhatsappEmail/WhatsappSalesSave", emp);
 }
+
+public getPdfGRN(GRNID) {
+  return this._httpClient.get("Pharmacy/view-GRNReport?GRNID=" + GRNID);
+  }
+
 }
 
 

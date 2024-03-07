@@ -149,7 +149,7 @@
                                                     <div style="width: 100%;">
                                                         <div matColumnDef="loading"
                                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                                            class="backgroundBlur"  style="height: 100%;">
+                                                            class="backgroundBlur" style="height: 100%;">
                                                             <div class="spinner-border text-danger"></div>
                                                         </div>
                                                         <!-- sppinner -->
@@ -192,15 +192,12 @@
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                           
-
-                                                          
-
                                                             <ng-container matColumnDef="SupplierName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm  class="w-200">
+                                                                    fxShow.gt-sm class="w-200">
                                                                     SupplierName </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-200">
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    class="w-200">
                                                                     {{contact.SupplierName}}
                                                                 </mat-cell>
                                                             </ng-container>
@@ -249,47 +246,51 @@
                                                                     {{contact.AddedByName}}
                                                                 </mat-cell>
                                                             </ng-container>
-
+                                                            
                                                             <ng-container matColumnDef="action">
                                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                                     style="color: white;">Action
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let row">
-                                                                    <button mat-icon-button (click)="getWhatsappshareSales(row)">
+                                                                    <button mat-icon-button
+                                                                        (click)="getWhatsappshareSales(row)">
                                                                         <mat-icon title="print Menu">print</mat-icon>
                                                                     </button>
+                                                                  
                                                                     <button mat-icon-button (click)="onEdit(row)">
                                                                         <mat-icon title="Edit Menu"
                                                                             *ngIf="row.IsVerified==1"
                                                                             [disabled]="row.disabled"
-                                                                            class="disabled-icon"> edit</mat-icon>
+                                                                            class="disabled-icon">
+                                                                            edit</mat-icon>
                                                                         <mat-icon title="Edit Menu"
                                                                             *ngIf="row.IsVerified==0"> edit</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button (click)="onVerify(row)">
-                                                                        <mat-icon *ngIf="row.IsVerified==1"
+                                                                        <mat-icon *ngIf="row.IsVerified == 1"
                                                                             [disabled]="row.disabled"
                                                                             class="disabled-icon"
                                                                             title="verify Menu">verified_user</mat-icon>
                                                                         <mat-icon title="verify Menu"
-                                                                            *ngIf="row.IsVerified==0">
+                                                                            *ngIf="row.IsVerified == 0">
                                                                             verified_user</mat-icon>
                                                                     </button>
                                                                     <button mat-icon-button (click)="POEmail(row)">
-                                                                        <mat-icon *ngIf="row.IsVerified==0"
+                                                                        <mat-icon *ngIf="row.IsVerified == 0"
                                                                             [disabled]="row.disabled"
                                                                             class="disabled-icon"
                                                                             title="Email Menu">mail</mat-icon>
-                                                                        <mat-icon *ngIf="row.IsVerified==1"
+                                                                        <mat-icon *ngIf="row.IsVerified == 1"
                                                                             title="Email Menu">mail</mat-icon>
                                                                     </button>
-                                                                    <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                                                    (click)="getWhatsappshareSales(row)">
-                                                                    <img width="100" height="20px"
-                                                                        src="assets/images/logos/WhatsApp.png">
-                                                            </button> 
+                                                                    <button mat-icon-button
+                                                                        matTooltip="Send Bill On WhatsApp"
+                                                                        (click)="getWhatsappshareSales(row)">
+                                                                        <img width="100" height="20px"
+                                                                            src="assets/images/logos/WhatsApp.png">
+                                                                    </button>
                                                                 </mat-cell>
-                                                            </ng-container>
+                                                            </ng-container> 
 
                                                             <ng-container matColumnDef="loading">
                                                                 <mat-header-cell *matFooterCellDef colspan="6"
@@ -339,15 +340,17 @@
                                                                     <div class="spinner-border text-danger"></div>
                                                                 </div>
                                                                 <!-- sppinner -->
-                                                                <mat-table matSort [dataSource]="dsPurchaseItemList" [@animateStagger]="{value:'50'}"
+                                                                <mat-table matSort [dataSource]="dsPurchaseItemList"
+                                                                    [@animateStagger]="{value:'50'}"
                                                                     style="overflow:auto;">
                                                                     <ng-container matColumnDef="ItemName">
                                                                         <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-200">
+                                                                            mat-sort-header fxHide fxShow.gt-sm
+                                                                            class="w-200">
                                                                             ItemName
                                                                         </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            fxShow.gt-sm class="w-200">
+                                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                            class="w-200">
                                                                             {{contact.ItemName}}
                                                                         </mat-cell>
                                                                     </ng-container>
@@ -695,8 +698,8 @@
             </td>
             <td colspan="4" style="border: 1px solid gray;vertical-align: top;
             padding: 15px;text-align: left;font-weight: 500;"> Octri Amount :-
-               <span>{{reportPrintObjList[0]?.OctriAmount | currency:'INR':'symbol-narrow':'0.2'}}</span>
-           </td>
+                <span>{{reportPrintObjList[0]?.OctriAmount | currency:'INR':'symbol-narrow':'0.2'}}</span>
+            </td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
              padding: 15px;text-align: left;">Discount Amount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;

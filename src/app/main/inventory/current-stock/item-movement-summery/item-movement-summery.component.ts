@@ -62,6 +62,7 @@ export class ItemMovementSummeryComponent implements OnInit {
       this._CurrentStockService.ItemSummeryFrom.get("start").setValue(this.fiveDaysAgo);
     }
     this.gePharStoreList();
+    this.getItemMovementSummeryList();
   
     const currentDate = new Date();
     const fiveDaysAgos = new Date(currentDate.setDate(currentDate.getDate() - 5));

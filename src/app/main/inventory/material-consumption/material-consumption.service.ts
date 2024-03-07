@@ -60,7 +60,7 @@ export class MaterialConsumptionService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_MaterialConsumption_ByName",Param);
   }
   public getItemlist(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemName_BalQty_M",Param)
   }
   
 }

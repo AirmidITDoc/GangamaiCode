@@ -215,10 +215,10 @@
 //       grid-template-columns: auto 1fr;
 //       grid-template-rows: auto;
 //     }
-//     .disabled-icon {
-//       opacity: 0.5; /* Reduce opacity to indicate disabled state */
-//       cursor: not-allowed; /* Change cursor to indicate disabled state */
-//     }
+    .disabled-icon {
+      opacity: 0.5; /* Reduce opacity to indicate disabled state */
+      cursor: not-allowed; /* Change cursor to indicate disabled state */
+    }
 //     // .mat-header-row {
 //     //   width:1400px;
 //     //   //max-width: 1600px;

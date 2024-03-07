@@ -23,6 +23,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { PODetailList, PurchaseorderComponent } from './purchaseorder/purchaseorder.component';
 import { MatSelect } from '@angular/material/select';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 const moment = _rollupMoment || _moment;
 @Component({
@@ -627,6 +628,56 @@ export class UpdateGRNComponent implements OnInit {
     this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / parseInt(this.vQty) * parseInt(this.vConversionFactor)) || 0
     this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty) * parseInt(this.vConversionFactor)) || 0
   }
+
+
+
+
+  calculateDiscAmount() {
+
+    debugger
+    let IGSTPer= 0;
+    this.vIGST =IGSTPer
+    let disc = this._GRNList.userFormGroup.get('DisAmount').value || 0;
+    if (disc > 0) {
+      //Swal.fire("Enter Discount less than 100");
+      // this.toastr.warning('Enter Discount less than 100', 'Warning !', {
+      //   toastClass: 'tostr-tost custom-toast-warning',
+      // });
+      // this._GRNList.userFormGroup.get('Disc').setValue('');
+    }
+    if (disc > 0) {
+      let disc = this._GRNList.userFormGroup.get('DisAmount').value;
+      if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
+        //disc
+        // this.vDisAmount = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
+        let TotalAmt = (parseFloat(this.vTotalAmount) - parseFloat(disc)).toFixed(2);
+        //Gst
+        this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
+        this.vCGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.vCGST)) / 100).toFixed(2);
+        this.vSGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.vSGST)) / 100).toFixed(2);
+        this.vIGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.vIGST)) / 100).toFixed(2);
+        this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
+        this.vNetAmount = ((parseFloat(TotalAmt)  + parseFloat(this.vGSTAmount))).toFixed(2);
+      } else {
+        //Gst
+        this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
+        this.vCGSTAmount = ((parseFloat(this.vTotalAmount) * parseFloat(this.vCGST)) / 100).toFixed(2);
+        this.vSGSTAmount = ((parseFloat(this.vTotalAmount) * parseFloat(this.vSGST)) / 100).toFixed(2);
+        this.vIGSTAmount = ((parseFloat(this.vTotalAmount) * parseFloat(this.vIGST)) / 100).toFixed(2);
+        this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
+
+        let TotalAmt = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
+
+        // this.vDisAmount = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
+
+        this.vNetAmount = (parseFloat(TotalAmt) - parseFloat(disc)).toFixed(2);
+      }
+    }
+    this.FinalLandedrate = (parseInt(this.vNetAmount) / parseInt(this.FinalTotalQty)) || 0,
+    this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / parseInt(this.vQty) * parseInt(this.vConversionFactor)) || 0
+    this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty) * parseInt(this.vConversionFactor)) || 0
+  }
+
   calculateDiscper2Amt() {
     this.vDisAmount = (((this.vTotalAmount) * (this.vDisc)) / 100);
     let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
@@ -705,6 +756,7 @@ export class UpdateGRNComponent implements OnInit {
 
     return this.vTotalFinalAmount;
   }
+
   calculateGSTType(event) {
     if (event.value.Name == "GST After Disc") {
       this.vIGST = 0;
@@ -1037,6 +1089,7 @@ export class UpdateGRNComponent implements OnInit {
         });
         this._matDialog.closeAll();
         this.OnReset();
+        this.viewGRNREPORTPdf(response)
       } else {
         this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -1178,7 +1231,8 @@ export class UpdateGRNComponent implements OnInit {
         });
         this._matDialog.closeAll();
         this.OnReset();
-
+        debugger
+        this.viewGRNREPORTPdf(response)
       } else {
         this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -1299,6 +1353,7 @@ OnSaveEdit() {
         });
         this._matDialog.closeAll();
         this.OnReset()
+        this.viewGRNREPORTPdf(response)
       }
     }, error => {
       this.toastr.error('New GRN Data not Updated !, Please check API error..', 'Error !', {
@@ -1365,6 +1420,7 @@ OnSaveEdit() {
     if (event.which === 13) {
       this.GateEntryNo1.nativeElement.focus()
     }
+    // this.getGSTtypeList()
   }
   public onEnterGateEntryNo(event): void {
     if (event.which === 13) {
@@ -1434,14 +1490,14 @@ OnSaveEdit() {
     //
     if (event.which === 13) {
       this.disc.nativeElement.focus();
-      this.vDisc.setValue('');
+      this.vDisc=0;
     }
   }
 
   public onEnterDisc(event): void {
     if (event.which === 13) {
       this.disc2.nativeElement.focus();
-      this.vDisc2.setValue('');
+      this.vDisc2=0;
     }
   }
   public onEnterDisc2(event): void {
@@ -1640,6 +1696,33 @@ OnSaveEdit() {
       Swal.fire("Item Expiry date in 3 months !");
     }
   }
+
+  AdList:boolean=false;
+  viewGRNREPORTPdf(el) {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      // this.SpinLoading =true;
+     this.AdList=true;
+    this._GRNList.getPdfGRN(el).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "GRN REPORT viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.sIsLoading = '';
+        });
+    });
+   
+    },100);
+  }
+
 
 }
 export class LastThreeItemList {

@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { NewMaterialConsumptionComponent } from './new-material-consumption/new-material-consumption.component';
 
 @Component({
   selector: 'app-material-consumption',
@@ -45,18 +46,15 @@ export class MaterialConsumptionComponent implements OnInit {
   screenFromString = 'admission-form';
   sIsLoading: string = '';
   isLoading = true;
-  filteredOptions: any;
   showAutocomplete = false;
-  noOptionFound: boolean = false;
   ItemName:any;
-  filteredOptionsItem:any;
   isItemIdSelected:boolean = false;
   ItemId: any;
+  dateTimeObj: any;
+
   
   dsMaterialConLList = new MatTableDataSource<MaterialConList>();
-
   dsNewMaterialConList = new MatTableDataSource<NewMaterialList>();
-
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -73,26 +71,21 @@ export class MaterialConsumptionComponent implements OnInit {
 
   ngOnInit(): void {
    this. gePharStoreList();
-    // this.getMaterialConList();
+   this.getMaterialConList();
   }
   
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-  dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-
- 
   getMaterialConList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "ToStoreId": this._MaterialConsumptionService.SearchGroup.get('StoreId').value.storeid || 1,
+      "ToStoreId":this._loggedService.currentUserValue.user.storeId || 0,
        "From_Dt": this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
        "To_Dt": this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
- 
     }
     console.log(vdata);
       this._MaterialConsumptionService.getMaterialConList(vdata).subscribe(data => {
@@ -106,53 +99,27 @@ export class MaterialConsumptionComponent implements OnInit {
       this.sIsLoading = '';
     });
   }
-
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
     }
-    console.log(vdata);
     this._MaterialConsumptionService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
-      console.log(this.StoreList);
       this._MaterialConsumptionService.SearchGroup.get('StoreId').setValue(this.StoreList[0]);
-      this._MaterialConsumptionService.userFormGroup.get('FromStoreId').setValue(this.StoreList[0]);
     });
   }
-
- 
-  
-  getSearchItemList() {
-    var m_data = {
-      "ItemName": `${this._MaterialConsumptionService.userFormGroup.get('ItemID').value}%`
-      // "ItemID": 1//this._IssueToDep.userFormGroup.get('ItemID').value.ItemID || 0 
-    }
-    // console.log(m_data);
-    if (this._MaterialConsumptionService.userFormGroup.get('ItemID').value.length >= 2) {
-      this._MaterialConsumptionService.getItemlist(m_data).subscribe(data => {
-        this.filteredOptionsItem = data;
-        // console.log(this.filteredOptionsItem.data);
-        this.filteredOptionsItem = data;
-        if (this.filteredOptionsItem.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
+  NewMatrialCon(){
+    const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
       });
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getMaterialConList();
+    });
   }
-  getOptionItemText(option) {
-    this.ItemId = option.ItemID;
-    if (!option) return '';
-    return option.ItemID + ' ' + option.ItemName ;
-  }
-  getSelectedObjItem(obj) {
-   // console.log(obj);
- 
-  }
-
-
- 
 }
 
 export class NewMaterialList {
