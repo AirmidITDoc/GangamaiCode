@@ -1,5 +1,5 @@
 .btn {
-    font-family: $inter-medium;
+    font-family: $roboto;
     font-weight: normal;
     line-height: normal;
     border-radius: 8px;
@@ -33,18 +33,17 @@
         display: flex;
         align-items: center;
         white-space: nowrap;
+        gap: 4px;
         span {
             display: flex;
             align-items: center;
             &.btn-icon {
-                // height: 16px;
-                // width: 16px;
-                margin-right: 8px;
-            }
-            .mat-icon{
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                .mat-icon {
+                    @include font-size(16px);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
             }
         }
     }
@@ -96,12 +95,16 @@
             background: t($ngt-warning);
             border-color: t($ngt-warning);
         }
+        &.btn-light {
+            background: $gray-50;
+            border-color: $gray-50;
+        }
         &.btn-primary-outline {
             background: transparent;
             color: $primary-600;
             border-color: $primary-600;
             &.btn-hover {
-                &:hover{
+                &:hover {
                     background-color: $primary-600;
                     color: $primary-25;
                 }
@@ -168,6 +171,12 @@
             box-shadow: 0px 0px 6px $gray-300;
         }
     }
+}
+// When more buttons in 1 row
+.button-row-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 @include media-breakpoint("xs") {
     .btn {

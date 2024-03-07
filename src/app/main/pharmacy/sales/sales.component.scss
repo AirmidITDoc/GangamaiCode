@@ -1,4 +1,4 @@
-$table-row-width: 1300px;
+
 
 app-sales {
     // .mat-row, .mat-footer-row {
@@ -254,7 +254,7 @@ button:disabled {
     // color: white !important;
     // font-size: 16px;
 }
-.patien-info-sales {
+.patient-info-sales {
     font-size: medium;
     background-color: rgb(203, 214, 214);
     padding: 15px;
@@ -306,16 +306,11 @@ button:disabled {
             padding-inline: 0;
         }
     }
-    .sales-table {
-        .mat-header-row,
-        .mat-row {
-            min-width: $table-row-width;
-        }
-    }
     .footer-container {
         .table-footer {
             .net-amt {
                 .net-amt-group {
+                    font-size: 15px;
                     .net-amt-label {
                         font-weight: 600;
                     }
