@@ -2890,6 +2890,8 @@ else{
   getFinalCalculation(contact, DraftQty) {
     console.log(contact)
     // if (parseInt(contact.BalanceQty) > parseInt(this.)) {
+
+    
     this.RQty = parseInt(DraftQty);
     if (this.RQty && contact.UnitMRP) {
       this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);

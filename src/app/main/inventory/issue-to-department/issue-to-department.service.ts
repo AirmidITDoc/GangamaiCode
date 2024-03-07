@@ -34,6 +34,7 @@ export class IssueToDepartmentService {
     return this._formBuilder.group({
       ToStoreId: '',
       FromStoreId:'',
+      Barcode:[''],
       ItemName:  [''],
       ItemID:[''],
       BatchNO:[''],
@@ -79,7 +80,9 @@ export class IssueToDepartmentService {
     return this._httpClient.post("InventoryTransaction/IssuetoDepartmentSave",Param);
   }
 
-
+  public getCurrentStockItem(param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrive_CurrentStock_ItemList",param);
+  }
 
    
 }
