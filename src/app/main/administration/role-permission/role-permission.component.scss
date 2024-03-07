@@ -1,28 +1,46 @@
 .example-tree-invisible {
-  display: none;
+    display: none;
 }
 
 .example-tree ul,
 .example-tree li {
-  margin-top: 0;
-  margin-bottom: 0;
-  list-style-type: none;
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
 }
 
 .example-tree-node {
-  display: block;
-  padding-left: 40px;
+    display: block;
+    padding-left: 40px;
 }
 
 .example-section {
-  margin: 12px 0;
+    margin: 12px 0;
 }
 
 .example-margin {
-  margin: 0 12px;
+    margin: 0 12px;
 }
 
 ul {
-  list-style-type: none;
-  margin-top: 4px;
+    list-style-type: none;
+    margin-top: 4px;
+}
+
+.role-permission{
+    .role-permission-body{
+        min-height: 450px;
+    }
+    .tree-container {
+        display: flex;
+        .label-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .checkbox-section {
+            flex: 2;
+        }
+    }
 }

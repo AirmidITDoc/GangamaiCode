@@ -1,0 +1,15 @@
+.mat-paginator {
+    .mat-paginator-outer-container{
+        .mat-paginator-container{
+            min-height: 40px;
+        }
+    }
+    .mat-icon-button {
+        height: 25px;
+        width: 25px;
+        line-height: 25px;
+        .mat-paginator-icon {
+            width: 22px;
+        }
+    }
+}

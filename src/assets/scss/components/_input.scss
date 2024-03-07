@@ -175,4 +175,13 @@
             }
         }
     }
+    &.mat-form-field-appearance-legacy {
+        .mat-form-field-suffix {
+            .mat-icon-button {
+                .mat-icon {
+                    @include font-size(16px);
+                }
+            }
+        }
+    }
 }
