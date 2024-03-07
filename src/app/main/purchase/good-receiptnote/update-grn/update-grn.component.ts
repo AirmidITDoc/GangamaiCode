@@ -105,6 +105,7 @@ export class UpdateGRNComponent implements OnInit {
   VatAmount: any;
   vFinalNetAmount: any;
   vFinalDisAmount: any;
+  vFinalDisAmount2:any;
   vFinalVatAmount: any;
   vNetPayamount: any;
   CGSTFinalAmount: any;
@@ -273,6 +274,9 @@ export class UpdateGRNComponent implements OnInit {
   }
   lastDay1: any;
   CellcalculateLastDay(contact, inputDate: string) {
+    // if (inputDate === undefined){
+    //  return inputDate.replace(/\s/g, "");
+    // }
     if (inputDate && inputDate.length === 6) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
@@ -442,6 +446,7 @@ export class UpdateGRNComponent implements OnInit {
         PurUnitRateWF: this.FinalpurUnitrateWF || 0
       });
     this.dsItemNameList.data = this.chargeslist
+    console.log(this.chargeslist)
   }
   else {
     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
@@ -453,6 +458,7 @@ export class UpdateGRNComponent implements OnInit {
     this._GRNList.userFormGroup.get('ItemName').setValue('');
     this.vNetAmount = 0;
     this.itemid.nativeElement.focus();
+    this.add=false
   }
   ItemReset() {
     this.ItemName = " ";
@@ -499,6 +505,7 @@ export class UpdateGRNComponent implements OnInit {
     return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
   }
   getCellCalculation(contact, ReceiveQty) {
+    
     if (contact.PurchaseID > 0) {
       if (contact.ReceiveQty > contact.POQty) {
         Swal.fire("Qty Should Be less than PO Qty")
@@ -506,9 +513,10 @@ export class UpdateGRNComponent implements OnInit {
         contact.poBalQty = ((contact.POQty) - (contact.ReceiveQty ))
       }
     }
-    contact.TotalQty = (((contact.FreeQty) + (contact.ReceiveQty )) * (contact.ConversionFactor)) || 0;
+    contact.TotalQty = (((contact.FreeQty) + (contact.ReceiveQty )) * (contact.ConversionFactor));
   
        if(contact.ReceiveQty){
+        debugger
        if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
         //total amt
         contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
@@ -524,11 +532,11 @@ export class UpdateGRNComponent implements OnInit {
         contact.VatAmount = (((TotalAmt) * (contact.VatPercentage)) / 100);
         contact.NetAmount = ((TotalAmt) + (contact.VatAmount));
         //LandedRate As New Double
-        contact.LandedRate = (contact.NetAmount / contact.TotalQty) || 0;
+        contact.LandedRate = (contact.NetAmount / contact.TotalQty);
         ///PurUnitRate
-        contact.PurUnitRate = (((contact.TotalAmount) / (contact.ReceiveQty)) * (contact.ConversionFactor)) || 0;
+        contact.PurUnitRate = (((contact.TotalAmount) / (contact.ReceiveQty)) * (contact.ConversionFactor));
         //PurUnitRateWF
-        contact.PurUnitRateWF= (((contact.TotalAmount) / (contact.TotalQty)) * (contact.ConversionFactor)) || 0;
+        contact.PurUnitRateWF= (((contact.TotalAmount) / (contact.TotalQty)) * (contact.ConversionFactor));
         if (contact.ReceiveQty = 0){
           let  TotAmtWF =  ((contact.FreeQty) * (contact.Rate)) ;
           contact.PurUnitRate = ((TotAmtWF) / (contact.TotalQty));
@@ -548,18 +556,18 @@ export class UpdateGRNComponent implements OnInit {
         let totalAmt = ((contact.TotalAmount) + (contact.VatAmount));
         //disc
         contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100);
-        contact.NetAmount = ((totalAmt) - (contact.DiscAmount)) || 0;
+        contact.NetAmount = ((totalAmt) - (contact.DiscAmount));
         //LandedRate As New Double
-        contact.LandedRate = (contact.NetAmount / contact.TotalQty) || 0;
+        contact.LandedRate = (contact.NetAmount / contact.TotalQty);
         ///PurUnitRate
-        contact.PurUnitRate = (((contact.TotalAmount) / (contact.ReceiveQty)) * (contact.ConversionFactor)) || 0;
+        contact.PurUnitRate = (((contact.TotalAmount) / (contact.ReceiveQty)) * (contact.ConversionFactor));
         //PurUnitRateWF
-        contact.PurUnitRateWF= (((contact.TotalAmount) / (contact.TotalQty)) * (contact.ConversionFactor)) || 0;
-        if (contact.ReceiveQty = 0){
-          let  TotAmtWF =  ((contact.FreeQty) * (contact.Rate)) ;
-          contact.PurUnitRate = ((TotAmtWF) / (contact.TotalQty));
-          contact.PurUnitRateWF = ((TotAmtWF) / (contact.TotalQty));
-        }
+        contact.PurUnitRateWF= (((contact.TotalAmount) / (contact.TotalQty)) * (contact.ConversionFactor));
+        // if (contact.ReceiveQty = 0){
+        //   let  TotAmtWF =  ((contact.FreeQty) * (contact.Rate)) ;
+        //   contact.PurUnitRate = ((TotAmtWF) / (contact.TotalQty));
+        //   contact.PurUnitRateWF = ((TotAmtWF) / (contact.TotalQty));
+        // }
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
       //total amt
@@ -619,6 +627,8 @@ export class UpdateGRNComponent implements OnInit {
     }
   }
   calculateTotalamt() {
+
+
     let Qty = this._GRNList.userFormGroup.get('Qty').value;
     let freeqty = this._GRNList.userFormGroup.get('FreeQty').value;
     this.FinalTotalQty = ((parseInt(Qty) + parseInt(freeqty)) * parseInt(this.vConversionFactor));
@@ -741,6 +751,10 @@ export class UpdateGRNComponent implements OnInit {
     this.FinalLandedrate = (parseInt(this.vNetAmount) / parseInt(this.FinalTotalQty)) || 0,
     this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / parseInt(this.vQty) * parseInt(this.vConversionFactor)) || 0
     this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty) * parseInt(this.vConversionFactor)) || 0
+  
+  debugger
+    this.add=false
+    // this.addbutton.nativeElement.focus();
   }
   calculateDiscAmount() {
     debugger
@@ -799,8 +813,11 @@ export class UpdateGRNComponent implements OnInit {
   OnchekPurchaserateValidation() {
     let mrp = this._GRNList.userFormGroup.get('MRP').value
     if (mrp <= this.vRate) {
-      Swal.fire("Enter Purchase Rate Less Than MRP");
-      this._GRNList.userFormGroup.get('Rate').setValue(0);
+      this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+     // Swal.fire("Enter Purchase Rate Less Than MRP");
+      this._GRNList.userFormGroup.get('Rate').setValue(" ");
       this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
       this._GRNList.userFormGroup.get('DisAmount').setValue(0);
       this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
@@ -808,7 +825,14 @@ export class UpdateGRNComponent implements OnInit {
       this._GRNList.userFormGroup.get('SGSTAmount').setValue(0);
       this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
       this._GRNList.userFormGroup.get('NetAmount').setValue(0);
+      this.rate.nativeElement.focus();
     }
+else{
+  this.calculateTotalamt();
+}
+
+
+    // this.disc.nativeElement.focus();
   }
   getCGSTAmt(element) {
     let CGSTAmt;
@@ -833,6 +857,7 @@ export class UpdateGRNComponent implements OnInit {
    
     this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
     this.vFinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
+    this.vFinalDisAmount2 = (element.reduce((sum, { DiscAmt2 }) => sum += +(DiscAmt2 || 0), 0)).toFixed(2);
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
 
     let Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge").value || 0;
@@ -990,7 +1015,7 @@ export class UpdateGRNComponent implements OnInit {
     this.vQty = 0
     this.vUOM = obj.UnitofMeasurementId;
     this.vHSNCode = obj.HSNcode;
-    this.vRate = obj.PurchaseRate;
+    this.vRate = " ";
     this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
     this.vDisc = 0;
     this.vDisc2 = 0;
@@ -1524,7 +1549,8 @@ OnSaveEdit() {
   @ViewChild('cgst') cgst: ElementRef;
   @ViewChild('sgst') sgst: ElementRef;
   @ViewChild('igst') igst: ElementRef;
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  @ViewChild('addbutton') addbutton: ElementRef;
   add: boolean = false;
   @ViewChild('Remark') Remark: ElementRef;
   @ViewChild('ReceivedBy') ReceivedBy: ElementRef;
@@ -1595,6 +1621,8 @@ OnSaveEdit() {
   public onEnterBatchNo(event): void {
     if (event.which === 13) {
       this.expdate.nativeElement.focus();
+     let batchno = this.vBatchNo.toUpperCase();
+     this.vBatchNo = batchno;
     }
   }
   public onEnterExpDate(event): void {
@@ -1613,24 +1641,26 @@ OnSaveEdit() {
     }
   }
   public onEnterMRP(event): void {
+    debugger
     if (event.which === 13) {
       this.rate.nativeElement.focus();
-       this._GRNList.userFormGroup.get('Rate').setValue('');
+      //  this._GRNList.userFormGroup.get('Rate').setValue('');
     }
   }
 
   public onEnterRate(event): void {
-    //
     if (event.which === 13) {
       this.disc.nativeElement.focus();
-      this.vDisc= " ";
     }
   }
 
   public onEnterDisc(event): void {
+
+    debugger
     if (event.which === 13) {
-      this.disc2.nativeElement.focus();
-      this.vDisc2= "";
+      // this.disc2.nativeElement.focus();
+      this.add=true
+      this.addbutton.nativeElement.focus();
     }
   }
   public onEnterDisc2(event): void {
@@ -1661,7 +1691,7 @@ OnSaveEdit() {
     if (event.which === 13) {
       // this.cgst.nativeElement.focus();
       this.add = true;
-      this.addbutton.focus();
+      // this.addbutton.nativeElement.focus();
       this.itemid.nativeElement.focus();
     }
   }
