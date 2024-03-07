@@ -269,7 +269,7 @@
                                     <mat-form-field appearance="outline" fxFlex="8%">
                                         <mat-label>Dis Amount </mat-label>
                                         <input matInput [(ngModel)]="vDisAmount" name="DisAmount" type="number"
-                                            formControlName="DisAmount" readonly>
+                                            formControlName="DisAmount"  (keyup)="calculateDiscAmount()" >
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="5%">
