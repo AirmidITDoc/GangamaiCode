@@ -1,46 +1,48 @@
+$modal-gap:16px;
 .mat-dialog-container {
-    .modal-header {
-        background-color: $primary-600;
-        color: $primary-25;
-        .modal-header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 16px;
-            .modal-header-title {
-                @include font-size(15px);
+    .modal-wrapper {
+        overflow: auto;
+        .modal-header {
+            background-color: $primary-600;
+            color: $primary-25;
+            .modal-header-content {
                 display: flex;
-                justify-content: flex-start;
+                justify-content: space-between;
                 align-items: center;
-                gap: 8px;
-                .title{
-                    
-                }
-                .title-icon{
-
-                }
-            }
-            .modal-header-icon {
-                .modal-icon{
+                padding: 8px $modal-gap;
+                .modal-header-title {
+                    @include font-size(15px);
                     display: flex;
-                    justify-content: center;
+                    justify-content: flex-start;
                     align-items: center;
+                    gap: 8px;
+                    .title {
+                    }
+                    .title-icon {
+                    }
+                }
+                .modal-header-icon {
+                    .modal-icon {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
                 }
             }
         }
-    }
-    .modal-body {
-        padding: 0 16px ;
-    }
-    .modal-footer {
-        padding: 0 16px 16px 16px ;
-        .modal-footer-buttons{
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
+        .modal-body {
+            padding: $modal-gap;
+        }
+        .modal-footer {
+            padding: 0 $modal-gap $modal-gap $modal-gap;
+            .modal-footer-buttons {
+                display: flex;
+                justify-content: flex-end;
+                gap: 8px;
+            }
         }
     }
-    .mat-icon{
+    .mat-icon {
         display: flex;
         justify-content: center;
         align-items: center;

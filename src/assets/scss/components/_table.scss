@@ -1,9 +1,11 @@
 .mat-table {
     border-radius: 4px;
     overflow: auto;
-    .mat-header-row {
+    .mat-header-row,.mat-row{
         min-height: auto;
         height: auto;
+    }
+    .mat-header-row {
         .mat-header-cell {
             @include font-size(13px);
             color: inherit;
@@ -26,8 +28,6 @@
         }
     }
     .mat-row {
-        min-height: auto;
-        height: auto;
         .mat-cell {
             @include font-size(12px);
             font-family: $roboto;
