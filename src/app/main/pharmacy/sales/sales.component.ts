@@ -3257,8 +3257,8 @@ else{
   }
   Barcode:any;
   barcodeflag: boolean = false;
+
   chkbarcode(event) {
-    debugger
     if (event.checked == true) {
       this.barcodeflag = true
     }else{
