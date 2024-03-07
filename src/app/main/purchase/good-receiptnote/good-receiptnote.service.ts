@@ -118,8 +118,8 @@ export class GoodReceiptnoteService {
       OtherCharge:[''],
       RoundingAmt:[''],
       EwayBillNo:[""],
-      EwalBillDate:[new Date()]
-      
+      EwalBillDate:[new Date()],
+      DiscAmount2:['']
     });
   }
   CreatePOFrom(){
