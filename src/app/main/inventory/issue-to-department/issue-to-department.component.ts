@@ -289,6 +289,7 @@ export class IssueToDepartmentComponent implements OnInit {
   Itemchargeslist1: any = [];
   QtyBalchk: any = 0;
   Itemflag: boolean = false;
+
   onAddBarcodeItemList(contact, DraftQty) {
     console.log(contact)
     let i = 0;
@@ -356,7 +357,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
 
 tempdata:any=[];
-  onAdd(element, DraftQty) {
+  onAdd() {
     if ((this.vItemID == '' || this.vItemID == null || this.vItemID == undefined)) {
       this.toastr.warning('Please enter a item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
