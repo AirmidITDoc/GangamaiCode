@@ -276,6 +276,7 @@ export class IssueToDepartmentComponent implements OnInit {
   getOptionTextStores(option) {
     return option && option.StoreName ? option.StoreName : '';
   }
+
   getPharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
@@ -295,27 +296,19 @@ export class IssueToDepartmentComponent implements OnInit {
     let i = 0;
     if (this.dsNewIssueList3.data.length > 0) {
       this.dsNewIssueList3.data.forEach((element) => {
-
         if (element.ItemId == contact.ItemId) {
-
           this.Itemflag = true;
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
-
           });
-
           if (contact.IssueQty != null) {
             this.DraftQty = element.Qty + contact.IssueQty;
-
           } else {
             this.DraftQty = element.Qty + 1;
           }
-          debugger
-
           let TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
           let Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
           let vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
-
           this.dsNewIssueList3.data[i].Qty = this.DraftQty;
           this.dsNewIssueList3.data[i].VatAmount = Vatamount;
           this.dsNewIssueList3.data[i].TotalAmount = TotalMRP;
@@ -325,7 +318,6 @@ export class IssueToDepartmentComponent implements OnInit {
       });
 
     }
-    debugger
     if (!this.Itemflag) {
       let TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
       let Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
@@ -351,8 +343,6 @@ export class IssueToDepartmentComponent implements OnInit {
     }
     this.dsNewIssueList3.data = this.chargeslist
     console.log(this.dsNewIssueList3.data)
-
-
   }
 
 
@@ -623,12 +613,10 @@ tempdata:any=[];
     }
     this._IssueToDep.getCurrentStockItem(d).subscribe(data => {
       this.tempDatasource.data = data as any;
-      console.log(this.tempDatasource.data);
-
+      // console.log(this.tempDatasource.data);
       this.BarcodetempDatasource = this.dsNewIssueList3.data
       this.BarcodetempDatasource = this.tempDatasource.data
-
-      console.log(this.BarcodetempDatasource)
+      // console.log(this.BarcodetempDatasource)
       if (this.tempDatasource.data.length >= 1) {
         this.tempDatasource.data.forEach((element) => {
           this.DraftQty = 1;
@@ -644,8 +632,6 @@ tempdata:any=[];
     });
     this.vBarcode = '';
     this.Addflag = false
-
-
   }
 }
 export class NewIssueList3 {

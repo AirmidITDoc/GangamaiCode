@@ -362,7 +362,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="7%" *ngIf="barcodeflag">
                                                     <mat-label>Barcode No</mat-label>
                                                     <input matInput placeholder="Placeholder" [(ngModel)]="vBarcode"
-                                                        formControlName="Barcode" (keyup)="barcodeItemfetch()">
+                                                        formControlName="Barcode" (change)="barcodeItemfetch()">
                                                 </mat-form-field>
 
 
