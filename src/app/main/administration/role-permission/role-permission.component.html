@@ -42,7 +42,7 @@
                                             View?
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                            <mat-checkbox [checked]="element.isView"
+                                            <mat-checkbox [checked]="element.isView" [value]="element.isView"
                                                 (change)="valueChange(element,'view',$event)"
                                                 style="margin-right: 2px;font-size: 12px;">View
                                             </mat-checkbox>
