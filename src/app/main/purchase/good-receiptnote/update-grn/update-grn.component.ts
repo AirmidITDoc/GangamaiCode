@@ -68,6 +68,7 @@ export class UpdateGRNComponent implements OnInit {
     'landedRate',
     'purUnitRate',
     'purUnitRateWF',
+    'UnitMRP',
     'buttons',
   ];
   displayedColumns3 = [
@@ -185,6 +186,7 @@ export class UpdateGRNComponent implements OnInit {
   FinalLandedrate: any;
   FinalpurUnitRate: any;
   FinalpurUnitrateWF: any;
+  FinalUnitMRP: any;
   vItemName:any;
   vlastDay: string = '';
   lastDay2: string = '';
@@ -443,10 +445,11 @@ export class UpdateGRNComponent implements OnInit {
         POQty: 0,
         LandedRate: this.FinalLandedrate || 0,
         PurUnitRate: this.FinalpurUnitRate || 0,
-        PurUnitRateWF: this.FinalpurUnitrateWF || 0
+        PurUnitRateWF: this.FinalpurUnitrateWF || 0,
+        UnitMRP:this.FinalUnitMRP || 0
       });
     this.dsItemNameList.data = this.chargeslist
-    console.log(this.chargeslist)
+    // console.log(this.chargeslist)
   }
   else {
     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
@@ -460,6 +463,7 @@ export class UpdateGRNComponent implements OnInit {
     this.itemid.nativeElement.focus();
     this.add=false
   }
+
   ItemReset() {
     this.ItemName = " ";
     this.ItemID = 0;
@@ -532,11 +536,14 @@ export class UpdateGRNComponent implements OnInit {
         contact.VatAmount = (((TotalAmt) * (contact.VatPercentage)) / 100);
         contact.NetAmount = ((TotalAmt) + (contact.VatAmount));
         //LandedRate As New Double
+
+
         contact.LandedRate = (contact.NetAmount / contact.TotalQty);
         ///PurUnitRate
         contact.PurUnitRate = (((contact.TotalAmount) / (contact.ReceiveQty)) * (contact.ConversionFactor));
         //PurUnitRateWF
         contact.PurUnitRateWF = (((contact.TotalAmount) / (contact.TotalQty)) * (contact.ConversionFactor));
+        contact.UnitMRP = ((contact.MRP) * (contact.ConversionFactor));
         // if (contact.ReceiveQty = 0){
         //   let  TotAmtWF =  ((contact.FreeQty) * (contact.Rate)) ;
         //   contact.PurUnitRate = ((TotAmtWF) / (contact.TotalQty));
@@ -545,6 +552,7 @@ export class UpdateGRNComponent implements OnInit {
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST Before Disc') {
         contact.TotalQty = (((contact.FreeQty) + (contact.ReceiveQty )) * (contact.ConversionFactor));
+
         //total amt
         contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
         //Gst
@@ -552,18 +560,20 @@ export class UpdateGRNComponent implements OnInit {
         contact.CGSTAmt = (((contact.TotalAmount) * (contact.CGSTPer)) / 100);
         contact.SGSTAmt = (((contact.TotalAmount) * (contact.SGSTPer)) / 100);
         contact.IGSTAmt = (((contact.TotalAmount) * (contact.IGSTPer)) / 100);
-        // contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
         contact.VatAmount = (((contact.TotalAmount) * (contact.VatPercentage)) / 100);
         let totalAmt = ((contact.TotalAmount) + (contact.VatAmount));
+
         //disc
         contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100);
         contact.NetAmount = ((totalAmt) - (contact.DiscAmount));
+
         //LandedRate As New Double
         contact.LandedRate = (contact.NetAmount / contact.TotalQty);
         ///PurUnitRate
         contact.PurUnitRate = (((contact.TotalAmount) / (contact.ReceiveQty)) * (contact.ConversionFactor));
         //PurUnitRateWF
         contact.PurUnitRateWF = (((contact.TotalAmount) / (contact.TotalQty)) * (contact.ConversionFactor));
+        contact.UnitMRP = ((contact.MRP) * (contact.ConversionFactor));
         // if (contact.ReceiveQty = 0){
         //   let  TotAmtWF =  ((contact.FreeQty) * (contact.Rate)) ;
         //   contact.PurUnitRate = ((TotAmtWF) / (contact.TotalQty));
@@ -588,6 +598,15 @@ export class UpdateGRNComponent implements OnInit {
         // contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
         contact.VatAmount = (((totalamt2) * (contact.VatPercentage)) / 100);
         contact.NetAmount = ((totalamt2) + (contact.VatAmount)).toFixed(2);
+
+        //LandedRate As New Double
+        contact.LandedRate = (contact.NetAmount / contact.TotalQty);
+        ///PurUnitRate
+        contact.PurUnitRate = (((contact.TotalAmount) / (contact.ReceiveQty)) * (contact.ConversionFactor));
+        //PurUnitRateWF
+        contact.PurUnitRateWF = (((contact.TotalAmount) / (contact.TotalQty)) * (contact.ConversionFactor));
+        contact.UnitMRP = ((contact.MRP) * (contact.ConversionFactor));
+
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST on MRP Plus FreeQty") {
         let mrpTotal = ((contact.TotalQty) * (contact.ConversionFactor) * (contact.MRP));
@@ -753,8 +772,8 @@ export class UpdateGRNComponent implements OnInit {
     this.FinalLandedrate = (parseInt(this.vNetAmount) / parseInt(this.FinalTotalQty)) || 0,
     this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / parseInt(this.vQty) * parseInt(this.vConversionFactor)) || 0
     this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty) * parseInt(this.vConversionFactor)) || 0
-  
-  debugger
+    this.FinalUnitMRP = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty) * parseInt(this.vConversionFactor)) || 0
+    
     this.add=false
     // this.addbutton.nativeElement.focus();
   }
@@ -999,6 +1018,7 @@ else{
     else{
       this.isDisc2Selected = false;
     }
+    // this.getCellCalculation();
   
   }
   gePharStoreList() {

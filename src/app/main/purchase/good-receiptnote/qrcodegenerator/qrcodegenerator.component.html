@@ -60,7 +60,7 @@
                                         [width]="obj.Width" errorCorrectionLevel="L">
                                     </ngx-qrcode>
                                     <div
-                                        style="text-align: left;margin-left: 100px;margin-top: -25px;font-size: 15px;margin-bottom: {{obj.Margin}}px">
+                                        style="text-align: left;margin-left: {{obj.Width/2}}px;font-size: 10px;margin-bottom: {{obj.Margin}}px;">
                                         ||{{obj.QrCodeData}}||</div>
                                 </div>
                             </div>

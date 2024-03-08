@@ -479,8 +479,13 @@
                                         <ng-container matColumnDef="FreeQty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 FreeQty</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.FreeQty}}
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm [(ngModel)]="contact.FreeQty"  type="number">
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.FreeQty" type="number"
+                                                        (keyup.enter)="getCellCalculation(contact,contact.FreeQty)"
+                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                </mat-form-field>
+                                                <!-- {{contact.FreeQty}} -->
                                             </mat-cell>
                                         </ng-container>
 
@@ -704,7 +709,7 @@
 
                                         <ng-container matColumnDef="purUnitRate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                purUnitRate</mat-header-cell>
+                                                Unit Rate</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.PurUnitRate | number:'1.2-2' }}
                                             </mat-cell>
@@ -712,11 +717,20 @@
 
                                         <ng-container matColumnDef="purUnitRateWF">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                purUnitRateWF</mat-header-cell>
+                                                Unit Rate WF</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.PurUnitRateWF | number:'1.2-2' }}
                                             </mat-cell>
                                         </ng-container>
+
+                                        <ng-container matColumnDef="UnitMRP">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                UnitMRP</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.UnitMRP | number:'1.2-2' }}
+                                            </mat-cell>
+                                        </ng-container>
+
 
                                         <ng-container matColumnDef="loading">
                                             <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
