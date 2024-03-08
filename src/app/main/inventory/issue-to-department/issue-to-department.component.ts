@@ -16,6 +16,8 @@ import { element } from 'protractor';
 import { FormControl } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from "rxjs/operators";
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-issue-to-department',
@@ -29,6 +31,9 @@ export class IssueToDepartmentComponent implements OnInit {
   tempDatasource = new MatTableDataSource<IssueItemList>();
   BarcodetempDatasource: any[];
   Addflag: boolean = false;
+ vBarcodeflag: boolean = false;
+ SpinLoading:boolean=false;
+
   displayedColumns: string[] = [
     'IssueNo',
     'IssueDate',
@@ -147,6 +152,7 @@ export class IssueToDepartmentComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    private reportDownloadService: ExcelDownloadService,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
     private _loggedService: AuthenticationService
@@ -158,7 +164,7 @@ export class IssueToDepartmentComponent implements OnInit {
     this.gePharStoreList();
     this.getToStoreList();
     this.getPharStoreList();
-    this.getIssueToDepList();
+    this.getIssueToDep();
 
     this.filteredOptionsStore = this._IssueToDep.NewIssueGroup.get('ToStoreId').valueChanges.pipe(
       startWith(''),
@@ -199,7 +205,7 @@ export class IssueToDepartmentComponent implements OnInit {
       this._IssueToDep.IssueSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0])
     });
   }
-  getIssueToDepList() {
+  getIssueToDep() {
     this.sIsLoading = 'loading-data';
     var vdata = {
       "FromStoreId": this._loggedService.currentUserValue.user.storeId,
@@ -219,7 +225,7 @@ export class IssueToDepartmentComponent implements OnInit {
       });
   }
 
-  getIssueItemList(Param) {
+  getIssueItemwiseList(Param) {
     var vdata = {
       "IssueId": Param
     }
@@ -230,10 +236,7 @@ export class IssueToDepartmentComponent implements OnInit {
       this.dsIssueItemList.paginator = this.paginator;
     });
   }
-  OnSelect(Param) {
-    this.getIssueItemList(Param.IssueId)
-  }
-
+ 
   //second tab
   getSearchItemList() {
     var m_data = {
@@ -293,8 +296,10 @@ export class IssueToDepartmentComponent implements OnInit {
 
   onAddBarcodeItemList(contact, DraftQty) {
     console.log(contact)
+    this.vBarcodeflag=true;
     let i = 0;
     if (this.dsNewIssueList3.data.length > 0) {
+
       this.dsNewIssueList3.data.forEach((element) => {
         if (element.ItemId == contact.ItemId) {
           this.Itemflag = true;
@@ -343,11 +348,16 @@ export class IssueToDepartmentComponent implements OnInit {
     }
     this.dsNewIssueList3.data = this.chargeslist
     console.log(this.dsNewIssueList3.data)
+    this.vBarcode=0;
+    // this.vBarcodeflag=false;
   }
 
 
 tempdata:any=[];
-  onAdd() {
+  onAdd($event) {
+    debugger
+    if(this.vBarcode ==0){
+
     if ((this.vItemID == '' || this.vItemID == null || this.vItemID == undefined)) {
       this.toastr.warning('Please enter a item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -360,14 +370,18 @@ tempdata:any=[];
       });
       return;
     }
+
+  }
+
+ if(!this.vBarcodeflag){
     const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId);
     if (!isDuplicate) {
       let gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
-      debugger
+      
       this.chargeslist = this.dsTempItemNameList.data;
-      if (this.dsNewIssueList3.data.length > 0) {
-        this.chargeslist = this.dsNewIssueList3.data;
-      }
+      // if (this.dsNewIssueList3.data.length > 0) {
+      //   this.chargeslist = this.dsNewIssueList3.data;
+      // }
       this.chargeslist.push(
         {
           ItemId: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId || 0,
@@ -389,12 +403,14 @@ tempdata:any=[];
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
+  }
+    
     this.ItemReset();
     this.itemid.nativeElement.focus();
     this._IssueToDep.NewIssueGroup.get('ItemID').setValue('');
-    this.Addflag = true;
+    this.Addflag = false;
   }
-
+ 
 
 
 
@@ -419,6 +435,7 @@ tempdata:any=[];
     this.vTotalAmount = 0;
   }
   CalculateTotalAmt() {
+    debugger
     if (this.vQty > this.vBalanceQty) {
       this.toastr.warning('Enter Qty less than Balance', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -506,7 +523,7 @@ tempdata:any=[];
           toastClass: 'tostr-tost custom-toast-success',
         });
         this.OnReset();
-        this.getIssueToDepList();
+        this.getIssueToDep();
 
       } else {
         this.toastr.error('New Issue To Department Data not saved !, Please check validation error..', 'Error !', {
@@ -531,7 +548,7 @@ tempdata:any=[];
   @ViewChild('Rate') Rate: ElementRef;
   @ViewChild('BalQuantity') BalQuantity: ElementRef;
   @ViewChild('Quantity') Quantity: ElementRef;
-
+  @ViewChild('addbutton') addbutton: ElementRef;
   public onEnterFromstore(event): void {
     if (event.which === 13) {
       this.itemid.nativeElement.focus();
@@ -553,13 +570,17 @@ tempdata:any=[];
     }
   }
   public onEnterQty(event): void {
+    debugger
     if (event.which === 13) {
-      this.Rate.nativeElement.focus();
-
+      // this.Rate.nativeElement.focus();
+      this.Addflag=true
+      this.addbutton.nativeElement.focus();
     }
   }
   public onEnterRate(event): void {
     if (event.which === 13) {
+      this.Addflag=true
+      this.addbutton.nativeElement.focus();
     }
   }
   getBatch() {
@@ -614,8 +635,8 @@ tempdata:any=[];
     this._IssueToDep.getCurrentStockItem(d).subscribe(data => {
       this.tempDatasource.data = data as any;
       // console.log(this.tempDatasource.data);
-      this.BarcodetempDatasource = this.dsNewIssueList3.data
-      this.BarcodetempDatasource = this.tempDatasource.data
+      // this.BarcodetempDatasource = this.dsNewIssueList3.data
+      // this.BarcodetempDatasource = this.tempDatasource.data
       // console.log(this.BarcodetempDatasource)
       if (this.tempDatasource.data.length >= 1) {
         this.tempDatasource.data.forEach((element) => {
@@ -630,8 +651,43 @@ tempdata:any=[];
         });
       }
     });
-    this.vBarcode = '';
+    // this.vBarcode = '';
     this.Addflag = false
+  }
+
+
+  viewgetIssuetodeptReportPdf(contact) {
+    this.sIsLoading == 'loading-data'
+  
+    setTimeout(() => {
+    this.SpinLoading =true;
+    //  this.AdList=true;
+    this._IssueToDep.getIssueToDeptview(contact.IssueId).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Issue to Dept Reprt Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.sIsLoading = '';
+        });
+    });
+    },1000);
+  }
+
+
+   
+  exportIssuetodeptReportExcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['IssueNo', 'IssueDate', 'FromStoreName', 'ToStoreName', 'TotalAmount','TotalVatAmount','NetAmount','Remark','Receivedby'];
+    this.reportDownloadService.getExportJsonData(this.dsIssueToDep.data, exportHeaders, 'Issue To Department');
+    this.dsIssueToDep.data=[];
+    this.sIsLoading = '';
   }
 }
 export class NewIssueList3 {

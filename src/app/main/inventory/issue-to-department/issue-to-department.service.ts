@@ -84,5 +84,11 @@ export class IssueToDepartmentService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrive_CurrentStock_ItemList",param);
   }
 
-   
+  
+  public getIssueToDeptview(IssueId){
+    return this._httpClient.get("InventoryTransaction/view-IssuetoDeptIssuewise?IssueId=" + IssueId);
+  }
+
+
+  
 }

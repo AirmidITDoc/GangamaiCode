@@ -104,7 +104,13 @@
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>
                                         </div>
+                                      
 
+                                    <button  (click)="exportIssuetodeptReportExcel()"
+                                    [disabled]="! (dsIssueToDep.data.length > 0)"
+                                    style="background-color: white;color: white;width: 45px;">
+                                    <img width="32" height="10px" src="assets/images/logos/xls.png">
+                                </button>
                                     </div>
 
                                 </form>
@@ -222,7 +228,7 @@
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
                                                         <button mat-icon-button matTooltip="Print"
-                                                            (click)="getPrint(contact)">
+                                                            (click)="viewgetIssuetodeptReportPdf(contact)">
                                                             <mat-icon>print</mat-icon>
                                                         </button>
                                                     </mat-cell>
@@ -245,7 +251,7 @@
                                                 </mat-header-row>
                                                 <mat-row *matRowDef="let contact; columns: displayedColumns;"
                                                     class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                    (click)="OnSelect(contact)" appHighlight></mat-row>
+                                                    (click)="getIssueItemwiseList(contact)" appHighlight></mat-row>
                                                 <mat-footer-row *matFooterRowDef="['loading']"
                                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                 </mat-footer-row>
@@ -374,7 +380,7 @@
                         style="color: white;">
                         New Issue To Department List
                     </span>
-                    <span style="color: wheat;">
+                    <span style="color: wheat;margin-left: 700px;">
                     <app-common-date [screenFrom]="screenFromString"
                     (dateTimeEventEmitter)="getDateTime($event)">
                       </app-common-date>
@@ -486,13 +492,13 @@
                                             required (keyup)="CalculateTotalAmt()" [(ngModel)]="vQty"
                                             autocomplete="off">
                                     </mat-form-field>
-
+                                    <!-- (keyup)="CalculateTotalAmt()" -->
                                     <mat-form-field appearance="outline" fxFlex="8%">
                                         <mat-label>Unit Rate</mat-label>
                                         <input name="UnitRate" formControlName="UnitRate" matInput #Rate
-                                            [(ngModel)]="vUnitMRP"
+                                            [(ngModel)]="vUnitMRP" #Rate
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                            required (keyup)="CalculateTotalAmt()" autocomplete="off" readonly
+                                            required  autocomplete="off" readonly
                                             (keydown)="onEnterRate($event)">
                                     </mat-form-field>
 
@@ -505,9 +511,18 @@
                                     </mat-form-field>
                                     
                                     <div matTooltip="Select All Value to enable this button!!">
-                                        <button class="next-btn" (click)="onAdd()" [disabled]="Addflag">
+                                        <!-- <button class="next-btn" (click)="onAdd()" [disabled]="Addflag">
                                             Add
-                                        </button>
+                                        </button> -->
+
+
+                                        <button (click)="onAdd($event)"
+                                        class="btn btn-primary btn-with-icon py-8" [disabled]="!Addflag"
+                                        #addbutton>
+                                        <span class="btn-icon">
+                                            <mat-icon> add </mat-icon>
+                                        </span>
+                                    </button>
                                     </div>
                                 </div>
                                 <!-- </mat-card> -->
