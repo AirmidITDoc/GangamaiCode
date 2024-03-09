@@ -401,14 +401,12 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vUOM = obj.UnitofMeasurementId;
     this.vConversionFactor = obj.ConversionFactor;
     this.vHSNcode = obj.HSNcode;
-    this.vRate = obj.PurchaseRate;
     this.vDis = 0;
     this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
     this.vNetAmount = this.vTotalAmount;
     this.VatPercentage = obj.VatPercentage;
     this.vGSTPer = (obj.SGSTPer + obj.CGSTPer);
     this.GSTAmount = 0;
-    this.vMRP = obj.UnitMRP;
     this.vSpecification = obj.Specification || '';
     this.getLastThreeItemInfo();
     this.qty.nativeElement.focus();
@@ -705,7 +703,9 @@ export class UpdatePurchaseorderComponent implements OnInit {
       this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      this._PurchaseOrder.userFormGroup.get('Rate').setValue('');
+      this._PurchaseOrder.userFormGroup.get('Rate').setValue(0);
+    }else{
+      this.calculateTotalAmt();
     }
   }
 
@@ -924,44 +924,44 @@ export class UpdatePurchaseorderComponent implements OnInit {
   public onEnterQty(event): void {
     if (event.which === 13) {
       this.mrp.nativeElement.focus();
-      this.add = false;
+      //this.add = false;
     }
   }
   public onEnterMRP(event): void {
     if (event.which === 13) {
       this.rate.nativeElement.focus();
-      this.add = false;
+      //this.add = false;
     }
   }
   public onEnterRate(event): void {
     if (event.which === 13) {
       this.dis.nativeElement.focus();
-      this.add = false;
+     // this.add = false;
       this.vDis.setValue('');
     }
   }
   public onEnterTotal(event): void {
     if (event.which === 13) {
       this.dis.nativeElement.focus();
-      this.add = false;
+     // this.add = false;
     }
   }
   public onEnterDis(event): void {
     if (event.which === 13) {
       this.gst.nativeElement.focus();
-      this.add = false;
+     // this.add = false;
     }
   }
   public onEnterGST(event): void {
     if (event.which === 13) {
       this.specification.nativeElement.focus();
-      this.add = false;
+      //this.add = false;
     }
   }
 
   public onEnterSpecification(event): void {
     if (event.which === 13) {
-      this.add = false;
+      //this.add = false;
     }
   }
 

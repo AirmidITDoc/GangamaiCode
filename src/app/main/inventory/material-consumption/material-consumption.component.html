@@ -86,38 +86,47 @@
                                 <mat-table #table class="table1" matSort [dataSource]="dsMaterialConLList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <ng-container matColumnDef="Date">
+                                    <ng-container matColumnDef="ConsumptionNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Date </mat-header-cell>
+                                            ConsumptionNo </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.Date}}
+                                            {{contact.ConsumptionNo}}
                                         </mat-cell>
                                     </ng-container>
 
 
-                                    <ng-container matColumnDef="FromStoreName">
+                                    <ng-container matColumnDef="ConsumptionDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Store Name</mat-header-cell>
+                                            ConsumptionDate</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.FromStoreName}}
+                                            {{contact.ConsumptionDate}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="PurchaseTotalAmount">
+                                    <ng-container matColumnDef="ConsumptionTime">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Total Amount </mat-header-cell>
+                                            ConsumptionTime </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.PurchaseTotalAmount}}
+                                            {{contact.ConsumptionTime | date: 'shortTime'}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="TotalVatAmount">
+                                    <ng-container matColumnDef="MaterialConsumptionId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            GST Amount </mat-header-cell>
+                                            MaterialConsumptionId </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.TotalVatAmount}}
+                                            {{contact.MaterialConsumptionId}}
                                         </mat-cell>
                                     </ng-container>
+
+                                    <ng-container matColumnDef="LandedTotalAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            LandedTotalAmount </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.LandedTotalAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+
 
                                     <ng-container matColumnDef="Remark">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -127,11 +136,11 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Addedby">
+                                    <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Added By </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.Addedby}}
+                                            {{contact.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 

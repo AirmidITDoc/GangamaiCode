@@ -527,6 +527,7 @@ debugger
 
   onEdit(contact) {
     this.chkNewGRN = 2;
+    console.log(contact)
     const dialogRef = this._matDialog.open(UpdateGRNComponent,
       {
         maxWidth: "100%",
