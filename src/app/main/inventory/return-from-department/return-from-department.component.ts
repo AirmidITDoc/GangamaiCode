@@ -178,7 +178,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
   }
 
   
-  viewgetReturnfromdeptdatewiseReportPdf(contact) {
+  viewgetReturnfromdeptdatewiseReportPdf() {
     this.sIsLoading == 'loading-data'
     let FromDate = this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
     let ToDate =this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
