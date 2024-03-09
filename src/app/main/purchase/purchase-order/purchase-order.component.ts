@@ -20,8 +20,8 @@ import { UpdatePurchaseorderComponent } from './update-purchaseorder/update-purc
 import { SearchInforObj } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ToastrService } from 'ngx-toastr'; 
-import { EmailComponent } from './email/email.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 
 
 
@@ -367,7 +367,7 @@ export class PurchaseOrderComponent implements OnInit {
   
   POEmail(contact) {
     console.log(contact)
-    const dialogRef = this._matDialog.open(EmailComponent,
+    const dialogRef = this._matDialog.open(EmailSendComponent,
       {
         maxWidth: "100%",
         height: '75%',
