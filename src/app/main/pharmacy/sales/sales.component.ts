@@ -2890,6 +2890,8 @@ else{
   getFinalCalculation(contact, DraftQty) {
     console.log(contact)
     // if (parseInt(contact.BalanceQty) > parseInt(this.)) {
+
+    
     this.RQty = parseInt(DraftQty);
     if (this.RQty && contact.UnitMRP) {
       this.TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
@@ -3262,26 +3264,20 @@ else{
   chkbarcode(event) {
     if (event.checked == true) {
       this.barcodeflag = true
-      
     }else{
       this.barcodeflag = false
     }
   }
 
   barcodeItemfetch(){
-   
     var d={
       "StockId": this._salesService.IndentSearchGroup.get("Barcode").value || 0,
-    
       "StoreId": this._loggedService.currentUserValue.user.storeId || 0
-     
     }
     this._salesService.getCurrentStockItem(d).subscribe(data => {
       this.tempDatasource.data = data as any;
-      // console.log(this.tempDatasource.data);
       if (this.tempDatasource.data.length >= 1) {
         this.tempDatasource.data.forEach((element) => {
-        // this.DraftQty = element.QtyPerDay
         this.DraftQty=1;
         this.onAddDraftListTosale(element, this.DraftQty);
         });

@@ -219,6 +219,12 @@ app-update-grn {
     min-width: 110px;
     text-align: left;
   }
+  .mat-column-UnitMRP {
+    width: 110px;
+    max-width: 110px;
+    min-width: 110px;
+    text-align: left;
+  }
   .mat-column-Action {
     width: 80px;
     max-width: 80px;
@@ -352,8 +358,6 @@ button:disabled {
 }
   
 }
-
-
 .example-month-picker .mat-calendar-period-button {
   pointer-events: none;
 }

@@ -362,7 +362,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="7%" *ngIf="barcodeflag">
                                                     <mat-label>Barcode No</mat-label>
                                                     <input matInput placeholder="Placeholder" [(ngModel)]="vBarcode"
-                                                        formControlName="Barcode" (click)="barcodeItemfetch()">
+                                                        formControlName="Barcode" (change)="barcodeItemfetch()">
                                                 </mat-form-field>
 
 
@@ -441,7 +441,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="5%">
                                                     <mat-label>Disc %</mat-label>
                                                     <input matInput placeholder="Placeholder" formControlName="DiscPer"
-                                                        autocomplete="off" #disper [(ngModel)]="DiscPer"
+                                                        autocomplete="off" #disper [(ngModel)]="DiscPer" 
                                                         (keyup)="getDiscPer()" (keydown)="onEnterdiscper($event)"
                                                         (blur)="onEnterdiscper($event)" onlyNumber
                                                         (keypress)="keyPressAlphanumeric($event)">

@@ -85,12 +85,13 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
 
-                                        <mat-radio-group name="Status" value="false" formControlName="Status">
+                                        <mat-radio-group name="Status" value="0" formControlName="Status">
                                             <mat-label class="example-margin">&nbsp;&nbsp;&nbsp;
                                                 Status:</mat-label>&nbsp;&nbsp;
-                                            <mat-radio-button value="false" class="mr-sm-12">Pending</mat-radio-button>
-                                            <mat-radio-button value="true" class="mr-sm-12">Close</mat-radio-button>
+                                             <mat-radio-button value="1" class="mr-sm-12" (keyup)=" getIndentID()">Close</mat-radio-button>
+                                            <mat-radio-button value="0" class="mr-sm-12" (keyup)=" getIndentID()">Pending</mat-radio-button>
                                         </mat-radio-group>
+
 
                                         <div style="margin-top: 10px;">
                                             <button mat-raised-button (click)="onClear()" class="clearbutton"

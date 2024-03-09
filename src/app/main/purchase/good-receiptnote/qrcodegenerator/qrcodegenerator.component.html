@@ -28,35 +28,40 @@
                                     ||{{item.QrCodeData}}||</div>
                                 <div fxLayout="row">
                                     <mat-form-field appearance="outline">
-                                        <mat-label>Qty - {{item.Qty}}</mat-label>
-                                        <input [(ngModel)]="item.Qty" value="{{item.Qty}}" matInput type="number" autocomplete="off" required>
+                                        <mat-label>Qty</mat-label>
+                                        <input [(ngModel)]="item.Qty" value="{{item.Qty}}" matInput type="number"
+                                            autocomplete="off" required>
                                     </mat-form-field>
                                 </div>
                                 <div fxLayout="row">
                                     <mat-form-field appearance="outline">
-                                        <mat-label>Width {{item.Width}} </mat-label>
-                                        <input [(ngModel)]="item.Width" value="{{item.Width}}" matInput type="number" autocomplete="off"
-                                            required>
+                                        <mat-label>Width </mat-label>
+                                        <input [(ngModel)]="item.Width" value="{{item.Width}}" matInput type="number"
+                                            autocomplete="off" required>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Margin Bottom </mat-label>
+                                        <input [(ngModel)]="item.Margin" value="{{item.Margin}}" matInput type="number"
+                                            autocomplete="off" required>
                                     </mat-form-field>
                                 </div>
                             </div>
                             <div fxLayout="row">
-                                <button class="next-btn" style="border-radius: 14px;height:45px" [useExistingCss]="true"
+                                <button class="next-btn" style="border-radius: 14px;height:45px" 
                                     printSectionId="dvPrint" ngxPrint>Print</button>
                             </div>
                         </div>
-                        <div id="dvPrint" style="width: 700px;display: none;">
-                            <div *ngFor="let obj of QrData" style="width: 700px;">
-                                <div style="width: 700px;">
-                                    <div *ngFor="let item of [].constructor(obj.Qty); let i = index"
-                                        style="display: inline-block;">
-                                        <ngx-qrcode elementType="url" [value]="obj.QrCodeData" cssClass="aclass"
-                                            [width]="obj.Width" errorCorrectionLevel="L">
-                                        </ngx-qrcode>
-                                        <div
-                                            style="text-align: center;margin-top: -5px;font-size: 15px;margin-bottom: 10px">
-                                            ||{{obj.QrCodeData}}||</div>
-                                    </div>
+                        <div id="dvPrint" style="display: none;">
+                            <div *ngFor="let obj of QrData" style="display: block;width: 100%;">
+                                <div *ngFor="let item of [].constructor(obj.Qty); let i = index">
+                                    <ngx-qrcode elementType="url" [value]="obj.QrCodeData"
+                                        [width]="obj.Width" errorCorrectionLevel="L">
+                                    </ngx-qrcode>
+                                    <div
+                                        style="text-align: left;margin-left: {{obj.Width/2}}px;font-size: 10px;margin-bottom: {{obj.Margin}}px;">
+                                        ||{{obj.QrCodeData}}||</div>
                                 </div>
                             </div>
                         </div>

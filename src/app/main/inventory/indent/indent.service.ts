@@ -32,7 +32,7 @@ export class IndentService {
       FromStoreId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      Status:['false'],
+      Status:['0'],
     });
   }
   createnewindentfrom() {
@@ -83,6 +83,9 @@ export class IndentService {
 
   public InsertIndentUpdate(Param){
     return this._httpClient.post("InventoryTransaction/IndentUpdate", Param)
+  }
+  public VerifyIndent(Param){
+    return this._httpClient.post("InventoryTransaction/IndentVerify", Param)
   }
   populateForm(employee) {
     this.newIndentFrom.patchValue(employee);

@@ -13,6 +13,9 @@ import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { NewRetrunFromDepartmentComponent } from './new-retrun-from-department/new-retrun-from-department.component';
+import { IssueItemList } from '../issue-to-department/issue-to-department.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
 
@@ -36,6 +39,18 @@ export class ReturnFromDepartmentComponent implements OnInit {
     'Addedby',
   ];
 
+  displayedColumns1: string[] = [
+    'ItemName',
+    'UnitLandedRate',
+    'TotalLandedRate',
+    'VatPer',
+    'ReturnQty',
+    'RemainingQty',
+    'BalQty',
+    'IssueTime'
+  ]
+
+  SpinLoading:boolean=false;
   ToStoreList: any = [];
   StoreList: any = []; 
   sIsLoading: string = '';
@@ -45,6 +60,8 @@ export class ReturnFromDepartmentComponent implements OnInit {
   filteredOptionsStore: Observable<string[]>;
 
   dsReturnToDepList = new MatTableDataSource<ReturnTODepList>();
+  dsReturnItemList = new MatTableDataSource<IssueItemList>();
+
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -52,6 +69,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
   constructor(
     public _ReturnToDepartmentList: ReturnFromDepartmentService,
     public _matDialog: MatDialog,
+    private reportDownloadService: ExcelDownloadService,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private _loggedService: AuthenticationService,
@@ -79,10 +97,10 @@ export class ReturnFromDepartmentComponent implements OnInit {
   getReturnToDepartmentList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "FromStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.StoreId || 0,
-      "ToStoreId":  this._loggedService.currentUserValue.user.storeId || 0,
-      "From_Dt": this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "FromStoreId":10003,// this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.StoreId || 0,
+      "ToStoreId":10005,//  this._loggedService.currentUserValue.user.storeId || 0,
+      "From_Dt":'01/01/1900',// this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "To_Dt":'01/01/1900',// this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     }
     console.log(vdata);
     this._ReturnToDepartmentList.getReturnToDepartmentList(vdata).subscribe(data => {
@@ -96,6 +114,23 @@ export class ReturnFromDepartmentComponent implements OnInit {
       this.sIsLoading = '';
     });
   }
+
+
+  getReturnItemList(Param) {
+    var vdata = {
+      "ReturnId":4,// Param
+    }
+    this._ReturnToDepartmentList.getReturnItemList(vdata).subscribe(data => {
+      this.dsReturnItemList.data = data as IssueItemList[];
+      console.log(this.dsReturnItemList)
+      this.dsReturnItemList.sort = this.sort;
+      this.dsReturnItemList.paginator = this.paginator;
+    });
+  }
+
+
+
+
   getToStoreSearchList() {
     this._ReturnToDepartmentList.getToStoreSearchList().subscribe(data => {
       this.ToStoreList = data;
@@ -131,6 +166,73 @@ export class ReturnFromDepartmentComponent implements OnInit {
       console.log('The dialog was closed - Insert Action', result);
       this.getReturnToDepartmentList();
     });
+  }
+
+  
+  exportreturnFrdeptdaywiseReportExcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['ReturnNo', 'RDate', 'FromStoreName', 'ToStoreName', 'PurchaseTotalAmount','TotalVatAmount','Remark','Addedby'];
+    this.reportDownloadService.getExportJsonData(this.dsReturnToDepList.data, exportHeaders, 'Return From Dept Datewise');
+    this.dsReturnToDepList.data=[];
+    this.sIsLoading = '';
+  }
+
+  
+  viewgetReturnfromdeptdatewiseReportPdf(contact) {
+    this.sIsLoading == 'loading-data'
+    let FromDate = this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    let ToDate =this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    let FromStoreId  = this._ReturnToDepartmentList.ReturnSearchGroup.get("StoreId").value.StoreId || 0
+    let ToStoreId =this._ReturnToDepartmentList.ReturnSearchGroup.get("ToStoreId").value.StoreId || 0
+    
+    setTimeout(() => {
+    this.SpinLoading =true;
+    // FromDate,ToDate,FromStoreId ,ToStoreId
+    this._ReturnToDepartmentList.getReturnfromDeptdatewiseview(
+      '2022-11-21 00:00:00.000','2023-01-30 00:00:00.000',10003,10005 ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Return From Dept Date Wise Reprt Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.sIsLoading = '';
+        });
+    });
+    },1000);
+  }
+
+
+
+   
+  viewgetReturnfromdeptReportPdf(contact) {
+    this.sIsLoading == 'loading-data'
+   
+    setTimeout(() => {
+    this.SpinLoading =true;
+    // FromDate,ToDate,FromStoreId ,ToStoreId
+    this._ReturnToDepartmentList.getReturnfromDeptview(
+      4 ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Return From Dept Reprt Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.sIsLoading = '';
+        });
+    });
+    },1000);
   }
 }
 
