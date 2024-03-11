@@ -1073,7 +1073,7 @@ export class AppointmentComponent implements OnInit {
 
   }
   // VisitList
-
+  resultsLength = 0;
   getVisitList() {
     this.sIsLoading = "loading-data";
     var D_data = {
@@ -1084,15 +1084,19 @@ export class AppointmentComponent implements OnInit {
       From_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
       To_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
       IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
+      Start:(this.paginator?.pageIndex??0),
+      Length:(this.paginator?.pageSize??10),
+      Sort:this.sort?.active??'VisitId',
+      Order:this.sort?.direction??'asc'
     };
-    console.log(D_data)
     setTimeout(() => {
       // this.isLoadingStr = 'loading';
       this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
         (Visit) => {
-          this.dataSource.data = Visit as VisitMaster[];
+          this.dataSource.data = Visit["Table1"]??[] as VisitMaster[];
           this.dataSource.sort = this.sort;
-          console.log(Visit)
+          this.resultsLength=Visit["Table"][0]["total_row"];
+          if(!this.dataSource.paginator)
           this.dataSource.paginator = this.paginator;
           this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
           this.sIsLoading = " ";

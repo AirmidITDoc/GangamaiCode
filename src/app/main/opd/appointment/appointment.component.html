@@ -139,6 +139,7 @@
                                             </div>
                                             <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                                 class="appointment-table" id="app-table"
+                                                (matSortChange)="getVisitList()"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
 
                                                 <ng-container matColumnDef="PatientOldNew">
@@ -430,7 +431,7 @@
                                                     [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                             </mat-table>
                                             <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
-                                                showFirstLastButtons>
+                                                showFirstLastButtons [length]="resultsLength" (page)="getVisitList()">
                                             </mat-paginator>
                                             <div style="display: none;">
                                                 <div id="i-card" *ngIf="objICard">
