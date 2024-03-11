@@ -124,6 +124,7 @@ export class RoleTemplateMasterComponent implements OnInit {
       {
         maxWidth: "50vw",
           height: 'auto',
+          maxHeight:'90vh',
           width: '100%',
           data : {
             RoleId : RoleId,

@@ -2,12 +2,12 @@
 
 app-grn-return {
     .table1 {
-        height: 280px !important;
+        // height: 280px !important;
         width: 100%;
     }
 
     .table2 {
-        height: 220px !important;
+        // height: 220px !important;
         width: 100%;
     }
 
@@ -30,7 +30,7 @@ app-grn-return {
         min-height: 30px;
     }
 
-   // Table 1
+    // Table 1
 
     .mat-column-GRNReturnId {
         width: 150px;
@@ -56,7 +56,6 @@ app-grn-return {
         text-overflow: ellipsis;
         overflow: hidden !important;
         display: inline-block;
-        margin-top: 20px;
         justify-content: left;
     }
 
@@ -70,7 +69,6 @@ app-grn-return {
         text-overflow: ellipsis;
         overflow: hidden !important;
         display: inline-block;
-        margin-top: 20px;
         justify-content: left;
     }
 
@@ -98,7 +96,6 @@ app-grn-return {
         text-overflow: ellipsis;
         overflow: hidden !important;
         display: inline-block;
-        margin-top: 20px;
         justify-content: left;
     }
 
@@ -116,11 +113,6 @@ app-grn-return {
         text-align: center;
         justify-content: center;
     }
-
-    .mat-tab-group {
-        margin-bottom: 48px;
-    }
-
     // Table 2
 
     .mat-column-ItemName {
@@ -133,7 +125,6 @@ app-grn-return {
         text-overflow: ellipsis;
         overflow: hidden !important;
         display: inline-block;
-        margin-top: 20px;
         justify-content: left;
     }
 
@@ -294,5 +285,12 @@ app-grn-return {
         min-width: 100px;
         text-align: left;
     }
-
+}
+.grn-return {
+    .grn-return-body {
+        .mat-table {
+            height: calc(100vh - 620px);
+            min-height: 300px;
+        }
+    }
 }
