@@ -134,6 +134,15 @@
                                         </mat-form-field>&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex="7%">
+                                            <mat-label>PaymentDueDate</mat-label>
+                                            <input name="PaymentDate" matInput [matDatepicker]="picker10"
+                                                (keydown)="onEnterPaymentDueDate($event)" formControlName="PaymentDate"
+                                                [(ngModel)]="registerObj.PaymentDate" #paymentdate>
+                                            <mat-datepicker-toggle matSuffix [for]="picker10"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker10></mat-datepicker>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="7%">
                                             <mat-label>-Select GST Type-</mat-label>
                                             <mat-select formControlName="GSTType" name="GSTType" required #GSTType
                                                 (selectionChange)="calculateGSTType($event)"
@@ -142,17 +151,11 @@
                                                 <mat-option *ngFor="let m of GSTTypeList" [value]="m">
                                                     {{m.Name}}
                                                 </mat-option>
+
                                             </mat-select>
 
                                         </mat-form-field>&nbsp;
-                                        <mat-form-field appearance="outline" fxFlex="7%">
-                                            <mat-label>PaymentDueDate</mat-label>
-                                            <input name="PaymentDate" matInput [matDatepicker]="picker10"
-                                                (keydown)="onEnterPaymentDueDate($event)" formControlName="PaymentDate"
-                                                [(ngModel)]="registerObj.PaymentDate" #paymentdate>
-                                            <mat-datepicker-toggle matSuffix [for]="picker10"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker10></mat-datepicker>
-                                        </mat-form-field>
+                                        
                                     </div>
                                 </div>
                                 <div fxLayout="row">
@@ -246,13 +249,20 @@
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="5%">
-                                        <mat-label>Rate </mat-label>
+                                        <mat-label>Rate</mat-label>
                                         <input matInput [(ngModel)]="vRate" name="Rate"
-                                            formControlName="Rate" id="Rate"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
+                                            formControlName="Rate" id="Rate" (keydown)="onEnterRate($event)"
+                                            (keyup)="OnchekPurchaserateValidation()"  #rate required>
+                                    </mat-form-field>&nbsp;
+
+                                    <!-- <mat-form-field appearance="outline" fxFlex="5%">
+                                        <mat-label>Rate </mat-label>
+                                        <input matInput [(ngModel)]="vRate" name="Rate" formControlName="Rate" id="Rate"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                                             (keydown)="onEnterRate($event)" (keyup)="OnchekPurchaserateValidation()"  autocomplete="off"
                                             #rate required>
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>&nbsp; -->
 
 
                                     <mat-form-field appearance="outline" fxFlex="7%">
@@ -261,7 +271,7 @@
                                             formControlName="TotalAmount" id="TotalAmount" readonly>
                                     </mat-form-field>&nbsp;
 
-                                    <!-- <mat-form-field appearance="outline" fxFlex="5%">
+                                    <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Disc1 %</mat-label>
                                         <input matInput [(ngModel)]="vDisc" name="Disc"  autocomplete="off"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
@@ -269,35 +279,34 @@
                                             (keydown)="onEnterDisc($event)" #disc required >
                                     </mat-form-field>&nbsp;  
                                     
-                                     -->
+                                    
 
 
-                                    <mat-form-field appearance="outline" fxFlex="5%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Disc %</mat-label>
-                                        <input matInput placeholder="Placeholder" formControlName="Disc" 
-                                            autocomplete="off" [(ngModel)]="vDisc" #disc
-                                           (keydown)="onEnterDisc($event)" (blur)="onEnterDisc($event)" onlyNumber 
-                                            (keyup)="calculateDiscperAmount()">
-                                    </mat-form-field>
+                                        <input matInput placeholder="Placeholder" formControlName="Disc" required
+                                            autocomplete="off" [(ngModel)]="vDisc" #disc (keydown)="onEnterDisc($event)"
+                                            (blur)="onEnterDisc($event)" onlyNumber (keyup)="calculateDiscperAmount()">
+                                    </mat-form-field> -->
 
 
                                     <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Dis Amount </mat-label>
-                                        <input matInput [(ngModel)]="vDisAmount" name="DisAmount" type="number"  autocomplete="off"
-                                            formControlName="DisAmount"  (keyup)="calculateDiscAmount()" >
+                                        <input matInput [(ngModel)]="vDisAmount" name="DisAmount" type="number"
+                                            formControlName="DisAmount" (keyup)="calculateDiscAmount()">
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="4%">
                                         <mat-label>GST </mat-label>
                                         <input matInput [(ngModel)]="vGST" name="GST" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                            formControlName="GST" id="GST" (keydown)="onEnterGST($event)" #gst required
+                                            formControlName="GST" id="GST" (keydown)="onEnterGST($event)" #gst  
                                             readonly>
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>GST Amount</mat-label>
-                                        <input matInput [(ngModel)]="vGSTAmount" required name="GSTAmount" required
+                                        <input matInput [(ngModel)]="vGSTAmount" required name="GSTAmount"  
                                             type="number" formControlName="GSTAmount" id="GSTAmount" readonly>
                                     </mat-form-field>&nbsp;
 
@@ -312,22 +321,18 @@
                                             Add
                                         </button> -->
 
-
-
-                                        
-                                        <button (click)="onAdd()"
-                                        class="btn btn-primary btn-with-icon py-8"   [disabled]="!add"
-                                        #addbutton>
-                                        <span class="btn-icon">
-                                            <mat-icon> add </mat-icon>
-                                        </span>
-                                    </button>                                    </div>
+                                        <button (click)="onAdd()" class="btn btn-primary btn-with-icon py-8"
+                                            [disabled]="_GRNList.userFormGroup.invalid" #addbutton>
+                                            <span class="btn-icon">
+                                                <mat-icon> add </mat-icon>
+                                            </span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div fxLayout="row">
                                     <mat-form-field appearance="outline" fxFlex="4%" *ngIf="isDisc2Selected">
                                         <mat-label>Disc2%</mat-label>
-                                        <input matInput [(ngModel)]="vDisc2" name="Disc2" 
-                                            autocomplete="off"
+                                        <input matInput [(ngModel)]="vDisc2" name="Disc2" autocomplete="off"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                             (keyup)="calculateDiscper2Amt()" formControlName="Disc2" id="Disc2"
                                             (keydown)="onEnterDisc2($event)" #disc2>
@@ -336,7 +341,7 @@
                                     <mat-form-field appearance="outline" fxFlex="5%" *ngIf="isDisc2Selected">
                                         <mat-label>Dis Amount2 </mat-label>
                                         <input matInput [(ngModel)]="vDisAmount2" name="DisAmount2" type="number"
-                                            formControlName="DisAmount2" (keyup)="calculateDiscAmt()" >
+                                            formControlName="DisAmount2" (keyup)="calculateDiscAmt()">
                                     </mat-form-field>&nbsp;
 
 
@@ -381,8 +386,6 @@
                                         <input matInput [(ngModel)]="vIGSTAmount" name="IGSTAmount" type="number"
                                             formControlName="IGSTAmount" id="IGSTAmount" readonly>
                                     </mat-form-field>&nbsp;
-
-                                  
                                 </div>
                             </form>
                         </div>
@@ -461,8 +464,8 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput #inputField  
-                                                        (keyup.enter)="CellcalculateLastDay(contact,inputField.value)"
+                                                    <input matInput #inputField
+                                                        (keyup)="CellcalculateLastDay(contact,inputField.value)"
                                                         [(ngModel)]="contact.BatchExpDate" placeholder="mmyyyy">
                                                 </mat-form-field>
                                             </mat-cell>
@@ -475,7 +478,7 @@
                                             <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.ReceiveQty" type="number"
-                                                        (keyup.enter)="getCellCalculation(contact,contact.ReceiveQty)"
+                                                        (keyup)="getCellCalculation(contact,contact.ReceiveQty)"
                                                         (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
                                             </mat-cell>
@@ -484,10 +487,11 @@
                                         <ng-container matColumnDef="FreeQty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 FreeQty</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm [(ngModel)]="contact.FreeQty"  type="number">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                [(ngModel)]="contact.FreeQty" type="number">
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.FreeQty" type="number"
-                                                        (keyup.enter)="getCellCalculation(contact,contact.FreeQty)"
+                                                        (keyup)="getCellCalculation(contact,contact.FreeQty)"
                                                         (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
                                                 <!-- {{contact.FreeQty}} -->
@@ -507,7 +511,8 @@
                                                 MRP</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.MRP" step="0.1" type="number" autocomplete="off">
+                                                    <input matInput [(ngModel)]="contact.MRP" step="0.1" type="number"
+                                                        autocomplete="off">
                                                 </mat-form-field>
                                                 <!-- {{contact.MRP | number:'1.2-2' }} -->
                                             </mat-cell>
@@ -516,10 +521,11 @@
                                         <ng-container matColumnDef="Rate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Rate</mat-header-cell>
-                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1" type="number"  autocomplete="off"
-                                                        (keyup.enter)="getCellCalculation(contact,contact.Rate)">
+                                                    <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1"
+                                                        type="number" autocomplete="off"
+                                                        (keyup)="getCellCalculation(contact,contact.Rate)">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -535,11 +541,11 @@
                                         <ng-container matColumnDef="Disc">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Disc%</mat-header-cell>
-                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell class="w-50" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.DiscPercentage" 
-                                                        (keyup.enter)="getCellCalculation(contact,contact.DiscPercentage)"  step="0.1" type="number"
-                                                        autocomplete="off">
+                                                    <input matInput [(ngModel)]="contact.DiscPercentage"
+                                                        (keyup)="getCellCalculation(contact,contact.DiscPercentage)"
+                                                        step="0.1" type="number" autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -555,11 +561,11 @@
                                         <ng-container matColumnDef="Disc2">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Disc2%</mat-header-cell>
-                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.DiscPer2" 
-                                                        (keyup.enter)="getCellCalculation(contact,contact.DiscPer2)" step="0.1" type="number"
-                                                        autocomplete="off">
+                                                    <input matInput [(ngModel)]="contact.DiscPer2"
+                                                        (keyup)="getCellCalculation(contact,contact.DiscPer2)"
+                                                        step="0.1" type="number" autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -601,9 +607,10 @@
                                                 CGST</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.CGSTPer"  
-                                                        (keyup.enter)="getCellCalculation(contact,contact.CGSTPer)"
-                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                    <input matInput type="number" [(ngModel)]="contact.CGSTPer"
+                                                        step="0.1" type="number"
+                                                        (keyup)="getCellCalculation(contact,contact.CGSTPer)"
+                                                        autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -621,9 +628,10 @@
                                                 SGST</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.SGSTPer"  
-                                                        (keyup.enter)="getCellCalculation(contact,contact.SGSTPer)"
-                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                    <input matInput type="number" [(ngModel)]="contact.SGSTPer"
+                                                        step="0.1" type="number"
+                                                        (keyup)="getCellCalculation(contact,contact.SGSTPer)"
+                                                        autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -641,9 +649,10 @@
                                                 IGST</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.IGSTPer"  type="number" step="0.01"
-                                                        (keyup.enter)="getCellCalculation(contact,contact.IGSTPer)"
-                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                    <input matInput type="number" [(ngModel)]="contact.IGSTPer"
+                                                        step="0.1" type="number"
+                                                        (keyup)="getCellCalculation(contact,contact.IGSTPer)"
+                                                        autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -969,7 +978,7 @@
                                             <mat-label>DiscAmt2</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="DiscAmount2"
                                                 [(ngModel)]="vFinalDisAmount2" #DiscAmount1 type="number"
-                                                [(ngModel)]="registerObj.TotalDiscAmount" readonly
+                                                 readonly
                                                 (keydown)="onEnterDiscAmount($event)">
                                         </mat-form-field>
 

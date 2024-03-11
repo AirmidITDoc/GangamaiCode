@@ -203,9 +203,8 @@
                                                     (keydown)="onEnterRate($event)" #rate
                                                     (keyup)="OnchekPurchaserateValidation()"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
-                                                    formControlName="Rate" (keyup)="calculateTotalAmt()" required
+                                                    formControlName="Rate" required
                                                     id="Rate">
-
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="6%">

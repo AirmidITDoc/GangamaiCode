@@ -298,7 +298,6 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   getGSTtypeList() {
-    debugger
     var vdata = {
       'ConstanyType': 'GST_CALC_TYPE',
     }
@@ -349,6 +348,7 @@ export class UpdateGRNComponent implements OnInit {
       this.chargeslist = data as ItemNameList[];
       this.dsTempItemNameList.data = data as ItemNameList[];
       this.sIsLoading = '';
+      console.log(this.dsItemNameList);
     },
       error => {
         this.sIsLoading = '';
@@ -370,6 +370,7 @@ export class UpdateGRNComponent implements OnInit {
       });
   }
   onAdd() {
+    
     if ((this.vItemName == '' || this.vItemName == null || this.vItemName == undefined)) {
       this.toastr.warning('Please enter a ItemName', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -773,12 +774,10 @@ export class UpdateGRNComponent implements OnInit {
     this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / parseInt(this.vQty) * parseInt(this.vConversionFactor)) || 0
     this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty) * parseInt(this.vConversionFactor)) || 0
     this.FinalUnitMRP = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty) * parseInt(this.vConversionFactor)) || 0
-    
     this.add=false
     // this.addbutton.nativeElement.focus();
   }
   calculateDiscAmount() {
-    debugger
     let IGSTPer= 0;
     this.vIGST =IGSTPer
     let discAmount1 = this._GRNList.userFormGroup.get('DisAmount').value;
@@ -880,7 +879,8 @@ else{
     this.vFinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
     this.vFinalDisAmount2 = (element.reduce((sum, { DiscAmt2 }) => sum += +(DiscAmt2 || 0), 0)).toFixed(2);
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
-
+    // console.log(this.vFinalDisAmount2)
+    // console.log(element.DiscAmt2)
     let Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge").value || 0;
     FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(Othercharge));
 
@@ -943,6 +943,7 @@ else{
 
       this.vNetAmount = (totalamt + parseFloat(this.vGSTAmount)).toFixed(2);
       this._GRNList.userFormGroup.get('NetAmount').setValue(this.vNetAmount);
+      
     } 
     else if (event.value.Name == "GST Before Disc") {
       this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
@@ -1037,9 +1038,9 @@ else{
     this.vQty = 0
     this.vUOM = obj.UnitofMeasurementId;
     this.vHSNCode = obj.HSNcode;
-    this.vRate = " ";
+    // this.vRate = " ";
     this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
-    this.vDisc = 0;
+    // this.vDisc =  " ";
     this.vDisc2 = 0;
     this.vDisAmount = 0;
     this.vDisAmount2 = 0;
@@ -1410,7 +1411,6 @@ else{
         });
         this._matDialog.closeAll();
         this.OnReset();
-        debugger
         this.viewGRNREPORTPdf(response)
       } else {
         this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
@@ -1602,10 +1602,11 @@ OnSaveEdit() {
     }
     // this.getGSTtypeList()
   }
+  @ViewChild('GSTauto') matAutocomplete: ElementRef;
   public onEnterGateEntryNo(event): void {
     if (event.which === 13) {
-      if (this.GSTType) this.GSTType.focus();
-      // this.GSTType.nativeElement.focus();
+     // if (this.GSTType) this.GSTType.focus();
+       this.paymentdate.nativeElement.focus();
     }
   }
   public onEnterGSTType(event): void {
@@ -1660,10 +1661,10 @@ OnSaveEdit() {
   public onEnterFreeQty(event): void {
     if (event.which === 13) {
       this.mrp.nativeElement.focus();
+      this.vRate = '';
     }
   }
   public onEnterMRP(event): void {
-    debugger
     if (event.which === 13) {
       this.rate.nativeElement.focus();
       //  this._GRNList.userFormGroup.get('Rate').setValue('');
@@ -1673,16 +1674,21 @@ OnSaveEdit() {
   public onEnterRate(event): void {
     if (event.which === 13) {
       this.disc.nativeElement.focus();
+      this.vDisc = '';
     }
   }
 
   public onEnterDisc(event): void {
-
-    debugger
     if (event.which === 13) {
       // this.disc2.nativeElement.focus();
       this.add=true
       this.addbutton.nativeElement.focus();
+    }
+    if (this._GRNList.userFormGroup.invalid) {
+      this.toastr.warning('please fill all required fields', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
     }
   }
   public onEnterDisc2(event): void {
