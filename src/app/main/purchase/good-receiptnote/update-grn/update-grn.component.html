@@ -203,13 +203,17 @@
                                         <mat-label>Packing</mat-label>
                                         <input matInput [(ngModel)]="vConversionFactor" name="ConversionFactor"
                                             formControlName="ConversionFactor" id="ConversionFactor" #conversionfactor
-                                            (keydown)="onEnterConversionFactor($event)" readonly>
+                                            (keydown)="onEnterConversionFactor($event)" 
+                                            autocomplete="off"
+                                            readonly>
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="7%">
                                         <mat-label>Batch No</mat-label>
                                         <input matInput [(ngModel)]="vBatchNo" name="BatchNo" formControlName="BatchNo"
-                                            id="BatchNo" #batchno (keydown)="onEnterBatchNo($event)" required>
+                                            id="BatchNo" #batchno (keydown)="onEnterBatchNo($event)"
+                                            autocomplete="off"
+                                            required>
                                     </mat-form-field>&nbsp;
 
 
@@ -217,6 +221,7 @@
                                         <mat-label>MMYYYY</mat-label>
                                         <input matInput #inputField (keyup.enter)="calculateLastDay(inputField.value)"
                                             formControlName="ExpDatess" value="lastDay" [(ngModel)]="vlastDay" #expdate
+                                            autocomplete="off"
                                             placeholder="mmyyyy" required>
                                     </mat-form-field>&nbsp;
 
@@ -224,7 +229,7 @@
                                         <mat-label>Qty</mat-label>
                                         <input matInput [(ngModel)]="vQty" name="Qty" required
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                            (keyup)="calculateTotalamt()" formControlName="Qty" type="number" id="Qty"
+                                            (keyup)="calculateTotalamt()" formControlName="Qty" type="number" id="Qty"  autocomplete="off"
                                             (keydown)="onEnterQty($event)" #qty>
                                     </mat-form-field>&nbsp;
 
@@ -232,7 +237,7 @@
                                         <mat-label>Free Qty </mat-label>
                                         <input matInput [(ngModel)]="vFreeQty" name="FreeQty" type="number"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                            formControlName="FreeQty" id="FreeQty" (keydown)="onEnterFreeQty($event)"
+                                            formControlName="FreeQty" id="FreeQty" (keydown)="onEnterFreeQty($event)"  autocomplete="off"
                                             #freeqty>
                                     </mat-form-field>&nbsp;
 
@@ -240,7 +245,7 @@
                                         <mat-label>MRP</mat-label>
                                         <input matInput [(ngModel)]="vMRP" name="MRP"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
-                                            formControlName="MRP" id="MRP" (keydown)="onEnterMRP($event)" #mrp required>
+                                            formControlName="MRP" id="MRP" (keydown)="onEnterMRP($event)" #mrp  autocomplete="off" required>
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="5%">
@@ -255,14 +260,14 @@
                                         <mat-label>Rate </mat-label>
                                         <input matInput [(ngModel)]="vRate" name="Rate" formControlName="Rate" id="Rate"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
-                                            (keydown)="onEnterRate($event)" (keyup)="OnchekPurchaserateValidation()"
+                                            (keydown)="onEnterRate($event)" (keyup)="OnchekPurchaserateValidation()"  autocomplete="off"
                                             #rate required>
                                     </mat-form-field>&nbsp; -->
 
 
                                     <mat-form-field appearance="outline" fxFlex="7%">
                                         <mat-label>Total Amount</mat-label>
-                                        <input matInput [(ngModel)]="vTotalAmount" name="TotalAmount" type="number"
+                                        <input matInput [(ngModel)]="vTotalAmount" name="TotalAmount" type="number"  autocomplete="off"
                                             formControlName="TotalAmount" id="TotalAmount" readonly>
                                     </mat-form-field>&nbsp;
 

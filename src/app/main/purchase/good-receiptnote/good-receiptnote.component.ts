@@ -284,7 +284,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       this.SpinLoading = true;
       let data=[];
       this.selection.selected.forEach(element => {
-        data.push({QrCodeData:element["stockid"].toString(),Qty:element.ReceiveQty,Width:250,Margin:10});
+        data.push({QrCodeData:element["stockid"].toString(),Qty:element.ReceiveQty,Width:60,Margin:10});
       });
       const dialogRef = this._matDialog.open(QrcodegeneratorComponent,
         {
