@@ -292,7 +292,7 @@ export class UserDetailComponent implements OnInit {
   DoctorId:any=0;
   docflag: boolean = false;
   chkdoctor(event) {
-    debugger
+    // debugger
     if (this.UserForm.get('IsDoctor').value  == true) {
       this.DoctorId =this.UserForm.get('DoctorId').value.DoctorId;
       
