@@ -36,6 +36,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     'Qty',
     'MRP',
     'Rate',
+    'DefRate',
     'TotalAmount',
     'Dis',
     'DiscAmount',
@@ -82,7 +83,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   optionsMarital: any[] = [];
   optionsPayment: any[] = [];
   optionsItemName: any[] = [];
-
+  vDefRate:any;
   vGSTAmt: any = 0.0;
   CGSTAmount: any;
   IGSTAmount: any;
@@ -165,7 +166,6 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
   selectedRowIndex: any;
   filteredoptionsSupplier: Observable<string[]>;
   filteredoptionsPayment: Observable<string[]>;
@@ -263,7 +263,6 @@ export class UpdatePurchaseorderComponent implements OnInit {
  
   }
   private _filterSupplier(value: any): string[] {
-    debugger
     if (value) {
       const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
       return this.optionsMarital.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
@@ -276,6 +275,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vContact = obj.ContactPerson;
     this.vGSTNo = obj.GSTNo;
     this.vEmail = obj.Email;
+    this.getSupplierRate();
   }
   calculateGSTType(event) {
 
@@ -333,6 +333,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
           GSTAmount: this.vGSTAmt || 0,
           GrandTotalAmount: this.vNetAmount || 0,
           MRP: this.vMRP || 0,
+          DefRate: this.vDefRate || 0,
           Specification: this.vSpecification || '',
         });
       this.dsItemNameList.data = this.chargeslist;
@@ -412,7 +413,9 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vSpecification = obj.Specification || '';
     this.getLastThreeItemInfo();
     this.qty.nativeElement.focus();
+    this.getSupplierRate();
   }
+
   getLastThreeItemInfo() {
     var vdata = {
       'ItemId': this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemID || 0,
@@ -421,6 +424,26 @@ export class UpdatePurchaseorderComponent implements OnInit {
       this.dsLastThreeItemList.data = data as LastThreeItemList[]; this.sIsLoading = '';
     });
   }
+  supplierRateList:any=[]; 
+getSupplierRate(){
+  this.supplierRateList = [];
+ let Query = "Select SupplierRate  from M_ItemWiseSupplierRate where ItemId= "+ this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemID + " and SupplierId=" + this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId
+  console.log(Query);
+  this._PurchaseOrder.getSupplierRateList(Query).subscribe(data => {
+   // console.log(data)
+    this.supplierRateList = data
+    let SupplierRate = 0;
+    SupplierRate = this.supplierRateList[0].SupplierRate;
+    this.vDefRate = SupplierRate;
+   // console.log(this.vDefRate)
+  });
+}
+
+
+
+
+
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'F4') {
@@ -741,23 +764,24 @@ export class UpdatePurchaseorderComponent implements OnInit {
       contact.GrandTotalAmount = 0;
     }
   }
-
-
-
-
-
-
-
   OnchekPurchaserateValidation() {
-    let mrp = this._PurchaseOrder.userFormGroup.get('MRP').value
-    if (mrp <= this.vRate) {
+    debugger
+    if(this.vDefRate > 0){
+    if(this.vDefRate > this.vRate){
+      Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+      // this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
+      //   toastClass: 'tostr-tost custom-toast-warning',
+      // });
+    }
+  }
+    if (this.vRate <= this.vMRP ) {
      // Swal.fire("Enter Purchase Rate Less Than MRP");
+     this.calculateTotalAmt();
+    }else{
       this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      this._PurchaseOrder.userFormGroup.get('Rate').setValue(0);
-    }else{
-      this.calculateTotalAmt();
+      //this._PurchaseOrder.userFormGroup.get('Rate').setValue(0);
     }
   }
 
@@ -888,6 +912,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vMRP = 0;
     this.vConversionFactor = 0;
     this.vHSNcode = 0;
+    this.vDefRate = 0;
     this.vSpecification = "";
   }
   toggleDisable() {
