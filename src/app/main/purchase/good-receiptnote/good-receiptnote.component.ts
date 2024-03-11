@@ -847,7 +847,8 @@ export class ItemNameList {
   ItemTotalAmount:any;
   UOMID:any;
   GrandTotalAmount:any;
-  TranProcessId;any;
+  TranProcessId:any;
+  UnitMRP:any;
   /**
    * Constructor
    *
@@ -916,6 +917,8 @@ export class ItemNameList {
       this.ItemTotalAmount = ItemNameList.ItemTotalAmount || 0;
       this.UOMID = ItemNameList.UOMID || 0;
       this.GrandTotalAmount = ItemNameList.GrandTotalAmount || 0;
+      this.UnitMRP = ItemNameList.UnitMRP || 0;
+      
     }
   }
 }

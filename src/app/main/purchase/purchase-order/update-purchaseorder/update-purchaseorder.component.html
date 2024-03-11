@@ -304,9 +304,28 @@
                                             <ng-container matColumnDef="Qty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Qty</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
+                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-form-field appearance="legacy">
+                                                            <input matInput type="number" [(ngModel)]="contact.Qty" step="0.1"
+                                                                type="number" autocomplete="off"
+                                                                (keyup)="getCellCalculation(contact,contact.Qty)">
+                                                        </mat-form-field>
+                                                    </mat-cell>
+                                                <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
                                                     style="text-decoration: underline;"
                                                     (input)="onQtyEdit($event, contact)">{{contact.Qty}}
+                                                </mat-cell> -->
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Rate">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    Rate</mat-header-cell>
+                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-form-field appearance="legacy">
+                                                        <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1"
+                                                            type="number" autocomplete="off"
+                                                            (keyup)="getCellCalculation(contact,contact.Rate)">
+                                                    </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -321,18 +340,25 @@
                                             <ng-container matColumnDef="Rate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Rate</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
+                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-form-field appearance="legacy">
+                                                            <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1"
+                                                                type="number" autocomplete="off"
+                                                                (keyup)="getCellCalculation(contact,contact.Rate)">
+                                                        </mat-form-field>
+                                                    </mat-cell>
+                                                <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
                                                     style="text-decoration: underline;"
                                                     (input)="onRateEdit($event, contact)"> {{contact.Rate |
                                                     currency:'INR':'symbol-narrow':'0.2'}}
-                                                </mat-cell>
+                                                </mat-cell> -->
                                             </ng-container>
 
                                             <ng-container matColumnDef="TotalAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     TotalAmt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.TotalAmount | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.TotalAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -348,7 +374,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Dics. Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.DiscAmount | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.DiscAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -364,7 +390,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     CGST Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.CGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.CGSTAmt | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -380,7 +406,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     SGST Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.SGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.SGSTAmt | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -396,7 +422,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GST Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.VatAmount | currency:'INR': number:'1.2-2'}}
+                                                    {{contact.VatAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -404,7 +430,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Net Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.GrandTotalAmount | currency:'INR': number:'1.2-2'}}
+                                                    {{contact.GrandTotalAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -412,7 +438,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     MRP</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.MRP | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.MRP | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 

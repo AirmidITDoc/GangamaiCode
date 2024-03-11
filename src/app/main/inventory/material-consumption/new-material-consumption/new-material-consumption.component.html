@@ -95,7 +95,7 @@
                             <mat-form-field appearance="outline" fxFlex="10%">
                                 <mat-label>Date</mat-label>
                                 <input name="Date" matInput [matDatepicker]="picker" required
-                                    placeholder="Please select Date" (keydown)="onEnterPaymentDueDate($event)"
+                                    placeholder="Please select Date" 
                                     formControlName="Date" #date>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>

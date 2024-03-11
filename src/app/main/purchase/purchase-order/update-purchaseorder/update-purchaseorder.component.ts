@@ -397,16 +397,18 @@ export class UpdatePurchaseorderComponent implements OnInit {
   getSelectedObj(obj) {
     this.ItemId = obj.ItemId;
     this.ItemName = obj.ItemName;
-    this.vQty = 0;
     this.vUOM = obj.UnitofMeasurementId;
     this.vConversionFactor = obj.ConversionFactor;
     this.vHSNcode = obj.HSNcode;
-    this.vDis = 0;
+    this.vQty = '';
+    this.vMRP = '';
+    this.vRate = '';
+    this.vDis = '';
     this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
     this.vNetAmount = this.vTotalAmount;
-    this.VatPercentage = obj.VatPercentage;
+    //this.VatPercentage = obj.VatPercentage;
     this.vGSTPer = (obj.SGSTPer + obj.CGSTPer);
-    this.GSTAmount = 0;
+   // this.GSTAmount = 0;
     this.vSpecification = obj.Specification || '';
     this.getLastThreeItemInfo();
     this.qty.nativeElement.focus();
@@ -696,6 +698,110 @@ export class UpdatePurchaseorderComponent implements OnInit {
       contact.GrandTotalAmount = ((totalAmt) - (contact.DiscAmount));
     }
   }
+  getCellCalculation(contact, Qty) {
+
+    if (contact.Qty > 0 && contact.Rate > 0) {
+      if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == 'GST After Disc') {
+        //total amt
+        contact.TotalAmount = (contact.Qty * contact.Rate);
+        //disc
+        contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPer)) / 100);
+        let TotalAmt = ((contact.TotalAmount) - (contact.DiscAmount));
+        //Gst
+        contact.VatPer = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        contact.CGSTAmt = (((TotalAmt) * (contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((TotalAmt) * (contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((TotalAmt) * (contact.IGSTPer)) / 100);
+        contact.VatAmount = (((TotalAmt) * (contact.VatPer)) / 100);
+        contact.GrandTotalAmount = ((TotalAmt) + (contact.VatAmount));
+      }
+      else if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == 'GST Before Disc') {
+        //total amt
+        contact.TotalAmount = (contact.Qty * contact.Rate);
+        //Gst
+        contact.VatPer = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        contact.CGSTAmt = (((contact.TotalAmount) * (contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((contact.TotalAmount) * (contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((contact.TotalAmount) * (contact.IGSTPer)) / 100);
+        contact.VatAmount = (((contact.TotalAmount) * (contact.VatPer)) / 100);
+        let totalAmt = ((contact.TotalAmount) + (contact.VatAmount));
+        //disc
+        contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPer)) / 100);
+        contact.GrandTotalAmount = ((totalAmt) - (contact.DiscAmount));
+      }
+      else if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == "GST After TwoTime Disc") {
+        // //total amt
+        // contact.TotalAmount = (contact.Qty * contact.Rate);
+        // //disc 1
+        // contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100)
+        // let totalamt = ((contact.TotalAmount) - (contact.DiscAmount));
+        // //disc 2
+        // contact.DiscAmt2 = (((totalamt) * (contact.DiscPer2)) / 100);
+        // let totalamt2 = ((totalamt) - (contact.DiscAmt2));
+        // //GST cal
+        // contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        // contact.CGSTAmt = (((totalamt2) * (contact.CGSTPer)) / 100);
+        // contact.SGSTAmt = (((totalamt2) * (contact.SGSTPer)) / 100);
+        // contact.IGSTAmt = (((totalamt2) * (contact.IGSTPer)) / 100);
+        // // contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
+        // contact.VatAmount = (((totalamt2) * (contact.VatPercentage)) / 100);
+        // contact.NetAmount = ((totalamt2) + (contact.VatAmount)).toFixed(2);
+      }
+      else if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == "GST on MRP Plus FreeQty") {
+        // let mrpTotal = ((contact.TotalQty) * (contact.ConversionFactor) * (contact.MRP));
+        // let Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPer));
+        // //GST cal
+        // contact.VatPer = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        // contact.CGSTAmt = (((Totalmrp) * (contact.CGSTPer)) / 100);
+        // contact.SGSTAmt = (((Totalmrp) * (contact.SGSTPer)) / 100);
+        // contact.IGSTAmt = (((Totalmrp) * (contact.IGSTPer)) / 100);
+        // // this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
+        // contact.VatAmount = ((Totalmrp * (contact.VatPer)) / 100);
+        // let GrossAmt = ((contact.TotalAmount) - (contact.DiscAmount));
+        // contact.GrandTotalAmount = ((GrossAmt) + (contact.VatAmount));
+      }
+      else if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == "GST on Pur Plus FreeQty") {
+        // let TotalPurWf = ((contact.TotalQty) * (contact.Rate));
+        // //GST cal
+        // contact.VatPer = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        // contact.CGSTAmt = (((TotalPurWf) * (contact.CGSTPer)) / 100);
+        // contact.SGSTAmt = (((TotalPurWf) * (contact.SGSTPer)) / 100);
+        // contact.IGSTAmt = (((TotalPurWf) * (contact.IGSTPer)) / 100);
+        // contact.VatAmount = ((TotalPurWf * (contact.VatPer)) / 100);
+        // let GrossAmt = ((contact.TotalAmount) + (contact.VatPer));
+        // contact.GrandTotalAmount = ((GrossAmt) - (contact.DiscAmount));
+      }
+      else if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == "GST On MRP") {
+        // let mrpTotal = ((contact.Qty) * (contact.ConversionFactor) * (contact.MRP));
+        // let Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPer));
+        // //GST cal
+        // contact.VatPer = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        // contact.CGSTAmt = (((Totalmrp) * (contact.CGSTPer)) / 100);
+        // contact.SGSTAmt = (((Totalmrp) * (contact.SGSTPer)) / 100);
+        // contact.IGSTAmt = (((Totalmrp) * (contact.IGSTPer)) / 100);
+
+        // contact.VatAmount = ((Totalmrp * (contact.VatPer)) / 100);
+        // let GrossAmt = ((contact.TotalAmount) - (contact.DiscAmount));
+        // contact.GrandTotalAmount  = ((GrossAmt) + (contact.VatAmount));
+      }
+    }
+    else {
+      contact.TotalAmount = 0;
+      contact.DiscAmount = 0;
+      contact.CGSTAmt = 0;
+      contact.SGSTAmt = 0;
+      contact.IGSTAmt = 0;
+      contact.VatAmount = 0;
+      contact.GrandTotalAmount = 0;
+    }
+  }
+
+
+
+
+
+
+
   OnchekPurchaserateValidation() {
     let mrp = this._PurchaseOrder.userFormGroup.get('MRP').value
     if (mrp <= this.vRate) {
@@ -898,7 +1004,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
   public onEnterSupplier(event): void {
     if (event.which === 13) {
-      this.gsttype.nativeElement.focus();
+      this.itemid.nativeElement.focus();
     }
   }
   public onEnterGSTType(event): void {
@@ -906,16 +1012,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       this.itemid.nativeElement.focus();
     }
   }
-  public onEnterDeliveryDate(event): void {
-    if (event.which === 13) {
-      if (this.PaymentTerm) this.PaymentTerm.focus();
-    }
-  }
-  public onEnterTaxNature(event): void {
-    if (event.which === 13) {
-      this.itemid.nativeElement.focus();
-    }
-  }
+
   public onEnterItemName(event): void {
     if (event.which === 13) {
       this.qty.nativeElement.focus();
