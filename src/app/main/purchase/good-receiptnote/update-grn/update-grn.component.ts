@@ -407,7 +407,7 @@ export class UpdateGRNComponent implements OnInit {
       });
       return;
     }
-    const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId === this._GRNList.userFormGroup.get('ItemName').value.ItemID);
+    const isDuplicate = this.dsItemNameList.data.some(item => item.BatchNo === this._GRNList.userFormGroup.get('BatchNo').value);
 
     if (!isDuplicate) {
       this.dsItemNameList.data = [];
@@ -827,13 +827,36 @@ export class UpdateGRNComponent implements OnInit {
     this.vDisc2 = discamt2;
   }
   OnchekPurchaserateValidation() {
-    let mrp = this._GRNList.userFormGroup.get('MRP').value
-    if (mrp <= this.vRate) {
-      this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
+    // let mrp = this._GRNList.userFormGroup.get('MRP').value
+    // if (mrp <= this.vRate) {
+    //   this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   // Swal.fire("Enter Purchase Rate Less Than MRP");
+    //   this._GRNList.userFormGroup.get('Rate').setValue("");
+    //   this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
+    //   this._GRNList.userFormGroup.get('DisAmount').setValue(0);
+    //   this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
+    //   this._GRNList.userFormGroup.get('CGSTAmount').setValue(0);
+    //   this._GRNList.userFormGroup.get('SGSTAmount').setValue(0);
+    //   this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
+    //   this._GRNList.userFormGroup.get('NetAmount').setValue(0);
+    //   this.rate.nativeElement.focus();
+    // }
+    // else {
+    //   this.calculateTotalamt();
+    // }
+
+
+    if (this.vRate <= this.vMRP ) {
+      // Swal.fire("Enter Purchase Rate Less Than MRP");
+      this.calculateTotalamt();
+     }else{
+       this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       // Swal.fire("Enter Purchase Rate Less Than MRP");
-      this._GRNList.userFormGroup.get('Rate').setValue(" ");
+      //this._GRNList.userFormGroup.get('Rate').setValue(0);
       this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
       this._GRNList.userFormGroup.get('DisAmount').setValue(0);
       this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
@@ -842,10 +865,8 @@ export class UpdateGRNComponent implements OnInit {
       this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
       this._GRNList.userFormGroup.get('NetAmount').setValue(0);
       this.rate.nativeElement.focus();
-    }
-    else {
-      this.calculateTotalamt();
-    }
+     }
+    
   }
   getCGSTAmt(element) {
     let CGSTAmt;
