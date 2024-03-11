@@ -55,7 +55,7 @@ export class SupplierMasterComponent implements OnInit {
         public _supplierService: SupplierMasterService,
 
         public _matDialog: MatDialog
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.getSupplierMasterList();
@@ -80,10 +80,7 @@ export class SupplierMasterComponent implements OnInit {
 
     getSupplierMasterList() {
         var m_data = {
-            SupplierName:
-                this._supplierService.myformSearch
-                    .get("SupplierNameSearch")
-                    .value + "%" || "%",
+            SupplierName:this._supplierService.myformSearch.get("SupplierNameSearch").value + "%" || "%",
             StoreID: 0,
         };
         console.log(m_data);
@@ -153,12 +150,12 @@ export class SupplierMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
             maxWidth: "95vw",
-            maxHeight: "120vh",
+            maxHeight: "100vh",
             width: "100%",
             height: "100%",
-            data : {
-                registerObj : row,
-              }
+            data: {
+                registerObj: row,
+            }
         });
 
         dialogRef.afterClosed().subscribe((result) => {
@@ -170,7 +167,7 @@ export class SupplierMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
             maxWidth: "95vw",
-            maxHeight: "120vh",
+            maxHeight: "100vh",
             width: "100%",
             height: "100%",
         });
@@ -204,14 +201,14 @@ export class SupplierMaster {
     UpdatedBy: Number;
     GSTNo: String;
     PanNo: String;
-    ExpDate:Date;
+    ExpDate: Date;
     currentDate = new Date();
     IsDeletedSearch: number;
-    BankId:any;
-    BankNo:any;
-    Bankbranch:any;
-    Ifsccode:any;
-    StoreId:any;
+    BankId: any;
+    BankNo: any;
+    Bankbranch: any;
+    Ifsccode: any;
+    StoreId: any;
     /**
      * Constructor
      *
@@ -241,14 +238,14 @@ export class SupplierMaster {
             this.UpdatedBy = SupplierMaster.UpdatedBy || "";
             this.GSTNo = SupplierMaster.GSTNo || "";
             this.PanNo = SupplierMaster.PanNo || "";
-            this.ExpDate= SupplierMaster.ExpDate ||this.currentDate;
+            this.ExpDate = SupplierMaster.ExpDate || this.currentDate;
             this.IsDeletedSearch = SupplierMaster.IsDeletedSearch || "";
 
             this.BankId = SupplierMaster.BankId || "";
             this.BankNo = SupplierMaster.BankNo || "";
-            this.Bankbranch= SupplierMaster.Bankbranch ||"";
+            this.Bankbranch = SupplierMaster.Bankbranch || "";
             this.Ifsccode = SupplierMaster.Ifsccode || "";
-            this.StoreId=SupplierMaster.StoreId||0;
+            this.StoreId = SupplierMaster.StoreId || 0;
         }
     }
 }

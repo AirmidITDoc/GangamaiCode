@@ -228,7 +228,7 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                    <input name="GSTNo" placeholder="Enter GSTNo" formControlName="GSTNo" matInput
+                    <input name="GSTNo" placeholder="Enter GSTNo 22AAAAA0000A1Z5" formControlName="GSTNo" matInput
                         (keydown)="onEnterGst($event)" #Gst required>
                     <!-- <span class="error" *ngIf="f.GSTNo.invalid && f.GSTNo.touched">GSTNo Enter only in Format</span> -->
                 </mat-form-field>
@@ -241,7 +241,7 @@
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <input name="LicNo" placeholder="Enter LicNo" formControlName="LicNo" matInput
-                        (keydown)="onEnterLicno($event)" #Licno>
+                        (keydown)="onEnterLicno($event)" #Licno >
                     <!-- <span class="error" *ngIf="f.GSTNo.invalid && f.GSTNo.touched">GSTNo Enter only in Format</span> -->
                 </mat-form-field>
 
@@ -257,7 +257,7 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <input name="DlNo" placeholder="Enter DL No" formControlName="DlNo" matInput maxlength="20"
-                        (keydown)="onEnterDlno($event)" #Dlno required>
+                        (keydown)="onEnterDlno($event)" #Dlno required value="MH1420110062821">
                     <!-- <span class="error" *ngIf="f.DlNo.invalid && f.DlNo.touched">DlNo Enter only Format</span> -->
                 </mat-form-field>
 
@@ -308,15 +308,35 @@
 
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
-                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <mat-select placeholder="Select StoreName" #txt formControlName="StoreId" multiple
                         (keydown)="onEnterStore($event)" #Store>
                         <mat-option *ngFor="let M of StorecmbList" [value]="M.StoreId">
                             {{M.StoreName}}
                         </mat-option>
                     </mat-select>
+                </mat-form-field> -->
+
+                <mat-form-field appearance="outline" fxFlex="50%" style="margin-right: 10px;">
+                    <mat-label>Store Name</mat-label>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select StoreId" matInput
+                        formControlName="StoreId" [matAutocomplete]="autoStore1" required
+                        (keydown)="onEnterStore($event)" #Store>
+                    <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                            (click)="_supplierService.myform.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                            (click)="_supplierService.myform.get('StoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+                    </span>
+                    <mat-autocomplete #autoStore1="matAutocomplete" [displayWith]="getOptionTextStore">
+                        <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option">
+                            {{option.StoreName}}
+                        </mat-option>
+                    </mat-autocomplete>
                 </mat-form-field>
 
+
+<!-- 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <mat-select placeholder="Select Vender Type" #txt formControlName="VenderTypeId" 
                         (keydown)="onEnterVender($event)" #VenderTypeId>
@@ -325,7 +345,26 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
+ -->
 
+                
+                <mat-form-field appearance="outline" fxFlex="50%" style="margin-right: 10px;">
+                    <mat-label>Vender Type Name</mat-label>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select VenderTypeId" matInput
+                        formControlName="VenderTypeId" [matAutocomplete]="autovender" required
+                        (keydown)="onEnterVender($event)" #VenderTypeId>
+                    <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                            (click)="_supplierService.myform.get('VenderTypeId').setValue(''); isvenderselected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                            (click)="_supplierService.myform.get('VenderTypeId').setValue(''); isvenderselected = false;">search</mat-icon>
+                    </span>
+                    <mat-autocomplete #autovender="matAutocomplete" [displayWith]="getOptionTextVendertype">
+                        <mat-option *ngFor="let option of filteredOptionsVender | async" [value]="option">
+                            {{option.VenderTypeName}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <input name="OpeningBal" placeholder="Enter OpeningBal" formControlName="OpeningBal" matInput
@@ -348,10 +387,12 @@
                     <span class="error" *ngIf="f.MSMNo.invalid && f.MSMNo.touched">MSMNo required only Digits</span>
                 </mat-form-field>
 
-                <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                    <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
-                </mat-radio-group>
-
+                <!-- <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false' >
+                    <mat-radio-button value='false' class="mr-sm-12" fxFlex [(ngModel)]="registerObj.IsDeleted">IsActive</mat-radio-button>
+                </mat-radio-group> -->
+                <mat-checkbox aria-label="Mode" formControlName="IsDeleted"  [(ngModel)]="!registerObj.IsDeleted"
+                style="font-weight: bold;margin-right: 20px;">ISActive
+                </mat-checkbox>
             </div>
         </form>
     </div>

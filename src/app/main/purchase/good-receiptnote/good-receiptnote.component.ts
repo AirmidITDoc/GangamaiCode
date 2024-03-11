@@ -18,11 +18,10 @@ import { MatSelect } from '@angular/material/select';
 import { UpdateGRNComponent } from './update-grn/update-grn.component';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { GrnemailComponent } from './grnemail/grnemail.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { EmailComponent } from '../purchase-order/email/email.component';
 import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrcodegenerator/qrcodegenerator.component';
 import { SelectionModel } from '@angular/cdk/collections';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 
 @Component({
   selector: 'app-good-receiptnote',
@@ -510,7 +509,7 @@ debugger
     this.getGRNList();
   }
   GRNEmail(contact) {
-    const dialogRef = this._matDialog.open(EmailComponent,
+    const dialogRef = this._matDialog.open(EmailSendComponent,
       {
         maxWidth: "100%",
         height: '75%',

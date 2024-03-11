@@ -62,7 +62,7 @@ export class ItemMasterComponent implements OnInit {
         // "IsScheduleX",
         // "IsLASA",
         // "IsEmgerency",
-        "IsDeleted",
+        "Isdeleted",
         "action",
     ];
 
@@ -125,7 +125,7 @@ export class ItemMasterComponent implements OnInit {
             ConversionFactor: row.ConversionFactor,
             CurrencyId: row.CurrencyId,
             TaxPer: row.TaxPer,
-            IsDeleted: JSON.stringify(row.IsDeleted),
+            IsDeleted: JSON.stringify(row.Isdeleted),
             UpdatedBy: row.UpdatedBy,
             IsBatchRequired: JSON.stringify(row.IsBatchRequired),
             MinQty: row.MinQty,
@@ -146,13 +146,14 @@ export class ItemMasterComponent implements OnInit {
             IsLASA: JSON.stringify(row.IsLASA),
             IsEmgerency: JSON.stringify(row.IsEmgerency),
             StoreId: row.StoreId,
+            
         };
 
         this._itemService.populateForm(m_data);
 
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
             maxWidth: "95vw",
-            maxHeight: "110vh",
+            maxHeight: "80vh",
             width: "100%",
             height: "100%",
             data : {
@@ -162,14 +163,14 @@ export class ItemMasterComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-            this.getItemMasterList();
+            // this.getItemMasterList();
         });
     }
 
     onAdd() {
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
             maxWidth: "95vw",
-            maxHeight: "110vh",
+            maxHeight: "80vh",
             width: "100%",
             height: "100%",
         });
@@ -192,7 +193,7 @@ export class ItemMaster {
     ConversionFactor: string;
     CurrencyId: number;
     TaxPer: number;
-    IsDeleted: boolean;
+    Isdeleted: boolean;
     Addedby: number;
     UpdatedBy: number;
     IsBatchRequired: boolean;
@@ -236,7 +237,7 @@ export class ItemMaster {
             this.ConversionFactor = ItemMaster.ConversionFactor || "";
             this.CurrencyId = ItemMaster.CurrencyId || "";
             this.TaxPer = ItemMaster.TaxPer || "";
-            this.IsDeleted = ItemMaster.IsDeleted || "false";
+            this.Isdeleted = ItemMaster.Isdeleted || "false";
             this.Addedby = ItemMaster.Addedby || "";
             this.UpdatedBy = ItemMaster.UpdatedBy || "";
             this.IsBatchRequired = ItemMaster.IsBatchRequired || "false";

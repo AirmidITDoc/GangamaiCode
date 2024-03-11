@@ -67,8 +67,10 @@ export class SupplierMasterService {
             UpdatedBy: [""],
             SupplierType:[""],
             LicNo: [""],
-            ExpDate:[{ value: this.registerObj.ExpDate }],
-            DlNo:["",Validators.pattern("^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$")],
+            ExpDate:[{ value: this.registerObj.ExpDate}],
+            // DlNo:["",Validators.pattern("^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$")],
+          
+            DlNo:[''],
             MsmNo:[0],
             MSMNo:[0],
             Apprval:[""],

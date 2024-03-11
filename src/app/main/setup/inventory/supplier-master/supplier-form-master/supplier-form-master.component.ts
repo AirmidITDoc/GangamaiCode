@@ -59,6 +59,10 @@ export class SupplierFormMasterComponent implements OnInit {
     isTermofpaymentSelected : boolean = false;
     isSuppliertypeSelected: boolean = false;
     isMdeofpaymentSelected: boolean = false;
+    isStoreSelected: boolean = false;
+    isvenderselected: boolean = false;
+
+
     msg: any;
     msmflag:boolean=false;
     CityId:any;
@@ -126,6 +130,20 @@ export class SupplierFormMasterComponent implements OnInit {
       startWith(''),
       map(value => this._filterBank1(value)),
     );
+
+    this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterStore(value)),
+    );
+
+
+    this.filteredOptionsVender = this._supplierService.myform.get('VenderTypeId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterVender(value)),
+    );
+
+
+
   }
 
 
@@ -353,11 +371,7 @@ var m = {
 
   }
 
-  getOptionTextRefDoc(option) {
-
-    return option && option.DoctorName ? option.DoctorName : '';
-
-  }
+ 
 
 
     private _filterStore(value: any): string[] {
@@ -381,19 +395,38 @@ var m = {
     
 
 
+    // getStoreNameCombobox() {
+
+    //     this._supplierService.getStoreMasterCombo().subscribe(data => {
+    //         this.StorecmbList = data;
+    //         this.StorecmbList = this.StorecmbList.slice();
+    //         this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
+    //             startWith(''),
+    //             map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
+    //         );
+
+    //     });
+
+    // }
+
+
     getStoreNameCombobox() {
-
-        this._supplierService.getStoreMasterCombo().subscribe(data => {
-            this.StorecmbList = data;
-            this.StorecmbList = this.StorecmbList.slice();
-            this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
-            );
-
-        });
-
+      this._supplierService.getStoreMasterCombo().subscribe(data => {
+        this.StorecmbList = data;
+        this.optionsStore = this.StorecmbList.slice();
+        this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
+        );
+        
+      });
     }
+
+    getOptionTextStore(option) {
+
+      return option && option.StoreName ? option.StoreName : '';
+
+  }
 
     getVenderNameCombobox() {
 
@@ -408,25 +441,25 @@ var m = {
       });
 
   }
-    getOptionTextStore(option) {
+  getOptionTextVendertype(option) {
 
-        return option && option.StoreName ? option.StoreName : '';
+    return option && option.VenderTypeName ? option.VenderTypeName : '';
 
-    }
+  }
 
   
     onSubmit() {
         // if (this._supplierService.myform.valid) {
             if (!this._supplierService.myform.get("SupplierId").value) {
                 var data2 = [];
-                for (var val of this._supplierService.myform.get("StoreId")
-                    .value) {
+                // for (var val of this._supplierService.myform.get("StoreId")
+                //     .value) {
                     var data = {
-                        storeId: val,
+                        storeId:this._supplierService.myform.get("StoreId").value.storeid ,// val,
                         supplierId: 0,
                     };
                     data2.push(data);
-                }
+                // }
                 console.log(data2);
 
                 var m_data = {
@@ -487,16 +520,14 @@ var m = {
                      });
             } else {
                 var data3 = [];
-                for (var val of this._supplierService.myform.get("StoreId")
-                    .value) {
+                // for (var val of this._supplierService.myform.get("StoreId")
+                //     .value) {
                     var data4 = {
-                        storeId: val,
-                        supplierId:
-                            this._supplierService.myform.get("SupplierId")
-                                .value,
+                        storeId: this._supplierService.myform.get("StoreId").value.storeid ,// val,
+                        supplierId:this._supplierService.myform.get("SupplierId").value.supplierId,
                     };
                     data3.push(data4);
-                }
+                // }
                 console.log(data3);
                 var m_dataUpdate = {
                     updateSupplierMaster: {
@@ -649,10 +680,14 @@ var m = {
   @ViewChild('Bankbranch') Bankbranch: ElementRef;
   @ViewChild('Bankno') Bankno: ElementRef;
   @ViewChild('IFSC') IFSC: ElementRef;
-  @ViewChild('Store') Store: MatSelect;
+  // @ViewChild('Store') Store: MatSelect;
+  @ViewChild('Store') Store: ElementRef;
+
   @ViewChild('MSM') MSM: ElementRef;
   @ViewChild('Taluka') Taluka: ElementRef;
-  @ViewChild('VenderTypeId') VenderTypeId: MatSelect;
+  // @ViewChild('VenderTypeId') VenderTypeId: MatSelect;
+
+  @ViewChild('VenderTypeId') VenderTypeId: ElementRef;
   @ViewChild('OpeningBal') OpeningBal: ElementRef;
  
 
@@ -788,9 +823,10 @@ if (event.which === 13) {
 }
 }
 public onEnterIfsc(event): void {
+  debugger
 if (event.which === 13) {
-  
-  if (this.Store) this.Store.focus();
+  this.Store.nativeElement.focus();
+  // if (this.Store) this.Store.focus();
   this.save=true;
 }
 }
@@ -814,7 +850,7 @@ public onEnterStore(event): void {
   debugger
   if (event.which === 13) {
     //  this.MSM.nativeElement.focus();
-     
+    this.VenderTypeId.nativeElement.focus();
   }
   }
  
