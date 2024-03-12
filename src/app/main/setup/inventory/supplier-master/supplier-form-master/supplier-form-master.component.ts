@@ -10,6 +10,7 @@ import { ToastrService } from "ngx-toastr";
 import { fuseAnimations } from "@fuse/animations";
 import { MatSelect } from "@angular/material/select";
 import { size } from "lodash";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-supplier-form-master",
@@ -39,7 +40,7 @@ export class SupplierFormMasterComponent implements OnInit {
 
     optionsSubCompany: any[] = [];
     optionsStore: any[] = [];
-    // optionsCity: any[] = [];
+    optionsVender: any[] = [];
     optionsModeofpayment: any[] = [];
     optionsTermofpayment: any[] = [];
     optionsSuppliertype: any[] = [];
@@ -66,14 +67,40 @@ export class SupplierFormMasterComponent implements OnInit {
     msg: any;
     msmflag:boolean=false;
     CityId:any;
+    vchkactive: any=true;
 
-
+    
+  vSupplierName:any;
+  vSupplierType:any;
+  vAddress:any;
+  vPincode:any;
+  vMobile:any;
+  vCity:any;
+  vEmail:any;
+  vModeofpay:any;
+  vTermOfPayment:any;
+  vGSTNo:any;
+  vDlNo:any;
+  vBankName:any;
+  vBankbranch:any;
+  vBankNo:any;
+  vIfscNo:any;
+  vStoreId:any;
+  vVenderTypeId:any;
+  vTaxNature:any;
+  vPanNo:any;
+  vLicNo:any;
+  vFreight:any;
+  vIfsccode:any;
+  vOpeningBal:any;
+  VsupplierId:any=0;
     private _onDestroy = new Subject<void>();
 
     constructor(
         public _supplierService: SupplierMasterService,
         public toastr : ToastrService,
         @Inject(MAT_DIALOG_DATA) public data: any,
+        private _loggedService: AuthenticationService,
         public dialogRef: MatDialogRef<SupplierMasterComponent>
     ) {
       // this.getSupplierTypeMasterList();
@@ -94,17 +121,42 @@ export class SupplierFormMasterComponent implements OnInit {
     this.getCityNameCombobox();
     this.getStoreNameCombobox();
     this.getVenderNameCombobox();
+
+
     if (this.data) {
       this.registerObj = this.data.registerObj;
       console.log(this.registerObj);
-      this.registerObj.Mobile = this.data.registerObj.Mobile.trim();
+
+      this.VsupplierId=this.data.registerObj.supplierId;
+      this.vMobile= this.data.registerObj.Mobile.trim();
       this.registerObj.Phone = this.data.registerObj.Phone.trim();
-    
-    
-      // this.CityId = this.data.registerObj.CityId;
+      this.vchkactive = (this.registerObj.IsDeleted)
+      this.vSupplierName= this.data.registerObj.SupplierName;
+      this.vAddress = this.data.registerObj.Address;
+      this.vPincode = (this.registerObj.PinCode)
+      this.vEmail=this.data.registerObj.Email.trim();
+      this.vMobile= this.data.registerObj.Mobile.trim();
+      this.registerObj.Phone = this.data.registerObj.Phone.trim();
+      this.vchkactive = (this.registerObj.IsDeleted)
+      this.vGSTNo=this.data.registerObj.GSTNo1;
+      this.vPanNo=this.data.registerObj.PanNo;
+      this.vLicNo=this.data.registerObj.LicNo;
+      this.vDlNo=this.data.registerObj.DlNo;
+
+
+        this.vFreight=this.data.registerObj.Freight;
+      this.vBankbranch=this.data.registerObj.Branch;
+      this.vIfsccode=this.data.registerObj.Ifsccode;
+      this.vOpeningBal=this.data.registerObj.OpeningBalance;
+
+      this.vBankNo=this.data.registerObj.BankNo;
+      this.vTaxNature=this.data.registerObj.TaxNature;
+
+      
+      
       // this.setDropdownObjs1();
     }
-    debugger
+    
     this.filteredOptionsCity = this._supplierService.myform.get('CityId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterCity(value)),
@@ -128,20 +180,21 @@ export class SupplierFormMasterComponent implements OnInit {
 
     this.filteredOptionsBank1 = this._supplierService.myform.get('BankName').valueChanges.pipe(
       startWith(''),
-      map(value => this._filterBank1(value)),
+      map(value => this._filterBank(value)),
     );
 
+  
     this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterStore(value)),
+      
     );
-
 
     this.filteredOptionsVender = this._supplierService.myform.get('VenderTypeId').valueChanges.pipe(
       startWith(''),
-      map(value => this._filterVender(value)),
+      map(value => this._filtervender(value)),
+      
     );
-
 
 
   }
@@ -161,11 +214,13 @@ export class SupplierFormMasterComponent implements OnInit {
     getBankNameList1() {
         this._supplierService.getBankMasterCombo().subscribe(data => {
           this.BankNameList1 = data;
-          this.optionsBank1 = this.BankNameList1.slice();
-          this.filteredOptionsBank1 = this._supplierService.myform.get('BankName').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterBank1(value) : this.BankNameList1.slice()),
-          );
+          console.log(this.BankNameList1 )
+          if (this.data) {
+            const ddValue = this.BankNameList1.filter(c => c.BankId == this.data.registerObj.BankId);
+            this._supplierService.myform.get('BankName').setValue(ddValue[0]);
+            this._supplierService.myform.updateValueAndValidity();
+            return;
+          } 
           
         });
       }
@@ -189,14 +244,14 @@ export class SupplierFormMasterComponent implements OnInit {
         return option && option.BankName ? option.BankName : '';
       }
     
-      private _filterBank1(value: any): string[] {
+      private _filterBank(value: any): string[] {
         if (value) {
           const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
-           return this.optionsBank1.filter(option => option.BankName.toLowerCase().includes(filterValue));
+    
+          return this.BankNameList1.filter(option => option.BankName.toLowerCase().includes(filterValue));
         }
     
       }
-
       
 
     getCityNameCombobox() {
@@ -371,28 +426,27 @@ var m = {
 
   }
 
- 
-
-
-    private _filterStore(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-            //   this.isDoctorSelected = false;
-            return this.optionsStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-        }
-
-    }
+     
     
-    private _filterVender(value: any): string[] {
-      if (value) {
-          const filterValue = value && value.VenderTypeName ? value.VenderTypeName.toLowerCase() : value.toLowerCase();
-          //   this.isDoctorSelected = false;
-          return this.optionsStore.filter(option => option.VenderTypeName.toLowerCase().includes(filterValue));
-      }
+  private _filterStore(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+
+      return this.StorecmbList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+    }
 
   }
-  
-    
+ 
+  private _filtervender(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.VenderTypeName ? value.VenderTypeName.toLowerCase() : value.toLowerCase();
+
+      return this.VendercmbList.filter(option => option.VenderTypeName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+     
 
 
     // getStoreNameCombobox() {
@@ -411,13 +465,18 @@ var m = {
 
 
     getStoreNameCombobox() {
+      
       this._supplierService.getStoreMasterCombo().subscribe(data => {
         this.StorecmbList = data;
-        this.optionsStore = this.StorecmbList.slice();
-        this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
-          startWith(''),
-          map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
-        );
+        // this.optionsStore = this.StorecmbList.slice();
+        if (this.data) {
+          debugger
+          this.data.registerObj.StoreId=this._loggedService.currentUserValue.user.storeId
+          const ddValue = this.StorecmbList.filter(c => c.StoreId == this.data.registerObj.StoreId);
+          this._supplierService.myform.get('StoreId').setValue(ddValue[0]);
+         this._supplierService.myform.updateValueAndValidity();
+          return;
+        } 
         
       });
     }
@@ -432,12 +491,14 @@ var m = {
 
       this._supplierService.getVenderMasterCombo().subscribe(data => {
           this.VendercmbList = data;
-          this.VendercmbList = this.VendercmbList.slice();
-          this.filteredOptionsVender = this._supplierService.myform.get('VenderTypeId').valueChanges.pipe(
-              startWith(''),
-              map(value => value ? this._filterVender(value) : this.VendercmbList.slice()),
-          );
-
+          console.log(this.VendercmbList)
+          // this.optionsVender = this.VendercmbList.slice();
+          if (this.data) {
+            const ddValue = this.VendercmbList.filter(c => c.VenderTypeId == this.data.registerObj.VenderTypeId);
+            this._supplierService.myform.get('VenderTypeId').setValue(ddValue[0]);
+           this._supplierService.myform.updateValueAndValidity();
+            return;
+          } 
       });
 
   }
@@ -447,21 +508,31 @@ var m = {
 
   }
 
-  
     onSubmit() {
-        // if (this._supplierService.myform.valid) {
+        debugger
+    //   if ((this.vSupplierName == undefined || this.vSupplierType == undefined || this.vAddress == undefined || this.vPincode == undefined ||
+    //     this.vMobile == undefined || this.vCity == undefined || this.vEmail == undefined || this.vModeofpay == undefined || this.vTermOfPayment == undefined
+    //     ||  this.vGSTNo == undefined || this.vDlNo == undefined ||  this.vBankName == undefined || this.vBankbranch == undefined  || 
+    //      this.vBankNo == undefined || this.vIfscNo == undefined || this.vStoreId == undefined || this.vVenderTypeId == undefined)) {
+    //     this.toastr.warning('Please select All Data.', 'Warning !', {
+    //         toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    // }
+    // else {
             if (!this._supplierService.myform.get("SupplierId").value) {
                 var data2 = [];
                 // for (var val of this._supplierService.myform.get("StoreId")
                 //     .value) {
+                  debugger
                     var data = {
-                        storeId:this._supplierService.myform.get("StoreId").value.storeid ,// val,
+                        storeId: this._loggedService.currentUserValue.user.storeId  || this._supplierService.myform.get("StoreId").value.storeId,// val,
                         supplierId: 0,
                     };
                     data2.push(data);
                 // }
                 console.log(data2);
-
+                debugger
                 var m_data = {
                     insertSupplierMaster: {
                         supplierName: this._supplierService.myform.get("SupplierName").value,
@@ -477,9 +548,6 @@ var m = {
                         email:this._supplierService.myform.get("Email").value || "%",
                         modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
                         termsofPayment:this._supplierService.myform.get("TermOfPayment").value.Id || "0",
-                        // taxNature:
-                        //     this._supplierService.myform.get("TaxNature")
-                        //         .value || "0",
                         currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
                         octroi:0,
                         freight:this._supplierService.myform.get("Freight").value ||"0",
@@ -487,7 +555,20 @@ var m = {
                         addedBy: 1,
                         gstNo: this._supplierService.myform.get("GSTNo").value,
                         supplierId:this._supplierService.myform.get("SupplierId").value || "0",
-                        panNo: this._supplierService.myform.get("PanNo").value,
+                        PanNo: this._supplierService.myform.get("PanNo").value,
+                        pinCode:this._supplierService.myform.get("Pincode").value || "0",
+                        taluka:this._supplierService.myform.get("Taluka").value || "0",
+                        licNo:this._supplierService.myform.get("LicNo").value || "0",
+                        expDate: this.registerObj.ExpDate,//this._supplierService.myform.get("ExpDate").value.ExpDate || "",
+                        dlNo:this._supplierService.myform.get("DlNo").value || "0",
+                        BankId:this._supplierService.myform.get("BankName").value.BankId || "0",
+                        bankname:this._supplierService.myform.get("BankName").value.BankName || "0",
+                        branch:this._supplierService.myform.get("BankBranch").value || "0",
+                        bankNo:this._supplierService.myform.get("BankNo").value || "0",
+                        ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
+                        venderTypeId:this._supplierService.myform.get("VenderTypeId").value.VenderTypeId || "0",
+                        openingBalance:this._supplierService.myform.get("OpeningBal").value || "0",
+                        TaxNature:this._supplierService.myform.get("TaxNature").value || "0",
                     },
                     insertAssignSupplierToStore: data2,
                 };
@@ -523,8 +604,8 @@ var m = {
                 // for (var val of this._supplierService.myform.get("StoreId")
                 //     .value) {
                     var data4 = {
-                        storeId: this._supplierService.myform.get("StoreId").value.storeid ,// val,
-                        supplierId:this._supplierService.myform.get("SupplierId").value.supplierId,
+                      storeId: this._loggedService.currentUserValue.user.storeId  || this._supplierService.myform.get("StoreId").value.storeId,// val,
+                        supplierId: this.VsupplierId,
                     };
                     data3.push(data4);
                 // }
@@ -545,9 +626,7 @@ var m = {
                         email:this._supplierService.myform.get("Email").value || "%",
                         modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
                         termsofPayment:this._supplierService.myform.get("TermOfPayment").value.Id || "0",
-                        // taxNature:
-                        //     this._supplierService.myform.get("TaxNature")
-                        //         .value || "0",
+                        taxNature:this._supplierService.myform.get("TaxNature").value || "0",
                         currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
                         octroi:0,
                         freight:this._supplierService.myform.get("Freight").value ||"0",
@@ -555,6 +634,18 @@ var m = {
                         updatedBy: 1,
                         gstNo: this._supplierService.myform.get("GSTNo").value,
                         panNo: this._supplierService.myform.get("PanNo").value,
+                        pinCode:this._supplierService.myform.get("Pincode").value || "0",
+                        taluka:this._supplierService.myform.get("Taluka").value || "0",
+                        licNo:this._supplierService.myform.get("LicNo").value || "0",
+                        expDate:this._supplierService.myform.get("ExpDate").value || "0",
+                        dlNo:this._supplierService.myform.get("DlNo").value || "0",
+                        BankId:this._supplierService.myform.get("BankName").value.BankId || "0",
+                        bankname:this._supplierService.myform.get("BankName").value.BankName || "0",
+                        branch:this._supplierService.myform.get("BankBranch").value || "0",
+                        bankNo:this._supplierService.myform.get("BankNo").value || "0",
+                        ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
+                        venderTypeId:this._supplierService.myform.get("VenderTypeId").value.VenderTypeId || "0",
+                        openingBalance:this._supplierService.myform.get("OpeningBal").value || "0"
                     },
                     deleteAssignSupplierToStore: {
                         supplierId:
@@ -689,7 +780,7 @@ var m = {
 
   @ViewChild('VenderTypeId') VenderTypeId: ElementRef;
   @ViewChild('OpeningBal') OpeningBal: ElementRef;
- 
+  @ViewChild('addbutton') addbutton: ElementRef;
 
   public onEnterSuppliername(event): void {
     if (event.which === 13) {
@@ -827,7 +918,7 @@ public onEnterIfsc(event): void {
 if (event.which === 13) {
   this.Store.nativeElement.focus();
   // if (this.Store) this.Store.focus();
-  this.save=true;
+
 }
 }
 
@@ -840,7 +931,8 @@ public onEnterVender(event): void {
 
   public onEnterOpeningBal(event): void {
     if (event.which === 13) {
-      
+      // this.save=true;
+      this.addbutton.nativeElement.focus();
       // if (this.Store) this.Store.focus();
       
     }
@@ -854,7 +946,7 @@ public onEnterStore(event): void {
   }
   }
  
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
 
   // public onEnterIfsc(event): void {
   // if (event.which === 13) {

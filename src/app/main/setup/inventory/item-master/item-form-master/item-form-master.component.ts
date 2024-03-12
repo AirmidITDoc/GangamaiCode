@@ -287,7 +287,7 @@ addChips(event: any, itemList, controller): void {
 
         this._itemService.getitemtypeMasterCombo().subscribe(data => {
             this.ItemTypecmbList = data;
-            console.log(this.ItemTypecmbList)
+            // console.log(this.ItemTypecmbList)
             if (this.data) {
 
                 const ddValue = this.ItemTypecmbList.filter(c => c.ItemTypeId == this.data.registerObj.ItemTypeID);
