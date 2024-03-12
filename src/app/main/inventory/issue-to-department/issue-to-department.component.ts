@@ -230,7 +230,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
     getIssueItemwiseList(Param) {
         var vdata = {
-            "IssueId": Param
+            "IssueId": Param.IssueId
         }
         this._IssueToDep.getIssueItemList(vdata).subscribe(data => {
             this.dsIssueItemList.data = data as IssueItemList[];
