@@ -1,5 +1,14 @@
+
+
 .create-user-section {
-    .mat-table{
+    .mat-table {
         height: calc(100vh - 180px);
+        .mat-header-row,
+        .mat-row {
+            min-width: 1200px;
+            @include media-breakpoint("lt-lg") {
+                min-width: 600px;
+            }
+        }
     }
 }
