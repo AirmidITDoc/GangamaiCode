@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PharmItemSummaryComponent } from './pharm-item-summary/pharm-item-summary.component';
 
 
+
 const appRoutes: Routes = [
     {
     path: "sales",
@@ -41,6 +42,10 @@ const appRoutes: Routes = [
     path:"salesbillsettlement",
     loadChildren:() => import("./sales-return-bill-settlement/sales-return-bill-settlement.module").then((m)=>m.SalesReturnBillSettlementModule),
   },
+  {
+    path:"reorderlevelsummary",
+    loadChildren: () => import("./reorderlevelsummary/reorderlevelsummary.module").then((m)=>m.ReorderlevelsummaryModule),
+  },
 
   // {
   //   path:"pharmacyitemwisesupplierList",
@@ -51,7 +56,7 @@ const appRoutes: Routes = [
 
 
 @NgModule({
-  declarations: [ ],
+  declarations: [],
   imports: [
     RouterModule.forChild(appRoutes)
   ]

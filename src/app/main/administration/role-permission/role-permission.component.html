@@ -1,4 +1,4 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout simple right-sidebar role-permission">
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout simple right-sidebar role-permission h-100-p">
     <div class="center" fusePerfectScrollbar>
         <div class="modal-wrapper">
             <div class="modal-header">
@@ -7,16 +7,16 @@
                         <span>Role Permission</span>
                     </div>
                     <div class="modal-header-icon">
-                        <span class="modal-icon" (click)="onClose()" aria-label="Close dialog">
-                            <mat-icon>close</mat-icon>
-                        </span>
-                        <!-- <button mat-icon-button tabIndex="-1" >
-                        </button> -->
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <span class="modal-icon" >
+                                <mat-icon>close</mat-icon>
+                            </span>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="modal-body role-permission-body" >
-                <div class="py-12" fxLayoutGap="2px">
+            <div class="modal-body role-permission-body">
+                <div class="dialog-container">
                     <div class="dialog-content-wrapper">
                         <div fxlayout="row">
                             <div style="width: 100%" *ngIf="false">

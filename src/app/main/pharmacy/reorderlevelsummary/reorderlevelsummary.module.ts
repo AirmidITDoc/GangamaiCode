@@ -34,20 +34,21 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
-import { IssueToDepartmentComponent } from './issue-to-department.component';
+import { ReorderlevelsummaryComponent } from './reorderlevelsummary.component';
+import { IndentrequestComponent } from './indentrequest/indentrequest.component';
 
 const routes: Routes = [
   { 
       path: '**', 
-      component: IssueToDepartmentComponent
+      component:  ReorderlevelsummaryComponent
   },
 ];
 
 @NgModule({
-  declarations: [  
-    IssueToDepartmentComponent
+  declarations: [
+    ReorderlevelsummaryComponent,
+    IndentrequestComponent
   ],
-  
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -92,10 +93,11 @@ const routes: Routes = [
         
   ],
   providers: [
+    
     DatePipe,
 ],
 entryComponents: [
-  IssueToDepartmentComponent,
+  ReorderlevelsummaryComponent,
 ]
 })
-export class IssueToDepartmentModule { } 
+export class ReorderlevelsummaryModule { }
