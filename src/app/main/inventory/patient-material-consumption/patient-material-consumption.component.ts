@@ -10,6 +10,8 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-patient-material-consumption',
@@ -31,7 +33,7 @@ export class PatientMaterialConsumptionComponent implements OnInit {
   dsIndentID = new MatTableDataSource<IndentID>();
 
   dsIndentList = new MatTableDataSource<IndentList>();
-
+  SpinLoading:boolean=false;
   displayedColumns = [
     'FromStoreId',
     'IndentNo',
@@ -58,6 +60,7 @@ export class PatientMaterialConsumptionComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    private reportDownloadService: ExcelDownloadService,
     private accountService: AuthenticationService,
     
   ) { }
@@ -96,11 +99,11 @@ export class PatientMaterialConsumptionComponent implements OnInit {
     var Param = {
       
       "ToStoreId": this._IndentID.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
-       "From_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "Status": 1//this._IndentID.IndentSearchGroup.get("Status").value || 1,
+       "FromDate": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+       "ToDate": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      //  "Status": 1//this._IndentID.IndentSearchGroup.get("Status").value || 1,
     }
-      this._IndentID.getIndentID(Param).subscribe(data => {
+      this._IndentID.getMaterialConsumptiondatewise(Param).subscribe(data => {
       this.dsIndentID.data = data as IndentID[];
       console.log(this.dsIndentID.data)
       this.dsIndentID.sort = this.sort;
@@ -142,6 +145,43 @@ Swal.fire("Row selected :" + contact)
         });
 
        }
+
+
+
+       
+  viewgetMaterialConsumptionReportPdf(contact) {
+    this.sIsLoading == 'loading-data'
+  
+    setTimeout(() => {
+    this.SpinLoading =true;
+    //  this.AdList=true;
+    this._IndentID.getMaterialConsumptionview(contact.MaterialConsumptionId).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Issue to Dept Reprt Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.sIsLoading = '';
+        });
+    });
+    },1000);
+  }
+
+
+   
+  exportIssuetodeptReportExcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['IssueNo', 'IssueDate', 'FromStoreName', 'ToStoreName', 'TotalAmount','TotalVatAmount','NetAmount','Remark','Receivedby'];
+    this.reportDownloadService.getExportJsonData(this.dsIndentID.data, exportHeaders, 'Issue To Department');
+    this.dsIndentID.data=[];
+    this.sIsLoading = '';
+  }
 
   onClear(){
     

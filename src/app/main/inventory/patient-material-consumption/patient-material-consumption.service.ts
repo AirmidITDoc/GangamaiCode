@@ -41,8 +41,8 @@ export class PatientMaterialConsumptionService {
     });
   }
  
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+  public getMaterialConsumptiondatewise(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=rptMaterialConsumptionDateWise",Param);
   }
 
 
@@ -57,5 +57,9 @@ export class PatientMaterialConsumptionService {
   public getToList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
   }
-  
+   
+  public getMaterialConsumptionview(MaterialConsumptionId){
+    return this._httpClient.get("InventoryTransaction/view-IssuetoDeptIssuewise?MaterialConsumptionId=" + MaterialConsumptionId);
+  }
+
 }

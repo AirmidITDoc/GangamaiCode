@@ -2,7 +2,7 @@
     <mat-tab label="Patient Material Consumption">
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
             <mat-toolbar class="accent"
-                style="height:50px; justify-content: space-between;width: 100%;background-color: blue !important;">
+                style="height:50px; justify-content: space-between;width: 100%;">
                 <div fxLayout="row">
                     <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm
                         (click)="toggleSidebar('app-main')" style="color: white;">
@@ -77,7 +77,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>To Store</mat-label>
-                                            <mat-select formControlName="ToStoreId" name="StoreId2" required>
+                                            <mat-select formControlName="ToStoreId" name="StoreId2">
                                                 <mat-option></mat-option>
                                                 <mat-option *ngFor="let m of Store1List" [value]="m">
                                                     {{m.StoreName}}
