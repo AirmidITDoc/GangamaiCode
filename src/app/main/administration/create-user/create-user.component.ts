@@ -169,8 +169,9 @@ export class CreateUserComponent implements OnInit {
       this.advanceDataStored.storage = new UserList(xx);
       const dialogRef = this._matDialog.open(UserDetailComponent,
         {
-          maxWidth: "65vw",
-          height: "700px",
+          height: "auto",
+          maxHeight:"90vh",
+          maxWidth: "800px",
           width: '100%',
           data : {
             registerObj : m,
@@ -192,7 +193,7 @@ export class CreateUserComponent implements OnInit {
       {
         maxWidth: "65vw",
         // maxHeight: "95vh", 
-        height: "600px",
+        height: "auto",
         width: '100%',
         // height: "100%"
       });
