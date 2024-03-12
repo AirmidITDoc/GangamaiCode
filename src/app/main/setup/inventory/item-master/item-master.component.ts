@@ -219,6 +219,10 @@ export class ItemMaster {
     MaxDisc:any;
     Storagelocation:any;
     CompanyId:any;
+    DrugType :any;
+    DrugTypeName :any;
+    ItemCompnayId:any;
+    
     /**
      * Constructor
      *
@@ -237,7 +241,7 @@ export class ItemMaster {
             this.ConversionFactor = ItemMaster.ConversionFactor || "";
             this.CurrencyId = ItemMaster.CurrencyId || "";
             this.TaxPer = ItemMaster.TaxPer || "";
-            this.Isdeleted = ItemMaster.Isdeleted || "false";
+            this.Isdeleted = ItemMaster.Isdeleted || "true";
             this.Addedby = ItemMaster.Addedby || "";
             this.UpdatedBy = ItemMaster.UpdatedBy || "";
             this.IsBatchRequired = ItemMaster.IsBatchRequired || "false";
@@ -262,6 +266,9 @@ export class ItemMaster {
             this.MaxDisc=ItemMaster.MaxDisc || 0
             this.Storagelocation=ItemMaster.Storagelocation ||""
             this.CompanyId=ItemMaster.CompanyId ||""
+            this.DrugType=ItemMaster.DrugType ||""
+            this.DrugTypeName=ItemMaster.DrugTypeName ||""
+            this.ItemCompnayId=ItemMaster.ItemCompnayId || 0
         }
     }
 }

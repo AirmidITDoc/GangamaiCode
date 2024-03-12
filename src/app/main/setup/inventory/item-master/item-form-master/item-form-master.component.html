@@ -19,13 +19,13 @@
           <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
             <!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,20);" -->
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="HSNcode" placeholder="Enter HSNcode" formControlName="HSNcode" [ngModel]="vHSNcode" matInput
+              <input name="HSNcode" placeholder="Enter HSNcode" formControlName="HSNcode" [(ngModel)]="vHSNcode" matInput
                 type="number" required #HSN (keydown)="onEnterHsn($event)">
               <mat-error>Please enter HSNcode </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="ItemName" formControlName="ItemName" #Itemname [ngModel]="vItemName"
+              <input name="ItemName" formControlName="ItemName" #Itemname [(ngModel)]="vItemName"
                 placeholder="Enter Item Name" matInput (keydown)="onEnterItemName($event)" required>
               <!-- <span class="error" *ngIf="f.ItemName.invalid && f.ItemName.touched">ItemName is required Enter only
                 Alphabets</span> -->
@@ -206,7 +206,7 @@
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <input name="ReOrder" placeholder="Enter ReOrder" formControlName="ReOrder" type="number"
-                (keydown)="onEnterReOrder($event)" #ReOrder matInput [ngModel]="registerObj.ReOrder"
+                (keydown)="onEnterReOrder($event)" #ReOrder matInput [(ngModel)]="registerObj.ReOrder"
                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
               <span class="error" *ngIf="f.ReOrder.invalid && f.ReOrder.touched">ReOrder is required Enter only
                 Number</span>
@@ -214,7 +214,7 @@
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <input name="MaxDisc" placeholder="Enter MaxDisc" (keydown)="onEnterMaxdisc($event)" #Maxdisc
-                formControlName="MaxDisc" (keyup)="Chkdisc()" [ngModel]="registerObj.MaxDisc" matInput type="number"
+                formControlName="MaxDisc" (keyup)="Chkdisc()" [(ngModel)]="registerObj.MaxDisc" matInput type="number"
                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
               <mat-error>Please enter MaxDisc </mat-error>
             </mat-form-field>
@@ -248,28 +248,28 @@
 
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="CGST" placeholder="Enter CGST" [ngModel]="registerObj.CGST" formControlName="CGST" matInput
+              <input name="CGST" placeholder="Enter CGST" [(ngModel)]="registerObj.CGST" formControlName="CGST" matInput
                 type="number" (keydown)="onEnterCGST($event)" #CGST
                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
               <span class="error" *ngIf="f.CGST.invalid && f.CGST.touched">CGST is required Enter only Number</span>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="SGST" placeholder="Enter SGST" [ngModel]="registerObj.SGST" formControlName="SGST" matInput
+              <input name="SGST" placeholder="Enter SGST" [(ngModel)]="registerObj.SGST" formControlName="SGST" matInput
                 type="number" (keydown)="onEnterSGST($event)" #SGST
                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
               <span class="error" *ngIf="f.SGST.invalid && f.SGST.touched">SGST is required Enter only Number</span>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="IGST" placeholder="Enter IGST" [ngModel]="registerObj.IGST" formControlName="IGST" matInput
+              <input name="IGST" placeholder="Enter IGST" [(ngModel)]="registerObj.IGST" formControlName="IGST" matInput
                 type="number" (keydown)="onEnterIGST($event)" #IGST
                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
               <span class="error" *ngIf="f.IGST.invalid && f.IGST.touched">IGST is required Enter only Numbaer</span>
             </mat-form-field>
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <input name="MinQty" placeholder="Enter MinQty" formControlName="MinQty" matInput type="number"
-                (keydown)="onEnterMinQty($event)" #MinQty [ngModel]="registerObj.MinQty"
+                (keydown)="onEnterMinQty($event)" #MinQty [(ngModel)]="registerObj.MinQty"
                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
               <span class="error" *ngIf="f.MinQty.invalid && f.MinQty.touched">MinQty is required Enter only
                 Number</span>
@@ -277,7 +277,7 @@
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <input name="MaxQty" placeholder="Enter MaxQty" formControlName="MaxQty" matInput type="number"
-                (keydown)="onEnterMaxQty($event)" #MaxQty [ngModel]="registerObj.MaxQty"
+                (keydown)="onEnterMaxQty($event)" #MaxQty [(ngModel)]="registerObj.MaxQty"
                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
               <span class="error" *ngIf="f.MaxQty.invalid && f.MaxQty.touched">MaxQty is required Enter only
                 Number</span>
@@ -288,7 +288,7 @@
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <input name="Storagelocation" placeholder="Enter Storagelocation" (keydown)="onEnterStorage($event)"
-                #Storagee formControlName="Storagelocation" [ngModel]="vStoragelocation" matInput type="text">
+                #Storagee formControlName="Storagelocation" [(ngModel)]="vStoragelocation" matInput type="text">
 
               <mat-error>Please enter ProdLocation </mat-error>
             </mat-form-field>
@@ -341,7 +341,7 @@
               <mat-label>Company Name </mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput
                 (keydown)="onEnterCompany($event)" #Company formControlName="CompanyId" [matAutocomplete]="autoCompany"
-                required>
+                required [(ngModel)]="vCompanyId">
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
@@ -377,27 +377,18 @@
 
           <div>
 
-
-            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+<!-- 
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-select placeholder="Select StoreName" #Store (keydown)="onEnterStorename($event)"
                 formControlName="StoreId" multiple required>
                 <mat-option *ngFor="let M of StorecmbList" [value]="M.StoreId">
                   {{M.StoreName}}
                 </mat-option>
-              </mat-select>
-            </mat-form-field> -->
-            <!-- <mat-form-field>
-              <mat-select multiple placeholder="Test" [(ngModel)]="selectedObjectsFromArray">
-                <mat-option *ngFor="let el of toppingList" [value]="el.value">
-                  {{el.label}}
-                </mat-option>
-
-              </mat-select>
+               </mat-select>
             </mat-form-field>
+            -->
 
-            <p>{{selectedObjectsFromArray}}</p> -->
-
-
+<!-- 
             <mat-form-field class="example-chip-list" appearance="outline" style="width:50%;">
               <mat-label>Store Name</mat-label>
               <mat-chip-list #historyChipList>
@@ -417,7 +408,7 @@
                       {{element.PastHistoryDescr}}
                   </mat-option>
               </mat-autocomplete>
-          </mat-form-field>
+          </mat-form-field> -->
 
           </div>
           <div>
@@ -440,7 +431,7 @@
             </mat-checkbox>
             <button class="footer-btn" (keydown)="onClear()">Reset</button>
             <button class="next-btn" color="accent" type="submit" (click)="onSubmit()"
-              style="border-radius: 16px;">Save</button>
+              style="border-radius: 16px;" #addbutton>Save</button>
             <!-- [disabled]=_itemService.myform.invalid -->
 
 

@@ -121,6 +121,11 @@ export class SupplierMasterComponent implements OnInit {
     }
 
     onEdit(row) {
+        if(row.Fax){
+            row.Fax=row.Fax.trim()
+        }else{
+            row.Fax=0
+        }
         var m_data = {
             SupplierId: row.SupplierId,
             SupplierName: row.SupplierName,
@@ -209,6 +214,15 @@ export class SupplierMaster {
     Bankbranch: any;
     Ifsccode: any;
     StoreId: any;
+
+    PinCode: any;
+    Taluka: any;
+    LicNo: any;
+    DlNo: any;
+    Bankname: any;
+    Branch: any;
+    VenderType: any;
+    OpeningBalance: any;
     /**
      * Constructor
      *
@@ -246,6 +260,16 @@ export class SupplierMaster {
             this.Bankbranch = SupplierMaster.Bankbranch || "";
             this.Ifsccode = SupplierMaster.Ifsccode || "";
             this.StoreId = SupplierMaster.StoreId || 0;
+
+
+            this.PinCode = SupplierMaster.PinCode || 0;
+            this.Taluka = SupplierMaster.Taluka || 0;
+            this.LicNo = SupplierMaster.LicNo || 0;
+            this.DlNo = SupplierMaster.DlNo || 0;
+            this.Bankname = SupplierMaster.Bankname || 0;
+            this.Branch = SupplierMaster.Branch || 0;
+            this.VenderType = SupplierMaster.VenderType || 0;
+            this.OpeningBalance = SupplierMaster.OpeningBalance || 0;
         }
     }
 }
