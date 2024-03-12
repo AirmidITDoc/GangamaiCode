@@ -1,9 +1,12 @@
 .mat-table {
     border-radius: 4px;
     overflow: auto;
-    .mat-header-row {
+    .mat-header-row,
+    .mat-row {
         min-height: auto;
         height: auto;
+    }
+    .mat-header-row {
         .mat-header-cell {
             @include font-size(13px);
             color: inherit;
@@ -13,10 +16,10 @@
             &:not(:first-of-type) {
                 padding: 10px 10px;
             }
-            &:first-of-type{
+            &:first-of-type {
                 border-radius: 4px 0 0 4px;
             }
-            &:last-of-type{
+            &:last-of-type {
                 border-radius: 0 4px 4px 0;
             }
             .mat-sort-header-button,
@@ -26,8 +29,6 @@
         }
     }
     .mat-row {
-        min-height: auto;
-        height: auto;
         .mat-cell {
             @include font-size(12px);
             font-family: $roboto;
@@ -47,7 +48,10 @@
                     @include font-size(16px);
                 }
             }
-            span {
+            > span {
+                @include line-clamp(1);
+            }
+            .text-overflow{
                 @include line-clamp(1);
             }
         }
@@ -77,4 +81,13 @@
             }
         }
     }
+    .mat-checkbox {
+        .mat-checkbox-ripple{
+            height: 0;
+            width: 0;
+        }
+    }
+}
+.table-wrapper {
+    position: relative;
 }

@@ -82,3 +82,12 @@
     -webkit-box-orient: vertical;
     white-space: pre-wrap;
 }
+@mixin table-row-width($xl-width, $lg-width: 600px) {
+    .mat-header-row,
+    .mat-row {
+        min-width: $xl-width;
+        @include media-breakpoint("lt-lg") {
+            min-width: $lg-width;
+        }
+    }
+}

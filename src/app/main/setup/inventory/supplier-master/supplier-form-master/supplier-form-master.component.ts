@@ -605,7 +605,7 @@ var m = {
                 //     .value) {
                     var data4 = {
                       storeId: this._loggedService.currentUserValue.user.storeId  || this._supplierService.myform.get("StoreId").value.storeId,// val,
-                        supplierId: this.VsupplierId,
+                        supplierId: this._supplierService.myform.get("SupplierId").value,
                     };
                     data3.push(data4);
                 // }
