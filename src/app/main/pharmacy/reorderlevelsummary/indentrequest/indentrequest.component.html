@@ -36,7 +36,7 @@
                             <mat-form-field appearance="outline" fxFlex="30%" style="margin-right: 10px;">
                                 <mat-label>To Store</mat-label>
                                 <input matAutocompletePosition="below" type="text" required placeholder="Select Store"
-                                    matInput formControlName="ToStoreId" [matAutocomplete]="auto2">
+                                    matInput formControlName="ToStoreId" [matAutocomplete]="auto2"  [(ngModel)]="vToStored">
                                 <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
                                         (click)="_Reorderlevelsummery.RaisedIndentFrom.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
@@ -90,7 +90,7 @@
                                                 {{contact.Packing}}
                                             </mat-cell>
                                         </ng-container>
-    
+
                                         <ng-container matColumnDef="BalQty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 BalQty
@@ -99,8 +99,8 @@
                                                 {{contact.BalQty}}
                                             </mat-cell>
                                         </ng-container>
-    
-                                        <ng-container matColumnDef="ReorderQty">
+
+                                        <ng-container matColumnDef="StripQty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 StripQty
                                             </mat-header-cell>
@@ -108,6 +108,19 @@
                                                 {{contact.StripQty}}
                                             </mat-cell>
                                         </ng-container>
+
+                                        <ng-container matColumnDef="IndentQty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-80">IndentQty
+                                            </mat-header-cell>
+                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput [(ngModel)]="contact.IndentQty" type="number" 
+                                                    formControlName="IndentQty" >
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
+
                                         <ng-container matColumnDef="loading">
                                             <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                             </mat-header-cell>
@@ -122,8 +135,8 @@
                                         <mat-header-row class="accent"
                                             *matHeaderRowDef="displayedColumns; sticky: true">
                                         </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                         class="contact" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                         </mat-footer-row>

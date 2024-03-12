@@ -22,7 +22,8 @@ export class IndentrequestComponent implements OnInit {
     'ItemName',
     'Packing',
     'BalQty',
-    'ReorderQty',
+    'StripQty',
+    'IndentQty',
     'Action',
   ]
   dateTimeObj: any;
@@ -35,6 +36,7 @@ export class IndentrequestComponent implements OnInit {
   ToStoreList:any=[];
   registerObbj:any;
   chargeslist:any=[];
+  vToStored:any;
 
   dsRaisedIndent = new MatTableDataSource<RaisedIndentList>();
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -89,8 +91,23 @@ export class IndentrequestComponent implements OnInit {
     this.dsRaisedIndent.paginator = this.paginator;
   }
   OnSave(){
-    if ((!this.dsRaisedIndent.data.length)) {
-      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+    //debugger
+    // if ((this.dsRaisedIndent.data.length)) {
+    //   this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    let m=this._Reorderlevelsummery.RaisedIndentFrom.get('IndentQty').value
+    console.log(m)
+    if ((this.vToStored == '' || this.vToStored == null || this.vToStored == undefined)) {
+      this.toastr.warning('Please select To Store Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((m == '' || m == null || m == undefined)) {
+      this.toastr.warning('Please enter Indent Qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
@@ -118,5 +135,19 @@ export class IndentrequestComponent implements OnInit {
   }
 }
 export class RaisedIndentList{
-
+  ItemName:string;
+  Packing:any;
+  BalQty:any;
+  StripQty:any;
+  IndentQty:any;
+  
+  constructor(RaisedIndentList){
+    {
+      this.ItemName =RaisedIndentList.ItemName || '';
+      this.Packing = RaisedIndentList.Packing || 0;
+      this.BalQty = RaisedIndentList.BalQty || 0;
+      this.StripQty = RaisedIndentList.StripQty || 0;
+      this.IndentQty = RaisedIndentList.IndentQty || 0;
+    }
+  }
 }
