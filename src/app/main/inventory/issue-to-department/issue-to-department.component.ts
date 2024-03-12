@@ -493,7 +493,7 @@ tempdata:any=[];
     this.dsNewIssueList3.data.forEach(element => {
       let updateitemdetail = {};
       updateitemdetail['itemId'] = element.ItemId;
-      updateitemdetail['issueQty'] = element.BalanceQty;
+      updateitemdetail['issueQty'] = element.Qty;
       updateitemdetail['stkId']  = element.StockId ;
       updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
       updateissuetoDepartmentStock.push(updateitemdetail);
