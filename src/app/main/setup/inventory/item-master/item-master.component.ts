@@ -55,13 +55,6 @@ export class ItemMasterComponent implements OnInit {
         "AddedByName",
         "IsNursingFlag",
         "IsBatchRequired",
-        // "IsNarcotic",
-        // "IsH1Drug",
-        // "IsScheduleH",
-        // "IsHighRisk",
-        // "IsScheduleX",
-        // "IsLASA",
-        // "IsEmgerency",
         "Isdeleted",
         "action",
     ];
@@ -163,7 +156,7 @@ export class ItemMasterComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-            // this.getItemMasterList();
+            this.getItemMasterList();
         });
     }
 

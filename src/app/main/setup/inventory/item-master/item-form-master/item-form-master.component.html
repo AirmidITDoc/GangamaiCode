@@ -48,11 +48,13 @@
 
           <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
+            
+
             <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
               <mat-label>ItemType Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select ItemTypeID" matInput
                 formControlName="ItemTypeID" [matAutocomplete]="autoItemTypeID" required #ItemType
-                [(ngModel)]="vItemTypeID" (keydown)="onEnterItemType($event)">
+                (keydown)="onEnterItemType($event)" [(ngModel)]="vItemTypeID">
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('ItemTypeID').setValue(''); isItemTypeSelected = false;">close</mat-icon>
@@ -164,15 +166,7 @@
               </mat-autocomplete>
             </mat-form-field>
 
-            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                    <mat-select placeholder="Select StockUOMId" name="StockUOMId" formControlName="StockUOMId"
-                        #singleSelect>
-                        <mat-option *ngFor="let M of ItemUomcmbList" [value]="M.UnitOfMeasurementId">
-                            {{ M.UnitOfMeasurementName }}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error>Select UnitOfMeasurementName</mat-error>
-                </mat-form-field> -->
+          
 
             <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
               <mat-label>Stock UMOID </mat-label>
@@ -221,27 +215,7 @@
           </div>
           <div>
 
-            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="CGST" placeholder="Enter CGST" [ngModel]="registerObj.CGST" formControlName="CGST" matInput
-                type="number" (keydown)="onEnterCGST($event)" #CGST
-                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-              <span class="error" *ngIf="f.CGST.invalid && f.CGST.touched">CGST is required Enter only Number</span>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="SGST" placeholder="Enter SGST" [ngModel]="registerObj.SGST" formControlName="SGST" matInput
-                type="number" (keydown)="onEnterSGST($event)" #SGST
-                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-              <span class="error" *ngIf="f.SGST.invalid && f.SGST.touched">SGST is required Enter only Number</span>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="IGST" placeholder="Enter IGST" [ngModel]="registerObj.IGST" formControlName="IGST" matInput
-                type="number" (keydown)="onEnterIGST($event)" #IGST
-                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-              <span class="error" *ngIf="f.IGST.invalid && f.IGST.touched">IGST is required Enter only Numbaer</span>
-            </mat-form-field> -->
-
+         
           </div>
 
           <div>
@@ -377,46 +351,10 @@
 
           <div>
 
-<!-- 
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <mat-select placeholder="Select StoreName" #Store (keydown)="onEnterStorename($event)"
-                formControlName="StoreId" multiple required>
-                <mat-option *ngFor="let M of StorecmbList" [value]="M.StoreId">
-                  {{M.StoreName}}
-                </mat-option>
-               </mat-select>
-            </mat-form-field>
-            -->
-
-<!-- 
-            <mat-form-field class="example-chip-list" appearance="outline" style="width:50%;">
-              <mat-label>Store Name</mat-label>
-              <mat-chip-list #historyChipList>
-                  <mat-chip *ngFor="let ele of historySelected" [selectable]="selectable"
-                      [removable]="removable" (removed)="remove(ele, historySelected)">
-                      {{ele}}
-                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                  </mat-chip>
-                  <input #historyInput formControlName="StoreId" [matAutocomplete]="auto1"
-                      [matChipInputFor]="historyChipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                      (matChipInputTokenEnd)="addChips($event, historySelected, 'StoreId')">
-              </mat-chip-list>
-              <mat-autocomplete #auto1="matAutocomplete"
-                  (optionSelected)="selected($event, historySelected, 'StoreId', 'historyInput')">
-                  <mat-option *ngFor="let element of filteredHistory | async"
-                      [value]="element.PastHistoryDescr">
-                      {{element.PastHistoryDescr}}
-                  </mat-option>
-              </mat-autocomplete>
-          </mat-form-field> -->
 
           </div>
           <div>
-            <!--           
-            <mat-radio-group name="IsDeleted" formControlName="IsDeleted">
-                <mat-radio-button  class="mr-sm-12" fxFlex value='false'>IsActive</mat-radio-button>
-            </mat-radio-group> -->
-
+           
             <mat-checkbox aria-label="Mode" formControlName="IsDeleted" [(ngModel)]="vchkactive"
               style="font-weight: bold;margin-right: 20px;">ISActive
             </mat-checkbox>

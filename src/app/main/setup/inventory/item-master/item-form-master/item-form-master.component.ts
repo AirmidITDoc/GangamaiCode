@@ -36,7 +36,7 @@ export class ItemFormMasterComponent implements OnInit {
     DrugList: any = [];
     registerObj = new ItemMaster({});
 
-    // new changes?    filteredOptionsDoc: Observable<string[]>;
+    
     filteredOptionsManu: Observable<string[]>;
     filteredOptionsStore: Observable<string[]>;
     filteredItemType: Observable<string[]>;
@@ -95,20 +95,6 @@ export class ItemFormMasterComponent implements OnInit {
     private _onDestroy = new Subject<void>();
     msg: any;
 
-
-    // toppingList: any = [
-    //     {value: 'extra_cheese', label:'Extra cheese'},
-    //     {value:'mushroom', label:'Mushroom'},
-    //     {value:'onion', label:'Onion'},
-    //     {value:'pepperoni', label:'Pepperoni'},
-    //     {value:'sausage', label:'Sausage'},
-    //     {value:'tomato', label:'Tomato'}
-    //   ];
-
-      
-
-
-
     constructor(
         public _itemService: ItemMasterService,
         public toastr: ToastrService,
@@ -117,18 +103,7 @@ export class ItemFormMasterComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<ItemMasterComponent>
     ) { }
-    // selectedObjects : any[];
-
-    // selectedObjectsFromArray: any;
-     
-    // filteredStore: Observable<string[]>;
-    // selectable = true;
-    // removable = true;
-    // separatorKeysCodes: number[] = [ENTER, COMMA];
-    // historySelected: any[] = [];
-    // filteredHistory: Observable<HistoryClass[]>;
-
-
+    
     ngOnInit(): void {
         if (this.data) {
 
@@ -140,41 +115,26 @@ export class ItemFormMasterComponent implements OnInit {
             this.vchkactive = (this.registerObj.Isdeleted)
            
             this.setDropdownObjs1();
-            // this.selectedObjects = [{value:'tomato', label:'Tomato'}]; 
-    
-            // this.selectedObjectsFromArray = ['tomato', 'sausage']
+           
         }
 
 
         this.getitemtypeNameMasterCombo();
         this.getitemclassNameMasterCombo();
-        //this.getitemtypeNameMasterCombo();
         this.getitemcategoryNameMasterCombo();
         this.getitemgenericNameMasterCombo();
         this.getitemunitofmeasureMasterCombo();
         this.getStockUOMIDdMasterombo();
         this.getStoreNameMasterCombo();
-        // this.getStoreNameMasterCombo1();
         this.getManufactureNameMasterCombo();
         this.getCurrencyNameMasterCombo();
         this.getCompanyList();
         this.getDrugTypeList();
+
         this.setDropdownObjs1();
 
-        // this.filteredHistory = this._itemService.myform.get('StoreId').valueChanges.pipe(
-        //     startWith(''),
-        //     map((ele: any | null) => ele ? this._filterHistory(ele) : this.StorecmbList.slice()));
-      
-            // this.filteredOptionsStore = this._itemService.myform.get('StoreId').valueChanges.pipe(
-            //     startWith(''),
-            //     map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
-            // );
     }
-  
-//  comparer(o1: any, o2: any): boolean {
-//     // if possible compare by object's name, and not by reference.
-//     return o1 && o2 ? o1.label === o2.label : o2 === o2;
-//   }
+ 
 
     setDropdownObjs1() {
         this.filteredItemType = this._itemService.myform.get('ItemTypeID').valueChanges.pipe(
@@ -236,31 +196,7 @@ export class ItemFormMasterComponent implements OnInit {
 
     }
 
-    // private _filterHistory(value: any) {
-    //     const filterValue = (value && value.PastHistoryDescr) ? value.PastHistoryDescr.toLowerCase() : value.toLowerCase();
-    
-    //     return this.StorecmbList.filter(ele => ele.PastHistoryDescr.toLowerCase().includes(filterValue));
-    //   }
-
-
-
-addChips(event: any, itemList, controller): void {
-    const value = (event.value || '').trim();
-    if (value) {
-      itemList.push(value);
-    }
-    // event.chipInput!.clear();
-    // this._itemService.myform.get('StoreId').setValue(null);
-  }
-
-  remove(item: any, itemList): void {
-    const index = itemList.indexOf(item);
-
-    if (index >= 0) {
-      itemList.splice(index, 1);
-    }
-  }
-
+   
   
     get f() {
         return this._itemService.myform.controls;
@@ -287,7 +223,7 @@ addChips(event: any, itemList, controller): void {
 
         this._itemService.getitemtypeMasterCombo().subscribe(data => {
             this.ItemTypecmbList = data;
-            // console.log(this.ItemTypecmbList)
+            
             if (this.data) {
 
                 const ddValue = this.ItemTypecmbList.filter(c => c.ItemTypeId == this.data.registerObj.ItemTypeID);
@@ -452,7 +388,7 @@ addChips(event: any, itemList, controller): void {
         if (value) {
             const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
             //   this.isDoctorSelected = false;
-            return this.optionsStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+            return this.StorecmbList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -462,7 +398,7 @@ addChips(event: any, itemList, controller): void {
         if (value) {
             const filterValue = value && value.ItemTypeName ? value.ItemTypeName.toLowerCase() : value.toLowerCase();
 
-            return this.optionsItemType.filter(option => option.ItemTypeName.toLowerCase().includes(filterValue));
+            return this.ItemTypecmbList.filter(option => option.ItemTypeName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -549,11 +485,9 @@ addChips(event: any, itemList, controller): void {
         
         this._itemService.getStoreMasterCombo().subscribe(data => {
             this.StorecmbList = data;
-            // const StoreID =this._loggedService.currentUserValue.user.storeId
-            // this._itemService.myform.get('StoreId').setValue(StoreID)
+         
             if (this.data) {
-                // const StoreID =this._loggedService.currentUserValue.user.storeId
-                debugger
+               
                 this.data.registerObj.StoreId =this._loggedService.currentUserValue.user.storeId;
                 const ddValue = this.StorecmbList.filter(c => c.Storeid == this.data.registerObj.StoreId);
                 this._itemService.myform.get('StoreId').setValue(ddValue[0]);
@@ -615,41 +549,6 @@ addChips(event: any, itemList, controller): void {
     // }
 
     casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
-
-//     getStoreNameMasterCombo() {
-//         
-//     this._itemService.getHistoryList().subscribe((data: any) => {
-//       this.StorecmbList = data;
-//       // console.log(this.allHistory);
-//       // this.casePaperData.PastHistory = 'M AS AMSAS, cc';
-
-//       let historyStringsArr = this.casePaperData.PastHistory.split(',');
-//       this.StorecmbList.forEach((elementHist, index) => {
-//         historyStringsArr.forEach(elementRetrieve => {
-//           if (elementHist.PastHistoryDescr == elementRetrieve) {
-//             this.historySelected.push(elementHist.PastHistoryDescr);
-//           }
-//         });
-//       });
-//     });
-//   }
-
-// selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): void {
-  
-//     if (itemList.length == 0) {
-//       itemList.push(event.option.value);
-//     } else {
-//       itemList.forEach(element => {
-//         if (element != event.option.value) {
-//           itemList.push(event.option.value);
-         
-//           this.StorecmbList=itemList;
-//           console.log( this.StorecmbList);
-//         }
-//       });
-//     }
-  
-//   }
 
 
 
@@ -913,7 +812,7 @@ addChips(event: any, itemList, controller): void {
 
 
     assets:[]
-    // Asset:any;
+    
     onSubmit() {
 
         
@@ -942,10 +841,7 @@ addChips(event: any, itemList, controller): void {
                 
                 var m_data = {
                     insertItemMaster: {
-                        // ItemShortName:
-                        //     this._itemService.myform
-                        //         .get("ItemShortName")
-                        //         .value.trim() || "%",
+                       
                         itemName: this._itemService.myform.get("ItemName").value || "%",
                         itemTypeId: this._itemService.myform.get("ItemTypeID").value.ItemTypeId,
                         ItemCategaryId: this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId,
@@ -962,20 +858,15 @@ addChips(event: any, itemList, controller): void {
                         minQty: this._itemService.myform.get("MinQty").value || 0,
                         maxQty: this._itemService.myform.get("MaxQty").value || 0,
                         reorder: this._itemService.myform.get("ReOrder").value || 0,
-                        // isNursingFlag: Boolean(
-                        //     JSON.parse(
-                        //         this._itemService.myform.get("IsNursingFlag")
-                        //             .value
-                        //     )
-                        // ),
+                      
                         hsNcode: this._itemService.myform.get("HSNcode").value || "%",
                         cgst: this._itemService.myform.get("CGST").value || "0",
                         sgst: this._itemService.myform.get("SGST").value || "0",
                         igst: this._itemService.myform.get("IGST").value || "0",
                         manufId: this._itemService.myform.get("ManufId").value.ManufId || "0",
-                        isNarcotic: this._itemService.myform.get("IsNarcotic").value || 0,
+                        isNarcotic: 0,//this._itemService.myform.get("IsNarcotic").value || 0,
 
-                        prodLocation: this._itemService.myform.get("ProdLocation").value || "%",
+                        prodLocation: this._itemService.myform.get("Storagelocation").value || "%",
                         isH1Drug: 0,//Boolean(JSON.parse(this._itemService.myform.get("IsH1Drug").value)),
                         isScheduleH: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsScheduleH").value)),
                         isHighRisk: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsHighRisk").value)),
@@ -1001,14 +892,7 @@ addChips(event: any, itemList, controller): void {
                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
                             toastClass: 'tostr-tost custom-toast-success',
                         });
-                        // Swal.fire(
-                        //     "Saved !",
-                        //     "Record saved Successfully !",
-                        //     "success"
-                        // ).then((result) => {
-                        //     if (result.isConfirmed) {
-                        //     }
-                        // });
+                      
                     } else {
                         this.toastr.error('Item-Form Master Master Data not Saved !, Please check API error..', 'Error !', {
                             toastClass: 'tostr-tost custom-toast-error',
@@ -1035,16 +919,12 @@ addChips(event: any, itemList, controller): void {
                         itemId: this._itemService.myform.get("ItemID").value,
 
                         itemShortName: '%',
-                        // this._itemService.myform
-                        //     .get("ItemShortName")
-                        //     .value.trim() || "%",
                         itemName: this._itemService.myform.get("ItemName").value || "%",
                         itemTypeID: this._itemService.myform.get("ItemTypeID").value.ItemTypeId,
                         ItemCategaryId: this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId,
                         itemGenericNameId: this._itemService.myform.get("ItemGenericNameId").value.ItemGenericNameId || 0,
                         itemClassId: this._itemService.myform.get("ItemClassId").value.ItemClassId,
                         purchaseUOMId: this._itemService.myform.get("PurchaseUOMId").value.UnitOfMeasurementId,
-                        //         .UnitofMeasurementName
                         stockUOMId: this._itemService.myform.get("StockUOMId").value.UnitOfMeasurementId || "0",
                         conversionFactor: this._itemService.myform.get("ConversionFactor").value || "0",
                         currencyId: this._itemService.myform.get("CurrencyId").value.CurrencyId || "0",
@@ -1063,7 +943,7 @@ addChips(event: any, itemList, controller): void {
                         igst: this._itemService.myform.get("IGST").value || "0",
                         isNarcotic: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsNarcotic").value)),
                         manufId: this._itemService.myform.get("ManufId").value.ManufId || "0",
-                        prodLocation: this._itemService.myform.get("ProdLocation").value || "%",
+                        prodLocation: this._itemService.myform.get("Storagelocation").value || "%",
                         isH1Drug: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsH1Drug").value)),
                         isScheduleH: 0,//Boolean(JSON.parse(this._itemService.myform.get("IsScheduleH").value)),
                         isHighRisk: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsHighRisk").value)),
@@ -1072,7 +952,7 @@ addChips(event: any, itemList, controller): void {
                         isEmgerency: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsEmgerency").value)),
                         drugType: this._itemService.myform.get("DrugType").value.ItemDrugTypeId || "0",
                         drugTypeName: this._itemService.myform.get("DrugType").value.DrugTypeName || "",
-                        itemCompnayId: 0,
+                        itemCompnayId: this._itemService.myform.get("CompanyId").value.CompanyId || "0",
                         isUpdatedBy: "01/01/1900",
                     },
                     deleteAssignItemToStore: {
@@ -1089,14 +969,7 @@ addChips(event: any, itemList, controller): void {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
                             });
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
+                          
                         } else {
                             this.toastr.error('Item-Form Master Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
