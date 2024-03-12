@@ -340,7 +340,8 @@ export class IssueToDepartmentComponent implements OnInit {
           VatPer: contact.VatPercentage || 0,
           VatAmount: ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2),
           TotalAmount: TotalMRP || 0,
-          NetAmount: TotalNet || 0
+          NetAmount: TotalNet || 0,
+          StockId: this.vStockId
         });
       console.log(this.chargeslist);
       // });
@@ -355,9 +356,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
 tempdata:any=[];
   onAdd($event) {
-    debugger
     if(this.vBarcode ==0){
-
     if ((this.vItemID == '' || this.vItemID == null || this.vItemID == undefined)) {
       this.toastr.warning('Please enter a item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -377,11 +376,7 @@ tempdata:any=[];
     const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId);
     if (!isDuplicate) {
       let gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
-      
       this.chargeslist = this.dsTempItemNameList.data;
-      // if (this.dsNewIssueList3.data.length > 0) {
-      //   this.chargeslist = this.dsNewIssueList3.data;
-      // }
       this.chargeslist.push(
         {
           ItemId: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId || 0,
@@ -394,9 +389,9 @@ tempdata:any=[];
           VatPer: gstper || 0,
           VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
           TotalAmount: this.vTotalAmount || 0,
+          StockId: this.vStockId
         });
       console.log(this.chargeslist);
-
       this.dsNewIssueList3.data = this.chargeslist
     } else {
       this.toastr.warning('Selected Item already added in the list', 'Warning !', {
@@ -404,16 +399,12 @@ tempdata:any=[];
       });
     }
   }
-    
     this.ItemReset();
     this.itemid.nativeElement.focus();
     this._IssueToDep.NewIssueGroup.get('ItemID').setValue('');
     this.Addflag = false;
   }
  
-
-
-
   deleteTableRow(element) {
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
@@ -435,7 +426,6 @@ tempdata:any=[];
     this.vTotalAmount = 0;
   }
   CalculateTotalAmt() {
-    debugger
     if (this.vQty > this.vBalanceQty) {
       this.toastr.warning('Enter Qty less than Balance', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -496,7 +486,7 @@ tempdata:any=[];
       insertitemdetail['purTotalAmount'] = 0;
       insertitemdetail['vatPercentage'] = element.VatPer || 0;
       insertitemdetail['vatAmount'] = element.VatAmount || 0;
-      insertitemdetail['stkId'] = 0;
+      insertitemdetail['stkId'] = element.StockId ;
       isertItemdetailsObj.push(insertitemdetail);
     });
     let updateissuetoDepartmentStock = [];
@@ -504,7 +494,7 @@ tempdata:any=[];
       let updateitemdetail = {};
       updateitemdetail['itemId'] = element.ItemId;
       updateitemdetail['issueQty'] = element.BalanceQty;
-      updateitemdetail['stkId'] = 0;
+      updateitemdetail['stkId']  = element.StockId ;
       updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
       updateissuetoDepartmentStock.push(updateitemdetail);
     });
@@ -536,6 +526,7 @@ tempdata:any=[];
       });
     });
   }
+
   OnReset() {
     this._IssueToDep.NewIssueGroup.reset();
     this.dsNewIssueList1.data = [];
@@ -570,7 +561,6 @@ tempdata:any=[];
     }
   }
   public onEnterQty(event): void {
-    debugger
     if (event.which === 13) {
       // this.Rate.nativeElement.focus();
       this.Addflag=true
@@ -599,7 +589,6 @@ tempdata:any=[];
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-
       this.vBatchNo = result.BatchNo;
       this.vBatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       this.vMRP = result.UnitMRP;
@@ -679,8 +668,6 @@ tempdata:any=[];
     });
     },1000);
   }
-
-
    
   exportIssuetodeptReportExcel() {
     this.sIsLoading == 'loading-data'

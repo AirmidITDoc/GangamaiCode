@@ -253,7 +253,7 @@
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let row">
                                                                     <button mat-icon-button
-                                                                        (click)="getWhatsappshareSales(row)">
+                                                                        (click)="viewgetPurchaseorderReportPdf(row)">
                                                                         <mat-icon title="print Menu">print</mat-icon>
                                                                     </button>
                                                                   
@@ -322,8 +322,8 @@
                                                             </mat-footer-row>
                                                         </mat-table>
 
-                                                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
-                                                            [pageSize]="7" showFirstLastButtons>
+                                                        <mat-paginator [pageSizeOptions]="[6, 10, 25, 100]"
+                                                            [pageSize]="6" showFirstLastButtons>
                                                         </mat-paginator>
                                                     </div>
                                                 </div>
