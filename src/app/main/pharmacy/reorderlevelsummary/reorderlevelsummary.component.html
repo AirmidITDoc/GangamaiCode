@@ -1,0 +1,165 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Reorder Level Summary
+            </span>
+        </div>
+
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px; ">
+
+                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                    <form [formGroup]="_Reorderlevelsummery.SearchFrom" style="padding-bottom: 0px;">
+                        <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="10px">
+
+                            <mat-form-field appearance="outline" fxFlex="20%">
+                                <mat-label>Type</mat-label>
+                                <mat-select formControlName="Type">
+                                    <mat-option>--Select--</mat-option>
+                                    <mat-option value="Qty">Qty Wise</mat-option>
+                                    <mat-option value="Strip">Strip Wise</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="20%">
+                                <mat-label>Reorder Qty</mat-label>
+                                <mat-select formControlName="ReorderQty">
+                                    <mat-option>--Select--</mat-option>
+                                    <mat-option value="10">10</mat-option>
+                                    <mat-option value="30">30</mat-option>
+                                    <mat-option value="50">50</mat-option>
+                                    <mat-option value="70">70</mat-option>
+                                    <mat-option value="100">100</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <button mat-raised-button class="clearbutton" matTooltip="close"
+                                (click)="OnClear()">
+                                <mat-icon class="cleariconbutton">close</mat-icon>
+                            </button>
+                            <button mat-raised-button class="searchButton" matTooltip="search"
+                                (click)="getReorderlvlList()">
+                                <mat-icon class="searchiconbutton">search</mat-icon>
+                            </button>&nbsp;
+                        </div>
+                    </form>
+
+
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                    class="backgroundBlur">
+                                    <div class="spinner-border text-danger"></div>
+
+                                </div>
+
+                                <mat-table #table matSort class="table1" [dataSource]="dsReorderlevelSummery"
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
+
+                                    <ng-container matColumnDef="Action" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            <span class="material-icons">
+                                                cached
+                                            </span>
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" required>
+                                            <mat-checkbox aria-label="Checked"
+                                                (change)="tableElementChecked($event, contact)">
+                                            </mat-checkbox>
+                                        </mat-cell>
+
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ItemName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            ItemName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ItemName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Packing">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Packing
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.Packing}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="BalQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            BalQty
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.BalQty}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ReorderQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            StripQty
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.StripQty}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsReorderlevelSummery!=null && dsReorderlevelSummery.data.length==0)}"></mat-footer-row>
+                                </mat-table>
+                                <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
+                                    showFirstLastButtons>
+                                </mat-paginator>
+
+                            </div>
+                            <div fxLayoutAlign="end" style="padding: 15px;">
+                                <button class="btn btn-primary btn-with-icon py-8" (click)="RaiseIndent()">
+                                    Raise Indent</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <button mat-raised-button style="background-color: white;color: brown;margin-left:2% !important"
+                    (click)="OpenPopUp()">
+                    Raise Indent</button> -->
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
