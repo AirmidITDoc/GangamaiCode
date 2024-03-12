@@ -14,21 +14,18 @@ app-grn-return {
     .table3 {
         height: 350px !important;
         width: 100%;
+        .mat-header-row,.mat-row{
+            min-width: 1900px;
+        }
     }
 
-    .mat-header-row {
-        width: 120%;
-        //max-width: 1600px;
-        min-width: 110%;
-        min-height: 30px;
-        background-color: blue;
-    }
-
-    .mat-row {
-        width: 100%;
-        min-width: 1200px;
-        min-height: 30px;
-    }
+    // .mat-header-row {
+    //     width: 120%;
+    //     //max-width: 1600px;
+    //     min-width: 110%;
+    //     min-height: 30px;
+    //     background-color: blue;
+    // }
 
     // Table 1
 

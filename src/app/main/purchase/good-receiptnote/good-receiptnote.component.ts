@@ -279,7 +279,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
   selection = new SelectionModel<GrnItemList>(true, []);
   printBulkQrCode(){
-    debugger
+    // debugger
     setTimeout(() => {
       this.SpinLoading = true;
       let data=[];
@@ -403,7 +403,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   viewgetCurrentstockReportPdf(row) {
-debugger
+// debugger
     setTimeout(() => {
       this.SpinLoading = true;
       this._GRNService.getGRNreportview(
@@ -585,7 +585,7 @@ debugger
  
 
   getWhatsappshareSales(el) {
-    debugger
+    // debugger
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": 22,//el.RegNo,
