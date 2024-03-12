@@ -83,7 +83,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   optionsMarital: any[] = [];
   optionsPayment: any[] = [];
   optionsItemName: any[] = [];
-  vDefRate:any;
+  vDefRate: any;
   vGSTAmt: any = 0.0;
   CGSTAmount: any;
   IGSTAmount: any;
@@ -260,7 +260,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
         this.vEmail = toSelectSUpplierId.Email;
       }
     });
- 
+
   }
   private _filterSupplier(value: any): string[] {
     if (value) {
@@ -311,7 +311,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       return;
     }
     const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId === this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemID);
-    
+
     if (!isDuplicate) {
       this.dsItemNameList.data = []
       this.chargeslist.push(
@@ -409,7 +409,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vNetAmount = this.vTotalAmount;
     //this.VatPercentage = obj.VatPercentage;
     this.vGSTPer = (obj.SGSTPer + obj.CGSTPer);
-   // this.GSTAmount = 0;
+    // this.GSTAmount = 0;
     this.vSpecification = obj.Specification || '';
     this.getLastThreeItemInfo();
     this.qty.nativeElement.focus();
@@ -424,20 +424,20 @@ export class UpdatePurchaseorderComponent implements OnInit {
       this.dsLastThreeItemList.data = data as LastThreeItemList[]; this.sIsLoading = '';
     });
   }
-  supplierRateList:any=[]; 
-getSupplierRate(){
-  this.supplierRateList = [];
- let Query = "Select SupplierRate  from M_ItemWiseSupplierRate where ItemId= "+ this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemID + " and SupplierId=" + this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId
-  console.log(Query);
-  this._PurchaseOrder.getSupplierRateList(Query).subscribe(data => {
-   // console.log(data)
-    this.supplierRateList = data
-    let SupplierRate = 0;
-    SupplierRate = this.supplierRateList[0].SupplierRate;
-    this.vDefRate = SupplierRate;
-   // console.log(this.vDefRate)
-  });
-}
+  supplierRateList: any = [];
+  getSupplierRate() {
+    this.supplierRateList = [];
+    let Query = "Select SupplierRate  from M_ItemWiseSupplierRate where ItemId= " + this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemID + " and SupplierId=" + this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId
+    console.log(Query);
+    this._PurchaseOrder.getSupplierRateList(Query).subscribe(data => {
+      // console.log(data)
+      this.supplierRateList = data
+      let SupplierRate = 0;
+      SupplierRate = this.supplierRateList[0].SupplierRate;
+      this.vDefRate = SupplierRate;
+      // console.log(this.vDefRate)
+    });
+  }
 
 
 
@@ -505,7 +505,7 @@ getSupplierRate(){
     let InsertpurchaseDetailObj = [];
     debugger
     this.dsItemNameList.data.forEach((element) => {
-      //console.log(element);
+      console.log(element);
       let purchaseDetailInsertObj = {};
       purchaseDetailInsertObj['purchaseId'] = 0;
       purchaseDetailInsertObj['itemId'] = element.ItemId;
@@ -526,6 +526,9 @@ getSupplierRate(){
       purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
       purchaseDetailInsertObj['igstPer'] = 0;
       purchaseDetailInsertObj['igstAmt'] = 0;
+      purchaseDetailInsertObj['DefRate'] = element.DefRate;
+      purchaseDetailInsertObj['VendDisPer'] = 0;
+      purchaseDetailInsertObj['VendDiscAmt'] = 0;
 
       InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
     });
@@ -622,6 +625,9 @@ getSupplierRate(){
       purchaseDetailInsertObj['sgstAmt'] = element.SGSTAmt;
       purchaseDetailInsertObj['igstPer'] = 0;
       purchaseDetailInsertObj['igstAmt'] = 0;
+      purchaseDetailInsertObj['DefRate'] = element.DefRate;
+      purchaseDetailInsertObj['VendDisPer'] = 0;
+      purchaseDetailInsertObj['VendDiscAmt'] = 0;
       InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
     });
 
@@ -629,7 +635,7 @@ getSupplierRate(){
       "purchaseHeaderInsert": purchaseHeaderInsertObj,
       "purchaseDetailInsert": InsertpurchaseDetailObj,
     };
-    //console.log(submitData);
+    console.log(submitData);
     this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
       if (response) {
         this.toastr.success('Record Saved Successfully.', 'Saved !', {
@@ -723,6 +729,10 @@ getSupplierRate(){
   }
   getCellCalculation(contact, Qty) {
 
+    if (contact.Rate > contact.DefRate) {
+      Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+    }
+
     if (contact.Qty > 0 && contact.Rate > 0) {
       contact.IGSTPer = 0;
       if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == 'GST After Disc') {
@@ -765,23 +775,19 @@ getSupplierRate(){
     }
   }
   OnchekPurchaserateValidation() {
-    debugger
-    if(this.vDefRate > 0){
-    if(this.vDefRate > this.vRate){
-      Swal.fire("Please Check defined Supplier Rate for product ...!!!");
-      // this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
-      //   toastClass: 'tostr-tost custom-toast-warning',
-      // });
-    }
-  }
-    if (this.vRate <= this.vMRP ) {
-     // Swal.fire("Enter Purchase Rate Less Than MRP");
-     this.calculateTotalAmt();
-    }else{
-      this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      //this._PurchaseOrder.userFormGroup.get('Rate').setValue(0);
+ 
+    if (this.vRate) {
+      if (this.vRate > this.vDefRate) {
+        Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+      }
+      if (this.vRate <= this.vMRP) {
+        this.calculateTotalAmt();
+      } else {
+        this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        this._PurchaseOrder.userFormGroup.get('Rate').setValue(0);
+      }
     }
   }
 
@@ -807,7 +813,7 @@ getSupplierRate(){
   calculateDiscperAmount() {
     let disc = this._PurchaseOrder.userFormGroup.get('Dis').value
     if (disc >= 100) {
-     // Swal.fire("Enter Discount less than 100");
+      // Swal.fire("Enter Discount less than 100");
       this.toastr.warning('Enter Discount less than 100', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -1004,20 +1010,20 @@ getSupplierRate(){
   public onEnterRate(event): void {
     if (event.which === 13) {
       this.dis.nativeElement.focus();
-     // this.add = false;
+      // this.add = false;
       this.vDis.setValue('');
     }
   }
   public onEnterTotal(event): void {
     if (event.which === 13) {
       this.dis.nativeElement.focus();
-     // this.add = false;
+      // this.add = false;
     }
   }
   public onEnterDis(event): void {
     if (event.which === 13) {
       this.gst.nativeElement.focus();
-     // this.add = false;
+      // this.add = false;
     }
   }
   public onEnterGST(event): void {
@@ -1074,7 +1080,7 @@ getSupplierRate(){
       this.OctriAmount.nativeElement.focus();
     }
   }
- 
+
 
   onEdit(contact) {
     const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,

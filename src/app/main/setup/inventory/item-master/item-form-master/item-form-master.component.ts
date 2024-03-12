@@ -36,7 +36,7 @@ export class ItemFormMasterComponent implements OnInit {
     DrugList: any = [];
     registerObj = new ItemMaster({});
 
-    // new changes?    filteredOptionsDoc: Observable<string[]>;
+    
     filteredOptionsManu: Observable<string[]>;
     filteredOptionsStore: Observable<string[]>;
     filteredItemType: Observable<string[]>;
@@ -89,25 +89,11 @@ export class ItemFormMasterComponent implements OnInit {
     vManufId: any;
     vCompanyId: any;
     vStoragelocation: any;
-    vchkactive: any;
+    vchkactive: any=true;
     // vStoragelocation:any;
 
     private _onDestroy = new Subject<void>();
     msg: any;
-
-
-    toppingList: any = [
-        {value: 'extra_cheese', label:'Extra cheese'},
-        {value:'mushroom', label:'Mushroom'},
-        {value:'onion', label:'Onion'},
-        {value:'pepperoni', label:'Pepperoni'},
-        {value:'sausage', label:'Sausage'},
-        {value:'tomato', label:'Tomato'}
-      ];
-
-      
-
-
 
     constructor(
         public _itemService: ItemMasterService,
@@ -117,18 +103,7 @@ export class ItemFormMasterComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<ItemMasterComponent>
     ) { }
-    // selectedObjects : any[];
-
-    // selectedObjectsFromArray: any;
-     
-    filteredStore: Observable<string[]>;
-    selectable = true;
-    removable = true;
-    separatorKeysCodes: number[] = [ENTER, COMMA];
-    historySelected: any[] = [];
-    filteredHistory: Observable<HistoryClass[]>;
-
-
+    
     ngOnInit(): void {
         if (this.data) {
 
@@ -140,15 +115,12 @@ export class ItemFormMasterComponent implements OnInit {
             this.vchkactive = (this.registerObj.Isdeleted)
            
             this.setDropdownObjs1();
-            // this.selectedObjects = [{value:'tomato', label:'Tomato'}]; 
-    
-            // this.selectedObjectsFromArray = ['tomato', 'sausage']
+           
         }
 
 
         this.getitemtypeNameMasterCombo();
         this.getitemclassNameMasterCombo();
-        //this.getitemtypeNameMasterCombo();
         this.getitemcategoryNameMasterCombo();
         this.getitemgenericNameMasterCombo();
         this.getitemunitofmeasureMasterCombo();
@@ -158,19 +130,11 @@ export class ItemFormMasterComponent implements OnInit {
         this.getCurrencyNameMasterCombo();
         this.getCompanyList();
         this.getDrugTypeList();
+
         this.setDropdownObjs1();
 
-        this.filteredHistory = this._itemService.myform.get('StoreId').valueChanges.pipe(
-            startWith(''),
-            map((ele: any | null) => ele ? this._filterHistory(ele) : this.StorecmbList.slice()));
-      
-
     }
-  
-//  comparer(o1: any, o2: any): boolean {
-//     // if possible compare by object's name, and not by reference.
-//     return o1 && o2 ? o1.label === o2.label : o2 === o2;
-//   }
+ 
 
     setDropdownObjs1() {
         this.filteredItemType = this._itemService.myform.get('ItemTypeID').valueChanges.pipe(
@@ -225,38 +189,14 @@ export class ItemFormMasterComponent implements OnInit {
             map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
         );
 
-        this.filteredHistory = this._itemService.myform.get('StoreId').valueChanges.pipe(
+        this.filteredOptionsCompany = this._itemService.myform.get('CompanyId').valueChanges.pipe(
             startWith(''),
-            map((ele: any | null) => ele ? this._filterHistory(ele) : this.StorecmbList.slice()));
+            map((ele: any | null) => ele ? this._filterCompany(ele) : this.CompanyList.slice()));
       
 
     }
 
-    private _filterHistory(value: any) {
-        const filterValue = (value && value.PastHistoryDescr) ? value.PastHistoryDescr.toLowerCase() : value.toLowerCase();
-    
-        return this.StorecmbList.filter(ele => ele.PastHistoryDescr.toLowerCase().includes(filterValue));
-      }
-
-
-
-addChips(event: any, itemList, controller): void {
-    const value = (event.value || '').trim();
-    if (value) {
-      itemList.push(value);
-    }
-    // event.chipInput!.clear();
-    // this._itemService.myform.get('StoreId').setValue(null);
-  }
-
-  remove(item: any, itemList): void {
-    const index = itemList.indexOf(item);
-
-    if (index >= 0) {
-      itemList.splice(index, 1);
-    }
-  }
-
+   
   
     get f() {
         return this._itemService.myform.controls;
@@ -283,7 +223,7 @@ addChips(event: any, itemList, controller): void {
 
         this._itemService.getitemtypeMasterCombo().subscribe(data => {
             this.ItemTypecmbList = data;
-            console.log(this.ItemTypecmbList)
+            
             if (this.data) {
 
                 const ddValue = this.ItemTypecmbList.filter(c => c.ItemTypeId == this.data.registerObj.ItemTypeID);
@@ -358,12 +298,14 @@ addChips(event: any, itemList, controller): void {
     getCompanyList() {
         this._itemService.getCompanyCombo().subscribe(data => {
             this.CompanyList = data;
-            this.optionsCompany = this.CompanyList.slice();
-            this.filteredOptionsCompany = this._itemService.myform.get('CompanyId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterCompany(value) : this.CompanyList.slice()),
-            );
+            if (this.data) {
+          
+                const ddValue = this.CompanyList.filter(c => c.CompanyId == this.data.registerObj.ItemCompnayId);
+                this._itemService.myform.get('CompanyId').setValue(ddValue[0]);
 
+                this._itemService.myform.updateValueAndValidity();
+                return;
+            }
         });
     }
     private _filterCompany(value: any): string[] {
@@ -446,7 +388,7 @@ addChips(event: any, itemList, controller): void {
         if (value) {
             const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
             //   this.isDoctorSelected = false;
-            return this.optionsStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+            return this.StorecmbList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -456,7 +398,7 @@ addChips(event: any, itemList, controller): void {
         if (value) {
             const filterValue = value && value.ItemTypeName ? value.ItemTypeName.toLowerCase() : value.toLowerCase();
 
-            return this.optionsItemType.filter(option => option.ItemTypeName.toLowerCase().includes(filterValue));
+            return this.ItemTypecmbList.filter(option => option.ItemTypeName.toLowerCase().includes(filterValue));
         }
 
     }
@@ -525,22 +467,38 @@ addChips(event: any, itemList, controller): void {
 
         this._itemService.getDrugTypeCombo().subscribe(data => {
             this.DrugList = data;
-            this.DrugList = this.DrugList.slice();
-            this.filteredOptionsDrugtype = this._itemService.myform.get('DrugType').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
-            );
-            // if (this.data) {
-            //     
-            //     const ddValue = this.DrugList.filter(c => c.ItemDrugTypeId == this.data.registerObj.DrugType);
-            //     this._itemService.myform.get('DrugType').setValue(ddValue[0]);
+            if (this.data) {
+          
+                const ddValue = this.DrugList.filter(c => c.ItemDrugTypeId == this.data.registerObj.DrugType);
+                this._itemService.myform.get('DrugType').setValue(ddValue[0]);
 
-            //     this._itemService.myform.updateValueAndValidity();
-            //     return;
-            // }
+                this._itemService.myform.updateValueAndValidity();
+                return;
+            }
+           
         });
 
     }
+
+    
+    getStoreNameMasterCombo() {
+        
+        this._itemService.getStoreMasterCombo().subscribe(data => {
+            this.StorecmbList = data;
+         
+            if (this.data) {
+               
+                this.data.registerObj.StoreId =this._loggedService.currentUserValue.user.storeId;
+                const ddValue = this.StorecmbList.filter(c => c.Storeid == this.data.registerObj.StoreId);
+                this._itemService.myform.get('StoreId').setValue(ddValue[0]);
+
+                this._itemService.myform.updateValueAndValidity();
+                return;
+            }
+
+        });
+    }
+   
 
     getManufactureNameMasterCombo() {
         this._itemService.getManufactureMasterCombo().subscribe(data => {
@@ -555,6 +513,10 @@ addChips(event: any, itemList, controller): void {
             }
         });
     }
+
+
+
+
 
     // getDrugTypeCombo() {
 
@@ -584,88 +546,30 @@ addChips(event: any, itemList, controller): void {
 
     //     });
 
-    //     // if(this.data){
-    //     //     this.selectedObjects = [{StoreId:10008, StoreName:'DELUXE'}]; 
-    
-    //     //     this.selectedObjectsFromArray = ['DELUXE', 'NURSING STATION']
-    //     // }
-
     // }
 
     casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
 
-    getStoreNameMasterCombo() {
-        debugger
-    this._itemService.getHistoryList().subscribe((data: any) => {
-      this.StorecmbList = data;
-      // console.log(this.allHistory);
-      // this.casePaperData.PastHistory = 'M AS AMSAS, cc';
-
-      let historyStringsArr = this.casePaperData.PastHistory.split(',');
-      this.StorecmbList.forEach((elementHist, index) => {
-        historyStringsArr.forEach(elementRetrieve => {
-          if (elementHist.PastHistoryDescr == elementRetrieve) {
-            this.historySelected.push(elementHist.PastHistoryDescr);
-          }
-        });
-      });
-    });
-  }
-
-selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): void {
-  
-    if (itemList.length == 0) {
-      itemList.push(event.option.value);
-    } else {
-      itemList.forEach(element => {
-        if (element != event.option.value) {
-          itemList.push(event.option.value);
-         
-          this.StorecmbList=itemList;
-          console.log( this.StorecmbList);
-        }
-      });
-    }
-    // if (inputItem == 'historyInput') {
-    //   this.historyInput.nativeElement.value = '';
-    // }
-    //  else if (inputItem == 'diagnosisInput') {
-    //   this.diagnosisInput.nativeElement.value = '';
-    // }
-    // inputItem.nativeElement.value = '';
-    // this.caseFormGroup.get(controller).setValue(null);
-  }
-
 
 
 // Main
-    // getStoreNameMasterCombo() {
+//     getStoreNameMasterCombo() {
 
+// 
+//         this._itemService.getStoreMasterCombo().subscribe(data => {
+//             this.StorecmbList = data;
+//             if (this.data) {
+//                 
+//                 const ddValue = this.StorecmbList.filter(c => c.Storeid == this.data.registerObj.StoreId);
+//                 this._itemService.myform.get('StoreId').setValue(ddValue[0]);
 
-    //     this._itemService.getStoreMasterCombo().subscribe(data => {
-    //         this.StorecmbList = data;
-    //         if (this.data) {
-    //             debugger
-    //             const ddValue = this.StorecmbList.filter(c => c.Storeid == this.data.registerObj.StoreId);
-    //             this._itemService.myform.get('StoreId').setValue(ddValue[0]);
+//                 this._itemService.myform.updateValueAndValidity();
+//                 return;
+//             }
+//         });
 
-    //             this._itemService.myform.updateValueAndValidity();
-    //             return;
-    //         }
-    //     });
+//     }
 
-    // }
-
-
-    
-    //   private _filterStore(value: any): string[] {
-    //     if (value) {
-    //       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-
-    //       return this.optionsStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-    //     }
-
-    //   }
 
 
     getOptionTextManu(option) {
@@ -756,7 +660,7 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
     @ViewChild('Maxdisc') Maxdisc: ElementRef;
     @ViewChild('storename') storename: ElementRef;
     //   @ViewChild('Store') Store: MatSelect;
-
+    @ViewChild('addbutton') addbutton: ElementRef;
 
     public onEnterHsn(event): void {
         if (event.which === 13) {
@@ -789,7 +693,8 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
     }
     public onEnterItemClass(event): void {
         if (event.which === 13) {
-            this.PurchaseUOMId.nativeElement.focus();
+           
+            this.CurrencyId.nativeElement.focus();
         }
     }
 
@@ -801,19 +706,21 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
     }
     public onEnterStockUOMId(event): void {
         if (event.which === 13) {
-            this.CurrencyId.nativeElement.focus();
+            this.ConversionFactor.nativeElement.focus();
 
         }
     }
 
     public onEnterCurrencyId(event): void {
         if (event.which === 13) {
-            this.ConversionFactor.nativeElement.focus();
+            this.PurchaseUOMId.nativeElement.focus();
+           
         }
     }
     public onEnterConversionFactor(event): void {
         if (event.which === 13) {
-            this.CGST.nativeElement.focus();
+            this.ReOrder.nativeElement.focus();
+           
         }
     }
 
@@ -842,12 +749,12 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
 
     public onEnterMaxQty(event): void {
         if (event.which === 13) {
-            this.ReOrder.nativeElement.focus();
+            this.Storagee.nativeElement.focus();
         }
     }
     public onEnterReOrder(event): void {
         if (event.which === 13) {
-            this.DrugType.nativeElement.focus();
+            this.Maxdisc.nativeElement.focus();
         }
     }
 
@@ -864,7 +771,7 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
     }
     public onEnterCompany(event): void {
         if (event.which === 13) {
-            this.Storagee.nativeElement.focus();
+            this.storename.nativeElement.focus();
         }
     }
 
@@ -872,19 +779,19 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
 
     public onEnterStorage(event): void {
         if (event.which === 13) {
-            this.Maxdisc.nativeElement.focus();
+            this.DrugType.nativeElement.focus();
         }
     }
     public onEnterMaxdisc(event): void {
         if (event.which === 13) {
-            this.storename.nativeElement.focus();
+            this.CGST.nativeElement.focus();
         }
     }
 
     public onEnterstorename(event): void {
         if (event.which === 13) {
             this.save = true;
-            this.addbutton.focus();
+            this.addbutton.nativeElement.focus();
 
         }
     }
@@ -892,7 +799,9 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
 
 
     save: boolean = false;
-    @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+    // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+
+
     onEnterStorename(event): void {
 
         if (event.which === 13) {
@@ -902,10 +811,11 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
     }
 
 
-
+    assets:[]
+    
     onSubmit() {
 
-        debugger
+        
 
         if ((this.vHSNcode == undefined || this.vItemName == undefined || this.vItemTypeID == undefined || this.vItemCatageory == undefined ||
             this.vItemGeneric == undefined || this.vItemClass == undefined || this.vDrugType == undefined || this.vManufId == undefined || this.vCompanyId == undefined)) {
@@ -916,24 +826,22 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
         }
         else {
 
+
             if (!this._itemService.myform.get("ItemID").value) {
                 var data2 = [];
-                for (var val of this._itemService.myform.get("StoreId").value) {
+                // for (var val of this._itemService.myform.get("StoreId").value) {
                     var data = {
                         storeId: this._itemService.myform.get("StoreId").value.Storeid,
                         itemId: 0,
                     };
-                    debugger
+                    
                     data2.push(data);
-                }
+                // }
 
-
+                
                 var m_data = {
                     insertItemMaster: {
-                        // ItemShortName:
-                        //     this._itemService.myform
-                        //         .get("ItemShortName")
-                        //         .value.trim() || "%",
+                       
                         itemName: this._itemService.myform.get("ItemName").value || "%",
                         itemTypeId: this._itemService.myform.get("ItemTypeID").value.ItemTypeId,
                         ItemCategaryId: this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId,
@@ -950,20 +858,15 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
                         minQty: this._itemService.myform.get("MinQty").value || 0,
                         maxQty: this._itemService.myform.get("MaxQty").value || 0,
                         reorder: this._itemService.myform.get("ReOrder").value || 0,
-                        // isNursingFlag: Boolean(
-                        //     JSON.parse(
-                        //         this._itemService.myform.get("IsNursingFlag")
-                        //             .value
-                        //     )
-                        // ),
+                      
                         hsNcode: this._itemService.myform.get("HSNcode").value || "%",
                         cgst: this._itemService.myform.get("CGST").value || "0",
                         sgst: this._itemService.myform.get("SGST").value || "0",
                         igst: this._itemService.myform.get("IGST").value || "0",
                         manufId: this._itemService.myform.get("ManufId").value.ManufId || "0",
-                        isNarcotic: this._itemService.myform.get("IsNarcotic").value || 0,
+                        isNarcotic: 0,//this._itemService.myform.get("IsNarcotic").value || 0,
 
-                        prodLocation: this._itemService.myform.get("ProdLocation").value || "%",
+                        prodLocation: this._itemService.myform.get("Storagelocation").value || "%",
                         isH1Drug: 0,//Boolean(JSON.parse(this._itemService.myform.get("IsH1Drug").value)),
                         isScheduleH: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsScheduleH").value)),
                         isHighRisk: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsHighRisk").value)),
@@ -989,14 +892,7 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
                             toastClass: 'tostr-tost custom-toast-success',
                         });
-                        // Swal.fire(
-                        //     "Saved !",
-                        //     "Record saved Successfully !",
-                        //     "success"
-                        // ).then((result) => {
-                        //     if (result.isConfirmed) {
-                        //     }
-                        // });
+                      
                     } else {
                         this.toastr.error('Item-Form Master Master Data not Saved !, Please check API error..', 'Error !', {
                             toastClass: 'tostr-tost custom-toast-error',
@@ -1009,13 +905,13 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
                 });
             } else {
                 var data3 = [];
-                for (var val of this._itemService.myform.get("StoreId").value.Storeid) {
+                // for (var val of this._itemService.myform.get("StoreId").value.Storeid) {
                     var data4 = {
                         storeId: this._itemService.myform.get("StoreId").value.Storeid,//this._loggedService.currentUserValue.user.storeId,
                         itemId: this._itemService.myform.get("ItemID").value,
                     };
                     data3.push(data4);
-                }
+                // }
                 console.log(data3);
 
                 var m_dataUpdate = {
@@ -1023,16 +919,12 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
                         itemId: this._itemService.myform.get("ItemID").value,
 
                         itemShortName: '%',
-                        // this._itemService.myform
-                        //     .get("ItemShortName")
-                        //     .value.trim() || "%",
                         itemName: this._itemService.myform.get("ItemName").value || "%",
                         itemTypeID: this._itemService.myform.get("ItemTypeID").value.ItemTypeId,
                         ItemCategaryId: this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId,
                         itemGenericNameId: this._itemService.myform.get("ItemGenericNameId").value.ItemGenericNameId || 0,
                         itemClassId: this._itemService.myform.get("ItemClassId").value.ItemClassId,
                         purchaseUOMId: this._itemService.myform.get("PurchaseUOMId").value.UnitOfMeasurementId,
-                        //         .UnitofMeasurementName
                         stockUOMId: this._itemService.myform.get("StockUOMId").value.UnitOfMeasurementId || "0",
                         conversionFactor: this._itemService.myform.get("ConversionFactor").value || "0",
                         currencyId: this._itemService.myform.get("CurrencyId").value.CurrencyId || "0",
@@ -1051,7 +943,7 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
                         igst: this._itemService.myform.get("IGST").value || "0",
                         isNarcotic: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsNarcotic").value)),
                         manufId: this._itemService.myform.get("ManufId").value.ManufId || "0",
-                        prodLocation: this._itemService.myform.get("ProdLocation").value || "%",
+                        prodLocation: this._itemService.myform.get("Storagelocation").value || "%",
                         isH1Drug: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsH1Drug").value)),
                         isScheduleH: 0,//Boolean(JSON.parse(this._itemService.myform.get("IsScheduleH").value)),
                         isHighRisk: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsHighRisk").value)),
@@ -1060,7 +952,7 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
                         isEmgerency: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsEmgerency").value)),
                         drugType: this._itemService.myform.get("DrugType").value.ItemDrugTypeId || "0",
                         drugTypeName: this._itemService.myform.get("DrugType").value.DrugTypeName || "",
-                        itemCompnayId: 0,
+                        itemCompnayId: this._itemService.myform.get("CompanyId").value.CompanyId || "0",
                         isUpdatedBy: "01/01/1900",
                     },
                     deleteAssignItemToStore: {
@@ -1077,14 +969,7 @@ selected(event: MatAutocompleteSelectedEvent, itemList, controller, inputItem): 
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
                             });
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
+                          
                         } else {
                             this.toastr.error('Item-Form Master Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',

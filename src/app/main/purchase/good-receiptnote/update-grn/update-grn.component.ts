@@ -537,7 +537,7 @@ export class UpdateGRNComponent implements OnInit {
         //contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
         contact.VatAmount = (((TotalAmt) * (contact.VatPercentage)) / 100);
         contact.NetAmount = ((TotalAmt) + (contact.VatAmount));
-       
+
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST Before Disc') {
         contact.TotalQty = (((contact.FreeQty) + (contact.ReceiveQty)) * (contact.ConversionFactor));
@@ -626,13 +626,13 @@ export class UpdateGRNComponent implements OnInit {
         contact.NetAmount = ((GrossAmt) + (contact.VatAmount));
       }
 
-       //LandedRate As New Double
-       contact.LandedRate = (contact.NetAmount / contact.TotalQty);
-       ///PurUnitRate
-       contact.PurUnitRate = (((contact.TotalAmount) / (contact.ConversionFactor)));
-       //PurUnitRateWF
-       contact.PurUnitRateWF = (((contact.TotalAmount) / (contact.TotalQty)));
-       contact.UnitMRP = ((contact.MRP) / (contact.ConversionFactor));
+      //LandedRate As New Double
+      contact.LandedRate = (contact.NetAmount / contact.TotalQty);
+      ///PurUnitRate
+      contact.PurUnitRate = (((contact.TotalAmount) / (contact.ConversionFactor)));
+      //PurUnitRateWF
+      contact.PurUnitRateWF = (((contact.TotalAmount) / (contact.TotalQty)));
+      contact.UnitMRP = ((contact.MRP) / (contact.ConversionFactor));
 
     }
     else {
@@ -767,7 +767,7 @@ export class UpdateGRNComponent implements OnInit {
       }
     }
     this.FinalLandedrate = (parseInt(this.vNetAmount) / parseInt(this.FinalTotalQty)) || 0,
-      this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / parseInt(this.vConversionFactor))|| 0
+      this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / parseInt(this.vConversionFactor)) || 0
     this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty)) || 0
     this.FinalUnitMRP = (parseInt(this.vMRP) / parseInt(this.vConversionFactor)) || 0
     this.add = false
@@ -817,9 +817,6 @@ export class UpdateGRNComponent implements OnInit {
     this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty) * parseInt(this.vConversionFactor)) || 0
   }
 
-
-
-
   calculateDiscAmt() {
     let discamt1 = ((parseFloat(this.vDisAmount) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
     this.vDisc = discamt1;
@@ -827,13 +824,33 @@ export class UpdateGRNComponent implements OnInit {
     this.vDisc2 = discamt2;
   }
   OnchekPurchaserateValidation() {
+
+    if (this.vRate) {
+      if (this.vRate <= this.vMRP) {
+        this.calculateTotalamt();
+      } else {
+        this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        // Swal.fire("Enter Purchase Rate Less Than MRP");
+        this._GRNList.userFormGroup.get('Rate').setValue(0);
+        this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
+        this._GRNList.userFormGroup.get('DisAmount').setValue(0);
+        this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
+        this._GRNList.userFormGroup.get('CGSTAmount').setValue(0);
+        this._GRNList.userFormGroup.get('SGSTAmount').setValue(0);
+        this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
+        this._GRNList.userFormGroup.get('NetAmount').setValue(0);
+        this.rate.nativeElement.focus();
+      }
+    }
     // let mrp = this._GRNList.userFormGroup.get('MRP').value
     // if (mrp <= this.vRate) {
     //   this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
     //     toastClass: 'tostr-tost custom-toast-warning',
     //   });
     //   // Swal.fire("Enter Purchase Rate Less Than MRP");
-    //   this._GRNList.userFormGroup.get('Rate').setValue("");
+    //   this._GRNList.userFormGroup.get('Rate').setValue(0);
     //   this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
     //   this._GRNList.userFormGroup.get('DisAmount').setValue(0);
     //   this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
@@ -847,26 +864,22 @@ export class UpdateGRNComponent implements OnInit {
     //   this.calculateTotalamt();
     // }
 
-
-    if (this.vRate <= this.vMRP ) {
-      // Swal.fire("Enter Purchase Rate Less Than MRP");
-      this.calculateTotalamt();
-     }else{
-       this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      // Swal.fire("Enter Purchase Rate Less Than MRP");
-      //this._GRNList.userFormGroup.get('Rate').setValue(0);
-      this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
-      this._GRNList.userFormGroup.get('DisAmount').setValue(0);
-      this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
-      this._GRNList.userFormGroup.get('CGSTAmount').setValue(0);
-      this._GRNList.userFormGroup.get('SGSTAmount').setValue(0);
-      this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
-      this._GRNList.userFormGroup.get('NetAmount').setValue(0);
-      this.rate.nativeElement.focus();
-     }
-    
+    // if (this.vRate <= mrp) {     
+    //   this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   // Swal.fire("Enter Purchase Rate Less Than MRP");
+    //   this._GRNList.userFormGroup.get('Rate').setValue("");
+    //   this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
+    //   this._GRNList.userFormGroup.get('DisAmount').setValue(0);
+    //   this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
+    //   this._GRNList.userFormGroup.get('CGSTAmount').setValue(0);
+    //   this._GRNList.userFormGroup.get('SGSTAmount').setValue(0);
+    //   this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
+    //   this._GRNList.userFormGroup.get('NetAmount').setValue(0);
+    //   this.rate.nativeElement.focus();
+    //  }
+    //  this.calculateTotalamt();
   }
   getCGSTAmt(element) {
     let CGSTAmt;
@@ -1049,10 +1062,10 @@ export class UpdateGRNComponent implements OnInit {
     this.ItemID = obj.ItemId;
     this.ItemName = obj.ItemName;
     this.vConversionFactor = obj.ConversionFactor;
-    this.vQty = 0
+    this.vQty ='',
     this.vUOM = obj.UnitofMeasurementId;
     this.vHSNCode = obj.HSNcode;
-    // this.vRate = " ";
+    this.vRate = '',
     this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
     // this.vDisc =  " ";
     this.vDisc2 = 0;

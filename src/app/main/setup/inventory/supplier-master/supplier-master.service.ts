@@ -43,7 +43,7 @@ export class SupplierMasterService {
             Mobile:['', [Validators.required, Validators.pattern("^[0-9]*$"),
             Validators.minLength(10),
             Validators.maxLength(10),]],
-            Phone:['', [Validators.required, Validators.pattern("^[0-9]*$"),
+            Phone:['', [Validators.pattern("^[0-9]*$"),
             Validators.minLength(10),
             Validators.maxLength(10),]],
             Fax: ["", Validators.maxLength(10)],
@@ -77,12 +77,12 @@ export class SupplierMasterService {
             Pincode:[""],
             Taluka:[""],
             BankName:[""],
-            BankNo:[""],
-            BanlBranch:[""],
-            IFSCcode:[""],
+            BankNo:["",[Validators.pattern("[0-9]{6,18}")]],
+            BankBranch:[""],
+            IFSCcode:["",[Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")]],
             VenderTypeId:[""],
             OpeningBal:[""],
-            CreateApproval:["true"],
+            CreateApproval:[true],
         });
     }
 

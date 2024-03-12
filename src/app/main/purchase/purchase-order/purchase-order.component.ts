@@ -131,7 +131,6 @@ export class PurchaseOrderComponent implements OnInit {
   ];
 
   displayedColumns1 = [
-    'PurchaseId',
     'ItemName',
     'Qty',
     'Rate',
@@ -543,6 +542,7 @@ export class ItemNameList {
   GSTAmt:any;
   VatAmount:any;
   VatPer:any;
+  DefRate:any;
   /**
    * Constructor
    *
@@ -593,6 +593,7 @@ export class ItemNameList {
       this.TransportChanges = ItemNameList.TransportChanges || 0;
       this.DisAmount = ItemNameList.DisAmount || 0;
       this.taxAmount = ItemNameList.taxAmount || 0;
+      this.DefRate = ItemNameList.DefRate || 0;
     }
   }
 }

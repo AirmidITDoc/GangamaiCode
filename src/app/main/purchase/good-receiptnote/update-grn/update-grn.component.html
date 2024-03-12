@@ -203,9 +203,8 @@
                                         <mat-label>Packing</mat-label>
                                         <input matInput [(ngModel)]="vConversionFactor" name="ConversionFactor"
                                             formControlName="ConversionFactor" id="ConversionFactor" #conversionfactor
-                                            (keydown)="onEnterConversionFactor($event)" 
-                                            autocomplete="off"
-                                            readonly>
+                                            (keydown)="onEnterConversionFactor($event)" (keyup)="calculateTotalamt()"
+                                            autocomplete="off" >
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="7%">
