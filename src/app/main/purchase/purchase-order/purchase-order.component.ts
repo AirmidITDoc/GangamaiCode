@@ -131,7 +131,6 @@ export class PurchaseOrderComponent implements OnInit {
   ];
 
   displayedColumns1 = [
-    'PurchaseId',
     'ItemName',
     'Qty',
     'Rate',
@@ -399,8 +398,9 @@ export class PurchaseOrderComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getPurchaseOrderList();
     });
-    this.getPurchaseOrderList();
+   
   }
 
 
@@ -542,6 +542,7 @@ export class ItemNameList {
   GSTAmt:any;
   VatAmount:any;
   VatPer:any;
+  DefRate:any;
   /**
    * Constructor
    *
@@ -592,6 +593,7 @@ export class ItemNameList {
       this.TransportChanges = ItemNameList.TransportChanges || 0;
       this.DisAmount = ItemNameList.DisAmount || 0;
       this.taxAmount = ItemNameList.taxAmount || 0;
+      this.DefRate = ItemNameList.DefRate || 0;
     }
   }
 }

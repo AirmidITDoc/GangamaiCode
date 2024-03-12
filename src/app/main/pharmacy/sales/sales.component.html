@@ -350,16 +350,16 @@
                                         </form>
                                         <!-- Item Search  Option  -->
 
-                                        <div fxLayoutAlign="left left" style="width: 120px;">
+                                        <!-- <div fxLayoutAlign="left left" style="width: 120px;">
                                             <mat-checkbox style="margin-right: 2px;" formControlName="IsBarcode"
                                               (change)="chkbarcode($event)">IsBarcode
                                             </mat-checkbox>
-                                        </div>
+                                        </div> -->
                                         <form [formGroup]="_salesService.IndentSearchGroup">
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px"
                                                 fusePerfectScrollbar>
 
-                                                <mat-form-field appearance="outline" fxFlex="7%" *ngIf="barcodeflag">
+                                                <mat-form-field appearance="outline" fxFlex="7%" >
                                                     <mat-label>Barcode No</mat-label>
                                                     <input matInput placeholder="Placeholder" [(ngModel)]="vBarcode"
                                                         formControlName="Barcode" (change)="barcodeItemfetch()">

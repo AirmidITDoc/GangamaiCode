@@ -284,7 +284,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       this.SpinLoading = true;
       let data=[];
       this.selection.selected.forEach(element => {
-        data.push({QrCodeData:element["stockid"].toString(),Qty:element.ReceiveQty,Width:250,Margin:10});
+        data.push({QrCodeData:element["stockid"].toString(),Qty:element.ReceiveQty,Width:60,Margin:10});
       });
       const dialogRef = this._matDialog.open(QrcodegeneratorComponent,
         {
@@ -526,6 +526,7 @@ debugger
 
   onEdit(contact) {
     this.chkNewGRN = 2;
+    console.log(contact)
     const dialogRef = this._matDialog.open(UpdateGRNComponent,
       {
         maxWidth: "100%",
@@ -846,7 +847,8 @@ export class ItemNameList {
   ItemTotalAmount:any;
   UOMID:any;
   GrandTotalAmount:any;
-  TranProcessId;any;
+  TranProcessId:any;
+  UnitMRP:any;
   /**
    * Constructor
    *
@@ -915,6 +917,8 @@ export class ItemNameList {
       this.ItemTotalAmount = ItemNameList.ItemTotalAmount || 0;
       this.UOMID = ItemNameList.UOMID || 0;
       this.GrandTotalAmount = ItemNameList.GrandTotalAmount || 0;
+      this.UnitMRP = ItemNameList.UnitMRP || 0;
+      
     }
   }
 }

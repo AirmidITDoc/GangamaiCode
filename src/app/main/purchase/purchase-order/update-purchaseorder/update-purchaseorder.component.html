@@ -203,9 +203,8 @@
                                                     (keydown)="onEnterRate($event)" #rate
                                                     (keyup)="OnchekPurchaserateValidation()"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
-                                                    formControlName="Rate" (keyup)="calculateTotalAmt()" required
+                                                    formControlName="Rate" required
                                                     id="Rate">
-
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="6%">
@@ -257,13 +256,22 @@
                                                     [(ngModel)]="vSpecification" type="text"
                                                     formControlName="Specification"
                                                     (keydown)="onEnterSpecification($event)">
-                                            </mat-form-field>&nbsp;&nbsp;
+                                            </mat-form-field>&nbsp;
+
+                                            <mat-form-field appearance="outline" fxFlex="4%">
+                                                <mat-label>Def Rate</mat-label>
+                                                <input matInput [(ngModel)]="vDefRate" name="DefRate" #DefRate readonly
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                     type="number" formControlName="DefRate">
+                                            </mat-form-field>&nbsp;
 
                                             <div matTooltip="Select All Value to enable this button!!">
-                                                <button class="next-btn" (click)="onAdd()">
-                                                    Add
+                                                <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()">
+                                                <mat-icon>add</mat-icon>
                                                 </button>
                                             </div>
+
+                                           
                                         </div>
                                     </div>
                                 </form>
@@ -305,10 +313,13 @@
                                             <ng-container matColumnDef="Qty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Qty</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
-                                                    style="text-decoration: underline;"
-                                                    (input)="onQtyEdit($event, contact)">{{contact.Qty}}
-                                                </mat-cell>
+                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-form-field appearance="legacy">
+                                                            <input matInput type="number" [(ngModel)]="contact.Qty" step="0.1"
+                                                                type="number" autocomplete="off"
+                                                                (keyup)="getCellCalculation(contact,contact.Qty)">
+                                                        </mat-form-field>
+                                                    </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="UOM">
@@ -322,10 +333,20 @@
                                             <ng-container matColumnDef="Rate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Rate</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm contenteditable="true"
-                                                    style="text-decoration: underline;"
-                                                    (input)="onRateEdit($event, contact)"> {{contact.Rate |
-                                                    currency:'INR':'symbol-narrow':'0.2'}}
+                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-form-field appearance="legacy">
+                                                            <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1"
+                                                                type="number" autocomplete="off"
+                                                                (keyup)="getCellCalculation(contact,contact.Rate)">
+                                                        </mat-form-field>
+                                                    </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="DefRate">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                   Def_Rate</mat-header-cell>
+                                                   <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.DefRate | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -333,55 +354,67 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     TotalAmt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.TotalAmount | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.TotalAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="Dis">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Disc(%)</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.DiscPer}}
-                                                </mat-cell>
+                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-form-field appearance="legacy">
+                                                            <input matInput type="number" [(ngModel)]="contact.DiscPer" step="0.1"
+                                                                type="number" autocomplete="off"
+                                                                (keyup)="getCellCalculation(contact,contact.DiscPer)">
+                                                        </mat-form-field>
+                                                    </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="DiscAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Dics. Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.DiscAmount | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.DiscAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="CGST">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     CGST(%)</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.CGSTPer}}
-                                                </mat-cell>
+                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-form-field appearance="legacy">
+                                                            <input matInput type="number" [(ngModel)]="contact.CGSTPer" step="0.1"
+                                                                type="number" autocomplete="off"
+                                                                (keyup)="getCellCalculation(contact,contact.CGSTPer)">
+                                                        </mat-form-field>
+                                                    </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="CGSTAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     CGST Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.CGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.CGSTAmt | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="SGST">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     SGST(%)</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.SGSTPer}}
-                                                </mat-cell>
+                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-form-field appearance="legacy">
+                                                            <input matInput type="number" [(ngModel)]="contact.SGSTPer" step="0.1"
+                                                                type="number" autocomplete="off"
+                                                                (keyup)="getCellCalculation(contact,contact.SGSTPer)">
+                                                        </mat-form-field>
+                                                    </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="SGSTAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     SGST Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.SGSTAmt | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.SGSTAmt | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -397,7 +430,7 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GST Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.VatAmount | currency:'INR': number:'1.2-2'}}
+                                                    {{contact.VatAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -405,16 +438,23 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Net Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.GrandTotalAmount | currency:'INR': number:'1.2-2'}}
+                                                    {{contact.GrandTotalAmount | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="MRP">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     MRP</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.MRP | currency:'INR':'symbol-narrow':'0.2'}}
-                                                </mat-cell>
+                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-form-field appearance="legacy">
+                                                            <input matInput type="number" [(ngModel)]="contact.MRP" step="0.1"
+                                                                type="number" autocomplete="off"
+                                                                (keyup)="getCellCalculation(contact,contact.MRP)">
+                                                        </mat-form-field>
+                                                    </mat-cell>
+                                                <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.MRP | number:'1.2-2'}}
+                                                </mat-cell> -->
                                             </ng-container>
 
                                             <ng-container matColumnDef="Specification">
@@ -652,14 +692,19 @@
                                             <input matInput placeholder="Guarantee/Worrenty" #Worrenty
                                                 [(ngModel)]="registerObj.Worrenty" (keydown)="onEnterWorrenty($event)"
                                                 formControlName="Worrenty" type="text" required>
-                                        </mat-form-field>
+                                        </mat-form-field>&nbsp;
 
-                                        <div matTooltip="Select All Value to enable this button!!">
+                                        <!-- <div matTooltip="Select All Value to enable this button!!">
                                             <button class="next-btn"
                                                 style="border-radius: 16px;margin-left: 30px; margin-top: 10px;"
                                                 (click)="OnSave()">Save</button>
                                             <button class="footer-btn" style="border-radius: 16px;"
                                                 (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                                        </div> -->
+
+                                        <div>
+                                            <button class="btn btn-primary " (click)="OnSave()">Save</button>&nbsp;
+                                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
                                         </div>
                                     </div>
                                 </div>

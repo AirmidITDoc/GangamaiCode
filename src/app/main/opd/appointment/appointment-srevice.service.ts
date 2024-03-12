@@ -185,7 +185,7 @@ public documentdownloadInsert(employee){
   // display Appointment list
   public getAppointmentList(employee) {
     // return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_VisitDetailsList", employee)
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveVisitDetailsList_1", employee)
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=RetrieveVisitDetailsList_1", employee)
   }
   // Doctor Master Combobox List
   public getAdmittedDoctorCombo() {
