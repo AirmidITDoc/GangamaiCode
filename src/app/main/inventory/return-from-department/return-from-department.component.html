@@ -95,18 +95,20 @@
                                     <button mat-raised-button class="searchButton" (click)="getReturnToDepartmentList()"
                                         matTooltip="search" >
                                         <mat-icon class="searchiconbutton">search</mat-icon>
+                                    </button>&nbsp;
+
+                                    <button (click)="viewgetReturnfromdeptdatewiseReportPdf()"
+                                    matTooltip="Pdf" style="width: 45px;border-color: white;">
+                                    <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                                    </button>&nbsp;
+    
+                                    <button  (click)="exportreturnFrdeptdaywiseReportExcel()"
+                                        [disabled]="! (dsReturnToDepList.data.length > 0)"
+                                        style="background-color: white;color: white;width: 45px;">
+                                        <img width="32" height="10px" src="assets/images/logos/xls.png">
                                     </button>
                                 </div>
-                                <button (click)="viewgetReturnfromdeptdatewiseReportPdf()"
-                                matTooltip="Pdf" style="width: 45px;border-color: white;">
-                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
-                                </button>&nbsp;
-
-                                <button  (click)="exportreturnFrdeptdaywiseReportExcel()"
-                                    [disabled]="! (dsReturnToDepList.data.length > 0)"
-                                    style="background-color: white;color: white;width: 45px;">
-                                    <img width="32" height="10px" src="assets/images/logos/xls.png">
-                                </button>
+                              
                             </div>
                         </form>
                     </div>

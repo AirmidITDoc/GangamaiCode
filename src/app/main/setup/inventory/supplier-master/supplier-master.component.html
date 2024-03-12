@@ -41,7 +41,7 @@
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Supplier Name" autocomplete="off"
-                                            name="SupplierNameSearch" formControlName="SupplierNameSearch" />
+                                            name="SupplierNameSearch" formControlName="SupplierNameSearch" (keyup)="onSearch()"/>
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()" (keyup)="onSearch()">
                                             <mat-icon>close</mat-icon>

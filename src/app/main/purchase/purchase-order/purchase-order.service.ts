@@ -81,8 +81,8 @@ export class PurchaseOrderService {
       Mobile:'',
       Contact:'',
       GSTNo:'',
-      Email:''
-      
+      Email:'',
+      DefRate:''
     });
 
   }
@@ -167,12 +167,9 @@ export class PurchaseOrderService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
   }
 
-
-
-
-  // public getToStoreSearchList() {
-  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName", {});
-  // }
+  public getSupplierRateList(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data,  {});
+  }
 
   // public PurchaseUpdate(Param) {
   //   return this._httpClient.post("Pharmacy/UpdatePurchaseOrder", Param)

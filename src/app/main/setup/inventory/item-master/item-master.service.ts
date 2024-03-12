@@ -197,5 +197,7 @@ export class ItemMasterService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDrugTypeList", {})
   }
 
-  
+  public getHistoryList() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_PastHistoryMasterForCombo",{});
+  }
 }

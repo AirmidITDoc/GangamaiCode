@@ -17,17 +17,15 @@
       <form [formGroup]="_itemService.myform" noValidate>
         <div style="padding: 20px;">
           <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
+            <!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,20);" -->
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="HSNcode" placeholder="Enter HSNcode" formControlName="HSNcode"
-                [ngModel]="registerObj.HSNcode" matInput type="number" required #HSN
-                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,20);"
-                (keydown)="onEnterHsn($event)">
+              <input name="HSNcode" placeholder="Enter HSNcode" formControlName="HSNcode" [ngModel]="vHSNcode" matInput
+                type="number" required #HSN (keydown)="onEnterHsn($event)">
               <mat-error>Please enter HSNcode </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="ItemName" formControlName="ItemName" #Itemname [ngModel]="registerObj.ItemName"
+              <input name="ItemName" formControlName="ItemName" #Itemname [ngModel]="vItemName"
                 placeholder="Enter Item Name" matInput (keydown)="onEnterItemName($event)" required>
               <!-- <span class="error" *ngIf="f.ItemName.invalid && f.ItemName.touched">ItemName is required Enter only
                 Alphabets</span> -->
@@ -54,7 +52,7 @@
               <mat-label>ItemType Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select ItemTypeID" matInput
                 formControlName="ItemTypeID" [matAutocomplete]="autoItemTypeID" required #ItemType
-                (keydown)="onEnterItemType($event)">
+                [(ngModel)]="vItemTypeID" (keydown)="onEnterItemType($event)">
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('ItemTypeID').setValue(''); isItemTypeSelected = false;">close</mat-icon>
@@ -73,7 +71,7 @@
               <mat-label>ItemCategory Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select ItemCategoryId" matInput
                 formControlName="ItemCategoryId" [matAutocomplete]="autoItemCategoryId" required #ItemCatageory
-                (keydown)="onEnterItemCategory($event)">
+                (keydown)="onEnterItemCategory($event)" [(ngModel)]="vItemCatageory">
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('ItemCategoryId').setValue(''); isItemCategoryIdSelected = false;">close</mat-icon>
@@ -92,7 +90,7 @@
               <mat-label>ItemGeneric Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select ItemGenericNameId" matInput
                 formControlName="ItemGenericNameId" [matAutocomplete]="autoItemGenericNameId" required #ItemGeneric
-                (keydown)="onEnterItemGeneric($event)">
+                (keydown)="onEnterItemGeneric($event)" [(ngModel)]="vItemGeneric">
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('ItemGenericNameId').setValue(''); isItemGenericNameIdSelected = false;">close</mat-icon>
@@ -113,7 +111,7 @@
               <mat-label>ItemClass Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select ItemClassId" matInput #ItemClass
                 formControlName="ItemClassId" [matAutocomplete]="autoItemClassId" required
-                (keydown)="onEnterItemClass($event)">
+                (keydown)="onEnterItemClass($event)" [(ngModel)]="vItemClass">
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('ItemClassId').setValue(''); isClassSelected = false;">close</mat-icon>
@@ -127,6 +125,23 @@
               </mat-autocomplete>
             </mat-form-field>
 
+            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
+              <mat-label>CurrencyId </mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select StockUOMId" matInput
+                formControlName="CurrencyId" [matAutocomplete]="autoCurrencyId" (keydown)="onEnterCurrencyId($event)"
+                #CurrencyId>
+              <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('CurrencyId').setValue(''); isCurrencySelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                  (click)="_itemService.myform.get('CurrencyId').setValue(''); isCurrencySelected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoCurrencyId="matAutocomplete" [displayWith]="getOptionTextCurrency">
+                <mat-option *ngFor="let option of filteredCurrency | async" [value]="option">
+                  {{option.CurrencyName}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
 
           </div>
 
@@ -177,23 +192,6 @@
               </mat-autocomplete>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
-              <mat-label>CurrencyId </mat-label>
-              <input matAutocompletePosition="below" type="text" placeholder="Select StockUOMId" matInput
-                formControlName="CurrencyId" [matAutocomplete]="autoCurrencyId" (keydown)="onEnterCurrencyId($event)"
-                #CurrencyId>
-              <span matSuffix style="display: flex;">
-                <mat-icon class="mat-icon-close"
-                  (click)="_itemService.myform.get('CurrencyId').setValue(''); isCurrencySelected = false;">close</mat-icon>
-                <mat-icon class="mat-icon-close"
-                  (click)="_itemService.myform.get('CurrencyId').setValue(''); isCurrencySelected = false;">search</mat-icon>
-              </span>
-              <mat-autocomplete #autoCurrencyId="matAutocomplete" [displayWith]="getOptionTextCurrency">
-                <mat-option *ngFor="let option of filteredCurrency | async" [value]="option">
-                  {{option.CurrencyName}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
 
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -205,8 +203,49 @@
 
               <mat-error>Please enter ConversionFactor </mat-error>
             </mat-form-field>
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="ReOrder" placeholder="Enter ReOrder" formControlName="ReOrder" type="number"
+                (keydown)="onEnterReOrder($event)" #ReOrder matInput [ngModel]="registerObj.ReOrder"
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+              <span class="error" *ngIf="f.ReOrder.invalid && f.ReOrder.touched">ReOrder is required Enter only
+                Number</span>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="MaxDisc" placeholder="Enter MaxDisc" (keydown)="onEnterMaxdisc($event)" #Maxdisc
+                formControlName="MaxDisc" (keyup)="Chkdisc()" [ngModel]="registerObj.MaxDisc" matInput type="number"
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+              <mat-error>Please enter MaxDisc </mat-error>
+            </mat-form-field>
           </div>
           <div>
+
+            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="CGST" placeholder="Enter CGST" [ngModel]="registerObj.CGST" formControlName="CGST" matInput
+                type="number" (keydown)="onEnterCGST($event)" #CGST
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+              <span class="error" *ngIf="f.CGST.invalid && f.CGST.touched">CGST is required Enter only Number</span>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="SGST" placeholder="Enter SGST" [ngModel]="registerObj.SGST" formControlName="SGST" matInput
+                type="number" (keydown)="onEnterSGST($event)" #SGST
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+              <span class="error" *ngIf="f.SGST.invalid && f.SGST.touched">SGST is required Enter only Number</span>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+              <input name="IGST" placeholder="Enter IGST" [ngModel]="registerObj.IGST" formControlName="IGST" matInput
+                type="number" (keydown)="onEnterIGST($event)" #IGST
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+              <span class="error" *ngIf="f.IGST.invalid && f.IGST.touched">IGST is required Enter only Numbaer</span>
+            </mat-form-field> -->
+
+          </div>
+
+          <div>
+
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <input name="CGST" placeholder="Enter CGST" [ngModel]="registerObj.CGST" formControlName="CGST" matInput
@@ -228,10 +267,6 @@
                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
               <span class="error" *ngIf="f.IGST.invalid && f.IGST.touched">IGST is required Enter only Numbaer</span>
             </mat-form-field>
-
-          </div>
-
-          <div>
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <input name="MinQty" placeholder="Enter MinQty" formControlName="MinQty" matInput type="number"
                 (keydown)="onEnterMinQty($event)" #MinQty [ngModel]="registerObj.MinQty"
@@ -248,13 +283,17 @@
                 Number</span>
             </mat-form-field>
 
+
+
+
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="ReOrder" placeholder="Enter ReOrder" formControlName="ReOrder" type="number"
-                (keydown)="onEnterReOrder($event)" #ReOrder matInput [ngModel]="registerObj.ReOrder"
-                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-              <span class="error" *ngIf="f.ReOrder.invalid && f.ReOrder.touched">ReOrder is required Enter only
-                Number</span>
+              <input name="Storagelocation" placeholder="Enter Storagelocation" (keydown)="onEnterStorage($event)"
+                #Storagee formControlName="Storagelocation" [ngModel]="vStoragelocation" matInput type="text">
+
+              <mat-error>Please enter ProdLocation </mat-error>
             </mat-form-field>
+
+
           </div>
 
           <div>
@@ -264,7 +303,7 @@
               <mat-label>Drug TYpe</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select DrugType" matInput
                 formControlName="DrugType" [matAutocomplete]="autoDrugType" required (keydown)="onEnterDrugType($event)"
-                #DrugType>
+                #DrugType [(ngModel)]="vDrugType">
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('DrugType').setValue(''); isDugtypeSelected = false;">close</mat-icon>
@@ -283,7 +322,7 @@
               <mat-label>Manufacture Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select ManufId" matInput
                 (keydown)="onEnterManufId($event)" #ManufId formControlName="ManufId" [matAutocomplete]="autoManufId"
-                required>
+                required [(ngModel)]="vManufId">
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('ManufId').setValue(''); isManuSelected = false;">close</mat-icon>
@@ -316,29 +355,11 @@
               </mat-autocomplete>
             </mat-form-field>
 
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="Storagelocation" placeholder="Enter Storagelocation" (keydown)="onEnterStorage($event)"
-                #Storagee formControlName="Storagelocation" [ngModel]="registerObj.Storagelocation" matInput
-                type="text">
-
-              <mat-error>Please enter ProdLocation </mat-error>
-            </mat-form-field>
-
-
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <input name="MaxDisc" placeholder="Enter MaxDisc" (keydown)="onEnterMaxdisc($event)" #Maxdisc
-                formControlName="MaxDisc" (keyup)="Chkdisc()" [ngModel]="registerObj.MaxDisc" matInput type="number"
-                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-              <mat-error>Please enter MaxDisc </mat-error>
-            </mat-form-field>
-          </div>
-
-          <div>
-            <!-- <mat-form-field appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
+            <mat-form-field appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
               <mat-label>Store Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select StoreId" matInput
-                formControlName="StoreId" [matAutocomplete]="autoStoreId" required>
+                formControlName="StoreId" [matAutocomplete]="autoStoreId" required #storename
+                (keydown)="onEnterstorename($event)">
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
@@ -350,47 +371,83 @@
                   {{option.StoreName}}
                 </mat-option>
               </mat-autocomplete>
-            </mat-form-field> -->
+            </mat-form-field>
 
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+          </div>
+
+          <div>
+
+
+            <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-select placeholder="Select StoreName" #Store (keydown)="onEnterStorename($event)"
-                formControlName="StoreId" multiple>
+                formControlName="StoreId" multiple required>
                 <mat-option *ngFor="let M of StorecmbList" [value]="M.StoreId">
                   {{M.StoreName}}
                 </mat-option>
               </mat-select>
+            </mat-form-field> -->
+            <!-- <mat-form-field>
+              <mat-select multiple placeholder="Test" [(ngModel)]="selectedObjectsFromArray">
+                <mat-option *ngFor="let el of toppingList" [value]="el.value">
+                  {{el.label}}
+                </mat-option>
+
+              </mat-select>
             </mat-form-field>
 
+            <p>{{selectedObjectsFromArray}}</p> -->
 
 
+            <mat-form-field class="example-chip-list" appearance="outline" style="width:50%;">
+              <mat-label>Store Name</mat-label>
+              <mat-chip-list #historyChipList>
+                  <mat-chip *ngFor="let ele of historySelected" [selectable]="selectable"
+                      [removable]="removable" (removed)="remove(ele, historySelected)">
+                      {{ele}}
+                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                  <input #historyInput formControlName="StoreId" [matAutocomplete]="auto1"
+                      [matChipInputFor]="historyChipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="addChips($event, historySelected, 'StoreId')">
+              </mat-chip-list>
+              <mat-autocomplete #auto1="matAutocomplete"
+                  (optionSelected)="selected($event, historySelected, 'StoreId', 'historyInput')">
+                  <mat-option *ngFor="let element of filteredHistory | async"
+                      [value]="element.PastHistoryDescr">
+                      {{element.PastHistoryDescr}}
+                  </mat-option>
+              </mat-autocomplete>
+          </mat-form-field>
 
           </div>
           <div>
-          
+            <!--           
             <mat-radio-group name="IsDeleted" formControlName="IsDeleted">
-                <mat-radio-button value='true' class="mr-sm-12" fxFlex value='false'>IsActive</mat-radio-button>
-            </mat-radio-group>
-        </div>
+                <mat-radio-button  class="mr-sm-12" fxFlex value='false'>IsActive</mat-radio-button>
+            </mat-radio-group> -->
+
+            <mat-checkbox aria-label="Mode" formControlName="IsDeleted" [(ngModel)]="vchkactive"
+              style="font-weight: bold;margin-right: 20px;">ISActive
+            </mat-checkbox>
+          </div>
 
         </div>
 
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
           <div class="button-row">
-            <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true (change)="onChangeMode($event)"
-            style="font-weight: bold;margin-right: 20px;">Create / Approval
+            <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true
+              (change)="onChangeMode($event)" style="font-weight: bold;margin-right: 20px;">Create / Approval
             </mat-checkbox>
-            <button class="footer-btn" (click)="onClose()">Close</button>
-            <button class="next-btn" color="accent" type="submit" #addbutton (click)="onSubmit()"
-              style="border-radius: 16px;" [disabled]=!save>Save</button>
-    
-            <!-- <button mat-raised-button #addbutton class="next-btn" [disabled]="!save" (click)="onSubmit()">
-             Save
-          </button> -->
-    
+            <button class="footer-btn" (keydown)="onClear()">Reset</button>
+            <button class="next-btn" color="accent" type="submit" (click)="onSubmit()"
+              style="border-radius: 16px;">Save</button>
+            <!-- [disabled]=_itemService.myform.invalid -->
+
+
           </div>
         </div>
       </form>
     </div>
-  
+
   </div>
 </div>

@@ -21,10 +21,14 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { OnlinePaymentService } from './services/online-payment.service';
 import { ImageCropComponent } from './componets/image-crop/image-crop.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { MatSliderModule } from '@angular/material/slider';  
+import { MatSliderModule } from '@angular/material/slider';
+import { EmailSendComponent } from './componets/email-send/email-send.component';  
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent],
+  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -39,7 +43,9 @@ import { MatSliderModule } from '@angular/material/slider';
     MatSnackBarModule,
     FuseSharedModule,
     ImageCropperModule,
-    MatSliderModule
+    MatSliderModule,
+    MatIconModule,
+    MatToolbarModule
   ],
   providers: [
     ExcelDownloadService,
@@ -53,6 +59,6 @@ import { MatSliderModule } from '@angular/material/slider';
     HeaderComponent,
     PaymentModeComponent
   ],
-  entryComponents: [HeaderComponent, PaymentModeComponent]
+  entryComponents: []
 })
 export class SharedModule { }

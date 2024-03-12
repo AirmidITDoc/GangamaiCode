@@ -28,7 +28,6 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
 })
 export class ReturnFromDepartmentComponent implements OnInit {
   displayedColumns = [
-    'action',
     'ReturnNo',
     'RDate',
     'FromStoreName',
@@ -37,6 +36,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
     'TotalVatAmount',
     'Remark',
     'Addedby',
+    'action',
   ];
 
   displayedColumns1: string[] = [

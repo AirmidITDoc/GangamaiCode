@@ -32,10 +32,11 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
     // 'ItemID',
     'ItemName',
-    'Qty',
     'UOM',
+    'Qty',
     'MRP',
     'Rate',
+    'DefRate',
     'TotalAmount',
     'Dis',
     'DiscAmount',
@@ -82,7 +83,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   optionsMarital: any[] = [];
   optionsPayment: any[] = [];
   optionsItemName: any[] = [];
-
+  vDefRate:any;
   vGSTAmt: any = 0.0;
   CGSTAmount: any;
   IGSTAmount: any;
@@ -165,7 +166,6 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
   selectedRowIndex: any;
   filteredoptionsSupplier: Observable<string[]>;
   filteredoptionsPayment: Observable<string[]>;
@@ -263,7 +263,6 @@ export class UpdatePurchaseorderComponent implements OnInit {
  
   }
   private _filterSupplier(value: any): string[] {
-    debugger
     if (value) {
       const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
       return this.optionsMarital.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
@@ -276,6 +275,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vContact = obj.ContactPerson;
     this.vGSTNo = obj.GSTNo;
     this.vEmail = obj.Email;
+    this.getSupplierRate();
   }
   calculateGSTType(event) {
 
@@ -333,6 +333,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
           GSTAmount: this.vGSTAmt || 0,
           GrandTotalAmount: this.vNetAmount || 0,
           MRP: this.vMRP || 0,
+          DefRate: this.vDefRate || 0,
           Specification: this.vSpecification || '',
         });
       this.dsItemNameList.data = this.chargeslist;
@@ -397,22 +398,24 @@ export class UpdatePurchaseorderComponent implements OnInit {
   getSelectedObj(obj) {
     this.ItemId = obj.ItemId;
     this.ItemName = obj.ItemName;
-    this.vQty = 0;
     this.vUOM = obj.UnitofMeasurementId;
     this.vConversionFactor = obj.ConversionFactor;
     this.vHSNcode = obj.HSNcode;
-    this.vRate = obj.PurchaseRate;
-    this.vDis = 0;
+    this.vQty = '';
+    this.vMRP = '';
+    this.vRate = '';
+    this.vDis = '';
     this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
     this.vNetAmount = this.vTotalAmount;
-    this.VatPercentage = obj.VatPercentage;
+    //this.VatPercentage = obj.VatPercentage;
     this.vGSTPer = (obj.SGSTPer + obj.CGSTPer);
-    this.GSTAmount = 0;
-    this.vMRP = obj.UnitMRP;
+   // this.GSTAmount = 0;
     this.vSpecification = obj.Specification || '';
     this.getLastThreeItemInfo();
     this.qty.nativeElement.focus();
+    this.getSupplierRate();
   }
+
   getLastThreeItemInfo() {
     var vdata = {
       'ItemId': this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemID || 0,
@@ -421,6 +424,26 @@ export class UpdatePurchaseorderComponent implements OnInit {
       this.dsLastThreeItemList.data = data as LastThreeItemList[]; this.sIsLoading = '';
     });
   }
+  supplierRateList:any=[]; 
+getSupplierRate(){
+  this.supplierRateList = [];
+ let Query = "Select SupplierRate  from M_ItemWiseSupplierRate where ItemId= "+ this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemID + " and SupplierId=" + this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId
+  console.log(Query);
+  this._PurchaseOrder.getSupplierRateList(Query).subscribe(data => {
+   // console.log(data)
+    this.supplierRateList = data
+    let SupplierRate = 0;
+    SupplierRate = this.supplierRateList[0].SupplierRate;
+    this.vDefRate = SupplierRate;
+   // console.log(this.vDefRate)
+  });
+}
+
+
+
+
+
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'F4') {
@@ -698,14 +721,67 @@ export class UpdatePurchaseorderComponent implements OnInit {
       contact.GrandTotalAmount = ((totalAmt) - (contact.DiscAmount));
     }
   }
+  getCellCalculation(contact, Qty) {
+
+    if (contact.Qty > 0 && contact.Rate > 0) {
+      contact.IGSTPer = 0;
+      if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == 'GST After Disc') {
+        //total amt
+        contact.TotalAmount = (contact.Qty * contact.Rate);
+        //disc
+        contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPer)) / 100);
+        let TotalAmt = ((contact.TotalAmount) - (contact.DiscAmount));
+        //Gst
+        contact.VatPer = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        contact.CGSTAmt = (((TotalAmt) * (contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((TotalAmt) * (contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((TotalAmt) * (contact.IGSTPer)) / 100);
+        contact.VatAmount = (((TotalAmt) * (contact.VatPer)) / 100);
+        contact.GrandTotalAmount = ((TotalAmt) + (contact.VatAmount));
+      }
+      else if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == 'GST Before Disc') {
+        //total amt
+        contact.TotalAmount = (contact.Qty * contact.Rate);
+        //Gst
+        contact.VatPer = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
+        contact.CGSTAmt = (((contact.TotalAmount) * (contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((contact.TotalAmount) * (contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((contact.TotalAmount) * (contact.IGSTPer)) / 100);
+        contact.VatAmount = (((contact.TotalAmount) * (contact.VatPer)) / 100);
+        let totalAmt = ((contact.TotalAmount) + (contact.VatAmount));
+        //disc
+        contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPer)) / 100);
+        contact.GrandTotalAmount = ((totalAmt) - (contact.DiscAmount));
+      }
+    }
+    else {
+      contact.TotalAmount = 0;
+      contact.DiscAmount = 0;
+      contact.CGSTAmt = 0;
+      contact.SGSTAmt = 0;
+      contact.IGSTAmt = 0;
+      contact.VatAmount = 0;
+      contact.GrandTotalAmount = 0;
+    }
+  }
   OnchekPurchaserateValidation() {
-    let mrp = this._PurchaseOrder.userFormGroup.get('MRP').value
-    if (mrp <= this.vRate) {
+    debugger
+    if(this.vDefRate > 0){
+    if(this.vDefRate > this.vRate){
+      Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+      // this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
+      //   toastClass: 'tostr-tost custom-toast-warning',
+      // });
+    }
+  }
+    if (this.vRate <= this.vMRP ) {
      // Swal.fire("Enter Purchase Rate Less Than MRP");
+     this.calculateTotalAmt();
+    }else{
       this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      this._PurchaseOrder.userFormGroup.get('Rate').setValue('');
+      //this._PurchaseOrder.userFormGroup.get('Rate').setValue(0);
     }
   }
 
@@ -836,6 +912,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vMRP = 0;
     this.vConversionFactor = 0;
     this.vHSNcode = 0;
+    this.vDefRate = 0;
     this.vSpecification = "";
   }
   toggleDisable() {
@@ -898,7 +975,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
   public onEnterSupplier(event): void {
     if (event.which === 13) {
-      this.gsttype.nativeElement.focus();
+      this.itemid.nativeElement.focus();
     }
   }
   public onEnterGSTType(event): void {
@@ -906,16 +983,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       this.itemid.nativeElement.focus();
     }
   }
-  public onEnterDeliveryDate(event): void {
-    if (event.which === 13) {
-      if (this.PaymentTerm) this.PaymentTerm.focus();
-    }
-  }
-  public onEnterTaxNature(event): void {
-    if (event.which === 13) {
-      this.itemid.nativeElement.focus();
-    }
-  }
+
   public onEnterItemName(event): void {
     if (event.which === 13) {
       this.qty.nativeElement.focus();
@@ -924,44 +992,44 @@ export class UpdatePurchaseorderComponent implements OnInit {
   public onEnterQty(event): void {
     if (event.which === 13) {
       this.mrp.nativeElement.focus();
-      this.add = false;
+      //this.add = false;
     }
   }
   public onEnterMRP(event): void {
     if (event.which === 13) {
       this.rate.nativeElement.focus();
-      this.add = false;
+      //this.add = false;
     }
   }
   public onEnterRate(event): void {
     if (event.which === 13) {
       this.dis.nativeElement.focus();
-      this.add = false;
+     // this.add = false;
       this.vDis.setValue('');
     }
   }
   public onEnterTotal(event): void {
     if (event.which === 13) {
       this.dis.nativeElement.focus();
-      this.add = false;
+     // this.add = false;
     }
   }
   public onEnterDis(event): void {
     if (event.which === 13) {
       this.gst.nativeElement.focus();
-      this.add = false;
+     // this.add = false;
     }
   }
   public onEnterGST(event): void {
     if (event.which === 13) {
       this.specification.nativeElement.focus();
-      this.add = false;
+      //this.add = false;
     }
   }
 
   public onEnterSpecification(event): void {
     if (event.which === 13) {
-      this.add = false;
+      //this.add = false;
     }
   }
 

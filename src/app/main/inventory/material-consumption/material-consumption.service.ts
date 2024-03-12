@@ -36,7 +36,8 @@ export class MaterialConsumptionService {
       UsedQty:'',
       Rate:'',
       Remark: '',
-      ItemID:''
+      ItemID:'',
+      Date:['']
       
     });
   }
@@ -48,9 +49,9 @@ export class MaterialConsumptionService {
   //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
   // }
 
-  // public getStoreFromList(){
-  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
-  // }
+  public MaterialconsSave(Param){
+    return this._httpClient.post("InPatient/MaterialConsumption",Param);
+  }
 
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);

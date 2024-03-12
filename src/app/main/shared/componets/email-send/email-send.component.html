@@ -1,0 +1,86 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <!-- <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button> -->
+            <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon> -->
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Mail Information
+            </span>
+            <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+            style="border-color: red;"></app-common-date> -->
+            <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+                style="margin-left: 660px;">
+                <mat-icon>close</mat-icon>
+            </button> -->
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px;">
+                <div class="nav material2">
+
+                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                        <form [formGroup]="_PurchaseOrder.POEmailFrom"
+                            style="overflow:hidden;">
+
+                            <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>To Mail Id</mat-label>
+                                    <input matInput name="ToMailId" formControlName="ToMailId" placeholder="To Mail Id"
+                                        id="ToMailId" type="email" [(ngModel)]="vToMailId" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>To Mail Id CC</mat-label>
+                                    <input matInput name="cc" formControlName="CCName" placeholder="cc"
+                                        id="CCName" type="email" [(ngModel)]="vCCName" >
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>To Mail Id bcc</mat-label>
+                                    <input matInput name="bccName" formControlName="bccName" placeholder="bcc"
+                                        id="bccName" type="email" [(ngModel)]="vbccName" >
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Subject</mat-label>
+                                    <input matInput name="Subject" formControlName="Subject" placeholder="Subject"
+                                        id="Subject" type="text" [(ngModel)]="vSubject" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Body</mat-label>
+                                    <textarea matInput name="Body" formControlName="Body" placeholder="Write......"
+                                        id="Body" type="text"  required style="height: 100px;"
+                                        [(ngModel)]="vBody"></textarea>
+                                </mat-form-field>
+
+                                <div matTooltip="Fill All Data  to enable this button!!">
+                                    <button class="next-btn"
+                                        style="border-radius: 16px;margin-left: 600px; margin-top: 10px;"
+                                        [disabled]="_PurchaseOrder.POEmailFrom.invalid" (click)="OnSend()">Send</button>
+                                    <button class="footer-btn" style="border-radius: 16px;"
+                                        (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                                </div>
+                                
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
