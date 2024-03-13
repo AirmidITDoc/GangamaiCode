@@ -3,6 +3,7 @@
     .mat-toolbar {
         // height: 50px; // temporary
         background: $primary-25;
+        font: inherit;
         @include font-size(14px);
         font-weight: normal;
         .top-nav {
@@ -32,7 +33,8 @@
     }
 }
 .mat-typography {
-    .mat-toolbar{
+    .mat-toolbar {
         font: inherit;
+        @include font-size(14px);
     }
 }

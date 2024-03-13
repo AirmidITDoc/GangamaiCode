@@ -1,11 +1,13 @@
 .mat-table {
     border-radius: 4px;
     overflow: auto;
+    font-family: inherit;
     .mat-header-row,
     .mat-row {
         min-height: auto;
         height: auto;
     }
+
     .mat-header-row {
         .mat-header-cell {
             @include font-size(13px);
@@ -13,6 +15,8 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-family: $font-family-base;
+            font-weight: normal;
             &:not(:first-of-type) {
                 padding: 10px 10px;
             }
@@ -34,6 +38,7 @@
             font-family: $roboto;
             word-break: break-word;
             line-height: 20px;
+            font-family: $font-family-base;
             &:not(:first-of-type) {
                 padding: 5px 10px;
             }

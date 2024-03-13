@@ -1,5 +1,6 @@
 .mat-typography {
-    .mat-button {
-        font: inherit;
+    .mat-button,
+    .mat-raised-button {
+        font-family: inherit;
     }
 }

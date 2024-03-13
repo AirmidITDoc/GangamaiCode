@@ -1,9 +1,9 @@
 .page-layout {
     .center {
         .header {
-            height: 70px;
+            height: 60px;
             .welcome-message {
-                @include font-size(20px);
+                @include font-size(18px);
             }
             .header-row {
                 width: 100%;
