@@ -388,12 +388,18 @@
                             style="color: white;">
                             New Issue To Department List
                         </span>
-                        <span style="color: wheat;margin-left: 700px;">
+                        <!-- <span style="color: wheat;margin-left: 800px;">
                             <app-common-date [screenFrom]="screenFromString"
                                 (dateTimeEventEmitter)="getDateTime($event)">
                             </app-common-date>
-                        </span>
+                        </span> -->
                     </div>
+                        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+                            <button mat-raised-button (click)="OnIndent()" fxLayoutAlign="center center" class="py-8">
+                                <span>Indent List</span>
+                            </button>
+                        </div>
+
 
                 </mat-toolbar>
 
@@ -439,8 +445,15 @@
                                                     {{option.StoreName}}
                                                 </mat-option>
                                             </mat-autocomplete>
-                                        </mat-form-field>
+                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
+                                        <span >
+                                            <app-common-date [screenFrom]="screenFromString"
+                                                (dateTimeEventEmitter)="getDateTime($event)">
+                                            </app-common-date>
+                                        </span>
+
+                                        
                                         <!-- <div style="padding: 8px;">
                                        
                                     </div> -->
@@ -537,7 +550,7 @@
                                             <div fxlayout="row">
 
 
-                                                <div fxFlex.gt-sm="27%" fxFlex style="padding: 0;margin-right: 0;">
+                                                <div fxFlex.gt-sm="27%" fxFlex style="padding: 0;margin-right:10px;">
 
 
                                                     <mat-table class="tab1" matSort [dataSource]="dsNewIssueList1"
@@ -556,7 +569,7 @@
                                                                 fxShow.gt-sm>
                                                                 Qty </mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.Qty}} </mat-cell>
+                                                                {{element.IndentQuantity}} </mat-cell>
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="loading">
@@ -574,8 +587,8 @@
                                                             *matHeaderRowDef="displayedNewIssuesList1; sticky: true">
                                                         </mat-header-row>
                                                         <mat-row *matRowDef="let row; columns: displayedNewIssuesList1;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                            class="element" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                            (click)="IndentItemDetails(contacts)" ></mat-row>
                                                         <mat-footer-row *matFooterRowDef="['loading']"
                                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                         </mat-footer-row>

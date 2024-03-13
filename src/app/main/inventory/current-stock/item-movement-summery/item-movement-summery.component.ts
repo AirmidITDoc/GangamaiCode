@@ -29,6 +29,17 @@ export class ItemMovementSummeryComponent implements OnInit {
     'IssueQty',
     'BalQty'
   ];
+  displayedColumns1 = [
+    'BatchNo',
+    'TransactionType',
+    'DocumentNo',
+    'PatientName',
+    'BatchNo',
+    'BatchExpDate',
+    'ReceiptQty',
+    'IssueQty',
+    'BalQty'
+  ];
 
   isItemSelected: boolean = false;
   StoreList: any = [];
@@ -43,6 +54,7 @@ export class ItemMovementSummeryComponent implements OnInit {
   fiveDaysAgo:any;
 
   dsItemMovementSummery = new MatTableDataSource<ItemMovementList>();
+  dsBatchExpWise = new MatTableDataSource<BatchExpWiseList>();
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;  
   constructor(
@@ -117,15 +129,37 @@ export class ItemMovementSummeryComponent implements OnInit {
      "FromStoreID": this.registerObj.StoreId || 0,
      "ItemId":this.registerObj.ItemId || 0 
     }
-   console.log(vdata)
+  // console.log(vdata)
     setTimeout(() => {
       this._CurrentStockService.getItemMovementsummeryList(vdata).subscribe((Visit) => {
           this.dsItemMovementSummery.data = Visit as ItemMovementList[];
-         console.log(this.dsItemMovementSummery);
+        // console.log(this.dsItemMovementSummery);
           this.dsItemMovementSummery.sort = this.sort;
           this.dsItemMovementSummery.paginator = this.paginator;
           this.sIsLoading = '';
           this.isLoadingStr = this.dsItemMovementSummery.data.length == 0 ? 'no-data' : '';
+        },
+        (error) => {
+           this.isLoadingStr = 'no-data';
+        }
+      );
+    }, 1000);
+  }
+  getBatchExpWiseList(){
+    this.sIsLoading = 'loading-data';
+    var vdata = {
+     "FromStoreID": this.registerObj.StoreId || 0,
+     "ItemId":this.registerObj.ItemId || 0 
+    }
+   console.log(vdata)
+    setTimeout(() => {
+      this._CurrentStockService.getBatchExpWiseList(vdata).subscribe((Visit) => {
+          this.dsBatchExpWise.data = Visit as ItemMovementList[];
+         console.log(this.dsBatchExpWise);
+          this.dsBatchExpWise.sort = this.sort;
+          this.dsBatchExpWise.paginator = this.paginator;
+          this.sIsLoading = '';
+          this.isLoadingStr = this.dsBatchExpWise.data.length == 0 ? 'no-data' : '';
         },
         (error) => {
            this.isLoadingStr = 'no-data';
@@ -162,6 +196,32 @@ export class ItemMovementList{
       this.ReceiptQty = ItemMovementList.ReceiptQty || 0;
       this.IssueQty = ItemMovementList.IssueQty || 0;
       this.BalQty = ItemMovementList.BalQty ||  0;
+    }
+
+  }
+}
+export class BatchExpWiseList{
+  TranDate:any;
+  TransactionType:any;
+  DocumentNo:number;
+  PatientName:string;
+  BatchNo:any;
+  BatchExpDate:number;
+  ReceiptQty:number;
+  IssueQty:number;
+  BalQty:number;
+
+  constructor(BatchExpWiseList){
+    {
+      this.TranDate = BatchExpWiseList.TranDate || 0;
+      this.TransactionType = BatchExpWiseList.TransactionType || '';
+      this.DocumentNo = BatchExpWiseList.DocumentNo || 0;
+      this.PatientName = BatchExpWiseList.PatientName || "";
+      this.BatchNo = BatchExpWiseList.BatchNo || '';
+      this.BatchExpDate = BatchExpWiseList.BatchExpDate || 0;
+      this.ReceiptQty = BatchExpWiseList.ReceiptQty || 0;
+      this.IssueQty = BatchExpWiseList.IssueQty || 0;
+      this.BalQty = BatchExpWiseList.BalQty ||  0;
     }
 
   }

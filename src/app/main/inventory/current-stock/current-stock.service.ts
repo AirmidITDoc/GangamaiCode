@@ -12,6 +12,7 @@ export class CurrentStockService {
   ItemWiseFrom:FormGroup;
   PurchaseItem:FormGroup;
   ItemSummeryFrom:FormGroup;
+  BatchExpWiseFrom:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
@@ -22,6 +23,7 @@ export class CurrentStockService {
     this.ItemWiseFrom = this.createItemWiseFrom();
     this.PurchaseItem=this.PurchaseItemWiseFrom();
     this.ItemSummeryFrom =this.createItemSummeryFrom();
+    this.BatchExpWiseFrom =this.createBatchExpwiseFrom();
   }
 
   createSearchFrom() {
@@ -68,6 +70,14 @@ export class CurrentStockService {
       ItemCategory:'',
     });
   }
+  createBatchExpwiseFrom() {
+    return this._formBuilder.group({
+      start: [''],
+      end: [(new Date()).toISOString()],
+      StoreId:'',
+      ItemCategory:'',
+    });
+  }
 
   public getCurrentStockList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_Storewise_CurrentStock",Param);
@@ -86,6 +96,9 @@ export class CurrentStockService {
   }
   public getItemMovementsummeryList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Phar_ItemMovementReport", Param)
+  }
+  public getBatchExpWiseList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_BatchExpWiseList",Param);
   }
   
   

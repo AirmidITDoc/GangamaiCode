@@ -18,6 +18,7 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from "rxjs/operators";
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { IssueToDeparmentAgainstIndentComponent } from './issue-to-deparment-against-indent/issue-to-deparment-against-indent.component';
 
 @Component({
     selector: 'app-issue-to-department',
@@ -326,17 +327,17 @@ export class IssueToDepartmentComponent implements OnInit {
                     let LandedRateandedTotal = (parseInt(this.DraftQty) * (contact.LandedRate)).toFixed(2);
                     let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
                     let PurTotAmt = (parseInt(this.DraftQty) * (contact.PurUnitRateWF)).toFixed(2);
-          
+
                     let CGSTAmt = (((contact.UnitMRP) * (contact.CgstPer) / 100) * (this.DraftQty)).toFixed(2);
                     let SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * (this.DraftQty)).toFixed(2);
                     let IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * (this.DraftQty)).toFixed(2);
-          
+
                     // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
-          
+
                     let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
                     let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
-    
-                    
+
+
 
 
                     // this.dsNewIssueList3.data[i].Qty = this.DraftQty;
@@ -353,23 +354,23 @@ export class IssueToDepartmentComponent implements OnInit {
                     this.dsNewIssueList3.data[i].VatAmount = Vatamount;
                     this.dsNewIssueList3.data[i].TotalAmount = TotalMRP;
                     this.dsNewIssueList3.data[i].NetAmt = NetAmt;
-          
+
                     this.dsNewIssueList3.data[i].DiscPer = contact.DiscPer;
                     this.dsNewIssueList3.data[i].DiscAmt = DiscAmt;
-          
+
                     this.dsNewIssueList3.data[i].CGSTAmt = CGSTAmt;
                     this.dsNewIssueList3.data[i].SGSTAmt = SGSTAmt;
                     this.dsNewIssueList3.data[i].IGSTAmt = IGSTAmt;
-          
+
                     this.dsNewIssueList3.data[i].CgstPer = contact.CGSTPer;
                     this.dsNewIssueList3.data[i].SgstPer = contact.SGSTPer;
                     this.dsNewIssueList3.data[i].IgstPer = contact.IGSTPer;
-          
+
                     this.dsNewIssueList3.data[i].LandedRate = contact.LandedRate;
                     this.dsNewIssueList3.data[i].StockId = contact.StockId;
                     // this.dsNewIssueList3.data[i].PurchaseRate = contact.PurUnitRateWF;
                     // this.dsNewIssueList3.data[i].PurTotAmt = PurTotAmt;
-          
+
                     // this.dsNewIssueList3.data[i].BalanceQty = BalQty;
                 }
                 i++;
@@ -390,18 +391,18 @@ export class IssueToDepartmentComponent implements OnInit {
             let IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * (this.DraftQty)).toFixed(2);
   
             // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
-  
+
             let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
             let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
 
-            
+
 
             this.chargeslist.push(
                 {
                     ItemId: contact.ItemId || 0,
                     ItemName: contact.ItemName || '',
                     BatchNo: contact.BatchNo,
-                    
+
                     BalanceQty: contact.BalanceQty || 0,
                     Qty: this.DraftQty || 0,
                     UnitRate: contact.UnitMRP || 0,
@@ -823,6 +824,37 @@ export class IssueToDepartmentComponent implements OnInit {
         this.reportDownloadService.getExportJsonData(this.dsIssueToDep.data, exportHeaders, 'Issue To Department');
         this.dsIssueToDep.data = [];
         this.sIsLoading = '';
+    }
+
+    OnIndent() {
+        const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
+            {
+              maxWidth: "100%",
+              height: '95%',
+              width: '95%',
+            });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.dsNewIssueList1.data = result;
+           console.log(result)
+          });
+    }
+    IndentItemDetails(Param){
+        this.sIsLoading = 'loading-data';
+        var vdata = {
+          'IndentId':Param.IndentDetailsId  
+        }
+        console.log(vdata);
+        this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
+          this.dsNewIssueList3.data = data as NewIssueList3[];
+          console.log(this.dsNewIssueList3);
+          this.dsNewIssueList3.sort = this.sort;
+          this.dsNewIssueList3.paginator = this.paginator;
+          this.sIsLoading = '';
+        },
+          error => {
+            this.sIsLoading = '';
+          });
     }
 }
 export class NewIssueList3 {
