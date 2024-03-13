@@ -86,7 +86,7 @@ export class SalesService {
   }
 
   public getBatchList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_BatchPOP_BalanceQty",Param);
   }
   public getConcessionCombo()
   {
@@ -137,7 +137,7 @@ export class SalesService {
   }
 
   public getCurrentStockItem(param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrive_CurrentStock_ItemList",param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CurrentStock_ItemList",param);
   }
   
   public getSubstitutes(emp) {

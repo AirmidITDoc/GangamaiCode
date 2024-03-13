@@ -1234,6 +1234,9 @@ export class SalesComponent implements OnInit {
 
   }
   calculateTotalAmt() {
+    
+
+    debugger
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
@@ -1542,6 +1545,7 @@ export class SalesComponent implements OnInit {
       this.GSTPer = result.VatPercentage;
 
       this.TotalMRP = this.Qty * this.MRP;
+      this.DiscPer = result.DiscPer;
       this.DiscAmt = 0;
       this.NetAmt = this.TotalMRP;
       this.BalanceQty = result.BalanceQty;
@@ -1559,6 +1563,7 @@ export class SalesComponent implements OnInit {
       this.LandedRate = result.LandedRate;
       this.PurchaseRate = result.PurchaseRate;
       this.UnitMRP = result.UnitMRP;
+
     });
 
     // this.Quantity.nativeElement.focus();
@@ -3292,7 +3297,7 @@ export class SalesComponent implements OnInit {
       if (this.tempDatasource.data.length >= 1) {
         this.tempDatasource.data.forEach((element) => {
           this.DraftQty = 0;
-          this.onAddBarcodeItemList(element, this.DraftQty);
+          this.onAddBarcodeItemList(element, element.IssueQty);
         });
       }
       else if (this.tempDatasource.data.length == 0) {
@@ -3320,10 +3325,24 @@ export class SalesComponent implements OnInit {
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
+        debugger
           if (contact.IssueQty != null) {
+
+            
             this.DraftQty = element.Qty + contact.IssueQty;
+            if (this.DraftQty  > contact.BalanceQty) {
+              Swal.fire("Enter Qty less than Balance :" ,contact.BalanceQty);
+              element.Qty = this.DraftQty - contact.IssueQty;
+              this.ItemFormreset();
+            }
+            
           } else {
             this.DraftQty = element.Qty + 1;
+            if (this.DraftQty  > contact.BalanceQty) {
+              Swal.fire("Enter Qty less than Balance :",contact.BalanceQty);
+              element.Qty = this.DraftQty - 1;
+              this.ItemFormreset();
+            }
           }
           let TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
           let Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
@@ -3336,6 +3355,13 @@ export class SalesComponent implements OnInit {
           let SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * (this.DraftQty)).toFixed(2);
           let IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * (this.DraftQty)).toFixed(2);
 
+          // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
+
+          let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+          let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+    
+
+
           let BalQty = contact.BalanceQty -  this.DraftQty
 
           this.saleSelectedDatasource.data[i].Qty = this.DraftQty;
@@ -3345,7 +3371,10 @@ export class SalesComponent implements OnInit {
           this.saleSelectedDatasource.data[i].TotalMRP = TotalMRP;
           this.saleSelectedDatasource.data[i].VatAmount = Vatamount;
           this.saleSelectedDatasource.data[i].TotalAmount = TotalMRP;
-          this.saleSelectedDatasource.data[i].NetAmt = vFinalNetAmount;
+          this.saleSelectedDatasource.data[i].NetAmt = NetAmt;
+
+          this.saleSelectedDatasource.data[i].DiscPer = contact.DiscPer;
+          this.saleSelectedDatasource.data[i].DiscAmt = DiscAmt;
 
           this.saleSelectedDatasource.data[i].CGSTAmt = CGSTAmt;
           this.saleSelectedDatasource.data[i].SGSTAmt = SGSTAmt;
@@ -3370,8 +3399,19 @@ export class SalesComponent implements OnInit {
 
       if (contact.IssueQty != null) {
         this.DraftQty = DraftQty + contact.IssueQty;
+        
+        if (this.DraftQty  > contact.BalanceQty) {
+          Swal.fire("Enter Qty less than Balance");
+          this.DraftQty = DraftQty - contact.IssueQty;
+          this.ItemFormreset();
+        }
       } else {
         this.DraftQty = DraftQty + 1;
+        if (this.DraftQty  > contact.BalanceQty) {
+          Swal.fire("Enter Qty less than Balance");
+          this.DraftQty = DraftQty - 1;
+          this.ItemFormreset();
+        }
       }
 
 
@@ -3386,6 +3426,9 @@ export class SalesComponent implements OnInit {
       let SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * (this.DraftQty)).toFixed(2);
       let IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * (this.DraftQty)).toFixed(2);
 
+      let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+      let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+
 
       this.chargeslistBarcode.push(
         {
@@ -3399,8 +3442,8 @@ export class SalesComponent implements OnInit {
           GSTPer: contact.VatPer || 0,
           GSTAmount: Vatamount || 0,
           TotalMRP: TotalMRP,
-          DiscPer: 0,
-          DiscAmt: 0,
+          DiscPer: contact.DiscPer,
+          DiscAmt:DiscAmt|| 0,
           NetAmt: TotalNet,
           RoundNetAmt: parseInt(TotalNet),// Math.round(TotalNet),
           StockId: this.StockId,
