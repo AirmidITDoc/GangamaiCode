@@ -10,6 +10,7 @@ export class IssueToDepartmentService {
   NewIssueGroup: FormGroup;
   IssueSearchGroup :FormGroup;
   StoreFrom:FormGroup;
+  IndentFrom:FormGroup;
   
 
   constructor(
@@ -19,6 +20,7 @@ export class IssueToDepartmentService {
     this.NewIssueGroup = this.getNewIssueForm();
     this.IssueSearchGroup= this.IssueSearchFrom();
     this.StoreFrom = this.CreateStoreFrom();
+    this.IndentFrom = this.createIndentFrom();
   }
 
   IssueSearchFrom() {
@@ -53,13 +55,26 @@ export class IssueToDepartmentService {
       FromStoreId:'',
     });
   }
+  createIndentFrom() {
+    return this._formBuilder.group({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      FromStoreId:[''],
+      Status:['0']
+     
+    });
+  }
 
  
- 
+  public getIndentList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+  }
+  public getIndentItemDetList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=retrieve_IndentItemList",Param);
+  }
   public getIssueToDepList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IssueToDep_list_by_Name",Param);
   }
-
   public getIssueItemList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IssueItemList",Param);
   }

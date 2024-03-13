@@ -120,7 +120,7 @@ export class IndentrequestComponent implements OnInit {
       });
       return;
     }
-    
+   
     //debugger
     let InsertIndentObj = {};
     InsertIndentObj['indentDate'] = this.dateTimeObj.date;
@@ -131,7 +131,12 @@ export class IndentrequestComponent implements OnInit {
 
     let InsertIndentDetObj = [];
     this.dsRaisedIndent.data.forEach((element) => {
-     
+      if(element.IndentQty == 0 || element.IndentQty == ''){
+        this.toastr.warning('Please enter Indent Qty', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return
+      }
       let IndentDetInsertObj = {};
       IndentDetInsertObj['indentId'] = 0;
       IndentDetInsertObj['itemId'] = element.ItemId;
