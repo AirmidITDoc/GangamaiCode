@@ -1,11 +1,11 @@
 .top-nav-toolbar {
     width: 100%;
-    .mat-toolbar{
+    .mat-toolbar {
         // height: 50px; // temporary
         background: $primary-25;
         @include font-size(14px);
         font-weight: normal;
-        .top-nav{
+        .top-nav {
             width: 100%;
             padding: 0 5px;
             .toolbar-left-content {
@@ -29,5 +29,10 @@
                 }
             }
         }
+    }
+}
+.mat-typography {
+    .mat-toolbar{
+        font: inherit;
     }
 }

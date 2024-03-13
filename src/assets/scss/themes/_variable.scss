@@ -100,17 +100,15 @@ $indigo-100: #c5cae9;
 $indigo-50: #e8eaf6;
 $indigo-25: #e8eaf6;
 
-
-
 $pink-900: #be18cd;
 
 $transparent: transparent;
 
 // $font-size-base: 0.875rem;
-$font-size-base: 12px;
+$font-size-base: 12px; //12px Change this size to effect all over project
 // @include media-breakpoint-down(sm) {
 //   $font-size-base: 0.8rem;
 // }
-$font-family-base: $inter;
+$font-family-base: $calibri;
 
 $border-radius-base: 1.875rem;

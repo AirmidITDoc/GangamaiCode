@@ -1,3 +1,10 @@
-@mixin font-size($value) {
-    font-size: $value;
+@use "sass:math";
+$base-font-size: 16px; // Set your base font size here
+
+@mixin font-size($size) {
+    font-size: $size;
+//   $size-in-px: if(type-of($size) == 'number', $size, str-slice($size, 1, -2));
+//   $size-in-rem: $size-in-px / $base-font-size;
+//   font-size: $size;
+//   font-size: #{$size-in-rem}rem;
 }
