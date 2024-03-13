@@ -316,10 +316,59 @@ export class IssueToDepartmentComponent implements OnInit {
                     let TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
                     let Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
                     let vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
+
+
+                    // let TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
+                    // let Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
+                    // let vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
+                    let LandedRateandedTotal = (parseInt(this.DraftQty) * (contact.LandedRate)).toFixed(2);
+                    let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+                    let PurTotAmt = (parseInt(this.DraftQty) * (contact.PurUnitRateWF)).toFixed(2);
+          
+                    let CGSTAmt = (((contact.UnitMRP) * (contact.CgstPer) / 100) * (this.DraftQty)).toFixed(2);
+                    let SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * (this.DraftQty)).toFixed(2);
+                    let IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * (this.DraftQty)).toFixed(2);
+          
+                    // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
+          
+                    let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+                    let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+    
+                    
+
+
+                    // this.dsNewIssueList3.data[i].Qty = this.DraftQty;
+                    // this.dsNewIssueList3.data[i].VatAmount = Vatamount;
+                    // this.dsNewIssueList3.data[i].TotalAmount = TotalMRP;
+                    // this.dsNewIssueList3.data[i].NetAmount = vFinalNetAmount;
+
+
                     this.dsNewIssueList3.data[i].Qty = this.DraftQty;
                     this.dsNewIssueList3.data[i].VatAmount = Vatamount;
                     this.dsNewIssueList3.data[i].TotalAmount = TotalMRP;
-                    this.dsNewIssueList3.data[i].NetAmount = vFinalNetAmount;
+                    this.dsNewIssueList3.data[i].NetAmt = vFinalNetAmount;
+                    this.dsNewIssueList3.data[i].TotalMRP = TotalMRP;
+                    this.dsNewIssueList3.data[i].VatAmount = Vatamount;
+                    this.dsNewIssueList3.data[i].TotalAmount = TotalMRP;
+                    this.dsNewIssueList3.data[i].NetAmt = NetAmt;
+          
+                    this.dsNewIssueList3.data[i].DiscPer = contact.DiscPer;
+                    this.dsNewIssueList3.data[i].DiscAmt = DiscAmt;
+          
+                    this.dsNewIssueList3.data[i].CGSTAmt = CGSTAmt;
+                    this.dsNewIssueList3.data[i].SGSTAmt = SGSTAmt;
+                    this.dsNewIssueList3.data[i].IGSTAmt = IGSTAmt;
+          
+                    this.dsNewIssueList3.data[i].CgstPer = contact.CGSTPer;
+                    this.dsNewIssueList3.data[i].SgstPer = contact.SGSTPer;
+                    this.dsNewIssueList3.data[i].IgstPer = contact.IGSTPer;
+          
+                    this.dsNewIssueList3.data[i].LandedRate = contact.LandedRate;
+                    // this.dsNewIssueList3.data[i].LandedRateandedTotal = LandedRateandedTotal;
+                    // this.dsNewIssueList3.data[i].PurchaseRate = contact.PurUnitRateWF;
+                    // this.dsNewIssueList3.data[i].PurTotAmt = PurTotAmt;
+          
+                    // this.dsNewIssueList3.data[i].BalanceQty = BalQty;
                 }
                 i++;
             });
@@ -330,19 +379,59 @@ export class IssueToDepartmentComponent implements OnInit {
             let Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
             let TotalNet = TotalMRP + Vatamount
 
+            let LandedRateandedTotal = (parseInt(this.DraftQty) * (contact.LandedRate)).toFixed(2);
+            let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+            let PurTotAmt = (parseInt(this.DraftQty) * (contact.PurUnitRateWF)).toFixed(2);
+  
+            let CGSTAmt = (((contact.UnitMRP) * (contact.CgstPer) / 100) * (this.DraftQty)).toFixed(2);
+            let SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * (this.DraftQty)).toFixed(2);
+            let IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * (this.DraftQty)).toFixed(2);
+  
+            // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
+  
+            let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+            let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+
+            
+
             this.chargeslist.push(
                 {
                     ItemId: contact.ItemId || 0,
                     ItemName: contact.ItemName || '',
                     BatchNo: contact.BatchNo,
-                    BatchExpDate: contact.BatchExpDate || '01/01/1900',
+                    
                     BalanceQty: contact.BalanceQty || 0,
                     Qty: this.DraftQty || 0,
                     UnitRate: contact.UnitMRP || 0,
                     VatPer: contact.VatPercentage || 0,
                     VatAmount: ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2),
                     TotalAmount: TotalMRP || 0,
-                    NetAmount: TotalNet || 0
+                    NetAmount: TotalNet || 0,
+
+                     
+                        BatchExpDate:  this.datePipe.transform(contact.BatchExpDate, "yyyy-MM-dd") || '01/01/1900',
+                     
+                        UnitMRP: contact.UnitMRP,
+                        GSTPer: contact.VatPer || 0,
+                        GSTAmount: Vatamount || 0,
+                        TotalMRP: TotalMRP,
+                        DiscPer: contact.DiscPer,
+                        DiscAmt:DiscAmt|| 0,
+                        NetAmt: TotalNet,
+                        RoundNetAmt: parseInt(TotalNet),// Math.round(TotalNet),
+                        StockId: this.vBarcode,
+                        LandedRate: contact.LandedRate,
+                        LandedRateandedTotal: LandedRateandedTotal,
+                        CgstPer: contact.CGSTPer,
+                        CGSTAmt: CGSTAmt,
+                        SgstPer: contact.SGSTPer,
+                        SGSTAmt: SGSTAmt,
+                        IgstPer: contact.IGSTPer,
+                        IGSTAmt: IGSTAmt,
+                        PurchaseRate: contact.PurUnitRateWF,
+                        PurTotAmt: PurTotAmt,
+                        MarginAmt: v_marginamt,
+                        SalesDraftId: 1
                 });
             console.log(this.chargeslist);
             // });
@@ -396,6 +485,35 @@ export class IssueToDepartmentComponent implements OnInit {
                         VatPer: gstper || 0,
                         VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
                         TotalAmount: this.vTotalAmount || 0,
+
+
+                        // ItemId: contact.ItemId || 0,
+                        // ItemName: contact.ItemName || '',
+                        // BatchNo: contact.BatchNo,
+                        // BatchExpDate:  this.datePipe.transform(contact.BatchExpDate, "yyyy-MM-dd") || '01/01/1900',
+                        // BalanceQty: contact.BalanceQty,
+                        // Qty: this.DraftQty || 0,
+                        // UnitMRP: contact.UnitMRP,
+                        // GSTPer: contact.VatPer || 0,
+                        // GSTAmount: Vatamount || 0,
+                        // TotalMRP: TotalMRP,
+                        // DiscPer: contact.DiscPer,
+                        // DiscAmt:DiscAmt|| 0,
+                        // NetAmt: TotalNet,
+                        // RoundNetAmt: parseInt(TotalNet),// Math.round(TotalNet),
+                        // StockId: this.StockId,
+                        // LandedRate: contact.LandedRate,
+                        // LandedRateandedTotal: LandedRateandedTotal,
+                        // CgstPer: contact.CGSTPer,
+                        // CGSTAmt: CGSTAmt,
+                        // SgstPer: contact.SGSTPer,
+                        // SGSTAmt: SGSTAmt,
+                        // IgstPer: contact.IGSTPer,
+                        // IGSTAmt: IGSTAmt,
+                        // PurchaseRate: contact.PurUnitRateWF,
+                        // PurTotAmt: PurTotAmt,
+                        // MarginAmt: v_marginamt,
+                        // SalesDraftId: 1
                     });
                 console.log(this.chargeslist);
 
