@@ -320,12 +320,24 @@
                                             Add
                                         </button> -->
 
-                                        <button (click)="onAdd()" class="btn btn-primary btn-with-icon py-8"
+                                        <!-- <button (click)="onAdd()" class="btn btn-primary btn-with-icon py-8"
                                             [disabled]="_GRNList.userFormGroup.invalid" #addbutton>
                                             <span class="btn-icon">
                                                 <mat-icon> add </mat-icon>
                                             </span>
-                                        </button>
+                                        </button> -->
+                                            <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()"
+                                            [disabled]="_GRNList.userFormGroup.invalid" #addbutton>
+                                            <mat-icon>add</mat-icon>
+                                            </button>
+
+                                            <!-- <button (click)="OnAddUpdate($event)"
+                                            class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
+                                            #addbutton>
+                                            <span class="btn-icon">
+                                                <mat-icon> add </mat-icon>
+                                            </span> -->
+                                        <!-- </button> -->
                                     </div>
                                 </div>
                                 <div fxLayout="row">
