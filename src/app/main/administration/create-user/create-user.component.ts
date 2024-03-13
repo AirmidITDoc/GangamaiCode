@@ -80,32 +80,12 @@ export class CreateUserComponent implements OnInit {
 
   onEdit(row) {
     var m_data = {
-
       "RollId": row.RollId,
       "RollName": row.RollName,
-      // "FirstName":row.FirstName.trim(),
-      // "MiddleName":row.MiddleName.trim(),
-      // "LastName":row.LastName.trim(),
-      // "DateofBirth":row.DateofBirth,
-      // "Address":row.Address.trim(),
-      // "City":row.City.trim(),
-      // "Pin":row.Pin.trim(),
-      // "Phone":row.Phone.trim(),
-
     }
 
     console.log(m_data);
     this._UserService.populateForm(m_data);
-
-    // const dialogRef = this._matDialog.open(ChangePasswordComponent, 
-    //   {  maxWidth: "40vw",
-    //   maxHeight: "80vh", width: '100%', height: "100%"
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed - Insert Action', result);
-    //   // this.getDoctorMasterList();
-    // });
   }
 
   ChangePassword() {

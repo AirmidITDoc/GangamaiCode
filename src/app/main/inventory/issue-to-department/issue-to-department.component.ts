@@ -396,9 +396,9 @@ export class IssueToDepartmentComponent implements OnInit {
                         VatPer: gstper || 0,
                         VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
                         TotalAmount: this.vTotalAmount || 0,
+                        StockId:this.vStockId
                     });
                 console.log(this.chargeslist);
-
                 this.dsNewIssueList3.data = this.chargeslist
             } else {
                 this.toastr.warning('Selected Item already added in the list', 'Warning !', {
@@ -498,15 +498,15 @@ export class IssueToDepartmentComponent implements OnInit {
             insertitemdetail['purTotalAmount'] = 0;
             insertitemdetail['vatPercentage'] = element.VatPer || 0;
             insertitemdetail['vatAmount'] = element.VatAmount || 0;
-            insertitemdetail['stkId'] = 0;
+            insertitemdetail['stkId'] = element.StockId;
             isertItemdetailsObj.push(insertitemdetail);
         });
         let updateissuetoDepartmentStock = [];
         this.dsNewIssueList3.data.forEach(element => {
             let updateitemdetail = {};
             updateitemdetail['itemId'] = element.ItemId;
-            updateitemdetail['issueQty'] = element.BalanceQty;
-            updateitemdetail['stkId'] = 0;
+            updateitemdetail['issueQty'] = element.Qty;
+            updateitemdetail['stkId'] = element.StockId;
             updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
             updateissuetoDepartmentStock.push(updateitemdetail);
         });

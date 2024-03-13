@@ -365,7 +365,6 @@ export class UpdatePurchaseorderComponent implements OnInit {
     return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
   }
   getOldPurchaseOrder(el) {
-    debugger
     var Param = {
       "purchaseID": el,
     }
@@ -427,7 +426,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   supplierRateList: any = [];
   getSupplierRate() {
     this.supplierRateList = [];
-    let Query = "Select SupplierRate  from M_ItemWiseSupplierRate where ItemId= " + this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemID + " and SupplierId=" + this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId
+    let Query = "Select Isnull(SupplierRate,0) as SupplierRate from M_ItemWiseSupplierRate where ItemId= " + this._PurchaseOrder.userFormGroup.get('ItemName').value.ItemID + " and SupplierId=" + this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId
     console.log(Query);
     this._PurchaseOrder.getSupplierRateList(Query).subscribe(data => {
       // console.log(data)
@@ -503,9 +502,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     updatePurchaseOrderHeaderObj['purchaseId'] = this.registerObj.PurchaseID;
 
     let InsertpurchaseDetailObj = [];
-    debugger
     this.dsItemNameList.data.forEach((element) => {
-      console.log(element);
       let purchaseDetailInsertObj = {};
       purchaseDetailInsertObj['purchaseId'] = 0;
       purchaseDetailInsertObj['itemId'] = element.ItemId;
@@ -775,19 +772,24 @@ export class UpdatePurchaseorderComponent implements OnInit {
     }
   }
   OnchekPurchaserateValidation() {
- 
     if (this.vRate) {
-      if (this.vRate > this.vDefRate) {
-        Swal.fire("Please Check defined Supplier Rate for product ...!!!");
-      }
       if (this.vRate <= this.vMRP) {
         this.calculateTotalAmt();
       } else {
         this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
-        this._PurchaseOrder.userFormGroup.get('Rate').setValue(0);
+        this.vRate=this.vMRP;
       }
+    }
+    if (this.vDefRate == '' || this.vDefRate !== 0) {
+      if (this.vRate > this.vDefRate) {
+        Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+      }
+    } else {
+      this.toastr.warning('Defined rate is not defined for this Item.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
     }
   }
 

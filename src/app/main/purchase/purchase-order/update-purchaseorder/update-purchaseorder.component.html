@@ -149,8 +149,8 @@
                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                                     (optionSelected)='getSelectedObj($event.option.value)'>
                                                     <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                                                        {{option.ItemId}} | {{option.ItemName}}
-                                                        |{{option.BalanceQty}}
+                                                        {{option.ItemID}} | {{option.ItemName}}
+                                                        |{{option.HSNcode}}
                                                     </mat-option>
                                                 </mat-autocomplete>
                                                 <mat-error
