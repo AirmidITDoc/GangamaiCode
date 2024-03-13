@@ -123,37 +123,32 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     // console.log(this.dsItemList);
 
   }
-  onSubmit(){
-    // debugger
-    console.log(this.SelectedRowData);
+  onSubmit() {
     if ((!this.dsItemList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    
+
     let materialAcceptIssueHeader = {};
-    materialAcceptIssueHeader['issueId'] =this.data.Obj.IssueId; 
-    materialAcceptIssueHeader['acceptedBy'] = 1 ;
+    materialAcceptIssueHeader['issueId'] = this.data.Obj.IssueId;
+    materialAcceptIssueHeader['acceptedBy'] = 1;
 
     let materialAcceptIssueDetails = [];
     this.SelectedRowData.data.forEach((element) => {
-     
+
       let materialAcceptIssueDetailsObj = {};
 
-      materialAcceptIssueDetailsObj['issueId'] = element.IssueId; 
-      materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId ;
+      materialAcceptIssueDetailsObj['issueId'] = element.IssueId;
+      materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId;
       let statuschk
-      debugger
-      if(element.selected == 1){
+      if (element.selected == 1) {
         statuschk = 1;
-      }else if(element.selected != 1)
-        {
-          statuschk = 0;
-        }
-      
-      materialAcceptIssueDetailsObj['status'] = statuschk ;
+      } else if (element.selected != 1) {
+        statuschk = 0;
+      }
+      materialAcceptIssueDetailsObj['status'] = statuschk;
       materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
     });
     let submitData = {
@@ -172,11 +167,11 @@ export class AcceptMaterialListPopupComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
-    },error => {
+    }, error => {
       this.toastr.error('Category not saved !, Please check API error..', 'Error !', {
-       toastClass: 'tostr-tost custom-toast-error',
-     });
-   });
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });
   }
 
 }
