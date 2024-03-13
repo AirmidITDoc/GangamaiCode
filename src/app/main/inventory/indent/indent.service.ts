@@ -87,6 +87,12 @@ export class IndentService {
   public VerifyIndent(Param){
     return this._httpClient.post("InventoryTransaction/IndentVerify", Param)
   }
+
+  
+
+  public getIndentwiseview(IndentId){
+    return this._httpClient.get("InventoryTransaction/view-IndentWise?IndentId=" + IndentId);
+  }
   populateForm(employee) {
     this.newIndentFrom.patchValue(employee);
 }

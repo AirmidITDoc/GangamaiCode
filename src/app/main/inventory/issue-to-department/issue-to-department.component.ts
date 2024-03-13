@@ -34,6 +34,8 @@ export class IssueToDepartmentComponent implements OnInit {
     vBarcodeflag: boolean = false;
     SpinLoading: boolean = false;
 
+    vsaveflag: boolean = true;
+
     displayedColumns: string[] = [
         'IssueNo',
         'IssueDate',
@@ -364,7 +366,7 @@ export class IssueToDepartmentComponent implements OnInit {
                     this.dsNewIssueList3.data[i].IgstPer = contact.IGSTPer;
           
                     this.dsNewIssueList3.data[i].LandedRate = contact.LandedRate;
-                    // this.dsNewIssueList3.data[i].LandedRateandedTotal = LandedRateandedTotal;
+                    this.dsNewIssueList3.data[i].StockId = contact.StockId;
                     // this.dsNewIssueList3.data[i].PurchaseRate = contact.PurUnitRateWF;
                     // this.dsNewIssueList3.data[i].PurTotAmt = PurTotAmt;
           
@@ -383,9 +385,9 @@ export class IssueToDepartmentComponent implements OnInit {
             let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
             let PurTotAmt = (parseInt(this.DraftQty) * (contact.PurUnitRateWF)).toFixed(2);
   
-            let CGSTAmt = (((contact.UnitMRP) * (contact.CgstPer) / 100) * (this.DraftQty)).toFixed(2);
-            let SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * (this.DraftQty)).toFixed(2);
-            let IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * (this.DraftQty)).toFixed(2);
+            let CGSTAmt = (((contact.UnitMRP) * (contact.CGSTPer) / 100) * (this.DraftQty)).toFixed(2);
+            let SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * (this.DraftQty)).toFixed(2);
+            let IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * (this.DraftQty)).toFixed(2);
   
             // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
   
@@ -419,7 +421,7 @@ export class IssueToDepartmentComponent implements OnInit {
                         DiscAmt:DiscAmt|| 0,
                         NetAmt: TotalNet,
                         RoundNetAmt: parseInt(TotalNet),// Math.round(TotalNet),
-                        StockId: this.vBarcode,
+                        StockId: contact.StockId,
                         LandedRate: contact.LandedRate,
                         LandedRateandedTotal: LandedRateandedTotal,
                         CgstPer: contact.CGSTPer,
@@ -524,10 +526,19 @@ export class IssueToDepartmentComponent implements OnInit {
             }
         }
 
+
+       
         this.ItemReset();
         this.itemid.nativeElement.focus();
         this._IssueToDep.NewIssueGroup.get('ItemID').setValue('');
         this.Addflag = false;
+
+
+        // &&   this.vFinalNetAmount > 0 
+        debugger
+        if(!(this._IssueToDep.NewIssueGroup.invalid) && this.dsNewIssueList3.data.length > 0){
+            this.vsaveflag=false;
+        }
     }
 
 
@@ -570,9 +581,14 @@ export class IssueToDepartmentComponent implements OnInit {
         this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
         this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
         return this.vFinalTotalAmount;
+
+
     }
 
     OnSave() {
+       this.vsaveflag=true;
+
+
         if ((!this.dsNewIssueList3.data.length)) {
             this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',

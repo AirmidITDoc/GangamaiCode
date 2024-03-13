@@ -527,7 +527,9 @@ export class UserDetail {
   IsIndentVerify: any;
   IsInchIndVfy: any;
 
-
+  ViewBrowseBill:any;
+  IsPharmacyBalClearnace:any;
+  IsAddChargeDelete:any;
   /**
    * Constructor
    *
@@ -575,7 +577,9 @@ export class UserDetail {
       this.AddChargeIsDelete = UserDetail.Indentverify || '';
       this.IsIndentVerify = UserDetail.Indentverify || '';
       this.IsInchIndVfy = UserDetail.Indentverify || '';
-
+      this.ViewBrowseBill = UserDetail.ViewBrowseBill || '';
+      this.IsPharmacyBalClearnace=UserDetail.IsPharmacyBalClearnace || 0;
+      this.IsAddChargeDelete =UserDetail.IsAddChargeDelete || 0;
     }
 
   }

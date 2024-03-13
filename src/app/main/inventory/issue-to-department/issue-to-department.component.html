@@ -833,7 +833,7 @@
                                     <div matTooltip="Select All Value to enable this button!!">
                                         <button class="next-btn"
                                             style="width: 80px;border-radius: 16px;margin-left: 120px;"
-                                            (click)="OnSave()">Save</button>
+                                            (click)="OnSave()" [disabled]="vsaveflag">Save</button>
                                         <button class="footer-btn" style="width: 80px;border-radius: 16px;"
                                             (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                     </div>

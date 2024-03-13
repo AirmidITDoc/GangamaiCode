@@ -26,7 +26,7 @@ export class SalePopupComponent implements OnInit {
   dataSource = new MatTableDataSource<SalesList>();
   selectedRowIndex: number = 0;
   screenFromString = 'admission-form';
-
+vEscflag:boolean=false;
   
   
   constructor(
@@ -42,7 +42,9 @@ export class SalePopupComponent implements OnInit {
 
 @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     if (event.keyCode === 27) {
-        this. close();
+      this.vEscflag=true
+        this.close();
+
     }
 }
 
@@ -50,7 +52,7 @@ export class SalePopupComponent implements OnInit {
 
 
   close(){
-    this.dialogRef.close();
+    this.dialogRef.close(this.vEscflag);
   }
 
   highlight(row: any) {

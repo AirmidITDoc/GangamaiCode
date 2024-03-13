@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { MatTabGroup } from '@angular/material/tabs';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-indent',
@@ -75,6 +76,8 @@ export class IndentComponent implements OnInit {
   dsIndentNameList = new MatTableDataSource<IndentNameList>();
   dsTempItemNameList = new MatTableDataSource<IndentNameList>();
 
+
+  vSaveflag:boolean=true;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -463,6 +466,37 @@ export class IndentComponent implements OnInit {
       //this.itemid.nativeElement.focus();
     }
   }
+
+
+  SpinLoading: boolean = false;
+      
+  viewgetIndentReportPdf(contact) {
+
+    console.log(contact)
+    this.sIsLoading == 'loading-data'
+  
+    setTimeout(() => {
+    this.SpinLoading =true;
+    //  this.AdList=true;
+    this._IndentService.getIndentwiseview(contact.IndentId).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Indent Report Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.sIsLoading = '';
+        });
+    });
+    },1000);
+  }
+
+  
 }
 
 export class IndentNameList {
