@@ -75,7 +75,8 @@ export class IssueToDepartmentComponent implements OnInit {
     ];
     displayedNewIssuesList1: string[] = [
         'ItemName',
-        'Qty'
+        'Qty',
+        'Action'
     ]
     displayedNewIssuesList2: string[] = [
         'BatchNo',
@@ -385,11 +386,11 @@ export class IssueToDepartmentComponent implements OnInit {
             let LandedRateandedTotal = (parseInt(this.DraftQty) * (contact.LandedRate)).toFixed(2);
             let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
             let PurTotAmt = (parseInt(this.DraftQty) * (contact.PurUnitRateWF)).toFixed(2);
-  
+
             let CGSTAmt = (((contact.UnitMRP) * (contact.CGSTPer) / 100) * (this.DraftQty)).toFixed(2);
             let SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * (this.DraftQty)).toFixed(2);
             let IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * (this.DraftQty)).toFixed(2);
-  
+
             // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
 
             let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
@@ -411,30 +412,30 @@ export class IssueToDepartmentComponent implements OnInit {
                     TotalAmount: TotalMRP || 0,
                     NetAmount: TotalNet || 0,
 
-                     
-                        BatchExpDate:  this.datePipe.transform(contact.BatchExpDate, "yyyy-MM-dd") || '01/01/1900',
-                     
-                        UnitMRP: contact.UnitMRP,
-                        GSTPer: contact.VatPer || 0,
-                        GSTAmount: Vatamount || 0,
-                        TotalMRP: TotalMRP,
-                        DiscPer: contact.DiscPer,
-                        DiscAmt:DiscAmt|| 0,
-                        NetAmt: TotalNet,
-                        RoundNetAmt: parseInt(TotalNet),// Math.round(TotalNet),
-                        StockId: contact.StockId,
-                        LandedRate: contact.LandedRate,
-                        LandedRateandedTotal: LandedRateandedTotal,
-                        CgstPer: contact.CGSTPer,
-                        CGSTAmt: CGSTAmt,
-                        SgstPer: contact.SGSTPer,
-                        SGSTAmt: SGSTAmt,
-                        IgstPer: contact.IGSTPer,
-                        IGSTAmt: IGSTAmt,
-                        PurchaseRate: contact.PurUnitRateWF,
-                        PurTotAmt: PurTotAmt,
-                        MarginAmt: v_marginamt,
-                        SalesDraftId: 1
+
+                    BatchExpDate: this.datePipe.transform(contact.BatchExpDate, "yyyy-MM-dd") || '01/01/1900',
+
+                    UnitMRP: contact.UnitMRP,
+                    GSTPer: contact.VatPer || 0,
+                    GSTAmount: Vatamount || 0,
+                    TotalMRP: TotalMRP,
+                    DiscPer: contact.DiscPer,
+                    DiscAmt: DiscAmt || 0,
+                    NetAmt: TotalNet,
+                    RoundNetAmt: parseInt(TotalNet),// Math.round(TotalNet),
+                    StockId: contact.StockId,
+                    LandedRate: contact.LandedRate,
+                    LandedRateandedTotal: LandedRateandedTotal,
+                    CgstPer: contact.CGSTPer,
+                    CGSTAmt: CGSTAmt,
+                    SgstPer: contact.SGSTPer,
+                    SGSTAmt: SGSTAmt,
+                    IgstPer: contact.IGSTPer,
+                    IGSTAmt: IGSTAmt,
+                    PurchaseRate: contact.PurUnitRateWF,
+                    PurTotAmt: PurTotAmt,
+                    MarginAmt: v_marginamt,
+                    SalesDraftId: 1
                 });
             console.log(this.chargeslist);
             // });
@@ -528,7 +529,7 @@ export class IssueToDepartmentComponent implements OnInit {
         }
 
 
-       
+
         this.ItemReset();
         this.itemid.nativeElement.focus();
         this._IssueToDep.NewIssueGroup.get('ItemID').setValue('');
@@ -537,12 +538,137 @@ export class IssueToDepartmentComponent implements OnInit {
 
         // &&   this.vFinalNetAmount > 0 
         debugger
-        if(!(this._IssueToDep.NewIssueGroup.invalid) && this.dsNewIssueList3.data.length > 0){
-            this.vsaveflag=false;
+        if (!(this._IssueToDep.NewIssueGroup.invalid) && this.dsNewIssueList3.data.length > 0) {
+            this.vsaveflag = false;
         }
     }
 
 
+    AddIndentItem(contact) {
+        console.log(contact)
+        debugger
+        this.Itemchargeslist1 = [];
+        this.QtyBalchk = 0;
+
+        var m_data = {
+            "ItemId": contact.ItemId,
+            "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+        }
+        this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
+            console.log(draftdata)
+            this.Itemchargeslist1 = draftdata as any;
+            if (this.Itemchargeslist1.length == 0) {
+                Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
+            }
+            else if (this.Itemchargeslist1.length > 0) {
+                let ItemID;
+                this.Itemchargeslist1.forEach((element) => {
+                    
+                    // if(element.IndQty ==0){
+                    let IndQty=1
+                    // }else 
+                    if(element.IndQty > 0){
+                        IndQty=element.IndQty
+                    }
+
+                    if (ItemID != element.ItemId) {
+                        this.QtyBalchk = 0;
+                    }
+                    if (this.QtyBalchk != 1) {
+                        if (IndQty <= element.Qty) {
+                            this.QtyBalchk = 1;
+                              this.getFinalCalculation(element, IndQty);
+                            ItemID = element.ItemId;
+                        }
+                        else {
+                            Swal.fire("Balance Qty is :", element.Qty)
+                            this.QtyBalchk = 0;
+                            Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
+                        }
+                    }
+                });
+            }
+
+        });
+
+        // }
+
+    }
+
+    RQty:any=0;
+    getFinalCalculation(contact, DraftQty) {
+        debugger
+        console.log(contact)
+       
+        this.RQty = parseInt(DraftQty);
+        if (this.RQty && contact.UnitMRP) {
+         let TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
+         let LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
+         let PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
+    
+         let  v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+    
+         let  GSTAmount = (((contact.UnitMRP) * (contact.VatPercentage) / 100) * parseInt(this.RQty)).toFixed(2);
+         let  CGSTAmt = (((contact.UnitMRP) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+         let  SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+         let  IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+    
+         let  NetAmt = (parseFloat(TotalMRP) - 0).toFixed(2);
+    
+          if (contact.DiscPer > 0) {
+            // let  DiscAmt = ((TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
+            // let   NetAmt = (TotalMRP - this.DiscAmt).toFixed(2);
+    
+          }
+    
+          this.chargeslist = this.dsTempItemNameList.data;
+          let gstper
+          this.chargeslist.push(
+              {
+                  ItemId: contact.ItemId || 0,
+                  ItemName: contact.ItemName || '',
+                  BatchNo: contact.vBatchNo,
+                  BatchExpDate: this.datePipe.transform(contact.BatchExpDate, "MM-dd-yyyy"),
+                  BalanceQty: this.vBalanceQty || 0,
+                  Qty: this.vQty || 0,
+                  UnitRate: this.vUnitMRP || 0,
+                  VatPer: gstper || 0,
+                  VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
+                  TotalAmount: this.vTotalAmount || 0,
+  
+  
+                 
+                  UnitMRP: contact.UnitMRP,
+                  GSTPer: contact.VatPer || 0,
+                  GSTAmount: GSTAmount || 0,
+                  TotalMRP: TotalMRP,
+                  DiscPer: contact.DiscPer,
+                  DiscAmt: 0,
+                  NetAmt: NetAmt,
+                  RoundNetAmt: parseInt(NetAmt),// Math.round(TotalNet),
+                  StockId: contact.StockId,
+                  LandedRate: contact.LandedRate,
+                  LandedRateandedTotal: LandedRateandedTotal,
+                  CgstPer: contact.CGSTPer,
+                  CGSTAmt: CGSTAmt,
+                  SgstPer: contact.SGSTPer,
+                  SGSTAmt: SGSTAmt,
+                  IgstPer: contact.IGSTPer,
+                  IGSTAmt: IGSTAmt,
+                  PurchaseRate: contact.PurUnitRateWF,
+                  PurTotAmt: PurTotAmt,
+                  MarginAmt: v_marginamt,
+                  SalesDraftId: 1
+              });
+          console.log(this.chargeslist);
+          this.dsNewIssueList3.data = this.chargeslist
+  
+  
+        }
+    
+        // this.Itemchargeslist=[];
+      }
+    
 
 
     deleteTableRow(element) {
@@ -587,7 +713,7 @@ export class IssueToDepartmentComponent implements OnInit {
     }
 
     OnSave() {
-       this.vsaveflag=true;
+        this.vsaveflag = true;
 
 
         if ((!this.dsNewIssueList3.data.length)) {
@@ -677,9 +803,9 @@ export class IssueToDepartmentComponent implements OnInit {
         this.dsNewIssueList1.data = [];
         this.dsNewIssueList2.data = [];
         this.dsNewIssueList3.data = [];
-        this.BarcodetempDatasource=[];
-        this.chargeslist.data=[];
-        this.dsTempItemNameList.data=[];
+        this.BarcodetempDatasource = [];
+        this.chargeslist.data = [];
+        this.dsTempItemNameList.data = [];
     }
 
     @ViewChild('itemid') itemid: ElementRef;
@@ -698,10 +824,10 @@ export class IssueToDepartmentComponent implements OnInit {
         this.dsNewIssueList1.data = [];
         this.dsNewIssueList2.data = [];
         this.dsNewIssueList3.data = [];
-        this.BarcodetempDatasource=[];
-        this.chargeslist.data=[];
-        this.tempDatasource.data=[];
-        this.dsTempItemNameList.data=[];
+        this.BarcodetempDatasource = [];
+        this.chargeslist.data = [];
+        this.tempDatasource.data = [];
+        this.dsTempItemNameList.data = [];
     }
     public onEnteritemid(event): void {
         if (event.which === 13) {
@@ -842,35 +968,35 @@ export class IssueToDepartmentComponent implements OnInit {
     OnIndent() {
         const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
             {
-              maxWidth: "100%",
-              height: '95%',
-              width: '95%',
+                maxWidth: "100%",
+                height: '95%',
+                width: '95%',
             });
-          dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
             this.dsNewIssueList1.data = result;
-           console.log(result)
-          });
+            console.log(result)
+        });
     }
-    IndentItemDetails(Param){
+    IndentItemDetails(Param) {
         console.log(Param)
         this.sIsLoading = 'loading-data';
         var vdata = {
-            'IndentId':Param.IndentId  
+            'IndentId': Param.IndentId
         }
         console.log(vdata);
         this._IssueToDep.getAgainstIndentList(vdata).subscribe(data => {
             console.log(data)
-          this.dsNewIssueList3.data = data as NewIssueList3[];
-          this.chargeslist = data as NewIssueList3[];
-          console.log(this.dsNewIssueList3);
-          this.dsNewIssueList3.sort = this.sort;
-          this.dsNewIssueList3.paginator = this.paginator;
-          this.sIsLoading = '';
-        },
-          error => {
+            this.dsNewIssueList3.data = data as NewIssueList3[];
+            this.chargeslist = data as NewIssueList3[];
+            console.log(this.dsNewIssueList3);
+            this.dsNewIssueList3.sort = this.sort;
+            this.dsNewIssueList3.paginator = this.paginator;
             this.sIsLoading = '';
-          });
+        },
+            error => {
+                this.sIsLoading = '';
+            });
     }
 }
 export class NewIssueList3 {

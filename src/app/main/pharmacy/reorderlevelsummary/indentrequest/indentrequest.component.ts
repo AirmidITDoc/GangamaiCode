@@ -10,6 +10,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-indentrequest',
@@ -98,13 +99,13 @@ export class IndentrequestComponent implements OnInit {
   }
 
 
-  chkQty(contact){
-    debugger
+  chkQty(contact,InQty){
+    
     if(this.dsRaisedIndent.data.length > 0){
-      if(this.dsRaisedIndent.data[0].IndentQty == '' ){
-        this.dsRaisedIndent.data.forEach((element) => {
-          if (element.IndentQty == '' || element.IndentQty == null || element.IndentQty == undefined
-          || element.IndentQty == 0) {
+      
+        // this.dsRaisedIndent.data.forEach((element) => {
+          debugger
+          if (InQty == '' || InQty == null || InQty == 'undefined' || InQty == 0) {
             this.vQtyflag=true;
             this.toastr.warning('Please enter Indent Qty', 'Warning !', {
               toastClass: 'tostr-tost custom-toast-warning',
@@ -113,15 +114,15 @@ export class IndentrequestComponent implements OnInit {
           }else{
             this.vQtyflag=true;
           }
-        });
+        // });
         return;
       }
   
-      if(this.vQtyflag){
+      if(!this.vQtyflag){
         this.vsaveflag=false;
       }
     }
-  }
+  
 
 
 
@@ -130,6 +131,8 @@ export class IndentrequestComponent implements OnInit {
 
 
   OnSave() {
+
+
     if ((!this.dsRaisedIndent.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -143,7 +146,8 @@ export class IndentrequestComponent implements OnInit {
       return;
     }
 
-    //debugger
+    if(!this.vQtyflag){
+   
     let InsertIndentObj = {};
     InsertIndentObj['indentDate'] = this.dateTimeObj.date;
     InsertIndentObj['indentTime'] = this.dateTimeObj.time;
@@ -191,8 +195,11 @@ export class IndentrequestComponent implements OnInit {
       });
     });
   
-  
+    }
 }
+
+
+
   deleteTableRow(elm) {
     this.dsRaisedIndent.data = this.dsRaisedIndent.data
       .filter(i => i !== elm)

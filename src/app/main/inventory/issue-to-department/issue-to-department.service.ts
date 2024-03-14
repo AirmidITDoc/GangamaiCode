@@ -107,6 +107,8 @@ export class IssueToDepartmentService {
     return this._httpClient.get("InventoryTransaction/view-IssuetoDeptIssuewise?IssueId=" + IssueId);
   }
 
-
+  public getIndentItemBatch(emp){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",emp);
+  }
   
 }

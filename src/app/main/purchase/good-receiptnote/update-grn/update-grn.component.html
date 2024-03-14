@@ -1029,20 +1029,16 @@
                                                 [(ngModel)]="registerObj.RoundingAmt">
                                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                        <div>
-                                            <button class="btn btn-primary " (click)="OnSave()" [disabled]="vsaveflag">Save</button>&nbsp;
-                                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
+                                      
+                                        <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                            <button class="btn btn-primary " (click)="OnSave()" [disabled]="vsaveflag"
+                                                >Save</button>
+                                           
+                                            <button class="btn btn-danger-outline" (click)="OnReset()"
+                                                >Reset</button>
                                         </div>
 
-                                        <!-- <div class="sales-footer-buttons gap-8" fxLayout="row">
-                                            <button class="btn btn-primary " (click)="onSave()"
-                                                [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save(F9)</button>
-                                            <button class="btn btn-primary-outline"
-                                                *ngIf="IsOnlineRefNo"
-                                                (click)="payOnline()">Online</button>
-                                            <button class="btn btn-danger-outline" (click)="onClose()"
-                                                (keydown.enter)="onF6Reset($event)">Reset</button>
-                                        </div> -->
+                                       
 
                                     </div>
                                     <div style="width: 100%;font-size: 20px;font-weight: 500;">

@@ -53,11 +53,11 @@ export class ReorderlevelsummaryComponent implements OnInit {
       'ReOderQty':this._Reorderlevelsummery.SearchFrom.get('ReorderQty').value,
       'vType': this._Reorderlevelsummery.SearchFrom.get('Type').value
     }
-    //console.log(vdata)
+    console.log(vdata)
     this.sIsLoading = 'loading-data';
      this._Reorderlevelsummery.getIssuTrackerList(vdata).subscribe(data => {
      this.dsReorderlevelSummery.data = data as ReorderlvlList[];
-    // console.log(this.dsReorderlevelSummery.data)
+    console.log(this.dsReorderlevelSummery.data)
      this.dsReorderlevelSummery.sort = this.sort;
      this.dsReorderlevelSummery.paginator = this.paginator;
      this.sIsLoading = '';
@@ -96,12 +96,13 @@ export class ReorderlvlList{
   ItemName:string;
   BalQty:any;
   ReorderQty:any;
-
+  IndentQty: any;
   constructor(ReorderlvlList){
     {
       this.ItemName = ReorderlvlList.ItemName || '';
       this.BalQty = ReorderlvlList.BalQty || 0;
       this.ReorderQty = ReorderlvlList.ReorderQty || 0;
+      this.IndentQty = ReorderlvlList.IndentQty || 0;
     }
   }
 }

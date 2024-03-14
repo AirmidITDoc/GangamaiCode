@@ -711,6 +711,19 @@
                                                                 {{element.Qty}} </mat-cell>
                                                         </ng-container>
 
+
+                                                        
+                                                        <ng-container matColumnDef="Action" stickyEnd>
+                                                            <mat-header-cell *matHeaderCellDef style="color: white;">
+                                                                Action</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element">
+                                                                <button mat-icon-button (click)="AddIndentItem(element)"
+                                                                    color="warn">
+                                                                    <mat-icon>add</mat-icon>
+                                                                </button>
+                                                            </mat-cell>
+                                                        </ng-container>
+
                                                         <ng-container matColumnDef="loading">
                                                             <mat-header-cell *matFooterCellDef colspan="6"
                                                                 style="display: none;">
@@ -723,13 +736,13 @@
                                                             </mat-footer-cell>
                                                         </ng-container>
 
-                                                      
+                                                        <!-- (click)="IndentItemDetails(contact)"  -->
                                                         <mat-header-row class="accent"
                                                             *matHeaderRowDef="displayedNewIssuesList1; sticky: true">
                                                         </mat-header-row>
                                                         <mat-row *matRowDef="let contact; columns: displayedNewIssuesList1;"
                                                             class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                            (click)="IndentItemDetails(contact)" ></mat-row>
+                                                           ></mat-row>
                                                         <mat-footer-row *matFooterRowDef="['loading']"
                                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                         </mat-footer-row>
