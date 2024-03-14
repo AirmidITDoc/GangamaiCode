@@ -962,7 +962,7 @@
                                             <mat-label>Received By</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="ReceivedBy"
                                                 type="text" #ReceivedBy [(ngModel)]="registerObj.ReceivedBy"
-                                                (keydown)="onEnterReceivedBy($event)" required
+                                                (keydown)="onEnterReceivedBy($event)" required (keyup)="Setsave()"
                                                 (keydown.enter)="focusNextService()">
                                         </mat-form-field>
 
@@ -978,7 +978,7 @@
                                             <mat-label>Credit Amt</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="CreditAmount"
                                                 #CreditAmount [(ngModel)]="registerObj.CreditNote" type="number"
-                                                (keydown)="onEnterCreditAmount($event)"
+                                                (keydown)="onEnterCreditAmount($event)" 
                                                 (keydown.enter)="focusNextService()">
                                         </mat-form-field>
 

@@ -1777,12 +1777,20 @@ export class UpdateGRNComponent implements OnInit {
     }
   }
   public onEnterReceivedBy(event): void {
+    debugger
     if (event.which === 13) {
       this.DebitAmount.nativeElement.focus();
 
-      if(this.dsItemNameList.data.length > 0 ){
+      if(this.dsItemNameList.data.length > 0){
         this.vsaveflag=false;
       }
+    }
+  }
+
+  Setsave(){
+    
+    if(this.dsItemNameList.data.length > 0){
+      this.vsaveflag=false;
     }
   }
   public onEnterDebitAmount(event): void {
