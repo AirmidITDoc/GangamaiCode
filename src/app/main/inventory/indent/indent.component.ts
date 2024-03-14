@@ -47,6 +47,9 @@ export class IndentComponent implements OnInit {
     'IndentQuantity',
     'Action'
   ];
+
+  vsaveflag: boolean = true;
+  
   isItemIdSelected: boolean = false;
   sIsLoading: string = '';
   isLoading = true;
@@ -239,9 +242,9 @@ export class IndentComponent implements OnInit {
       this.chargeslist = this.dsTempItemNameList.data;
       this.chargeslist.push(
         {
-          ItemID: this._IndentService.newIndentFrom.get('ItemName').value.ItemID || 0,
+          ItemId: this._IndentService.newIndentFrom.get('ItemName').value.ItemID || 0,
           ItemName: this._IndentService.newIndentFrom.get('ItemName').value.ItemName,
-          IndentQuantity: this._IndentService.newIndentFrom.get('Qty').value || 0,
+          Qty: this._IndentService.newIndentFrom.get('Qty').value || 0,
         });
       this.dsIndentNameList.data = this.chargeslist;
     } else {
@@ -383,7 +386,7 @@ export class IndentComponent implements OnInit {
       ToStoreId: row.ToStoreId,
       StoreName: row.ToStoreName
     }
-    // console.log(vdata)
+   // console.log(vdata)
     this._IndentService.populateForm(vdata);
 
     this.vRemark = row.Remark;
@@ -443,6 +446,8 @@ export class IndentComponent implements OnInit {
   OnReset() {
     this._IndentService.newIndentFrom.reset();
     this.dsIndentNameList.data = [];
+    this.chargeslist.data = [];
+    this.dsTempItemNameList.data = [];
   }
   onClear() {
     this._IndentService.IndentSearchGroup.reset();

@@ -71,6 +71,9 @@ export class UpdateGRNComponent implements OnInit {
     'purUnitRate',
     'purUnitRateWF',
     'UnitMRP',
+    'IsVerifiedUserId',
+    'IsVerified',
+    'IsVerifiedDatetime',
     'buttons',
   ];
   displayedColumns3 = [
@@ -449,7 +452,11 @@ export class UpdateGRNComponent implements OnInit {
           LandedRate: this.FinalLandedrate || 0,
           PurUnitRate: this.FinalpurUnitRate || 0,
           PurUnitRateWF: this.FinalpurUnitrateWF || 0,
-          UnitMRP: this.FinalUnitMRP || 0
+          UnitMRP: this.FinalUnitMRP || 0,
+          IsVerifiedUserId:0,
+          IsVerified:false,
+          IsVerifiedDatetime: 0
+
         });
       this.dsItemNameList.data = this.chargeslist
       // console.log(this.chargeslist)
@@ -828,7 +835,8 @@ export class UpdateGRNComponent implements OnInit {
   OnchekPurchaserateValidation() {
 
     if (this.vRate) {
-      if (this.vRate <= this.vMRP) {
+      let rate = this._GRNList.userFormGroup.get('Rate').value
+      if (rate <= this.vMRP) {
         this.calculateTotalamt();
       } else {
         this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
@@ -1255,10 +1263,10 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['igstPer'] = element.IGSTPer || 0;
       grnDetailSaveObj['igstAmt'] = element.IGSTAmt || 0;
       grnDetailSaveObj['mrP_Strip'] = element.MRP_Strip || 0;
-      grnDetailSaveObj['isVerified'] = 0;
+      grnDetailSaveObj['isVerified'] = element.IsVerified;
       grnDetailSaveObj['igstPer'] = element.IGST || 0;
-      grnDetailSaveObj['isVerifiedDatetime'] = this.dateTimeObj.time;
-      grnDetailSaveObj['isVerifiedUserId'] = 0;
+      grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
+      grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
 
       SavegrnDetailObj.push(grnDetailSaveObj);
 
@@ -1408,10 +1416,10 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['igstPer'] = element.IGSTPer || 0;
       grnDetailSaveObj['igstAmt'] = element.IGSTAmt || 0;
       grnDetailSaveObj['mrP_Strip'] = element.MRP || 0;
-      grnDetailSaveObj['isVerified'] = 0;
+      grnDetailSaveObj['isVerified'] = element.IsVerified;
       grnDetailSaveObj['igstPer'] = element.IGST || 0;
-      grnDetailSaveObj['isVerifiedDatetime'] = this.dateTimeObj.time;
-      grnDetailSaveObj['isVerifiedUserId'] = 0;
+      grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
+      grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
 
       SavegrnDetailObj.push(grnDetailSaveObj);
 
@@ -1539,10 +1547,10 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['igstPer'] = element.IGSTPer || 0;
       grnDetailSaveObj['igstAmt'] = element.IGSTAmt || 0;
       grnDetailSaveObj['mrP_Strip'] = element.MRP || 0;
-      grnDetailSaveObj['isVerified'] = 0
+      grnDetailSaveObj['isVerified'] = element.IsVerified;
       grnDetailSaveObj['igstPer'] = element.IGST || 0;
-      grnDetailSaveObj['isVerifiedDatetime'] = this.dateTimeObj.time;
-      grnDetailSaveObj['isVerifiedUserId'] = 0
+      grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
+      grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
 
       SavegrnDetailObj.push(grnDetailSaveObj);
     });
@@ -1652,7 +1660,7 @@ export class UpdateGRNComponent implements OnInit {
 
   public onEnteritemid(event): void {
     if (event.which === 13) {
-      this.batchno.nativeElement.focus();
+      this.conversionfactor.nativeElement.focus();
     }
   }
   public onEnterUOM(event): void {
@@ -1667,7 +1675,7 @@ export class UpdateGRNComponent implements OnInit {
   }
   public onEnterConversionFactor(event): void {
     if (event.which === 13) {
-      this.expdate.nativeElement.focus();
+      this.batchno.nativeElement.focus();
     }
   }
 
@@ -1705,25 +1713,35 @@ export class UpdateGRNComponent implements OnInit {
     if (event.which === 13) {
       this.disc.nativeElement.focus();
       this.vDisc = '';
+      
     }
   }
 
   public onEnterDisc(event): void {
     if (event.which === 13) {
       // this.disc2.nativeElement.focus();
+      debugger
+      if(this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc"){
+        this.isDisc2Selected = true;
+        this._GRNList.userFormGroup.get('Disc2').setValue('')
+         this.disc2.nativeElement.focus();
+         return
+      }
       this.add = true
       this.addbutton.nativeElement.focus();
     }
-    if (this._GRNList.userFormGroup.invalid) {
-      this.toastr.warning('please fill all required fields', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (this._GRNList.userFormGroup.invalid) {
+    //   this.toastr.warning('please fill all required fields', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
   }
   public onEnterDisc2(event): void {
     if (event.which === 13) {
       this.cgst.nativeElement.focus();
+      this.add = true
+      this.addbutton.nativeElement.focus();
     }
   }
 
@@ -1897,7 +1915,10 @@ export class UpdateGRNComponent implements OnInit {
             IsClosed: element.IsClosed,
             LandedRate: element.LandedRate || 0,
             PurUnitRate: this.FinalpurUnitRate1 || 0,
-            PurUnitRateWF: this.FinalpurUnitrateWF1 || 0
+            PurUnitRateWF: this.FinalpurUnitrateWF1 || 0,
+            IsVerifiedUserId:0,
+            IsVerified:false,
+            IsVerifiedDatetime:0
           });
         this.dsItemNameList.data = this.chargeslist
       });

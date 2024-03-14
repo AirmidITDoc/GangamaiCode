@@ -11,6 +11,7 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { AcceptMaterialListPopupComponent } from './accept-material-list-popup/accept-material-list-popup.component';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -22,8 +23,10 @@ import { AcceptMaterialListPopupComponent } from './accept-material-list-popup/a
 })
 export class BrowsSalesReturnBillComponent implements OnInit {
 
-  sIsLoading: string = '';
-  isLoading = true;
+ 
+  isLoadingStr: string = '';
+  isLoading: String = '';
+  sIsLoading: string = "";
   Store1List: any = [];
   screenFromString = 'admission-form';
 
@@ -34,6 +37,7 @@ export class BrowsSalesReturnBillComponent implements OnInit {
   dsItemList = new MatTableDataSource<ItemList>();
 
   displayedColumns = [
+    'IsAccepted',
     'IssueNo',
     'IssueDate',
     'FromStoreName',
@@ -41,7 +45,6 @@ export class BrowsSalesReturnBillComponent implements OnInit {
     'NetAmount',
     'Remark',
     // 'Receivedby',
-    'IsAccepted',
     'AcceptedBy',
     'AcceptedDatetime',
     'action',
@@ -67,9 +70,10 @@ export class BrowsSalesReturnBillComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
+    public toastr: ToastrService,
 
   ) { }
-
+  editbutton:boolean=true;
   ngOnInit(): void {
     this.getIndentStoreList();
     this.getIssueTodept()
@@ -85,17 +89,21 @@ export class BrowsSalesReturnBillComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-
+ 
+  
 
   getIssueTodept() {
+    this.sIsLoading = '';
     var Param = {
-      "ToStoreId ": this._SalesReturn.MaterialReturnFrDept.get('ToStoreId').value.storeid || 0,
+      "ToStoreId ": this._loggedService.currentUserValue.user.storeId,
       "From_Dt": this.datePipe.transform(this._SalesReturn.MaterialReturnFrDept.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._SalesReturn.MaterialReturnFrDept.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "IsVerify ": 0
+      "IsVerify ":this._SalesReturn.MaterialReturnFrDept.get('Status').value || 0
     }
+    console.log(Param)
     this._SalesReturn.getIssuetodeptlist(Param).subscribe(data => {
       this.DsIssuetodept.data = data as Issuetodept[];
+      console.log(this.DsIssuetodept)
       this.DsIssuetodept.sort = this.sort;
       this.DsIssuetodept.paginator = this.paginator;
       this.sIsLoading = '';
@@ -121,20 +129,27 @@ export class BrowsSalesReturnBillComponent implements OnInit {
   }
 
   onEdit(contact) {
-    console.log(contact);
-    const dialogRef = this._matDialog.open(AcceptMaterialListPopupComponent,
-      {
-        maxWidth: "75vw",
-        height: '650px',
-        width: '100%',
-        data: {
-          Obj: contact,
-        }
+    if(this._SalesReturn.MaterialReturnFrDept.get('Status').value == 0){
+      console.log(contact);
+      const dialogRef = this._matDialog.open(AcceptMaterialListPopupComponent,
+        {
+          maxWidth: "75vw",
+          height: '650px',
+          width: '100%',
+          data: {
+            Obj: contact,
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getIssueTodept();
       });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getIssueTodept();
-    });
+    }else{
+      this.toastr.warning('Already material accepted.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
+   
   }
 
 

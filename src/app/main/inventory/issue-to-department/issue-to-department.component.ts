@@ -713,9 +713,13 @@ export class IssueToDepartmentComponent implements OnInit {
     }
 
     OnSave() {
+<<<<<<< HEAD
         this.vsaveflag = true;
 
 
+=======
+       this.vsaveflag=true;
+>>>>>>> f4cccdf91a806037302abca73cab1b065d3920d6
         if ((!this.dsNewIssueList3.data.length)) {
             this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
