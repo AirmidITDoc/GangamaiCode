@@ -1,5 +1,5 @@
 <div id="content" class="simple page-layout inner-scroll inner-sidebar right-sidebar" style="height: 100%;"
-fusePerfectScrollbar>
+    fusePerfectScrollbar>
     <mat-toolbar style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxFlext="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -17,16 +17,14 @@ fusePerfectScrollbar>
 
 
     <div class="content">
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
+        <!-- <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
             margin-left:12px; background-color: white;height:100%;">
             <div>
-                <!-- SIDEBAR HEADER -->
+               
                 <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
                     <span class="h5" style="font-size: 17px;">Search Facility</span>
-                    <!-- / USER -->
+                  
                 </div>
-                <!-- / SIDEBAR HEADER -->
-                <!-- SIDEBAR CONTENT -->
                 <div>
                     <div class="nav material2">
 
@@ -79,14 +77,59 @@ fusePerfectScrollbar>
                     </div>
                 </div>
             </div>
-        </fuse-sidebar>
+        </fuse-sidebar> -->
 
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px; ">
 
 
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                <div fxFlexFill fxLayout="column"  fxLayoutGap="10px">
+
+                    <form [formGroup]="_IssueToDep.IndentFrom">
+                        <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
+                            <br />
+                            <mat-form-field appearance="outline" fxFlex="20%" >
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate formControlName="start" placeholder="Start date">
+                                    <input matEndDate formControlName="end" placeholder="End date"
+                                        (dateChange)='getIndentList()'>
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="30%">
+                                <mat-label>From Store</mat-label>
+                                <mat-select formControlName="FromStoreId" name="FromStoreId">
+                                    <mat-option></mat-option>
+                                    <mat-option *ngFor="let m of FromStoreList" [value]="m">
+                                        {{m.StoreName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-radio-group name="Status" formControlName="Status" fxFlex="20%" value="0"
+                                style="padding: 12px;" fxLayout="row">
+                                <mat-label>Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <mat-radio-button value="1" class="mr-sm-12" (keyup)="getIndentList()">Verify
+                                </mat-radio-button>
+                                <mat-radio-button value="0" class="mr-sm-12" (keyup)="getIndentList()">Pending
+                                </mat-radio-button>
+                            </mat-radio-group>
+
+                                <button mat-raised-button class="clearbutton" matTooltip="close">
+                                    <mat-icon class="cleariconbutton">close</mat-icon>
+                                </button>&nbsp;
+
+                                <button mat-raised-button class="searchButton" (click)="getIndentList()"
+                                    matTooltip="search">
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                </button>
+                          
+                        </div>
+                    </form>
                     <div fxFlex.gt-sm="100%" fxFlex>
 
                         <div fxlayout="row">
@@ -188,7 +231,7 @@ fusePerfectScrollbar>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Indent Qty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IndentQuantity }}
+                                            {{contact.Qty }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -206,7 +249,7 @@ fusePerfectScrollbar>
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"   appHighlight></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>
@@ -221,11 +264,11 @@ fusePerfectScrollbar>
                             </div>
                             <div fxLayoutAlign="end" style="padding-left: 20px;">
                                 <button class="btn btn-primary" (click)="OnIndentList()">Ok</button>&nbsp;
-                                <button class="btn btn-danger-outline"  (click)="OnReset()">Close</button>&nbsp;
+                                <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
                             </div>
                         </div>
                     </div>
-                   
+
                 </div>
             </div>
         </div>

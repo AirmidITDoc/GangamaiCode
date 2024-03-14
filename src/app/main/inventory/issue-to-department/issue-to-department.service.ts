@@ -72,6 +72,9 @@ export class IssueToDepartmentService {
   public getIndentItemDetList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=retrieve_IndentItemList",Param);
   }
+  public getAgainstIndentList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IndentItemList_aginstIssue",Param);
+  }
   public getIssueToDepList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IssueToDep_list_by_Name",Param);
   }

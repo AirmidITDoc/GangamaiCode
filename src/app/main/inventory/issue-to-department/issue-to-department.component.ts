@@ -824,13 +824,16 @@ export class IssueToDepartmentComponent implements OnInit {
           });
     }
     IndentItemDetails(Param){
+        console.log(Param)
         this.sIsLoading = 'loading-data';
         var vdata = {
-          'IndentId':Param.IndentDetailsId  
+            'IndentId':Param.IndentId  
         }
         console.log(vdata);
-        this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
+        this._IssueToDep.getAgainstIndentList(vdata).subscribe(data => {
+            console.log(data)
           this.dsNewIssueList3.data = data as NewIssueList3[];
+          this.chargeslist = data as NewIssueList3[];
           console.log(this.dsNewIssueList3);
           this.dsNewIssueList3.sort = this.sort;
           this.dsNewIssueList3.paginator = this.paginator;

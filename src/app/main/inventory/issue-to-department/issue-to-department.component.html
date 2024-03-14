@@ -569,7 +569,7 @@
                                                                 fxShow.gt-sm>
                                                                 Qty </mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.IndentQuantity}} </mat-cell>
+                                                                {{element.Qty}} </mat-cell>
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="loading">
@@ -583,18 +583,20 @@
                                                                 no data found...
                                                             </mat-footer-cell>
                                                         </ng-container>
+
+                                                      
                                                         <mat-header-row class="accent"
                                                             *matHeaderRowDef="displayedNewIssuesList1; sticky: true">
                                                         </mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedNewIssuesList1;"
-                                                            class="element" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                            (click)="IndentItemDetails(contacts)" ></mat-row>
+                                                        <mat-row *matRowDef="let contact; columns: displayedNewIssuesList1;"
+                                                            class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                            (click)="IndentItemDetails(contact)" ></mat-row>
                                                         <mat-footer-row *matFooterRowDef="['loading']"
                                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                         </mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                                        <!-- <mat-footer-row *matFooterRowDef="['noData']"
                                                             [ngClass]="{'hide':!(dsNewIssueList1!=null && dsNewIssueList1.data.length==0)}">
-                                                        </mat-footer-row>
+                                                        </mat-footer-row> -->
                                                     </mat-table>
 
 
