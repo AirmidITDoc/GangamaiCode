@@ -380,6 +380,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   TotalNetAmount: any = 0;
   TotalOtherCharge: any = 0;
   finalamt: any = 0;
+
   openQrCodePrintDialog(row) {
     setTimeout(() => {
       this.SpinLoading = true;
@@ -403,7 +404,6 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   viewgetCurrentstockReportPdf(row) {
-// debugger
     setTimeout(() => {
       this.SpinLoading = true;
       this._GRNService.getGRNreportview(
@@ -432,56 +432,56 @@ export class GoodReceiptnoteComponent implements OnInit {
     }, 100);
   }
 
-  getPrint(el) {
-    var m_data = {
-      "GRNID": el.GRNID
-    }
-    this._GRNService.getPrintGRNList(m_data).subscribe(data => {
-      this.reportPrintObjList = data as GRNList[];
-      setTimeout(() => {
-        this.print3();
-      }, 1000);
+  // getPrint(el) {
+  //   var m_data = {
+  //     "GRNID": el.GRNID
+  //   }
+  //   this._GRNService.getPrintGRNList(m_data).subscribe(data => {
+  //     this.reportPrintObjList = data as GRNList[];
+  //     setTimeout(() => {
+  //       this.print3();
+  //     }, 1000);
 
-    })
+  //   })
 
-  }
+  // }
 
-  print3() {
-    let popupWin, printContents;
+  // print3() {
+  //   let popupWin, printContents;
 
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  //   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
 
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-      <style type="text/css" media="print">
-    @page { size: portrait; }
-  </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.GRNListTemplate.nativeElement.innerHTML}</body>
-    <script>
-      var css = '@page { size: portrait; }',
-      head = document.head || document.getElementsByTagName('head')[0],
-      style = document.createElement('style');
-      style.type = 'text/css';
-      style.media = 'print';
+  //   popupWin.document.write(` <html>
+  //   <head><style type="text/css">`);
+  //   popupWin.document.write(`
+  //     </style>
+  //     <style type="text/css" media="print">
+  //   @page { size: portrait; }
+  // </style>
+  //         <title></title>
+  //     </head>
+  //   `);
+  //   popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.GRNListTemplate.nativeElement.innerHTML}</body>
+  //   <script>
+  //     var css = '@page { size: portrait; }',
+  //     head = document.head || document.getElementsByTagName('head')[0],
+  //     style = document.createElement('style');
+  //     style.type = 'text/css';
+  //     style.media = 'print';
   
-      if (style.styleSheet){
-          style.styleSheet.cssText = css;
-      } else {
-          style.appendChild(document.createTextNode(css));
-      }
-      head.appendChild(style);
-    </script>
-    </html>`);
-    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-    // </html>`);
+  //     if (style.styleSheet){
+  //         style.styleSheet.cssText = css;
+  //     } else {
+  //         style.appendChild(document.createTextNode(css));
+  //     }
+  //     head.appendChild(style);
+  //   </script>
+  //   </html>`);
+  //   // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+  //   // </html>`);
 
-    popupWin.document.close();
-  }
+  //   popupWin.document.close();
+  // }
   LastThreeItemList(contact) {
     var vdata = {
       'ItemId': contact.ItemId,
@@ -545,8 +545,8 @@ export class GoodReceiptnoteComponent implements OnInit {
  
   onVerify(row) {
     let updateGRNVerifyStatusobj ={};
-    updateGRNVerifyStatusobj['GRNID'] = row.GRNID || 0 ;
-    updateGRNVerifyStatusobj['ISVerified'] = 1;
+    updateGRNVerifyStatusobj['GRNID'] = row.GRNID;
+    updateGRNVerifyStatusobj['IsVerifiedUserId'] = this.accountService.currentUserValue.user.id ;
     let submitObj ={
       "updateGRNVerifyStatus":updateGRNVerifyStatusobj
     }
@@ -573,7 +573,6 @@ export class GoodReceiptnoteComponent implements OnInit {
  
 
   getWhatsappshareSales(el) {
-    // debugger
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": 22,//el.RegNo,
@@ -591,7 +590,6 @@ export class GoodReceiptnoteComponent implements OnInit {
 
       }
     }
-   // console.log(m_data);
     this._GRNService.InsertWhatsappGRN(m_data).subscribe(response => {
       if (response) {
         Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {

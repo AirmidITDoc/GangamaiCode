@@ -34,7 +34,7 @@ const moment = _rollupMoment || _moment;
   animations: fuseAnimations,
 })
 export class UpdateGRNComponent implements OnInit {
-  vsaveflag:boolean=true;
+  vsaveflag: boolean = true;
 
   displayedColumns2 = [
     'ItemName',
@@ -281,9 +281,6 @@ export class UpdateGRNComponent implements OnInit {
   }
   lastDay1: any;
   CellcalculateLastDay(contact, inputDate: string) {
-    // if (inputDate === undefined){
-    //  return inputDate.replace(/\s/g, "");
-    // }
     if (inputDate && inputDate.length === 6) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
@@ -453,13 +450,11 @@ export class UpdateGRNComponent implements OnInit {
           PurUnitRate: this.FinalpurUnitRate || 0,
           PurUnitRateWF: this.FinalpurUnitrateWF || 0,
           UnitMRP: this.FinalUnitMRP || 0,
-          IsVerifiedUserId:0,
-          IsVerified:false,
-          IsVerifiedDatetime: 0
-
+          IsVerifiedUserId: 0,
+          IsVerified: false,
+          IsVerifiedDatetime: "01/01/1900"
         });
       this.dsItemNameList.data = this.chargeslist
-      // console.log(this.chargeslist)
     }
     else {
       this.toastr.warning('Selected Item already added in the list', 'Warning !', {
@@ -833,7 +828,7 @@ export class UpdateGRNComponent implements OnInit {
     this.vDisc2 = discamt2;
   }
   OnchekPurchaserateValidation() {
-
+    debugger;
     if (this.vRate) {
       let rate = this._GRNList.userFormGroup.get('Rate').value
       if (rate <= this.vMRP) {
@@ -854,43 +849,8 @@ export class UpdateGRNComponent implements OnInit {
         this.rate.nativeElement.focus();
       }
     }
-    // let mrp = this._GRNList.userFormGroup.get('MRP').value
-    // if (mrp <= this.vRate) {
-    //   this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   // Swal.fire("Enter Purchase Rate Less Than MRP");
-    //   this._GRNList.userFormGroup.get('Rate').setValue(0);
-    //   this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
-    //   this._GRNList.userFormGroup.get('DisAmount').setValue(0);
-    //   this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
-    //   this._GRNList.userFormGroup.get('CGSTAmount').setValue(0);
-    //   this._GRNList.userFormGroup.get('SGSTAmount').setValue(0);
-    //   this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
-    //   this._GRNList.userFormGroup.get('NetAmount').setValue(0);
-    //   this.rate.nativeElement.focus();
-    // }
-    // else {
-    //   this.calculateTotalamt();
-    // }
-
-    // if (this.vRate <= mrp) {     
-    //   this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   // Swal.fire("Enter Purchase Rate Less Than MRP");
-    //   this._GRNList.userFormGroup.get('Rate').setValue("");
-    //   this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
-    //   this._GRNList.userFormGroup.get('DisAmount').setValue(0);
-    //   this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
-    //   this._GRNList.userFormGroup.get('CGSTAmount').setValue(0);
-    //   this._GRNList.userFormGroup.get('SGSTAmount').setValue(0);
-    //   this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
-    //   this._GRNList.userFormGroup.get('NetAmount').setValue(0);
-    //   this.rate.nativeElement.focus();
-    //  }
-    //  this.calculateTotalamt();
   }
+
   getCGSTAmt(element) {
     let CGSTAmt;
     CGSTAmt = element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0); this.vCGSTAmount
@@ -1072,11 +1032,11 @@ export class UpdateGRNComponent implements OnInit {
     this.ItemID = obj.ItemId;
     this.ItemName = obj.ItemName;
     this.vConversionFactor = obj.ConversionFactor;
-    this.vQty ='',
-    this.vUOM = obj.UnitofMeasurementId;
+    this.vQty = '',
+      this.vUOM = obj.UnitofMeasurementId;
     this.vHSNCode = obj.HSNcode;
     this.vRate = '',
-    this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
+      this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
     // this.vDisc =  " ";
     this.vDisc2 = 0;
     this.vDisAmount = 0;
@@ -1159,12 +1119,13 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   OnSave() {
-    this.vsaveflag=true;
+    this.vsaveflag = true;
     if (!this._GRNList.userFormGroup.get('PurchaseId').value) {
       if (this.data.chkNewGRN == 1) {
         this.OnSavenew();
       } else if (this.data.chkNewGRN == 2) {
         this.OnSaveEdit();
+        this.viewGRNREPORTPdf(this.registerObj.GRNID)
       }
     } else {
       this.OnSavePO();
@@ -1562,7 +1523,7 @@ export class UpdateGRNComponent implements OnInit {
       "delete_GRNDetails": delete_GRNDetailsobj,
       "grnDetailSave": SavegrnDetailObj
     };
-    //console.log(submitData);
+    console.log(submitData);
     this._GRNList.GRNEdit(submitData).subscribe(response => {
       if (response) {
         this.toastr.success('Record Updated Successfully.', 'Updated !', {
@@ -1570,7 +1531,6 @@ export class UpdateGRNComponent implements OnInit {
         });
         this._matDialog.closeAll();
         this.OnReset()
-        this.viewGRNREPORTPdf(response)
       }
     }, error => {
       this.toastr.error('New GRN Data not Updated !, Please check API error..', 'Error !', {
@@ -1713,29 +1673,21 @@ export class UpdateGRNComponent implements OnInit {
     if (event.which === 13) {
       this.disc.nativeElement.focus();
       this.vDisc = '';
-      
+
     }
   }
 
   public onEnterDisc(event): void {
     if (event.which === 13) {
-      // this.disc2.nativeElement.focus();
-      debugger
-      if(this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc"){
+      if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
         this.isDisc2Selected = true;
         this._GRNList.userFormGroup.get('Disc2').setValue('')
-         this.disc2.nativeElement.focus();
-         return
+        this.disc2.nativeElement.focus();
+        return
       }
       this.add = true
       this.addbutton.nativeElement.focus();
     }
-    // if (this._GRNList.userFormGroup.invalid) {
-    //   this.toastr.warning('please fill all required fields', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
   }
   public onEnterDisc2(event): void {
     if (event.which === 13) {
@@ -1765,9 +1717,7 @@ export class UpdateGRNComponent implements OnInit {
   }
   public onEnterGST(event): void {
     if (event.which === 13) {
-      // this.cgst.nativeElement.focus();
       this.add = true;
-      // this.addbutton.nativeElement.focus();
       this.itemid.nativeElement.focus();
     }
   }
@@ -1781,16 +1731,16 @@ export class UpdateGRNComponent implements OnInit {
     if (event.which === 13) {
       this.DebitAmount.nativeElement.focus();
 
-      if(this.dsItemNameList.data.length > 0){
-        this.vsaveflag=false;
+      if (this.dsItemNameList.data.length > 0) {
+        this.vsaveflag = false;
       }
     }
   }
 
-  Setsave(){
-    
-    if(this.dsItemNameList.data.length > 0){
-      this.vsaveflag=false;
+  Setsave() {
+
+    if (this.dsItemNameList.data.length > 0) {
+      this.vsaveflag = false;
     }
   }
   public onEnterDebitAmount(event): void {
@@ -1924,9 +1874,9 @@ export class UpdateGRNComponent implements OnInit {
             LandedRate: element.LandedRate || 0,
             PurUnitRate: this.FinalpurUnitRate1 || 0,
             PurUnitRateWF: this.FinalpurUnitrateWF1 || 0,
-            IsVerifiedUserId:0,
-            IsVerified:false,
-            IsVerifiedDatetime:0
+            IsVerifiedUserId: 0,
+            IsVerified: false,
+            IsVerifiedDatetime: 0
           });
         this.dsItemNameList.data = this.chargeslist
       });
