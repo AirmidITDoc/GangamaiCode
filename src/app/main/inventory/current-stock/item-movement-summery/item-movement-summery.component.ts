@@ -40,6 +40,17 @@ export class ItemMovementSummeryComponent implements OnInit {
     'IssueQty',
     'BalQty'
   ];
+  displayedColumns2 = [
+    'BatchNo',
+    'TransactionType',
+    'DocumentNo',
+    'PatientName',
+    'BatchNo',
+    'BatchExpDate',
+    'ReceiptQty',
+    'IssueQty',
+    'BalQty'
+  ];
 
   isItemSelected: boolean = false;
   StoreList: any = [];
@@ -55,6 +66,7 @@ export class ItemMovementSummeryComponent implements OnInit {
 
   dsItemMovementSummery = new MatTableDataSource<ItemMovementList>();
   dsBatchExpWise = new MatTableDataSource<BatchExpWiseList>();
+  dsPurSupplierWise= new MatTableDataSource<PurSupplierWiseList>();
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;  
   constructor(
@@ -70,19 +82,20 @@ export class ItemMovementSummeryComponent implements OnInit {
   ngOnInit(): void {
     if(this.data.Obj ){
       this.registerObj = this.data.Obj;
-      console.log(this.registerObj);
+      //console.log(this.registerObj);
       this._CurrentStockService.ItemSummeryFrom.get("start").setValue(this.fiveDaysAgo);
     }
     this.gePharStoreList();
     this.getItemMovementSummeryList();
+    this.getBatchExpWiseList();
+    this.getPueSupplierWiseList();
   
     const currentDate = new Date();
     const fiveDaysAgos = new Date(currentDate.setDate(currentDate.getDate() - 5));
     this.fiveDaysAgo =  this.datePipe.transform (new Date(currentDate.setDate(currentDate.getDate() - 5)),"yyyy-MM-dd 00:00:00.000");
     this._CurrentStockService.ItemSummeryFrom.get("start").setValue(fiveDaysAgos);
-    console.log(this.fiveDaysAgo)
+    //console.log(this.fiveDaysAgo)
     //  this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -99,28 +112,7 @@ export class ItemMovementSummeryComponent implements OnInit {
       this._CurrentStockService.ItemSummeryFrom.get('StoreId').setValue(this.StoreList[0]);
     });
   }
-  getStockItemList() {
-    var m_data = {
-      "ItemName": `${this._CurrentStockService.ItemSummeryFrom.get('ItemCategory').value}%`
-    }
-    if (this._CurrentStockService.ItemSummeryFrom.get('ItemCategory').value.length >= 1) {
-      this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(this.filteredOptions)
-        this.ItemListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }
-  }
-  getOptionTextItemList(option) {
-    if (!option) return '';
-    return option.ItemName;
-  }
- 
+//itemMovement Summery
   getItemMovementSummeryList(){
     this.sIsLoading = 'loading-data';
     var vdata = {
@@ -145,6 +137,7 @@ export class ItemMovementSummeryComponent implements OnInit {
       );
     }, 1000);
   }
+  //batchExpwiseList
   getBatchExpWiseList(){
     this.sIsLoading = 'loading-data';
     var vdata = {
@@ -153,13 +146,13 @@ export class ItemMovementSummeryComponent implements OnInit {
     }
    console.log(vdata)
     setTimeout(() => {
-      this._CurrentStockService.getBatchExpWiseList(vdata).subscribe((Visit) => {
-          this.dsBatchExpWise.data = Visit as ItemMovementList[];
-         console.log(this.dsBatchExpWise);
+      this._CurrentStockService.getBatchExpWiseList(vdata).subscribe((data) => {
+          this.dsBatchExpWise.data = data as BatchExpWiseList[];
+          console.log(data)
+          console.log(this.dsBatchExpWise);
           this.dsBatchExpWise.sort = this.sort;
           this.dsBatchExpWise.paginator = this.paginator;
           this.sIsLoading = '';
-          this.isLoadingStr = this.dsBatchExpWise.data.length == 0 ? 'no-data' : '';
         },
         (error) => {
            this.isLoadingStr = 'no-data';
@@ -167,6 +160,29 @@ export class ItemMovementSummeryComponent implements OnInit {
       );
     }, 1000);
   }
+    //Purchase SupplierwiseList
+    getPueSupplierWiseList(){
+      this.sIsLoading = 'loading-data';
+      var vdata = {
+       "FromStoreID": this.registerObj.StoreId || 0,
+       "ItemId":this.registerObj.ItemId || 0 
+      }
+     console.log(vdata)
+      setTimeout(() => {
+        this._CurrentStockService.getPueSupplierWiseList(vdata).subscribe((data) => {
+            this.dsPurSupplierWise.data = data as PurSupplierWiseList[];
+            console.log(data)
+            console.log(this.dsPurSupplierWise);
+            this.dsPurSupplierWise.sort = this.sort;
+            this.dsPurSupplierWise.paginator = this.paginator;
+            this.sIsLoading = '';
+          },
+          (error) => {
+             this.isLoadingStr = 'no-data';
+          }
+        );
+      }, 1000);
+    }
   onClose(){
     this._matDialog.closeAll();
   }
@@ -222,6 +238,31 @@ export class BatchExpWiseList{
       this.ReceiptQty = BatchExpWiseList.ReceiptQty || 0;
       this.IssueQty = BatchExpWiseList.IssueQty || 0;
       this.BalQty = BatchExpWiseList.BalQty ||  0;
+    }
+  }
+}
+export class PurSupplierWiseList{
+  TranDate:any;
+  TransactionType:any;
+  DocumentNo:number;
+  PatientName:string;
+  BatchNo:any;
+  BatchExpDate:number;
+  ReceiptQty:number;
+  IssueQty:number;
+  BalQty:number;
+
+  constructor(PurSupplierWiseList){
+    {
+      this.TranDate = PurSupplierWiseList.TranDate || 0;
+      this.TransactionType = PurSupplierWiseList.TransactionType || '';
+      this.DocumentNo = PurSupplierWiseList.DocumentNo || 0;
+      this.PatientName = PurSupplierWiseList.PatientName || "";
+      this.BatchNo = PurSupplierWiseList.BatchNo || '';
+      this.BatchExpDate = PurSupplierWiseList.BatchExpDate || 0;
+      this.ReceiptQty = PurSupplierWiseList.ReceiptQty || 0;
+      this.IssueQty = PurSupplierWiseList.IssueQty || 0;
+      this.BalQty = PurSupplierWiseList.BalQty ||  0;
     }
 
   }

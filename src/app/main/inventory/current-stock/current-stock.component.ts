@@ -360,7 +360,7 @@ getOptionTextPurchaseItemList(option) {
    
   }
   getItemdetails(contact){
-    console.log(contact)
+    //console.log(contact)
     const dialogRef = this._matDialog.open(ItemMovementSummeryComponent,
       {
         maxWidth: "100%",

@@ -100,6 +100,9 @@ export class CurrentStockService {
   public getBatchExpWiseList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_BatchExpWiseList",Param);
   }
+  public getPueSupplierWiseList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_PurchaseSupplierWiseList",Param);
+  }
   
   
   public getItemFormList(param){

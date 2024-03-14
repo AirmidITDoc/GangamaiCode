@@ -88,11 +88,11 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     var vdata = {
       'IndentId':Param.IndentId  
     }
-    console.log(vdata);
+   // console.log(vdata);
     this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
       this.dsIndentItemDetList.data = data as IndentItemDetList[];
       this.Charglist = this.dsIndentItemDetList.data;
-      console.log(this.dsIndentItemDetList);
+     // console.log(this.dsIndentItemDetList);
       this.dsIndentItemDetList.sort = this.sort;
       this.dsIndentItemDetList.paginator = this.paginator;
       this.sIsLoading = '';
