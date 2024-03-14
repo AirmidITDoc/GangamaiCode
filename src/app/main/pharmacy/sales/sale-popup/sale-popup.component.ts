@@ -52,7 +52,11 @@ vEscflag:boolean=false;
 
 
   close(){
-    this.dialogRef.close(this.vEscflag);
+    var d={
+      // selectedData:selectedData,
+      vEscflag:this.vEscflag
+    }
+    this.dialogRef.close(d);
   }
 
   highlight(row: any) {
@@ -106,7 +110,14 @@ vEscflag:boolean=false;
     } else if(ele) {
       selectedData = ele;
     }
-    this.dialogRef.close(selectedData);
+
+    var d={
+      selectedData:selectedData,
+      vEscflag:this.vEscflag
+    }
+
+    console.log(d)
+    this.dialogRef.close(d);
   }
 
   dateTimeObj: any;

@@ -1535,16 +1535,18 @@ export class SalesComponent implements OnInit {
           "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.storeid
         }
       });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result1 => {
       debugger
+      let result =result1.selectedData
+      let vescflag=result1.vEscflag
       console.log(result);
 
-      if(result){
+      if(vescflag){
         this._salesService.IndentSearchGroup.get('ItemId').setValue('')
       this.itemid.nativeElement.focus();
-      }
-      
-      else{
+      }else if(!vescflag){
+       this.Quantity.nativeElement.focus();
+     
       this.BatchNo = result.BatchNo;
       this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       this.MRP = result.UnitMRP;
@@ -1574,7 +1576,7 @@ export class SalesComponent implements OnInit {
       }
     });
 
-    // this.Quantity.nativeElement.focus();
+   
   }
 
   focusNextService() {
