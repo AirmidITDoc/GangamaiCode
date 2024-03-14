@@ -1,5 +1,5 @@
 .mat-paginator {
-    font-family: $font-family-base;
+    font-family: $font-primary;
     .mat-paginator-outer-container{
         .mat-paginator-container{
             min-height: 40px;
@@ -11,6 +11,11 @@
         line-height: 25px;
         .mat-paginator-icon {
             width: 22px;
+        }
+    }
+    .mat-paginator-page-size{
+        .mat-select-trigger{
+            font-family: $font-primary;
         }
     }
 }

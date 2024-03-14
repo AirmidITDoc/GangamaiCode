@@ -95,6 +95,7 @@
 .mat-typography {
     @include themed() {
         .mat-radio-button {
+            font-family: inherit;
             &.mat-accent {
                 .mat-radio-inner-circle {
                     background-color: $primary-600;

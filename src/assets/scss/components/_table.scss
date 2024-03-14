@@ -15,7 +15,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            font-family: $font-family-base;
+            font-family: $font-primary;
             font-weight: normal;
             &:not(:first-of-type) {
                 padding: 10px 10px;
@@ -38,7 +38,7 @@
             font-family: $roboto;
             word-break: break-word;
             line-height: 20px;
-            font-family: $font-family-base;
+            font-family: $font-primary;
             &:not(:first-of-type) {
                 padding: 5px 10px;
             }

@@ -3,6 +3,7 @@
     .mat-select-panel {
         .mat-option {
             @include font-size(13px);
+            font-family: inherit;
             &:hover:not(.mat-option-disabled),
             &:focus:not(.mat-option-disabled),
             &.mat-active {

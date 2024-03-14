@@ -13,7 +13,7 @@
             position: relative;
         }
     }
-    .opd-header,.top-header {
+    .top-header {
         height: auto;
         min-height: 50px;
         display: flex;
@@ -57,6 +57,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+        .logo-text{
+            @include font-size(16px);
         }
     }
 }

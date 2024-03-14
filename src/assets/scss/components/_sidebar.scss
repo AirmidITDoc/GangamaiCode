@@ -3,14 +3,13 @@ $sidebar-gap: 12px;
 .fuse-search-sidebar {
     margin: $sidebar-gap 0 0 $sidebar-gap;
     border-radius: 4px;
-    font-family: $muli;
+    font-family: inherit;
     @include box-shadow-small();
     .sidebar-content {
         .sidebar-header {
             padding: 12px;
             .search-title {
                 @include font-size(13px);
-                font-weight: 600;
             }
         }
         .sidebar-body {
