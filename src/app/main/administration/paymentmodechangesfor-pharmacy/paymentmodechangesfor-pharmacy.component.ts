@@ -137,8 +137,8 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
     this.advanceDataStored.storage = new PaymentPharmayList(xx);
     const dialogRef = this._matDialog.open(EditPaymentmodeComponent,
       {
-        maxWidth: "65vw",
-        height: "700px",
+        maxWidth: "78vw",
+        height: "630px",
         width: '100%',
         data: {
           registerObj: m,

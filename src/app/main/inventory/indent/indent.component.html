@@ -193,7 +193,7 @@
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let row">
 
-                                                        <button mat-icon-button (click)="getPrint(contact)"
+                                                        <button mat-icon-button (click)="viewgetIndentReportPdf(row)"
                                                             matTooltip="Print">
                                                             <mat-icon style="color: black;">print</mat-icon>
                                                         </button>
@@ -549,7 +549,7 @@
                                     <div class="footer-navigation-container" fxLayout.gt-xs="row"
                                         style="margin-left: 500px;">
                                         <div matTooltip="Select All Value to enable this button!!">
-                                            <button class="next-btn" (click)="OnSave()"
+                                            <button class="next-btn" (click)="OnSave()" 
                                                 style="margin-left: 750px;">Save</button>
                                             <button class="footer-btn" (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                         </div>

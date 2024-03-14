@@ -1536,7 +1536,15 @@ export class SalesComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(result);
+      debugger
+      console.log(result);
+
+      if(result){
+        this._salesService.IndentSearchGroup.get('ItemId').setValue('')
+      this.itemid.nativeElement.focus();
+      }
+      
+      else{
       this.BatchNo = result.BatchNo;
       this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       this.MRP = result.UnitMRP;
@@ -1563,7 +1571,7 @@ export class SalesComponent implements OnInit {
       this.LandedRate = result.LandedRate;
       this.PurchaseRate = result.PurchaseRate;
       this.UnitMRP = result.UnitMRP;
-
+      }
     });
 
     // this.Quantity.nativeElement.focus();
@@ -3319,16 +3327,19 @@ export class SalesComponent implements OnInit {
 
     if (this.saleSelectedDatasource.data.length > 0) {
       this.chargeslistBarcode = this.saleSelectedDatasource.data
+
       this.saleSelectedDatasource.data.forEach((element) => {
+
         if (element.ItemId == contact.ItemId) {
           this.Itemflag = true;
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
         debugger
+
+
           if (contact.IssueQty != null) {
 
-            
             this.DraftQty = element.Qty + contact.IssueQty;
             if (this.DraftQty  > contact.BalanceQty) {
               Swal.fire("Enter Qty less than Balance :" ,contact.BalanceQty);
@@ -3344,6 +3355,8 @@ export class SalesComponent implements OnInit {
               this.ItemFormreset();
             }
           }
+
+          
           let TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
           let Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
           let vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
@@ -3390,11 +3403,13 @@ export class SalesComponent implements OnInit {
           this.saleSelectedDatasource.data[i].PurTotAmt = PurTotAmt;
 
           this.saleSelectedDatasource.data[i].BalanceQty = BalQty;
+          this.saleSelectedDatasource.data[i].StockId = contact.StockId;
+          
         }
         i++;
       });
 
-    } debugger
+    } 
     if (!this.Itemflag) {
 
       if (contact.IssueQty != null) {
@@ -3446,7 +3461,7 @@ export class SalesComponent implements OnInit {
           DiscAmt:DiscAmt|| 0,
           NetAmt: TotalNet,
           RoundNetAmt: parseInt(TotalNet),// Math.round(TotalNet),
-          StockId: this.StockId,
+          StockId: contact.StockId,
           LandedRate: contact.LandedRate,
           LandedRateandedTotal: LandedRateandedTotal,
           CgstPer: contact.CGSTPer,

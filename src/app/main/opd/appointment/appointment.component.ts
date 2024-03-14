@@ -1096,8 +1096,7 @@ export class AppointmentComponent implements OnInit {
           this.dataSource.data = Visit["Table1"]??[] as VisitMaster[];
           this.dataSource.sort = this.sort;
           this.resultsLength=Visit["Table"][0]["total_row"];
-          if(!this.dataSource.paginator)
-          this.dataSource.paginator = this.paginator;
+         // this.dataSource.paginator = this.paginator;
           this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
           this.sIsLoading = " ";
         },
