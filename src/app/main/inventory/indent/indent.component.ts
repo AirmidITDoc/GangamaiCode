@@ -375,7 +375,7 @@ export class IndentComponent implements OnInit {
   selectedIndex: string = '';
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   OnEdit(row, tabGroup: MatTabGroup) {
-
+    
     const tabIndex = row === 'tab1' ? 0 : 1;
     tabGroup.selectedIndex = tabIndex;
     // console.log(row)
@@ -443,6 +443,8 @@ export class IndentComponent implements OnInit {
   OnReset() {
     this._IndentService.newIndentFrom.reset();
     this.dsIndentNameList.data = [];
+    this.chargeslist.data = [];
+    this.dsTempItemNameList.data = [];
   }
   onClear() {
     this._IndentService.IndentSearchGroup.reset();

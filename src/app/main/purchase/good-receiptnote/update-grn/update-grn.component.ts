@@ -1711,15 +1711,19 @@ export class UpdateGRNComponent implements OnInit {
   public onEnterDisc(event): void {
     if (event.which === 13) {
       // this.disc2.nativeElement.focus();
+      if(this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc"){
+         this.vDisc2 = '';
+         this.disc2.nativeElement.focus();
+      }
       this.add = true
       this.addbutton.nativeElement.focus();
     }
-    if (this._GRNList.userFormGroup.invalid) {
-      this.toastr.warning('please fill all required fields', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (this._GRNList.userFormGroup.invalid) {
+    //   this.toastr.warning('please fill all required fields', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
   }
   public onEnterDisc2(event): void {
     if (event.which === 13) {
