@@ -47,6 +47,9 @@ export class IndentComponent implements OnInit {
     'IndentQuantity',
     'Action'
   ];
+
+  vsaveflag: boolean = true;
+  
   isItemIdSelected: boolean = false;
   sIsLoading: string = '';
   isLoading = true;
