@@ -18,6 +18,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
+import { invalid } from 'moment';
 
 @Component({
   selector: 'app-update-purchaseorder',
@@ -27,7 +28,7 @@ import { element } from 'protractor';
   animations: fuseAnimations,
 })
 export class UpdatePurchaseorderComponent implements OnInit {
-
+  vsaveflag:boolean=true;
   displayedColumns2 = [
 
     // 'ItemID',
@@ -454,6 +455,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     }
   }
   OnSave() {
+    this.vsaveflag=true
     if (!this.registerObj.PurchaseID) {
       this.OnSavenew();
     } else {
@@ -1080,6 +1082,10 @@ export class UpdatePurchaseorderComponent implements OnInit {
   public onEnterWorrenty(event): void {
     if (event.which === 13) {
       this.OctriAmount.nativeElement.focus();
+    }
+
+    if(this.dsItemNameList.data.length > 0){
+      this.vsaveflag=false
     }
   }
 

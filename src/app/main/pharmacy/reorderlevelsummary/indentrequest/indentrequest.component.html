@@ -117,7 +117,7 @@
                                             <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.IndentQty" type="number" 
-                                                    formControlName="IndentQty" >
+                                                    formControlName="IndentQty" (keyup)="chkQty(contact)">
                                                     <mat-error *ngIf="_Reorderlevelsummery.RaisedIndentFrom.get('IndentQty').hasError('IndentQty')">Qty is required</mat-error>
                                                 </mat-form-field>
                                             </mat-cell>
@@ -154,9 +154,10 @@
                             </div>
                         </div>
                     </div>
+                    <!-- !_Reorderlevelsummery.RaisedIndentFrom.valid -->
                     <div fxLayoutAlign="end" style="padding: 15px;">
                         <button class="btn btn-primary" (click)="OnSave()"
-                        [disabled]="!_Reorderlevelsummery.RaisedIndentFrom.valid">Save</button>&nbsp;
+                        [disabled]="vsaveflag">Save</button>&nbsp;
                         <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
                     </div>
                 </form>

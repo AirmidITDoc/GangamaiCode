@@ -326,8 +326,9 @@
                                                 <mat-icon> add </mat-icon>
                                             </span>
                                         </button> -->
+                                        <!-- [disabled]="_GRNList.userFormGroup.invalid" -->
                                             <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()"
-                                            [disabled]="_GRNList.userFormGroup.invalid" #addbutton>
+                                            [disabled]="!add" #addbutton>
                                             <mat-icon>add</mat-icon>
                                             </button>
 
@@ -1029,7 +1030,7 @@
                                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
                                         <div>
-                                            <button class="btn btn-primary " (click)="OnSave()">Save</button>&nbsp;
+                                            <button class="btn btn-primary " (click)="OnSave()" [disabled]="vsaveflag">Save</button>&nbsp;
                                             <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
                                         </div>
 

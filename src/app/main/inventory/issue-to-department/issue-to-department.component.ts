@@ -677,6 +677,9 @@ export class IssueToDepartmentComponent implements OnInit {
         this.dsNewIssueList1.data = [];
         this.dsNewIssueList2.data = [];
         this.dsNewIssueList3.data = [];
+        this.BarcodetempDatasource=[];
+        this.chargeslist.data=[];
+        this.dsTempItemNameList.data=[];
     }
 
     @ViewChild('itemid') itemid: ElementRef;
@@ -685,10 +688,20 @@ export class IssueToDepartmentComponent implements OnInit {
     @ViewChild('BalQuantity') BalQuantity: ElementRef;
     @ViewChild('Quantity') Quantity: ElementRef;
     @ViewChild('addbutton') addbutton: ElementRef;
+
+
     public onEnterFromstore(event): void {
         if (event.which === 13) {
             this.itemid.nativeElement.focus();
         }
+
+        this.dsNewIssueList1.data = [];
+        this.dsNewIssueList2.data = [];
+        this.dsNewIssueList3.data = [];
+        this.BarcodetempDatasource=[];
+        this.chargeslist.data=[];
+        this.tempDatasource.data=[];
+        this.dsTempItemNameList.data=[];
     }
     public onEnteritemid(event): void {
         if (event.which === 13) {

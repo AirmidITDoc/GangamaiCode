@@ -34,6 +34,8 @@ const moment = _rollupMoment || _moment;
   animations: fuseAnimations,
 })
 export class UpdateGRNComponent implements OnInit {
+  vsaveflag:boolean=true;
+
   displayedColumns2 = [
     'ItemName',
     'UOMId',
@@ -770,7 +772,7 @@ export class UpdateGRNComponent implements OnInit {
       this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / parseInt(this.vConversionFactor)) || 0
     this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty)) || 0
     this.FinalUnitMRP = (parseInt(this.vMRP) / parseInt(this.vConversionFactor)) || 0
-    this.add = false
+    // this.add = true
     // this.addbutton.nativeElement.focus();
   }
   calculateDiscAmount() {
@@ -1149,6 +1151,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   OnSave() {
+    this.vsaveflag=true;
     if (!this._GRNList.userFormGroup.get('PurchaseId').value) {
       if (this.data.chkNewGRN == 1) {
         this.OnSavenew();
@@ -1758,6 +1761,10 @@ export class UpdateGRNComponent implements OnInit {
   public onEnterReceivedBy(event): void {
     if (event.which === 13) {
       this.DebitAmount.nativeElement.focus();
+
+      if(this.dsItemNameList.data.length > 0 ){
+        this.vsaveflag=false;
+      }
     }
   }
   public onEnterDebitAmount(event): void {
