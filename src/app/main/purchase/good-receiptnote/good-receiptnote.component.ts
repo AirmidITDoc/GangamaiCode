@@ -544,30 +544,17 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
  
   onVerify(row) {
-
-    // var Param = {
-    //   "updateGRNVerifyStatus": {
-    //     "grnid": row.GRNID,
-    //     "isVerified": true
-    //   }
-    // }
-
     let updateGRNVerifyStatusobj ={};
     updateGRNVerifyStatusobj['GRNID'] = row.GRNID || 0 ;
     updateGRNVerifyStatusobj['ISVerified'] = 1;
-
     let submitObj ={
       "updateGRNVerifyStatus":updateGRNVerifyStatusobj
     }
-    console.log(submitObj)
-   
-   // console.log(submitData);
    this._GRNService.getVerifyGRN(submitObj).subscribe(response => {
       if (response) {
         this.toastr.success('Record Verified Successfully.', 'Verified !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
-
       } else {
         this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -579,8 +566,9 @@ export class GoodReceiptnoteComponent implements OnInit {
       this.toastr.success('Record Verified Successfully.', 'Verified !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
-      this.getGRNList();
+    
     });
+    this.getGRNList();
   }
  
 
@@ -609,7 +597,6 @@ export class GoodReceiptnoteComponent implements OnInit {
         Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             this._matDialog.closeAll();
-
           }
         });
       } else {
