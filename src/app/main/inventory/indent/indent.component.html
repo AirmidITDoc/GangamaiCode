@@ -371,7 +371,7 @@
 
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                             <from [formGroup]="_IndentService.StoreFrom">
-                                                <mat-form-field appearance="outline" fxFlex="300px">
+                                                <mat-form-field appearance="outline" fxFlex="30%">
                                                     <mat-label>From Store</mat-label>
                                                     <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                         <mat-option></mat-option>
@@ -546,13 +546,19 @@
                                     </mat-form-field>
 
 
-                                    <div class="footer-navigation-container" fxLayout.gt-xs="row"
+                                    <!-- <div class="footer-navigation-container" fxLayout.gt-xs="row"
                                         style="margin-left: 500px;">
-                                        <div matTooltip="Select All Value to enable this button!!">
+                                        <div>
                                             <button class="next-btn" (click)="OnSave()" 
                                                 style="margin-left: 750px;">Save</button>
                                             <button class="footer-btn" (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                         </div>
+                                    </div>
+                                     -->
+                                    <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                        <button class="btn btn-primary " (click)="OnSave()">Save</button>
+                                        <button class="btn btn-danger-outline" (click)="OnReset()"
+                                            >Reset</button>
                                     </div>
 
 

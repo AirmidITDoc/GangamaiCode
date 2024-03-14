@@ -533,10 +533,6 @@ export class IssueToDepartmentComponent implements OnInit {
         this.itemid.nativeElement.focus();
         this._IssueToDep.NewIssueGroup.get('ItemID').setValue('');
         this.Addflag = false;
-
-
-        // &&   this.vFinalNetAmount > 0 
-        debugger
         if(!(this._IssueToDep.NewIssueGroup.invalid) && this.dsNewIssueList3.data.length > 0){
             this.vsaveflag=false;
         }
@@ -588,8 +584,6 @@ export class IssueToDepartmentComponent implements OnInit {
 
     OnSave() {
        this.vsaveflag=true;
-
-
         if ((!this.dsNewIssueList3.data.length)) {
             this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
