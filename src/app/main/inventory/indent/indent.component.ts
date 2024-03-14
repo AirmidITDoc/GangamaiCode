@@ -79,9 +79,6 @@ export class IndentComponent implements OnInit {
   dsIndentNameList = new MatTableDataSource<IndentNameList>();
   dsTempItemNameList = new MatTableDataSource<IndentNameList>();
 
-
-  vsaveflag:boolean=true;
-
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   //service filter
