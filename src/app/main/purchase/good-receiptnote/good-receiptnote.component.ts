@@ -525,22 +525,22 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   onEdit(contact) {
-    this.chkNewGRN = 2;
-    console.log(contact)
-    const dialogRef = this._matDialog.open(UpdateGRNComponent,
-      {
-        maxWidth: "100%",
-        height: '95%',
-        width: '95%',
-        data: {
-          Obj: contact,
-          chkNewGRN: this.chkNewGRN
-        }
+      this.chkNewGRN = 2;
+      console.log(contact)
+      const dialogRef = this._matDialog.open(UpdateGRNComponent,
+        {
+          maxWidth: "100%",
+          height: '95%',
+          width: '95%',
+          data: {
+            Obj: contact,
+            chkNewGRN: this.chkNewGRN
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getGRNList();
       });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getGRNList();
-    });
   }
  
   onVerify(row) {
@@ -836,6 +836,9 @@ export class ItemNameList {
   GrandTotalAmount:any;
   TranProcessId:any;
   UnitMRP:any;
+  IsVerified:any;
+  IsVerifiedDatetime:any;
+  IsVerifiedUserId:any;
   /**
    * Constructor
    *
@@ -905,7 +908,9 @@ export class ItemNameList {
       this.UOMID = ItemNameList.UOMID || 0;
       this.GrandTotalAmount = ItemNameList.GrandTotalAmount || 0;
       this.UnitMRP = ItemNameList.UnitMRP || 0;
-      
+      this.IsVerified = ItemNameList.IsVerified || 0;
+      this.IsVerifiedDatetime = ItemNameList.IsVerifiedDatetime || 0;
+      this.IsVerifiedUserId = ItemNameList.IsVerifiedUserId || 0;
     }
   }
 }

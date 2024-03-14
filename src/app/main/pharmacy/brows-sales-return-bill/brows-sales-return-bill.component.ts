@@ -11,6 +11,7 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { AcceptMaterialListPopupComponent } from './accept-material-list-popup/accept-material-list-popup.component';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -69,6 +70,7 @@ export class BrowsSalesReturnBillComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
+    public toastr: ToastrService,
 
   ) { }
   editbutton:boolean=true;
@@ -143,7 +145,9 @@ export class BrowsSalesReturnBillComponent implements OnInit {
         this.getIssueTodept();
       });
     }else{
-      Swal.fire('Already material accepted')
+      this.toastr.warning('Already material accepted.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
     }
    
   }

@@ -242,9 +242,9 @@ export class IndentComponent implements OnInit {
       this.chargeslist = this.dsTempItemNameList.data;
       this.chargeslist.push(
         {
-          ItemID: this._IndentService.newIndentFrom.get('ItemName').value.ItemID || 0,
+          ItemId: this._IndentService.newIndentFrom.get('ItemName').value.ItemID || 0,
           ItemName: this._IndentService.newIndentFrom.get('ItemName').value.ItemName,
-          IndentQuantity: this._IndentService.newIndentFrom.get('Qty').value || 0,
+          Qty: this._IndentService.newIndentFrom.get('Qty').value || 0,
         });
       this.dsIndentNameList.data = this.chargeslist;
     } else {
@@ -378,7 +378,7 @@ export class IndentComponent implements OnInit {
   selectedIndex: string = '';
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   OnEdit(row, tabGroup: MatTabGroup) {
-    
+
     const tabIndex = row === 'tab1' ? 0 : 1;
     tabGroup.selectedIndex = tabIndex;
     // console.log(row)
@@ -386,7 +386,7 @@ export class IndentComponent implements OnInit {
       ToStoreId: row.ToStoreId,
       StoreName: row.ToStoreName
     }
-    // console.log(vdata)
+   // console.log(vdata)
     this._IndentService.populateForm(vdata);
 
     this.vRemark = row.Remark;

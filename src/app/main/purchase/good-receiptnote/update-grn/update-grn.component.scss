@@ -220,9 +220,27 @@ app-update-grn {
     text-align: left;
   }
   .mat-column-UnitMRP {
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  .mat-column-IsVerifiedUserId {
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: left;
+  }
+  .mat-column-IsVerified {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  .mat-column-IsVerifiedDatetime {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
     text-align: left;
   }
   .mat-column-Action {
@@ -232,16 +250,16 @@ app-update-grn {
     text-align: left;
   }
    .mat-header-row {
-      width:2950px;
-      max-width: 2950px;
-      min-width:2950px;
+      width:3400px;
+      max-width: 3400px;
+      min-width:3400px;
       // min-height: 30px;
       // background-color: blue;
     }
 
     .mat-row {
-    width: 2950px;
-    min-width: 2950px;  
+    width: 3400px;
+    min-width: 3400px;  
     // min-height: 30px; 
     }
     }

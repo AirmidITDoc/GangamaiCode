@@ -363,15 +363,15 @@
                     <div class="center p-12 pb-56" fxFlexAlign="start center">
 
                         <div class="content-card" style="border-radius:4px; ">
-                            <form [formGroup]="_IndentService.newIndentFrom">
-                                <div class="nav material2">
+                            <form [formGroup]="_IndentService.newIndentFrom" >
+                                <div class="nav material2" >
 
 
                                     <div fxLayout="column" fxLayoutAlign="start none">
 
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                             <from [formGroup]="_IndentService.StoreFrom">
-                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                <mat-form-field appearance="outline" fxFlex="100%">
                                                     <mat-label>From Store</mat-label>
                                                     <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                         <mat-option></mat-option>
@@ -447,9 +447,9 @@
                                                     (keydown)="onEnterqty($event)" required #qty type="number">
                                             </mat-form-field>&nbsp;&nbsp;
 
-                                            <div matTooltip="Select All Value to enable this button!!">
-                                                <button class="next-btn" (click)="onAdd()">
-                                                    Add
+                                            <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
+                                                <button class="btn btn-primary" (click)="onAdd()" >
+                                                    <mat-icon>add</mat-icon>
                                                 </button>
                                             </div>
 
@@ -481,7 +481,7 @@
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                             Item Code</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.ItemID}}
+                                                            {{contact.ItemId}}
                                                         </mat-cell>
                                                     </ng-container>
 
@@ -499,7 +499,7 @@
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                             Indent Quantity</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.IndentQuantity}}
+                                                            {{contact.Qty}}
                                                         </mat-cell>
                                                     </ng-container>
 
@@ -555,7 +555,7 @@
                                         </div>
                                     </div>
                                      -->
-                                    <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                    <div class="sales-footer-buttons gap-8" fxLayout="row" fxFlexAlign="end">
                                         <button class="btn btn-primary " (click)="OnSave()">Save</button>
                                         <button class="btn btn-danger-outline" (click)="OnReset()"
                                             >Reset</button>
