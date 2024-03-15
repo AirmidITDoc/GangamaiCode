@@ -1,5 +1,6 @@
 .mat-paginator {
     font-family: $font-primary;
+    @include font-size(12px);
     .mat-paginator-outer-container{
         .mat-paginator-container{
             min-height: 40px;

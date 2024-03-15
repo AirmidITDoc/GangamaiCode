@@ -70,6 +70,11 @@
             background-color: $primary-50;
         }
     }
+    .mat-footer-row{
+        .mat-footer-cell{
+            @include font-size(14px);
+        }
+    }
     .mat-form-field {
         &.mat-form-field-appearance-legacy {
             .mat-form-field-wrapper {

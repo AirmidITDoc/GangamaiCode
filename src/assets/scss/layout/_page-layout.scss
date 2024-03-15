@@ -1,7 +1,6 @@
 .page-layout {
     .center {
         .header {
-            height: 60px;
             .welcome-message {
                 @include font-size(18px);
             }
@@ -13,20 +12,22 @@
             position: relative;
         }
     }
-    .top-header {
+    .top-header,
+    > .header,
+    > .mat-toolbar {
         height: auto;
-        min-height: 50px;
+        max-height: 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 8px 16px;
-        .top-header-info{
+        .top-header-info {
             display: flex;
             justify-content: start;
             align-items: center;
             gap: 8px;
-            .top-header-title{
-                @include font-size(16px);
+            .top-header-title {
+                @include font-size(14px);
             }
         }
         .date-time-container {
@@ -45,21 +46,21 @@
                         fill: $gray-200;
                     }
                 }
-                .material-icons{
+                .material-icons {
                     color: $gray-200;
                 }
             }
-            &.padding-div{
+            &.padding-div {
                 padding: 0;
             }
         }
-        .mat-icon{
+        .mat-icon {
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        .logo-text{
-            @include font-size(16px);
+        .logo-text {
+            @include font-size(14px);
         }
     }
 }

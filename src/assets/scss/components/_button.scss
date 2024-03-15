@@ -1,16 +1,16 @@
 .btn {
-    font-family: $roboto;
+    font-family: $font-primary;
     font-weight: normal;
     line-height: normal;
     border-radius: 8px;
-    padding: 12px 18px;
+    padding: 0.83rem 1.3rem;
     letter-spacing: 0.28px;
     cursor: pointer;
-    @include font-size(13px);
+    @include font-size(12px);
     border: 1px solid;
     &.btn-xxl {
         padding: 21px 40px;
-        @include font-size(16px);
+        @include font-size(13px);
     }
     &.btn-xl {
         padding: 15px 20px;
@@ -183,19 +183,19 @@
         padding: 10px 16px;
         // font-family: $inter-medium;
         font-family: $inter-semibold;
-        @include font-size(12px);
+        @include font-size(11px);
 
         &.btn-xxl {
             padding: 17px 40px;
-            @include font-size(18px);
+            @include font-size(11px);
         }
         &.btn-xl {
             padding: 15px 24px;
-            @include font-size(13px);
+            @include font-size(11px);
         }
         &.btn-xs {
             padding: 8px 14px;
-            @include font-size(11px);
+            @include font-size(10px);
         }
         &.btn-transparent {
             //   @include button-size(0.4125rem, 0.5375rem, $font-size-base, $border-radius-base);
