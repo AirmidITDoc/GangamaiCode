@@ -211,7 +211,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       "IsVerify": this._GRNService.GRNSearchGroup.get("Status1").value || 0,
       "Supplier_Id": this._GRNService.GRNSearchGroup.get('SupplierId').value.SupplierId || 0,
     }
-    console.log(Param)
+    //console.log(Param)
     this._GRNService.getGRNList(Param).subscribe(data => {
       this.dsGRNList.data = data as GRNList[];
       this.dsGRNList.sort = this.sort;
@@ -323,7 +323,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   isSomeSelected() {
-    console.log(this.selection.selected);
+   // console.log(this.selection.selected);
     return this.selection.selected.length > 0;
   }
   getGrnItemDetailList(Params) {
@@ -837,6 +837,7 @@ export class ItemNameList {
   IsVerified:any;
   IsVerifiedDatetime:any;
   IsVerifiedUserId:any;
+  StkID:any;
   /**
    * Constructor
    *
@@ -909,6 +910,7 @@ export class ItemNameList {
       this.IsVerified = ItemNameList.IsVerified || 0;
       this.IsVerifiedDatetime = ItemNameList.IsVerifiedDatetime || 0;
       this.IsVerifiedUserId = ItemNameList.IsVerifiedUserId || 0;
+      this.StkID = ItemNameList.StkID || 0;
     }
   }
 }

@@ -243,6 +243,18 @@ app-update-grn {
     min-width: 150px;
     text-align: left;
   }
+  .mat-column-stockid {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: left;
+  }
+  .mat-column-Status {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: left;
+  }
   .mat-column-Action {
     width: 80px;
     max-width: 80px;
@@ -250,16 +262,16 @@ app-update-grn {
     text-align: left;
   }
    .mat-header-row {
-      width:3400px;
-      max-width: 3400px;
-      min-width:3400px;
+      width:3550px;
+      max-width: 3550px;
+      min-width:3550px;
       // min-height: 30px;
       // background-color: blue;
     }
 
     .mat-row {
-    width: 3400px;
-    min-width: 3400px;  
+    width: 3550px;
+    min-width: 3550px;  
     // min-height: 30px; 
     }
     }
@@ -382,4 +394,8 @@ button:disabled {
 
 .example-month-picker .mat-calendar-arrow {
   display: none;
+}
+.disabled-row {
+  pointer-events: none;
+  background-color: #68f19d;
 }

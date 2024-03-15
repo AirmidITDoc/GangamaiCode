@@ -37,6 +37,7 @@ export class UpdateGRNComponent implements OnInit {
   vsaveflag: boolean = true;
 
   displayedColumns2 = [
+    'Status',
     'ItemName',
     'UOMId',
     'HSNCode',
@@ -74,6 +75,7 @@ export class UpdateGRNComponent implements OnInit {
     'IsVerifiedUserId',
     'IsVerified',
     'IsVerifiedDatetime',
+    'stockid',
     'buttons',
   ];
   displayedColumns3 = [
@@ -246,7 +248,7 @@ export class UpdateGRNComponent implements OnInit {
     if (ctrlValue && ctrlValue > currentDate) {
       this.date.setValue(this.date.value);
     }
-    console.log(this.datePipe.transform(this.date.value, "yyyy-MM"));
+    //console.log(this.datePipe.transform(this.date.value, "yyyy-MM"));
 
     datepicker.close();
   }
@@ -452,7 +454,8 @@ export class UpdateGRNComponent implements OnInit {
           UnitMRP: this.FinalUnitMRP || 0,
           IsVerifiedUserId: 0,
           IsVerified: false,
-          IsVerifiedDatetime: "01/01/1900"
+          IsVerifiedDatetime: "01/01/1900",
+          StkID:0
         });
       this.dsItemNameList.data = this.chargeslist
     }
@@ -1098,15 +1101,22 @@ export class UpdateGRNComponent implements OnInit {
       .map((i, idx) => (i.position = (idx + 1), i));
   }
   deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
-    if (index >= 0) {
-      this.chargeslist.splice(index, 1);
-      this.dsItemNameList.data = [];
-      this.dsItemNameList.data = this.chargeslist;
+    if(element.isVerifiedUserId==1){
+      this.toastr.warning('Verified Record should not be Deleted .', 'Deleted !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+    }else{
+      let index = this.chargeslist.indexOf(element);
+      if (index >= 0) {
+        this.chargeslist.splice(index, 1);
+        this.dsItemNameList.data = [];
+        this.dsItemNameList.data = this.chargeslist;
+      }
+      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
     }
-    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-      toastClass: 'tostr-tost custom-toast-success',
-    });
+   
   }
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -1117,7 +1127,7 @@ export class UpdateGRNComponent implements OnInit {
       return false;
     }
   }
-
+ 
   OnSave() {
     this.vsaveflag = true;
     if (!this._GRNList.userFormGroup.get('PurchaseId').value) {
@@ -1228,6 +1238,7 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['igstPer'] = element.IGST || 0;
       grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
       grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
+      grnDetailSaveObj['StkID'] = element.StkID || 0;
 
       SavegrnDetailObj.push(grnDetailSaveObj);
 
@@ -1381,6 +1392,7 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['igstPer'] = element.IGST || 0;
       grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
       grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
+      grnDetailSaveObj['StkID'] = element.StkID || 0;
 
       SavegrnDetailObj.push(grnDetailSaveObj);
 
@@ -1402,7 +1414,7 @@ export class UpdateGRNComponent implements OnInit {
       "grnDetailSave": SavegrnDetailObj,
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray
     };
-    // console.log(submitData);
+     console.log(submitData);
     this._GRNList.GRNSave(submitData).subscribe(response => {
       if (response) {
         this.toastr.success('Record Saved Successfully.', 'Saved !', {
@@ -1512,6 +1524,7 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['igstPer'] = element.IGST || 0;
       grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
       grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
+      grnDetailSaveObj['StkID'] = element.StkID || 0;
 
       SavegrnDetailObj.push(grnDetailSaveObj);
     });
@@ -1797,7 +1810,7 @@ export class UpdateGRNComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
+     // console.log('The dialog was closed - Insert Action', result);
     });
   }
   onClose() {
