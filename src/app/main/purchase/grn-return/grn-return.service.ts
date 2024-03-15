@@ -9,23 +9,23 @@ export class GrnReturnService {
 
 
   vGRNReturnheaderList: FormGroup;
-  vGRNReturnSearchFilter :FormGroup;
-  vGRNReturnItemFilter :FormGroup;
+  GRNReturnSearchFrom :FormGroup;
+  NewGRNReturnFrom :FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
     this.vGRNReturnheaderList = this.GRNReturnHeaderList();
-    this.vGRNReturnSearchFilter= this.GRNSearchFrom();
-    this.vGRNReturnItemFilter = this.GRNSearchItemList();
+    this.GRNReturnSearchFrom= this.GRNSearchFrom();
+    this.NewGRNReturnFrom = this.NewGRNItemList();
   }
 
   GRNSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: '',
       SupplierId:'',
-      IsVerify:'',
+      Status:['0'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });
@@ -36,19 +36,20 @@ export class GrnReturnService {
     });
   }
 
-  GRNSearchItemList() {
+  NewGRNItemList() {
     return this._formBuilder.group({
+      ToStoreId: '',
+      SupplierId:'',
+      CashType:['1'],
+      ReturnDate: [(new Date()).toISOString()],
     });
   }
- 
-  public getGRNReturnHeaderList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNReturnList_by_Name",Param);
-  }
-
   public getGRNReturnList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=getGRNReturnList",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GRNReturnList_by_Name",Param);
   }
-
+  public getGRNReturnItemDetList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_getGRNReturnList",Param);
+  }
   public getSupplierSearchList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName",{});
   }
@@ -56,10 +57,13 @@ export class GrnReturnService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
+
+
+
+
+
   
-  public getGRNReturnItemList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemList_by_Supplier_Name_For_GRNReturn",Param);
-  }
+
 
 }
 

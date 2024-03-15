@@ -838,6 +838,8 @@ export class ItemNameList {
   IsVerifiedDatetime:any;
   IsVerifiedUserId:any;
   StkID:any;
+  IsVerifiedId:any
+  VerifiedDateTime:any;
   /**
    * Constructor
    *
@@ -911,6 +913,8 @@ export class ItemNameList {
       this.IsVerifiedDatetime = ItemNameList.IsVerifiedDatetime || 0;
       this.IsVerifiedUserId = ItemNameList.IsVerifiedUserId || 0;
       this.StkID = ItemNameList.StkID || 0;
+      this.IsVerifiedId = ItemNameList.IsVerifiedId || 0;
+      this.VerifiedDateTime = ItemNameList.VerifiedDateTime || 0;
     }
   }
 }

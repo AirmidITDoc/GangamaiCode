@@ -65,7 +65,7 @@ export class UpdateGRNComponent implements OnInit {
     'NetAmount',
     'poId',
     'purDetID',
-    'isClosed',
+    //'isClosed',
     'poBalQty',
     'poQty',
     'landedRate',
@@ -517,12 +517,11 @@ export class UpdateGRNComponent implements OnInit {
     return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
   }
   getCellCalculation(contact, ReceiveQty) {
-
-    if (contact.PurchaseID > 0) {
+    if (contact.PurchaseId > 0) {
       if (contact.ReceiveQty > contact.POQty) {
         Swal.fire("Qty Should Be less than PO Qty")
       } else {
-        contact.poBalQty = ((contact.POQty) - (contact.ReceiveQty))
+        contact.POBalQty = ((contact.POQty) - (contact.ReceiveQty))
       }
     }
 
@@ -1209,7 +1208,7 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['uomId'] = element.UOMId || 0;
       grnDetailSaveObj['receiveQty'] = element.ReceiveQty || 0;
       grnDetailSaveObj['freeQty'] = element.FreeQty || 0;
-      grnDetailSaveObj['mrp'] = element.MRP || 0;
+      grnDetailSaveObj['mrp'] = element.UnitMRP || 0;
       grnDetailSaveObj['rate'] = element.Rate || 0;
       grnDetailSaveObj['totalAmount'] = element.TotalAmount || 0;
       grnDetailSaveObj['conversionFactor'] = element.ConversionFactor || 0;
@@ -1233,7 +1232,7 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['sgstAmt'] = element.SGSTAmt || 0;
       grnDetailSaveObj['igstPer'] = element.IGSTPer || 0;
       grnDetailSaveObj['igstAmt'] = element.IGSTAmt || 0;
-      grnDetailSaveObj['mrP_Strip'] = element.MRP_Strip || 0;
+      grnDetailSaveObj['mrP_Strip'] = element.MRP || 0;
       grnDetailSaveObj['isVerified'] = element.IsVerified;
       grnDetailSaveObj['igstPer'] = element.IGST || 0;
       grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
@@ -1271,8 +1270,8 @@ export class UpdateGRNComponent implements OnInit {
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray,
       "update_POHeader_Status_AganistGRN": update_POHeader_Status_AganistGRN
     };
-    // console.log(submitData);
-    this._GRNList.GRNSave(submitData).subscribe(response => {
+     console.log(submitData);
+    this._GRNList.POtoGRNSave(submitData).subscribe(response => {
       if (response) {
         this.toastr.success('Record PO TO GRN Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
@@ -1281,12 +1280,12 @@ export class UpdateGRNComponent implements OnInit {
         this.OnReset();
         this.viewGRNREPORTPdf(response)
       } else {
-        this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
+        this.toastr.error('PO TO GRN Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
     }, error => {
-      this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
+      this.toastr.error('PO TO GRN Data not saved !, Please check API error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
@@ -1821,6 +1820,7 @@ export class UpdateGRNComponent implements OnInit {
   FinalLandedrate1: any = 0;
   FinalpurUnitRate1: any = 0;
   FinalpurUnitrateWF1: any = 0;
+  FinalUnitMRP1:any=0;
   PurchaseOrderList() {
     const _dialogRef = this._matDialog.open(PurchaseorderComponent,
       {
@@ -1830,7 +1830,7 @@ export class UpdateGRNComponent implements OnInit {
       });
 
     _dialogRef.afterClosed().subscribe(result => {
-      //      console.log(result)
+      //console.log(result)
       this.vPurchaseId = result[0].PurchaseID;
       this.vpoBalQty = result[0].ReceiveQty;
       let other = result[0].FreightCharges + result[0].HandlingCharges + result[0].TransportChanges + result[0].OctriAmount
@@ -1839,17 +1839,20 @@ export class UpdateGRNComponent implements OnInit {
 
       const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
       this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
-     // this.vMobile = toSelectSUpplierId.Mobile;
-     // this.vContact = toSelectSUpplierId.ContactPerson;
+      this.vMobile = toSelectSUpplierId.Mobile;
+      this.vContact = toSelectSUpplierId.ContactPerson;
+    // console.log(toSelectSUpplierId)
+     //console.log(other)
 
       this.dsItemNameList1.data = result;
       this.dsItemNameList1.data.forEach((element) => {
 
         let Qty = element.Qty;
         this.FinalTotalQty1 = (((element.Qty) + (element.FreeQty)) * (element.ConversionFactor))
-        this.FinalLandedrate1 = (element.NetAmount) / (this.FinalTotalQty1) || 0
+        this.FinalLandedrate1 = (element.NetAmount) / (this.FinalTotalQty1) 
         this.FinalpurUnitRate1 = (((element.ItemTotalAmount) / (element.Qty)) * (element.ConversionFactor))
         this.FinalpurUnitrateWF1 = (((element.ItemTotalAmount) / (this.FinalTotalQty1)) * parseInt(element.ConversionFactor))
+        this.FinalUnitMRP1 = (element.MRP) / (element.ConversionFactor) 
 
         this.chargeslist.push(
           {
@@ -1866,7 +1869,7 @@ export class UpdateGRNComponent implements OnInit {
             MRP: element.MRP || 0,
             Rate: element.Rate || 0,
             TotalAmount: element.ItemTotalAmount || 0,
-            DiscPercentage: element.DiscPer || '',
+            DiscPercentage: element.DiscPer || 0,
             DiscAmount: element.ItemDiscAmount || 0,
             DiscPer2: element.DiscPer2 || 0,
             DiscAmt2: element.DiscAmt2 || 0,
@@ -1883,13 +1886,15 @@ export class UpdateGRNComponent implements OnInit {
             PurDetId: element.PurDetId || 0,
             POBalQty: element.POBalQty || 0,
             POQty: element.POQty || 0,
-            IsClosed: element.IsClosed,
+           // IsClosed: element.IsClosed,
             LandedRate: element.LandedRate || 0,
             PurUnitRate: this.FinalpurUnitRate1 || 0,
             PurUnitRateWF: this.FinalpurUnitrateWF1 || 0,
-            IsVerifiedUserId: 0,
-            IsVerified: false,
-            IsVerifiedDatetime: 0
+            IsVerifiedUserId: 0 ,//element.IsVerifiedId || 0,
+            IsVerified: false,//true,
+            IsVerifiedDatetime:"01/01/1900",// element.VerifiedDateTime || 0,
+            StkID:0,
+            UnitMRP:0
           });
         this.dsItemNameList.data = this.chargeslist
       });
