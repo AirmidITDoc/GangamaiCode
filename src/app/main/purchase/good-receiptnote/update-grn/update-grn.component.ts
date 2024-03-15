@@ -1101,7 +1101,7 @@ export class UpdateGRNComponent implements OnInit {
       .map((i, idx) => (i.position = (idx + 1), i));
   }
   deleteTableRow(element) {
-    if(element.isVerifiedUserId==1){
+    if(element.IsVerifiedUserId==1){
       this.toastr.warning('Verified Record should not be Deleted .', 'Deleted !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
@@ -1839,8 +1839,8 @@ export class UpdateGRNComponent implements OnInit {
 
       const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
       this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
-      this.vMobile = toSelectSUpplierId.Mobile;
-      this.vContact = toSelectSUpplierId.ContactPerson;
+     // this.vMobile = toSelectSUpplierId.Mobile;
+     // this.vContact = toSelectSUpplierId.ContactPerson;
 
       this.dsItemNameList1.data = result;
       this.dsItemNameList1.data.forEach((element) => {
