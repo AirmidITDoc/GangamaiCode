@@ -830,7 +830,6 @@ export class UpdateGRNComponent implements OnInit {
     this.vDisc2 = discamt2;
   }
   OnchekPurchaserateValidation() {
-    debugger;
     if (this.vRate) {
       let rate = this._GRNList.userFormGroup.get('Rate').value
       if (rate <= this.vMRP) {
@@ -1128,8 +1127,9 @@ export class UpdateGRNComponent implements OnInit {
   }
  
   OnSave() {
-    this.vsaveflag = true;
-    if (!this._GRNList.userFormGroup.get('PurchaseId').value) {
+   // this.vsaveflag = true;
+   console.log(this.vPurchaseId)
+    if (!this.vPurchaseId) {
       if (this.data.chkNewGRN == 1) {
         this.OnSavenew();
       } else if (this.data.chkNewGRN == 2) {
@@ -1188,7 +1188,7 @@ export class UpdateGRNComponent implements OnInit {
     grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
     grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
     grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
-    grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount || 0;
+    grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount2 || 0;
     grnSaveObj['grnid'] = 0;
 
     let SavegrnDetailObj = [];
@@ -1216,12 +1216,14 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
       grnDetailSaveObj['discPercentage'] = element.DiscPercentage || 0;
       grnDetailSaveObj['discAmount'] = element.DiscAmount || 0;
+      grnDetailSaveObj['discPerc2'] = element.DiscPer2 || 0;
+      grnDetailSaveObj['discAmt2'] = element.DiscAmt2 || 0;
       grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
       grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
       grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
       grnDetailSaveObj['grossAmount'] = element.NetAmount || 0;
       grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
-      grnDetailSaveObj['poNo'] = element.PurchaseID || 0;
+      grnDetailSaveObj['poNo'] = element.PurchaseId || 0;
       grnDetailSaveObj['batchNo'] = element.BatchNo || "";
       grnDetailSaveObj['batchExpDate'] = this.vExpDate;//this.datePipe.transform(this.lastDay1, "mm/dd/yyyy");
       grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
@@ -1257,7 +1259,7 @@ export class UpdateGRNComponent implements OnInit {
     let update_POHeader_Status_AganistGRN = [];
     this.dsItemNameList.data.forEach((element) => {
       let update_POHeader_Status_AganistGRNObj = {};
-      update_POHeader_Status_AganistGRNObj['poId'] = element.PurchaseID || 0;
+      update_POHeader_Status_AganistGRNObj['poId'] = element.PurchaseId || 0;
       update_POHeader_Status_AganistGRNObj['purDetID'] = element.PurDetId || 0;
       update_POHeader_Status_AganistGRNObj['isClosed'] = true;
       update_POHeader_Status_AganistGRNObj['poBalQty'] = element.POBalQty || 0;
@@ -1339,7 +1341,7 @@ export class UpdateGRNComponent implements OnInit {
     grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
     grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
     grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
-    grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount || 0;
+    grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount2 || 0;
     grnSaveObj['grnid'] = 0;
 
     let SavegrnDetailObj = [];
@@ -1360,6 +1362,8 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
       grnDetailSaveObj['discPercentage'] = element.DiscPercentage || 0;
       grnDetailSaveObj['discAmount'] = element.DiscAmount || 0;
+      grnDetailSaveObj['discPerc2'] = element.DiscPer2 || 0;
+      grnDetailSaveObj['discAmt2'] = element.DiscAmt2 || 0;
       grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
       grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
       grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
@@ -1474,7 +1478,7 @@ export class UpdateGRNComponent implements OnInit {
     updateGRNHeaderObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;
     updateGRNHeaderObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
     updateGRNHeaderObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
-    updateGRNHeaderObj['billDiscAmt'] = this.vFinalDisAmount || 0;
+    updateGRNHeaderObj['billDiscAmt'] = this.vFinalDisAmount2 || 0;
 
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
@@ -1502,6 +1506,8 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
       grnDetailSaveObj['discPercentage'] = element.DiscPercentage || 0;
       grnDetailSaveObj['discAmount'] = element.DiscAmount || 0;
+      grnDetailSaveObj['discPerc2'] = element.DiscPer2 || 0;
+      grnDetailSaveObj['discAmt2'] = element.DiscAmt2 || 0;
       grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
       grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
       grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
@@ -1739,7 +1745,6 @@ export class UpdateGRNComponent implements OnInit {
     }
   }
   public onEnterReceivedBy(event): void {
-    debugger
     if (event.which === 13) {
       this.DebitAmount.nativeElement.focus();
 
@@ -1830,7 +1835,7 @@ export class UpdateGRNComponent implements OnInit {
       });
 
     _dialogRef.afterClosed().subscribe(result => {
-      //console.log(result)
+      console.log(result)
       this.vPurchaseId = result[0].PurchaseID;
       this.vpoBalQty = result[0].ReceiveQty;
       let other = result[0].FreightCharges + result[0].HandlingCharges + result[0].TransportChanges + result[0].OctriAmount
@@ -1846,12 +1851,12 @@ export class UpdateGRNComponent implements OnInit {
 
       this.dsItemNameList1.data = result;
       this.dsItemNameList1.data.forEach((element) => {
-
         let Qty = element.Qty;
-        this.FinalTotalQty1 = (((element.Qty) + (element.FreeQty)) * (element.ConversionFactor))
-        this.FinalLandedrate1 = (element.NetAmount) / (this.FinalTotalQty1) 
+        let freeqty = element.FreeQty || 0;
+        this.FinalTotalQty1 = (((element.Qty) + (freeqty)) * (element.ConversionFactor));
+        this.FinalLandedrate1 = (element.NetAmount) / (this.FinalTotalQty1) ;
         this.FinalpurUnitRate1 = (((element.ItemTotalAmount) / (element.Qty)) * (element.ConversionFactor))
-        this.FinalpurUnitrateWF1 = (((element.ItemTotalAmount) / (this.FinalTotalQty1)) * parseInt(element.ConversionFactor))
+        this.FinalpurUnitrateWF1 = (((element.ItemTotalAmount) / (this.FinalTotalQty1)) * (element.ConversionFactor))
         this.FinalUnitMRP1 = (element.MRP) / (element.ConversionFactor) 
 
         this.chargeslist.push(
@@ -1894,7 +1899,7 @@ export class UpdateGRNComponent implements OnInit {
             IsVerified: false,//true,
             IsVerifiedDatetime:"01/01/1900",// element.VerifiedDateTime || 0,
             StkID:0,
-            UnitMRP:0
+            UnitMRP:this.FinalUnitMRP1
           });
         this.dsItemNameList.data = this.chargeslist
       });

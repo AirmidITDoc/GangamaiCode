@@ -8,17 +8,19 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class GrnReturnService {
 
 
-  vGRNReturnheaderList: FormGroup;
+  NewGRNRetFinalFrom: FormGroup;
   GRNReturnSearchFrom :FormGroup;
   NewGRNReturnFrom :FormGroup;
+  GRNListFrom:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.vGRNReturnheaderList = this.GRNReturnHeaderList();
+    this.NewGRNRetFinalFrom = this.NewGRNReturnFinal();
     this.GRNReturnSearchFrom= this.GRNSearchFrom();
     this.NewGRNReturnFrom = this.NewGRNItemList();
+    this.GRNListFrom = this.createGRNList();
   }
 
   GRNSearchFrom() {
@@ -31,8 +33,11 @@ export class GrnReturnService {
     });
   }
   
-  GRNReturnHeaderList() {
+  NewGRNReturnFinal() {
     return this._formBuilder.group({
+      Remark:[''],
+      TotalAmount:[''],
+      NetAmount:[''],
     });
   }
 
@@ -41,7 +46,14 @@ export class GrnReturnService {
       ToStoreId: '',
       SupplierId:'',
       CashType:['1'],
-      ReturnDate: [(new Date()).toISOString()],
+      start: [(new Date()).toISOString()],
+    });
+  }
+  createGRNList() {
+    return this._formBuilder.group({
+      SupplierId:'',
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
     });
   }
   public getGRNReturnList(Param){
@@ -49,6 +61,9 @@ export class GrnReturnService {
   }
   public getGRNReturnItemDetList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_getGRNReturnList",Param);
+  }
+  public getGRNList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GRNList_by_Name_For_GRNReturn",Param);
   }
   public getSupplierSearchList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName",{});
