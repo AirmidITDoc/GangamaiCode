@@ -99,30 +99,22 @@ export class IndentrequestComponent implements OnInit {
   }
 
 
-  chkQty(contact,InQty){
-    
-    if(this.dsRaisedIndent.data.length > 0){
-      
-        // this.dsRaisedIndent.data.forEach((element) => {
-          debugger
-          if (InQty == '' || InQty == null || InQty == 'undefined' || InQty == 0) {
-            this.vQtyflag=true;
-            this.toastr.warning('Please enter Indent Qty', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-             
-            });
-          }else{
-            this.vQtyflag=true;
-          }
-        // });
-        return;
-      }
-  
-      if(!this.vQtyflag){
-        this.vsaveflag=false;
-      }
+  chkQty(contact, InQty) {
+debugger
+    if (this.dsRaisedIndent.data.length > 0) {
+      if (InQty == '' || InQty == null || InQty == 'undefined' || InQty == 0) {
+        this.toastr.warning('Please enter Indent Qty', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+      } 
+      return;
     }
-  
+
+    if (!this.vQtyflag) {
+      this.vsaveflag = false;
+    }
+  }
+
 
 
 
@@ -131,8 +123,6 @@ export class IndentrequestComponent implements OnInit {
 
 
   OnSave() {
-
-
     if ((!this.dsRaisedIndent.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -145,9 +135,18 @@ export class IndentrequestComponent implements OnInit {
       });
       return;
     }
+    if (this.dsRaisedIndent.data.length > 0) {
+      this.dsRaisedIndent.data.forEach((element) => {
+        debugger
+        if (element.IndentQty == '' || element.IndentQty == null || element.IndentQty == 'undefined' || element.IndentQty == 0) {
+          this.toastr.warning('Please enter Indent Qty', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+        }
+      });
+      return;
+    }
 
-    if(!this.vQtyflag){
-   
     let InsertIndentObj = {};
     InsertIndentObj['indentDate'] = this.dateTimeObj.date;
     InsertIndentObj['indentTime'] = this.dateTimeObj.time;
@@ -157,12 +156,6 @@ export class IndentrequestComponent implements OnInit {
 
     let InsertIndentDetObj = [];
     this.dsRaisedIndent.data.forEach((element) => {
-      if(element.IndentQty == 0 || element.IndentQty == ''){
-        this.toastr.warning('Please enter Indent Qty', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return
-      }
       let IndentDetInsertObj = {};
       IndentDetInsertObj['indentId'] = 0;
       IndentDetInsertObj['itemId'] = element.ItemId;
@@ -195,7 +188,6 @@ export class IndentrequestComponent implements OnInit {
       });
     });
   
-    }
 }
 
 

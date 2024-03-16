@@ -108,7 +108,10 @@
                                                 </button>
                                             </div>
 
-
+                                            <!-- <button  (click)="viewgetIssuetodeptReportPdf()"
+                                            matTooltip="Pdf" style="width: 45px;border-color: white;">
+                                            <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                                              </button>&nbsp; -->
                                             <button (click)="exportIssuetodeptReportExcel()"
                                                 [disabled]="! (dsIssueToDep.data.length > 0)"
                                                 style="background-color: white;color: white;width: 45px;">
@@ -232,7 +235,7 @@
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact">
                                                             <button mat-icon-button matTooltip="Print"
-                                                                (click)="viewgetIssuetodeptReportPdf(contact)">
+                                                                (click)="viewgetIssuetodeptReportPdf(contact,true)">
                                                                 <mat-icon>print</mat-icon>
                                                             </button>
                                                         </mat-cell>
@@ -417,7 +420,7 @@
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                         <from [formGroup]="_IssueToDep.StoreFrom">
                                        
-                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                            <mat-form-field appearance="outline" fxFlex="500px;">
                                                 <mat-label>From Store</mat-label>
                                                 <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                     <mat-option></mat-option>
@@ -448,7 +451,7 @@
                                             </mat-autocomplete>
                                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                        <span style="margin-left: 200px;">
+                                        <span style="float: right;">
                                             <app-common-date [screenFrom]="screenFromString"
                                                 (dateTimeEventEmitter)="getDateTime($event)">
                                             </app-common-date>

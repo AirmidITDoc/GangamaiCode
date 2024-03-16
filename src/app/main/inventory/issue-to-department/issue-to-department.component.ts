@@ -34,7 +34,7 @@ export class IssueToDepartmentComponent implements OnInit {
     Addflag: boolean = false;
     vBarcodeflag: boolean = false;
     SpinLoading: boolean = false;
-
+    vprintflag:boolean=false;
     vsaveflag: boolean = true;
 
     displayedColumns: string[] = [
@@ -261,7 +261,7 @@ export class IssueToDepartmentComponent implements OnInit {
     }
     getOptionItemText(option) {
         if (!option) return '';
-        return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
+        return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')' + ' (' + option.UnitMRP + ')';
     }
     getSelectedObjItem(obj) {
         this.ItemName = obj.ItemName;
@@ -309,9 +309,9 @@ export class IssueToDepartmentComponent implements OnInit {
             this.dsNewIssueList3.data.forEach((element) => {
                 if (element.ItemId == contact.ItemId) {
                     this.Itemflag = true;
-                    this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-                        toastClass: 'tostr-tost custom-toast-warning',
-                    });
+                    // this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+                    //     toastClass: 'tostr-tost custom-toast-warning',
+                    // });
                     if (contact.IssueQty != null) {
                         this.DraftQty = element.Qty + contact.IssueQty;
                     } else {
@@ -469,8 +469,8 @@ export class IssueToDepartmentComponent implements OnInit {
         }
 
         if (!this.vBarcodeflag) {
-            const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId);
-            if (!isDuplicate) {
+            // const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId);
+            // if (!isDuplicate) {
                 let gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
 
                 this.chargeslist = this.dsTempItemNameList.data;
@@ -489,7 +489,7 @@ export class IssueToDepartmentComponent implements OnInit {
                         VatPer: gstper || 0,
                         VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
                         TotalAmount: this.vTotalAmount || 0,
-
+                        StockId: this.vStockId,
 
                         // ItemId: contact.ItemId || 0,
                         // ItemName: contact.ItemName || '',
@@ -505,7 +505,7 @@ export class IssueToDepartmentComponent implements OnInit {
                         // DiscAmt:DiscAmt|| 0,
                         // NetAmt: TotalNet,
                         // RoundNetAmt: parseInt(TotalNet),// Math.round(TotalNet),
-                        // StockId: this.StockId,
+                       
                         // LandedRate: contact.LandedRate,
                         // LandedRateandedTotal: LandedRateandedTotal,
                         // CgstPer: contact.CGSTPer,
@@ -521,11 +521,11 @@ export class IssueToDepartmentComponent implements OnInit {
                     });
                 console.log(this.chargeslist);
                 this.dsNewIssueList3.data = this.chargeslist
-            } else {
-                this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-            }
+            // } else {
+            //     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+            //         toastClass: 'tostr-tost custom-toast-warning',
+            //     });
+            // }
         }
 
 
@@ -546,7 +546,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
     AddIndentItem(contact) {
         console.log(contact)
-        debugger
+        
         this.Itemchargeslist1 = [];
         this.QtyBalchk = 0;
 
@@ -561,26 +561,22 @@ export class IssueToDepartmentComponent implements OnInit {
                 Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
             }
             else if (this.Itemchargeslist1.length > 0) {
-                let ItemID;
+                let ItemID=contact.ItemId;
                 this.Itemchargeslist1.forEach((element) => {
+                    debugger
                     
-                    // if(element.IndQty ==0){
-                    let IndQty=1
-                    // }else 
-                    if(element.IndQty > 0){
-                        IndQty=element.IndQty
-                    }
-
+                    let IndQty=contact.Qty
+                    
                     if (ItemID != element.ItemId) {
                         this.QtyBalchk = 0;
                     }
                     if (this.QtyBalchk != 1) {
-                        if (IndQty <= element.Qty) {
+                        if (IndQty <= element.BalanceQty) {
                             this.QtyBalchk = 1;
-                              this.getFinalCalculation(element, IndQty);
+                              this.getFinalCalculation(element, contact.Qty);
                             ItemID = element.ItemId;
                         }
-                        else {
+                        else if(IndQty > element.BalanceQty){
                             Swal.fire("Balance Qty is :", element.Qty)
                             this.QtyBalchk = 0;
                             Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
@@ -613,8 +609,11 @@ export class IssueToDepartmentComponent implements OnInit {
          let  SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
          let  IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
     
-         let  NetAmt = (parseFloat(TotalMRP) - 0).toFixed(2);
-    
+         let  NetAmt = ((parseFloat(TotalMRP) + parseFloat(GSTAmount))).toFixed(2);
+            
+         let BQty = contact.BalanceQty -  this.RQty;
+
+
           if (contact.DiscPer > 0) {
             // let  DiscAmt = ((TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
             // let   NetAmt = (TotalMRP - this.DiscAmt).toFixed(2);
@@ -627,26 +626,21 @@ export class IssueToDepartmentComponent implements OnInit {
               {
                   ItemId: contact.ItemId || 0,
                   ItemName: contact.ItemName || '',
-                  BatchNo: contact.vBatchNo,
+                  BatchNo: contact.BatchNo,
                   BatchExpDate: this.datePipe.transform(contact.BatchExpDate, "MM-dd-yyyy"),
-                  BalanceQty: this.vBalanceQty || 0,
-                  Qty: this.vQty || 0,
-                  UnitRate: this.vUnitMRP || 0,
-                  VatPer: gstper || 0,
-                  VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
-                  TotalAmount: this.vTotalAmount || 0,
+                  BalanceQty: BQty || 0,
+                  Qty:this.RQty || 0,
+                  UnitRate:contact.UnitMRP|| 0,
+                  TotalAmount: NetAmt || 0,
   
-  
-                 
-                  UnitMRP: contact.UnitMRP,
-                  GSTPer: contact.VatPer || 0,
-                  GSTAmount: GSTAmount || 0,
+                  VatPer: contact.VatPercentage || 0,
+                  VatAmount: GSTAmount || 0,
                   TotalMRP: TotalMRP,
                   DiscPer: contact.DiscPer,
                   DiscAmt: 0,
                   NetAmt: NetAmt,
                   RoundNetAmt: parseInt(NetAmt),// Math.round(TotalNet),
-                  StockId: contact.StockId,
+                  StockId: contact.StockId1,
                   LandedRate: contact.LandedRate,
                   LandedRateandedTotal: LandedRateandedTotal,
                   CgstPer: contact.CGSTPer,
@@ -655,7 +649,7 @@ export class IssueToDepartmentComponent implements OnInit {
                   SGSTAmt: SGSTAmt,
                   IgstPer: contact.IGSTPer,
                   IGSTAmt: IGSTAmt,
-                  PurchaseRate: contact.PurUnitRateWF,
+                  PurchaseRate: contact.PurchaseRate,
                   PurTotAmt: PurTotAmt,
                   MarginAmt: v_marginamt,
                   SalesDraftId: 1
@@ -784,6 +778,7 @@ export class IssueToDepartmentComponent implements OnInit {
                 this.toastr.success('Record New Issue To Department Saved Successfully.', 'Saved !', {
                     toastClass: 'tostr-tost custom-toast-success',
                 });
+                this.viewgetIssuetodeptReportPdf(response,this.vprintflag);
                 this.OnReset();
                 this.getIssueToDep();
 
@@ -875,6 +870,8 @@ export class IssueToDepartmentComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log(result);
 
+            result=result.selectedData
+debugger
             this.vBatchNo = result.BatchNo;
             this.vBatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
             this.vMRP = result.UnitMRP;
@@ -931,13 +928,21 @@ export class IssueToDepartmentComponent implements OnInit {
     }
 
 
-    viewgetIssuetodeptReportPdf(contact) {
+    viewgetIssuetodeptReportPdf(contact,vprintflag) {
+        debugger
+        let IssueId
+        if(vprintflag){
+         IssueId=contact.IssueId
+        }else {
+             IssueId=contact
+        }
+        
         this.sIsLoading == 'loading-data'
 
         setTimeout(() => {
             this.SpinLoading = true;
             //  this.AdList=true;
-            this._IssueToDep.getIssueToDeptview(contact.IssueId).subscribe(res => {
+            this._IssueToDep.getIssueToDeptview(IssueId).subscribe(res => {
                 const dialogRef = this._matDialog.open(PdfviewerComponent,
                     {
                         maxWidth: "95vw",

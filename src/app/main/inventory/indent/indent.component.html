@@ -193,7 +193,7 @@
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let row">
 
-                                                        <button mat-icon-button (click)="viewgetIndentReportPdf(row)"
+                                                        <button mat-icon-button (click)="viewgetIndentReportPdf(row,true)"
                                                             matTooltip="Print">
                                                             <mat-icon style="color: black;">print</mat-icon>
                                                         </button>
@@ -208,10 +208,10 @@
                                                         </button>
                                                         <button mat-icon-button (click)="onVerify(row)"
                                                             matTooltip="Verify">
-                                                            <mat-icon *ngIf="row.Isverify==1" [disabled]="row.disabled"
+                                                            <!-- <mat-icon *ngIf="row.Isverify==1" [disabled]="row.disabled"
                                                                 class="disabled-icon"
-                                                                title="verify Menu">verified_user</mat-icon>
-                                                            <mat-icon title="verify Menu" *ngIf="row.Isverify==0">
+                                                                title="verify Menu">verified_user</mat-icon> -->
+                                                            <mat-icon title="verify Menu" *ngIf="row.Isverify ==0">
                                                                 verified_user</mat-icon>
                                                         </button>
                                                     </mat-cell>
