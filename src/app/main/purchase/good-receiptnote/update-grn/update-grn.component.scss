@@ -183,12 +183,12 @@ app-update-grn {
     min-width: 90px;
     text-align: left;
   }
-  .mat-column-isClosed {
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
-    text-align: left;
-  }
+  // .mat-column-isClosed {
+  //   width: 90px;
+  //   max-width: 90px;
+  //   min-width: 90px;
+  //   text-align: left;
+  // }
   .mat-column-poBalQty {
     width: 90px;
     max-width: 90px;
@@ -262,16 +262,16 @@ app-update-grn {
     text-align: left;
   }
    .mat-header-row {
-      width:3550px;
-      max-width: 3550px;
-      min-width:3550px;
+      width:3500px;
+      max-width: 3500px;
+      min-width:3500px;
       // min-height: 30px;
       // background-color: blue;
     }
 
     .mat-row {
-    width: 3550px;
-    min-width: 3550px;  
+    width: 3500px;
+    min-width: 3500px;  
     // min-height: 30px; 
     }
     }
