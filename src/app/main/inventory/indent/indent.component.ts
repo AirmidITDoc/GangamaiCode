@@ -71,6 +71,7 @@ export class IndentComponent implements OnInit {
   filteredOptionsStoreList: Observable<string[]>;
   vRemark: any;
   vIndentId: any;
+vprintflag:boolean=false;
 
   dsIndentSearchList = new MatTableDataSource<IndentID>();
 
@@ -294,10 +295,11 @@ export class IndentComponent implements OnInit {
 
       let InsertIndentDetObj = [];
       this.dsIndentNameList.data.forEach((element) => {
+        debugger
         let IndentDetInsertObj = {};
         IndentDetInsertObj['indentId'] = 0;
-        IndentDetInsertObj['itemId'] = element.ItemID;
-        IndentDetInsertObj['qty'] = element.IndentQuantity;
+        IndentDetInsertObj['itemId'] = element.ItemId;
+        IndentDetInsertObj['qty'] = element.Qty;
         InsertIndentDetObj.push(IndentDetInsertObj);
       });
 
@@ -314,6 +316,7 @@ export class IndentComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-success',
           });
           this.OnReset();
+          this.viewgetIndentReportPdf(response,this.vprintflag);
           this.getIndentID();
         } else {
           this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
@@ -357,6 +360,7 @@ export class IndentComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-success',
           });
           this.OnReset();
+          this.viewgetIndentReportPdf(response,this.vprintflag);
           this.getIndentID();
         } else {
           this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
@@ -472,15 +476,21 @@ export class IndentComponent implements OnInit {
 
   SpinLoading: boolean = false;
       
-  viewgetIndentReportPdf(contact) {
-
+  viewgetIndentReportPdf(contact,vprintflag) {
+    let IndentId
+debugger
+    if(vprintflag){
+       IndentId=contact.IndentId
+    }else{
+      IndentId=contact
+    }
     console.log(contact)
     this.sIsLoading == 'loading-data'
   
     setTimeout(() => {
     this.SpinLoading =true;
     //  this.AdList=true;
-    this._IndentService.getIndentwiseview(contact.IndentId).subscribe(res => {
+    this._IndentService.getIndentwiseview(IndentId).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
           maxWidth: "95vw",
@@ -504,6 +514,7 @@ export class IndentComponent implements OnInit {
 export class IndentNameList {
   Action: any;
   ItemID: any;
+  ItemId:any;
   ItemName: string;
   Qty: number;
   HospitalBalance: number;
@@ -519,6 +530,7 @@ export class IndentNameList {
   constructor(IndentNameList) {
     {
       this.Action = IndentNameList.Action || 0;
+      this.ItemId = IndentNameList.ItemId || 0;
       this.ItemID = IndentNameList.ItemID || 0;
       this.ItemName = IndentNameList.ItemName || "";
       this.Qty = IndentNameList.Qty || 0;

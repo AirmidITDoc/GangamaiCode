@@ -38,7 +38,7 @@
                                 <mat-form-field appearance="outline" style="margin-left: 2%;">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="getIssueTodept()">
                                         <input matEndDate formControlName="end" placeholder="End date"
                                             (dateChnage)="getIssueTodept()">
                                     </mat-date-range-input>
@@ -70,9 +70,9 @@
                                 <mat-radio-group name="Status" formControlName="Status" fxLayout="row" class="gap-4 "
                                     value="0" >
                                     <mat-label>Status:</mat-label>
-                                    <mat-radio-button value="1" class="mr-sm-12" (keyup)=" getIssueTodept()">
+                                    <mat-radio-button value=1 class="mr-sm-12" (keyup)=" getIssueTodept()">
                                         Close </mat-radio-button>
-                                    <mat-radio-button value="0" class="mr-sm-12" (keyup)=" getIssueTodept()">
+                                    <mat-radio-button value=0 class="mr-sm-12" (keyup)=" getIssueTodept()">
                                         Pending </mat-radio-button>
                                 </mat-radio-group>
 
@@ -209,16 +209,15 @@
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button matTooltip="Print">
+                                            <button mat-icon-button matTooltip="Print" (click)="viewgetMaterialrecfrdeptReportPdf(row)">
                                                 <mat-icon>print</mat-icon>
                                             </button>
-                                            <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit"  >
-                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted==1"
-                                                    [disabled]="row.disabled" class="disabled-icon"
-                                                   >
+                                            <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit"  [disabled]="row.IsAccepted">
+                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted !=true"
+                                                    class="disabled-icon">
                                                     edit</mat-icon>
-                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted==0">
-                                                    edit</mat-icon>
+                                                <!-- <mat-icon title="Edit Menu" *ngIf="row.IsAccepted != true">
+                                                    edit</mat-icon> -->
                                             </button>
                                         </mat-cell>
                                     </ng-container>

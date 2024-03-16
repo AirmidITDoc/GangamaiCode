@@ -93,7 +93,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
   tableElementChecked(event ,contact){
     if(contact.selected){
       contact.Status = 'Accepted'
-      this.SelectedRowData.push(contact);
+      this.SelectedRowData.data.push(contact);
       console.log(this.SelectedRowData);
       // this.temparray = this.S.data;
     }

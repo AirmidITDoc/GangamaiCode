@@ -63,4 +63,11 @@ export class BrowsSalesReturnBillService {
   public AcceptmaterialSave(Param){
     return this._httpClient.post("Pharmacy/UpdateMaterialAcceptance",Param);
   }
+
+
+   
+  public getMaterialreceivedfrDeptview(IssueId){
+    return this._httpClient.get("Pharmacy/view-MaterialRecivedFrDept_Report?IssueId=" + IssueId);
+  }
+  
 }
