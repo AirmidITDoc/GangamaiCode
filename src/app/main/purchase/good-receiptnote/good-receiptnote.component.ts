@@ -819,7 +819,7 @@ export class ItemNameList {
   UnitofMeasurementName: number;
   UnitofMeasurementId: any;
   POBalQty: any;
-  PurchaseID: any;
+  PurchaseId: any;
   IsClosed: boolean;
   PurDetId: any;
   LandedRate: any;
@@ -840,6 +840,7 @@ export class ItemNameList {
   StkID:any;
   IsVerifiedId:any
   VerifiedDateTime:any;
+  PurchaseID:any;
   /**
    * Constructor
    *
@@ -902,7 +903,7 @@ export class ItemNameList {
       this.PurUnitRate = ItemNameList.PurUnitRate || 0;
       this.PurUnitRateWF = ItemNameList.PurUnitRateWF || 0;
       this.BatchExpDate = ItemNameList.BatchExpDate || 0;
-      this.PurchaseID = ItemNameList.PurchaseID || 0;
+      this.PurchaseId = ItemNameList.PurchaseId || 0;
       this.ItemDiscAmount = ItemNameList.ItemDiscAmount || 0;
       this.DiscPer = ItemNameList.DiscPer || 0;
       this.ItemTotalAmount = ItemNameList.ItemTotalAmount || 0;

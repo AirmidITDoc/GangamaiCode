@@ -14,6 +14,8 @@ import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
+import { GrnListComponent } from './grn-list/grn-list.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-grn-return',
@@ -52,28 +54,11 @@ export class GRNReturnComponent implements OnInit {
   ];
   displayedColumns2 = [
     "GRNNO",
-    "ItemName",
-    "BatchNo",
-    'Batch',
-    'BalQty',
-    "ReturnQty",
-    "LandedRate",
-    "TotalAmount",
-    "GST",
-    "GSTAmount",
+    "GRNDate",
+    "SupplierName",
+    'TotalAmount',
     'NetAmount',
-    'IsBatchRequired',
-    'StkID',
-    'CF',
-    'TotalQty',
-    'GrnId',
   ];
-
-
-  dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
-  dsGRNReturnItemDetList = new MatTableDataSource<GRNReturnItemDetList>();
-  dsGRNReturnItemList = new MatTableDataSource<GRNReturnItemList>();
-
   ToStoreList: any = [];
   SupplierList: any;
   optionsToStore: any;
@@ -85,27 +70,27 @@ export class GRNReturnComponent implements OnInit {
   dateTimeObj: any;
   screenFromString = 'admission-form';
   labelPosition: 'before' | 'after' = 'after';
-
-
-
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-  @ViewChild('paginator1', { static: true }) public paginator1: MatPaginator;
-  @ViewChild('paginator2', { static: true }) public paginator2: MatPaginator;
   sIsLoading: string;
   filteredoptionsToStore: Observable<string[]>;
   filteredoptionsSupplier: Observable<string[]>;
   filteredoptionsSupplier2: Observable<string[]>;
   vGRNReturnItemFilter: any;
 
+  dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
+  dsGRNReturnItemDetList = new MatTableDataSource<GRNReturnItemDetList>();
+  dsNewGRNReturnItemList = new MatTableDataSource<NewGRNReturnItemList>();
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+  @ViewChild('paginator1', { static: true }) public paginator1: MatPaginator;
+  @ViewChild('paginator2', { static: true }) public paginator2: MatPaginator;
+ 
   constructor(
     public _GRNReturnHeaderList: GrnReturnService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private _loggedService: AuthenticationService,
-
+    public toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -149,17 +134,14 @@ export class GRNReturnComponent implements OnInit {
       const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
       return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
     }
-  }
-  
-  getOptionTextPayment(option) {
-    return option && option.StoreName ? option.StoreName : '';
-  }
+  } 
   getOptionTextSupplier(option) {
     return option && option.SupplierName ? option.SupplierName : '';
   }
   getOptionTextSupplier2(option) {
     return option && option.SupplierName ? option.SupplierName : '';
   }
+  
   getGRNReturnList() {
     this.sIsLoading = 'loading-data';
     var Param = {
@@ -189,7 +171,7 @@ export class GRNReturnComponent implements OnInit {
     this._GRNReturnHeaderList.getGRNReturnItemDetList(Param).subscribe(data => {
       this.dsGRNReturnItemDetList.data = data as GRNReturnItemDetList[];
       this.dsGRNReturnItemDetList.sort = this.sort;
-      this.dsGRNReturnItemDetList.paginator = this.paginator;
+      this.dsGRNReturnItemDetList.paginator = this.paginator1;
       this.sIsLoading = '';
       console.log(this.dsGRNReturnItemDetList.data)
     },
@@ -198,40 +180,51 @@ export class GRNReturnComponent implements OnInit {
       });
   }
 
-
-  // onChangeDateofBirth(DateOfBirth) {
-  //   if (DateOfBirth) {
-  //     const todayDate = new Date();
-  //     const dob = new Date(DateOfBirth);
-  //     const timeDiff = Math.abs(Date.now() - dob.getTime());
-  //     this.vGRNReturnItemFilter.get('DateOfBirth').setValue(DateOfBirth);
-  //   }
-
-  // }
-
-
-
-
-
-
-
-
-  deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
-    if (index >= 0) {
-      this.chargeslist.splice(index, 1);
-      this.dsGRNReturnItemList.data = [];
-      this.dsGRNReturnItemList.data = this.chargeslist;
+  deleteTableRow(elm) {
+    this.dsNewGRNReturnItemList.data = this.dsNewGRNReturnItemList.data
+      .filter(i => i !== elm)
+      .map((i, idx) => (i.position = (idx + 1), i));
+      this.toastr.success('Record Deleted Successfully', 'Success !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+  }
+  OnSave() {
+    if ((!this.dsNewGRNReturnItemList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
     }
-    Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
+    if ((!this._GRNReturnHeaderList.GRNReturnSearchFrom.get('SupplierId').value.SupplierId)) {
+      this.toastr.warning('Please Select Supplier name.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+   }
+
+  OnReset() { 
+    this._GRNReturnHeaderList.NewGRNReturnFrom.reset();
+    this._GRNReturnHeaderList.NewGRNRetFinalFrom.reset();
+    this.dsNewGRNReturnItemList.data = [];
   }
 
-  OnSave() { }
-
-  OnReset() { }
-
   onClear() { }
-
+  getGRNList() {
+    const dialogRef = this._matDialog.open(GrnListComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      console.log(result)
+      this.dsNewGRNReturnItemList.data = result as NewGRNReturnItemList[];
+      const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierId);
+      this._GRNReturnHeaderList.NewGRNReturnFrom.get('SupplierId').setValue(toSelectSUpplierId);
+    });
+}
 }
 
 export class GRNReturnList {
@@ -247,11 +240,6 @@ export class GRNReturnList {
   GRNReturnNo: number;
   UserName: any;
 
-  /**
-   * Constructor
-   *
-   * @param GRNReturnList
-   */
   constructor(GRNReturnList) {
     {
       this.GRNReturnId = GRNReturnList.GRNReturnId || 0;
@@ -269,7 +257,6 @@ export class GRNReturnList {
 }
 
 export class GRNReturnItemDetList {
-
   ItemName: string;
   BatchNo: number;
   BatchExpiryDate: number;
@@ -287,11 +274,7 @@ export class GRNReturnItemDetList {
   MRP:number;
   LandedRate: number;
   Totalamt:any;
-  /**
-   * Constructor
-   *
-   * @param GRNReturnItemDetList
-   */
+
   constructor(GRNReturnItemDetList) {
     {
 
@@ -316,7 +299,7 @@ export class GRNReturnItemDetList {
   }
 }
 
-export class GRNReturnItemList {
+export class NewGRNReturnItemList {
 
   GRNNO: number;
   ItemName: number;
@@ -333,29 +316,25 @@ export class GRNReturnItemList {
   CF: number;
   TotalQty: number;
   GrnId: number;
+  position:any;
 
-  /**
-   * Constructor
-   *
-   * @param GRNReturnItemList
-   */
-  constructor(GRNReturnItemList) {
+  constructor(NewGRNReturnItemList) {
     {
-      this.GRNNO = GRNReturnItemList.GRNNO || 0;
-      this.ItemName = GRNReturnItemList.ItemName || 0;
-      this.BatchNo = GRNReturnItemList.BatchNo || 0;
-      this.BalQty = GRNReturnItemList.BalQty || 0;
-      this.ReturnQty = GRNReturnItemList.ReturnQty || 0;
-      this.LandedRate = GRNReturnItemList.LandedRate || 0;
-      this.TotalAmount = GRNReturnItemList.TotalAmount || 0;
-      this.GST = GRNReturnItemList.GST || 0;
-      this.GSTAmount = GRNReturnItemList.GSTAmount || 0;
-      this.NetAmount = GRNReturnItemList.NetAmount || 0;
-      this.IsBatchRequired = GRNReturnItemList.IsBatchRequired || 0;
-      this.StkID = GRNReturnItemList.StkID || 0;
-      this.CF = GRNReturnItemList.CF || 0;
-      this.TotalQty = GRNReturnItemList.TotalQty || 0;
-      this.GrnId = GRNReturnItemList.GrnId || 0;
+      this.GRNNO = NewGRNReturnItemList.GRNNO || 0;
+      this.ItemName = NewGRNReturnItemList.ItemName || 0;
+      this.BatchNo = NewGRNReturnItemList.BatchNo || 0;
+      this.BalQty = NewGRNReturnItemList.BalQty || 0;
+      this.ReturnQty = NewGRNReturnItemList.ReturnQty || 0;
+      this.LandedRate = NewGRNReturnItemList.LandedRate || 0;
+      this.TotalAmount = NewGRNReturnItemList.TotalAmount || 0;
+      this.GST = NewGRNReturnItemList.GST || 0;
+      this.GSTAmount = NewGRNReturnItemList.GSTAmount || 0;
+      this.NetAmount = NewGRNReturnItemList.NetAmount || 0;
+      this.IsBatchRequired = NewGRNReturnItemList.IsBatchRequired || 0;
+      this.StkID = NewGRNReturnItemList.StkID || 0;
+      this.CF = NewGRNReturnItemList.CF || 0;
+      this.TotalQty = NewGRNReturnItemList.TotalQty || 0;
+      this.GrnId = NewGRNReturnItemList.GrnId || 0;
     }
   }
 }
