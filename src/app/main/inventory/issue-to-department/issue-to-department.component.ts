@@ -950,7 +950,7 @@ debugger
                         width: '100%',
                         data: {
                             base64: res["base64"] as string,
-                            title: "Issue to Dept Reprt Viewer"
+                            title: "Issue to Dept Report Viewer"
                         }
                     });
                 dialogRef.afterClosed().subscribe(result => {
@@ -961,7 +961,40 @@ debugger
     }
 
 
+    viewgetIssuetodeptsummaryReportPdf() {
+        debugger
+        let Fromdate = this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    let Todate = this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+   
+    let FromStoreId = this._loggedService.currentUserValue.user.storeId|| this._IssueToDep.IssueSearchGroup.get("FromStoreId").value.StoreId || 0
+   
+    let ToStoreId = this._IssueToDep.IssueSearchGroup.get("ToStoreId").value.StoreId || 0
+    
+        this.sIsLoading == 'loading-data'
 
+        setTimeout(() => {
+            this.SpinLoading = true;
+            //  this.AdList=true;
+            this._IssueToDep.getIssueToDeptsummaryview(Fromdate,Todate,FromStoreId,ToStoreId).subscribe(res => {
+                const dialogRef = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "95vw",
+                        height: '850px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Issue to Dept Summary Report Viewer"
+                        }
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    this.sIsLoading = '';
+                });
+            });
+        }, 1000);
+    }
+
+   
+    
     exportIssuetodeptReportExcel() {
         this.sIsLoading == 'loading-data'
         let exportHeaders = ['IssueNo', 'IssueDate', 'FromStoreName', 'ToStoreName', 'TotalAmount', 'TotalVatAmount', 'NetAmount', 'Remark', 'Receivedby'];
