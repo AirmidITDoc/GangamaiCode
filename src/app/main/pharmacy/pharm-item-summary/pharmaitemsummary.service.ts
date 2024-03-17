@@ -36,6 +36,7 @@ export class PharmaitemsummaryService {
       // start: [(new Date()).toISOString()],
       start:[(new Date()).toISOString()],
       ExpYear:'',
+      ExpMonth:'',
       StoreId:'',
       
     });
@@ -59,5 +60,13 @@ export class PharmaitemsummaryService {
   }
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+  }
+
+
+  public getNonMovingItemview(NonMovingDay,StoreId ){
+    return this._httpClient.get("InventoryTransaction/view-NonMovingItem?NonMovingDay=" + NonMovingDay+"&StoreId  ="+StoreId );
+  }
+  public getExpiryItemview(ExpMonth,ExpYear,StoreID){
+    return this._httpClient.get("InventoryTransaction/view-ExpiryItemList?ExpMonth=" + ExpMonth+"&ExpYear ="+ExpYear  +"&StoreID="+StoreID);
   }
 }

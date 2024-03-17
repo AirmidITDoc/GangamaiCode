@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-pharm-item-summary',
@@ -275,6 +276,76 @@ export class PharmItemSummaryComponent implements OnInit {
   //   },100);
   // }
 
+  viewgetExpItemListReportPdf() {
+    debugger
+
+let Expyear =  this._PharmaitemsummaryService.userFormGroup.get("ExpYear").value || 0
+let ExpMonth =  this._PharmaitemsummaryService.userFormGroup.get("ExpMonth").value || 0
+
+let ToStoreId = 1//this.accountService.currentUserValue.user.storeId|| this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId || 0
+
+    this.sIsLoading == 'loading-data'
+
+    setTimeout(() => {
+        this.SpinLoading = true;
+        //  this.AdList=true;
+        this._PharmaitemsummaryService.getExpiryItemview(ExpMonth,Expyear,ToStoreId).subscribe(res => {
+            const dialogRef = this._matDialog.open(PdfviewerComponent,
+                {
+                    maxWidth: "95vw",
+                    height: '850px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Expiry Item  Report Viewer"
+                    }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                this.sIsLoading = '';
+            });
+        });
+    }, 1000);
+}
+
+ChkNonMovvalue(){
+  if(this._PharmaitemsummaryService.SearchGroup.get("NonMovingDay").value > 0){
+this.VNonMovdaysflag=false
+  }
+}
+
+
+VNonMovdaysflag:boolean=true
+viewgetNonMovingReportPdf() {
+    debugger
+//     let Fromdate = this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+// let Todate = this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+
+let FromStoreId = this.accountService.currentUserValue.user.storeId || this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId || 0
+
+let NonMDays = this._PharmaitemsummaryService.SearchGroup.get("NonMovingDay").value || 0
+
+    this.sIsLoading == 'loading-data'
+
+    setTimeout(() => {
+        this.SpinLoading = true;
+        //  this.AdList=true;
+        this._PharmaitemsummaryService.getNonMovingItemview(NonMDays,FromStoreId).subscribe(res => {
+            const dialogRef = this._matDialog.open(PdfviewerComponent,
+                {
+                    maxWidth: "95vw",
+                    height: '850px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Non Moving Item Report Viewer"
+                    }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                this.sIsLoading = '';
+            });
+        });
+    }, 1000);
+}
 
 }
 

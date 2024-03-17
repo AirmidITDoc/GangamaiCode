@@ -106,9 +106,15 @@ export class IssueToDepartmentService {
   public getIssueToDeptview(IssueId){
     return this._httpClient.get("InventoryTransaction/view-IssuetoDeptIssuewise?IssueId=" + IssueId);
   }
+  
 
+
+  public getIssueToDeptsummaryview(FromDate,Todate ,FromStoreId,ToStoreId){
+    return this._httpClient.get("/api/InventoryTransaction/view-IssuetoDeptSummary?FromDate=" + FromDate+"&Todate ="+Todate  +"&FromStoreId="+FromStoreId  +"&ToStoreId="+ToStoreId);
+  }
   public getIndentItemBatch(emp){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",emp);
   }
   
 }
+// rptNonMovingItemList  RptItemExpReportMonthWise
