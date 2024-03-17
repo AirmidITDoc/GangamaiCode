@@ -149,6 +149,7 @@ export class NewMaterialList {
   }
 }
 export class MaterialConList {
+  ConsumptionNo:any;
   Date: Number;
   FromStoreName:string;
   PurchaseTotalAmount: number;
@@ -158,6 +159,7 @@ export class MaterialConList {
   
   constructor(MaterialConList) {
     {
+      this.ConsumptionNo = MaterialConList.ConsumptionNo || 0;
       this.Date = MaterialConList.Date || 0;
       this.PurchaseTotalAmount = MaterialConList.PurchaseTotalAmount || 0;
       this.FromStoreName = MaterialConList.FromStoreName || "";

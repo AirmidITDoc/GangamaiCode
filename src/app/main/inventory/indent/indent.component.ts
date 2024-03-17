@@ -72,6 +72,7 @@ export class IndentComponent implements OnInit {
   vRemark: any;
   vIndentId: any;
 vprintflag:boolean=false;
+vToStoreId:any=0;
 
   dsIndentSearchList = new MatTableDataSource<IndentID>();
 
@@ -104,10 +105,13 @@ vprintflag:boolean=false;
     this.getIndentID();
     this.getTostoreListCombobox();
 
+    
+
     this.filteredOptionsStore = this._IndentService.newIndentFrom.get('ToStoreId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterToStore(value)),
     );
+
     this.filteredOptionsStoreList = this._IndentService.IndentSearchGroup.get('ToStoreId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterToStoreList(value)),
@@ -133,7 +137,7 @@ vprintflag:boolean=false;
     console.log(Param)
     this._IndentService.getIndentID(Param).subscribe(data => {
       this.dsIndentSearchList.data = data as IndentID[];
-      console.log(this.dsIndentSearchList)
+      console.log(this.dsIndentSearchList.data)
       this.dsIndentSearchList.sort = this.sort;
       this.dsIndentSearchList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -148,6 +152,7 @@ vprintflag:boolean=false;
     }
     this._IndentService.getIndentList(Param).subscribe(data => {
       this.dsIndentDetailsSearchList.data = data as IndentList[];
+      console.log(this.dsIndentDetailsSearchList.data)
       this.dsIndentDetailsSearchList.sort = this.sort;
       this.dsIndentDetailsSearchList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -162,6 +167,8 @@ vprintflag:boolean=false;
       this.ToStoreList1 = data;
     });
   }
+
+  
   private _filterToStoreList(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
@@ -181,17 +188,42 @@ vprintflag:boolean=false;
       this._IndentService.StoreFrom.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
+  // getTostoreListCombobox() {
+  //   this._IndentService.getToStoreNameSearch().subscribe(data => {
+  //     this.ToStoreList = data;
+  //   });
+  // }
+
+
   getTostoreListCombobox() {
+      
     this._IndentService.getToStoreNameSearch().subscribe(data => {
       this.ToStoreList = data;
+      console.log(this.ToStoreList)
+      if (this.vIndentId != 0) {
+        const ddValue = this.ToStoreList.filter(c => c.StoreId == this.vToStoreId);
+        this._IndentService.newIndentFrom.get('ToStoreId').setValue(ddValue[0]);
+        
+        this._IndentService.newIndentFrom.updateValueAndValidity();
+        return;
+      } 
     });
+    
   }
+
+
+
   private _filterToStore(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+
       return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
     }
+
   }
+
+
+
   getOptionTextStores(option) {
     return option && option.StoreName ? option.StoreName : '';
   }
@@ -236,8 +268,8 @@ vprintflag:boolean=false;
     }
     const isDuplicate = this.dsIndentNameList.data.some(item => item.ItemID === this._IndentService.newIndentFrom.get('ItemName').value.ItemID);
     if (!isDuplicate) {
-      this.dsIndentNameList.data = [];
-      this.chargeslist = this.dsTempItemNameList.data;
+      // this.dsIndentNameList.data = [];
+      this.chargeslist = this.dsIndentNameList.data;
       this.chargeslist.push(
         {
           ItemId: this._IndentService.newIndentFrom.get('ItemName').value.ItemID || 0,
@@ -329,22 +361,25 @@ vprintflag:boolean=false;
         });
       });
     } else {
+
+      debugger
       let updateIndent = {};
-      updateIndent['indentId'] = this.dateTimeObj.time;
+      updateIndent['indentId'] = this.vIndentId;
       updateIndent['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
       updateIndent['toStoreId'] = this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId;
 
       let insertIndentDetail = [];
       this.dsIndentNameList.data.forEach((element) => {
+        debugger
         let insertIndentDetailobj = {};
-        insertIndentDetailobj['indentId'] = 0;
-        insertIndentDetailobj['itemId'] = element.ItemID;
-        insertIndentDetailobj['qty'] = element.IndentQuantity;
+        insertIndentDetailobj['indentId'] = this.vIndentId;
+        insertIndentDetailobj['itemId'] = element.ItemId;
+        insertIndentDetailobj['qty'] = element.Qty;
         insertIndentDetail.push(insertIndentDetailobj);
       });
 
       let deleteIndent = {};
-      deleteIndent['indentId'] = 0;
+      deleteIndent['indentId'] = this.vIndentId;
 
       let submitData = {
         "updateIndent": updateIndent,
@@ -354,21 +389,22 @@ vprintflag:boolean=false;
 
       console.log(submitData);
 
-      this._IndentService.InsertIndentSave(submitData).subscribe(response => {
+      this._IndentService.InsertIndentUpdate(submitData).subscribe(response => {
         if (response) {
-          this.toastr.success('Record New Indent Saved Successfully.', 'Saved !', {
+          console.log(response)
+          this.toastr.success('Record  Indent Updated Successfully.', 'Saved !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
           this.OnReset();
-          this.viewgetIndentReportPdf(response,this.vprintflag);
+        //  this.viewgetIndentReportPdf(response,this.vprintflag);
           this.getIndentID();
         } else {
-          this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
+          this.toastr.error(' Issue Indent Data not saved !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
           });
         }
       }, error => {
-        this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
+        this.toastr.error(' Issue Indent Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       });
@@ -379,10 +415,11 @@ vprintflag:boolean=false;
   selectedIndex: string = '';
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   OnEdit(row, tabGroup: MatTabGroup) {
-
+  
     const tabIndex = row === 'tab1' ? 0 : 1;
     tabGroup.selectedIndex = tabIndex;
     // console.log(row)
+    this. getTostoreListCombobox();
     var vdata = {
       ToStoreId: row.ToStoreId,
       StoreName: row.ToStoreName
@@ -391,8 +428,11 @@ vprintflag:boolean=false;
     this._IndentService.populateForm(vdata);
 
     this.vRemark = row.Remark;
-    const selectedToStore = this.ToStoreList.filter(c => c.StoreId == row.ToStoreId);
-    this._IndentService.newIndentFrom.get('ToStoreId').setValue(selectedToStore);
+    this.vIndentId=row.IndentId;
+    this.vToStoreId=row.ToStoreId;
+
+    // const selectedToStore = this.ToStoreList.filter(c => c.StoreId == row.ToStoreId);
+    // this._IndentService.newIndentFrom.get('ToStoreId').setValue(selectedToStore);
 
     // console.log(selectedToStore);
     // console.log(row.ToStoreId)

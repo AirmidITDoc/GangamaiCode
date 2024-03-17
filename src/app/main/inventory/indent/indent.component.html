@@ -199,12 +199,12 @@
                                                         </button>
 
                                                         <button mat-icon-button (click)="OnEdit(row,tabGroup)"
-                                                            matTooltip="Edit">
-                                                            <mat-icon title="Edit Menu" *ngIf="row.Isverify==1"
-                                                                [disabled]="row.disabled" class="disabled-icon">
+                                                            matTooltip="Edit"  [disabled]="row.Isverify">
+                                                            <mat-icon title="Edit Menu" *ngIf="row.Isverify != true"
+                                                                class="disabled-icon">
                                                                 edit</mat-icon>
-                                                            <mat-icon title="Edit Menu" *ngIf="row.Isverify==0">
-                                                                edit</mat-icon>
+                                                            <!-- <mat-icon title="Edit Menu" *ngIf="row.IsInchargeVerify==0">
+                                                                edit</mat-icon> -->
                                                         </button>
                                                         <button mat-icon-button (click)="onVerify(row)"
                                                             matTooltip="Verify">
