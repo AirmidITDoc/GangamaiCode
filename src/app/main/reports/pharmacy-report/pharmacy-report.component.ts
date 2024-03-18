@@ -230,10 +230,7 @@ export class PharmacyReportComponent implements OnInit {
   }
 
   GetPaymentModeList() {
-<<<<<<< HEAD
     debugger
-=======
->>>>>>> f3c68553db66a66dd7b52f69f489d2b2bc1233fd
     this._PharmacyreportService.getPaymentModeList().subscribe(data => {
       this.PaymentList = data;
       this.optionsPaymentMode = this.PaymentList.slice();
@@ -397,7 +394,6 @@ export class PharmacyReportComponent implements OnInit {
     }, 100);
   }
   viewgetSalesPatientWiseReportPdf() {
-<<<<<<< HEAD
 
 
     setTimeout(() => {
@@ -424,33 +420,6 @@ export class PharmacyReportComponent implements OnInit {
               title: "Pharma Daily Collection Summary Patient Wise Viewer"
             }
           });
-=======
-    let AddUserId =0;
-    if (this._BrowsSalesBillService.userForm.get('UserId').value)
-       AddUserId =  this._BrowsSalesBillService.userForm.get('UserId').value.UserId
-
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-     this.AdList=true;
-    this._BrowsSalesBillService.getSalesDetail_Patientwise(
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      0,
-      0,
-      AddUserId || 0,
-      this._loggedUser.currentUserValue.user.storeId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pharma Daily Collection Summary Patient Wise Viewer"
-          }
-        });
->>>>>>> f3c68553db66a66dd7b52f69f489d2b2bc1233fd
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = ' ';
