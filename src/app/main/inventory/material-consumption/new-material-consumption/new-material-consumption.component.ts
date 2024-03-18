@@ -272,7 +272,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
       let insertMaterialConsDetail = {};
       insertMaterialConsDetail['materialConsumptionId'] = 0;
       insertMaterialConsDetail['itemId'] = element.ItemId;
-      insertMaterialConsDetail['batchNo'] = this._loggedService.currentUserValue.user.storeId;
+      insertMaterialConsDetail['batchNo'] = this.accountService.currentUserValue.user.storeId;
      
       insertMaterialConsDetail['batchExpDate'] = element.BatchExpDate;
       insertMaterialConsDetail['qty'] = (element.UsedQty);//element.BalQty;
