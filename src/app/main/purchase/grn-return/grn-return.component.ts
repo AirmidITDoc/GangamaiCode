@@ -215,20 +215,7 @@ export class GRNReturnComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
   }
-  OnSave() {
-    if ((!this.dsNewGRNReturnItemList.data.length)) {
-      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((!this._GRNReturnHeaderList.GRNReturnSearchFrom.get('SupplierId').value.SupplierId)) {
-      this.toastr.warning('Please Select Supplier name.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-   }
+
 
   OnReset() { 
     this._GRNReturnService.NewGRNReturnFrom.reset();
