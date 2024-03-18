@@ -246,8 +246,10 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   getSupplierSearchCombo() {
-
-    this._GRNService.getSupplierSearchList().subscribe(data => {
+    var vdata={
+      'SupplierName':`${this._GRNService.GRNSearchGroup.get('SupplierId').value}%`,
+    }
+    this._GRNService.getSupplierSearchList(vdata).subscribe(data => {
       this.SupplierList = data;
       this.optionsSupplier = this.SupplierList.slice();
       this.filteredoptionsSupplier = this._GRNService.GRNSearchGroup.get('SupplierId').valueChanges.pipe(
@@ -342,7 +344,10 @@ export class GoodReceiptnoteComponent implements OnInit {
       });
   }
   getSupplierSearchList1() {
-    this._GRNService.getSupplierSearchList().subscribe(data => {
+    var vdata={
+      'SupplierName':`${this._GRNService.GRNSearchGroup.get('SupplierId').value}%`,
+    }
+    this._GRNService.getSupplierSearchList(vdata).subscribe(data => {
       this.SupplierList = data;
     });
   }

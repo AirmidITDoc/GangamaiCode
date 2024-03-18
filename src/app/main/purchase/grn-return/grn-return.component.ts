@@ -90,6 +90,7 @@ export class GRNReturnComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private _loggedService: AuthenticationService,
+    private accountService: AuthenticationService,
     public toastr: ToastrService,
   ) { }
 
@@ -201,6 +202,100 @@ export class GRNReturnComponent implements OnInit {
       });
       return;
     }
+    let grnReturnSaveObj = {};
+    grnReturnSaveObj['grnId']=0;
+    grnReturnSaveObj['grnReturnDate']=this.dateTimeObj.data;
+    grnReturnSaveObj['grnReturnTime']= this.dateTimeObj.time;
+    grnReturnSaveObj['storeId']= this._loggedService.currentUserValue.user.storeId || 0;
+    grnReturnSaveObj['supplierID']= this._GRNReturnHeaderList.NewGRNReturnFrom.get('SupplierId').value.SupplierId || 0;
+    grnReturnSaveObj['totalAmount']=0;
+    grnReturnSaveObj['grnReturnAmount']=0;
+    grnReturnSaveObj['totalDiscAmount']=0;
+    grnReturnSaveObj['totalVATAmount']=0;
+    grnReturnSaveObj['totalOtherTaxAmount']=0;
+    grnReturnSaveObj['totalOctroiAmount']=0;
+    grnReturnSaveObj['netAmount']=0;
+    grnReturnSaveObj['cash_Credit']= this._GRNReturnHeaderList.NewGRNReturnFrom.get('CashType').value;
+    grnReturnSaveObj['remark']= this._GRNReturnHeaderList.NewGRNRetFinalFrom.get('Remark').value;
+    grnReturnSaveObj['isVerified']=true;
+    grnReturnSaveObj['isClosed']=true;
+    grnReturnSaveObj['addedBy']= this.accountService.currentUserValue.user.id || 0;
+    grnReturnSaveObj['isCancelled']=true;
+    grnReturnSaveObj['grnType']='';
+    grnReturnSaveObj['isGrnTypeFlag']=true;
+    grnReturnSaveObj['grnReturnId']=0;
+  
+
+      let grnReturnDetailSaveObj =[];
+      this.dsNewGRNReturnItemList.data.forEach((element) => {
+        let grnReturnDetail = {};
+        grnReturnDetail['grnReturnId']=
+        grnReturnDetail['itemId']=
+        grnReturnDetail['batchNo']=
+        grnReturnDetail['batchExpiryDate']=
+        grnReturnDetail['returnQty']=
+        grnReturnDetail['landedRate']=
+        grnReturnDetail['mrp']=
+        grnReturnDetail['unitPurchaseRate']=
+        grnReturnDetail['vatPercentage']=
+        grnReturnDetail['vatAmount']=
+        grnReturnDetail['taxAmount']=
+        grnReturnDetail['otherTaxAmount']=
+        grnReturnDetail['octroiPer']=
+        grnReturnDetail['octroiAmt']=
+        grnReturnDetail['landedTotalAmount']=
+        grnReturnDetail['mrpTotalAmount']=
+        grnReturnDetail['purchaseTotalAmount']=
+        grnReturnDetail['conversion']=
+        grnReturnDetail['remarks']=
+        grnReturnDetail['stkId']=
+        grnReturnDetail['cf']=
+        grnReturnDetail['totalQty']=
+        grnReturnDetail['grnId']=0;
+      });
+
+      let grnReturnUpdateCurrentStock =[];
+      this.dsNewGRNReturnItemList.data.forEach((element) => {
+        let grnReturnUpdateCurrentStockObj = {};
+        grnReturnUpdateCurrentStockObj['itemId']=
+        grnReturnUpdateCurrentStockObj['issueQty']=
+        grnReturnUpdateCurrentStockObj['stkId']=
+        grnReturnUpdateCurrentStockObj['storeID']=0;
+        grnReturnUpdateCurrentStock.push(grnReturnUpdateCurrentStockObj);
+      });
+
+      let grnReturnUpateReturnQty =[];
+      this.dsNewGRNReturnItemList.data.forEach((element) => {
+        let grnReturnUpateReturnQtyObj = {};
+        grnReturnUpateReturnQtyObj['grnDetID']=
+        grnReturnUpateReturnQtyObj['returnQty']=
+        grnReturnUpateReturnQty.push(grnReturnUpateReturnQtyObj);
+      });
+   
+    let submitData ={
+      'grnReturnSave':grnReturnSaveObj,
+      'grnReturnDetailSave':grnReturnDetailSaveObj,
+      'grnReturnUpdateCurrentStock':grnReturnUpdateCurrentStock,
+      'grnReturnUpateReturnQty':grnReturnUpateReturnQty
+    }
+    console.log(submitData);
+    this._GRNReturnHeaderList.GRNRetrunSave(submitData).subscribe((response) => {
+      if (response) {
+        this.toastr.success('Record GRN Return Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this._matDialog.closeAll();
+        this.OnReset();
+      } else {
+        this.toastr.error('GRN ReturnData not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    }, error => {
+      this.toastr.error('GRN Return Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });
    }
 
   OnReset() { 

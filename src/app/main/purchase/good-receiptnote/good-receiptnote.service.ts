@@ -172,8 +172,8 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
   
-  public getSupplierSearchList(){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list",{});
+  public getSupplierSearchList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list",param);
   }
 
     public getItemNameList(Param){

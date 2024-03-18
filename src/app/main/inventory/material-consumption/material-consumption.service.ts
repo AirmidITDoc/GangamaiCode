@@ -29,15 +29,16 @@ export class MaterialConsumptionService {
   
   createUserForm() {
     return this._formBuilder.group({
-      FromStoreId: '',
-      BatchNO: '',
-      ItemName:'',
-      BalQty:'',
-      UsedQty:'',
-      Rate:'',
-      Remark: '',
-      ItemID:'',
-      Date:['']
+      FromStoreId: [''],
+      BatchNO: [''],
+      ItemName:[''],
+      BalQty:[''],
+      UsedQty:[''],
+      Rate:[''],
+      Remark: [''],
+      ItemID:[''],
+      Date:[''],
+      FooterRemark:['']
       
     });
   }

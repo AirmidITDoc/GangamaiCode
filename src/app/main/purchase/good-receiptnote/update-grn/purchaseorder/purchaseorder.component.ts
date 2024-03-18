@@ -100,11 +100,13 @@ export class PurchaseorderComponent implements OnInit {
     }
   }
   getSupplierSearchCombo() {
-
-    this._GRNList.getSupplierSearchList().subscribe(data => {
+    var vdata={
+      'SupplierName':`${this._GRNList.POFrom.get('SupplierId').value}%`,
+    }
+    this._GRNList.getSupplierSearchList(vdata).subscribe(data => {
       this.SupplierList = data;
       this.optionsSupplier = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._GRNList.GRNSearchGroup.get('SupplierId').valueChanges.pipe(
+      this.filteredoptionsSupplier = this._GRNList.POFrom.get('SupplierId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
       );

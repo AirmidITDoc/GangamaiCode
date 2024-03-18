@@ -71,7 +71,8 @@
 
                             <mat-form-field appearance="outline" fxFlex="8%">
                                 <mat-label>Bal Qty</mat-label>
-                                <input name="BalQty" formControlName="BalQty" [(ngModel)]="vBalQty" matInput>
+                                <input name="BalQty" formControlName="BalQty" [(ngModel)]="vBalQty" matInput
+                                 readonly>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="8%">
@@ -105,10 +106,11 @@
                                     (dateTimeEventEmitter)="getDateTime($event)">
                                 </app-common-date>&nbsp;&nbsp;&nbsp;&nbsp; -->
 
-                            <div matTooltip="Select All Value to enable this button!!">
-                                <button class="next-btn" (click)="onAdd()"
-                                    [disabled]="_MaterialConsumptionService.userFormGroup.invalid">
-                                    Add
+                           
+                            <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
+                                <button class="btn btn-primary" (click)="onAdd()"
+                                [disabled]="_MaterialConsumptionService.userFormGroup.invalid" >
+                                    <mat-icon>add</mat-icon>
                                 </button>
                             </div>
 
@@ -167,11 +169,27 @@
                             </mat-cell>
                         </ng-container>
 
-                        <ng-container matColumnDef="TotalAmount">
+                        <ng-container matColumnDef="MRPTotalAmt">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                TotalAmount </mat-header-cell>
+                                MRPTotalAmt </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                {{contact.TotalAmount}}
+                                {{contact.MRPTotalAmt}}
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="LandedTotalAmt">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                LandedTotalAmt </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{contact.LandedTotalAmt}}
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="PurTotalAmt">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                PurTotalAmt </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{contact.PurTotalAmt}}
                             </mat-cell>
                         </ng-container>
 
@@ -226,12 +244,52 @@
                     <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
                     </mat-paginator>
 
-                    <div matTooltip="Select All Value to enable this button!!">
-                        <button class="next-btn" style="width: 80px;border-radius: 16px;margin-left: 1350px;
-                            margin-top: 10px;" (click)="OnSave()">Save</button>
-                        <button class="footer-btn" style="width: 80px;border-radius: 16px;margin-top: 10px;"
-                            (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                    <div fxLayout="row" fxLayoutGap="4px">
+                        <mat-form-field appearance="outline" fxFlex="25%">
+                            <mat-label>Remark</mat-label>
+                            <input name="FooterRemark" formControlName="FooterRemark"  matInput
+                             #remark>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="10%">
+                            <mat-label>MRPTotalAmt</mat-label>
+                            <input name="MRPTotalAmt" formControlName="MRPTotalAmt"  matInput
+                             #remark [(ngModel)]="vMRPTotalAmt">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="10%">
+                            <mat-label>LandedTotalAmt</mat-label>
+                            <input name="LandedTotalAmt" formControlName="LandedTotalAmt"  matInput
+                            [(ngModel)]="vLandedTotalAmt" #remark>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="10%">
+                            <mat-label>PurTotalAmt</mat-label>
+                            <input name="PurTotalAmt" formControlName="PurTotalAmt" 
+                            [(ngModel)]="vPurTotalAmt" matInput
+                             #remark>
+                        </mat-form-field>
+    
+
+                        <div style="padding: 15px;">
+                            <span class="net-amt-label"
+                                style="width: 150px;font-weight: bold;color:blue;">No of
+                                Items:</span>&nbsp;<span class="net-amt-value"
+                                style="margin-right: 100px;font-weight: bold">{{dsNewmaterialList.data.length}}</span>
+                            <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;">
+                                Total Amount :</span>&nbsp;<span class="net-amt-value"
+                                style="margin-right: 10px;font-weight: bold">{{getTotalamt(dsNewmaterialList.data)
+                                | currency:'INR' }}</span>
+                        
+                        </div>
+                 
+                        <div class="sales-footer-buttons gap-8" fxLayout="row" fxFlexAlign="end">
+                            <button class="btn btn-primary " (click)="OnSave()">Save</button>
+                            <button class="btn btn-danger-outline" (click)="OnReset()"
+                                >Reset</button>
+                        </div>
                     </div>
+                    
 
 
                 </form>
