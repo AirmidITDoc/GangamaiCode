@@ -26,7 +26,7 @@
             <div>
                 <!-- SIDEBAR HEADER -->
                 <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
-                    <span class="h5" style="font-size: 17px;">Search Facility</span>
+                    <span class="search-title">Search Facility</span>
                     <!-- / USER -->
                 </div>
                 <!-- / SIDEBAR HEADER -->
@@ -145,17 +145,15 @@
                                                 matTooltip="Self Patient">
                                                 
                                                 <mat-icon
-                                                    style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                     *ngIf="contact.CompanyName=='1' || contact.CompanyName=='2'"
-                                                    matTooltip="CompanyName" class=" green-600 s-16">circle</mat-icon>
+                                                    matTooltip="CompanyName" class="pill green-600 s-16">circle</mat-icon>
                                             </button>
                                             <button mat-icon-button *ngIf="contact.CompanyName !==''"
                                                 matTooltip="Company Patient">
                                                 
                                                 <mat-icon
-                                                    style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                     *ngIf="contact.CompanyName=='0' " matTooltip="CompanyName"
-                                                    class=" orange-600 s-16">circle</mat-icon>
+                                                    class="pill orange-600 s-16">circle</mat-icon>
                                             </button>
 
                                         </mat-cell>

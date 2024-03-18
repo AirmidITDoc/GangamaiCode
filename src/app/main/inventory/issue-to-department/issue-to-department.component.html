@@ -29,7 +29,7 @@
                             <!-- SIDEBAR HEADER -->
                             <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
                                 style="margin-top: 3%">
-                                <span class="h5" style="font-size: 17px;">Search Facility</span>
+                                <span class="search-title">Search Facility</span>
                                 <!-- / USER -->
                             </div>
                             <!-- / SIDEBAR HEADER -->
@@ -108,15 +108,25 @@
                                                 </button>
                                             </div>
 
-                                            <!-- <button  (click)="viewgetIssuetodeptReportPdf()"
+                                            <button  (click)="viewgetIssuetodeptsummaryReportPdf()"
                                             matTooltip="Pdf" style="width: 45px;border-color: white;">
                                             <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
-                                              </button>&nbsp; -->
+                                              </button>&nbsp;
                                             <button (click)="exportIssuetodeptReportExcel()"
                                                 [disabled]="! (dsIssueToDep.data.length > 0)"
                                                 style="background-color: white;color: white;width: 45px;">
                                                 <img width="32" height="10px" src="assets/images/logos/xls.png">
                                             </button>
+
+
+                                                                                          
+                                        <!-- <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                            <button class="btn btn-primary " (click)="viewgetExpItemListReportPdf()" 
+                                                >ExpItemList</button>
+                                           
+                                          
+                                        </div> -->
+
                                         </div>
 
                                     </form>

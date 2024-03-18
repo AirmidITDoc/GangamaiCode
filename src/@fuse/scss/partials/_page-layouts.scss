@@ -82,7 +82,7 @@
 // -----------------------------------------------------------------------------------------------------
 $carded-header-height: 200px !default;
 $carded-toolbar-height: 64px !default;
-$header-height: 50px !default;
+$header-height: 45px !default;
 
 // Calculate toolbar-less carded header height
 $carded-header-height-without-toolbar: $carded-header-height - $carded-toolbar-height;

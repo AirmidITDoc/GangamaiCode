@@ -1,0 +1,42 @@
+.mat-typography {
+    .mat-display-1 {
+        font: inherit;
+    }
+    .mat-select,
+    .mat-list-item {
+        font-family: $font-primary;
+        font-size: inherit;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: inherit;
+    }
+    h1,
+    .h1 {
+        @include font-size(18px);
+    }
+    h2,
+    .h2 {
+        @include font-size(16px);
+    }
+    h3,
+    .h3 {
+        @include font-size(15px);
+    }
+    h4,
+    .h4 {
+        @include font-size(14px);
+    }
+    h5,
+    .h5 {
+        @include font-size(13px);
+    }
+    h6,
+    .h6 {
+        @include font-size(12px);
+    }
+}

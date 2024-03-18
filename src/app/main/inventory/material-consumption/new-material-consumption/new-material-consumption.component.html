@@ -36,10 +36,10 @@
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
-
+                            <span style="margin-left: 600px;">
                             <app-common-date [screenFrom]="screenFromString"
                                 (dateTimeEventEmitter)="getDateTime($event)">
-                            </app-common-date>
+                            </app-common-date></span>
                         </div>
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
 
@@ -95,8 +95,8 @@
 
                             <mat-form-field appearance="outline" fxFlex="10%">
                                 <mat-label>Date</mat-label>
-                                <input name="Date" matInput [matDatepicker]="picker" required
-                                    placeholder="Please select Date" 
+                                <input name="Date" matInput [matDatepicker]="picker" required [(ngModel)]="vConsumDate"
+                                    placeholder="Please select Date"  (keydown)="onEnterdate($event)"
                                     formControlName="Date" #date>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
@@ -244,52 +244,12 @@
                     <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
                     </mat-paginator>
 
-                    <div fxLayout="row" fxLayoutGap="4px">
-                        <mat-form-field appearance="outline" fxFlex="25%">
-                            <mat-label>Remark</mat-label>
-                            <input name="FooterRemark" formControlName="FooterRemark"  matInput
-                             #remark>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="10%">
-                            <mat-label>MRPTotalAmt</mat-label>
-                            <input name="MRPTotalAmt" formControlName="MRPTotalAmt"  matInput
-                             #remark [(ngModel)]="vMRPTotalAmt">
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="10%">
-                            <mat-label>LandedTotalAmt</mat-label>
-                            <input name="LandedTotalAmt" formControlName="LandedTotalAmt"  matInput
-                            [(ngModel)]="vLandedTotalAmt" #remark>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="10%">
-                            <mat-label>PurTotalAmt</mat-label>
-                            <input name="PurTotalAmt" formControlName="PurTotalAmt" 
-                            [(ngModel)]="vPurTotalAmt" matInput
-                             #remark>
-                        </mat-form-field>
-    
-
-                        <div style="padding: 15px;">
-                            <span class="net-amt-label"
-                                style="width: 150px;font-weight: bold;color:blue;">No of
-                                Items:</span>&nbsp;<span class="net-amt-value"
-                                style="margin-right: 100px;font-weight: bold">{{dsNewmaterialList.data.length}}</span>
-                            <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;">
-                                Total Amount :</span>&nbsp;<span class="net-amt-value"
-                                style="margin-right: 10px;font-weight: bold">{{getTotalamt(dsNewmaterialList.data)
-                                | currency:'INR' }}</span>
-                        
-                        </div>
-                 
-                        <div class="sales-footer-buttons gap-8" fxLayout="row" fxFlexAlign="end">
-                            <button class="btn btn-primary " (click)="OnSave()">Save</button>
-                            <button class="btn btn-danger-outline" (click)="OnReset()"
-                                >Reset</button>
-                        </div>
+                    <div matTooltip="Select All Value to enable this button!!">
+                        <button class="next-btn" style="width: 80px;border-radius: 16px;margin-left: 1350px;
+                            margin-top: 10px;" (click)="OnSave()">Save</button>
+                        <button class="footer-btn" style="width: 80px;border-radius: 16px;margin-top: 10px;"
+                            (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                     </div>
-                    
 
 
                 </form>

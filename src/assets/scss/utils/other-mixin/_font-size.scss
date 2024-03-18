@@ -1,3 +1,37 @@
-@mixin font-size($value) {
-    font-size: $value;
+@use "sass:math";
+// $base-font-size: 16px; // Set your base font size here
+@mixin font-size($size) {
+    // font-size: $size;
+    $size-in-px: if(type-of($size) == "number", $size, str-slice($size, 1, -2));
+    $size-in-rem: $size-in-px / $font-size-base;
+    font-size: $size;
+
+    font-size: #{($size-in-rem)}rem;
 }
+// @mixin font-size($size, $important: false) {
+//     $size-in-px: if(
+//         type-of($size) == "string" and str-index($size, "px"),
+//         str-slice($size, 1, -2),
+//         $size
+//     );
+//     $size-in-px: if(type-of($size-in-px) == "string", 0, $size-in-px);
+//     $font-size-base: if(
+//         type-of($font-size-base) == "string" and
+//             str-index($font-size-base, "px"),
+//         str-slice($font-size-base, 1, -2),
+//         $font-size-base
+//     );
+//     font-size: $size-in-px + px;
+//     @if $important {
+//         font-size: $size-in-px / $font-size-base + rem !important;
+//     } @else {
+//         font-size: $size-in-px / $font-size-base + rem;
+//     }
+// }
+// @for $i from 2 through 100 {
+//     $font-size: $i * 2; // Increment font size by 2
+//     .fs-#{$font-size} {
+//         font-size: #{$font-size}px;
+//     }
+// }
+    

@@ -3,6 +3,9 @@
     .mat-select-panel {
         .mat-option {
             @include font-size(13px);
+            font-family: inherit;
+            height: 3rem;
+            line-height: 3rem;
             &:hover:not(.mat-option-disabled),
             &:focus:not(.mat-option-disabled),
             &.mat-active {
@@ -16,5 +19,29 @@
                 }
             }
         }
+    }
+    .mat-menu-panel{
+        .mat-menu-content{
+            .mat-menu-item{
+                font-family: inherit;
+                font-size: inherit;
+                height: 3rem;
+                line-height: 3rem;
+            }
+        }
+    }
+    .mat-list-base {
+        .mat-list-item ,.mat-list-option{
+            .mat-list-icon{
+                height: auto;
+                width: auto;
+                font-size: inherit;
+            } 
+            &.mat-list-item-with-avatar{
+                max-height: 42px;
+            }
+        } 
+        
+
     }
 }

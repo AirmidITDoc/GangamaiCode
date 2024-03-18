@@ -51,7 +51,7 @@
               <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
                 <!-- USER -->
                 <!-- <img [src]="user.avatar" class="avatar mr-16" [alt]="user.name" /> -->
-                <span class="h5" style="font-size: 17px;">Search Information</span>
+                <span class="search-title">Search Information</span>
                 <!-- / USER -->
               </div>
               <!-- / SIDEBAR HEADER -->
@@ -253,13 +253,11 @@
                           UnBooking</mat-header-cell>
                         <mat-cell *matCellDef="let contact">
                             <mat-icon
-                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                 *ngIf="contact.UnBooking=='1' " matTooltip="Booking"
-                                class=" orange-600 s-16 ">circle</mat-icon>
+                                class=" pill orange-600 s-16 ">circle</mat-icon>
                             <mat-icon
-                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                 *ngIf="contact.UnBooking=='0' " matTooltip="UnBooking"
-                                class="green-600 s-16 ">circle</mat-icon>
+                                class="pill green-600 s-16 ">circle</mat-icon>
                         </mat-cell>
                     </ng-container>
   

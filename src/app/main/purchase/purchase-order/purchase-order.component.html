@@ -1,7 +1,7 @@
-    <div fxlayout="row" fxFlex.gt-sm="100%" fxFlex>
+    <div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout">
         <div class="center">
-            <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-                <div fxLayout="row">
+            <mat-toolbar class="top-header accent">
+                <div fxLayout="row" class="top-header-info">
                     <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm
                         (click)="toggleSidebar('app-main')" style="color: white;">
                         <mat-icon>menu</mat-icon>
@@ -42,7 +42,7 @@
                                             <!-- SIDEBAR HEADER -->
                                             <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
                                                 style="margin-top: 3%">
-                                                <span class="h5" style="font-size: 17px;">Search Facility</span>
+                                                <span class="h5" class="search-title">Search Facility</span>
                                                 <!-- / USER -->
                                             </div>
                                             <!-- / SIDEBAR HEADER -->
@@ -166,15 +166,13 @@
                                                                         style="color: white;">Verify</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact">
                                                                         <mat-icon
-                                                                            style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                                             *ngIf="contact.IsVerified"
                                                                             matTooltip="Verified"
-                                                                            class=" green-600 s-16">circle</mat-icon>
+                                                                            class="pill green-600 s-16">circle</mat-icon>
                                                                         <mat-icon
-                                                                            style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                                             *ngIf="!contact.IsVerified"
                                                                             matTooltip="Pending"
-                                                                            class=" red-600 s-16">circle</mat-icon>
+                                                                            class="pill red-600 s-16">circle</mat-icon>
                                                                     </mat-cell>
                                                                 </ng-container>
 

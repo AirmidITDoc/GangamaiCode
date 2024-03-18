@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-new-material-consumption',
@@ -46,6 +47,10 @@ export class NewMaterialConsumptionComponent implements OnInit {
   vItemID: any;
   vbatchNo:any;
   vTotalAmount:any;
+  vlandedTotalAmount:any;
+  vPureTotalAmount:any;
+  vStoreId:any;
+  vfinalTotalAmount
   vStockId:any;
   vExpDate:any;
   vItemName:any;
@@ -71,7 +76,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewMaterialConsumptionComponent>,
-    public _loggedService: AuthenticationService,
+    // public _loggedService: AuthenticationService,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
     public _MaterialConsumptionService: MaterialConsumptionService,
@@ -85,7 +90,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this.accountService.currentUserValue.user.storeId
     }
     this._MaterialConsumptionService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -169,6 +174,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
     if (!isDuplicate) {
 
       this.chargeslist = this.dsTempItemNameList.data;
+      
       this.chargeslist.push(
         {
           ItemId: this.ItemID ,//this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId || 0,
@@ -182,18 +188,26 @@ export class NewMaterialConsumptionComponent implements OnInit {
           LandedTotalAmt :this.vUsedQty * this.vRate || 0,
           PurTotalAmt: this.vUsedQty * this.vRate || 0,
           Remark: this.vRemark ||  " ",
-          StockId:this.vStockId || 0
+          StockId:this.vStockId || 0,
+          StoreId:this.vStoreId ,
+          LandedRate:this.vLandedRate,
+          PurchaseRate:this.vPurchaseRate,
+          VatPercentage:this.vVatPercentage,
+          
         });
       console.log(this.chargeslist);
-        this.ItemReset();
+      
       this.dsNewmaterialList.data = this.chargeslist
     } else {
       this.toastr.warning('Selected Item already added in the list', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      this.ItemReset();
-      this.itemid.nativeElement.focus();
+      // this.ItemReset();
+    
     }
+    this.ItemReset();
+    this.vadd=false;
+    this.itemid.nativeElement.focus();
   }
   deleteTableRow(element) {
     let index = this.chargeslist.indexOf(element);
@@ -212,23 +226,47 @@ export class NewMaterialConsumptionComponent implements OnInit {
     this.vBalQty = 0;
     this.vUsedQty = 0;
     this.vRemark = " ";
-    this._MaterialConsumptionService.userFormGroup.get('Date').setValue('');
+    this._MaterialConsumptionService.userFormGroup.get('ItemID').setValue('');
+    // this._MaterialConsumptionService.userFormGroup.get('Date').setValue('');
   }
-
-  getTotalamt(element) {
-    this.vMRPTotalAmt = (element.reduce((sum, { MRPTotalAmt }) => sum += +(MRPTotalAmt || 0), 0)).toFixed(2);
-    this.vLandedTotalAmt = (element.reduce((sum, { LandedTotalAmt }) => sum += +(LandedTotalAmt || 0), 0)).toFixed(2);
-    this.vPurTotalAmt = (element.reduce((sum, { PurTotalAmt }) => sum += +(PurTotalAmt || 0), 0)).toFixed(2);
-    return this.vMRPTotalAmt;
-}
+  getBatch() {
+    this.usedQty.nativeElement.focus();
+    const dialogRef = this._matDialog.open(SalePopupComponent,
+      {
+        maxWidth: "800px",
+        minWidth: '800px',
+        width: '800px',
+        height: '380px',
+        disableClose: true,
+        data: {
+          "ItemId": this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId,
+          "StoreId": this._MaterialConsumptionService.userFormGroup.get('FromStoreId').value.storeid
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+       console.log(result);
+      this.vbatchNo = result.BatchNo;
+      this.vBalQty = result.BalanceQty;
+      this.vExpDate = result.BatchExpDate;
+      this.vRate = result.LandedRate;
+      this.vTotalAmount = result.totalAmount;
+      this.vStockId = result.StockId;
+    });
+  }
   QtyCondition(){
+    
     if(this.vBalQty < this.vUsedQty){
       this.toastr.warning('Enter UsedQty less than BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       }); 
       this.vUsedQty = 0;
+    }else{
+    this.vTotalAmount= this.vUsedQty * this.vRate
+    this.vBalQty = this.vBalQty - this.vUsedQty
     }
+    this.remark.nativeElement.focus()
   }
+
   OnSave(){
     if ((!this.dsNewmaterialList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -236,20 +274,21 @@ export class NewMaterialConsumptionComponent implements OnInit {
       });
       return;
     }
-   
     let materialConsumptionObj = {};
     materialConsumptionObj['materialConsumptionId'] = 0;
     materialConsumptionObj['consumptionDate'] = this.dateTimeObj.data;
     materialConsumptionObj['consumptionTime'] =this.dateTimeObj.time;
     materialConsumptionObj['fromStoreId'] =this._loggedService.currentUserValue.user.storeId;
-    materialConsumptionObj['landedTotalAmount'] =  this.vLandedTotalAmt || 0;
-    materialConsumptionObj['purchaseTotal'] =  this.vPurTotalAmt || 0;
-    materialConsumptionObj['mrpTotal'] = this.vMRPTotalAmt || 0;
-    materialConsumptionObj['remark'] = this._MaterialConsumptionService.userFormGroup.get('FooterRemark').value || '';
+    materialConsumptionObj['landedTotalAmount'] = 0;
+    materialConsumptionObj['purchaseTotal'] = 0;
+    materialConsumptionObj['mrpTotal'] =0;
+    materialConsumptionObj['remark'] = '';
     materialConsumptionObj['addedby'] =this.accountService.currentUserValue.user.id || 0;
 
     let submitdata={
-      'materialconsumptionInsert':materialConsumptionObj
+      'insertMaterialConsumption':insertMaterialConsumption,
+      'insertMaterialConsDetail':insertMaterialConsDetailarray,
+      'updateCurrentStock':updateCurrentStockarray
     }
     console.log(submitdata)
     this._MaterialConsumptionService.MaterialconsSave(submitdata).subscribe(response => {
@@ -269,10 +308,24 @@ export class NewMaterialConsumptionComponent implements OnInit {
       });
     });
   }
+
+  getTotalamt(element) {
+    this.vfinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
+   this.vlandedTotalAmount = (element.reduce((sum, { LandedRate }) => sum += +(LandedRate || 0), 0)).toFixed(2);
+  this.vPureTotalAmount = (parseFloat(this.vPurchaseRate) + parseFloat(this.vPurchaseRate)).toFixed(2);
+    return this.vfinalTotalAmount;
+  
+  }
+
+  
+
+
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('usedQty') usedQty: ElementRef;
   @ViewChild('remark') remark: ElementRef;
   @ViewChild('date') date: ElementRef;
+  @ViewChild('addbutton') addbutton: ElementRef;
+
 
   public onEnterFromstore(event): void {
     if (event.which === 13) {
@@ -291,14 +344,29 @@ export class NewMaterialConsumptionComponent implements OnInit {
   }
   public onEnterRemark(event): void {
     if (event.which === 13) {
+      // this.vadd=false;
       this.date.nativeElement.focus();
     }
+  }
+  onEnterdate(event): void {
+    if (event.which === 13) {
+      this.addbutton.nativeElement.focus();
+      setTimeout(() => {
+      this.vadd=true;
+     
+  }, 10);
+    }
+    // this.vadd=false;
+     
   }
   onClose() {
     this._matDialog.closeAll();
   }
+
+
   OnReset(){
    this.ItemReset();
+  //  this._MaterialConsumptionService.userFormGroup.reset();
    this.dsNewmaterialList.data = []; 
    this.chargeslist.data = [];
    this.dsTempItemNameList.data =[];
@@ -315,9 +383,6 @@ export class ItemList {
   Remark: number;
   StockId: any;
   ItemId:any;
-  MRPTotalAmt:any;
-  LandedTotalAmt :any;
-  PurTotalAmt:any;
 
   constructor(ItemList) {
     {
@@ -331,8 +396,7 @@ export class ItemList {
       this.Remark = ItemList.Remark || '';
       this.StockId = ItemList.StockId || 0;
       this.ItemId = ItemList.itemId || 0;
-      this.LandedTotalAmt = ItemList.LandedTotalAmt || 0;
-      this.PurTotalAmt = ItemList.PurTotalAmt || 0;
     }
   }
 }
+

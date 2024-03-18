@@ -1,8 +1,11 @@
+html {
+    font-size: $font-size-base;
+}
 body.mat-typography {
     margin: 0;
     padding: 0;
     // font-family: $inter;
-    font-family: $roboto;
+    font-family: $font-primary;
     font-weight: normal;
     line-height: normal;
     @include font-size($font-size-base);

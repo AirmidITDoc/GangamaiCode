@@ -92,9 +92,11 @@
 //     }
 //   }
 // }
+$radio-size: 1.5rem;
 .mat-typography {
     @include themed() {
         .mat-radio-button {
+            font-family: inherit;
             &.mat-accent {
                 .mat-radio-inner-circle {
                     background-color: $primary-600;
@@ -122,6 +124,18 @@
             }
             .mat-radio-label-content {
                 @include font-size(11px);
+            }
+            .mat-radio-container {
+                height: $radio-size;
+                width: $radio-size; 
+                .mat-radio-outer-circle {
+                    height: $radio-size;
+                    width: $radio-size;
+                }
+                .mat-radio-inner-circle {
+                    height: $radio-size;
+                    width: $radio-size;
+                }
             }
         }
     }

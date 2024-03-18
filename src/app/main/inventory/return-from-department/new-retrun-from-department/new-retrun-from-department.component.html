@@ -42,7 +42,7 @@
                                             <mat-label>To Store</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Store" matInput formControlName="ToStoreId"
-                                                [matAutocomplete]="auto">
+                                                [matAutocomplete]="auto" required>
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_ReturnToDepartmentList.userFormGroup.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
@@ -248,6 +248,20 @@
                                     </mat-cell>
                                 </ng-container>
 
+<!-- 
+                                <ng-container matColumnDef="ReturnQty">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                        class="w-80">ReturnQty
+                                    </mat-header-cell>
+                                    <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-form-field appearance="legacy">
+                                            <input matInput [(ngModel)]="contact.ReturnQty" type="number"
+                                                (keyup)="getCellCalculation(contact,contact.ReturnQty)"
+                                                (keypress)="keyPressAlphanumeric($event)">
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container> -->
+
                                 <ng-container matColumnDef="PerUnitLandedRate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                         PerUnitLandedRate </mat-header-cell>
@@ -309,32 +323,42 @@
                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                 </mat-footer-row>
                                 <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dsItemList!=null && dsItemList.data.length==0)}">
+                                    [ngClass]="{'hide':!(dsItemDetailsList!=null && dsItemDetailsList.data.length==0)}">
                                 </mat-footer-row>
                             </mat-table>
                             <mat-paginator #thirdPaginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
                                 showFirstLastButtons>
                             </mat-paginator>
+                            <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;">
+                                Total Amount :</span>&nbsp;<span class="net-amt-value"
+                                style="margin-right: 10px;font-weight: bold">{{getTotalamt(dsItemDetailsList.data)
+                                | currency:'INR' }}</span>
                             </div>
+                            <form [formGroup]="_ReturnToDepartmentList.userFormGroup" style="padding-bottom: 10px;" >
                             <div style="margin-top: 10px;">
                                 <mat-form-field appearance="outline" fxFlex="30%">
                                     <mat-label>Remark</mat-label>
-                                    <input matInput placeholder="Remark"
+                                    <input matInput placeholder="Remark" [(ngModel)]="vRemark"
                                         formControlName="Remark" #Remark>
                                 </mat-form-field>&nbsp;
 
                                 <mat-form-field appearance="outline" fxFlex="12%">
                                     <mat-label>TotalAmount</mat-label>
-                                    <input matInput placeholder="TotalAmount"
+                                    <input matInput placeholder="TotalAmount" [(ngModel)]="vTotalAmount"
                                         formControlName="TotalAmount">
                                 </mat-form-field>&nbsp;
 
-                                <div matTooltip="Select All Value to enable this button!!" style="margin-left: 650px;">
-                                    <button class="next-btn" (click)="OnSave()">Save</button>
-                                    <button class="footer-btn" (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                              
+                                <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                    <button class="btn btn-primary " (click)="OnSave()" [disabled]="vsaveflag"
+                                        >Save</button>
+                                   
+                                    <button class="btn btn-danger-outline" (click)="OnReset()"
+                                        >Reset</button>
                                 </div>
 
                             </div>
+                            </form>
                         </div>
 
                     </div>
