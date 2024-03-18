@@ -1,5 +1,5 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <mat-toolbar style="background-color: #039be5 !important; height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
@@ -35,7 +35,7 @@
                                     <!-- SIDEBAR HEADER -->
                                     <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
                                         style="margin-top: 3%">
-                                        <span class="h5" style="font-size: 17px;">Search Facility</span>
+                                        <span class="search-title">Search Facility</span>
                                         <!-- / USER -->
                                     </div>
                                     <!-- / SIDEBAR HEADER -->
@@ -151,13 +151,11 @@
                                                             style="color: white;">Verify</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact">
                                                             <mat-icon
-                                                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                                 *ngIf="contact.IsVerified"  
-                                                                matTooltip="Verified" class=" green-600 s-16">circle</mat-icon>
+                                                                matTooltip="Verified" class="pill green-600 s-16">circle</mat-icon>
                                                             <mat-icon
-                                                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                                 *ngIf="!contact.IsVerified" matTooltip="Pending"
-                                                                class=" red-600 s-16">circle</mat-icon>
+                                                                class="pill red-600 s-16">circle</mat-icon>
                                                         </mat-cell>
                                                         </ng-container>
 

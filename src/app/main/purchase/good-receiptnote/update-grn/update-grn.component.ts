@@ -315,7 +315,10 @@ export class UpdateGRNComponent implements OnInit {
     }
   }
   getSupplierSearchCombo() {
-    this._GRNList.getSupplierSearchList().subscribe(data => {
+    var vdata={
+      'SupplierName':`${this._GRNList.userFormGroup.get('SupplierId').value}%`,
+    }
+    this._GRNList.getSupplierSearchList(vdata).subscribe(data => {
       this.SupplierList = data;
       this.optionsSupplier = this.SupplierList.slice();
       this.filteredoptionsSupplier = this._GRNList.userFormGroup.get('SupplierId').valueChanges.pipe(
@@ -830,15 +833,17 @@ export class UpdateGRNComponent implements OnInit {
     this.vDisc2 = discamt2;
   }
   OnchekPurchaserateValidation() {
+  
+
     if (this.vRate) {
-      let rate = this._GRNList.userFormGroup.get('Rate').value
+      const rate = this._GRNList.userFormGroup.get('Rate').value
       if (rate <= this.vMRP) {
         this.calculateTotalamt();
+        
       } else {
         this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
-        // Swal.fire("Enter Purchase Rate Less Than MRP");
         this._GRNList.userFormGroup.get('Rate').setValue(0);
         this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
         this._GRNList.userFormGroup.get('DisAmount').setValue(0);
@@ -1081,7 +1086,10 @@ export class UpdateGRNComponent implements OnInit {
     });
   }
   getSupplierSearchList1() {
-    this._GRNList.getSupplierSearchList().subscribe(data => {
+    var vdata={
+      'SupplierName':`${this._GRNList.userFormGroup.get('SupplierId').value}%`,
+    }
+    this._GRNList.getSupplierSearchList(vdata).subscribe(data => {
       this.SupplierList = data;
     });
   }
@@ -1256,13 +1264,21 @@ export class UpdateGRNComponent implements OnInit {
       updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
     });
 
+    let update_PO_STATUS_AganistGRN = [];
+    this.dsItemNameList.data.forEach((element) => {
+      let update_PO_STATUS_AganistGRNObj = {};
+      update_PO_STATUS_AganistGRNObj['poId'] = element.PurchaseId || 0;
+      update_PO_STATUS_AganistGRNObj['purDetID'] = element.PurDetId || 0;
+      update_PO_STATUS_AganistGRNObj['isClosed'] = true;
+      update_PO_STATUS_AganistGRNObj['poBalQty'] = element.POBalQty || 0;
+      update_PO_STATUS_AganistGRN.push(update_PO_STATUS_AganistGRNObj);
+    });
+
     let update_POHeader_Status_AganistGRN = [];
     this.dsItemNameList.data.forEach((element) => {
       let update_POHeader_Status_AganistGRNObj = {};
       update_POHeader_Status_AganistGRNObj['poId'] = element.PurchaseId || 0;
-      update_POHeader_Status_AganistGRNObj['purDetID'] = element.PurDetId || 0;
       update_POHeader_Status_AganistGRNObj['isClosed'] = true;
-      update_POHeader_Status_AganistGRNObj['poBalQty'] = element.POBalQty || 0;
       update_POHeader_Status_AganistGRN.push(update_POHeader_Status_AganistGRNObj);
     });
 
@@ -1270,6 +1286,7 @@ export class UpdateGRNComponent implements OnInit {
       "grnSave": grnSaveObj,
       "grnDetailSave": SavegrnDetailObj,
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray,
+      "update_PO_STATUS_AganistGRN": update_PO_STATUS_AganistGRN,
       "update_POHeader_Status_AganistGRN": update_POHeader_Status_AganistGRN
     };
      console.log(submitData);

@@ -38,19 +38,9 @@ export class StockAdjustmentComponent implements OnInit {
   isLoading = true;
   StoreList:any=[];
   screenFromString = 'admission-form';
-  VQty:any;
-  VBatchNO:any;
   isItemIdSelected: boolean = false;
-  registerObj = new RegInsert({});
- 
    ItemName: any;
    ItemId: any;
-   BalanceQty:any;
-   MRP:any;
-   Qty:any;
-   UpdatedQty:any;
-   result:any;
-
    dateTimeObj: any;
    ItemList:any=[];
    OptionsItemName: any;
@@ -70,6 +60,7 @@ export class StockAdjustmentComponent implements OnInit {
   constructor(
     public _StockAdjustment: StockAdjustmentService,
     private _loggedService: AuthenticationService,
+    private accountService: AuthenticationService,
     public datePipe: DatePipe,  
     public toastr: ToastrService,
   ) { }
@@ -88,7 +79,7 @@ export class StockAdjustmentComponent implements OnInit {
     }
     this._StockAdjustment.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
-      this._StockAdjustment.userFormGroup.get('StoreId').setValue(this.StoreList[0]);
+      this._StockAdjustment.StoreFrom.get('StoreId').setValue(this.StoreList[0]);
     });
   }
 getSearchList() {
@@ -119,7 +110,7 @@ this.getStockList();
 getStockList() {
   var Param = {
     "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
-    "ItemId": this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0,
+    "ItemId": 56784,//this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0, //56784
   }
   console.log(Param)
   this._StockAdjustment.getStockList(Param).subscribe(data => {
@@ -135,22 +126,26 @@ getStockList() {
 }
 
 OnSelect(param){
-  this.VBatchNO=param.BatchNo,
-  this.BalanceQty=param.BalanceQty,
-  this.Qty=param.BalanceQty,
-  this.MRP=param.UnitMRP
   console.log(param);
+  this.vBatchNo=param.BatchNo,
+  this.vQty=param.BalanceQty,
+  this.vBalQty=param.BalanceQty,
+  this.vMRP=param.UnitMRP,
+  this.vStockId = param.StockId
+  this.ItemId = param.ItemId;
 } 
+vStatus:any;
+vStockId:any;
+CalculateQty(){
 
-addition(){
-var q=this._StockAdjustment.userFormGroup.get('Qty').value;
-  this.UpdatedQty = this.BalanceQty + q;
-  
+  let qty =this._StockAdjustment.userFormGroup.get('Qty').value || 0;
+    if(this.vStatus == 0){
+      this.vUpdatedQty =(parseInt(this.vBalQty) - parseInt(qty));
+    }else{
+      this.vUpdatedQty =(parseInt(this.vBalQty) + parseInt(qty));
+    } 
 }
-Substraction(){
-  this.UpdatedQty =  this.BalanceQty - this.Qty;
-  
-}
+
 OnSave(){
   if ((!this.dsStockAdjList.data.length)) {
     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -158,7 +153,73 @@ OnSave(){
     });
     return;
   }
+  if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+    this.toastr.warning('Please enter a vQty', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  let insertMRPStockadju ={};
+  insertMRPStockadju['storeID']= this.accountService.currentUserValue.user.storeId || 0;
+  insertMRPStockadju['itemId']=  this.ItemId;//this._StockAdjustment.userFormGroup.get('ItemID').value.ItemId || 0;
+  insertMRPStockadju['batchNo']= this._StockAdjustment.userFormGroup.get('BatchNo').value || '';
+  insertMRPStockadju['ad_DD_Type']= this._StockAdjustment.userFormGroup.get('Status').value ;
+  insertMRPStockadju['ad_DD_Qty']= this._StockAdjustment.userFormGroup.get('Qty').value || 0;
+  insertMRPStockadju['preBalQty']= this._StockAdjustment.userFormGroup.get('BalanceQty').value ||  0;
+  insertMRPStockadju['afterBalQty']= this._StockAdjustment.userFormGroup.get('UpdatedQty').value ||  0;
+  insertMRPStockadju['mrpAdg']= this._StockAdjustment.userFormGroup.get('MRP').value ||  0;
+  insertMRPStockadju['addedBy']= this.accountService.currentUserValue.user.id || 0;
+  insertMRPStockadju['updatedBy']=this.accountService.currentUserValue.user.id || 0;
+  insertMRPStockadju['date']= this.dateTimeObj.date;
+  insertMRPStockadju['time']= this.dateTimeObj.time;
+  insertMRPStockadju['stockAdgId']=this.vStockId || 0;
+
+  let updatecurrentstockadjyadd ={};
+  updatecurrentstockadjyadd['storeId']= this.accountService.currentUserValue.user.storeId || 0;
+  updatecurrentstockadjyadd['stockId']= this.vStockId || 0;
+  updatecurrentstockadjyadd['itemId']=this.ItemId ;// this._StockAdjustment.userFormGroup.get('ItemID').value.ItemId || 0;
+  updatecurrentstockadjyadd['receivedQty']= this._StockAdjustment.userFormGroup.get('Qty').value || 0;
+
+  let updatecurrentstockadjydedu ={};
+  updatecurrentstockadjydedu['storeId']= this.accountService.currentUserValue.user.storeId || 0;
+  updatecurrentstockadjydedu['stockId']= this.vStockId || 0
+  updatecurrentstockadjydedu['itemId']= this.ItemId;//this._StockAdjustment.userFormGroup.get('ItemID').value.ItemId || 0;
+  updatecurrentstockadjydedu['receivedQty']= this._StockAdjustment.userFormGroup.get('Qty').value || 0;
+
+  let insertitemmovstockadd ={};
+  insertitemmovstockadd['id']=0;
+  insertitemmovstockadd['typeId']=0;
+
+  let insertitemmovstockdedu ={};
+  insertitemmovstockdedu['id']=0;
+  insertitemmovstockdedu['typeId']=0;
+
+  let submitData ={
+    'insertMRPStockadju':insertMRPStockadju,
+    'updatecurrentstockadjyadd':updatecurrentstockadjyadd,
+    'updatecurrentstockadjydedu':updatecurrentstockadjydedu,
+    'insertitemmovstockadd':insertitemmovstockadd,
+    'insertitemmovstockdedu':insertitemmovstockdedu
+  }
+  console.log(submitData);
+  this._StockAdjustment.StockAdjSave(submitData).subscribe(response => {
+    if (response) {
+      this.toastr.success('Record Stock Adjustment Saved Successfully.', 'Saved !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+      this.OnReset();
+    } else {
+      this.toastr.error('Stock Adjustment Data not saved !, Please check error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }
+  }, error => {
+    this.toastr.error('Stock Adjustment Data not saved !, Please check API error..', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  });
 }
+
  OnReset(){
   this._StockAdjustment.userFormGroup.reset();
  }

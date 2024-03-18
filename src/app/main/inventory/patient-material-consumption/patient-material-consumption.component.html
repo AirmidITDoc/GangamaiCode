@@ -40,7 +40,7 @@
                         <!-- SIDEBAR HEADER -->
                         <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
                             style="margin-top: 3%">
-                            <span class="h5" style="font-size: 17px;">Search Facility</span>
+                            <span class="search-title">Search Facility</span>
                             <!-- / USER -->
                         </div>
                         <!-- / SIDEBAR HEADER -->
@@ -150,11 +150,10 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
                                             <mat-icon
-                                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                 *ngIf="contact.FromStoreId=='1'|| contact.FromStoreId=='2' "
-                                                matTooltip="Bill Generated" class=" red-600 s-16">circle</mat-icon>
+                                                matTooltip="Bill Generated" class="pill red-600 s-16">circle</mat-icon>
                                             <mat-icon
-                                                style="font-size: 70px;width: 25px !important; border: black 1px solid; height:25px !important;border-radius:100% ;"
+                                                style="border: black 1px solid;"
                                                 *ngIf="contact.FromStoreId=='0' " matTooltip="Did not Generated Bill"
                                                 class=" white-600 s-16">
                                                 circle</mat-icon>

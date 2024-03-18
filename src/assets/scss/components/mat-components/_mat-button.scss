@@ -1,0 +1,10 @@
+.mat-typography {
+    .mat-button,
+    .mat-raised-button {
+        font-family: inherit;
+        @include font-size(12px);
+        .mat-icon{
+            display: inline-block;
+        }
+    }
+}

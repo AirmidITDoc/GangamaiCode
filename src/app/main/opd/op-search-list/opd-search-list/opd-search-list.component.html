@@ -29,7 +29,7 @@
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="search-sidebar">
                 <!-- SIDEBAR HEADER -->
                 <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
-                    <span class="h5" style="font-size: 17px;">Search Facility</span>
+                    <span class="search-title">Search Facility</span>
                     <!-- / USER -->
                 </div>
                 <!-- / SIDEBAR HEADER -->
@@ -137,13 +137,11 @@
                                             style="color: white;">New/Old</mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
                                             <mat-icon
-                                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                 *ngIf="contact.PatientOldNew=='2' || contact.PatientOldNew=='2'"
-                                                matTooltip="Patient New" class=" green-600 s-16">circle</mat-icon>
+                                                matTooltip="Patient New" class="pill green-600 s-16">circle</mat-icon>
                                             <mat-icon
-                                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                 *ngIf="contact.PatientOldNew=='1' " matTooltip="Patient Old"
-                                                class=" orange-600 s-16">circle</mat-icon>
+                                                class="pill orange-600 s-16">circle</mat-icon>
                                         </mat-cell>
                                     </ng-container>
 
@@ -153,13 +151,12 @@
                                             style="color: white;"></mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
                                             <mat-icon
-                                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                 *ngIf="contact.MPbillNo=='1'|| contact.MPbillNo=='2' "
                                                 matTooltip="Bill Generated" class=" red-600 s-16">circle</mat-icon>
                                             <mat-icon
                                                 style="font-size: 70px;width: 25px !important; border: black 1px solid; height:25px !important;border-radius:100% ;"
                                                 *ngIf="contact.MPbillNo=='0' " matTooltip="Did not Generated Bill"
-                                                class=" white-600 s-16">circle</mat-icon>
+                                                class="pill white-600 s-16">circle</mat-icon>
                                         </mat-cell>
                                     </ng-container>
                                     

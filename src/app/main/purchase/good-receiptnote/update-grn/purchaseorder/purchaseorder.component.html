@@ -10,14 +10,14 @@
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Purchase Order List
             </span>
-            <app-common-date [screenFrom]="screenFromString" style="margin-left: 890px;"
+            
+        </div>
+        <app-common-date [screenFrom]="screenFromString" style="margin-left: 910px;"
                 (dateTimeEventEmitter)="getDateTime($event)">
             </app-common-date>
-
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
+        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
     </mat-toolbar>
 
     <div class="content">
@@ -28,7 +28,7 @@
             <div>
                 <!-- SIDEBAR HEADER -->
                 <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
-                    <span class="h5" style="font-size: 17px;">Search Facility</span>
+                    <span class="search-title">Search Facility</span>
                     <!-- / USER -->
                 </div>
                 <!-- / SIDEBAR HEADER -->

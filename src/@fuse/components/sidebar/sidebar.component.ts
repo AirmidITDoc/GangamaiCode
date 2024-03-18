@@ -101,7 +101,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy {
     ) {
         // Set the defaults
         this.foldedAutoTriggerOnHover = true;
-        this.foldedWidth = 64;
+        this.foldedWidth = 54;
         this.foldedChanged = new EventEmitter();
         this.openedChanged = new EventEmitter();
         this.opened = false;

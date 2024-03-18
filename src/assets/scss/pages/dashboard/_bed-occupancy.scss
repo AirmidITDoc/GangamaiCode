@@ -1,11 +1,10 @@
 .bed-occupancy-section{
-    font-family: $inter;
     .ward-dashboard {
         .ward-main-conatiner {
             .ward-container{
                 font-weight: normal;
-                font-family: $inter-bold;
                 background:$primary-100;
+                font-weight: 600;
             }
             .ward-details-container{
                 background-color: $primary-25;
@@ -19,7 +18,7 @@
                     }
                     .ward-value-class {
                         font-weight: normal;
-                        font-family: $inter-bold;
+                        font-weight: 600;
                     }
                 }
             }

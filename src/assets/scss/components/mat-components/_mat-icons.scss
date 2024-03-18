@@ -8,6 +8,11 @@
         line-height: 30px;
     }
     .material-icons {
-        @include font-size(18px);
+        @include font-size(16px);
+    }
+    .mat-icon{
+        // display: flex;
+        // justify-content: center;
+        // align-items: center;
     }
 }

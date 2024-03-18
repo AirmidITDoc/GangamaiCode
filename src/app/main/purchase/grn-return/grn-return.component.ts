@@ -94,8 +94,8 @@ export class GRNReturnComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-     private accountService: AuthenticationService,
-    
+    private _loggedService: AuthenticationService,
+    private accountService: AuthenticationService,
     public toastr: ToastrService,
   ) { }
 

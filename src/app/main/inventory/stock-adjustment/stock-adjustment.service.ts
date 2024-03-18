@@ -8,29 +8,31 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class StockAdjustmentService {
 
   userFormGroup: FormGroup;
- 
+  StoreFrom:FormGroup;
 
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    
+    this.StoreFrom = this.CreateStoreFrom();
     this.userFormGroup = this.createUserForm();
   }
-
+  CreateStoreFrom(){
+    return this._formBuilder.group({
+      StoreId: [''],
+    });
+  }
   createUserForm() {
     return this._formBuilder.group({
-      StoreId: '',
-      ItemID: '',
-      BatchNo:'',
-      MRP:'',
-      Qty:'',
-      IsDeleted:'',
-      UpdatedQty:'',
-      BalanceQty:'',
-      
-      
+    
+      ItemID: [''],
+      BatchNo:[''],
+      MRP:[''],
+      Qty:[''],
+      Status:[''],
+      UpdatedQty:[''],
+      BalanceQty:[''],
     });
   }
    
@@ -42,6 +44,9 @@ export class StockAdjustmentService {
   }
   public getItemlist(){
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",{})
+  }
+  public StockAdjSave(param){
+    return this._httpClient.post('Pharmacy/InsertStockadjustment',param);
   }
   
 }

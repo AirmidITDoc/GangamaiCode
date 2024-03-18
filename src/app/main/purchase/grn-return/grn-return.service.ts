@@ -72,6 +72,10 @@ export class GrnReturnService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
+  public GRNRetrunSave(Param){
+    return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
+  }
+
 
 
   public GRNReturnSave(Param){

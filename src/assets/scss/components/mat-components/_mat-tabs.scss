@@ -1,10 +1,18 @@
 .mat-tab-group {
+    font-family: inherit;
     .mat-tab-header {
         .mat-tab-label-container {
             .mat-tab-labels {
-                .mat-tab-label-content {
-                    @include font-size(13px);
-                    font-weight: bold;
+                .mat-tab-label {
+                    font-family: inherit;
+                    height: 40px;
+                    .mat-tab-label-content {
+                        @include font-size(12px);
+                        font-weight: bold;
+                    }
+                }
+                .mat-ink-bar {
+                    height: 1px;
                 }
             }
         }

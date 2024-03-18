@@ -290,7 +290,10 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   getSupplierSearchCombo() {
-    this._PurchaseOrder.getSupplierSearchList().subscribe(data => {
+    var vdata={
+      'SupplierName':`${this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value}%`,
+    }
+    this._PurchaseOrder.getSupplierSearchList(vdata).subscribe(data => {
       this.SupplierList = data;
       // console.log(data);
       this.optionsMarital = this.SupplierList.slice();

@@ -27,7 +27,7 @@
                             <!-- SIDEBAR HEADER -->
                             <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
                                 style="margin-top: 3%">
-                                <span class="h5" style="font-size: 17px;">Search Facility</span>
+                                <span class="search-title">Search Facility</span>
                                 <!-- / USER -->
                             </div>
                             <!-- / SIDEBAR HEADER -->
@@ -202,7 +202,20 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                              
+                                                <ng-container matColumnDef="IsInchargeVerify">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        style="color: white;">Verify</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact">
+                                                        <mat-icon
+                                                            style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                            *ngIf="contact.Isverify" matTooltip="Verified"
+                                                            class=" green-600 s-16">circle</mat-icon>
+                                                        <mat-icon
+                                                            style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                            *ngIf="!contact.Isverify" matTooltip="Pending"
+                                                            class=" red-600 s-16">circle</mat-icon>
+                                                    </mat-cell>
+                                                </ng-container>
 
                                                 <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm

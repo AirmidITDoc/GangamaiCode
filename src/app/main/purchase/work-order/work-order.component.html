@@ -1,7 +1,7 @@
 <mat-tab-group style="width: 100%;">
     <mat-tab label="Work Order List">
         <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
-            <mat-toolbar style="height: 50px; justify-content: space-between;width: 100%;">
+            <mat-toolbar class="top-header accent">
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                         <mat-icon>menu</mat-icon>
@@ -29,7 +29,7 @@
             border-radius: 4px; width: 30%; height: 100%;">
 
                     <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
-                        <span class="h5" style="font-size: 17px;">Search Facility</span>
+                        <span class="search-title">Search Facility</span>
                     </div>
                     <div class="nav material2">
                         <form [formGroup]="_WorkOrderService.myFormGroup" style="padding: 6px 6px 5px 5px;"

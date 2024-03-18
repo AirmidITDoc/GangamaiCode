@@ -1,9 +1,8 @@
 .page-layout {
     .center {
         .header {
-            height: 70px;
             .welcome-message {
-                @include font-size(20px);
+                @include font-size(18px);
             }
             .header-row {
                 width: 100%;
@@ -13,19 +12,21 @@
             position: relative;
         }
     }
-    .opd-header,.top-header {
+    .top-header,
+    > .header,
+    > .mat-toolbar {
         height: auto;
-        min-height: 50px;
+        max-height: 45px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 8px 16px;
-        .top-header-info{
+        .top-header-info {
             display: flex;
             justify-content: start;
             align-items: center;
             gap: 8px;
-            .top-header-title{
+            .top-header-title {
                 @include font-size(16px);
             }
         }
@@ -45,18 +46,21 @@
                         fill: $gray-200;
                     }
                 }
-                .material-icons{
+                .material-icons {
                     color: $gray-200;
                 }
             }
-            &.padding-div{
+            &.padding-div {
                 padding: 0;
             }
         }
-        .mat-icon{
+        .mat-icon {
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+        .logo-text {
+            @include font-size(16px);
         }
     }
 }
