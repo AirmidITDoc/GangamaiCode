@@ -204,7 +204,7 @@
                                         <input matInput [(ngModel)]="vConversionFactor" name="ConversionFactor"
                                             formControlName="ConversionFactor" id="ConversionFactor" #conversionfactor
                                             (keydown)="onEnterConversionFactor($event)" (keyup)="calculateTotalamt()"
-                                            autocomplete="off" >
+                                            autocomplete="off" #conversionfactor>
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="7%">
@@ -326,8 +326,9 @@
                                                 <mat-icon> add </mat-icon>
                                             </span>
                                         </button> -->
+                                        <!-- [disabled]="_GRNList.userFormGroup.invalid" -->
                                             <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()"
-                                            [disabled]="_GRNList.userFormGroup.invalid" #addbutton>
+                                            [disabled]="!add" #addbutton>
                                             <mat-icon>add</mat-icon>
                                             </button>
 
@@ -346,7 +347,7 @@
                                         <input matInput [(ngModel)]="vDisc2" name="Disc2" autocomplete="off"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                             (keyup)="calculateDiscper2Amt()" formControlName="Disc2" id="Disc2"
-                                            (keydown)="onEnterDisc2($event)" #disc2>
+                                            (keydown)="onEnterDisc2($event)" #disc2 required>
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="5%" *ngIf="isDisc2Selected">
@@ -451,7 +452,8 @@
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.ConversionFactor"
                                                         (keyup)="getCellCalculation(contact,contact.ConversionFactor)"
-                                                        step="0.1" type="number" autocomplete="off">
+                                                        step="0.1" type="number" autocomplete="off"
+                                                        [disabled]="contact.IsVerifiedUserId==1">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -477,7 +479,7 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.BatchNo">
+                                                    <input matInput [(ngModel)]="contact.BatchNo" [disabled]="contact.IsVerifiedUserId==1">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -489,7 +491,8 @@
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput #inputField
                                                         (keyup)="CellcalculateLastDay(contact,inputField.value)"
-                                                        [(ngModel)]="contact.BatchExpDate" placeholder="mmyyyy">
+                                                        [(ngModel)]="contact.BatchExpDate" placeholder="mmyyyy"
+                                                        [disabled]="contact.IsVerifiedUserId==1">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -502,7 +505,7 @@
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.ReceiveQty" type="number"
                                                         (keyup)="getCellCalculation(contact,contact.ReceiveQty)"
-                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                        (keypress)="keyPressAlphanumeric($event)" [disabled]="contact.IsVerifiedUserId==1">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -515,7 +518,7 @@
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.FreeQty" type="number"
                                                         (keyup)="getCellCalculation(contact,contact.FreeQty)"
-                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                        (keypress)="keyPressAlphanumeric($event)" [disabled]="contact.IsVerifiedUserId==1">
                                                 </mat-form-field>
                                                 <!-- {{contact.FreeQty}} -->
                                             </mat-cell>
@@ -535,7 +538,7 @@
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.MRP" step="0.1" type="number"
-                                                        autocomplete="off">
+                                                        autocomplete="off" [disabled]="contact.IsVerifiedUserId==1">
                                                 </mat-form-field>
                                                 <!-- {{contact.MRP | number:'1.2-2' }} -->
                                             </mat-cell>
@@ -547,7 +550,7 @@
                                             <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1"
-                                                        type="number" autocomplete="off"
+                                                        type="number" autocomplete="off" [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.Rate)">
                                                 </mat-form-field>
                                             </mat-cell>
@@ -566,7 +569,7 @@
                                                 Disc%</mat-header-cell>
                                             <mat-cell class="w-50" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.DiscPercentage"
+                                                    <input matInput [(ngModel)]="contact.DiscPercentage" [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.DiscPercentage)"
                                                         step="0.1" type="number" autocomplete="off">
                                                 </mat-form-field>
@@ -586,7 +589,7 @@
                                                 Disc2%</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.DiscPer2"
+                                                    <input matInput [(ngModel)]="contact.DiscPer2" [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.DiscPer2)"
                                                         step="0.1" type="number" autocomplete="off">
                                                 </mat-form-field>
@@ -631,7 +634,7 @@
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput type="number" [(ngModel)]="contact.CGSTPer"
-                                                        step="0.1" type="number"
+                                                        step="0.1" type="number" [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.CGSTPer)"
                                                         autocomplete="off">
                                                 </mat-form-field>
@@ -652,7 +655,7 @@
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput type="number" [(ngModel)]="contact.SGSTPer"
-                                                        step="0.1" type="number"
+                                                        step="0.1" type="number" [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.SGSTPer)"
                                                         autocomplete="off">
                                                 </mat-form-field>
@@ -673,7 +676,7 @@
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput type="number" [(ngModel)]="contact.IGSTPer"
-                                                        step="0.1" type="number"
+                                                        step="0.1" type="number" [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.IGSTPer)"
                                                         autocomplete="off">
                                                 </mat-form-field>
@@ -712,13 +715,13 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="isClosed">
+                                        <!-- <ng-container matColumnDef="isClosed">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 isClosed</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.IsClosed}}
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
 
                                         <ng-container matColumnDef="poBalQty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -768,6 +771,49 @@
                                             </mat-cell>
                                         </ng-container>
 
+                                        <ng-container matColumnDef="IsVerifiedUserId">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                IsVerifiedUserId</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.IsVerifiedUserId}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Status">
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                style="color: white;">Verify</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact">
+                                                <mat-icon *ngIf="contact.IsVerifiedUserId" matTooltip="Verified"
+                                                    class="pill green-600 s-16" >circle</mat-icon>
+                                                <mat-icon *ngIf="!contact.IsVerifiedUserId" matTooltip="Pending"
+                                                    class="pill red-600 s-16">circle</mat-icon>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IsVerified">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                IsVerified</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.IsVerified}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IsVerifiedDatetime">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                IsVerifiedDatetime</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.IsVerifiedDatetime | date:'dd/MM/YYYY'}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="stockid">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                StockId</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.StkID}}
+                                            </mat-cell>
+                                        </ng-container>
+
 
                                         <ng-container matColumnDef="loading">
                                             <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -784,7 +830,8 @@
                                             *matHeaderRowDef="displayedColumns2; sticky: true">
                                         </mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumns2;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                            [@animate]="{value:'*',params:{y:'100%'}}" appHighlight
+                                            ></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                         </mat-footer-row>
@@ -937,7 +984,7 @@
                                             <mat-label>Received By</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="ReceivedBy"
                                                 type="text" #ReceivedBy [(ngModel)]="registerObj.ReceivedBy"
-                                                (keydown)="onEnterReceivedBy($event)" required
+                                                (keydown)="onEnterReceivedBy($event)" required (keyup)="Setsave()"
                                                 (keydown.enter)="focusNextService()">
                                         </mat-form-field>
 
@@ -953,7 +1000,7 @@
                                             <mat-label>Credit Amt</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="CreditAmount"
                                                 #CreditAmount [(ngModel)]="registerObj.CreditNote" type="number"
-                                                (keydown)="onEnterCreditAmount($event)"
+                                                (keydown)="onEnterCreditAmount($event)" 
                                                 (keydown.enter)="focusNextService()">
                                         </mat-form-field>
 
@@ -1028,20 +1075,16 @@
                                                 [(ngModel)]="registerObj.RoundingAmt">
                                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                        <div>
-                                            <button class="btn btn-primary " (click)="OnSave()">Save</button>&nbsp;
-                                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
+                                      
+                                        <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                            <button class="btn btn-primary " (click)="OnSave()" 
+                                                >Save</button>
+                                           
+                                            <button class="btn btn-danger-outline" (click)="OnReset()"
+                                                >Reset</button>
                                         </div>
 
-                                        <!-- <div class="sales-footer-buttons gap-8" fxLayout="row">
-                                            <button class="btn btn-primary " (click)="onSave()"
-                                                [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save(F9)</button>
-                                            <button class="btn btn-primary-outline"
-                                                *ngIf="IsOnlineRefNo"
-                                                (click)="payOnline()">Online</button>
-                                            <button class="btn btn-danger-outline" (click)="onClose()"
-                                                (keydown.enter)="onF6Reset($event)">Reset</button>
-                                        </div> -->
+                                       
 
                                     </div>
                                     <div style="width: 100%;font-size: 20px;font-weight: 500;">

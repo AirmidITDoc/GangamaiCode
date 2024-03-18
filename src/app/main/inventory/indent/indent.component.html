@@ -1,4 +1,4 @@
-    <mat-tab-group style="width: 100%;">
+    <mat-tab-group style="width: 100%;" #tabGroup>
         <mat-tab label="Indent List">
             <div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" style="height: 100%;"
                 fusePerfectScrollbar>
@@ -191,25 +191,25 @@
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let row">
 
-                                                        <button mat-icon-button (click)="getPrint(contact)"
+                                                        <button mat-icon-button (click)="viewgetIndentReportPdf(row,true)"
                                                             matTooltip="Print">
                                                             <mat-icon style="color: black;">print</mat-icon>
                                                         </button>
 
                                                         <button mat-icon-button (click)="OnEdit(row,tabGroup)"
-                                                            matTooltip="Edit">
-                                                            <mat-icon title="Edit Menu" *ngIf="row.Isverify==1"
-                                                                [disabled]="row.disabled" class="disabled-icon">
+                                                            matTooltip="Edit"  [disabled]="row.Isverify">
+                                                            <mat-icon title="Edit Menu" *ngIf="row.Isverify != true"
+                                                                class="disabled-icon">
                                                                 edit</mat-icon>
-                                                            <mat-icon title="Edit Menu" *ngIf="row.Isverify==0">
-                                                                edit</mat-icon>
+                                                            <!-- <mat-icon title="Edit Menu" *ngIf="row.IsInchargeVerify==0">
+                                                                edit</mat-icon> -->
                                                         </button>
                                                         <button mat-icon-button (click)="onVerify(row)"
                                                             matTooltip="Verify">
-                                                            <mat-icon *ngIf="row.Isverify==1" [disabled]="row.disabled"
+                                                            <!-- <mat-icon *ngIf="row.Isverify==1" [disabled]="row.disabled"
                                                                 class="disabled-icon"
-                                                                title="verify Menu">verified_user</mat-icon>
-                                                            <mat-icon title="verify Menu" *ngIf="row.Isverify==0">
+                                                                title="verify Menu">verified_user</mat-icon> -->
+                                                            <mat-icon title="verify Menu" *ngIf="row.Isverify ==0">
                                                                 verified_user</mat-icon>
                                                         </button>
                                                     </mat-cell>
@@ -361,15 +361,15 @@
                     <div class="center p-12 pb-56" fxFlexAlign="start center">
 
                         <div class="content-card" style="border-radius:4px; ">
-                            <form [formGroup]="_IndentService.newIndentFrom">
-                                <div class="nav material2">
+                            <form [formGroup]="_IndentService.newIndentFrom" >
+                                <div class="nav material2" >
 
 
                                     <div fxLayout="column" fxLayoutAlign="start none">
 
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                             <from [formGroup]="_IndentService.StoreFrom">
-                                                <mat-form-field appearance="outline" fxFlex="300px">
+                                                <mat-form-field appearance="outline" fxFlex="100%">
                                                     <mat-label>From Store</mat-label>
                                                     <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                         <mat-option></mat-option>
@@ -445,9 +445,9 @@
                                                     (keydown)="onEnterqty($event)" required #qty type="number">
                                             </mat-form-field>&nbsp;&nbsp;
 
-                                            <div matTooltip="Select All Value to enable this button!!">
-                                                <button class="next-btn" (click)="onAdd()">
-                                                    Add
+                                            <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
+                                                <button class="btn btn-primary" (click)="onAdd()" >
+                                                    <mat-icon>add</mat-icon>
                                                 </button>
                                             </div>
 
@@ -479,7 +479,7 @@
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                             Item Code</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.ItemID}}
+                                                            {{contact.ItemId}}
                                                         </mat-cell>
                                                     </ng-container>
 
@@ -497,7 +497,7 @@
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                             Indent Quantity</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.IndentQuantity}}
+                                                            {{contact.Qty}}
                                                         </mat-cell>
                                                     </ng-container>
 
@@ -544,13 +544,19 @@
                                     </mat-form-field>
 
 
-                                    <div class="footer-navigation-container" fxLayout.gt-xs="row"
+                                    <!-- <div class="footer-navigation-container" fxLayout.gt-xs="row"
                                         style="margin-left: 500px;">
-                                        <div matTooltip="Select All Value to enable this button!!">
-                                            <button class="next-btn" (click)="OnSave()"
+                                        <div>
+                                            <button class="next-btn" (click)="OnSave()" 
                                                 style="margin-left: 750px;">Save</button>
                                             <button class="footer-btn" (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                         </div>
+                                    </div>
+                                     -->
+                                    <div class="sales-footer-buttons gap-8" fxLayout="row" fxFlexAlign="end">
+                                        <button class="btn btn-primary " (click)="OnSave()">Save</button>
+                                        <button class="btn btn-danger-outline" (click)="OnReset()"
+                                            >Reset</button>
                                     </div>
 
 

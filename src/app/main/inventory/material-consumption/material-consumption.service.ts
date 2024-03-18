@@ -50,7 +50,7 @@ export class MaterialConsumptionService {
   // }
 
   public MaterialconsSave(Param){
-    return this._httpClient.post("InPatient/MaterialConsumption",Param);
+    return this._httpClient.post("InventoryTransaction/MaterialConsumptionSave",Param);
   }
 
   public getLoggedStoreList(Param){

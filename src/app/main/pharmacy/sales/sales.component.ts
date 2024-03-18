@@ -1535,8 +1535,18 @@ export class SalesComponent implements OnInit {
           "StoreId": this._salesService.IndentSearchGroup.get('StoreId').value.storeid
         }
       });
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log(result);
+    dialogRef.afterClosed().subscribe(result1 => {
+      debugger
+      let result =result1.selectedData
+      let vescflag=result1.vEscflag
+      console.log(result);
+
+      if(vescflag){
+        this._salesService.IndentSearchGroup.get('ItemId').setValue('')
+      this.itemid.nativeElement.focus();
+      }else if(!vescflag){
+       this.Quantity.nativeElement.focus();
+     
       this.BatchNo = result.BatchNo;
       this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
       this.MRP = result.UnitMRP;
@@ -1563,10 +1573,10 @@ export class SalesComponent implements OnInit {
       this.LandedRate = result.LandedRate;
       this.PurchaseRate = result.PurchaseRate;
       this.UnitMRP = result.UnitMRP;
-
+      }
     });
 
-    // this.Quantity.nativeElement.focus();
+   
   }
 
   focusNextService() {
@@ -2003,7 +2013,7 @@ export class SalesComponent implements OnInit {
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-      SalesInsert['externalPatientName'] = this.PatientName || '';
+    SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] = 0;
@@ -2018,12 +2028,11 @@ export class SalesComponent implements OnInit {
     SalesInsert['salesTypeId'] = 0;
     SalesInsert['salesId'] = 0;
     SalesInsert['extMobileNo'] = this.MobileNo || 0;
+    SalesInsert['extAddress'] = this.vextAddress || '';
 
     let salesDetailInsertarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
-
       console.log(element);
-      // "2025-06-01"
       let salesDetailInsert = {};
       salesDetailInsert['salesID'] = 0;
       salesDetailInsert['itemId'] = element.ItemId;
@@ -2058,7 +2067,7 @@ export class SalesComponent implements OnInit {
       updateCurStkSales['itemId'] = element.ItemId;
       updateCurStkSales['issueQty'] = element.Qty;
       updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
-        updateCurStkSales['stkID'] = element.StockId;
+      updateCurStkSales['stkID'] = element.StockId;
       updateCurStkSalestarr.push(updateCurStkSales);
     });
 
@@ -2068,8 +2077,6 @@ export class SalesComponent implements OnInit {
     let cal_GSTAmount_Sales = {};
     cal_GSTAmount_Sales['salesID'] = 0;
 
-
-
     let salesDraftStatusUpdate = {};
     console.log(this.DraftID);
     salesDraftStatusUpdate['DSalesId'] = this.DraftID || 0;
@@ -2078,36 +2085,35 @@ export class SalesComponent implements OnInit {
     let PaymentInsertobj = {};
 
     PaymentInsertobj['BillNo'] = 0,
-      PaymentInsertobj['ReceiptNo'] = '',
-      PaymentInsertobj['PaymentDate'] = this.newDateTimeObj.date; //  this.dateTimeObj.date;
+    PaymentInsertobj['ReceiptNo'] = '',
+    PaymentInsertobj['PaymentDate'] = this.newDateTimeObj.date; //  this.dateTimeObj.date;
     PaymentInsertobj['PaymentTime'] = this.newDateTimeObj.time; //  this.dateTimeObj.time;
     PaymentInsertobj['CashPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //NetAmt;
     PaymentInsertobj['ChequePayAmount'] = 0,
-      PaymentInsertobj['ChequeNo'] = 0,
-      PaymentInsertobj['BankName'] = '',
-      PaymentInsertobj['ChequeDate'] = '01/01/1900',
-      PaymentInsertobj['CardPayAmount'] = 0,
-      PaymentInsertobj['CardNo'] = '',
-      PaymentInsertobj['CardBankName'] = '',
-      PaymentInsertobj['CardDate'] = '01/01/1900',
-      PaymentInsertobj['AdvanceUsedAmount'] = 0;
+    PaymentInsertobj['ChequeNo'] = 0,
+    PaymentInsertobj['BankName'] = '',
+    PaymentInsertobj['ChequeDate'] = '01/01/1900',
+    PaymentInsertobj['CardPayAmount'] = 0,
+    PaymentInsertobj['CardNo'] = '',
+    PaymentInsertobj['CardBankName'] = '',
+    PaymentInsertobj['CardDate'] = '01/01/1900',
+    PaymentInsertobj['AdvanceUsedAmount'] = 0;
     PaymentInsertobj['AdvanceId'] = 0;
     PaymentInsertobj['RefundId'] = 0;
     PaymentInsertobj['TransactionType'] = 4;
     PaymentInsertobj['Remark'] = '',
-      PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-      PaymentInsertobj['IsCancelled'] = 0;
+    PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+    PaymentInsertobj['IsCancelled'] = 0;
     PaymentInsertobj['IsCancelledBy'] = 0;
     PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
-      PaymentInsertobj['OPD_IPD_Type'] = 3;
+    PaymentInsertobj['OPD_IPD_Type'] = 3;
     PaymentInsertobj['NEFTPayAmount'] = 0,
-      PaymentInsertobj['NEFTNo'] = '',
-      PaymentInsertobj['NEFTBankMaster'] = '',
-      PaymentInsertobj['NEFTDate'] = '01/01/1900',
-      PaymentInsertobj['PayTMAmount'] = 0,
-      PaymentInsertobj['PayTMTranNo'] = '',
-      PaymentInsertobj['PayTMDate'] = '01/01/1900'
-
+    PaymentInsertobj['NEFTNo'] = '',
+    PaymentInsertobj['NEFTBankMaster'] = '',
+    PaymentInsertobj['NEFTDate'] = '01/01/1900',
+    PaymentInsertobj['PayTMAmount'] = 0,
+    PaymentInsertobj['PayTMTranNo'] = '',
+    PaymentInsertobj['PayTMDate'] = '01/01/1900'
 
     let submitData = {
       "salesInsert": SalesInsert,
@@ -2239,6 +2245,7 @@ export class SalesComponent implements OnInit {
           SalesInsert['salesTypeId'] = 0;
           SalesInsert['salesId'] = 0;
           SalesInsert['extMobileNo'] = this.MobileNo || 0;
+          SalesInsert['extAddress'] = this.vextAddress || '';
 
           let salesDetailInsertarr = [];
           this.saleSelectedDatasource.data.forEach((element) => {
@@ -2687,6 +2694,7 @@ export class SalesComponent implements OnInit {
     salesInsertCredit['salesTypeId'] = 0;
     salesInsertCredit['salesId'] = 0;
     salesInsertCredit['extMobileNo'] = this.MobileNo;
+    salesInsertCredit['extAddress'] = this.vextAddress || '';
 
     let salesDetailInsertCreditarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
@@ -3319,16 +3327,19 @@ export class SalesComponent implements OnInit {
 
     if (this.saleSelectedDatasource.data.length > 0) {
       this.chargeslistBarcode = this.saleSelectedDatasource.data
+
       this.saleSelectedDatasource.data.forEach((element) => {
+
         if (element.ItemId == contact.ItemId) {
           this.Itemflag = true;
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
         debugger
+
+
           if (contact.IssueQty != null) {
 
-            
             this.DraftQty = element.Qty + contact.IssueQty;
             if (this.DraftQty  > contact.BalanceQty) {
               Swal.fire("Enter Qty less than Balance :" ,contact.BalanceQty);
@@ -3344,6 +3355,8 @@ export class SalesComponent implements OnInit {
               this.ItemFormreset();
             }
           }
+
+          
           let TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
           let Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
           let vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
@@ -3390,11 +3403,13 @@ export class SalesComponent implements OnInit {
           this.saleSelectedDatasource.data[i].PurTotAmt = PurTotAmt;
 
           this.saleSelectedDatasource.data[i].BalanceQty = BalQty;
+          this.saleSelectedDatasource.data[i].StockId = contact.StockId;
+          
         }
         i++;
       });
 
-    } debugger
+    } 
     if (!this.Itemflag) {
 
       if (contact.IssueQty != null) {
@@ -3446,7 +3461,7 @@ export class SalesComponent implements OnInit {
           DiscAmt:DiscAmt|| 0,
           NetAmt: TotalNet,
           RoundNetAmt: parseInt(TotalNet),// Math.round(TotalNet),
-          StockId: this.StockId,
+          StockId: contact.StockId,
           LandedRate: contact.LandedRate,
           LandedRateandedTotal: LandedRateandedTotal,
           CgstPer: contact.CGSTPer,

@@ -694,17 +694,14 @@
                                                 formControlName="Worrenty" type="text" required>
                                         </mat-form-field>&nbsp;
 
-                                        <!-- <div matTooltip="Select All Value to enable this button!!">
-                                            <button class="next-btn"
-                                                style="border-radius: 16px;margin-left: 30px; margin-top: 10px;"
-                                                (click)="OnSave()">Save</button>
-                                            <button class="footer-btn" style="border-radius: 16px;"
-                                                (click)="OnReset()">Reset</button>&nbsp;&nbsp;
-                                        </div> -->
-
-                                        <div>
-                                            <button class="btn btn-primary " (click)="OnSave()">Save</button>&nbsp;
-                                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
+                                        
+                                        
+                                        <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                            <button class="btn btn-primary " (click)="OnSave()"
+                                                >Save</button>
+                                           
+                                            <button class="btn btn-danger-outline" (click)="OnReset()"
+                                                >Reset</button>
                                         </div>
                                     </div>
                                 </div>

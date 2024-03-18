@@ -18,6 +18,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
+import { invalid } from 'moment';
 
 @Component({
   selector: 'app-update-purchaseorder',
@@ -27,7 +28,7 @@ import { element } from 'protractor';
   animations: fuseAnimations,
 })
 export class UpdatePurchaseorderComponent implements OnInit {
-
+  vsaveflag:boolean=true;
   displayedColumns2 = [
 
     // 'ItemID',
@@ -454,6 +455,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     }
   }
   OnSave() {
+    this.vsaveflag=true
     if (!this.registerObj.PurchaseID) {
       this.OnSavenew();
     } else {
@@ -726,10 +728,12 @@ export class UpdatePurchaseorderComponent implements OnInit {
   }
   getCellCalculation(contact, Qty) {
 
-    if (contact.Rate > contact.DefRate) {
-      Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+    if(contact.DefRate > 0){
+      if (contact.Rate > contact.DefRate) {
+        Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+      }   
     }
-
+   
     if (contact.Qty > 0 && contact.Rate > 0) {
       contact.IGSTPer = 0;
       if (this._PurchaseOrder.userFormGroup.get('Status3').value.Name == 'GST After Disc') {
@@ -782,14 +786,14 @@ export class UpdatePurchaseorderComponent implements OnInit {
         this.vRate=this.vMRP;
       }
     }
-    if (this.vDefRate == '' || this.vDefRate !== 0) {
+    if (this.vDefRate == '' || this.vDefRate == 0) {
+      this.toastr.warning('Defined rate is not defined for this Item.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      }); 
+    } else {
       if (this.vRate > this.vDefRate) {
         Swal.fire("Please Check defined Supplier Rate for product ...!!!");
       }
-    } else {
-      this.toastr.warning('Defined rate is not defined for this Item.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
     }
   }
 
@@ -1080,6 +1084,10 @@ export class UpdatePurchaseorderComponent implements OnInit {
   public onEnterWorrenty(event): void {
     if (event.which === 13) {
       this.OctriAmount.nativeElement.focus();
+    }
+
+    if(this.dsItemNameList.data.length > 0){
+      this.vsaveflag=false
     }
   }
 

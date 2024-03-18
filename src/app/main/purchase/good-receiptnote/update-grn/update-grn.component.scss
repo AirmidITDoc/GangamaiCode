@@ -183,12 +183,12 @@ app-update-grn {
     min-width: 90px;
     text-align: left;
   }
-  .mat-column-isClosed {
-    width: 90px;
-    max-width: 90px;
-    min-width: 90px;
-    text-align: left;
-  }
+  // .mat-column-isClosed {
+  //   width: 90px;
+  //   max-width: 90px;
+  //   min-width: 90px;
+  //   text-align: left;
+  // }
   .mat-column-poBalQty {
     width: 90px;
     max-width: 90px;
@@ -220,9 +220,39 @@ app-update-grn {
     text-align: left;
   }
   .mat-column-UnitMRP {
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  .mat-column-IsVerifiedUserId {
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: left;
+  }
+  .mat-column-IsVerified {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+  }
+  .mat-column-IsVerifiedDatetime {
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: left;
+  }
+  .mat-column-stockid {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+    text-align: left;
+  }
+  .mat-column-Status {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
     text-align: left;
   }
   .mat-column-Action {
@@ -232,16 +262,16 @@ app-update-grn {
     text-align: left;
   }
    .mat-header-row {
-      width:2950px;
-      max-width: 2950px;
-      min-width:2950px;
+      width:3500px;
+      max-width: 3500px;
+      min-width:3500px;
       // min-height: 30px;
       // background-color: blue;
     }
 
     .mat-row {
-    width: 2950px;
-    min-width: 2950px;  
+    width: 3500px;
+    min-width: 3500px;  
     // min-height: 30px; 
     }
     }
@@ -364,4 +394,8 @@ button:disabled {
 
 .example-month-picker .mat-calendar-arrow {
   display: none;
+}
+.disabled-row {
+  pointer-events: none;
+  background-color: #68f19d;
 }

@@ -64,7 +64,7 @@ export class PharmacyReportComponent implements OnInit {
 
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
-  PaymentMode:any;
+  PaymentMode: any;
   TotalAmount: any = 0;
   TotalVatAmount: any = 0;
   TotalDiscAmount: any = 0;
@@ -88,12 +88,12 @@ export class PharmacyReportComponent implements OnInit {
 
   TotalBalAmount: any = 0;
   TotalCashAmount: any = 0;
-  SpinLoading:boolean=false;
-  AdList:boolean=false;
+  SpinLoading: boolean = false;
+  AdList: boolean = false;
   FromDate: any;
   Todate: any;
-  UserId:any=0;
-  UserName:any;
+  UserId: any = 0;
+  UserName: any;
   IsLoading: boolean = false;
 
 
@@ -114,9 +114,9 @@ export class PharmacyReportComponent implements OnInit {
     public _BrowsSalesBillService: BrowsSalesBillService,
     private _loggedUser: AuthenticationService,
     private formBuilder: FormBuilder
-  ) { 
-    this.UserId= this._loggedUser.currentUserValue.user.id;
-    this.UserName= this._loggedUser.currentUserValue.user.userName;
+  ) {
+    this.UserId = this._loggedUser.currentUserValue.user.id;
+    this.UserName = this._loggedUser.currentUserValue.user.userName;
     console.log(this.UserId)
   }
 
@@ -125,7 +125,6 @@ export class PharmacyReportComponent implements OnInit {
     this.bindReportData();
     this.GetUserList();
     this.GetPaymentModeList();
-    debugger
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
     this._BrowsSalesBillService.userForm.get('UserId').setValue(toSelect);
 
@@ -150,56 +149,57 @@ export class PharmacyReportComponent implements OnInit {
     this.ReportID = el.ReportId;
 
     if (this.ReportName == 'Pharmacy Daily Collection') {
-      this.FlagUserSelected=true;
-      this.FlagPaymentSelected=false;
-      } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
-      this.FlagUserSelected=true;
-      this.FlagPaymentSelected=false;
-      
+      this.FlagUserSelected = true;
+      this.FlagPaymentSelected = false;
+    } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
+      this.FlagUserSelected = true;
+      this.FlagPaymentSelected = false;
+
     } else if (this.ReportName == 'Sales Summary Report') {
-      this.FlagUserSelected=true;
-      this.FlagPaymentSelected=false;
-      
+      this.FlagUserSelected = true;
+      this.FlagPaymentSelected = false;
+
     } else if (this.ReportName == 'Sales Patient Wise Report') {
-      this.FlagUserSelected=true;
-      this.FlagPaymentSelected=false;
-      
+      this.FlagUserSelected = true;
+      this.FlagPaymentSelected = false;
+
     } else if (this.ReportName == 'Sales Return Summary Report') {
-      this.FlagPaymentSelected=false;
-      this.FlagUserSelected=false;
-      
+      this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
+
     } else if (this.ReportName == 'Sales Return PatientWise Report') {
-      this.FlagPaymentSelected=false;
-      this.FlagUserSelected=false;
+      this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
     } else if (this.ReportName == 'Sales Credit Report') {
-      this.FlagPaymentSelected=false;
-      this.FlagUserSelected=false;
-     
+      this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
+
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
-      this.FlagUserSelected=true;
-      this.FlagPaymentSelected=false;
-     
+      this.FlagUserSelected = true;
+      this.FlagPaymentSelected = false;
+
     }
     else if (this.ReportName == 'Sales Cash Book Report') {
-      this.FlagPaymentSelected=true;
-      this.FlagUserSelected=false;
-     
+      this.FlagPaymentSelected = true;
+      this.FlagUserSelected = false;
+
     }
   }
 
-  
+
   getOptionTextUser(option) {
-    this.UserId = option.UserId;
-    this.UserName=option.UserName;
+    debugger
+    // this.UserId = option.UserId;
+    // this.UserName=option.UserName;
     return option && option.UserName ? option.UserName : '';
-   
+
   }
 
   getOptionTextPaymentMode(option) {
-    
-    this.PaymentMode=option.PaymentMode;
+
+    this.PaymentMode = option.PaymentMode;
     return option && option.PaymentMode ? option.PaymentMode : '';
-   
+
   }
 
 
@@ -211,8 +211,8 @@ export class PharmacyReportComponent implements OnInit {
   }
 
   GetUserList() {
-    var data ={
-      "StoreId":this._loggedUser.currentUserValue.user.storeId
+    var data = {
+      "StoreId": this._loggedUser.currentUserValue.user.storeId
     }
     this._PharmacyreportService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;
@@ -230,10 +230,10 @@ export class PharmacyReportComponent implements OnInit {
   }
 
   GetPaymentModeList() {
-   debugger
+    debugger
     this._PharmacyreportService.getPaymentModeList().subscribe(data => {
       this.PaymentList = data;
-      this.optionsPaymentMode= this.PaymentList.slice();
+      this.optionsPaymentMode = this.PaymentList.slice();
       console.log(this.PaymentList);
       this.filteredOptionsPaymentmode = this._BrowsSalesBillService.userForm.get('PaymentMode').valueChanges.pipe(
         startWith(''),
@@ -245,11 +245,10 @@ export class PharmacyReportComponent implements OnInit {
   }
 
 
-  
+
   getPrint() {
-    debugger
     if (this.ReportName == 'Pharmacy Daily Collection') {
-     this.viewDailyCollectionPdf();
+      this.viewDailyCollectionPdf();
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
       this.viewDailyCollectionSummaryPdf();
     } else if (this.ReportName == 'Sales Summary Report') {
@@ -261,7 +260,7 @@ export class PharmacyReportComponent implements OnInit {
     } else if (this.ReportName == 'Sales Return PatientWise Report') {
       this.viewgetSalesReturnPatientwiseReportPdf();
     } else if (this.ReportName == 'Sales Credit Report') {
-     this.viewgetSalesCreditReportPdf();
+      this.viewgetSalesCreditReportPdf();
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
       this.viewgetPharCollsummDayuserwiseReportPdf();
     }
@@ -275,274 +274,301 @@ export class PharmacyReportComponent implements OnInit {
 
 
 
-  viewDailyCollectionPdf(){
-    let AddUserId =0;
+  viewDailyCollectionPdf() {
+    let AddUserId = 0;
     if (this._BrowsSalesBillService.userForm.get('UserId').value)
-       AddUserId =  this._BrowsSalesBillService.userForm.get('UserId').value.UserId
+      AddUserId = this._BrowsSalesBillService.userForm.get('UserId').value.UserId
 
     setTimeout(() => {
-    this.sIsLoading = 'loading-data';
-    this.AdList=true;
-    this._BrowsSalesBillService.getSalesDailyCollectionNew(
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this._loggedUser.currentUserValue.user.storeId, AddUserId
-    ).subscribe(res=>{
-    const dialogRef = this._matDialog.open(PdfviewerComponent, 
-      {   maxWidth: "95vw",
-          height: '1000px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pharma Daily Collection Viewer"
-          }
-        });
+      this.sIsLoading = 'loading-data';
+      this.AdList = true;
+      
+      this._BrowsSalesBillService.getSalesDailyCollectionNew(
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this._loggedUser.currentUserValue.user.storeId, AddUserId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '1000px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharma Daily Collection Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.sIsLoading = '';
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
 
   viewDailyCollectionSummaryPdf() {
-    
+    let AddUserId = 0;
+    if (this._BrowsSalesBillService.userForm.get('UserId').value)
+      
+    AddUserId = this._BrowsSalesBillService.userForm.get('UserId').value.UserId
+
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-     this.AdList=true;
-    this._BrowsSalesBillService.getSalesDailyCollectionSummary(
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this._loggedUser.currentUserValue.user.storeId,
-      this._BrowsSalesBillService.userForm.get('UserId').value.UserId || 0 //this.UserId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pharma Daily Collection Summary Viewer"
-          }
-        });
+      this.AdList = true;
+     
+      this._BrowsSalesBillService.getSalesDailyCollectionSummary(
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this._loggedUser.currentUserValue.user.storeId,AddUserId
+        
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharma Daily Collection Summary Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.sIsLoading = '';
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
   viewgetPharCollsummDayuserwiseReportPdf() {
+    let AddUserId = 0;
+      if (this._BrowsSalesBillService.userForm.get('UserId').value)
+        
+      AddUserId = this._BrowsSalesBillService.userForm.get('UserId').value.UserId
+
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-     this.AdList=true;
-    this._BrowsSalesBillService.getSalesDailyCollectionSummaryDayuserwise(
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this._loggedUser.currentUserValue.user.storeId,this._BrowsSalesBillService.userForm.get('UserId').value.UserId || 0
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pharma Daily Collection Summary Day & User Wise Viewer"
-          }
-        });
+      this.AdList = true;
+      
+      this._BrowsSalesBillService.getSalesDailyCollectionSummaryDayuserwise(
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this._loggedUser.currentUserValue.user.storeId,AddUserId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharma Daily Collection Summary Day & User Wise Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.sIsLoading = ' ';
         });
-      
-    });
-   
-    },100);
+
+      });
+
+    }, 100);
   }
 
   viewgetsalesSummaryReportPdf() {
+
+    debugger
+    let AddUserId = 0;
+    if (this._BrowsSalesBillService.userForm.get('UserId').value)
+      AddUserId = this._BrowsSalesBillService.userForm.get('UserId').value.UserId
+
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-     this.AdList=true;
-    this._BrowsSalesBillService.getSalesDetailSummary(
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',0,0,this.UserId,
-      this._loggedUser.currentUserValue.user.storeId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pharma Sales Summary Viewer"
-          }
-        });
+      this.AdList = true;
+     
+      this._BrowsSalesBillService.getSalesDetailSummary(
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+         0, 0, AddUserId,this._loggedUser.currentUserValue.user.storeId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharma Sales Summary Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.sIsLoading = '';
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
   viewgetSalesPatientWiseReportPdf() {
+    this.AdList = true;
+    let AddUserId = 0;
+    if (this._BrowsSalesBillService.userForm.get('UserId').value)
+      
+    AddUserId = this._BrowsSalesBillService.userForm.get('UserId').value.UserId
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-     this.AdList=true;
-    this._BrowsSalesBillService.getSalesDetail_Patientwise(
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',0,0,this.UserId,
-      this._loggedUser.currentUserValue.user.storeId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pharma Daily Collection Summary Patient Wise Viewer"
-          }
-        });
+    
+      let Frdate=this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      let Todate =  this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      
+      this._BrowsSalesBillService.getSalesDetail_Patientwise(Frdate,Todate,    
+        0, 0, AddUserId, this._loggedUser.currentUserValue.user.storeId
+      ).subscribe(res => {
+        
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharma Daily Collection Summary Patient Wise Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.sIsLoading = ' ';
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
- 
+
   viewgetSalesReturnReportPdf() {
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-     this.AdList=true;
-    this._BrowsSalesBillService.getSalesReturn(
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',0,0,
-      this._loggedUser.currentUserValue.user.storeId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Sales Return Viewer"
-          }
-        });
+      this.AdList = true;
+      this._BrowsSalesBillService.getSalesReturn(
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0,
+        this._loggedUser.currentUserValue.user.storeId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Sales Return Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.sIsLoading = '';
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
   viewgetSalesReturnPatientwiseReportPdf() {
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-     this.AdList=true;
-    this._BrowsSalesBillService.getSalesReturnPatientwise(
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',0,0,
-      this._loggedUser.currentUserValue.user.storeId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Sales Return Patient Wise Viewer"
-          }
-        });
+      this.AdList = true;
+      let frdate= this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      let Todate =this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+   debugger
+      this._BrowsSalesBillService.getSalesReturnPatientwise(frdate,Todate,0, 0,this._loggedUser.currentUserValue.user.storeId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Sales Return Patient Wise Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.sIsLoading = '';
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
   viewgetSalesCreditReportPdf() {
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-     this.AdList=true;
-    this._BrowsSalesBillService.getSalesCredit(
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0,0,0,
-      this._loggedUser.currentUserValue.user.storeId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Sales Credit Viewer"
-          }
-        });
+      this.AdList = true;
+      this._BrowsSalesBillService.getSalesCredit(
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0, 0,
+        this._loggedUser.currentUserValue.user.storeId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Sales Credit Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.sIsLoading = '';
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
-  
+
 
   viewgetSalesCashBookReportPdf() {
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
-     this.AdList=true;
- 
-    this._BrowsSalesBillService.getSalesCashBook(
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',this.PaymentMode,
-      this._loggedUser.currentUserValue.user.storeId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Sales Cash Book"
-          }
-        });
+      this.AdList = true;
+
+      this._BrowsSalesBillService.getSalesCashBook(
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
+        this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900', this.PaymentMode,
+        this._loggedUser.currentUserValue.user.storeId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Sales Cash Book"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.sIsLoading = '';
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
-  userChk(option){
-    this.UserId=option.UserID || 0;
-    this.UserName=option.UserName;
+  userChk(option) {
+    this.UserId = option.UserID || 0;
+    this.UserName = option.UserName;
   }
 
-  PaymentModeChk(option){
-    this.PaymentMode=option.PaymentMode;
+  PaymentModeChk(option) {
+    this.PaymentMode = option.PaymentMode;
   }
 
   onClose() { }

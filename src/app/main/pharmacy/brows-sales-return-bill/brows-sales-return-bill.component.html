@@ -38,7 +38,7 @@
                                 <mat-form-field appearance="outline" style="margin-left: 2%;">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="getIssueTodept()">
                                         <input matEndDate formControlName="end" placeholder="End date"
                                             (dateChnage)="getIssueTodept()">
                                     </mat-date-range-input>
@@ -58,7 +58,7 @@
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>To Store</mat-label>
-                                    <mat-select formControlName="ToStoreId" name="StoreId2">
+                                    <mat-select formControlName="ToStoreId" name="ToStoreId">
                                         <mat-option></mat-option>
                                         <mat-option *ngFor="let m of Store1List" [value]="m">
                                             {{m.StoreName}}
@@ -66,14 +66,15 @@
                                     </mat-select>
                                 </mat-form-field>
 
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                    <mat-label class="example-margin">Status:</mat-label>&nbsp;&nbsp;
-                                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value="false">
-                                        <mat-radio-button value="false" class="mr-sm-12"
-                                            fxFlex>Pending</mat-radio-button>
-                                        <mat-radio-button value="true" class="mr-sm-12" fxFlex>Close</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
+
+                                <mat-radio-group name="Status" formControlName="Status" fxLayout="row" class="gap-4 "
+                                    value="0" >
+                                    <mat-label>Status:</mat-label>
+                                    <mat-radio-button value=1 class="mr-sm-12" (keyup)=" getIssueTodept()">
+                                        Close </mat-radio-button>
+                                    <mat-radio-button value=0 class="mr-sm-12" (keyup)=" getIssueTodept()">
+                                        Pending </mat-radio-button>
+                                </mat-radio-group>
 
                                 <div style="margin-top: 10px;">
                                     <button mat-raised-button (click)="onClear()" class="clearbutton"
@@ -107,12 +108,15 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
+
+                                <div>
                                 <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur" style="height: 100%;">
                                     <div class="spinner-border text-danger"></div>
                                 </div>
-                                <mat-table #table class="table1" matSort [dataSource]="DsIssuetodept" [@animateStagger]="{value:'50'}"
-                                    style="overflow:auto;">
+
+                                <mat-table #table class="table1" matSort [dataSource]="DsIssuetodept"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
                                     <ng-container matColumnDef="IssueNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             IssueNo
@@ -172,24 +176,27 @@
                                     </ng-container> -->
                                     <ng-container matColumnDef="IsAccepted">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            IsAccepted</mat-header-cell>
+                                            Status</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <!-- <mat-icon *ngIf="IsAccepted == 0" style="color: green">check_circle</mat-icon>
-                                            <mat-icon *ngIf="IsAccepted == 1" style="color: red">check_circle</mat-icon> -->
-                                            <!-- {{contact.IsAccepted}} -->
-                                            <mat-icon *ngIf="contact.IsAccepted"
-                                            class="active-icon green-600 s-16">check_circle</mat-icon>
-                                        <mat-icon *ngIf="!contact.IsAccepted"
-                                            class="active-icon red-500 s-16">close</mat-icon>
+                                            <mat-icon *ngIf="contact.IsAccepted" matTooltip="Verified"
+                                                class="pill green-600 s-16">circle</mat-icon>
+                                            <mat-icon *ngIf="!contact.IsAccepted" matTooltip="Pending"
+                                                class="pill red-600 s-16">circle</mat-icon>
                                         </mat-cell>
+                                        <!-- <mat-icon *ngIf="contact.IsAccepted"
+                                                class="active-icon green-600 s-16">check_circle</mat-icon>
+                                            <mat-icon *ngIf="!contact.IsAccepted"
+                                                class="active-icon red-500 s-16">close</mat-icon> -->
+
                                     </ng-container>
                                     <ng-container matColumnDef="AcceptedBy">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             AcceptedBy</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.AcceptedBy}}
                                         </mat-cell>
                                     </ng-container>
+
                                     <ng-container matColumnDef="AcceptedDatetime">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                             Accepted Datetime</mat-header-cell>
@@ -202,12 +209,15 @@
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit">
-                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted==1"
-                                                    [disabled]="row.disabled" class="disabled-icon">
+                                            <button mat-icon-button matTooltip="Print" (click)="viewgetMaterialrecfrdeptReportPdf(row)">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+                                            <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit"  [disabled]="row.IsAccepted">
+                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted !=true"
+                                                    class="disabled-icon">
                                                     edit</mat-icon>
-                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted==0">
-                                                    edit</mat-icon>
+                                                <!-- <mat-icon title="Edit Menu" *ngIf="row.IsAccepted != true">
+                                                    edit</mat-icon> -->
                                             </button>
                                         </mat-cell>
                                     </ng-container>
@@ -240,6 +250,7 @@
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
                                     showFirstLastButtons>
                                 </mat-paginator>
+                            </div>
                             </div>
                         </div>
 

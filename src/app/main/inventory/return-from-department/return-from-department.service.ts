@@ -32,7 +32,9 @@ export class ReturnFromDepartmentService {
       ToStoreId: '',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      StoreId: '' 
+      StoreId: '' ,
+      Remark: '' ,
+      TotalAmount: '' 
     });
   }
   
@@ -67,6 +69,10 @@ export class ReturnFromDepartmentService {
   
   public getReturnfromDeptdatewiseview(FromDate, ToDate, FromStoreId, ToStoreId){
     return this._httpClient.get("InventoryTransaction/view-ReturnfromDeptDatewise?FromDate=" + FromDate + "&ToDate="+ToDate + "&FromStoreId=" +FromStoreId +"&ToStoreId="+ToStoreId);
+  }
+
+  public ReturnfromdeptSave(Param){
+    return this._httpClient.post("InventoryTransaction/InsertReturnFromDepartment",Param);
   }
 
 }

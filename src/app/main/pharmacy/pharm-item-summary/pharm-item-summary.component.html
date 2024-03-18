@@ -55,7 +55,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>NonMovingDay</mat-label>
-                                            <input name="NonMovingDay" formControlName="NonMovingDay" matInput required>
+                                            <input name="NonMovingDay" formControlName="NonMovingDay" matInput required (keyup)="ChkNonMovvalue()">
                                         </mat-form-field>&nbsp;
 
                                         <div style="margin-top: 10px;">
@@ -64,7 +64,8 @@
                                                 <mat-icon class="cleariconbutton">close</mat-icon>
                                             </button>&nbsp;
                                             <button mat-raised-button class="searchButton" (click)="getItemList()"
-                                                matTooltip="search"  [disabled]="_PharmaitemsummaryService.SearchGroup.invalid">
+                                                matTooltip="search"
+                                                [disabled]="_PharmaitemsummaryService.SearchGroup.invalid">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>
 
@@ -78,6 +79,13 @@
                                                 style="background-color: #8e67e0;color: white; margin-right: 15px;margin-top: 10px;">ItemWithoutBatch(Excel)
                                             </button>
 
+                                            <button (click)="viewgetNonMovingReportPdf()" matTooltip="Pdf"
+                                                style="width: 45px;border-color: white;" [disabled]="VNonMovdaysflag">
+                                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                                            </button>&nbsp;
+
+                                            <!-- <button class="btn btn-primary" (click)="viewgetNonMovingReportPdf()"
+                                            >NonMoveing Item</button> -->
 
                                         </div>
 
@@ -171,7 +179,7 @@
 
                                             <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
-                                                   
+
                                                     <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                                 </mat-footer-cell>
                                             </ng-container>
@@ -259,7 +267,7 @@
 
                                             <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
-                                                  
+
                                                     <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                                 </mat-footer-cell>
                                             </ng-container>
@@ -338,12 +346,12 @@
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <input matInput [matDatepicker]="picker" placeholder="Choose a date"
-                                            formControlName="start">
+                                                formControlName="start">
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-datepicker #picker startView="multi-year"
                                                 (yearSelected)="chosenYearHandler($event)"
                                                 (monthSelected)="chosenMonthHandler($event)"></mat-datepicker>
-                                        </mat-form-field> 
+                                        </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>From Store</mat-label>
@@ -355,6 +363,16 @@
 
                                             </mat-select>
                                         </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="15%" >
+                                            <mat-label>Exp Year</mat-label>
+                                            <input matInput name="ExpYear" formControlName="ExpYear" >
+                                        </mat-form-field>&nbsp;
+
+                                        <mat-form-field appearance="outline" fxFlex="15%" >
+                                            <mat-label>Exp Month</mat-label>
+                                            <input matInput name="ExpMonth" formControlName="ExpMonth" >
+                                        </mat-form-field>&nbsp;
 
                                         <div style="margin-top: 10px;">
                                             <button mat-raised-button (click)="onClear()" class="clearbutton"
@@ -371,6 +389,15 @@
                                                 style="background-color: #8e67e0;color: white; margin-right: 15px;margin-top: 10px;">Export
                                                 Table(Excel)
                                             </button>
+
+                                            <!-- <button class="btn btn-primary " (click)="viewgetExpItemListReportPdf()" 
+                                            >ExpItemList</button> -->
+
+                                            <button (click)="viewgetExpItemListReportPdf()" matTooltip="Pdf"
+                                                style="width: 45px;border-color: white;">
+                                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                                            </button>&nbsp;
+
                                         </div>
 
                                     </div>
@@ -444,7 +471,7 @@
 
                                             <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
-                                                  
+
                                                     <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                                 </mat-footer-cell>
                                             </ng-container>

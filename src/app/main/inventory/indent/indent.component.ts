@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { MatTabGroup } from '@angular/material/tabs';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-indent',
@@ -46,6 +47,9 @@ export class IndentComponent implements OnInit {
     'IndentQuantity',
     'Action'
   ];
+
+  vsaveflag: boolean = true;
+  
   isItemIdSelected: boolean = false;
   sIsLoading: string = '';
   isLoading = true;
@@ -67,6 +71,8 @@ export class IndentComponent implements OnInit {
   filteredOptionsStoreList: Observable<string[]>;
   vRemark: any;
   vIndentId: any;
+vprintflag:boolean=false;
+vToStoreId:any=0;
 
   dsIndentSearchList = new MatTableDataSource<IndentID>();
 
@@ -74,7 +80,6 @@ export class IndentComponent implements OnInit {
 
   dsIndentNameList = new MatTableDataSource<IndentNameList>();
   dsTempItemNameList = new MatTableDataSource<IndentNameList>();
-
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -100,10 +105,13 @@ export class IndentComponent implements OnInit {
     this.getIndentID();
     this.getTostoreListCombobox();
 
+    
+
     this.filteredOptionsStore = this._IndentService.newIndentFrom.get('ToStoreId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterToStore(value)),
     );
+
     this.filteredOptionsStoreList = this._IndentService.IndentSearchGroup.get('ToStoreId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterToStoreList(value)),
@@ -129,7 +137,7 @@ export class IndentComponent implements OnInit {
     console.log(Param)
     this._IndentService.getIndentID(Param).subscribe(data => {
       this.dsIndentSearchList.data = data as IndentID[];
-      console.log(this.dsIndentSearchList)
+      console.log(this.dsIndentSearchList.data)
       this.dsIndentSearchList.sort = this.sort;
       this.dsIndentSearchList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -144,6 +152,7 @@ export class IndentComponent implements OnInit {
     }
     this._IndentService.getIndentList(Param).subscribe(data => {
       this.dsIndentDetailsSearchList.data = data as IndentList[];
+      console.log(this.dsIndentDetailsSearchList.data)
       this.dsIndentDetailsSearchList.sort = this.sort;
       this.dsIndentDetailsSearchList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -158,6 +167,8 @@ export class IndentComponent implements OnInit {
       this.ToStoreList1 = data;
     });
   }
+
+  
   private _filterToStoreList(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
@@ -177,17 +188,42 @@ export class IndentComponent implements OnInit {
       this._IndentService.StoreFrom.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
+  // getTostoreListCombobox() {
+  //   this._IndentService.getToStoreNameSearch().subscribe(data => {
+  //     this.ToStoreList = data;
+  //   });
+  // }
+
+
   getTostoreListCombobox() {
+      
     this._IndentService.getToStoreNameSearch().subscribe(data => {
       this.ToStoreList = data;
+      console.log(this.ToStoreList)
+      if (this.vIndentId != 0) {
+        const ddValue = this.ToStoreList.filter(c => c.StoreId == this.vToStoreId);
+        this._IndentService.newIndentFrom.get('ToStoreId').setValue(ddValue[0]);
+        
+        this._IndentService.newIndentFrom.updateValueAndValidity();
+        return;
+      } 
     });
+    
   }
+
+
+
   private _filterToStore(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+
       return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
     }
+
   }
+
+
+
   getOptionTextStores(option) {
     return option && option.StoreName ? option.StoreName : '';
   }
@@ -232,13 +268,13 @@ export class IndentComponent implements OnInit {
     }
     const isDuplicate = this.dsIndentNameList.data.some(item => item.ItemID === this._IndentService.newIndentFrom.get('ItemName').value.ItemID);
     if (!isDuplicate) {
-      this.dsIndentNameList.data = [];
-      this.chargeslist = this.dsTempItemNameList.data;
+      // this.dsIndentNameList.data = [];
+      this.chargeslist = this.dsIndentNameList.data;
       this.chargeslist.push(
         {
-          ItemID: this._IndentService.newIndentFrom.get('ItemName').value.ItemID || 0,
+          ItemId: this._IndentService.newIndentFrom.get('ItemName').value.ItemID || 0,
           ItemName: this._IndentService.newIndentFrom.get('ItemName').value.ItemName,
-          IndentQuantity: this._IndentService.newIndentFrom.get('Qty').value || 0,
+          Qty: this._IndentService.newIndentFrom.get('Qty').value || 0,
         });
       this.dsIndentNameList.data = this.chargeslist;
     } else {
@@ -291,10 +327,11 @@ export class IndentComponent implements OnInit {
 
       let InsertIndentDetObj = [];
       this.dsIndentNameList.data.forEach((element) => {
+        debugger
         let IndentDetInsertObj = {};
         IndentDetInsertObj['indentId'] = 0;
-        IndentDetInsertObj['itemId'] = element.ItemID;
-        IndentDetInsertObj['qty'] = element.IndentQuantity;
+        IndentDetInsertObj['itemId'] = element.ItemId;
+        IndentDetInsertObj['qty'] = element.Qty;
         InsertIndentDetObj.push(IndentDetInsertObj);
       });
 
@@ -311,6 +348,7 @@ export class IndentComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-success',
           });
           this.OnReset();
+          this.viewgetIndentReportPdf(response,this.vprintflag);
           this.getIndentID();
         } else {
           this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
@@ -323,22 +361,25 @@ export class IndentComponent implements OnInit {
         });
       });
     } else {
+
+      debugger
       let updateIndent = {};
-      updateIndent['indentId'] = this.dateTimeObj.time;
+      updateIndent['indentId'] = this.vIndentId;
       updateIndent['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
       updateIndent['toStoreId'] = this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId;
 
       let insertIndentDetail = [];
       this.dsIndentNameList.data.forEach((element) => {
+        debugger
         let insertIndentDetailobj = {};
-        insertIndentDetailobj['indentId'] = 0;
-        insertIndentDetailobj['itemId'] = element.ItemID;
-        insertIndentDetailobj['qty'] = element.IndentQuantity;
+        insertIndentDetailobj['indentId'] = this.vIndentId;
+        insertIndentDetailobj['itemId'] = element.ItemId;
+        insertIndentDetailobj['qty'] = element.Qty;
         insertIndentDetail.push(insertIndentDetailobj);
       });
 
       let deleteIndent = {};
-      deleteIndent['indentId'] = 0;
+      deleteIndent['indentId'] = this.vIndentId;
 
       let submitData = {
         "updateIndent": updateIndent,
@@ -348,20 +389,22 @@ export class IndentComponent implements OnInit {
 
       console.log(submitData);
 
-      this._IndentService.InsertIndentSave(submitData).subscribe(response => {
+      this._IndentService.InsertIndentUpdate(submitData).subscribe(response => {
         if (response) {
-          this.toastr.success('Record New Indent Saved Successfully.', 'Saved !', {
+          console.log(response)
+          this.toastr.success('Record  Indent Updated Successfully.', 'Saved !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
           this.OnReset();
+        //  this.viewgetIndentReportPdf(response,this.vprintflag);
           this.getIndentID();
         } else {
-          this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
+          this.toastr.error(' Issue Indent Data not saved !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
           });
         }
       }, error => {
-        this.toastr.error('New Issue Indent Data not saved !, Please check API error..', 'Error !', {
+        this.toastr.error(' Issue Indent Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       });
@@ -372,20 +415,24 @@ export class IndentComponent implements OnInit {
   selectedIndex: string = '';
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   OnEdit(row, tabGroup: MatTabGroup) {
-
+  
     const tabIndex = row === 'tab1' ? 0 : 1;
     tabGroup.selectedIndex = tabIndex;
     // console.log(row)
+    this. getTostoreListCombobox();
     var vdata = {
       ToStoreId: row.ToStoreId,
       StoreName: row.ToStoreName
     }
-    // console.log(vdata)
+   // console.log(vdata)
     this._IndentService.populateForm(vdata);
 
     this.vRemark = row.Remark;
-    const selectedToStore = this.ToStoreList.filter(c => c.StoreId == row.ToStoreId);
-    this._IndentService.newIndentFrom.get('ToStoreId').setValue(selectedToStore);
+    this.vIndentId=row.IndentId;
+    this.vToStoreId=row.ToStoreId;
+
+    // const selectedToStore = this.ToStoreList.filter(c => c.StoreId == row.ToStoreId);
+    // this._IndentService.newIndentFrom.get('ToStoreId').setValue(selectedToStore);
 
     // console.log(selectedToStore);
     // console.log(row.ToStoreId)
@@ -440,6 +487,8 @@ export class IndentComponent implements OnInit {
   OnReset() {
     this._IndentService.newIndentFrom.reset();
     this.dsIndentNameList.data = [];
+    this.chargeslist.data = [];
+    this.dsTempItemNameList.data = [];
   }
   onClear() {
     this._IndentService.IndentSearchGroup.reset();
@@ -463,11 +512,49 @@ export class IndentComponent implements OnInit {
       //this.itemid.nativeElement.focus();
     }
   }
+
+
+  SpinLoading: boolean = false;
+      
+  viewgetIndentReportPdf(contact,vprintflag) {
+    let IndentId
+debugger
+    if(vprintflag){
+       IndentId=contact.IndentId
+    }else{
+      IndentId=contact
+    }
+    console.log(contact)
+    this.sIsLoading == 'loading-data'
+  
+    setTimeout(() => {
+    this.SpinLoading =true;
+    //  this.AdList=true;
+    this._IndentService.getIndentwiseview(IndentId).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Indent Report Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.sIsLoading = '';
+        });
+    });
+    },1000);
+  }
+
+  
 }
 
 export class IndentNameList {
   Action: any;
   ItemID: any;
+  ItemId:any;
   ItemName: string;
   Qty: number;
   HospitalBalance: number;
@@ -483,6 +570,7 @@ export class IndentNameList {
   constructor(IndentNameList) {
     {
       this.Action = IndentNameList.Action || 0;
+      this.ItemId = IndentNameList.ItemId || 0;
       this.ItemID = IndentNameList.ItemID || 0;
       this.ItemName = IndentNameList.ItemName || "";
       this.Qty = IndentNameList.Qty || 0;

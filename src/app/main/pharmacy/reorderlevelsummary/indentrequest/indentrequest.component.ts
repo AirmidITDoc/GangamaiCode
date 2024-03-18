@@ -10,6 +10,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-indentrequest',
@@ -38,7 +39,7 @@ export class IndentrequestComponent implements OnInit {
   registerObbj: any;
   chargeslist: any = [];
   vToStored: any;
-
+  vsaveflag:boolean=true
   dsRaisedIndent = new MatTableDataSource<RaisedIndentList>();
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -96,6 +97,31 @@ export class IndentrequestComponent implements OnInit {
     this.dsRaisedIndent.sort = this.sort;
     this.dsRaisedIndent.paginator = this.paginator;
   }
+
+
+  chkQty(contact, InQty) {
+debugger
+    if (this.dsRaisedIndent.data.length > 0) {
+      if (InQty == '' || InQty == null || InQty == 'undefined' || InQty == 0) {
+        this.toastr.warning('Please enter Indent Qty', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+      } 
+      return;
+    }
+
+    if (!this.vQtyflag) {
+      this.vsaveflag = false;
+    }
+  }
+
+
+
+
+  vQtyflag:boolean=false
+
+
+
   OnSave() {
     if ((!this.dsRaisedIndent.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -109,10 +135,10 @@ export class IndentrequestComponent implements OnInit {
       });
       return;
     }
-    if(this.dsRaisedIndent.data[0].IndentQty == '' ){
+    if (this.dsRaisedIndent.data.length > 0) {
       this.dsRaisedIndent.data.forEach((element) => {
-        if (element.IndentQty == '' || element.IndentQty == null || element.IndentQty == undefined
-        || element.IndentQty == 0) {
+        debugger
+        if (element.IndentQty == '' || element.IndentQty == null || element.IndentQty == 'undefined' || element.IndentQty == 0) {
           this.toastr.warning('Please enter Indent Qty', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
@@ -120,8 +146,7 @@ export class IndentrequestComponent implements OnInit {
       });
       return;
     }
-    
-    //debugger
+
     let InsertIndentObj = {};
     InsertIndentObj['indentDate'] = this.dateTimeObj.date;
     InsertIndentObj['indentTime'] = this.dateTimeObj.time;
@@ -131,7 +156,6 @@ export class IndentrequestComponent implements OnInit {
 
     let InsertIndentDetObj = [];
     this.dsRaisedIndent.data.forEach((element) => {
-     
       let IndentDetInsertObj = {};
       IndentDetInsertObj['indentId'] = 0;
       IndentDetInsertObj['itemId'] = element.ItemId;
@@ -163,7 +187,10 @@ export class IndentrequestComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
-  }
+  
+}
+
+
 
   deleteTableRow(elm) {
     this.dsRaisedIndent.data = this.dsRaisedIndent.data

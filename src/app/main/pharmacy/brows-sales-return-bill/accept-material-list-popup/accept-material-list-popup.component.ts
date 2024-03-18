@@ -18,6 +18,8 @@ import { element } from 'protractor';
 })
 export class AcceptMaterialListPopupComponent implements OnInit {
 
+  tempItemlist: any = [];
+  
   displayedColumns = [
     'Action',
     'Status',
@@ -93,8 +95,10 @@ export class AcceptMaterialListPopupComponent implements OnInit {
   tableElementChecked(event ,contact){
     if(contact.selected){
       contact.Status = 'Accepted'
-      this.SelectedRowData.push(contact);
-      console.log(this.SelectedRowData);
+      // this.tempItemlist=this.tempItemlist;
+
+      this.tempItemlist.push(contact);
+      console.log(this.tempItemlist);
       // this.temparray = this.S.data;
     }
     else{
@@ -136,7 +140,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     materialAcceptIssueHeader['acceptedBy'] = 1;
 
     let materialAcceptIssueDetails = [];
-    this.SelectedRowData.data.forEach((element) => {
+    this.tempItemlist.forEach((element) => {
 
       let materialAcceptIssueDetailsObj = {};
 

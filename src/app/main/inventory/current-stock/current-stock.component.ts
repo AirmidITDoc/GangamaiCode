@@ -89,10 +89,6 @@ export class CurrentStockComponent implements OnInit {
   printflag:boolean=false;
   
   @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
-  
-  // @ViewChild(MatPaginator) paginator2: MatPaginator;
-
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild('secondPaginator', { static: true }) public secondPaginator: MatPaginator;
   @ViewChild('thirdPaginator', { static: true }) public thirdPaginator: MatPaginator;
@@ -360,7 +356,7 @@ getOptionTextPurchaseItemList(option) {
    
   }
   getItemdetails(contact){
-    console.log(contact)
+    //console.log(contact)
     const dialogRef = this._matDialog.open(ItemMovementSummeryComponent,
       {
         maxWidth: "100%",

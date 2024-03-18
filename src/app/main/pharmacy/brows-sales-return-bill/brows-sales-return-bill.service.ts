@@ -16,14 +16,15 @@ export class BrowsSalesReturnBillService {
     private _formBuilder: FormBuilder
   ) { 
     this.userFormGroup = this.IndentID();
-    this.MaterialReturnFrDept= this.IndentSearchFrom();
+    this.MaterialReturnFrDept= this.MaterialSearchFrom();
   }
 
-  IndentSearchFrom() {
+  MaterialSearchFrom() {
     return this._formBuilder.group({
-      ToStoreId: 0,
+      ToStoreId:[''],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+      Status:['0']
     });
   }
   
@@ -62,4 +63,11 @@ export class BrowsSalesReturnBillService {
   public AcceptmaterialSave(Param){
     return this._httpClient.post("Pharmacy/UpdateMaterialAcceptance",Param);
   }
+
+
+   
+  public getMaterialreceivedfrDeptview(IssueId){
+    return this._httpClient.get("Pharmacy/view-MaterialRecivedFrDept_Report?IssueId=" + IssueId);
+  }
+  
 }

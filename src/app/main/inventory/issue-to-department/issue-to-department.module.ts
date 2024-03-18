@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { IssueToDepartmentComponent } from './issue-to-department.component';
+import { IssueToDeparmentAgainstIndentComponent } from './issue-to-deparment-against-indent/issue-to-deparment-against-indent.component';
 
 const routes: Routes = [
   { 
@@ -45,7 +46,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [  
-    IssueToDepartmentComponent
+    IssueToDepartmentComponent, IssueToDeparmentAgainstIndentComponent,
   ],
   
   imports: [

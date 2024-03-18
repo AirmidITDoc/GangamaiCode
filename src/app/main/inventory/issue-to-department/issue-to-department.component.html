@@ -108,12 +108,25 @@
                                                 </button>
                                             </div>
 
-
+                                            <button  (click)="viewgetIssuetodeptsummaryReportPdf()"
+                                            matTooltip="Pdf" style="width: 45px;border-color: white;">
+                                            <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                                              </button>&nbsp;
                                             <button (click)="exportIssuetodeptReportExcel()"
                                                 [disabled]="! (dsIssueToDep.data.length > 0)"
                                                 style="background-color: white;color: white;width: 45px;">
                                                 <img width="32" height="10px" src="assets/images/logos/xls.png">
                                             </button>
+
+
+                                                                                          
+                                        <!-- <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                            <button class="btn btn-primary " (click)="viewgetExpItemListReportPdf()" 
+                                                >ExpItemList</button>
+                                           
+                                          
+                                        </div> -->
+
                                         </div>
 
                                     </form>
@@ -232,7 +245,7 @@
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact">
                                                             <button mat-icon-button matTooltip="Print"
-                                                                (click)="viewgetIssuetodeptReportPdf(contact)">
+                                                                (click)="viewgetIssuetodeptReportPdf(contact,true)">
                                                                 <mat-icon>print</mat-icon>
                                                             </button>
                                                         </mat-cell>
@@ -388,12 +401,18 @@
                             style="color: white;">
                             New Issue To Department List
                         </span>
-                        <span style="color: wheat;margin-left: 700px;">
+                        <!-- <span style="color: wheat;margin-left: 800px;">
                             <app-common-date [screenFrom]="screenFromString"
                                 (dateTimeEventEmitter)="getDateTime($event)">
                             </app-common-date>
-                        </span>
+                        </span> -->
                     </div>
+                        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+                            <button mat-raised-button (click)="OnIndent()" fxLayoutAlign="center center" class="py-8">
+                                <span>Indent List</span>
+                            </button>
+                        </div>
+
 
                 </mat-toolbar>
 
@@ -410,7 +429,8 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                         <from [formGroup]="_IssueToDep.StoreFrom">
-                                            <mat-form-field appearance="outline" fxFlex="300px">
+                                       
+                                            <mat-form-field appearance="outline" fxFlex="500px;">
                                                 <mat-label>From Store</mat-label>
                                                 <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                     <mat-option></mat-option>
@@ -439,8 +459,15 @@
                                                     {{option.StoreName}}
                                                 </mat-option>
                                             </mat-autocomplete>
-                                        </mat-form-field>
+                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
+                                        <span style="float: right;">
+                                            <app-common-date [screenFrom]="screenFromString"
+                                                (dateTimeEventEmitter)="getDateTime($event)">
+                                            </app-common-date>
+                                        </span>
+
+                                        
                                         <!-- <div style="padding: 8px;">
                                        
                                     </div> -->
@@ -535,108 +562,6 @@
                                         <div fxFlex.gt-sm="100%" fxFlex>
 
                                             <div fxlayout="row">
-
-
-                                                <div fxFlex.gt-sm="27%" fxFlex style="padding: 0;margin-right: 0;">
-
-
-                                                    <mat-table class="tab1" matSort [dataSource]="dsNewIssueList1"
-                                                        [@animateStagger]="{value:'50'}" style="overflow:auto;">
-
-                                                        <ng-container matColumnDef="ItemName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                ItemName </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.ItemName}} </mat-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="Qty">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                Qty </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.Qty}} </mat-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="loading">
-                                                            <mat-header-cell *matFooterCellDef colspan="6"
-                                                                style="display: none;">
-                                                            </mat-header-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="noData">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                no data found...
-                                                            </mat-footer-cell>
-                                                        </ng-container>
-                                                        <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedNewIssuesList1; sticky: true">
-                                                        </mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedNewIssuesList1;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                                        </mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(dsNewIssueList1!=null && dsNewIssueList1.data.length==0)}">
-                                                        </mat-footer-row>
-                                                    </mat-table>
-
-
-                                                    <mat-table class="tab2" matSort [dataSource]="dsNewIssueList2"
-                                                        [@animateStagger]="{value:'50'}" style="overflow:auto;">
-
-                                                        <ng-container matColumnDef="BatchNo">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                BatchNo </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.BatchNo}} </mat-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="ExpDateNo">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                Exp.DateNo </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.ExpDateNo | date: 'dd/MM/yyyy'}} </mat-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="BalQty">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                Bal Qty </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.BalQty}} </mat-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="loading">
-                                                            <mat-header-cell *matFooterCellDef colspan="6"
-                                                                style="display: none;">
-                                                            </mat-header-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="noData">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                no data found...
-                                                            </mat-footer-cell>
-                                                        </ng-container>
-                                                        <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedNewIssuesList2; sticky: true">
-                                                        </mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedNewIssuesList2;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                                        </mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(dsNewIssueList2!=null && dsNewIssueList2.data.length==0)}">
-                                                        </mat-footer-row>
-                                                    </mat-table>
-                                                </div>
 
                                                 <div style="width: 100%;">
 
@@ -777,6 +702,123 @@
                                                     </mat-paginator>
 
                                                 </div>
+                                                <div fxFlex.gt-sm="27%" fxFlex style="padding: 0;margin-left:10px;">
+
+
+                                                    <mat-table class="tab1" matSort [dataSource]="dsNewIssueList1"
+                                                        [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                                        <ng-container matColumnDef="ItemName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                ItemName </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.ItemName}} </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="Qty">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                Qty </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.Qty}} </mat-cell>
+                                                        </ng-container>
+
+
+                                                        
+                                                        <ng-container matColumnDef="Action" stickyEnd>
+                                                            <mat-header-cell *matHeaderCellDef style="color: white;">
+                                                                Action</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element">
+                                                                <button mat-icon-button (click)="AddIndentItem(element)"
+                                                                    color="warn">
+                                                                    <mat-icon>add</mat-icon>
+                                                                </button>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="loading">
+                                                            <mat-header-cell *matFooterCellDef colspan="6"
+                                                                style="display: none;">
+                                                            </mat-header-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                no data found...
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+
+                                                        <!-- (click)="IndentItemDetails(contact)"  -->
+                                                        <mat-header-row class="accent"
+                                                            *matHeaderRowDef="displayedNewIssuesList1; sticky: true">
+                                                        </mat-header-row>
+                                                        <mat-row *matRowDef="let contact; columns: displayedNewIssuesList1;"
+                                                            class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                           ></mat-row>
+                                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                                        </mat-footer-row>
+                                                        <!-- <mat-footer-row *matFooterRowDef="['noData']"
+                                                            [ngClass]="{'hide':!(dsNewIssueList1!=null && dsNewIssueList1.data.length==0)}">
+                                                        </mat-footer-row> -->
+                                                    </mat-table>
+
+
+                                                    <!-- <mat-table class="tab2" matSort [dataSource]="dsNewIssueList2"
+                                                        [@animateStagger]="{value:'50'}" style="overflow:auto;" *ngIf="vtable1">
+
+                                                        <ng-container matColumnDef="BatchNo">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                BatchNo </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.BatchNo}} </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="ExpDateNo">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                Exp.DateNo </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.ExpDateNo | date: 'dd/MM/yyyy'}} </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="BalQty">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
+                                                                Bal Qty </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.BalQty}} </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="loading">
+                                                            <mat-header-cell *matFooterCellDef colspan="6"
+                                                                style="display: none;">
+                                                            </mat-header-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                no data found...
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+                                                        <mat-header-row class="accent"
+                                                            *matHeaderRowDef="displayedNewIssuesList2; sticky: true">
+                                                        </mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedNewIssuesList2;"
+                                                            class="element"
+                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                                        </mat-footer-row>
+                                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                                            [ngClass]="{'hide':!(dsNewIssueList2!=null && dsNewIssueList2.data.length==0)}">
+                                                        </mat-footer-row>
+                                                    </mat-table> -->
+                                                </div>
+
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -830,12 +872,23 @@
                                         | currency:'INR' }}</span> -->
                                     </div>
 
-                                    <div matTooltip="Select All Value to enable this button!!">
+                                    <!-- <div matTooltip="Select All Value to enable this button!!">
                                         <button class="next-btn"
                                             style="width: 80px;border-radius: 16px;margin-left: 120px;"
-                                            (click)="OnSave()">Save</button>
+                                            (click)="OnSave()" >Save</button>
                                         <button class="footer-btn" style="width: 80px;border-radius: 16px;"
                                             (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                                    </div> -->
+
+
+                                    <!-- [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0" -->
+
+                                    <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                        <button class="btn btn-primary " (click)="OnSave()" [disabled]="vsaveflag"
+                                            >Save</button>
+                                       
+                                        <button class="btn btn-danger-outline" (click)="OnReset()"
+                                            >Reset</button>
                                     </div>
                                 </div>
                             </form>

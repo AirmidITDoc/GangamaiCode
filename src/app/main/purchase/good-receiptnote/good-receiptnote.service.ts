@@ -148,8 +148,8 @@ export class GoodReceiptnoteService {
   public getDirectPOList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DirectPOList_by_Name",Param);
   }
-  public getPurchaseItemList(Param) { //m_Retrieve_PurchaseItemList
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemList_by_Supplier_Name", Param);
+  public getPurchaseItemList(Param) { //Rtrv_ItemList_by_Supplier_Name
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemList_by_Supplier_Name", Param);
   }
   public getGRNList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GRNList_by_Name",Param);
@@ -159,8 +159,8 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_GrnItemList",Param);
   }
 
-  public getGrnItemDetailList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDetailsForGRNUpdate",Param);
+  public getGrnItemDetailList(Param){//Rtrv_ItemDetailsForGRNUpdate
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemDetailsForGRNUpdate",Param);
   }
 
 
@@ -182,6 +182,9 @@ export class GoodReceiptnoteService {
   
   public GRNSave(Param){
     return this._httpClient.post("Pharmacy/InsertGRNDirect", Param);
+  }
+  public POtoGRNSave(Param){
+    return this._httpClient.post("Pharmacy/InsertGRNPurchase", Param);
   }
 
   public GRNEdit(Param){
