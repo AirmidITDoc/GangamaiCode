@@ -74,10 +74,10 @@ export class GrnReturnService {
   }
 
 
+  public GRNReturnSave(Param){
+    return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
+  }
 
-
-
-  
 
 
 }

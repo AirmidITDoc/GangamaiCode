@@ -28,7 +28,7 @@
 
                         <div class="sidebar-body">
                             <div class="sidebar-form">
-                                <form [formGroup]="_GRNReturnHeaderList.GRNReturnSearchFrom">
+                                <form [formGroup]="_GRNReturnService.GRNReturnSearchFrom">
                                     <div fxLayout="column" fxLayoutAlign="start none">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Enter a date range</mat-label>
@@ -58,9 +58,9 @@
                                                 [matAutocomplete]="autoSupllier">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
-                                                    (click)="_GRNReturnHeaderList.GRNReturnSearchFrom.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
+                                                    (click)="_GRNReturnService.GRNReturnSearchFrom.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
                                                 <mat-icon class="mat-icon-close"
-                                                    (click)="_GRNReturnHeaderList.GRNReturnSearchFrom.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
+                                                    (click)="_GRNReturnService.GRNReturnSearchFrom.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
                                             </span>
                                             <mat-autocomplete #autoSupllier="matAutocomplete"
                                                 [displayWith]="getOptionTextSupplier">
@@ -329,13 +329,13 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                            <!-- <ng-container matColumnDef="NetAmount">
+                                            <ng-container matColumnDef="NetAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     NetAmount</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.LandedTotalAmount}}
                                                 </mat-cell>
-                                            </ng-container> -->
+                                            </ng-container>
 
 
                                             <ng-container matColumnDef="StkId">
@@ -372,6 +372,16 @@
                                         <mat-paginator #paginator1 [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
                                             showFirstLastButtons>
                                         </mat-paginator>
+
+                                        <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;font-size: medium;">
+                                            Total Amount :</span>&nbsp;<span class="net-amt-value"
+                                            style="margin-right: 10px;font-weight: bold">{{getTotalamt(dsGRNReturnItemDetList.data)
+                                            | currency:'INR' }}</span>
+                                        <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;font-size: medium;">
+                                              Net Amount :</span>&nbsp;<span class="net-amt-value"
+                                            style="margin-right: 10px;font-weight: bold">{{getNetamt(dsGRNReturnItemDetList.data)
+                                            | currency:'INR' }}</span>
+                     
                                     </div>
                                 </div>
 
@@ -414,7 +424,7 @@
                     <div class="content-card" style="border-radius:4px;" fxLayoutGap="10px">
 
                         <div fxLayout="column" fxLayoutAlign="start none">
-                            <form [formGroup]="_GRNReturnHeaderList.NewGRNReturnFrom">
+                            <form [formGroup]="_GRNReturnService.NewGRNReturnFrom">
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
                                     <mat-form-field appearance="outline" fxFlex="20%">
@@ -433,9 +443,9 @@
                                             matInput formControlName="SupplierId" [matAutocomplete]="autoSupllier1">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
-                                                (click)="_GRNReturnHeaderList.NewGRNReturnFrom.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
+                                                (click)="_GRNReturnService.NewGRNReturnFrom.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
                                             <mat-icon class="mat-icon-close"
-                                                (click)="_GRNReturnHeaderList.NewGRNReturnFrom.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
+                                                (click)="_GRNReturnService.NewGRNReturnFrom.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #autoSupllier1="matAutocomplete"
                                             [displayWith]="getOptionTextSupplier2">
@@ -552,7 +562,7 @@
                                 </div>
                             </div>
 
-                            <form [formGroup]="_GRNReturnHeaderList.NewGRNRetFinalFrom">
+                            <form [formGroup]="_GRNReturnService.NewGRNRetFinalFrom">
                                 <mat-form-field appearance="outline" fxFlex="60%" >
                                     <mat-label>Remark</mat-label>
                                     <input matInput name="Remark" formControlName="Remark">
