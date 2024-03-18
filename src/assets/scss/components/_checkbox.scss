@@ -95,6 +95,7 @@
     @include themed() {
         .mat-checkbox {
             @include font-size(12px);
+            font-family: inherit;
             &.mat-checkbox-indeterminate.mat-accent {
                 .mat-checkbox-background {
                     background-color: $primary-600;

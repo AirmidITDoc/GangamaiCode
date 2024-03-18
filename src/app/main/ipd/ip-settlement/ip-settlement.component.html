@@ -1,14 +1,13 @@
-<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" style="background-color: #F5F5F5;">
+<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" style="background-color: #F5F5F5;" class="page-layout">
 
 
-    <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+    <div class="header accent p-10 p-sm-20 top-header" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 
         <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
 
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="font-size: 20px; font-weight: 500;width:90%;">
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class="logo-text">
                 Payment Settlement
                 <!-- <span> RegNo - {{selectedAdvanceObj.OPD_IPD_Id}} - {{selectedAdvanceObj.PatientName}}</span> -->
             </span>
@@ -18,9 +17,9 @@
                 </app-common-date>
             </span>
 
-            <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
+            <!-- <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
-            </button>
+            </button> -->
         </div>
 
     </div>
