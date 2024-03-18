@@ -125,7 +125,6 @@ export class PharmacyReportComponent implements OnInit {
     this.bindReportData();
     this.GetUserList();
     this.GetPaymentModeList();
-    debugger
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
     this._BrowsSalesBillService.userForm.get('UserId').setValue(toSelect);
 
@@ -230,7 +229,6 @@ export class PharmacyReportComponent implements OnInit {
   }
 
   GetPaymentModeList() {
-   debugger
     this._PharmacyreportService.getPaymentModeList().subscribe(data => {
       this.PaymentList = data;
       this.optionsPaymentMode= this.PaymentList.slice();
@@ -247,7 +245,6 @@ export class PharmacyReportComponent implements OnInit {
 
   
   getPrint() {
-    debugger
     if (this.ReportName == 'Pharmacy Daily Collection') {
      this.viewDailyCollectionPdf();
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
@@ -394,12 +391,19 @@ export class PharmacyReportComponent implements OnInit {
     },100);
   }
   viewgetSalesPatientWiseReportPdf() {
+    let AddUserId =0;
+    if (this._BrowsSalesBillService.userForm.get('UserId').value)
+       AddUserId =  this._BrowsSalesBillService.userForm.get('UserId').value.UserId
+
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
      this.AdList=true;
     this._BrowsSalesBillService.getSalesDetail_Patientwise(
       this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',0,0,this.UserId,
+      this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      0,
+      0,
+      AddUserId || 0,
       this._loggedUser.currentUserValue.user.storeId
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
