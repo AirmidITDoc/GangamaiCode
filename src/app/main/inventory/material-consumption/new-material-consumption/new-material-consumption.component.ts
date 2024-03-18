@@ -64,6 +64,8 @@ export class NewMaterialConsumptionComponent implements OnInit {
   vMRPTotalAmt:any;
   vLandedTotalAmt:any;
   vPurTotalAmt:any;
+  vLandedRate:any;
+  vVatPercentage:any;
 
   dsNewmaterialList = new MatTableDataSource<ItemList>();
   dsTempItemNameList = new MatTableDataSource<ItemList>();
@@ -76,7 +78,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewMaterialConsumptionComponent>,
-    // public _loggedService: AuthenticationService,
+     public _loggedService: AuthenticationService,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
     public _MaterialConsumptionService: MaterialConsumptionService,
@@ -206,7 +208,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
     
     }
     this.ItemReset();
-    this.vadd=false;
+    //this.vadd=false;
     this.itemid.nativeElement.focus();
   }
   deleteTableRow(element) {
@@ -229,30 +231,30 @@ export class NewMaterialConsumptionComponent implements OnInit {
     this._MaterialConsumptionService.userFormGroup.get('ItemID').setValue('');
     // this._MaterialConsumptionService.userFormGroup.get('Date').setValue('');
   }
-  getBatch() {
-    this.usedQty.nativeElement.focus();
-    const dialogRef = this._matDialog.open(SalePopupComponent,
-      {
-        maxWidth: "800px",
-        minWidth: '800px',
-        width: '800px',
-        height: '380px',
-        disableClose: true,
-        data: {
-          "ItemId": this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId,
-          "StoreId": this._MaterialConsumptionService.userFormGroup.get('FromStoreId').value.storeid
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-       console.log(result);
-      this.vbatchNo = result.BatchNo;
-      this.vBalQty = result.BalanceQty;
-      this.vExpDate = result.BatchExpDate;
-      this.vRate = result.LandedRate;
-      this.vTotalAmount = result.totalAmount;
-      this.vStockId = result.StockId;
-    });
-  }
+  // getBatch() {
+  //   this.usedQty.nativeElement.focus();
+  //   const dialogRef = this._matDialog.open(SalePopupComponent,
+  //     {
+  //       maxWidth: "800px",
+  //       minWidth: '800px',
+  //       width: '800px',
+  //       height: '380px',
+  //       disableClose: true,
+  //       data: {
+  //         "ItemId": this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId,
+  //         "StoreId": this._MaterialConsumptionService.userFormGroup.get('FromStoreId').value.storeid
+  //       }
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //      console.log(result);
+  //     this.vbatchNo = result.BatchNo;
+  //     this.vBalQty = result.BalanceQty;
+  //     this.vExpDate = result.BatchExpDate;
+  //     this.vRate = result.LandedRate;
+  //     this.vTotalAmount = result.totalAmount;
+  //     this.vStockId = result.StockId;
+  //   });
+  // }
   QtyCondition(){
     
     if(this.vBalQty < this.vUsedQty){
@@ -286,9 +288,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
     materialConsumptionObj['addedby'] =this.accountService.currentUserValue.user.id || 0;
 
     let submitdata={
-      'insertMaterialConsumption':insertMaterialConsumption,
-      'insertMaterialConsDetail':insertMaterialConsDetailarray,
-      'updateCurrentStock':updateCurrentStockarray
+      'insertMaterialConsumption':materialConsumptionObj,
     }
     console.log(submitdata)
     this._MaterialConsumptionService.MaterialconsSave(submitdata).subscribe(response => {
@@ -352,7 +352,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
     if (event.which === 13) {
       this.addbutton.nativeElement.focus();
       setTimeout(() => {
-      this.vadd=true;
+     // this.vadd=true;
      
   }, 10);
     }
@@ -383,6 +383,8 @@ export class ItemList {
   Remark: number;
   StockId: any;
   ItemId:any;
+  MRPTotalAmt:any;
+
 
   constructor(ItemList) {
     {

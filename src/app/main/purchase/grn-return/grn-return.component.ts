@@ -82,6 +82,7 @@ export class GRNReturnComponent implements OnInit {
 
   dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
   dsGRNReturnItemDetList = new MatTableDataSource<GRNReturnItemDetList>();
+  dsGRNReturnItemDetList1 = new MatTableDataSource<ItemNameList>();
   dsNewGRNReturnItemList = new MatTableDataSource<ItemNameList>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -102,6 +103,18 @@ export class GRNReturnComponent implements OnInit {
     this.getStoreList();
     this.getGRNReturnList();
     this.getSupplierSearchCombo();
+
+    this.filteredoptionsSupplier = this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterSupplier(value)),
+    );
+
+
+    this.filteredoptionsSupplier2 = this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterSupplier(value)),
+    );
+
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -119,34 +132,61 @@ export class GRNReturnComponent implements OnInit {
       this._GRNReturnService.NewGRNReturnFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
     });
   }
+  // getSupplierSearchCombo() {
+  //   debugger
+  //   this._GRNReturnService.getSupplierSearchList().subscribe(data => {
+  //     this.SupplierList = data;
+  //     console.log(data);
+  //     this.optionsSupplier = this.SupplierList.slice();
+  //     this.filteredoptionsSupplier = this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
+  //     );
+  //     this.filteredoptionsSupplier2 = this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
+  //     );
+  //   });
+
+  //   if (this.VsupplierId !=0) {
+  //     const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == this.VsupplierId);
+  //     this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').setValue(toSelectSUpplierId);
+     
+  //   }
+
+  // }
+
+
   getSupplierSearchCombo() {
     this._GRNReturnService.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
-      // console.log(data);
-      this.optionsSupplier = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-      );
-      this.filteredoptionsSupplier2 = this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-      );
+      console.log(this.SupplierList )
+
+      if (this.VsupplierId !=0) {
+        const ddValue = this.SupplierList.filter(c => c.SupplierId == this.VsupplierId);
+        this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').setValue(ddValue[0]);
+        this._GRNReturnService.NewGRNReturnFrom.updateValueAndValidity();
+        return;
+      } 
+      
     });
-
-    if (this.VsupplierId !=0) {
-      const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == this.VsupplierId);
-      this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').setValue(toSelectSUpplierId);
-     
-    }
-
   }
+
+  // private _filterSupplier(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
+  //     return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
+  //   }
+  // } 
+
   private _filterSupplier(value: any): string[] {
     if (value) {
       const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-      return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
+
+      return this.SupplierList.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
     }
-  } 
+
+  }
   getOptionTextSupplier(option) {
     return option && option.SupplierName ? option.SupplierName : '';
   }
@@ -215,20 +255,7 @@ export class GRNReturnComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
   }
-  OnSave() {
-    if ((!this.dsNewGRNReturnItemList.data.length)) {
-      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((!this._GRNReturnHeaderList.GRNReturnSearchFrom.get('SupplierId').value.SupplierId)) {
-      this.toastr.warning('Please Select Supplier name.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-   }
+
 
   OnReset() { 
     this._GRNReturnService.NewGRNReturnFrom.reset();
@@ -252,10 +279,24 @@ export class GRNReturnComponent implements OnInit {
       console.log( this.dsNewGRNReturnItemList.data)
       this.VsupplierId= result[0].SupplierId
       this.getSupplierSearchCombo()
-      // const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierId);
-      // this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').setValue(toSelectSUpplierId);
+     this.getGRNReturnItemDetList1(this.dsNewGRNReturnItemList.data[0])
+
+
+
     });
 }
+
+ getGRNReturnItemDetList1(Params) {
+  debugger
+    this.sIsLoading = 'loading-data';
+    var Param = {
+      "GRNReturnId": Params.GRNReturnId
+    }
+    this._GRNReturnService.getGRNReturnItemDetList(Param).subscribe(data => {
+      this.dsGRNReturnItemDetList1.data = data as ItemNameList[];
+      console.log( this.dsGRNReturnItemDetList1.data)
+     });
+  }
 
 
 OnSave(){
@@ -265,7 +306,7 @@ OnSave(){
     });
     return;
   }
-  if ((!this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').value.SupplierId)) {
+  if ((!this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').value.SupplierId)) {
     this.toastr.warning('Please Select Supplier name.', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
     });
@@ -297,10 +338,10 @@ OnSave(){
   grnReturnSave['isGrnTypeFlag'] = '';
   grnReturnSave['grnReturnId'] =1//this.accountService.currentUserValue.user.id || 0;
 
-
+debugger
   let grnReturnDetailSavearray=[];
-  this.dsNewGRNReturnItemList.data.forEach((element) => {
-
+  this.dsGRNReturnItemDetList1.data.forEach((element) => {
+console.log(element)
     // let vtotalMRPAmount = ((element.UsedQty) * (element.Rate)).toFixed(2);
     // let vatAmount = ((parseFloat(vtotalMRPAmount) * (element.VatPercentage)) / 100).toFixed(2)
     // let TotalNet = vtotalMRPAmount + vatAmount
@@ -352,7 +393,7 @@ OnSave(){
   });
 
   let grnReturnUpdateCurrentStockarray = [];
-  this.dsNewGRNReturnItemList.data.forEach((element) => {
+  this.dsGRNReturnItemDetList1.data.forEach((element) => {
     let grnReturnUpdateCurrentStockObj = {};
     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
     grnReturnUpdateCurrentStockObj['issueQty'] = element.CGSTPer || 0;
@@ -363,10 +404,10 @@ OnSave(){
   });
 
   let grnReturnUpateReturnQtyarray = [];
-  this.dsNewGRNReturnItemList.data.forEach((element) => {
+  this.dsGRNReturnItemDetList1.data.forEach((element) => {
     let grnReturnUpateReturnQty = {};
-    grnReturnUpateReturnQty['grnDetID'] = element.PurchaseId || 0;
-    grnReturnUpateReturnQty['returnQty'] = element.PurDetId || 0;
+    grnReturnUpateReturnQty['grnDetID'] = 1,//element.GrnDetID || 0;
+    grnReturnUpateReturnQty['returnQty'] = 1,//element.ReturnQty || 0;
   
     grnReturnUpateReturnQtyarray.push(grnReturnUpateReturnQty);
   });
@@ -429,6 +470,7 @@ export class GRNReturnList {
 }
 
 export class GRNReturnItemDetList {
+
   ItemName: string;
   BatchNo: number;
   BatchExpiryDate: number;
@@ -618,7 +660,7 @@ export class ItemNameList {
    */
   constructor(ItemNameList) {
     {
-
+    
       this.ItemName = ItemNameList.ItemName || "";
       this.UOMId = ItemNameList.UOMId || 0;
       this.HSNCode = ItemNameList.HSNCode || 0;

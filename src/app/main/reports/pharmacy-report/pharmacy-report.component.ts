@@ -283,7 +283,7 @@ export class PharmacyReportComponent implements OnInit {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
       
-      this._BrowsSalesBillService.getSalesDailyCollectionNew(
+      this._PharmacyreportService.getSalesDailyCollectionNew(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this._loggedUser.currentUserValue.user.storeId, AddUserId
@@ -318,7 +318,7 @@ export class PharmacyReportComponent implements OnInit {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
      
-      this._BrowsSalesBillService.getSalesDailyCollectionSummary(
+      this._PharmacyreportService.getSalesDailyCollectionSummary(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this._loggedUser.currentUserValue.user.storeId,AddUserId
@@ -353,7 +353,7 @@ export class PharmacyReportComponent implements OnInit {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
       
-      this._BrowsSalesBillService.getSalesDailyCollectionSummaryDayuserwise(
+      this._PharmacyreportService.getSalesDailyCollectionSummaryDayuserwise(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this._loggedUser.currentUserValue.user.storeId,AddUserId
@@ -389,7 +389,7 @@ export class PharmacyReportComponent implements OnInit {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
      
-      this._BrowsSalesBillService.getSalesDetailSummary(
+      this._PharmacyreportService.getSalesDetailSummary(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
          0, 0, AddUserId,this._loggedUser.currentUserValue.user.storeId
@@ -424,7 +424,7 @@ export class PharmacyReportComponent implements OnInit {
       let Frdate=this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
       let Todate =  this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
       
-      this._BrowsSalesBillService.getSalesDetail_Patientwise(Frdate,Todate,    
+      this._PharmacyreportService.getSalesDetail_Patientwise(Frdate,Todate,    
         0, 0, AddUserId, this._loggedUser.currentUserValue.user.storeId
       ).subscribe(res => {
         
@@ -452,7 +452,7 @@ export class PharmacyReportComponent implements OnInit {
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
-      this._BrowsSalesBillService.getSalesReturn(
+      this._PharmacyreportService.getSalesReturn(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0,
         this._loggedUser.currentUserValue.user.storeId
@@ -482,7 +482,7 @@ export class PharmacyReportComponent implements OnInit {
       let frdate= this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
       let Todate =this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
    debugger
-      this._BrowsSalesBillService.getSalesReturnPatientwise(frdate,Todate,0, 0,this._loggedUser.currentUserValue.user.storeId
+      this._PharmacyreportService.getSalesReturnPatientwise(frdate,Todate,0, 0,this._loggedUser.currentUserValue.user.storeId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -507,7 +507,7 @@ export class PharmacyReportComponent implements OnInit {
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
-      this._BrowsSalesBillService.getSalesCredit(
+      this._PharmacyreportService.getSalesCredit(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0, 0,
         this._loggedUser.currentUserValue.user.storeId
@@ -538,7 +538,7 @@ export class PharmacyReportComponent implements OnInit {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
 
-      this._BrowsSalesBillService.getSalesCashBook(
+      this._PharmacyreportService.getSalesCashBook(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900', this.PaymentMode,
         this._loggedUser.currentUserValue.user.storeId

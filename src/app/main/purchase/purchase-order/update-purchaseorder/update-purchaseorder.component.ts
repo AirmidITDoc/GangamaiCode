@@ -19,6 +19,7 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
 import { invalid } from 'moment';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-update-purchaseorder',
@@ -551,6 +552,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
         });
         this._matDialog.closeAll();
         this.OnReset()
+        this.viewgetPurchaseorderReportPdf(response);
       } else {
         this.toastr.error('New Purchase  Data not Updated !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -646,6 +648,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
         this._matDialog.closeAll();
         this.OnReset()
+        this.viewgetPurchaseorderReportPdf(response);
       } else {
         this.toastr.error('New Purchase  Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -1095,6 +1098,32 @@ export class UpdatePurchaseorderComponent implements OnInit {
   }
 
 
+  viewgetPurchaseorderReportPdf(PurchaseID) {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      
+   this._PurchaseOrder.getPurchaseorderreportview(
+    PurchaseID
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "PURCHASE ORDER Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+       
+    });
+   
+    },100);
+  }
   onEdit(contact) {
     const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
       {
