@@ -632,7 +632,6 @@ export class IssueToDepartmentComponent implements OnInit {
                   Qty:this.RQty || 0,
                   UnitRate:contact.UnitMRP|| 0,
                   TotalAmount: NetAmt || 0,
-  
                   VatPer: contact.VatPercentage || 0,
                   VatAmount: GSTAmount || 0,
                   TotalMRP: TotalMRP,
@@ -656,14 +655,9 @@ export class IssueToDepartmentComponent implements OnInit {
               });
           console.log(this.chargeslist);
           this.dsNewIssueList3.data = this.chargeslist
-  
-  
         }
-    
         // this.Itemchargeslist=[];
       }
-    
-
 
     deleteTableRow(element) {
         let index = this.chargeslist.indexOf(element);
