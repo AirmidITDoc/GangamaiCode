@@ -15,7 +15,7 @@
 
   // Safari and Chrome
 }
-@mixin placeholder($font: $font-size-base, $family: $inter, $color: $gray-400) {
+@mixin placeholder($font: $font-size-base, $family: $font-primary, $color: $gray-400) {
   &::placeholder {
     color: $color;
     font-family: $family;

@@ -4,7 +4,8 @@
         .mat-option {
             @include font-size(12px);
             font-family: inherit;
-            max-height: 3rem;
+            height: 3rem;
+            line-height: 3rem;
             &:hover:not(.mat-option-disabled),
             &:focus:not(.mat-option-disabled),
             &.mat-active {
