@@ -248,7 +248,6 @@ export class NewMaterialConsumptionComponent implements OnInit {
       });
       return;
     }
-    debugger
     let insertMaterialConsumption = {};
     insertMaterialConsumption['materialConsumptionId'] = 0;
     insertMaterialConsumption['consumptionDate'] = this.dateTimeObj.date;
@@ -267,36 +266,25 @@ export class NewMaterialConsumptionComponent implements OnInit {
       let vtotalMRPAmount = ((element.UsedQty) * (element.Rate)).toFixed(2);
       let vatAmount = ((parseFloat(vtotalMRPAmount) * (element.VatPercentage)) / 100).toFixed(2)
       let TotalNet = vtotalMRPAmount + vatAmount
-  
       let vtotalLandedRate = ((element.UsedQty) * (element.LandedRate)).toFixed(2);
-     
       let totalPurAmount = ((element.UsedQty) * (element.PurchaseRate)).toFixed(2);
-  
 
       let insertMaterialConsDetail = {};
       insertMaterialConsDetail['materialConsumptionId'] = 0;
-      
       insertMaterialConsDetail['itemId'] = element.ItemId;
-      insertMaterialConsDetail['batchNo'] = this.accountService.currentUserValue.user.storeId;
+      insertMaterialConsDetail['batchNo'] = this._loggedService.currentUserValue.user.storeId;
      
       insertMaterialConsDetail['batchExpDate'] = element.BatchExpDate;
       insertMaterialConsDetail['qty'] = (element.UsedQty);//element.BalQty;
-     
       insertMaterialConsDetail['perUnitLandedRate'] = element.LandedRate;
-    
       insertMaterialConsDetail['parUnitPurchaseRate'] = element.PurchaseRate;
-    
       insertMaterialConsDetail['perUnitMRPRate'] = element.Rate;
-
       insertMaterialConsDetail['landedRateTotalAmount'] = parseFloat(vtotalLandedRate);
       insertMaterialConsDetail['purchaseRateTotalAmount'] = parseFloat(totalPurAmount);
-    
       insertMaterialConsDetail['mrpTotalAmount'] = parseFloat(vtotalMRPAmount);
       insertMaterialConsDetail['startDate'] = this.dateTimeObj.date;
       insertMaterialConsDetail['endDate'] = this.dateTimeObj.date;
       insertMaterialConsDetail['remark'] =  this._MaterialConsumptionService.userFormGroup.get('Remark').value || '';
-     
-     
       insertMaterialConsDetailarray.push(insertMaterialConsDetail);
      
       let updateCurrentStock ={}
