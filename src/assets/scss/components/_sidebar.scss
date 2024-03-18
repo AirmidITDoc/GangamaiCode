@@ -40,3 +40,11 @@ $sidebar-gap: 12px;
         }
     }
 }
+fuse-sidebar{
+    .search-title{
+        @include font-size(16px);
+    }
+    .clearbutton{
+        margin-right: 10px;
+    }
+}

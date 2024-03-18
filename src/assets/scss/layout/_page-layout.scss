@@ -16,7 +16,7 @@
     > .header,
     > .mat-toolbar {
         height: auto;
-        max-height: 40px;
+        max-height: 45px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -27,7 +27,7 @@
             align-items: center;
             gap: 8px;
             .top-header-title {
-                @include font-size(14px);
+                @include font-size(16px);
             }
         }
         .date-time-container {
@@ -60,7 +60,7 @@
             align-items: center;
         }
         .logo-text {
-            @include font-size(14px);
+            @include font-size(16px);
         }
     }
 }
