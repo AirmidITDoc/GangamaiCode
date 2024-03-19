@@ -385,24 +385,32 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   onEdit(contact) {
-    this.chkNewGRN = 2;
-    console.log(contact)
-    this.advanceDataStored.storage = new SearchInforObj(contact);
-    // this._PurchaseOrder.populateForm();
-    const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
-      {
-        maxWidth: "100%",
-        height: '95%',
-        width: '95%',
-        data: {
-          Obj: contact,
-          chkNewGRN: this.chkNewGRN
-        }
+    if(this._PurchaseOrder.PurchaseSearchGroup.get('Status').value == 0 ){
+      this.chkNewGRN = 2;
+      console.log(contact)
+      this.advanceDataStored.storage = new SearchInforObj(contact);
+      // this._PurchaseOrder.populateForm();
+      const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
+        {
+          maxWidth: "100%",
+          height: '95%',
+          width: '95%',
+          data: {
+            Obj: contact,
+            chkNewGRN: this.chkNewGRN
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getPurchaseOrderList();
       });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getPurchaseOrderList();
-    });
+    }
+    else{
+      this.toastr.warning('Verified Record connot be edited', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
+   
    
   }
 

@@ -25,14 +25,7 @@ export class StockAdjustmentService {
   }
   createUserForm() {
     return this._formBuilder.group({
-    
       ItemID: [''],
-      BatchNo:[''],
-      MRP:[''],
-      Qty:[''],
-      Status:[''],
-      UpdatedQty:[''],
-      BalanceQty:[''],
     });
   }
    
@@ -42,8 +35,8 @@ export class StockAdjustmentService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  public getItemlist(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemMasterForCombo",Param)
+  public getItemlist(Param){//m_Rtrv_ItemMasterForCombo
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",Param)
   }
   public StockAdjSave(param){
     return this._httpClient.post('Pharmacy/InsertStockadjustment',param);

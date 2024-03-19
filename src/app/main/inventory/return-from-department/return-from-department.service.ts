@@ -9,6 +9,7 @@ export class ReturnFromDepartmentService {
 
   userFormGroup: FormGroup;
   ReturnSearchGroup :FormGroup;
+  NewReturnFinalForm:FormGroup;
 
 
   constructor(
@@ -17,6 +18,7 @@ export class ReturnFromDepartmentService {
   ) { 
     this.ReturnSearchGroup= this.ReturnSearchFrom();
     this.userFormGroup = this.CreateNewReturnForm();
+    this.NewReturnFinalForm = this.createFinalForm();
   }
 
   ReturnSearchFrom() {
@@ -34,14 +36,26 @@ export class ReturnFromDepartmentService {
       end: [(new Date()).toISOString()],
       StoreId: '' ,
       Remark: '' ,
-      TotalAmount: '' 
+      TotalAmount: '' ,
+      TotalvatAmount:'',
     });
   }
-  
+  createFinalForm() {
+    return this._formBuilder.group({
+      Remark: '' ,
+      TotalAmount: '' ,
+      TotalvatAmount:'',
+      PurTotalAmount:'',
+      LandedTotalAmount:''
+    });
+  }
   
  
   public getReturnToDepartmentList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ReturnToDepartmentList_1",Param);
+  }
+  public getReturnItemList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=rptReturnFromDepartment",Param);
   }
   public getNewReturnToDepartmentList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ReturnToDepartmentIssueList_1",Param);
@@ -57,9 +71,7 @@ export class ReturnFromDepartmentService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
   
-  public getReturnItemList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=rptReturnFromDepartment",Param);
-  }
+ 
   
   
   public getReturnfromDeptview(ReturnId){

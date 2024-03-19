@@ -97,10 +97,10 @@ export class ReturnFromDepartmentComponent implements OnInit {
   getReturnToDepartmentList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "FromStoreId":10003,// this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.StoreId || 0,
-      "ToStoreId":10005,//  this._loggedService.currentUserValue.user.storeId || 0,
-      "From_Dt":'01/01/1900',// this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt":'01/01/1900',// this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "FromStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.StoreId || 0,
+      "ToStoreId": this._loggedService.currentUserValue.user.storeId || 0,
+      "From_Dt":this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "To_Dt": this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     }
     console.log(vdata);
     this._ReturnToDepartmentList.getReturnToDepartmentList(vdata).subscribe(data => {
