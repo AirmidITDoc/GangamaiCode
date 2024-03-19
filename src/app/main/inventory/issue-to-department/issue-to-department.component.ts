@@ -36,6 +36,7 @@ export class IssueToDepartmentComponent implements OnInit {
     SpinLoading: boolean = false;
     vprintflag:boolean=false;
     vsaveflag: boolean = true;
+    vremark:any='';
 
     displayedColumns: string[] = [
         'IssueNo',
@@ -543,10 +544,71 @@ export class IssueToDepartmentComponent implements OnInit {
         }
     }
 
+    // chkSaveflag(){
+        
+    //     if(this.vremark ! ='')
+    //     if ((this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId) && this.dsNewIssueList3.data.length > 0) {
+    //         this.vsaveflag = false;
+    //     }
+    // }
+
 
     AddIndentItem(contact) {
         console.log(contact)
-        
+        debugger
+        if (this.dsNewIssueList3.data.length > 0) {
+            this.dsNewIssueList3.data.forEach((element) => {
+              if (element.ItemId == contact.ItemId) {
+                // Swal.fire('Selected Item already added in the list');
+                this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+                  toastClass: 'tostr-tost custom-toast-warning',
+                });
+               
+//add Duplicate
+
+var m_data = {
+    "ItemId": contact.ItemId,
+    "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+}
+this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
+    console.log(draftdata)
+    this.Itemchargeslist1 = draftdata as any;
+    if (this.Itemchargeslist1.length == 0) {
+        Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
+    }
+    else if (this.Itemchargeslist1.length > 0) {
+        let ItemID=contact.ItemId;
+        this.Itemchargeslist1.forEach((element) => {
+                                
+            let IndQty=contact.Qty
+            
+            if (ItemID != element.ItemId) {
+                this.QtyBalchk = 0;
+            }
+            if (this.QtyBalchk != 1) {
+                if (IndQty <= element.BalanceQty) {
+                    this.QtyBalchk = 1;
+                      this.getFinalCalculation(element, contact.Qty);
+                    ItemID = element.ItemId;
+                }
+                else if(IndQty > element.BalanceQty){
+                    Swal.fire("Balance Qty is :", element.Qty)
+                    this.QtyBalchk = 0;
+                    Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
+                }
+            }
+        });
+    }
+
+});
+
+
+//end
+              } 
+            });
+          }
+          else  {
+           
         this.Itemchargeslist1 = [];
         this.QtyBalchk = 0;
 
@@ -563,8 +625,7 @@ export class IssueToDepartmentComponent implements OnInit {
             else if (this.Itemchargeslist1.length > 0) {
                 let ItemID=contact.ItemId;
                 this.Itemchargeslist1.forEach((element) => {
-                    debugger
-                    
+                                        
                     let IndQty=contact.Qty
                     
                     if (ItemID != element.ItemId) {
@@ -587,7 +648,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
         });
 
-        // }
+        }
 
     }
 
@@ -716,12 +777,12 @@ export class IssueToDepartmentComponent implements OnInit {
             });
             return;
         }
-        if (this._IssueToDep.NewIssueGroup.invalid) {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+        // if (this._IssueToDep.NewIssueGroup.invalid) {
+        //     this.toastr.warning('please check from is invalid', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
         let insertheaderObj = {};
         insertheaderObj['issueDate'] = this.dateTimeObj.date;
         insertheaderObj['issueTime'] = this.dateTimeObj.time;
@@ -739,17 +800,20 @@ export class IssueToDepartmentComponent implements OnInit {
 
         let isertItemdetailsObj = [];
         this.dsNewIssueList3.data.forEach(element => {
+            console.log(element)
+
             let insertitemdetail = {};
             insertitemdetail['issueId'] = 0;
             insertitemdetail['itemId'] = element.ItemId;
             insertitemdetail['batchNo'] = element.BatchNo;
             insertitemdetail['batchExpDate'] = element.BatchExpDate;
             insertitemdetail['issueQty'] = element.Qty;
-            insertitemdetail['perUnitLandedRate'] = 0;
+            insertitemdetail['perUnitLandedRate'] = element.LandedRate;
+            insertitemdetail['LandedTotalAmount'] = element.LandedRateandedTotal;
             insertitemdetail['unitMRP'] = element.UnitRate;
             insertitemdetail['mrpTotalAmount'] = element.TotalAmount;
-            insertitemdetail['unitPurRate'] = 0;
-            insertitemdetail['purTotalAmount'] = 0;
+            insertitemdetail['unitPurRate'] = element.PurchaseRate;
+            insertitemdetail['purTotalAmount'] = element.PurTotAmt;
             insertitemdetail['vatPercentage'] = element.VatPer || 0;
             insertitemdetail['vatAmount'] = element.VatAmount || 0;
             insertitemdetail['stkId'] = element.StockId;
@@ -809,7 +873,8 @@ export class IssueToDepartmentComponent implements OnInit {
     @ViewChild('BalQuantity') BalQuantity: ElementRef;
     @ViewChild('Quantity') Quantity: ElementRef;
     @ViewChild('addbutton') addbutton: ElementRef;
-
+    @ViewChild('save') save: ElementRef;
+    
 
     public onEnterFromstore(event): void {
         if (event.which === 13) {
@@ -853,6 +918,16 @@ export class IssueToDepartmentComponent implements OnInit {
             this.addbutton.nativeElement.focus();
         }
     }
+
+    public onEnterRemark(event): void {
+        if (event.which === 13) {
+           this.save.nativeElement.focus();
+        //    if ((this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId) && this.dsNewIssueList3.data.length > 0) {
+            this.vsaveflag = false;
+        // }
+        }
+    }
+    
     getBatch() {
         this.Quantity.nativeElement.focus();
         const dialogRef = this._matDialog.open(SalePopupComponent,
@@ -871,7 +946,7 @@ export class IssueToDepartmentComponent implements OnInit {
             console.log(result);
 
             result=result.selectedData
-debugger
+
             this.vBatchNo = result.BatchNo;
             this.vBatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
             this.vMRP = result.UnitMRP;
@@ -1076,8 +1151,9 @@ export class NewIssueList3 {
     NetAmount: any;
     ExpDateNo; any;
     BalQty: any;
-
-
+    PurchaseRate:any;
+    LandedRateandedTotal:any;
+    PurTotAmt:any;
     constructor(NewIssueList3) {
         this.ItemId = NewIssueList3.ItemId || 0;
         this.ItemName = NewIssueList3.ItemName || '';
@@ -1115,7 +1191,10 @@ export class NewIssueList3 {
         this.DiscAmount = NewIssueList3.DiscAmount || 0;
         this.ExpDateNo = NewIssueList3.ExpDateNo || 1 / 2 / 23;
         this.BalQty = NewIssueList3.BalQty || 0;
-
+        this.PurchaseRate = NewIssueList3.PurchaseRate || 0;
+        this.LandedRateandedTotal = NewIssueList3.LandedRateandedTotal || 0;
+        this.PurTotAmt = NewIssueList3.PurTotAmt || 0;
+        
     }
 }
 

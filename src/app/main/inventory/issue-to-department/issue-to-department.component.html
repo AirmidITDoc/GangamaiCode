@@ -828,7 +828,8 @@
 
                                     <mat-form-field appearance="outline" fxFlex="22%">
                                         <mat-label>Remark</mat-label>
-                                        <input type="text" name="Remark" formControlName="Remark" matInput #remark>
+                                        <input type="text" name="Remark" formControlName="Remark" matInput #remark
+                                         [(ngModel)]="vremark" required (keydown)="onEnterRemark($event)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="8%">
@@ -885,7 +886,7 @@
 
                                     <div class="sales-footer-buttons gap-8" fxLayout="row">
                                         <button class="btn btn-primary " (click)="OnSave()" [disabled]="vsaveflag"
-                                            >Save</button>
+                                            #save>Save</button>
                                        
                                         <button class="btn btn-danger-outline" (click)="OnReset()"
                                             >Reset</button>

@@ -19,6 +19,8 @@ import { debug } from 'console';
   animations: fuseAnimations,
 })
 export class NewMaterialConsumptionComponent implements OnInit {
+
+  vConsumDate=new Date()
   displayedColumns = [
     'ItemName',
     'BatchNo',
