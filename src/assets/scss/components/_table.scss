@@ -17,7 +17,7 @@
             text-overflow: ellipsis;
             font-family: $font-primary;
             font-weight: normal;
-            // margin: 0;
+            margin: 0;
             &:not(:first-of-type) {
                 padding: 10px 10px;
             }
@@ -33,7 +33,7 @@
             word-break: break-word;
             line-height: 20px;
             font-family: $font-primary;
-            // margin: 0;
+            margin: 0;
             &:not(:first-of-type) {
                 padding: 3px 10px;
             }
