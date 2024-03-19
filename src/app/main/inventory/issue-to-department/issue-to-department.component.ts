@@ -670,7 +670,7 @@ export class IssueToDepartmentComponent implements OnInit {
          let  SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
          let  IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
     
-         let  NetAmt = ((parseFloat(TotalMRP) + parseFloat(GSTAmount))).toFixed(2);
+         let  NetAmt = ((parseFloat(LandedRateandedTotal) + parseFloat(GSTAmount))).toFixed(2);
             
          let BQty = contact.BalanceQty -  this.RQty;
 
@@ -691,7 +691,7 @@ export class IssueToDepartmentComponent implements OnInit {
                   BatchExpDate: this.datePipe.transform(contact.BatchExpDate, "MM-dd-yyyy"),
                   BalanceQty: BQty || 0,
                   Qty:this.RQty || 0,
-                  UnitRate:contact.UnitMRP|| 0,
+                  UnitRate:contact.LandedRate,
                   TotalAmount: NetAmt || 0,
                   VatPer: contact.VatPercentage || 0,
                   VatAmount: GSTAmount || 0,
