@@ -347,24 +347,7 @@
 
                                             <mat-table #table matSort class="table2" [dataSource]="dsGrnItemList"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
-                                                <ng-container matColumnDef="select" sticky>
-                                                    <mat-header-cell *matHeaderCellDef class="w-50">
-                                                        <div class="checkbox-cell">
-                                                            <mat-checkbox (change)="$event ? masterToggle() : null"
-                                                                [checked]="selection.hasValue()"
-                                                                [indeterminate]="selection.hasValue() && !isAllSelected()">
-                                                            </mat-checkbox>
-                                                        </div>
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let row" class="w-50">
-                                                        <div class="checkbox-cell">
-                                                            <mat-checkbox (click)="$event.stopPropagation()"
-                                                                (change)="$event ? selection.toggle(row) : null"
-                                                                [checked]="selection.isSelected(row)">
-                                                            </mat-checkbox>
-                                                        </div>
-                                                    </mat-cell>
-                                                </ng-container>
+                                               
                                                 <ng-container matColumnDef="ItemName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                         class="w-200" fxShow.gt-sm>

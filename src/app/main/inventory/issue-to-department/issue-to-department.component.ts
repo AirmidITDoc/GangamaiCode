@@ -356,10 +356,10 @@ export class IssueToDepartmentComponent implements OnInit {
                     this.dsNewIssueList3.data[i].VatAmount = Vatamount;
                     this.dsNewIssueList3.data[i].TotalAmount = TotalMRP;
                     this.dsNewIssueList3.data[i].NetAmt = NetAmt;
-
+                    this.dsNewIssueList3.data[i].UnitMRP = contact.UnitMRP;
                     this.dsNewIssueList3.data[i].DiscPer = contact.DiscPer;
                     this.dsNewIssueList3.data[i].DiscAmt = DiscAmt;
-
+                
                     this.dsNewIssueList3.data[i].CGSTAmt = CGSTAmt;
                     this.dsNewIssueList3.data[i].SGSTAmt = SGSTAmt;
                     this.dsNewIssueList3.data[i].IGSTAmt = IGSTAmt;
@@ -451,7 +451,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
     tempdata: any = [];
     onAdd($event) {
-        debugger
+        
         if (this.vBarcode == 0) {
 
             if ((this.vItemID == '' || this.vItemID == null || this.vItemID == undefined)) {
@@ -492,7 +492,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
 
 
-debugger
+
             this.chargeslist.push(
                 {
                     ItemId: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId || 0,
@@ -547,7 +547,7 @@ debugger
 
 
         // &&   this.vFinalNetAmount > 0 
-        debugger
+        
         if (!(this._IssueToDep.NewIssueGroup.invalid) && this.dsNewIssueList3.data.length > 0) {
             this.vsaveflag = false;
         }
@@ -564,7 +564,8 @@ debugger
 
     AddIndentItem(contact) {
         console.log(contact)
-        debugger
+        let DuplicateItem=0;
+        
         if (this.dsNewIssueList3.data.length > 0) {
             this.dsNewIssueList3.data.forEach((element) => {
                 if (element.ItemId == contact.ItemId) {
@@ -572,7 +573,7 @@ debugger
                     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
                         toastClass: 'tostr-tost custom-toast-warning',
                     });
-
+                    DuplicateItem=1
                     //add Duplicate
 
                     // var m_data = {
@@ -617,7 +618,8 @@ debugger
             });
         }
         //   else  {
-
+            
+if(!DuplicateItem){
         this.Itemchargeslist1 = [];
         this.QtyBalchk = 0;
 
@@ -641,7 +643,7 @@ debugger
                         this.QtyBalchk = 0;
                     }
                     if (this.QtyBalchk != 1) {
-                        if (IndQty <= element.BalanceQty) {
+                        if (contact.Qty <= element.BalanceQty) {
                             this.QtyBalchk = 1;
                             this.getFinalCalculation(element, contact.Qty);
                             ItemID = element.ItemId;
@@ -657,13 +659,13 @@ debugger
 
         });
 
-        // }
+        }
 
     }
 
     RQty: any = 0;
     getFinalCalculation(contact, DraftQty) {
-        debugger
+        
         console.log(contact)
 
         this.RQty = parseInt(DraftQty);
@@ -701,7 +703,9 @@ debugger
                     BatchExpDate: this.datePipe.transform(contact.BatchExpDate, "MM-dd-yyyy"),
                     BalanceQty: BQty || 0,
                     Qty: this.RQty || 0,
-                    UnitRate: contact.UnitMRP,
+                    UnitRate: contact.UnitRate,
+                    UnitMRP: contact.UnitMRP,
+                    
                     TotalAmount: NetAmt || 0,
                     VatPer: contact.VatPercentage || 0,
                     VatAmount: GSTAmount || 0,
@@ -723,11 +727,12 @@ debugger
                     PurTotAmt: PurTotAmt,
                     MarginAmt: v_marginamt,
                     SalesDraftId: 1
+
                 });
             console.log(this.chargeslist);
             this.dsNewIssueList3.data = this.chargeslist
         }
-        // this.Itemchargeslist=[];
+       
     }
 
     deleteTableRow(element) {
@@ -751,7 +756,7 @@ debugger
         this.vTotalAmount = 0;
     }
     CalculateTotalAmt() {
-        debugger
+        
         if (this.vQty > this.vBalanceQty) {
             this.toastr.warning('Enter Qty less than Balance', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -805,7 +810,7 @@ debugger
         let isertItemdetailsObj = [];
         this.dsNewIssueList3.data.forEach(element => {
             console.log(element)
-debugger
+
             let insertitemdetail = {};
             insertitemdetail['issueId'] = 0;
             insertitemdetail['itemId'] = element.ItemId;
@@ -909,7 +914,7 @@ debugger
         }
     }
     public onEnterQty(event): void {
-        debugger
+        
         if (event.which === 13) {
             // this.Rate.nativeElement.focus();
             this.Addflag = true
@@ -1008,7 +1013,7 @@ debugger
 
 
     viewgetIssuetodeptReportPdf(contact, vprintflag) {
-        debugger
+        
         let IssueId
         if (vprintflag) {
             IssueId = contact.IssueId
@@ -1041,7 +1046,7 @@ debugger
 
 
     viewgetIssuetodeptsummaryReportPdf() {
-        debugger
+        
         let Fromdate = this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
         let Todate = this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
 
@@ -1053,7 +1058,7 @@ debugger
 
         setTimeout(() => {
             this.SpinLoading = true;
-            //  this.AdList=true;
+          debugger
             this._IssueToDep.getIssueToDeptsummaryview(Fromdate, Todate, FromStoreId, ToStoreId).subscribe(res => {
                 const dialogRef = this._matDialog.open(PdfviewerComponent,
                     {
