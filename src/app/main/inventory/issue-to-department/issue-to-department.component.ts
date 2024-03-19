@@ -566,48 +566,48 @@ export class IssueToDepartmentComponent implements OnInit {
                
 //add Duplicate
 
-var m_data = {
-    "ItemId": contact.ItemId,
-    "StoreId": this._loggedService.currentUserValue.user.storeId || 0
-}
-this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
-    console.log(draftdata)
-    this.Itemchargeslist1 = draftdata as any;
-    if (this.Itemchargeslist1.length == 0) {
-        Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
-    }
-    else if (this.Itemchargeslist1.length > 0) {
-        let ItemID=contact.ItemId;
-        this.Itemchargeslist1.forEach((element) => {
+// var m_data = {
+//     "ItemId": contact.ItemId,
+//     "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+// }
+// this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
+//     console.log(draftdata)
+//     this.Itemchargeslist1 = draftdata as any;
+//     if (this.Itemchargeslist1.length == 0) {
+//         Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
+//     }
+//     else if (this.Itemchargeslist1.length > 0) {
+//         let ItemID=contact.ItemId;
+//         this.Itemchargeslist1.forEach((element) => {
                                 
-            let IndQty=contact.Qty
+//             let IndQty=contact.Qty
             
-            if (ItemID != element.ItemId) {
-                this.QtyBalchk = 0;
-            }
-            if (this.QtyBalchk != 1) {
-                if (IndQty <= element.BalanceQty) {
-                    this.QtyBalchk = 1;
-                      this.getFinalCalculation(element, contact.Qty);
-                    ItemID = element.ItemId;
-                }
-                else if(IndQty > element.BalanceQty){
-                    Swal.fire("Balance Qty is :", element.Qty)
-                    this.QtyBalchk = 0;
-                    Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
-                }
-            }
-        });
-    }
+//             if (ItemID != element.ItemId) {
+//                 this.QtyBalchk = 0;
+//             }
+//             if (this.QtyBalchk != 1) {
+//                 if (IndQty <= element.BalanceQty) {
+//                     this.QtyBalchk = 1;
+//                       this.getFinalCalculation(element, contact.Qty);
+//                     ItemID = element.ItemId;
+//                 }
+//                 else if(IndQty > element.BalanceQty){
+//                     Swal.fire("Balance Qty is :", element.Qty)
+//                     this.QtyBalchk = 0;
+//                     Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
+//                 }
+//             }
+//         });
+//     }
 
-});
+// });
 
 
 //end
               } 
             });
           }
-          else  {
+        //   else  {
            
         this.Itemchargeslist1 = [];
         this.QtyBalchk = 0;
@@ -648,7 +648,7 @@ this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
 
         });
 
-        }
+        // }
 
     }
 
@@ -753,7 +753,7 @@ this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
         }
     }
     getTotalamt(element) {
-        this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
+        this.vFinalTotalAmount = (element.reduce((sum, { LandedRateandedTotal }) => sum += +(LandedRateandedTotal || 0), 0)).toFixed(2);
         this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
         this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
         return this.vFinalTotalAmount;
@@ -804,8 +804,8 @@ this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
             insertitemdetail['issueQty'] = element.Qty;
             insertitemdetail['perUnitLandedRate'] = element.LandedRate;
             insertitemdetail['LandedTotalAmount'] = element.LandedRateandedTotal;
-            insertitemdetail['unitMRP'] = element.UnitRate;
-            insertitemdetail['mrpTotalAmount'] = element.TotalAmount;
+            insertitemdetail['unitMRP'] = element.LandedRate;
+            insertitemdetail['mrpTotalAmount'] = element.LandedRateandedTotal;
             insertitemdetail['unitPurRate'] = element.PurchaseRate;
             insertitemdetail['purTotalAmount'] = element.PurTotAmt;
             insertitemdetail['vatPercentage'] = element.VatPer || 0;
