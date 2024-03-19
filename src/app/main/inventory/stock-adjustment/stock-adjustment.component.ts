@@ -83,7 +83,10 @@ export class StockAdjustmentComponent implements OnInit {
     });
   }
 getSearchList() {
-    this._StockAdjustment.getItemlist().subscribe(resData => {
+    var vdata:{
+      "ItemName": '%',
+    }
+    this._StockAdjustment.getItemlist(vdata).subscribe(resData => {
       this.ItemList = resData;
       console.log(this.ItemList)
       this.OptionsItemName = this.ItemList.slice();
@@ -110,7 +113,7 @@ this.getStockList();
 getStockList() {
   var Param = {
     "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
-    "ItemId": 56784,//this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0, //56784
+    "ItemId": this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0, //56784
   }
   console.log(Param)
   this._StockAdjustment.getStockList(Param).subscribe(data => {

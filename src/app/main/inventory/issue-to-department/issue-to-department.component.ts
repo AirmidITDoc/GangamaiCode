@@ -693,7 +693,6 @@ this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
                   Qty:this.RQty || 0,
                   UnitRate:contact.UnitMRP|| 0,
                   TotalAmount: NetAmt || 0,
-  
                   VatPer: contact.VatPercentage || 0,
                   VatAmount: GSTAmount || 0,
                   TotalMRP: TotalMRP,
@@ -717,14 +716,9 @@ this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
               });
           console.log(this.chargeslist);
           this.dsNewIssueList3.data = this.chargeslist
-  
-  
         }
-    
         // this.Itemchargeslist=[];
       }
-    
-
 
     deleteTableRow(element) {
         let index = this.chargeslist.indexOf(element);

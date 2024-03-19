@@ -42,8 +42,8 @@ export class StockAdjustmentService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  public getItemlist(){
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",{})
+  public getItemlist(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemMasterForCombo",Param)
   }
   public StockAdjSave(param){
     return this._httpClient.post('Pharmacy/InsertStockadjustment',param);

@@ -1,7 +1,7 @@
 <mat-tab-group>
-    <mat-tab label="ItemMovementSummery">
+    <mat-tab label="Item Movement Summery">
         <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+            <!-- <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                         <mat-icon>menu</mat-icon>
@@ -17,7 +17,7 @@
                 <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;" (click)="onClose()">
                     close
                 </span>
-            </mat-toolbar>
+            </mat-toolbar> -->
         
             <div class="content">
                 <div class="center p-12 pb-56" fxFlexAlign="start center">
@@ -38,15 +38,6 @@
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                     </mat-form-field>
-        
-                                    <!-- <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close"
-                                        style="margin-top:2px;">
-                                        <mat-icon class="cleariconbutton">close</mat-icon>
-                                    </button> -->
-                                    <!-- <button mat-raised-button class="searchButton" style="margin-top:2px;"
-                                        (click)="getItemMovementSummeryList()" matTooltip="search">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
-                                    </button>&nbsp; -->
                                 </div>
                             </form>
         
@@ -180,9 +171,9 @@
 
     </mat-tab>
 
-    <mat-tab label="BatchExpWiseList">
+    <mat-tab label="Batch Wise List">
         <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+            <!-- <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                         <mat-icon>menu</mat-icon>
@@ -199,7 +190,7 @@
                     close
                 </span>
             </mat-toolbar>
-        
+         -->
             <div class="content">
 
                 <div class="center p-12 pb-56" fxFlexAlign="start center">
@@ -352,9 +343,10 @@
             </div>
         </div>
     </mat-tab>
-    <mat-tab label="PurchaseSupplierWiseList">
+
+    <mat-tab label="Purchase Supplier Wise List">
          <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+            <!-- <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                         <mat-icon>menu</mat-icon>
@@ -370,7 +362,7 @@
                 <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;" (click)="onClose()">
                     close
                 </span>
-            </mat-toolbar>
+            </mat-toolbar> -->
         
             <div class="content">
 
@@ -524,10 +516,10 @@
             </div>
         </div>
     </mat-tab>
-    <mat-tab label="SalesList">
+    <mat-tab label="Sales List">
         
     </mat-tab>
-    <mat-tab label="SalesReturnList">
+    <mat-tab label="Sales Return List">
         
     </mat-tab>
 </mat-tab-group>
