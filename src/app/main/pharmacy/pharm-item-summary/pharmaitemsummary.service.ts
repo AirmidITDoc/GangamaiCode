@@ -64,7 +64,7 @@ export class PharmaitemsummaryService {
 
 
   public getNonMovingItemview(NonMovingDay,StoreId ){
-    return this._httpClient.get("InventoryTransaction/view-NonMovingItem?NonMovingDay=" + NonMovingDay+"&StoreId  ="+StoreId );
+    return this._httpClient.get("InventoryTransaction/view-NonMovingItem?NonMovingDay=" + NonMovingDay + "&StoreId=" +StoreId );
   }
   public getExpiryItemview(ExpMonth,ExpYear,StoreID){
     return this._httpClient.get("InventoryTransaction/view-ExpiryItemList?ExpMonth=" + ExpMonth+"&ExpYear ="+ExpYear  +"&StoreID="+StoreID);

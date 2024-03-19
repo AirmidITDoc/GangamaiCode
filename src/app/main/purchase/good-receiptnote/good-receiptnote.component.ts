@@ -921,6 +921,10 @@ export class ItemNameList {
       this.StkID = ItemNameList.StkID || 0;
       this.IsVerifiedId = ItemNameList.IsVerifiedId || 0;
       this.VerifiedDateTime = ItemNameList.VerifiedDateTime || 0;
+      this.ReceiveQty=ItemNameList.ReceiveQty || 0
+      this.ConversionFactor=ItemNameList.ConversionFactor || 0
+
+      
     }
   }
 }

@@ -317,12 +317,10 @@ this.VNonMovdaysflag=false
 VNonMovdaysflag:boolean=true
 viewgetNonMovingReportPdf() {
     debugger
-//     let Fromdate = this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-// let Todate = this.datePipe.transform(this._IssueToDep.IssueSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
 
 let FromStoreId = this.accountService.currentUserValue.user.storeId || this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId || 0
 
-let NonMDays = this._PharmaitemsummaryService.SearchGroup.get("NonMovingDay").value || 0
+let NonMDays = parseInt(this._PharmaitemsummaryService.SearchGroup.get("NonMovingDay").value) || 0
 
     this.sIsLoading == 'loading-data'
 

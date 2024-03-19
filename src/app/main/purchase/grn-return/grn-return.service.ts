@@ -76,7 +76,9 @@ export class GrnReturnService {
     return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
   }
 
-
+  public getGrnItemList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_GrnItemList",Param);
+  }
 
   public GRNReturnSave(Param){
     return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
