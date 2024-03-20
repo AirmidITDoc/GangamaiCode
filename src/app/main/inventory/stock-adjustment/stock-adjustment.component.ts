@@ -32,7 +32,6 @@ export class StockAdjustmentComponent implements OnInit {
     'UnitMRP',
     'PurchaseRate',
     'BalQty',
-    'Qty',
     'Addition',
     'Deduction',
     'UpdatedQty'
@@ -73,7 +72,15 @@ export class StockAdjustmentComponent implements OnInit {
     this.gePharStoreList();
     this.getStockList();
   }
+  editable:boolean=false;
+  enableEditing(row: StockAdjList) {
+  
+    row.editable = true;
+  }
 
+  disableEditing(row: StockAdjList) {
+    row.editable = false;
+  }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -251,7 +258,7 @@ export class StockAdjList {
   Landedrate:any;
   PurchaseRate:any;
   UpdatedQty:any;
-  Qty:any;
+  editable:boolean=false;
   constructor(StockAdjList) {
     {
       this.BalQty = StockAdjList.BalQty || 0;
@@ -261,7 +268,6 @@ export class StockAdjList {
       this.Landedrate = StockAdjList.Landedrate || 0;
       this.PurchaseRate =StockAdjList.PurchaseRate || 0;
       this.UpdatedQty = StockAdjList.UpdatedQty || 0;
-      this.Qty = StockAdjList.Qty || 0;
     }
   }
 }
