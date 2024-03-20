@@ -132,7 +132,7 @@
                                   </div>
 
                                 <mat-table #table class="table1" matSort [dataSource]="dsReturnToDepList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;width: 100%;">
 
                                     <ng-container matColumnDef="ReturnNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -238,7 +238,7 @@
                             </div>
 
                             <mat-table #table class="table2" matSort [dataSource]="dsReturnItemList"
-                            [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                            [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
                             <ng-container matColumnDef="ItemName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                     ItemName
@@ -329,11 +329,11 @@
                             <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{'hide':!(dsReturnItemList!=null && dsReturnItemList.data.length==0)}">
                             </mat-footer-row>
-                        </mat-table>
+                           </mat-table>
 
-                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
+                           <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
                             showFirstLastButtons>
-                        </mat-paginator>
+                           </mat-paginator>
 
                         </div>
                     </div>

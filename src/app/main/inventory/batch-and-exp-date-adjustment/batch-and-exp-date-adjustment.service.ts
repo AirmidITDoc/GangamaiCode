@@ -6,33 +6,38 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class BatchAndExpDateAdjustmentService {
-
- 
-
+  userFormGroup: FormGroup;
+  SearchGroup: FormGroup;
+  StoreFrom: FormGroup;
 
   constructor(
-    public _httpClient: HttpClient
-  ) { }
-
- 
-  
-     
- 
-
-  public getLoggedStoreList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+    public _httpClient: HttpClient,
+    public _formBuilder: FormBuilder
+  ) {
+    this.SearchGroup = this.createSearchFrom();
+    this.StoreFrom = this.CreateStoreFrom();
   }
 
-  public getItemlist(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemMasterForCombo",Param)
+  CreateStoreFrom() {
+    return this._formBuilder.group({
+      StoreId: [''],
+    });
   }
-  public getItemlist1(){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientAdmittedListSearch",{})
+  createSearchFrom() {
+    return this._formBuilder.group({
+      ItemID: '',
+    });
   }
 
-  public getBatchAdjustList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
+  public getLoggedStoreList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
   }
-  
-  
+  public getItemlist(Param) {//RetrieveItemMasterForCombo
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName", Param)
+  }
+  public getBatchAdjustList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj", Param);
+  }
+
+
 }

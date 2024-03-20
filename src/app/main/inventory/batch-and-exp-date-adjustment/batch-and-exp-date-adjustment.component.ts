@@ -5,15 +5,13 @@ import { BatchAndExpDateAdjustmentService } from './batch-and-exp-date-adjustmen
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { RegInsert } from 'app/main/opd/appointment/appointment.component';
-import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-batch-and-exp-date-adjustment',
@@ -28,140 +26,132 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
     'BatchNo',
     'ExpDate',
     'UnitMRP',
-    'Landedrate',
     'PurchaseRate',
     'BalQty',
+    'Qty',
+    'Addition',
+    'Deduction',
+    'UpdatedQty'
   ];
+
+
+  ItemId: any;
+  ItemName: any;
+  BalanceQty:any
+  VLandedrate: any;
+  VPurchaseRate: any;
+  VMRP: any;
+  VBatchNO: any;
+  NewBatchNo: any;
+  BtachExpDate: any;
+  OptionsItemName: any;
 
   StoreList: any = [];
   sIsLoading: string = '';
   isLoading = true;
   screenFromString = 'admission-form';
-  filteredOptions: any;
-  ItemListfilteredOptions: any;
-  noOptionFound: boolean = false;
+  dateTimeObj: any;
   isItemIdSelected: boolean = false;
-  ItemId:any;
-  ItemName:any;
-  isItemSearchDisabled:boolean =false;
-  VLandedrate:any;
-  VPurchaseRate:any;
-  VMRP:any;
-  VBatchNO:any;
-  NewBatchNo:any;
-  BtachExpDate:any;
+  ItemList: any = [];
+  filteredoptionsItemName: Observable<string[]>;
 
   dsBatchAndExpDate = new MatTableDataSource<BatchAndExpList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  userFormGroup: FormGroup;
-  SearchGroup :FormGroup;
-  BalanceQty: any;
- 
-
   constructor(
-    public _BatchAndExpDateAdjustmentService: BatchAndExpDateAdjustmentService,
+    public _BatchAndExpDateService: BatchAndExpDateAdjustmentService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
-     private _loggedService: AuthenticationService,
-    private _formBuilder: FormBuilder
+    public toastr: ToastrService,
+    private _loggedService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
-    this.SearchGroup= this.createSearchFrom();
     this.gePharStoreList();
   }
-  createSearchFrom() {
-    return this._formBuilder.group({
-      StoreId: '',
-      ItemID: '',
-      BtachExpDate:'',
-      NewExpDate:'',
-      NewBatchNo:'',
-      BalanceQty:''
-    });
-  }
-
-  dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
     }
-    // console.log(vdata);
-    this._BatchAndExpDateAdjustmentService.getLoggedStoreList(vdata).subscribe(data => {
+    this._BatchAndExpDateService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
-      // console.log(this.StoreList);
-      this.SearchGroup.get('StoreId').setValue(this.StoreList[0]);
+      this._BatchAndExpDateService.StoreFrom.get('StoreId').setValue(this.StoreList[0]);
     });
   }
+  getItemList() {
+    var vdata = {
+      "ItemName": `${this._BatchAndExpDateService.SearchGroup.get('ItemID').value}%`
+    }
+    this._BatchAndExpDateService.getItemlist(vdata).subscribe(resData => {
+      this.ItemList = resData;
+      //console.log(this.ItemList)
+      this.OptionsItemName = this.ItemList.slice();
+      this.filteredoptionsItemName = this._BatchAndExpDateService.SearchGroup.get('ItemID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterLitem(value) : this.ItemList.slice()),
+      );
+    });
+  }
+  private _filterLitem(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.ItemName ? value.ItemName.toLowerCase() : value.toLowerCase();
+      return this.OptionsItemName.filter(option => option.ItemName.toLowerCase().includes(filterValue));
+    }
+  }
+  getOptionTextItemName(option) {
+    return option && option.ItemName ? option.ItemName : '';
+  }
+  getSelectedObj(obj) {
+    this.getBatchAndAdjList(obj);
+  }
+
   getBatchAndAdjList(Param) {
     this.sIsLoading = 'loading-data';
-   var vdata= { 
-     "StoreId": this.SearchGroup.get('StoreId').value.storeid ,
-     "ItemId": Param.ItemID
-   }
-   console.log(vdata);
-     this._BatchAndExpDateAdjustmentService.getBatchAdjustList(vdata).subscribe(data => {
-     this.dsBatchAndExpDate.data = data as BatchAndExpList[];
-     this.dsBatchAndExpDate.sort = this.sort;
-     this.dsBatchAndExpDate.paginator = this.paginator;
-     this.sIsLoading = '';
-     console.log(this.dsBatchAndExpDate.data);
-   },
-     error => {
-       this.sIsLoading = '';
-     });
- }
-
- getSearchList() {
-  var m_data = {
-    "ItemName": `${this.SearchGroup.get('ItemID').value}%`
-    // "ItemID":0
+    var vdata = {
+      "StoreId": this._BatchAndExpDateService.StoreFrom.get('StoreId').value.storeid,
+      "ItemId":this._BatchAndExpDateService.SearchGroup.get('ItemID').value.ItemID// Param.ItemID
+    }
+    console.log(vdata);
+    this._BatchAndExpDateService.getBatchAdjustList(vdata).subscribe(data => {
+      this.dsBatchAndExpDate.data = data as BatchAndExpList[];
+      this.dsBatchAndExpDate.sort = this.sort;
+      this.dsBatchAndExpDate.paginator = this.paginator;
+      this.sIsLoading = '';
+      console.log(this.dsBatchAndExpDate.data);
+    },
+      error => {
+        this.sIsLoading = '';
+      });
   }
-  //console.log(m_data);
-  if (this.SearchGroup.get('ItemID').value.length >= 1) {
-    this._BatchAndExpDateAdjustmentService.getItemlist(m_data).subscribe(resData => {
-      this.filteredOptions = resData;
-     // console.log(resData)
-      this.ItemListfilteredOptions = resData;
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
 
-    });
+  OnSelect(param) {
+
+    this.VBatchNO = param.BatchNo,
+      this.VLandedrate = param.LandedRate,
+      this.VMRP = param.UnitMRP,
+      this.VPurchaseRate = param.PurUnitRateWF,
+      this.NewBatchNo = param.BatchNo,
+      this.BtachExpDate = param.BatchExpDate,
+      //this.BalanceQty=param.BalanceQty
+      console.log(param);
   }
-}
-getOptionItemText(option) {
-  this.ItemId = option.ItemID;
-  if (!option) return '';
-  return option.ItemID + ' ' + option.ItemName  ;
-}
- 
-getSelectedObj(obj) {
-  this.getBatchAndAdjList(obj);
-  //console.log(obj);
-}
-OnSelect(param){
-
-this.VBatchNO=param.BatchNo,
-this.VLandedrate=param.LandedRate,
-this.VMRP=param.UnitMRP,
-this.VPurchaseRate=param.PurUnitRateWF,
-this.NewBatchNo=param.BatchNo,
-this.BtachExpDate=param.BatchExpDate,
-this.BalanceQty=param.BalanceQty
-console.log(param);
-}
-
+  OnSave() {
+    if ((!this.dsBatchAndExpDate.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
+  OnReset() {
+    this._BatchAndExpDateService.SearchGroup.reset();
+    this.dsBatchAndExpDate.data = [];
+  }
 }
 
 export class BatchAndExpList {
