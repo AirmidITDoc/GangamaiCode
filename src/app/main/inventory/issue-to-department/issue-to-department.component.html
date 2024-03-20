@@ -1,4 +1,4 @@
-<div class="page-layout grn-section">
+<div class="page-layout grn-section" dynamicTableHeight>
     <mat-tab-group style="width: 100%;">
         <mat-tab label="Issue To Department List">
             <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;"
@@ -108,10 +108,10 @@
                                                 </button>
                                             </div>
 
-                                            <button  (click)="viewgetIssuetodeptsummaryReportPdf()"
-                                            matTooltip="Pdf" style="width: 45px;border-color: white;">
-                                            <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
-                                              </button>&nbsp;
+                                            <button (click)="viewgetIssuetodeptsummaryReportPdf()" matTooltip="Pdf"
+                                                style="width: 45px;border-color: white;">
+                                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                                            </button>&nbsp;
                                             <button (click)="exportIssuetodeptReportExcel()"
                                                 [disabled]="! (dsIssueToDep.data.length > 0)"
                                                 style="background-color: white;color: white;width: 45px;">
@@ -119,8 +119,8 @@
                                             </button>
 
 
-                                                                                          
-                                        <!-- <div class="sales-footer-buttons gap-8" fxLayout="row">
+
+                                            <!-- <div class="sales-footer-buttons gap-8" fxLayout="row">
                                             <button class="btn btn-primary " (click)="viewgetExpItemListReportPdf()" 
                                                 >ExpItemList</button>
                                            
@@ -174,7 +174,8 @@
                                                     </ng-container>
 
                                                     <ng-container matColumnDef="FromStoreName">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                            class="w-180">
                                                             From Store Name</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                                             {{contact.FromStoreName}}
@@ -182,7 +183,8 @@
                                                     </ng-container>
 
                                                     <ng-container matColumnDef="ToStoreName">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                            class="w-180">
                                                             To Store Name</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                                             {{contact.ToStoreName}}
@@ -407,11 +409,11 @@
                             </app-common-date>
                         </span> -->
                     </div>
-                        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
-                            <button mat-raised-button (click)="OnIndent()" fxLayoutAlign="center center" class="py-8">
-                                <span>Indent List</span>
-                            </button>
-                        </div>
+                    <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+                        <button mat-raised-button (click)="OnIndent()" fxLayoutAlign="center center" class="py-8">
+                            <span>Indent List</span>
+                        </button>
+                    </div>
 
 
                 </mat-toolbar>
@@ -429,7 +431,7 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                         <from [formGroup]="_IssueToDep.StoreFrom">
-                                       
+
                                             <mat-form-field appearance="outline" fxFlex="500px;">
                                                 <mat-label>From Store</mat-label>
                                                 <mat-select formControlName="FromStoreId" name="FromStoreId">
@@ -467,7 +469,7 @@
                                             </app-common-date>
                                         </span>
 
-                                        
+
                                         <!-- <div style="padding: 8px;">
                                        
                                     </div> -->
@@ -725,7 +727,7 @@
                                                         </ng-container>
 
 
-                                                        
+
                                                         <ng-container matColumnDef="Action" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef style="color: white;">
                                                                 Action</mat-header-cell>
@@ -753,9 +755,10 @@
                                                         <mat-header-row class="accent"
                                                             *matHeaderRowDef="displayedNewIssuesList1; sticky: true">
                                                         </mat-header-row>
-                                                        <mat-row *matRowDef="let contact; columns: displayedNewIssuesList1;"
-                                                            class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                                           ></mat-row>
+                                                        <mat-row
+                                                            *matRowDef="let contact; columns: displayedNewIssuesList1;"
+                                                            class="contact"
+                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                         <mat-footer-row *matFooterRowDef="['loading']"
                                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                         </mat-footer-row>
@@ -818,7 +821,7 @@
                                                     </mat-table> -->
                                                 </div>
 
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -884,11 +887,10 @@
                                     <!-- [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0" -->
 
                                     <div class="sales-footer-buttons gap-8" fxLayout="row">
-                                        <button class="btn btn-primary " (click)="OnSave()" [disabled]="vsaveflag"
-                                            >Save</button>
-                                       
-                                        <button class="btn btn-danger-outline" (click)="OnReset()"
-                                            >Reset</button>
+                                        <button class="btn btn-primary " (click)="OnSave()"
+                                            [disabled]="vsaveflag">Save</button>
+
+                                        <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
                                     </div>
                                 </div>
                             </form>

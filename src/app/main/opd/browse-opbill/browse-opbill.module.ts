@@ -25,6 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowseOPBillComponent } from './browse-opbill.component';
 import { ViewOPBillComponent } from './view-opbill/view-opbill.component';
 import { BrowseOPBillService } from './browse-opbill.service';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 
 const routes: Routes = [
@@ -61,7 +62,8 @@ const routes: Routes = [
         FuseConfirmDialogModule,
         FuseSidebarModule,
         MatProgressSpinnerModule,
-        MatTooltipModule
+        MatTooltipModule,
+        SharedModule
     ],
     providers: [
         BrowseOPBillService,
