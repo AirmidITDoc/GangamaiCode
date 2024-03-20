@@ -233,21 +233,15 @@
                                                             <mat-icon title="Edit Menu" *ngIf="row.Isverify != true"
                                                                 class="disabled-icon">
                                                                 edit</mat-icon>
-                                                            <!-- <mat-icon title="Edit Menu" *ngIf="row.IsInchargeVerify==0">
-                                                                edit</mat-icon> -->
                                                         </button>
                                                         <button mat-icon-button (click)="onVerify(row)"
                                                             matTooltip="Verify">
-                                                            <!-- <mat-icon *ngIf="row.Isverify==1" [disabled]="row.disabled"
-                                                                class="disabled-icon"
-                                                                title="verify Menu">verified_user</mat-icon> -->
                                                             <mat-icon title="verify Menu" *ngIf="row.Isverify ==0">
                                                                 verified_user</mat-icon>
                                                         </button>
 
                                                         <button mat-icon-button (click)="viewgetIndentVerifyReportPdf(row,true)"
                                                         matTooltip="Indent verify Print">
-                                                        <mat-icon style="color: black;">print</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>

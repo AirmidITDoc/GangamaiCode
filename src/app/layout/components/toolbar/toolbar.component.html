@@ -33,9 +33,14 @@
                     <div class="nav-menu" *ngIf="!false">
                         <!--fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center"-->
                         <div fxLayout="row" fxLayoutGap="0px" fxLayoutAlign="center center">
+                            <!-- <div class="nav-item">
+                                <div class="current-date">
+                                    <span>  {{ user.user.storeId }}</span>
+                                </div>
+                            </div> -->
                             <div class="nav-item">
                                 <div class="current-date">
-                                    <span>{{currentDate | date:'dd/MM/yyyy hh:mm:ss'}}</span>
+                                    <span>{{currentDate | date:'MM/dd/yy h:mm:ss a'}}</span>
                                 </div>
                             </div>
                             <div class="nav-item">
@@ -80,12 +85,11 @@
                                 src="assets/images/avatars/Velazquez.jpg"
                             /> -->
                                         <mat-icon class="mr-12">account_circle</mat-icon>
-                                        <span class="username mr-12" fxHide fxShow.gt-sm>{{ user && user.user &&
-                                            user.user.firstName
-                                            }}
+                                        <span class="username mr-12" fxHide fxShow.gt-sm>{{ user && user.user && user.user.firstName}}
                                             {{ user && user.user && user.user.lastName }}</span>
                                         <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
                                     </div>
+                                  
                                 </button>
 
                                 <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
@@ -116,6 +120,15 @@
                             <div class="nav-item seperator-right">
                                 <div class="nav-button">
                                     <fuse-search-bar (input)="search($event)"></fuse-search-bar>
+                                </div>
+                            </div>
+                            <div class="toolbar-separator"></div>
+                            <div class="nav-item seperator-right">
+                                <div>
+                                    <button mat-menu-item class="" (click)="logout()">
+                                        <mat-icon>exit_to_app</mat-icon>
+                                        <span>Logout</span>
+                                    </button>
                                 </div>
                             </div>
 
