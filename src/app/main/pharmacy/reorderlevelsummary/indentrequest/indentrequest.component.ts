@@ -100,19 +100,19 @@ export class IndentrequestComponent implements OnInit {
 
 
   chkQty(contact, InQty) {
-debugger
+//debugger
     if (this.dsRaisedIndent.data.length > 0) {
       if (InQty == '' || InQty == null || InQty == 'undefined' || InQty == 0) {
         this.toastr.warning('Please enter Indent Qty', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
       } 
-      return;
+      return  this.vsaveflag = false;
     }
-
-    if (!this.vQtyflag) {
-      this.vsaveflag = false;
-    }
+   
+    // if (!this.vQtyflag) {
+    //   this.vsaveflag = true;
+    // }
   }
 
 
@@ -135,15 +135,27 @@ debugger
       });
       return;
     }
+    // if (this.dsRaisedIndent.data.length > 0) {
+    //   this.dsRaisedIndent.data.forEach((element) => {
+    //     debugger
+    //     if (element.IndentQty == '' || element.IndentQty == null || element.IndentQty == 'undefined' || element.IndentQty == 0) {
+    //       this.toastr.warning('Please enter Indent Qty', 'Warning !', {
+    //         toastClass: 'tostr-tost custom-toast-warning',
+    //       });
+    //     }
+    //   });
+    //   return;
+    // }
     if (this.dsRaisedIndent.data.length > 0) {
-      this.dsRaisedIndent.data.forEach((element) => {
-        debugger
-        if (element.IndentQty == '' || element.IndentQty == null || element.IndentQty == 'undefined' || element.IndentQty == 0) {
-          this.toastr.warning('Please enter Indent Qty', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-        }
-      });
+     for(let i = 0;i == this.dsRaisedIndent.data.length;i++){
+      console.log(this.dsRaisedIndent.data[i])
+      console.log(this.dsRaisedIndent[i])
+      if (this.dsRaisedIndent[i].IndentQty == '' || this.dsRaisedIndent[i].IndentQty == null || this.dsRaisedIndent[i].IndentQty == 'undefined' || this.dsRaisedIndent[i].IndentQty== 0) {
+        this.toastr.warning('Please enter Indent Qty', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+      }
+     }
       return;
     }
 

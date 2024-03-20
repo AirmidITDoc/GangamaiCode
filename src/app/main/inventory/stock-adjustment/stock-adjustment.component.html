@@ -86,10 +86,18 @@
                                     Exp.Date
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <!-- <mat-form-field appearance="legacy">
-                                            <input matInput [(ngModel)]="contact.BatchExpDate" >
-                                        </mat-form-field> -->
-                                    {{contact.BatchExpDate | date: 'dd/MM/yyyy'}}
+                                    <ng-container *ngIf="!contact.Expeditable; else showInput">
+                                        {{contact.BatchExpDate}}
+                                        <button mat-icon-button (click)="ExpDateenableEditing(contact)">
+                                            <mat-icon>edit</mat-icon></button>
+                                    </ng-container>
+                                    <ng-template #showInput>
+                                       
+                                            <input [(ngModel)]="contact.BatchExpDate" type="number"
+                                                (blur)="ExpDatedisableEditing(contact)"
+                                                (keyup)="AddQty(contact,contact.BatchExpDate)">
+                                     
+                                    </ng-template>
                                 </mat-cell>
                             </ng-container>
 
@@ -111,23 +119,26 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Unit MRP</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.UnitMRP" type="number"
-                                           >
-                                    </mat-form-field>
-                                    <!-- {{contact.UnitMRP}} -->
+                                    {{contact.UnitMRP}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="PurchaseRate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Purchase Rate</mat-header-cell>
-
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.PurUnitRateWF" type="number">
-                                    </mat-form-field>
-                                    <!-- {{contact.PurUnitRateWF }} -->
+                                    <ng-container *ngIf="!contact.Rateeditable; else showInput">
+                                        {{contact.PurUnitRateWF}}
+                                        <button mat-icon-button (click)="RateenableEditing(contact)">
+                                            <mat-icon>edit</mat-icon></button>
+                                    </ng-container>
+                                    <ng-template #showInput>
+                                      
+                                            <input  [(ngModel)]="contact.PurUnitRateWF" type="number"  
+                                                (blur)="RatedisableEditing(contact)"
+                                                (keyup)="AddQty(contact,contact.PurUnitRateWF)">
+                                  
+                                    </ng-template>
                                 </mat-cell>
                             </ng-container>
 
@@ -158,54 +169,37 @@
                                 <mat-header-cell *matHeaderCellDef style="color: white;">
                                     Addition</mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                  <ng-container *ngIf="!contact.editable; else showInput">
-                                    <button mat-icon-button (click)="enableEditing(contact)">
-                                        <mat-icon>add</mat-icon></button>
-                                  </ng-container>
-                                  <ng-template #showInput>
-                                    <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.Addition" type="number"
-                                            (click)="AddQty(contact,contact.Addition)"  (blur)="disableEditing(contact)">
-                                    </mat-form-field>
-                                    <button mat-icon-button>
-                                        <mat-icon>check</mat-icon></button>
-                                  </ng-template>
+                                    <ng-container *ngIf="!contact.Addeditable; else showInput">
+                                        <button mat-icon-button (click)="enableEditing(contact)">
+                                            <mat-icon>add</mat-icon></button>
+                                    </ng-container>
+                                    <ng-template #showInput>
+                                        <mat-form-field appearance="legacy" class="w-60">
+                                            <input matInput [(ngModel)]="contact.AddQty" type="number"
+                                                (blur)="disableEditing(contact)"
+                                                (keyup)="AddQty(contact,contact.AddQty)">
+                                        </mat-form-field>
+                                    </ng-template>
                                 </mat-cell>
-                              </ng-container>
+                            </ng-container>
 
-                              <ng-container matColumnDef="Deduction">
+                            <ng-container matColumnDef="Deduction">
                                 <mat-header-cell *matHeaderCellDef style="color: white;">
                                     Deduction</mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                  <ng-container *ngIf="!contact.editable; else showInput">
-                                    <button mat-icon-button (click)="enableEditing(contact)">
-                                        <mat-icon>minimize</mat-icon></button>
-                                  </ng-container>
-                                  <ng-template #showInput>
-                                    <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.Deduction" type="number"
-                                            (click)="AddQty(contact,contact.Deduction)"  (blur)="disableEditing(contact)">
-                                    </mat-form-field>
-                                    <button mat-icon-button>
-                                        <mat-icon>check</mat-icon></button>
-                                  </ng-template>
+                                    <ng-container *ngIf="!contact.Dedueditable; else showInput">
+                                        <button mat-icon-button (click)="deduenableEditing(contact)">
+                                            <mat-icon>minimize</mat-icon></button>
+                                    </ng-container>
+                                    <ng-template #showInput>
+                                        <mat-form-field appearance="legacy" class="w-60">
+                                            <input matInput [(ngModel)]="contact.DeduQty" type="number"
+                                                (keyup)="DeduQty(contact,contact.DeduQty)"
+                                                (blur)="dedudisableEditing(contact)">
+                                        </mat-form-field>
+                                    </ng-template>
                                 </mat-cell>
-                              </ng-container>
-
-                            <!-- <ng-container matColumnDef="Deduction" stickend>
-                                <mat-header-cell *matHeaderCellDef style="color: white;">
-                                    Deduction</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.Deduction" type="number"
-                                            (click)="AddQty(contact,contact.Deduction)"
-                                           >
-                                    </mat-form-field>
-                                    <button mat-icon-button (click)="DeduQty(contact)" color="warn" value="0">
-                                        <mat-icon>edit</mat-icon>
-                                    </button>
-                                </mat-cell>
-                            </ng-container> -->
+                            </ng-container>
 
                             <ng-container matColumnDef="UpdatedQty">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>

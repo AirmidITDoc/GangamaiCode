@@ -72,15 +72,7 @@ export class StockAdjustmentComponent implements OnInit {
     this.gePharStoreList();
     this.getStockList();
   }
-  editable:boolean=false;
-  enableEditing(row: StockAdjList) {
-  
-    row.editable = true;
-  }
 
-  disableEditing(row: StockAdjList) {
-    row.editable = false;
-  }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -146,32 +138,78 @@ OnSelect(param){
 vStatus:any;
 vStockId:any;
 AddType:any;
-AddQty(contact){
-  if(contact.Qty > 0){
-    contact.UpdatedQty = contact.BalanceQty + contact.Qty ;
+vExpDate:any;
+vPurchaseRate:any;
+AddQty(contact,AddQty){
+  if(contact.AddQty > 0){
+    contact.UpdatedQty = contact.BalanceQty + contact.AddQty ;
     this.AddType = 1;
+    this.toastr.success(contact.AddQty + ' Qty Added Successfully.', 'Success !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+    this.OnSave();
+  }else{
+    contact.UpdatedQty = 0;
+  }
     this.vBatchNo=contact.BatchNo,
     this.vUpdatedQty = contact.UpdatedQty,
-    this.vQty=contact.Qty,
+    this.vQty=contact.AddQty,
     this.vBalQty=contact.BalanceQty,
     this.vMRP=contact.UnitMRP,
-    this.vStockId = contact.StockId
-    this.toastr.success(contact.Qty + ' Qty Added Successfully.', 'Success !', {
-      toastClass: 'tostr-tost custom-toast-success',
-    });
-  }
+    this.vStockId = contact.StockId,
+    this.vExpDate = contact.BatchExpDate
+    this.vPurchaseRate = contact.PurUnitRateWF
 }
-DeduQty(contact){
-  if(contact.Qty > 0){
-    contact.UpdatedQty = contact.BalanceQty - contact.Qty ;
+DeduQty(contact,DeduQty){
+  if(contact.DeduQty > 0){
+    contact.UpdatedQty = contact.BalanceQty - contact.DeduQty ;
     this.AddType=0;
-    this.toastr.success(contact.Qty + ' Qty Deduction Successfully.', 'Success !', {
+    this.vQty=contact.DeduQty,
+    this.toastr.success(contact.DeduQty + ' Qty Deduction Successfully.', 'Success !', {
       toastClass: 'tostr-tost custom-toast-success',
     });
-  } 
+    this.OnSave();
+  } else{
+    contact.UpdatedQty = 0;
+  }
+  this.OnSave();
 }
 
-
+Addeditable:boolean=false;
+Dedueditable:boolean=false;
+Expeditable:boolean=false;
+MRPeditable:boolean=false;
+Rateeditable:boolean=false;
+enableEditing(row: StockAdjList) {
+  row.Addeditable = true;
+}
+disableEditing(row: StockAdjList) {
+  row.Addeditable = false;
+}
+deduenableEditing(row: StockAdjList) {
+  row.Dedueditable = true;
+}
+dedudisableEditing(row: StockAdjList) {
+  row.Dedueditable = false;
+}
+RateenableEditing(row: StockAdjList) {
+  row.Rateeditable = true;
+}
+RatedisableEditing(row: StockAdjList) {
+  row.Rateeditable = false;
+}
+MRPenableEditing(row: StockAdjList) {
+  row.MRPeditable = true;
+}
+MRPdisableEditing(row: StockAdjList) {
+  row.MRPeditable = false;
+}
+ExpDateenableEditing(row: StockAdjList) {
+  row.Expeditable = true;
+}
+ExpDatedisableEditing(row: StockAdjList) {
+  row.Expeditable = false;
+}
 OnSave(){
   if ((!this.dsStockAdjList.data.length)) {
     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -258,7 +296,12 @@ export class StockAdjList {
   Landedrate:any;
   PurchaseRate:any;
   UpdatedQty:any;
-  editable:boolean=false;
+  Addeditable:boolean=false;
+  Dedueditable:boolean=false;
+  Rateeditable:boolean=false;
+  MRPeditable:boolean=false;
+  Expeditable:boolean=false;
+
   constructor(StockAdjList) {
     {
       this.BalQty = StockAdjList.BalQty || 0;
