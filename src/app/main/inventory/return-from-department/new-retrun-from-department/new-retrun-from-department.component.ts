@@ -40,7 +40,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
     'BatchNo',
     'BatchExpDate',
     'IssueQty',
-    //'ReturnQty',
+    'ReturnQty',
     'PerUnitLandedRate',
     'LandedTotalAmount',
     'UnitPurRate',
@@ -49,7 +49,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
     'MRPTotalAmount',
     'VatPercentage',
     'VatAmount',
-    //'StkId',
+    'StkId',
     'Action'
   ];
   dateTimeObj: any;
@@ -174,20 +174,20 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
         ItemId: param.ItemId || 0,
         ItemName: param.ItemName || '',
         BatchExpDate: param.BatchExpDate || 0,
-        IssueQty: param.PerUnitLandedRate || 0,
+        IssueQty: param.IssueQty || 0,
         PerUnitLandedRate: param.PerUnitLandedRate || 0,
         VatPercentage: param.VatPercentage || 0,
         LandedTotalAmount: param.LandedTotalAmount || 0,
         StkId: param.StkId || 0,
         IssueDepId: param.IssueDepId || 0,
-        IssueId: param.IssueDepId || 0,
-        BatchNo: param.IssueDepId || 0,
-        VatAmount: param.IssueDepId || 0,
-        UnitMRP: param.IssueDepId || 0,
-        MRPTotalAmount: param.IssueDepId || 0,
-        UnitPurRate: param.IssueDepId || 0,
-        PurTotalAmount: param.IssueDepId || 0,
-        IsBatchRequired: param.IssueDepId || 0,
+        IssueId: param.IssueId || 0,
+        BatchNo: param.BatchNo || 0,
+        VatAmount: param.VatAmount || 0,
+        UnitMRP: param.UnitMRP || 0,
+        MRPTotalAmount: param.MRPTotalAmount || 0,
+        UnitPurRate: param.UnitPurRate || 0,
+        PurTotalAmount: param.PurTotalAmount || 0,
+        IsBatchRequired: param.IsBatchRequired || 0,
       });
     this.sIsLoading = '';
     this.dsItemDetailsList.data = this.chargeslist;
@@ -202,7 +202,20 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
     return this.vLandedTotalAmount;
   }
   Celldatacalculation(contact,RetrunQty){
-
+    debugger
+    console.log(contact)
+    console.log(contact.ReturnQty)
+    if(contact.ReturnQty > 0){
+      contact.LandedTotalAmount = contact.ReturnQty * contact.PerUnitLandedRate;
+      contact.MRPTotalAmount = contact.ReturnQty * contact.UnitMRP;
+      contact.PurTotalAmount = contact.ReturnQty * contact.UnitPurRate;
+      contact.VatAmount = ((contact.VatPercentage * contact.MRPTotalAmount) / 100);
+    }else{
+      contact.LandedTotalAmount = 0;
+      contact.MRPTotalAmount = 0;
+      contact.PurTotalAmount = 0;
+      contact.VatAmount = 0;
+    }
   }
   OnSave() {
     if ((!this.dsIssueList.data.length)) {
@@ -255,7 +268,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
       // let remainingQty = 2// element.BalQty - element.ReturnQty;
       // let totalPurAmount = ((element.IssueQty) * (element.UnitPurRate)).toFixed(2);
 
-     // let RetrunQty = element.IssueQty
+      let remainingQty = element.IssueQty - element.ReturnQty
 
       let insertReturnDepartmentDetail = {};
       insertReturnDepartmentDetail['returnId'] = 0;
@@ -263,17 +276,17 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
       insertReturnDepartmentDetail['itemId'] = element.ItemId;
       insertReturnDepartmentDetail['batchNo'] = this._loggedService.currentUserValue.user.storeId;
       insertReturnDepartmentDetail['batchExpDate'] = element.BatchExpDate;
-      insertReturnDepartmentDetail['balQty'] = 0;//element.BalQty;
-      insertReturnDepartmentDetail['returnQty'] = 0;
-      insertReturnDepartmentDetail['remainingQty'] = 0;
+      insertReturnDepartmentDetail['balQty'] =element.IssueQty || 0
+      insertReturnDepartmentDetail['returnQty'] = element.ReturnQty || 0;
+      insertReturnDepartmentDetail['remainingQty'] = remainingQty || 0;
       insertReturnDepartmentDetail['unitLandedRate'] = element.PerUnitLandedRate || 0;
       insertReturnDepartmentDetail['totalLandedRate'] = element.LandedTotalAmount || 0;
-      insertReturnDepartmentDetail['unitPurchaseRate'] = element.UnitPurRate;
+      insertReturnDepartmentDetail['unitPurchaseRate'] = element.UnitPurRate || 0;
       insertReturnDepartmentDetail['totalPurAmount'] = element.PurTotalAmount || 0;
-      insertReturnDepartmentDetail['unitMRP'] = element.UnitMRP;
-      insertReturnDepartmentDetail['totalMRPAmount'] =element.MRPTotalAmount;
-      insertReturnDepartmentDetail['vatPer'] = element.VatPercentage;
-      insertReturnDepartmentDetail['vatAmount'] = element.VatAmount
+      insertReturnDepartmentDetail['unitMRP'] = element.UnitMRP || 0;
+      insertReturnDepartmentDetail['totalMRPAmount'] =element.MRPTotalAmount || 0;
+      insertReturnDepartmentDetail['vatPer'] = element.VatPercentage || 0;
+      insertReturnDepartmentDetail['vatAmount'] = element.VatAmount || 0;
       insertReturnDepartmentDetail['remark'] = this._ReturnToDepartmentList.userFormGroup.get('Remark').value || '';
 
 
@@ -380,6 +393,7 @@ export class ItemList {
   position: any;
   StkId:any;
   IssueId:any;
+  RetrunQty:any;
 
   constructor(ItemList) {
     {
