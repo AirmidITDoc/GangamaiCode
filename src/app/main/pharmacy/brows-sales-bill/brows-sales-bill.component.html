@@ -140,47 +140,40 @@
 
                                             <mat-table #table matSort [dataSource]="dssaleList1" [@animateStagger]="{value:'50'}">
                                                 <ng-container matColumnDef="action">
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                        style="color: white;">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
-                                                        <button mat-icon-button matTooltip="Print2"
-                                                            (click)="getPrint2(contact)">
+                                                        <button mat-icon-button matTooltip="Print2" (click)="getPrint2(contact)">
                                                             <mat-icon>print3</mat-icon>
                                                         </button>
-                                                        <button mat-icon-button matTooltip="View As Pdf"
-                                                            (click)="viewSalesPdf(contact)">
+                                                        <button mat-icon-button matTooltip="View As Pdf" (click)="viewSalesPdf(contact)">
                                                             <mat-icon>visibility</mat-icon>
                                                         </button>
-                                                     <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                                            (click)="getWhatsappshareSales(contact)">
-                                                            <img width="100" height="20px"
-                                                                src="assets/images/logos/WhatsApp.png">
-                                                    </button> 
-
-                                                    <!-- <button mat-icon-button matTooltip="Send Bill On Xls" (click)="expPrint(contact,'Excel')"
-                                                        matTooltip="Export To Excel">
-                                                        <img width="100" height="20px" src="assets/images/logos/xls.png">
-                                                    </button> -->
-
-                                                    
+                                                        <button mat-icon-button matTooltip="Send Bill On WhatsApp" (click)="getWhatsappshareSales(contact)">
+                                                            <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                                                        </button>
+                                                        <button mat-icon-button matTooltip="Credit Bill" *ngIf="contact.PaidType=='Credit'"
+                                                            (click)="OnPayment(contact)">
+                                                            <mat-icon>payment</mat-icon>
+                                                        </button>
                                                     </mat-cell>
                                                 </ng-container>
 
-
+<!-- 
                                                 <ng-container matColumnDef="payment">
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                        style="color: white;">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
-                                                        <mat-icon *ngIf="contact.PaidType=='Credit' "
+                                                        <button mat-icon-button matTooltip="Credit Bill" *ngIf="contact.PaidType=='Credit'"
+                                                        (click)="OnPayment(contact)">
+                                                        <mat-icon>payment</mat-icon>
+                                                    </button>
+
+                                                        <mat-icon *ngIf="contact.PaidType=='Credit'"
                                                             matTooltip="Credit Bill"
                                                             (click)="OnPayment(contact)">payment</mat-icon>
-                                                        <!-- <mat-icon
-                                                            *ngIf="contact.InterimOrFinal=='1' " matTooltip=" Final Bill "
-                                                            class="pill red-600 s-16 ">circle</mat-icon> -->
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container> -->
 
                                                 <ng-container matColumnDef="Date">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
@@ -211,10 +204,10 @@
 
 
                                                 <ng-container matColumnDef="PatientName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                                         Patient Name
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                                         {{contact.PatientName}}
                                                     </mat-cell>
                                                 </ng-container>
@@ -289,10 +282,10 @@
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;" id="app-table">
 
                                                 <ng-container matColumnDef="ItemName" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Item
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">Item
                                                         Name
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                                         {{contact.ItemName}}
                                                     </mat-cell>
                                                 </ng-container>
