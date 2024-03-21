@@ -141,9 +141,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
 
     let materialAcceptIssueDetails = [];
     this.tempItemlist.forEach((element) => {
-
       let materialAcceptIssueDetailsObj = {};
-
       materialAcceptIssueDetailsObj['issueId'] = element.IssueId;
       materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId;
       let statuschk
@@ -155,9 +153,14 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       materialAcceptIssueDetailsObj['status'] = statuschk;
       materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
     });
+
+    let materialAcceptStockUpdate = {};
+    materialAcceptStockUpdate['issueId'] = this.data.Obj.IssueId;
+
     let submitData = {
       "materialAcceptIssueHeader": materialAcceptIssueHeader,
       "materialAcceptIssueDetails": materialAcceptIssueDetails,
+      "materialAcceptStockUpdate":materialAcceptStockUpdate,
     };
     console.log(submitData);
     this._SalesReturn.AcceptmaterialSave(submitData).subscribe(response => {
