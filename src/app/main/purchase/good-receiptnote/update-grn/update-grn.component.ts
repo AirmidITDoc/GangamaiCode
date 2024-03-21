@@ -217,11 +217,13 @@ export class UpdateGRNComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.chkNewGRN == 2) {
       this.registerObj = this.data.Obj;
+      console.log(this.registerObj)
+      console.log(this.registerObj.SupplierId)
       this.InvoiceNo = this.registerObj.InvoiceNo;
       this.GateEntryNo = this.registerObj.GateEntryNo;
       this.SupplierId = this.registerObj.SupplierId;
       this.StoreId = this.registerObj.StoreId;
-
+     // this.getSupplierSearchCombo();
       if (this.registerObj.Cash_CreditType)
         this.vCahchecked = 1;
       if (!this.registerObj.Cash_CreditType)
@@ -232,7 +234,7 @@ export class UpdateGRNComponent implements OnInit {
         this.vGrntypechecked = 0;
       this.getGRNItemDetailList(this.registerObj);
     }
-    this.getSupplierSearchCombo();
+   // this.getSupplierSearchCombo();
     this.gePharStoreList();
     this.getGSTtypeList();
   }
@@ -315,19 +317,23 @@ export class UpdateGRNComponent implements OnInit {
     }
   }
   getSupplierSearchCombo() {
+    debugger
     var vdata={
       'SupplierName':`${this._GRNList.userFormGroup.get('SupplierId').value}%`,
     }
     this._GRNList.getSupplierSearchList(vdata).subscribe(data => {
       this.SupplierList = data;
+      console.log(this.SupplierList)
       this.optionsSupplier = this.SupplierList.slice();
       this.filteredoptionsSupplier = this._GRNList.userFormGroup.get('SupplierId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
       );
-      if (this.data) {
+    
+      if (this.data) { 
         const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierId);
         this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
+        console.log(toSelectSUpplierId)
         this.vMobile = toSelectSUpplierId.Mobile;
         this.vContact = toSelectSUpplierId.ContactPerson;
       }
@@ -355,7 +361,7 @@ export class UpdateGRNComponent implements OnInit {
       this.chargeslist = data as ItemNameList[];
       this.dsTempItemNameList.data = data as ItemNameList[];
       this.sIsLoading = '';
-      console.log(this.dsItemNameList);
+     // console.log(this.dsItemNameList);
     },
       error => {
         this.sIsLoading = '';
@@ -833,18 +839,16 @@ export class UpdateGRNComponent implements OnInit {
     this.vDisc2 = discamt2;
   }
   OnchekPurchaserateValidation() {
-  
-
+  debugger
     if (this.vRate) {
-      const rate = this._GRNList.userFormGroup.get('Rate').value
-      if (rate <= this.vMRP) {
+      if (parseFloat(this.vRate) <= parseFloat(this.vMRP)) {
         this.calculateTotalamt();
         
       } else {
         this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
-        this._GRNList.userFormGroup.get('Rate').setValue(0);
+        this._GRNList.userFormGroup.get('Rate').setValue('');
         this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
         this._GRNList.userFormGroup.get('DisAmount').setValue(0);
         this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
@@ -1136,7 +1140,7 @@ export class UpdateGRNComponent implements OnInit {
  
   OnSave() {
    // this.vsaveflag = true;
-   console.log(this.vPurchaseId)
+   //console.log(this.vPurchaseId)
     if (!this.vPurchaseId) {
       if (this.data.chkNewGRN == 1) {
         this.OnSavenew();

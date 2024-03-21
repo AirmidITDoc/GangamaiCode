@@ -242,15 +242,13 @@
 
                                     <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>MRP</mat-label>
-                                        <input matInput [(ngModel)]="vMRP" name="MRP"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
+                                        <input matInput [(ngModel)]="vMRP" name="MRP" onlyNumber
                                             formControlName="MRP" id="MRP" (keydown)="onEnterMRP($event)" #mrp  autocomplete="off" required>
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Rate</mat-label>
-                                        <input matInput [(ngModel)]="vRate" name="Rate"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
+                                        <input matInput [(ngModel)]="vRate" name="Rate" onlyNumber
                                             formControlName="Rate" id="Rate" (keydown)="onEnterRate($event)"
                                             (keyup)="OnchekPurchaserateValidation()"  #rate required>
                                     </mat-form-field>&nbsp;
