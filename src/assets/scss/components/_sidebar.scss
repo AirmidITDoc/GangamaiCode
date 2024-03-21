@@ -14,7 +14,9 @@ $sidebar-gap: 12px;
         }
         .sidebar-body {
             .sidebar-form {
-                padding: $sidebar-gap;
+                form{
+                    padding: $sidebar-gap;
+                }
             }
         }
         .mat-form-field {

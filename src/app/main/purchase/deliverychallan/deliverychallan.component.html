@@ -1,20 +1,18 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
     <mat-toolbar class="top-header accent">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle">
                 <mat-icon>menu</mat-icon>
             </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box</mat-icon>
-            <span class="=logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="color: white;">Delivery Challan List
+            <mat-icon class="logo-icon"
+                [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box</mat-icon>
+            <span class="=logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Delivery Challan List
             </span>
 
         </div>
-        <div fxLayout="row" fxLayoutGap="5px" style="margin-left:2% !important; ">
-            <button mat-raised-button (click)="newDelivery()"
-                style="background-color: aliceblue;color: brown;margin-left:2% !important">New Delivery
-
+        <div fxLayout="row" fxLayoutGap="5px">
+            <button mat-raised-button (click)="newDelivery()" style="background-color: aliceblue;color: brown;">New
+                Delivery
             </button>
         </div>
 
@@ -29,43 +27,39 @@
 
                         <div class="content">
                             <!-- SIDEBAR -->
-                            <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-                             margin-left:12px; background-color: white;height:100%;">
-                                <div>
+                            <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm"
+                                class="fuse-search-sidebar">
+                                <div class="sidebar-content">
                                     <!-- SIDEBAR HEADER -->
-                                    <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
-                                        style="margin-top: 3%">
+                                    <div class="sidebar-header accent" fxLayout="row" fxLayoutAlign="start center">
                                         <span class="search-title">Search Facility</span>
                                         <!-- / USER -->
                                     </div>
                                     <!-- / SIDEBAR HEADER -->
                                     <!-- SIDEBAR CONTENT -->
-                                    <div>
-                                        <div class="nav material2">
+                                    <div class="sidebar-body">
+                                        <div class="nav material2 sidebar-form">
 
-                                            <form [formGroup]="_DeliveryService.GRNSearchGroup"
-                                                style="padding: 6px 6px 5px 5px;">
+                                            <form [formGroup]="_DeliveryService.GRNSearchGroup">
                                                 <div fxLayout="column" fxLayoutAlign="start none">
-                                                    <br />
-
-                                                   
-                                                    <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                                    <mat-form-field appearance="outline">
                                                         <mat-label>Enter a date range</mat-label>
                                                         <mat-date-range-input [rangePicker]="picker">
-                                                            <input matStartDate formControlName="start" placeholder="Start date">
-                                                            <input matEndDate formControlName="end" placeholder="End date"
-                                                                (dateChange)="getGRNList()">
+                                                            <input matStartDate formControlName="start"
+                                                                placeholder="Start date">
+                                                            <input matEndDate formControlName="end"
+                                                                placeholder="End date" (dateChange)="getGRNList()">
                                                         </mat-date-range-input>
-                                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="picker"></mat-datepicker-toggle>
                                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="25%">
                                                         <mat-label>To Store</mat-label>
-                                                        <input matAutocompletePosition="below"  (keyup)="getGRNList()"
+                                                        <input matAutocompletePosition="below" (keyup)="getGRNList()"
                                                             placeholder="Select Payment" matInput
-                                                            formControlName="ToStoreId"
-                                                            [matAutocomplete]="autoTostore">
+                                                            formControlName="ToStoreId" [matAutocomplete]="autoTostore">
                                                         <span matSuffix style="display: flex;">
                                                             <mat-icon class="mat-icon-close"
                                                                 (click)="_DeliveryService.GRNSearchGroup.get('ToStoreId').setValue(''); isPaymentSelected = false;">close</mat-icon>
@@ -80,13 +74,13 @@
                                                                 {{option.StoreName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field>          
+                                                    </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="25%">
                                                         <mat-label>Supplier Name</mat-label>
-                                                        <input matAutocompletePosition="below" type="text" (keyup)="getGRNList()"
-                                                            placeholder="Select Supplier" matInput
-                                                            formControlName="SupplierId"
+                                                        <input matAutocompletePosition="below" type="text"
+                                                            (keyup)="getGRNList()" placeholder="Select Supplier"
+                                                            matInput formControlName="SupplierId"
                                                             [matAutocomplete]="autoSupllier">
                                                         <span matSuffix style="display: flex;">
                                                             <mat-icon class="mat-icon-close"
@@ -104,13 +98,15 @@
                                                         </mat-autocomplete>
                                                     </mat-form-field>
 
-                                                    <mat-radio-group name="Status1" formControlName="Status1" fxFlex="30%" value="0" 
-                                                    style="padding-top: 12px;">
-                                                    <mat-label >Status:</mat-label>&nbsp;
-                                                        <mat-radio-button value="1" class="mr-sm-12" (keyup)=" getGRNList()">Verified
-                                                          </mat-radio-button>
-                                                        <mat-radio-button value="0" class="mr-sm-12" (keyup)=" getGRNList()">Pending
-                                                            </mat-radio-button>
+                                                    <mat-radio-group name="Status1" formControlName="Status1"
+                                                        fxFlex="30%" value="0" style="padding-top: 12px;">
+                                                        <mat-label>Status:</mat-label>&nbsp;
+                                                        <mat-radio-button value="1" class="mr-sm-12"
+                                                            (keyup)=" getGRNList()">Verified
+                                                        </mat-radio-button>
+                                                        <mat-radio-button value="0" class="mr-sm-12"
+                                                            (keyup)=" getGRNList()">Pending
+                                                        </mat-radio-button>
                                                     </mat-radio-group>
 
                                                     <div style="margin-top: 10px;">
@@ -127,7 +123,7 @@
                                                 </div>
 
                                             </form>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -142,21 +138,21 @@
                                             <div fxlayout="row">
                                                 <div style="width: 100%;">
 
-                                                    <mat-table #table matSort class="table1"
-                                                        [dataSource]="dsGRNList" [@animateStagger]="{value:'50'}"
+                                                    <mat-table #table matSort class="table1" [dataSource]="dsGRNList"
+                                                        [@animateStagger]="{value:'50'}"
                                                         style="overflow: auto;width:100%;">
 
                                                         <ng-container matColumnDef="Status">
                                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                            style="color: white;">Verify</mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact">
-                                                            <mat-icon
-                                                                *ngIf="contact.IsVerified"  
-                                                                matTooltip="Verified" class="pill green-600 s-16">circle</mat-icon>
-                                                            <mat-icon
-                                                                *ngIf="!contact.IsVerified" matTooltip="Pending"
-                                                                class="pill red-600 s-16">circle</mat-icon>
-                                                        </mat-cell>
+                                                                style="color: white;">Verify</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact">
+                                                                <mat-icon *ngIf="contact.IsVerified"
+                                                                    matTooltip="Verified"
+                                                                    class="pill green-600 s-16">circle</mat-icon>
+                                                                <mat-icon *ngIf="!contact.IsVerified"
+                                                                    matTooltip="Pending"
+                                                                    class="pill red-600 s-16">circle</mat-icon>
+                                                            </mat-cell>
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="DeliveryNo">
@@ -294,20 +290,30 @@
                                                                     (click)="getPrint(row)">
                                                                     <mat-icon>print</mat-icon>
                                                                 </button>
-                                                                <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit">
-                                                                    <mat-icon title="Edit Menu"    *ngIf="row.IsVerified==1"  
-                                                                    [disabled]="row.disabled"  class="disabled-icon"> edit</mat-icon>
-                                                                    <mat-icon title="Edit Menu"    *ngIf="row.IsVerified==0"  > edit</mat-icon>
+                                                                <button mat-icon-button (click)="onEdit(row)"
+                                                                    matTooltip="Edit">
+                                                                    <mat-icon title="Edit Menu"
+                                                                        *ngIf="row.IsVerified==1"
+                                                                        [disabled]="row.disabled" class="disabled-icon">
+                                                                        edit</mat-icon>
+                                                                    <mat-icon title="Edit Menu"
+                                                                        *ngIf="row.IsVerified==0"> edit</mat-icon>
                                                                 </button>
-                                                                <button mat-icon-button (click)="onVerify(row)" matTooltip="Verify">
-                                                                    <mat-icon   *ngIf="row.IsVerified==1"   [disabled]="row.disabled"  class="disabled-icon"
-                                                                    title="verify Menu">verified_user</mat-icon>
-                                                                    <mat-icon title="verify Menu"  *ngIf="row.IsVerified==0"> verified_user</mat-icon>
+                                                                <button mat-icon-button (click)="onVerify(row)"
+                                                                    matTooltip="Verify">
+                                                                    <mat-icon *ngIf="row.IsVerified==1"
+                                                                        [disabled]="row.disabled" class="disabled-icon"
+                                                                        title="verify Menu">verified_user</mat-icon>
+                                                                    <mat-icon title="verify Menu"
+                                                                        *ngIf="row.IsVerified==0">
+                                                                        verified_user</mat-icon>
                                                                 </button>
                                                                 <button mat-icon-button>
-                                                                    <mat-icon  *ngIf="row.IsVerified==0" [disabled]="row.disabled"  class="disabled-icon"
+                                                                    <mat-icon *ngIf="row.IsVerified==0"
+                                                                        [disabled]="row.disabled" class="disabled-icon"
                                                                         title="Email Menu">mail</mat-icon>
-                                                                        <mat-icon *ngIf="row.IsVerified==1" title="Email Menu">mail</mat-icon>
+                                                                    <mat-icon *ngIf="row.IsVerified==1"
+                                                                        title="Email Menu">mail</mat-icon>
                                                                 </button>
                                                             </mat-cell>
                                                         </ng-container>
@@ -327,19 +333,17 @@
                                                             *matHeaderRowDef="displayedColumns; sticky: true">
                                                         </mat-header-row>
 
-                                                        <mat-row
-                                                            *matRowDef="let contact; columns: displayedColumns;"
-                                                            class="contact"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"
+                                                        <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                                            class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
                                                             (click)="getGrnItemDetailList(contact)"></mat-row>
                                                         <mat-footer-row *matFooterRowDef="['loading']"
                                                             [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>
                                                         <mat-footer-row *matFooterRowDef="['noData']"
                                                             [ngClass]="{'hide':!(dsGRNList!=null && dsGRNList.data.length==0)}"></mat-footer-row>
                                                     </mat-table>
-                                               
-                                                    <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]"
-                                                        [pageSize]="12" showFirstLastButtons>
+
+                                                    <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
+                                                        showFirstLastButtons>
                                                     </mat-paginator>
                                                 </div>
                                             </div>
@@ -355,14 +359,13 @@
                                             <div fxlayout="row">
                                                 <div style="width: 100%;">
 
-                                                      <mat-table #table matSort class="table2"
-                                                        [dataSource]="dsGrnItemList"
-                                                        [@animateStagger]="{value:'50'}"
+                                                    <mat-table #table matSort class="table2"
+                                                        [dataSource]="dsGrnItemList" [@animateStagger]="{value:'50'}"
                                                         style="overflow: auto;width:100%;">
 
                                                         <ng-container matColumnDef="ItemName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                fxHide fxShow.gt-sm>
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>
                                                                 ItemName
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -494,17 +497,16 @@
                                                         <mat-header-row class="accent"
                                                             *matHeaderRowDef="displayedColumns1; sticky: true">
                                                         </mat-header-row>
-                                                        <mat-row
-                                                            *matRowDef="let contact; columns: displayedColumns1;"
+                                                        <mat-row *matRowDef="let contact; columns: displayedColumns1;"
                                                             [@animate]="{value:'*',params:{y:'100%'}}">
                                                         </mat-row>
                                                         <mat-footer-row *matFooterRowDef="['loading']"
                                                             [ngClass]="{'hide':dsGrnItemList!=null}"></mat-footer-row>
                                                         <mat-footer-row *matFooterRowDef="['noData']"
                                                             [ngClass]="{'hide':!(dsGrnItemList!=null && dsGrnItemList.data.length==0)}"></mat-footer-row>
-                                                    </mat-table> 
-                                                    <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]"
-                                                        [pageSize]="12" showFirstLastButtons>
+                                                    </mat-table>
+                                                    <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
+                                                        showFirstLastButtons>
                                                     </mat-paginator>
                                                 </div>
                                             </div>
@@ -516,7 +518,7 @@
                     </div>
                 </mat-tab>
 
-             
+
             </mat-tab-group>
         </div>
     </div>
@@ -550,8 +552,7 @@
                     | Reg.No :-BIJ00467ALSSh </span>
 
             </div>
-            <span
-                style="font-size: 20px; text-transform: uppercase;font-weight: 500;margin-top: 20px;margin-left: 60px;
+            <span style="font-size: 20px; text-transform: uppercase;font-weight: 500;margin-top: 20px;margin-left: 60px;
                 color:black">Delivery Challan </span>
         </div>
         <hr>
@@ -590,7 +591,7 @@
                 <span style="font-size:11px;">{{reportPrintObjList[0]?.GSTNo}}</span>'
             </td>
             <td><span style="font-weight: 500;margin-right: 25px;margin-left: 300px;">Phone No</span>
-                <span style="font-size:11px;">  </span>
+                <span style="font-size:11px;"> </span>
             </td>
         </tr>
     </table>
@@ -627,7 +628,7 @@
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
                 background-color: red;color: white;">
                 GST </td>
-          
+
             <td style="border: 1px solid gray;font-weight:bold;text-align:center;vertical-align: middle;padding:10px 5px;
                background-color: red; border-top-right-radius: 20px;color: white;">
                 Net Amount</td>
@@ -649,16 +650,16 @@
             padding: 15px;height: 20px;">{{item?.TotalDiscAmount.toFixed(2)}}</td>
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.TotalVATAmount}}</td>
-            
+
             <td style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;">{{item?.NetPayble.toFixed(2)}}</td>
 
         </tr>
         <tr style="height:20px;">
-            
+
             <td colspan="3" style="border: 1px solid gray;vertical-align: top;
             padding: 15px;background-color: red;color: white;font-weight:bold;">Total</td>
-            
+
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
             padding: 15px;height: 20px;background-color: red;color: white;">{{TotalQty}}</td>
             <td style="border: 1px solid gray;vertical-align: top;font-weight:bold;
@@ -703,7 +704,7 @@
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
             padding: 15px;height: 20px;text-align: right;">{{TotalNetAmt.toFixed(2)}}</td>
         </tr>
-        <tr> 
+        <tr>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
              padding: 15px;text-align: left;">Discount</td>
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
@@ -717,7 +718,7 @@
             <td colspan="2" style="border: 1px solid gray;vertical-align: top;
              padding: 15px;height: 20px;text-align: right;">{{TotalGSTAmt.toFixed(2)}}</td>
         </tr>
-       
+
         <tr>
             <td colspan="5" style="font-weight: 500;border: 1px solid gray;vertical-align: top;
             padding: 15px;text-align: left; border-bottom-left-radius: 20px;">Total Amount in words :-</td>
@@ -749,4 +750,4 @@
 
 
 
-</div> 
+</div>

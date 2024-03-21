@@ -7,11 +7,12 @@ import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnDestroy, O
 export class DyanmicTableHeightDirective implements OnInit, AfterViewInit, OnDestroy {
     private observer: MutationObserver;
     public rootElement!: HTMLElement;
-    public tables!: Array<HTMLElement>;
-    public paginators!: Array<HTMLElement>;
+    public tableElements!: Array<HTMLElement>;
+    public paginatorElements!: Array<HTMLElement>;
     public totalPaginatorHeight: number = 0;
     public viewportHeight!: number;
     public tableTopHeight!: number;
+    public availableHeight!: number;
     public setTableHeight!: number;
     constructor(private el: ElementRef, private renderer2: Renderer2) { }
     ngOnInit(): void {
@@ -29,24 +30,23 @@ export class DyanmicTableHeightDirective implements OnInit, AfterViewInit, OnDes
     }
     public setDyanmicTableHeight(): void {
         this.viewportHeight = window.innerHeight;// 100vh Height
-        
-        this.tables = Array.from(this.rootElement.getElementsByTagName('mat-table')) as HTMLElement[];
-        if (this.tables && this.tables.length) {
 
-            this.tableTopHeight = this.tables[0].getBoundingClientRect().top;
-            this.paginators = Array.from(this.rootElement.getElementsByTagName('mat-paginator')) as HTMLElement[];
-            if (this.paginators && this.paginators.length) {
-                this.totalPaginatorHeight = this.paginators[0].clientHeight * this.paginators.length;
-            }
+        this.tableElements = Array.from(this.rootElement.getElementsByTagName('mat-table')) as HTMLElement[];
+        if (this.tableElements && this.tableElements.length) {
+
+            this.tableTopHeight = this.tableElements[0].getBoundingClientRect().top;
+            this.paginatorElements = Array.from(this.rootElement.getElementsByTagName('mat-paginator')) as HTMLElement[];
+            this.totalPaginatorHeight = this.paginatorElements.reduce((acc, paginator) => acc + paginator.clientHeight, 0);
+            // if (this.paginatorElements && this.paginatorElements.length) {
+            //     this.totalPaginatorHeight = this.paginatorElements[0].clientHeight * this.paginatorElements.length;
+            // }
             // This is new height of table. 12 is padding-bottom
-            this.setTableHeight = (this.viewportHeight - 12 - this.tableTopHeight - this.totalPaginatorHeight);
-            if (this.tables.length >= 2) {
-                this.setTableHeight = this.setTableHeight / 2;
-            }
+            this.availableHeight = this.viewportHeight - 12 - this.tableTopHeight - this.totalPaginatorHeight;
+            this.setTableHeight = this.tableElements.length >= 2 ? this.availableHeight / 2 : this.availableHeight;
             // Iterate each table element and set height
-            for (let element of this.tables) {
-                (element as HTMLElement).style.height = this.setTableHeight + 'px';
-            }
+            this.tableElements.forEach((element) => {
+                element.style.height = this.setTableHeight + 'px';
+            })
         }
     }
     @HostListener('window:resize', ['$event'])
