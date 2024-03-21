@@ -831,7 +831,8 @@
 
                                     <mat-form-field appearance="outline" fxFlex="22%">
                                         <mat-label>Remark</mat-label>
-                                        <input type="text" name="Remark" formControlName="Remark" matInput #remark>
+                                        <input type="text" name="Remark" formControlName="Remark" matInput #remark
+                                         [(ngModel)]="vremark" required>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="8%">
@@ -887,10 +888,10 @@
                                     <!-- [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0" -->
 
                                     <div class="sales-footer-buttons gap-8" fxLayout="row">
-                                        <button class="btn btn-primary " (click)="OnSave()"
-                                            [disabled]="vsaveflag">Save</button>
-
-                                        <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                                        <button class="btn btn-danger-outline" (click)="OnReset()" >Reset</button>
+                                        <button class="btn btn-primary " (click)="OnSave()" 
+                                            #save>Save</button>
+                                       
                                     </div>
                                 </div>
                             </form>

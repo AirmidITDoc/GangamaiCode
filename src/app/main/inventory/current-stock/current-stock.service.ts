@@ -103,8 +103,13 @@ export class CurrentStockService {
   public getPueSupplierWiseList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_PurchaseSupplierWiseList",Param);
   }
-  
-  
+  public getSalesList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_SalesList",Param);
+  }
+  public getSalesRetrunList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_SalesReturnList",Param);
+  }
+   
   public getItemFormList(param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",param);
   }

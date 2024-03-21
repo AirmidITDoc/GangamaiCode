@@ -129,8 +129,8 @@ export class PurchaseOrderService {
   public getGSTtypeList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants",Param);
   }
-  public getSupplierSearchList() {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", {});
+  public getSupplierSearchList(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", param);
   }
   public getLoggedStoreList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);

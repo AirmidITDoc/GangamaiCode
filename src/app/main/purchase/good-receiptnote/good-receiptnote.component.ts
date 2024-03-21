@@ -53,7 +53,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   ];
 
   displayedColumns1 = [
-    "select",
+    //"select",
     "ItemName",
     "BatchNo",
     "BatchExpDate",
@@ -246,8 +246,10 @@ export class GoodReceiptnoteComponent implements OnInit {
   }
 
   getSupplierSearchCombo() {
-
-    this._GRNService.getSupplierSearchList().subscribe(data => {
+    var vdata={
+      'SupplierName':`${this._GRNService.GRNSearchGroup.get('SupplierId').value}%`,
+    }
+    this._GRNService.getSupplierSearchList(vdata).subscribe(data => {
       this.SupplierList = data;
       this.optionsSupplier = this.SupplierList.slice();
       this.filteredoptionsSupplier = this._GRNService.GRNSearchGroup.get('SupplierId').valueChanges.pipe(
@@ -342,7 +344,10 @@ export class GoodReceiptnoteComponent implements OnInit {
       });
   }
   getSupplierSearchList1() {
-    this._GRNService.getSupplierSearchList().subscribe(data => {
+    var vdata={
+      'SupplierName':`${this._GRNService.GRNSearchGroup.get('SupplierId').value}%`,
+    }
+    this._GRNService.getSupplierSearchList(vdata).subscribe(data => {
       this.SupplierList = data;
     });
   }
@@ -916,6 +921,10 @@ export class ItemNameList {
       this.StkID = ItemNameList.StkID || 0;
       this.IsVerifiedId = ItemNameList.IsVerifiedId || 0;
       this.VerifiedDateTime = ItemNameList.VerifiedDateTime || 0;
+      this.ReceiveQty=ItemNameList.ReceiveQty || 0
+      this.ConversionFactor=ItemNameList.ConversionFactor || 0
+
+      
     }
   }
 }

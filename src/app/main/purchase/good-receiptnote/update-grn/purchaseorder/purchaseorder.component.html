@@ -10,14 +10,14 @@
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Purchase Order List
             </span>
-            <app-common-date [screenFrom]="screenFromString" style="margin-left: 890px;"
+            
+        </div>
+        <app-common-date [screenFrom]="screenFromString" style="margin-left: 910px;"
                 (dateTimeEventEmitter)="getDateTime($event)">
             </app-common-date>
-
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
+        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
     </mat-toolbar>
 
     <div class="content">

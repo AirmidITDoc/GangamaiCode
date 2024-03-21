@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { GrnListComponent } from './grn-list/grn-list.component';
 import { ToastrService } from 'ngx-toastr';
+import { GrnItemList } from '../good-receiptnote/good-receiptnote.component';
 
 @Component({
   selector: 'app-grn-return',
@@ -28,6 +29,8 @@ export class GRNReturnComponent implements OnInit {
   VsupplierId:any=0
   vfinalTotalAmount:any=0
   vfinalNetAmount:any=0
+  RQty:any=0;
+  vvatAmount:any=0
   displayedColumns = [
     'GRNReturnId',
     'GRNReturnNo',
@@ -41,22 +44,35 @@ export class GRNReturnComponent implements OnInit {
     'AddedBy',
     'action',
   ];
+  
+
+
   displayedColumns1 = [
+    // "Action",
     "ItemName",
     "BatchNo",
-    "BatchExpiryDate",
-    'Conversion',
+   
+    // "BatchExpDate"
+    // "ConversionFactor",
+    // "ReceiveQty",
     "ReturnQty",
-    'TotalQty',
-    'MRP',
-    "LandedRate",
-    "Totalamt",
-    "GST",
-    "GSTAmount",
-    "NetAmount",
-    "StkId",
+    // "FreeQty",
+    "MRP"
+    // "Rate"
+    // "TotalAmount"
+    // "VatPercentage",
+    // "DiscPercentage",
+    // "LandedRate",
+    // "NetAmount"
+    // "TotalQty",
+    // "stockid"
+    // "IsVerified",
+    // "IsVerifiedDatetime",
+    // "IsVerifiedUserId"
   ];
+
   displayedColumns2 = [
+    "Action",
     "GRNNO",
     "GRNDate",
     "SupplierName",
@@ -82,6 +98,7 @@ export class GRNReturnComponent implements OnInit {
 
   dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
   dsGRNReturnItemDetList = new MatTableDataSource<GRNReturnItemDetList>();
+  dsGRNReturnItemDetList1 = new MatTableDataSource<ItemNameList>();
   dsNewGRNReturnItemList = new MatTableDataSource<ItemNameList>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -93,8 +110,8 @@ export class GRNReturnComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-     private accountService: AuthenticationService,
-    
+    private _loggedService: AuthenticationService,
+    private accountService: AuthenticationService,
     public toastr: ToastrService,
   ) { }
 
@@ -102,6 +119,18 @@ export class GRNReturnComponent implements OnInit {
     this.getStoreList();
     this.getGRNReturnList();
     this.getSupplierSearchCombo();
+
+    this.filteredoptionsSupplier = this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterSupplier(value)),
+    );
+
+
+    this.filteredoptionsSupplier2 = this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterSupplier(value)),
+    );
+
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -119,34 +148,35 @@ export class GRNReturnComponent implements OnInit {
       this._GRNReturnService.NewGRNReturnFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
     });
   }
+  
+
+
   getSupplierSearchCombo() {
     this._GRNReturnService.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
-      // console.log(data);
-      this.optionsSupplier = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-      );
-      this.filteredoptionsSupplier2 = this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-      );
+      console.log(this.SupplierList )
+debugger
+      if (this.VsupplierId !=0) {
+        const ddValue = this.SupplierList.filter(c => c.SupplierId == this.VsupplierId);
+        this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').setValue(ddValue[0]);
+        this._GRNReturnService.NewGRNReturnFrom.updateValueAndValidity();
+        return;
+      } 
+      
     });
-
-    if (this.VsupplierId !=0) {
-      const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == this.VsupplierId);
-      this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').setValue(toSelectSUpplierId);
-     
-    }
-
   }
+
+
+
+
   private _filterSupplier(value: any): string[] {
     if (value) {
       const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-      return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
+
+      return this.SupplierList.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
     }
-  } 
+
+  }
   getOptionTextSupplier(option) {
     return option && option.SupplierName ? option.SupplierName : '';
   }
@@ -156,8 +186,8 @@ export class GRNReturnComponent implements OnInit {
   
   getTotalamt(element) {
     this.vfinalTotalAmount = (element.reduce((sum, { Totalamt }) => sum += +(Totalamt || 0), 0)).toFixed(2);
-  //  this.vlandedTotalAmount = (element.reduce((sum, { LandedRate }) => sum += +(LandedRate || 0), 0)).toFixed(2);
-  // this.vPureTotalAmount = (parseFloat(this.vPurchaseRate) + parseFloat(this.vPurchaseRate)).toFixed(2);
+   this.vvatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+  // this.vvatAmount = (parseFloat(this.vPurchaseRate) + parseFloat(this.vPurchaseRate)).toFixed(2);
     return this.vfinalTotalAmount;
   
   }
@@ -234,16 +264,151 @@ export class GRNReturnComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       console.log(result)
+     
       this.dsNewGRNReturnItemList.data = result as ItemNameList[];
-
-      console.log( this.dsNewGRNReturnItemList.data)
-      this.VsupplierId= result[0].SupplierId
+debugger
+      console.log(this.dsNewGRNReturnItemList.data)
+      this.VsupplierId= this.dsNewGRNReturnItemList.data[0]['SupplierId']
       this.getSupplierSearchCombo()
-      // const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierId);
-      // this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').setValue(toSelectSUpplierId);
+     this.getGrnItemDetailList(this.dsNewGRNReturnItemList.data[0])
+
+
+
     });
 }
 
+dsGrnItemList = new MatTableDataSource<ItemNameList>();
+getGrnItemDetailList(Params) {
+  this.sIsLoading = 'loading-data';
+  var Param = {
+    "GrnId": Params.GRNID
+  }
+  this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
+    this.dsGrnItemList.data = data as ItemNameList[];
+
+  //  this.VsupplierId=this.dsGrnItemList.data[0]['SupplierId'];
+  //  this.getSupplierSearchCombo();
+    this.sIsLoading = '';
+  },
+    error => {
+      this.sIsLoading = '';
+    });
+}
+
+
+SelectedArray: any = [];
+tableElementChecked(event, element) {
+  if (event.checked) {
+    this.SelectedArray.push(element);
+  }
+  console.log(this.SelectedArray)
+}
+
+getCellCalculation(contact, ReturnQty) {
+
+  this.SelectedArray.push(contact);
+
+  console.log(this.SelectedArray)
+  debugger
+  this.RQty = parseInt(ReturnQty);
+  if ((parseInt(this.RQty)) > (parseInt(contact.ReceiveQty))) {
+    Swal.fire("Return Qty cannot be greater than Qty")
+
+    contact.ReturnQty = parseInt(contact.Qty);
+    this.RQty = parseInt(contact.Qty);
+
+    let GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+
+    // let GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+    let vPurAmt = (parseFloat(contact.PurchaseRate) * parseInt(this.RQty)).toFixed(2);
+
+
+    let  vLandAmt = ((parseFloat(contact.landedRate) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+    let  VatAmount = ((parseFloat(contact.landedRate) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
+  
+  
+    let CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+    let SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+    let IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
+    let TotalAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+    
+    // this.TotalAmt = ((parseFloat(contact.UnitMRP) * parseInt(this.RQty)) - (parseFloat(this.DiscAmt))).toFixed(2);
+
+    
+      contact.SalesNo = contact.SalesNo,
+      contact.SalesDetId = contact.SalesDetId,
+      contact.OP_IP_ID = contact.OP_IP_ID,
+      contact.ItemName = contact.ItemName,
+      contact.BatchNo = contact.BatchNo,
+      contact.UnitMRP = contact.UnitMRP,
+      contact.Qty = contact.Qty,
+      contact.ReturnQty = contact.ReturnQty
+      contact.TotalAmount = TotalAmt,
+      contact.VatPer = contact.VatPer,
+      contact.VatAmount = VatAmount,
+      contact.DiscPer = 0,//contact.DiscPer,
+      contact.DiscAmount = 0,
+      contact.GrossAmount = GrossAmt,
+      contact.LandedPrice = contact.LandedPrice,
+      contact.TotalLandedAmount = vLandAmt,
+      contact.PurRateWf = contact.PurRateWf,
+      contact.PurTotAmt = vPurAmt,
+      contact.CGSTPer = contact.CGSTPer,
+      contact.CGSTAmount = CGSTAmount,
+      contact.SGSTPer = contact.SGSTPer,
+      contact.SGSTAmount = SGSTAmount,
+      contact.IGSTPer = contact.IGSTPer,
+      contact.IGSTAmount = IGSTAmount,
+      contact.IsPurRate = contact.IsPurRate,
+      contact.StkID = contact.StkID,
+      contact.conversionFactor=contact.ConversionFactor
+      contact.GrnDetID=contact.GRNDetID
+
+  }
+  else {
+    this.RQty = parseInt(ReturnQty);
+    // this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+    // this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+    // this.VatAmount = ((parseFloat(contact.UnitMRP) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
+    // this.CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+    // this.SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+    // this.IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
+    //this.TotalAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+    
+    // this.TotalAmt = ((parseFloat(contact.UnitMRP) * parseInt(this.RQty)) - (parseFloat(this.DiscAmt))).toFixed(2);
+
+  
+      contact.SalesNo = contact.SalesNo,
+      contact.SalesDetId = contact.SalesDetId,
+      contact.OP_IP_ID = contact.OP_IP_ID,
+      contact.ItemName = contact.ItemName,
+      contact.BatchNo = contact.BatchNo,
+      contact.UnitMRP = contact.UnitMRP,
+      contact.Qty = contact.Qty,
+      contact.ReturnQty = this.RQty,
+      // contact.TotalAmount = this.TotalAmt,
+      // contact.VatPer = contact.VatPer,
+      // contact.VatAmount = this.VatAmount,
+      // contact.DiscPer = contact.DiscPer,
+      // contact.DiscAmount = this.DiscAmt,
+      // contact.GrossAmount = this.GrossAmt,
+      // contact.LandedPrice = contact.LandedPrice,
+      // contact.TotalLandedAmount = this.LandAmt,
+      // contact.PurRateWf = contact.PurRateWf,
+      // contact.PurTotAmt = this.PurAmt,
+      // contact.CGSTPer = contact.CGSTPer,
+      // contact.CGSTAmount = this.CGSTAmount,
+      // contact.SGSTPer = contact.SGSTPer,
+      // contact.SGSTAmount = this.SGSTAmount,
+      // contact.IGSTPer = contact.IGSTPer,
+      // contact.IGSTAmount = this.IGSTAmount,
+      contact.IsPurRate = contact.IsPurRate,
+      contact.StkID = contact.StkID
+    // this.selectedssaleDetailList.data = this.Itemselectedlist;
+
+  }
+  
+}
 
 OnSave(){
   if ((!this.dsNewGRNReturnItemList.data.length)) {
@@ -252,14 +417,14 @@ OnSave(){
     });
     return;
   }
-  if ((!this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').value.SupplierId)) {
+  if ((!this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').value.SupplierId)) {
     this.toastr.warning('Please Select Supplier name.', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
     });
     return;
   }
 
-  debugger
+  
   let grnReturnSave = {};
   grnReturnSave['grnId'] = 0;
   grnReturnSave['grnReturnDate'] = this.dateTimeObj.date;
@@ -267,27 +432,27 @@ OnSave(){
   grnReturnSave['storeId'] =this._GRNReturnService.NewGRNReturnFrom.get('ToStoreId').value.StoreId;
   grnReturnSave['supplierID'] =this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').value.SupplierId
   grnReturnSave['totalAmount'] = parseFloat(this.vfinalTotalAmount);
-  grnReturnSave['grnReturnAmount'] = 1,//parseFloat(this.vfinalTotalAmount);
-  grnReturnSave['totalDiscAmount'] = '';
+  grnReturnSave['grnReturnAmount'] = parseFloat(this.vfinalTotalAmount);
+  grnReturnSave['totalDiscAmount'] = 0;
  
-  grnReturnSave['totalVATAmount'] =1,//this.accountService.currentUserValue.user.storeId;
+  grnReturnSave['totalVATAmount'] = this.vvatAmount;
   grnReturnSave['totalOtherTaxAmount'] =1,// parseFloat(this.vlandedTotalAmount);
   grnReturnSave['totalOctroiAmount'] = 1,//parseFloat(this.vPureTotalAmount);
   grnReturnSave['netAmount'] = parseFloat(this.vfinalNetAmount);
-  grnReturnSave['cash_Credit'] = this._GRNReturnService.NewGRNReturnFrom.get('CashType').value
+  grnReturnSave['cash_Credit'] = parseInt(this._GRNReturnService.NewGRNReturnFrom.get('CashType').value)
   grnReturnSave['remark'] = this._GRNReturnService.NewGRNRetFinalFrom.get('Remark').value
   grnReturnSave['isVerified'] =this.accountService.currentUserValue.user.storeId;
-  grnReturnSave['isClosed'] =1,// parseFloat(this.vlandedTotalAmount);
+  grnReturnSave['isClosed'] =1,
   grnReturnSave['addedby'] =this.accountService.currentUserValue.user.id || 0;
   grnReturnSave['isCancelled'] =1,// parseFloat(this.vPureTotalAmount);
   grnReturnSave['grnType'] = 1,//parseFloat(this.vfinalTotalAmount);
-  grnReturnSave['isGrnTypeFlag'] = '';
-  grnReturnSave['grnReturnId'] =1//this.accountService.currentUserValue.user.id || 0;
+  grnReturnSave['isGrnTypeFlag'] = 0;
+  grnReturnSave['grnReturnId'] =0
 
-
+debugger
   let grnReturnDetailSavearray=[];
-  this.dsNewGRNReturnItemList.data.forEach((element) => {
-
+  this.SelectedArray.forEach((element) => {
+console.log(element)
     // let vtotalMRPAmount = ((element.UsedQty) * (element.Rate)).toFixed(2);
     // let vatAmount = ((parseFloat(vtotalMRPAmount) * (element.VatPercentage)) / 100).toFixed(2)
     // let TotalNet = vtotalMRPAmount + vatAmount
@@ -301,16 +466,16 @@ OnSave(){
     grnDetailSaveObj['uomId'] = element.UOMId || 0;
     grnDetailSaveObj['receiveQty'] = element.ReceiveQty || 0;
     grnDetailSaveObj['freeQty'] = element.FreeQty || 0;
-    grnDetailSaveObj['mrp'] = element.UnitMRP || 0;
+    grnDetailSaveObj['mrp'] =  element.LandedRate ||element.UnitMRP || 0;
     grnDetailSaveObj['rate'] = element.Rate || 0;
     grnDetailSaveObj['totalAmount'] = element.TotalAmount || 0;
     grnDetailSaveObj['conversionFactor'] = element.ConversionFactor || 0;
     grnDetailSaveObj['vatPercentage'] = element.VatPercentage || 0;
     grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
-    grnDetailSaveObj['discPercentage'] = element.DiscPercentage || 0;
-    grnDetailSaveObj['discAmount'] = element.DiscAmount || 0;
-    grnDetailSaveObj['discPerc2'] = element.DiscPer2 || 0;
-    grnDetailSaveObj['discAmt2'] = element.DiscAmt2 || 0;
+    grnDetailSaveObj['discPercentage'] =0,// element.DiscPercentage || 0;
+    grnDetailSaveObj['discAmount'] =0,// element.DiscAmount || 0;
+    grnDetailSaveObj['discPerc2'] = 0,//element.DiscPer2 || 0;
+    grnDetailSaveObj['discAmt2'] = 0,//element.DiscAmt2 || 0;
     grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
     grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
     grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
@@ -339,21 +504,21 @@ OnSave(){
   });
 
   let grnReturnUpdateCurrentStockarray = [];
-  this.dsNewGRNReturnItemList.data.forEach((element) => {
+  this.SelectedArray.forEach((element) => {
     let grnReturnUpdateCurrentStockObj = {};
     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
-    grnReturnUpdateCurrentStockObj['issueQty'] = element.CGSTPer || 0;
-    grnReturnUpdateCurrentStockObj['stkId'] = element.SGSTPer || 0;
-    grnReturnUpdateCurrentStockObj['storeID'] = element.IGSTPer || 0;
+    grnReturnUpdateCurrentStockObj['issueQty'] = element.ReceiveQty || 0;
+    grnReturnUpdateCurrentStockObj['stkId'] = element.StkID || 0;
+    grnReturnUpdateCurrentStockObj['storeID'] = element.StoreId || 0;
     
     grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);
   });
 
   let grnReturnUpateReturnQtyarray = [];
-  this.dsNewGRNReturnItemList.data.forEach((element) => {
+  this.SelectedArray.forEach((element) => {
     let grnReturnUpateReturnQty = {};
-    grnReturnUpateReturnQty['grnDetID'] = element.PurchaseId || 0;
-    grnReturnUpateReturnQty['returnQty'] = element.PurDetId || 0;
+    grnReturnUpateReturnQty['grnDetID'] = element.GRNDetID || 0;
+    grnReturnUpateReturnQty['returnQty'] = element.ReturnQty || 0;
   
     grnReturnUpateReturnQtyarray.push(grnReturnUpateReturnQty);
   });
@@ -416,6 +581,7 @@ export class GRNReturnList {
 }
 
 export class GRNReturnItemDetList {
+
   ItemName: string;
   BatchNo: number;
   BatchExpiryDate: number;
@@ -598,6 +764,8 @@ export class ItemNameList {
   IsVerifiedId:any
   VerifiedDateTime:any;
   PurchaseID:any;
+  GrnDetID:any;
+  ReturnQty:any;
   /**
    * Constructor
    *
@@ -605,7 +773,7 @@ export class ItemNameList {
    */
   constructor(ItemNameList) {
     {
-
+    
       this.ItemName = ItemNameList.ItemName || "";
       this.UOMId = ItemNameList.UOMId || 0;
       this.HSNCode = ItemNameList.HSNCode || 0;
@@ -673,6 +841,8 @@ export class ItemNameList {
       this.StkID = ItemNameList.StkID || 0;
       this.IsVerifiedId = ItemNameList.IsVerifiedId || 0;
       this.VerifiedDateTime = ItemNameList.VerifiedDateTime || 0;
+      this.GrnDetID = ItemNameList.GrnDetID || 0; 
+       this.ReturnQty = ItemNameList.ReturnQty || 0;
     }
   }
 }

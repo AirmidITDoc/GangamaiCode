@@ -32,25 +32,18 @@ export class StockAdjustmentComponent implements OnInit {
     'UnitMRP',
     'PurchaseRate',
     'BalQty',
+    'Addition',
+    'Deduction',
+    'UpdatedQty'
   ];
 
   sIsLoading: string = '';
   isLoading = true;
   StoreList:any=[];
   screenFromString = 'admission-form';
-  VQty:any;
-  VBatchNO:any;
   isItemIdSelected: boolean = false;
-  registerObj = new RegInsert({});
- 
    ItemName: any;
    ItemId: any;
-   BalanceQty:any;
-   MRP:any;
-   Qty:any;
-   UpdatedQty:any;
-   result:any;
-
    dateTimeObj: any;
    ItemList:any=[];
    OptionsItemName: any;
@@ -70,6 +63,7 @@ export class StockAdjustmentComponent implements OnInit {
   constructor(
     public _StockAdjustment: StockAdjustmentService,
     private _loggedService: AuthenticationService,
+    private accountService: AuthenticationService,
     public datePipe: DatePipe,  
     public toastr: ToastrService,
   ) { }
@@ -88,13 +82,16 @@ export class StockAdjustmentComponent implements OnInit {
     }
     this._StockAdjustment.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
-      this._StockAdjustment.userFormGroup.get('StoreId').setValue(this.StoreList[0]);
+      this._StockAdjustment.StoreFrom.get('StoreId').setValue(this.StoreList[0]);
     });
   }
 getSearchList() {
-    this._StockAdjustment.getItemlist().subscribe(resData => {
+    var vdata = {
+      "ItemName": `${this._StockAdjustment.userFormGroup.get('ItemID').value}%` 
+    }
+    this._StockAdjustment.getItemlist(vdata).subscribe(resData => {
       this.ItemList = resData;
-      console.log(this.ItemList)
+      //console.log(this.ItemList)
       this.OptionsItemName = this.ItemList.slice();
       this.filteredoptionsItemName = this._StockAdjustment.userFormGroup.get('ItemID').valueChanges.pipe(
        startWith(''),
@@ -112,14 +109,14 @@ getOptionTextItemName(option) {
   return option && option.ItemName ? option.ItemName : '';
 } 
 getSelectedObj(obj){
-console.log(obj);
+//console.log(obj);
 this.getStockList();
 }
 
 getStockList() {
   var Param = {
     "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
-    "ItemId": this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0,
+    "ItemId": this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0, //56784
   }
   console.log(Param)
   this._StockAdjustment.getStockList(Param).subscribe(data => {
@@ -135,21 +132,83 @@ getStockList() {
 }
 
 OnSelect(param){
-  this.VBatchNO=param.BatchNo,
-  this.BalanceQty=param.BalanceQty,
-  this.Qty=param.BalanceQty,
-  this.MRP=param.UnitMRP
-  console.log(param);
+ // console.log(param);
+ 
 } 
-
-addition(){
-var q=this._StockAdjustment.userFormGroup.get('Qty').value;
-  this.UpdatedQty = this.BalanceQty + q;
-  
+vStatus:any;
+vStockId:any;
+AddType:any;
+vExpDate:any;
+vPurchaseRate:any;
+AddQty(contact,AddQty){
+  if(contact.AddQty > 0){
+    contact.UpdatedQty = contact.BalanceQty + contact.AddQty ;
+    this.AddType = 1;
+    this.toastr.success(contact.AddQty + ' Qty Added Successfully.', 'Success !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+    this.OnSave();
+  }else{
+    contact.UpdatedQty = 0;
+  }
+    this.vBatchNo=contact.BatchNo,
+    this.vUpdatedQty = contact.UpdatedQty,
+    this.vQty=contact.AddQty,
+    this.vBalQty=contact.BalanceQty,
+    this.vMRP=contact.UnitMRP,
+    this.vStockId = contact.StockId,
+    this.vExpDate = contact.BatchExpDate
+    this.vPurchaseRate = contact.PurUnitRateWF
 }
-Substraction(){
-  this.UpdatedQty =  this.BalanceQty - this.Qty;
-  
+DeduQty(contact,DeduQty){
+  if(contact.DeduQty > 0){
+    contact.UpdatedQty = contact.BalanceQty - contact.DeduQty ;
+    this.AddType=0;
+    this.vQty=contact.DeduQty,
+    this.toastr.success(contact.DeduQty + ' Qty Deduction Successfully.', 'Success !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+    this.OnSave();
+  } else{
+    contact.UpdatedQty = 0;
+  }
+  this.OnSave();
+}
+
+Addeditable:boolean=false;
+Dedueditable:boolean=false;
+Expeditable:boolean=false;
+MRPeditable:boolean=false;
+Rateeditable:boolean=false;
+enableEditing(row: StockAdjList) {
+  row.Addeditable = true;
+}
+disableEditing(row: StockAdjList) {
+  row.Addeditable = false;
+}
+deduenableEditing(row: StockAdjList) {
+  row.Dedueditable = true;
+}
+dedudisableEditing(row: StockAdjList) {
+  row.Dedueditable = false;
+}
+RateenableEditing(row: StockAdjList) {
+  row.Rateeditable = true;
+}
+RatedisableEditing(row: StockAdjList) {
+  row.Rateeditable = false;
+}
+MRPenableEditing(row: StockAdjList) {
+  row.MRPeditable = true;
+}
+MRPdisableEditing(row: StockAdjList) {
+  row.MRPeditable = false;
+}
+ExpDateenableEditing(row: StockAdjList) {
+  row.Expeditable = true;
+}
+ExpDatedisableEditing(row: StockAdjList) {
+  row.Expeditable = false;
 }
 OnSave(){
   if ((!this.dsStockAdjList.data.length)) {
@@ -158,14 +217,77 @@ OnSave(){
     });
     return;
   }
+  if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+    this.toastr.warning('Please enter a vQty', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  let insertMRPStockadju ={};
+  insertMRPStockadju['storeID']= this.accountService.currentUserValue.user.storeId || 0;
+  insertMRPStockadju['itemId']=  this._StockAdjustment.userFormGroup.get('ItemID').value.ItemId || 0;
+  insertMRPStockadju['batchNo']= this.vBatchNo || '';
+  insertMRPStockadju['ad_DD_Type']=  this.AddType ;
+  insertMRPStockadju['ad_DD_Qty']= this.vQty || 0;
+  insertMRPStockadju['preBalQty']= this.vBalQty ||  0;
+  insertMRPStockadju['afterBalQty']= this.vUpdatedQty ||  0;
+  insertMRPStockadju['mrpAdg']= this.vMRP ||  0;
+  insertMRPStockadju['addedBy']= this.accountService.currentUserValue.user.id || 0;
+  insertMRPStockadju['updatedBy']=this.accountService.currentUserValue.user.id || 0;
+  insertMRPStockadju['date']= this.dateTimeObj.date;
+  insertMRPStockadju['time']= this.dateTimeObj.time;
+  insertMRPStockadju['stockAdgId']=this.vStockId || 0;
+
+  let updatecurrentstockadjyadd ={};
+  updatecurrentstockadjyadd['storeId']= this.accountService.currentUserValue.user.storeId || 0;
+  updatecurrentstockadjyadd['stockId']= this.vStockId || 0;
+  updatecurrentstockadjyadd['itemId']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemId || 0;
+  updatecurrentstockadjyadd['receivedQty']=  this.vUpdatedQty || 0;
+
+  let updatecurrentstockadjydedu ={};
+  updatecurrentstockadjydedu['storeId']= this.accountService.currentUserValue.user.storeId || 0;
+  updatecurrentstockadjydedu['stockId']= this.vStockId || 0
+  updatecurrentstockadjydedu['itemId']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemId || 0;
+  updatecurrentstockadjydedu['receivedQty']=  this.vUpdatedQty || 0;
+
+  let insertitemmovstockadd ={};
+  insertitemmovstockadd['id']=0;
+  insertitemmovstockadd['typeId']=0;
+
+  let insertitemmovstockdedu ={};
+  insertitemmovstockdedu['id']=0;
+  insertitemmovstockdedu['typeId']=0;
+
+  let submitData ={
+    'insertMRPStockadju':insertMRPStockadju,
+    'updatecurrentstockadjyadd':updatecurrentstockadjyadd,
+    'updatecurrentstockadjydedu':updatecurrentstockadjydedu,
+    'insertitemmovstockadd':insertitemmovstockadd,
+    'insertitemmovstockdedu':insertitemmovstockdedu
+  }
+  console.log(submitData);
+  this._StockAdjustment.StockAdjSave(submitData).subscribe(response => {
+    if (response) {
+      this.toastr.success('Record Stock Adjustment Saved Successfully.', 'Saved !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+      this.OnReset();
+    } else {
+      this.toastr.error('Stock Adjustment Data not saved !, Please check error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }
+  }, error => {
+    this.toastr.error('Stock Adjustment Data not saved !, Please check API error..', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  });
 }
+
  OnReset(){
   this._StockAdjustment.userFormGroup.reset();
  }
 }
-
- 
-
 export class StockAdjList {
   BalQty: any;
   BatchNo: number;
@@ -173,7 +295,13 @@ export class StockAdjList {
   UnitMRP:number;
   Landedrate:any;
   PurchaseRate:any;
- 
+  UpdatedQty:any;
+  Addeditable:boolean=false;
+  Dedueditable:boolean=false;
+  Rateeditable:boolean=false;
+  MRPeditable:boolean=false;
+  Expeditable:boolean=false;
+
   constructor(StockAdjList) {
     {
       this.BalQty = StockAdjList.BalQty || 0;
@@ -182,6 +310,7 @@ export class StockAdjList {
       this.UnitMRP = StockAdjList.UnitMRP|| 0;
       this.Landedrate = StockAdjList.Landedrate || 0;
       this.PurchaseRate =StockAdjList.PurchaseRate || 0;
+      this.UpdatedQty = StockAdjList.UpdatedQty || 0;
     }
   }
 }

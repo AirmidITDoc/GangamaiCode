@@ -109,8 +109,8 @@ export class IssueToDepartmentService {
   
 
 
-  public getIssueToDeptsummaryview(FromDate,Todate ,FromStoreId,ToStoreId){
-    return this._httpClient.get("/api/InventoryTransaction/view-IssuetoDeptSummary?FromDate=" + FromDate+"&Todate ="+Todate  +"&FromStoreId="+FromStoreId  +"&ToStoreId="+ToStoreId);
+  public getIssueToDeptsummaryview(FromDate,Todate,FromStoreId,ToStoreId){
+    return this._httpClient.get("InventoryTransaction/view-IssuetoDeptSummary?FromDate=" + FromDate + "&Todate ="+Todate  + "&FromStoreId="+FromStoreId  +"&ToStoreId="+ToStoreId);
   }
   public getIndentItemBatch(emp){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",emp);
