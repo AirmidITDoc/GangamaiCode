@@ -772,14 +772,10 @@ if(!DuplicateItem){
         this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
         this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
         return this.vFinalTotalAmount;
-
-
     }
 
     OnSave() {
         this.vsaveflag = true;
-
-
         if ((!this.dsNewIssueList3.data.length)) {
             this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',

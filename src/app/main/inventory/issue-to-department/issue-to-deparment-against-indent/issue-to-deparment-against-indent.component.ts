@@ -66,7 +66,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   getIndentList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "ToStoreId": 10003,//this._loggedService.currentUserValue.user.storeId,
+      "ToStoreId": this._loggedService.currentUserValue.user.storeId,
       "From_Dt": this.datePipe.transform(this._IssueToDep.IndentFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._IssueToDep.IndentFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "Status": this._IssueToDep.IndentFrom.get('Status').value
@@ -74,7 +74,6 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     console.log(vdata);
     this._IssueToDep.getIndentList(vdata).subscribe(data => {
       this.dsIndentList.data = data as IndentList[];
-      console.log(this.dsIndentList);
       this.dsIndentList.sort = this.sort;
       this.dsIndentList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -88,11 +87,9 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     var vdata = {
       'IndentId':Param.IndentId  
     }
-   // console.log(vdata);
     this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
       this.dsIndentItemDetList.data = data as IndentItemDetList[];
       this.Charglist = this.dsIndentItemDetList.data;
-     console.log(this.dsIndentItemDetList);
       this.dsIndentItemDetList.sort = this.sort;
       this.dsIndentItemDetList.paginator = this.paginator;
       this.sIsLoading = '';
