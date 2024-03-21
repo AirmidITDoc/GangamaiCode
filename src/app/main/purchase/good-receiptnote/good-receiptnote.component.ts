@@ -531,7 +531,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
   onEdit(contact) {
       this.chkNewGRN = 2;
-      console.log(contact)
+      //console.log(contact)
       const dialogRef = this._matDialog.open(UpdateGRNComponent,
         {
           maxWidth: "100%",
@@ -846,6 +846,7 @@ export class ItemNameList {
   IsVerifiedId:any
   VerifiedDateTime:any;
   PurchaseID:any;
+  SupplierName:any;
   /**
    * Constructor
    *

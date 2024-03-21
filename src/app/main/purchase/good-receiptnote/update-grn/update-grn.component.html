@@ -60,9 +60,9 @@
                                         <mat-form-field appearance="outline" fxFlex="13%">
                                             <mat-label>Supplier Name | Code</mat-label>
                                             <input matAutocompletePosition="below" type="text"
-                                                [(ngModel)]="registerObj.SupplierId" (keydown)="onEnterSupplier($event)"
+                                                [(ngModel)]="vSupplierId" (keydown)="onEnterSupplier($event)"
                                                 placeholder="Select Supplier" matInput formControlName="SupplierId"
-                                                [matAutocomplete]="autoSupllier" required>
+                                                [matAutocomplete]="autoSupllier" required (input)="getSupplierSearchCombo()">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_GRNList.userFormGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
@@ -72,8 +72,7 @@
                                             <mat-autocomplete #autoSupllier="matAutocomplete"
                                                 [displayWith]="getOptionTextSupplier"
                                                 (optionSelected)='getSelectedSupplierObj($event.option.value)'>
-                                                <mat-option *ngFor="let option of filteredoptionsSupplier | async"
-                                                    [value]="option">
+                                                <mat-option *ngFor="let option of filteredOptionssupplier"  [value]="option">
                                                     {{option.SupplierName}} || {{option.SupplierId}}
                                                 </mat-option>
                                             </mat-autocomplete>
