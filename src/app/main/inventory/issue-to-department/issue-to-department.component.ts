@@ -49,6 +49,7 @@ export class IssueToDepartmentComponent implements OnInit {
         'NetAmount',
         'Remark',
         'Receivedby',
+        'IsAccepted',
         'action'
     ];
     displayedColumns1: string[] = [
