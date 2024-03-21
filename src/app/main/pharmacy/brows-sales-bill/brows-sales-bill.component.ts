@@ -69,7 +69,7 @@ export class BrowsSalesBillComponent implements OnInit {
     'action',
     //  'action1',
     //  'action2',
-    'payment',
+    // 'payment',
     'Date',
     'SalesNo',
     'RegNo',
