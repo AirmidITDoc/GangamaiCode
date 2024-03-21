@@ -232,7 +232,6 @@ export class UpdateGRNComponent implements OnInit {
         this.vGrntypechecked = 0;
       this.getGRNItemDetailList(this.registerObj);
     }
-    // this.getSupplierSearchCombo();
     this.gePharStoreList();
     this.getGSTtypeList();
   }
@@ -314,56 +313,31 @@ export class UpdateGRNComponent implements OnInit {
       this._GRNList.userFormGroup.get('GSTType').setValue(toSelectGSTType);
     }
   }
-  // getSupplierSearchCombo1() {
-  //   debugger
-  //   var vdata={
-  //     'SupplierName': `${this._GRNList.userFormGroup.get('SupplierId').value}%` || `${this.registerObj.SupplierName}%`
-  //   }
-  //   this._GRNList.getSupplierSearchList(vdata).subscribe(data => {
-  //     this.SupplierList = data;
-  //     console.log(this.SupplierList)
-  //     this.optionsSupplier = this.SupplierList.slice();
-  //     this.filteredoptionsSupplier = this._GRNList.userFormGroup.get('SupplierId').valueChanges.pipe(
-  //       startWith(''),
-  //       map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-  //     );
-  //     if (this.data) { 
-  //       const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierId);
-  //       this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
-  //       this._GRNList.userFormGroup.get('SupplierId').setValue(this.registerObj.SupplierName);
-  //       console.log(toSelectSUpplierId)
-  //       this.vMobile = toSelectSUpplierId.Mobile;
-  //       this.vContact = toSelectSUpplierId.ContactPerson;
-  //       this._GRNList.userFormGroup.get('SupplierId').setValue(this.SupplierList[0]);
-  //     }
-  //   });
-  // }
-  private _filterSupplier(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-      return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
-    }
-  }
+
+
   filteredOptionssupplier:any;
   noOptionFoundsupplier:any;
   vSupplierId:any;
   getSupplierSearchCombo() {
+    let vsupplierName:any;
+    if(this.registerObj.SupplierName){
+      vsupplierName = this.registerObj.SupplierName;
+    }else{
+      vsupplierName = this.vPurchaseOrderSupplierId ;
+    }
     var m_data = {
-      'SupplierName': `${this._GRNList.userFormGroup.get('SupplierId').value}%` || `${this.registerObj.SupplierName}%`
+      'SupplierName': `${this._GRNList.userFormGroup.get('SupplierId').value}%` || `${vsupplierName}%`
     }
     this._GRNList.getSupplierSearchList(m_data).subscribe(data => {
       this.filteredOptionssupplier = data;
-      //console.log(this.filteredOptionssupplier)
       if (this.filteredOptionssupplier.length == 0) {
         this.noOptionFoundsupplier = true;
       } else {
         this.noOptionFoundsupplier = false;
       }
-      debugger
       if (this.data) { 
         const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierId);
         this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
-        console.log(toSelectSUpplierId)
         this.vMobile = toSelectSUpplierId.Mobile;
         this.vContact = toSelectSUpplierId.ContactPerson;
         this.vSupplierId =toSelectSUpplierId.SupplierName;
@@ -712,7 +686,6 @@ export class UpdateGRNComponent implements OnInit {
     this.calculateDiscperAmount();
   }
   calculateDiscperAmount() {
-    debugger
     let IGSTPer = 0;
     this.vIGST = IGSTPer
     let disc = this._GRNList.userFormGroup.get('Disc').value || 0;
@@ -1918,12 +1891,22 @@ export class UpdateGRNComponent implements OnInit {
   onClose() {
     this.dialogRef.close();
   }
-
+  getPotoGrnsupplier( ) {
+    var m_data = {
+      'SupplierName':'%'
+    }
+   
+    this._GRNList.getSupplierSearchList(m_data).subscribe(data => {
+   this.SupplierList = data;
+   console.log(this.SupplierList)
+    });
+  }
   FinalTotalQty1: any = 0;
   FinalLandedrate1: any = 0;
   FinalpurUnitRate1: any = 0;
   FinalpurUnitrateWF1: any = 0;
   FinalUnitMRP1: any = 0;
+  vPurchaseOrderSupplierId:any;
   PurchaseOrderList() {
     const _dialogRef = this._matDialog.open(PurchaseorderComponent,
       {
@@ -1933,27 +1916,35 @@ export class UpdateGRNComponent implements OnInit {
       });
 
     _dialogRef.afterClosed().subscribe(result => {
-      this.getSupplierSearchCombo();
+    
+      this.getPotoGrnsupplier()
       console.log(result)
       this.vPurchaseId = result[0].PurchaseID;
       this.vpoBalQty = result[0].ReceiveQty;
+      this.vPurchaseOrderSupplierId = result[0].SupplierName
       let other = result[0].FreightCharges + result[0].HandlingCharges + result[0].TransportChanges + result[0].OctriAmount
       this._GRNList.GRNFinalForm.get('OtherCharge').setValue(other);
       this._GRNList.GRNFinalForm.get('Remark').setValue(result[0].Remarks);
 
-      // const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
-      // this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
-      // this.vMobile = toSelectSUpplierId.Mobile;
-      // this.vContact = toSelectSUpplierId.ContactPerson;
-      const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == result[0].SupplierID);
-      this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
-      // this.vMobile = toSelectSUpplierId.Mobile;
-      // this.vContact = toSelectSUpplierId.ContactPerson;
-      // this.vSupplierId =toSelectSUpplierId.SupplierName;
-      this._GRNList.userFormGroup.get('SupplierId').setValue(this.filteredOptionssupplier[0]);
+      this.getSupplierSearchCombo();
+    //   debugger
+    // //  const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
+    //   const toSelectSUpplierId = this.SupplierList.data.find(item => item.SupplierId === result[0].SupplierID);
+    //   console.log(toSelectSUpplierId)
+    //   this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
+    //   this.vMobile = toSelectSUpplierId.Mobile;
+    //   this.vContact = toSelectSUpplierId.ContactPerson;
+    //   this._GRNList.userFormGroup.get('SupplierId').setValue(this.SupplierList[0]);
+
+
+    //  const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == result[0].SupplierID);
+    //  this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
+    //   this.vMobile = toSelectSUpplierId.Mobile;
+    //   this.vContact = toSelectSUpplierId.ContactPerson;
+    //   this.vSupplierId =toSelectSUpplierId.SupplierName;
+    //   this._GRNList.userFormGroup.get('SupplierId').setValue(this.filteredOptionssupplier[0]);
     
-      // console.log(toSelectSUpplierId)
-      //console.log(other)
+    
 
       this.dsItemNameList1.data = result;
       this.dsItemNameList1.data.forEach((element) => {

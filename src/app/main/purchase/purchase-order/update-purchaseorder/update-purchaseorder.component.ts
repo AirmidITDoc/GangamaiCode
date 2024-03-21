@@ -188,11 +188,14 @@ export class UpdatePurchaseorderComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.chkNewGRN == 2) {
       this.registerObj = this.data.Obj;
+      console.log(this.registerObj)
+      console.log(this.registerObj.SupplierName)
+      this.getSupplierSearchCombo();
       this.getOldPurchaseOrder(this.registerObj.PurchaseID);
+    
     }
     this.getGSTtypeList();
     this.getPaymentTermList();
-    this.getSupplierSearchCombo();
     this.getModeOfPaymentList();
     this.gePharStoreList();
   }
@@ -242,36 +245,39 @@ export class UpdatePurchaseorderComponent implements OnInit {
       this._PurchaseOrder.StoreFormGroup.get('StoreId').setValue(this.StoreList[0]);
     });
   }
-
+  filteredOptionssupplier:any;
+  noOptionFoundsupplier:any;
+  vSupplierId:any;
   getSupplierSearchCombo() {
-    var vdata={
-      'SupplierName':`${this._PurchaseOrder.userFormGroup.get('SupplierId').value}%`,
+    debugger
+    this.registerObj.SupplierName
+    var m_data = {
+      'SupplierName': `${this._PurchaseOrder.userFormGroup.get('SupplierId').value}%` ||  `${this.registerObj.SupplierName}%`
     }
-    this._PurchaseOrder.getSupplierSearchList(vdata).subscribe(data => {
-      this.SupplierList = data;
-      // console.log(data);
-      this.optionsMarital = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._PurchaseOrder.userFormGroup.get('SupplierId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-      );
-      if (this.data) {
-        const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierID);
+    console.log(m_data)
+    this._PurchaseOrder.getSupplierSearchList(m_data).subscribe(data => {
+      this.filteredOptionssupplier = data;
+      console.log(this.filteredOptionssupplier)
+      if (this.filteredOptionssupplier.length == 0) {
+        this.noOptionFoundsupplier = true;
+      } else {
+        this.noOptionFoundsupplier = false;
+      }
+      debugger
+      if (this.data) { 
+        const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierID);
         this._PurchaseOrder.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
-        this.vAddress = toSelectSUpplierId.Address;
-        this.vMobile = toSelectSUpplierId.Mobile;
+        console.log(toSelectSUpplierId)
         this.vContact = toSelectSUpplierId.ContactPerson;
+        this.vSupplierId =toSelectSUpplierId.SupplierName;
+        this.SupplierID = toSelectSUpplierId.SupplierId;
+        this.vAddress = toSelectSUpplierId.Address;
         this.vGSTNo = toSelectSUpplierId.GSTNo;
         this.vEmail = toSelectSUpplierId.Email;
+        this.vMobile = toSelectSUpplierId.Mobile;
+        this._PurchaseOrder.userFormGroup.get('SupplierId').setValue(this.filteredOptionssupplier[0]);
       }
     });
-
-  }
-  private _filterSupplier(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-      return this.optionsMarital.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
-    }
   }
   getSelectedSupplierObj(obj) {
     this.SupplierID = obj.SupplierId;
@@ -282,6 +288,11 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vEmail = obj.Email;
     this.getSupplierRate();
   }
+  
+  getOptionTextSupplier(option) {
+    return option && option.SupplierName ? option.SupplierName : '';
+  }
+
   calculateGSTType(event) {
 
     if (event.value.Name == "GST After Disc") {
@@ -783,7 +794,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   }
   OnchekPurchaserateValidation() {
     if (this.vRate) {
-      if (this.vRate <= this.vMRP) {
+      if (parseFloat(this.vRate) <= parseFloat(this.vMRP)) {
         this.calculateTotalAmt();
       } else {
         this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
@@ -797,7 +808,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       }); 
     } else {
-      if (this.vRate > this.vDefRate) {
+      if (parseFloat(this.vRate) > parseFloat(this.vMRP)) {
         Swal.fire("Please Check defined Supplier Rate for product ...!!!");
       }
     }
@@ -937,9 +948,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.disableTextbox = !this.disableTextbox;
   }
 
-  getOptionTextSupplier(option) {
-    return option && option.SupplierName ? option.SupplierName : '';
-  }
+
 
   getOptionTextPayment(option) {
     return option && option.StoreName ? option.StoreName : '';

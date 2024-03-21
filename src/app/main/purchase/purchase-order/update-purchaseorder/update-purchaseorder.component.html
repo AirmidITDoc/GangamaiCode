@@ -15,7 +15,7 @@
                     Purchase Order List
                 </span>
 
-                <app-common-date [screenFrom]="screenFromString" style="margin-left: 1050px;"
+                <app-common-date [screenFrom]="screenFromString" style="margin-left: 850px;"
                     (dateTimeEventEmitter)="getDateTime($event)">
                 </app-common-date>
 
@@ -67,12 +67,13 @@
                                             </div>
 
                                             <div>
-                                                <mat-form-field appearance="outline" fxFlex="25%">
+                                                <!-- <mat-form-field appearance="outline" fxFlex="25%">
                                                     <mat-label>Supplier Name</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select Supplier" matInput
                                                         (keydown)="onEnterSupplier($event)" formControlName="SupplierId"
-                                                        [matAutocomplete]="autoMarital" required>
+                                                        [matAutocomplete]="autoMarital" required
+                                                        (input)="getSupplierSearchCombo()">
                                                     <span matSuffix style="display: flex;">
                                                         <mat-icon class="mat-icon-close"
                                                             (click)="_PurchaseOrder.userFormGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
@@ -82,13 +83,33 @@
                                                     <mat-autocomplete #autoMarital="matAutocomplete"
                                                         [displayWith]="getOptionTextSupplier"
                                                         (optionSelected)='getSelectedSupplierObj($event.option.value)'>
-                                                        <mat-option
-                                                            *ngFor="let option of filteredoptionsSupplier | async"
+                                                        <mat-option *ngFor="let option of filteredOptionssupplier"
                                                             [value]="option">
                                                             {{option.SupplierName}}
                                                         </mat-option>
                                                     </mat-autocomplete>
-                                                </mat-form-field>
+                                                </mat-form-field> -->
+
+                                                <mat-form-field appearance="outline" fxFlex="13%">
+                                                    <mat-label>Supplier Name | Code</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        [(ngModel)]="vSupplierId" (keydown)="onEnterSupplier($event)"
+                                                        placeholder="Select Supplier" matInput formControlName="SupplierId"
+                                                        [matAutocomplete]="autoSupllier" required (input)="getSupplierSearchCombo()">
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="_PurchaseOrder.userFormGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="_PurchaseOrder.userFormGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoSupllier="matAutocomplete"
+                                                        [displayWith]="getOptionTextSupplier"
+                                                        (optionSelected)='getSelectedSupplierObj($event.option.value)'>
+                                                        <mat-option *ngFor="let option of filteredOptionssupplier"  [value]="option">
+                                                            {{option.SupplierName}} || {{option.SupplierId}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>&nbsp;
 
                                                 <mat-form-field appearance="outline" fxFlex="10%">
                                                     <mat-label>Contact Persion</mat-label>
@@ -123,7 +144,8 @@
                                                 <mat-form-field appearance="outline" style="width: 180px;">
                                                     <mat-label>-- Select Status3 --</mat-label>
                                                     <mat-select formControlName="Status3" name="Status3" required
-                                                        (selectionChange)="calculateGSTType($event)" #gsttype  (keydown)="onEnterGSTType($event)">
+                                                        (selectionChange)="calculateGSTType($event)" #gsttype
+                                                        (keydown)="onEnterGSTType($event)">
                                                         <mat-option></mat-option>
                                                         <mat-option *ngFor="let m of GSTTypeList" [value]="m">
                                                             {{m.Name}}
@@ -193,18 +215,15 @@
                                             <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>MRP</mat-label>
                                                 <input matInput [(ngModel)]="vMRP" name="MRP" #mrp required
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
-                                                    (keydown)="onEnterMRP($event)" formControlName="MRP">
+                                                    (keydown)="onEnterMRP($event)" formControlName="MRP" OnlyNumber>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Rate</mat-label>
                                                 <input matInput [(ngModel)]="vRate" name="Rate"
-                                                    (keydown)="onEnterRate($event)" #rate
-                                                    (keyup)="OnchekPurchaserateValidation()"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
-                                                    formControlName="Rate" required
-                                                    id="Rate">
+                                                    (keydown)="onEnterRate($event)" #rate OnlyNumber
+                                                    (keyup)="OnchekPurchaserateValidation()" formControlName="Rate"
+                                                    required id="Rate">
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="6%">
@@ -262,16 +281,16 @@
                                                 <mat-label>Def Rate</mat-label>
                                                 <input matInput [(ngModel)]="vDefRate" name="DefRate" #DefRate readonly
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                     type="number" formControlName="DefRate">
+                                                    type="number" formControlName="DefRate">
                                             </mat-form-field>&nbsp;
 
                                             <div matTooltip="Select All Value to enable this button!!">
                                                 <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()">
-                                                <mat-icon>add</mat-icon>
+                                                    <mat-icon>add</mat-icon>
                                                 </button>
                                             </div>
 
-                                           
+
                                         </div>
                                     </div>
                                 </form>
@@ -303,7 +322,8 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="ItemName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                    class="w-200">
                                                     ItemName </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                     {{contact.ItemName}}
@@ -313,13 +333,13 @@
                                             <ng-container matColumnDef="Qty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Qty</mat-header-cell>
-                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
-                                                        <mat-form-field appearance="legacy">
-                                                            <input matInput type="number" [(ngModel)]="contact.Qty" step="0.1"
-                                                                type="number" autocomplete="off"
-                                                                (keyup)="getCellCalculation(contact,contact.Qty)">
-                                                        </mat-form-field>
-                                                    </mat-cell>
+                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-form-field appearance="legacy">
+                                                        <input matInput type="number" [(ngModel)]="contact.Qty"
+                                                            step="0.1" type="number" autocomplete="off"
+                                                            (keyup)="getCellCalculation(contact,contact.Qty)">
+                                                    </mat-form-field>
+                                                </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="UOM">
@@ -333,19 +353,19 @@
                                             <ng-container matColumnDef="Rate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Rate</mat-header-cell>
-                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
-                                                        <mat-form-field appearance="legacy">
-                                                            <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1"
-                                                                type="number" autocomplete="off"
-                                                                (keyup)="getCellCalculation(contact,contact.Rate)">
-                                                        </mat-form-field>
-                                                    </mat-cell>
+                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-form-field appearance="legacy">
+                                                        <input matInput type="number" [(ngModel)]="contact.Rate"
+                                                            step="0.1" type="number" autocomplete="off"
+                                                            (keyup)="getCellCalculation(contact,contact.Rate)">
+                                                    </mat-form-field>
+                                                </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="DefRate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                   Def_Rate</mat-header-cell>
-                                                   <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    Def_Rate</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.DefRate | number:'1.2-2'}}
                                                 </mat-cell>
                                             </ng-container>
@@ -361,13 +381,13 @@
                                             <ng-container matColumnDef="Dis">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Disc(%)</mat-header-cell>
-                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
-                                                        <mat-form-field appearance="legacy">
-                                                            <input matInput type="number" [(ngModel)]="contact.DiscPer" step="0.1"
-                                                                type="number" autocomplete="off"
-                                                                (keyup)="getCellCalculation(contact,contact.DiscPer)">
-                                                        </mat-form-field>
-                                                    </mat-cell>
+                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-form-field appearance="legacy">
+                                                        <input matInput type="number" [(ngModel)]="contact.DiscPer"
+                                                            step="0.1" type="number" autocomplete="off"
+                                                            (keyup)="getCellCalculation(contact,contact.DiscPer)">
+                                                    </mat-form-field>
+                                                </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="DiscAmount">
@@ -381,13 +401,13 @@
                                             <ng-container matColumnDef="CGST">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     CGST(%)</mat-header-cell>
-                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
-                                                        <mat-form-field appearance="legacy">
-                                                            <input matInput type="number" [(ngModel)]="contact.CGSTPer" step="0.1"
-                                                                type="number" autocomplete="off"
-                                                                (keyup)="getCellCalculation(contact,contact.CGSTPer)">
-                                                        </mat-form-field>
-                                                    </mat-cell>
+                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-form-field appearance="legacy">
+                                                        <input matInput type="number" [(ngModel)]="contact.CGSTPer"
+                                                            step="0.1" type="number" autocomplete="off"
+                                                            (keyup)="getCellCalculation(contact,contact.CGSTPer)">
+                                                    </mat-form-field>
+                                                </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="CGSTAmount">
@@ -401,13 +421,13 @@
                                             <ng-container matColumnDef="SGST">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     SGST(%)</mat-header-cell>
-                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
-                                                        <mat-form-field appearance="legacy">
-                                                            <input matInput type="number" [(ngModel)]="contact.SGSTPer" step="0.1"
-                                                                type="number" autocomplete="off"
-                                                                (keyup)="getCellCalculation(contact,contact.SGSTPer)">
-                                                        </mat-form-field>
-                                                    </mat-cell>
+                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-form-field appearance="legacy">
+                                                        <input matInput type="number" [(ngModel)]="contact.SGSTPer"
+                                                            step="0.1" type="number" autocomplete="off"
+                                                            (keyup)="getCellCalculation(contact,contact.SGSTPer)">
+                                                    </mat-form-field>
+                                                </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="SGSTAmount">
@@ -445,13 +465,13 @@
                                             <ng-container matColumnDef="MRP">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     MRP</mat-header-cell>
-                                                    <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
-                                                        <mat-form-field appearance="legacy">
-                                                            <input matInput type="number" [(ngModel)]="contact.MRP" step="0.1"
-                                                                type="number" autocomplete="off"
-                                                                (keyup)="getCellCalculation(contact,contact.MRP)">
-                                                        </mat-form-field>
-                                                    </mat-cell>
+                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-form-field appearance="legacy">
+                                                        <input matInput type="number" [(ngModel)]="contact.MRP"
+                                                            step="0.1" type="number" autocomplete="off"
+                                                            (keyup)="getCellCalculation(contact,contact.MRP)">
+                                                    </mat-form-field>
+                                                </mat-cell>
                                                 <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.MRP | number:'1.2-2'}}
                                                 </mat-cell> -->
@@ -694,14 +714,12 @@
                                                 formControlName="Worrenty" type="text" required>
                                         </mat-form-field>&nbsp;
 
-                                        
-                                        
+
+
                                         <div class="sales-footer-buttons gap-8" fxLayout="row">
-                                            <button class="btn btn-primary " (click)="OnSave()"
-                                                >Save</button>
-                                           
-                                            <button class="btn btn-danger-outline" (click)="OnReset()"
-                                                >Reset</button>
+                                            <button class="btn btn-primary " (click)="OnSave()">Save</button>
+
+                                            <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
                                         </div>
                                     </div>
                                 </div>

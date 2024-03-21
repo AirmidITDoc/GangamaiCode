@@ -225,7 +225,7 @@ OnSave(){
   }
   let insertMRPStockadju ={};
   insertMRPStockadju['storeID']= this.accountService.currentUserValue.user.storeId || 0;
-  insertMRPStockadju['itemId']=  this._StockAdjustment.userFormGroup.get('ItemID').value.ItemId || 0;
+  insertMRPStockadju['itemId']=  this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
   insertMRPStockadju['batchNo']= this.vBatchNo || '';
   insertMRPStockadju['ad_DD_Type']=  this.AddType ;
   insertMRPStockadju['ad_DD_Qty']= this.vQty || 0;
@@ -241,13 +241,13 @@ OnSave(){
   let updatecurrentstockadjyadd ={};
   updatecurrentstockadjyadd['storeId']= this.accountService.currentUserValue.user.storeId || 0;
   updatecurrentstockadjyadd['stockId']= this.vStockId || 0;
-  updatecurrentstockadjyadd['itemId']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemId || 0;
+  updatecurrentstockadjyadd['itemId']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
   updatecurrentstockadjyadd['receivedQty']=  this.vUpdatedQty || 0;
 
   let updatecurrentstockadjydedu ={};
   updatecurrentstockadjydedu['storeId']= this.accountService.currentUserValue.user.storeId || 0;
   updatecurrentstockadjydedu['stockId']= this.vStockId || 0
-  updatecurrentstockadjydedu['itemId']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemId || 0;
+  updatecurrentstockadjydedu['itemId']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
   updatecurrentstockadjydedu['receivedQty']=  this.vUpdatedQty || 0;
 
   let insertitemmovstockadd ={};

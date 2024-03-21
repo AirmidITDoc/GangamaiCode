@@ -174,9 +174,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
   ngOnInit(): void {
     this.getToStoreSearchList();
-    this.getSupplierSearchCombo();
     this.getToStoreSearchCombo();
-    this.getSupplierSearchCombo();
     this.getGRNList();
   }
 
@@ -191,9 +189,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   getOptionTextPayment(option) {
     return option && option.StoreName ? option.StoreName : '';
   }
-  getOptionTextSupplier(option) {
-    return option && option.SupplierName ? option.SupplierName : '';
-  }
+ 
   deleteTableRow(element) {
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
@@ -244,20 +240,26 @@ export class GoodReceiptnoteComponent implements OnInit {
       this.StoreName = this._GRNService.GRNSearchGroup.get('ToStoreId').value.StoreName;
     });
   }
-
+  filteredOptionssupplier:any;
+  noOptionFoundsupplier:any;
+  vSupplierId:any;
   getSupplierSearchCombo() {
-    var vdata={
-      'SupplierName':`${this._GRNService.GRNSearchGroup.get('SupplierId').value}%`,
+    var m_data = {
+      'SupplierName': `${this._GRNService.GRNSearchGroup.get('SupplierId').value}%`
     }
-    this._GRNService.getSupplierSearchList(vdata).subscribe(data => {
-      this.SupplierList = data;
-      this.optionsSupplier = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._GRNService.GRNSearchGroup.get('SupplierId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-      );
-
+    //console.log(m_data)
+    this._GRNService.getSupplierSearchList(m_data).subscribe(data => {
+      this.filteredOptionssupplier = data;
+    //  console.log(this.filteredOptionssupplier)
+      if (this.filteredOptionssupplier.length == 0) {
+        this.noOptionFoundsupplier = true;
+      } else {
+        this.noOptionFoundsupplier = false;
+      }
     });
+  }
+  getOptionTextSupplier(option) {
+    return option && option.SupplierName ? option.SupplierName : '';
   }
   private _filterStore(value: any): string[] {
     if (value) {
@@ -266,19 +268,6 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
   }
 
-  private _filterSupplier(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-      return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
-    }
-  }
-
-  private _filterItemName(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.ItemName ? value.ItemName.toLowerCase() : value.toLowerCase();
-      return this.optionsItemName.filter(option => option.ItemName.toLowerCase().includes(filterValue));
-    }
-  }
   selection = new SelectionModel<GrnItemList>(true, []);
   printBulkQrCode(){
     // debugger
