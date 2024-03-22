@@ -2,7 +2,7 @@
 // $base-font-size: 16px; // Set your base font size here
 @mixin font-size($size) {
     // font-size: $size;
-    $size-in-px: if(type-of($size) == "number", $size, str-slice($size, 1, -2));
+    $size-in-px: if(type-of($size) == "number", $size, str-slice($size, 2, -2));
     $size-in-rem: $size-in-px / $font-size-base;
     font-size: $size;
 

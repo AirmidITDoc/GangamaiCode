@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
     <mat-toolbar style=" height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -23,85 +23,82 @@
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm">
             <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
                 <span class="search-title">Search Facility</span>
-                
+
             </div>
-            
-            
-                <div class="nav material2">
-
-                    <form [formGroup]="_ItemMovemnentService.ItemSearchGroup"
-                        fusePerfectScrollbar>
-                        <div fxLayout="column" fxLayoutAlign="start none">
-                          
-                            <mat-form-field appearance="outline" >
-                                <mat-label>Enter a date range</mat-label>
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate formControlName="start" placeholder="Start date">
-                                    <input matEndDate formControlName="end" placeholder="End date">
-                                </mat-date-range-input>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>From Store</mat-label>
-                                <mat-select name="StoreId" formControlName="StoreId" >
-    
-                                    <mat-option *ngFor="let m of StoreList" [value]="m">
-                                        {{m.StoreName}}
-                                    </mat-option>
-                                     
-                                </mat-select>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>To Store</mat-label>
-                                <mat-select formControlName="ToStoreId" name="StoreId2" >
-                                    <mat-option></mat-option>
-                                    <mat-option *ngFor="let m of Store1List" [value]="m">
-                                        {{m.StoreName}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                         
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>ItemName</mat-label>
-                                <input matAutocompletePosition="below" type="text" required
-                                    placeholder="Select Item" matInput formControlName="ItemID"
-                                    [matAutocomplete]="auto2" (input)="getStockItemList()">
-                                <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_ItemMovemnentService.ItemSearchGroup.get('ItemID').setValue(''); isItemSelected = false;">close</mat-icon>
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="_ItemMovemnentService.ItemSearchGroup.get('ItemID').setValue(''); isItemSelected = false;">search</mat-icon>
-                                </span>
-                                <mat-autocomplete #auto2="matAutocomplete"
-                                    [displayWith]="getOptionTextItemList">
-                                    <mat-option *ngFor="let option of ItemListfilteredOptions"
-                                        [value]="option">
-                                        {{option.ItemName}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field> 
 
 
-                            <div style="margin-top: 10px;">
-                                <button mat-raised-button class="clearbutton" matTooltip="close">
-                                    <mat-icon class="cleariconbutton">close</mat-icon>
-                                </button>&nbsp;
-                                <button mat-raised-button class="searchButton" (click)="getItemMovementList()"
-                                    matTooltip="search">
-                                    <mat-icon class="searchiconbutton">search</mat-icon>
-                                </button>
-                                
-                            </div>
+            <div class="nav material2">
+
+                <form [formGroup]="_ItemMovemnentService.ItemSearchGroup" fusePerfectScrollbar>
+                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="start" placeholder="Start date">
+                                <input matEndDate formControlName="end" placeholder="End date">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>From Store</mat-label>
+                            <mat-select name="StoreId" formControlName="StoreId">
+
+                                <mat-option *ngFor="let m of StoreList" [value]="m">
+                                    {{m.StoreName}}
+                                </mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>To Store</mat-label>
+                            <mat-select formControlName="ToStoreId" name="StoreId2">
+                                <mat-option></mat-option>
+                                <mat-option *ngFor="let m of Store1List" [value]="m">
+                                    {{m.StoreName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>ItemName</mat-label>
+                            <input matAutocompletePosition="below" type="text" required placeholder="Select Item"
+                                matInput formControlName="ItemID" [matAutocomplete]="auto2"
+                                (input)="getStockItemList()">
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_ItemMovemnentService.ItemSearchGroup.get('ItemID').setValue(''); isItemSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_ItemMovemnentService.ItemSearchGroup.get('ItemID').setValue(''); isItemSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #auto2="matAutocomplete" [displayWith]="getOptionTextItemList">
+                                <mat-option *ngFor="let option of ItemListfilteredOptions" [value]="option">
+                                    {{option.ItemName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+
+                        <div style="margin-top: 10px;">
+                            <button mat-raised-button class="clearbutton" matTooltip="close">
+                                <mat-icon class="cleariconbutton">close</mat-icon>
+                            </button>&nbsp;
+                            <button mat-raised-button class="searchButton" (click)="getItemMovementList()"
+                                matTooltip="search">
+                                <mat-icon class="searchiconbutton">search</mat-icon>
+                            </button>
 
                         </div>
 
-                    </form>
+                    </div>
 
-                </div>
-            
+                </form>
+
+            </div>
+
 
         </fuse-sidebar>
         <!-- / SIDEBAR -->
@@ -205,7 +202,7 @@
                                             {{contact.BalQty}}
                                         </mat-cell>
                                     </ng-container>
- 
+
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -221,7 +218,7 @@
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" ></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>
