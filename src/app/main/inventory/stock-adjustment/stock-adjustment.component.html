@@ -183,8 +183,12 @@
                                             <input matInput [(ngModel)]="contact.AddQty" type="number"
                                                 (blur)="disableEditing(contact)"
                                                 (keyup)="AddQty(contact,contact.AddQty)">
+                                                <buttom mati-icon-button >
+                                                    <mat-icon>check</mat-icon>
+                                                </buttom> 
+                                              
                                         </mat-form-field>
-                                        <mat-icon>check</mat-icon>
+                                       
                                     </ng-template>
                                 </mat-cell>
                             </ng-container>
@@ -202,8 +206,10 @@
                                             <input matInput [(ngModel)]="contact.DeduQty" type="number"
                                                 (keyup)="DeduQty(contact,contact.DeduQty)"
                                                 (blur)="dedudisableEditing(contact)">
+                                                <buttom mati-icon-button >
+                                                    <mat-icon>check</mat-icon>
+                                                </buttom> 
                                         </mat-form-field>
-                                        <mat-icon>check</mat-icon>
                                     </ng-template>
                                 </mat-cell>
                             </ng-container>
