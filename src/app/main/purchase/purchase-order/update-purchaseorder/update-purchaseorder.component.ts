@@ -248,11 +248,18 @@ export class UpdatePurchaseorderComponent implements OnInit {
   filteredOptionssupplier:any;
   noOptionFoundsupplier:any;
   vSupplierId:any;
+  vsupplierName:any;
   getSupplierSearchCombo() {
     debugger
-    this.registerObj.SupplierName
+    if(this.vSupplierId){
+      this.vsupplierName = this._PurchaseOrder.userFormGroup.get('SupplierId').value ;
+     }
+     else{
+       this.vsupplierName = this.registerObj.SupplierName;
+     }
+   
     var m_data = {
-      'SupplierName': `${this._PurchaseOrder.userFormGroup.get('SupplierId').value}%` ||  `${this.registerObj.SupplierName}%`
+      'SupplierName': `${this.vsupplierName}%`
     }
     console.log(m_data)
     this._PurchaseOrder.getSupplierSearchList(m_data).subscribe(data => {
