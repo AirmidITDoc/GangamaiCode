@@ -95,7 +95,7 @@ export class UpdateWorkorderComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored) { }
 
   ngOnInit(): void {
-   debugger
+   //debugger
     if (this.data.chkNewWorkorder==2) {
       
       this.registerObj=this.data.Obj;
@@ -141,7 +141,7 @@ this._matDialog.closeAll();
   }
   
   OnSave() {
-    debugger
+    //debugger
     if(this.data.chkNewWorkorder==1) {
     let workorderHeaderInsertObj = {};
     workorderHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
@@ -334,7 +334,7 @@ this._matDialog.closeAll();
   
   
   onAdd(event) {
-    debugger
+    //debugger
     this.dsItemNameList.data = [];
     this.chargeslist.push(
       {
@@ -534,7 +534,7 @@ this._matDialog.closeAll();
 
   
   calculateTotalAmount() {
-    debugger
+    //debugger
     if (this.Rate && this.Qty) {
       this.TotalAmount = (parseFloat(this.Rate) * parseInt(this.Qty)).toFixed(4);
       this.NetAmount = this.TotalAmount;

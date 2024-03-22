@@ -160,7 +160,7 @@
                                                                 fxShow.gt-sm>
                                                                 DeliveryNo</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.GrnNumber}}
+                                                                <span>{{contact.GrnNumber}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -169,7 +169,7 @@
                                                                 fxShow.gt-sm>
                                                                 DeliveryDate</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.GRNDate}}
+                                                                <span>{{contact.GRNDate}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -178,16 +178,17 @@
                                                                 fxShow.gt-sm>
                                                                 InvoiceNo</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.InvoiceNo}}
+                                                                <span>{{contact.InvoiceNo}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="SupplierName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                fxShow.gt-sm>
+                                                                class="w-200" fxShow.gt-sm>
                                                                 SupplierName</mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.SupplierName}}
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm [matTooltip]="contact.SupplierName"
+                                                                class="w-200">
+                                                                <span>{{contact.SupplierName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -196,7 +197,7 @@
                                                                 fxShow.gt-sm>
                                                                 TotalAmt</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.TotalAmount | number:'1.2-2'}}
+                                                                <span>{{contact.TotalAmount | number:'1.2-2'}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -205,7 +206,8 @@
                                                                 fxShow.gt-sm>
                                                                 DiscAmt</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.TotalDiscAmount | number:'1.2-2'}}
+                                                                <span>{{contact.TotalDiscAmount |
+                                                                    number:'1.2-2'}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -214,7 +216,7 @@
                                                                 fxShow.gt-sm>
                                                                 GSTAmt</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.TotalVATAmount | number:'1.2-2'}}
+                                                                <span>{{contact.TotalVATAmount | number:'1.2-2'}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -223,7 +225,7 @@
                                                                 fxShow.gt-sm>
                                                                 NetAmt</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.NetAmount | number:'1.2-2'}}
+                                                                <span>{{contact.NetAmount | number:'1.2-2'}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -232,7 +234,7 @@
                                                                 fxShow.gt-sm>
                                                                 RoundAmt</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.RoundingAmt}}
+                                                                <span>{{contact.RoundingAmt}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -241,7 +243,7 @@
                                                                 fxShow.gt-sm>
                                                                 DebitNote</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.DebitNote}}
+                                                                <span>{{contact.DebitNote}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -250,7 +252,7 @@
                                                                 fxShow.gt-sm>
                                                                 CreditNote</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.CreditNote}}
+                                                                <span>{{contact.CreditNote}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -259,7 +261,7 @@
                                                                 fxShow.gt-sm>
                                                                 CashCreditType</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.Cash_CreditType}}
+                                                                <span>{{contact.Cash_CreditType}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -268,7 +270,7 @@
                                                                 fxShow.gt-sm>
                                                                 ReceivedBy</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.ReceivedBy}}
+                                                                <span>{{contact.ReceivedBy}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -277,15 +279,14 @@
                                                                 fxShow.gt-sm>
                                                                 IsClosed</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.Cash_CreditType}}
+                                                                <span>{{contact.Cash_CreditType}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="Action1" stickyEnd>
-                                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                                style="color: white;">Action
+                                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-200">Action
                                                             </mat-header-cell>
-                                                            <mat-cell *matCellDef="let row">
+                                                            <mat-cell *matCellDef="let row" class="w-200">
                                                                 <button mat-icon-button matTooltip="print"
                                                                     (click)="getPrint(row)">
                                                                     <mat-icon>print</mat-icon>
@@ -329,12 +330,13 @@
                                                             </mat-footer-cell>
                                                         </ng-container>
 
-                                                        <mat-header-row class="accent"
+                                                        <mat-header-row class="accent min-width-1700"
                                                             *matHeaderRowDef="displayedColumns; sticky: true">
                                                         </mat-header-row>
 
-                                                        <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                            class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                        <mat-row 
+                                                            *matRowDef="let contact; columns: displayedColumns;"
+                                                            class="contact min-width-1700" [@animate]="{value:'*',params:{y:'100%'}}"
                                                             (click)="getGrnItemDetailList(contact)"></mat-row>
                                                         <mat-footer-row *matFooterRowDef="['loading']"
                                                             [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>
@@ -364,12 +366,12 @@
                                                         style="overflow: auto;width:100%;">
 
                                                         <ng-container matColumnDef="ItemName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide class="w-150"
                                                                 fxShow.gt-sm>
                                                                 ItemName
                                                             </mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.ItemName}}
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-150">
+                                                                <span>{{contact.ItemName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -378,7 +380,7 @@
                                                                 fxShow.gt-sm>
                                                                 BatchNo</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.BatchNo}}
+                                                                <span>{{contact.BatchNo}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -388,7 +390,8 @@
                                                                 fxShow.gt-sm>
                                                                 BatchExpDate</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.BatchExpDate | date: 'dd/mm/yyyy'}}
+                                                                <span>{{contact.BatchExpDate | date:
+                                                                    'dd/mm/yyyy'}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -397,7 +400,7 @@
                                                                 fxShow.gt-sm>
                                                                 ReceiveQty</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.ReceiveQty}}
+                                                                <span>{{contact.ReceiveQty}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -406,7 +409,7 @@
                                                                 fxShow.gt-sm>
                                                                 FreeQty</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.FreeQty}}
+                                                                <span>{{contact.FreeQty}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -415,7 +418,7 @@
                                                                 fxShow.gt-sm>
                                                                 MRP</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.MRP}}
+                                                                <span>{{contact.MRP}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -424,7 +427,7 @@
                                                                 fxShow.gt-sm>
                                                                 Rate</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.Rate}}
+                                                                <span>{{contact.Rate}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -433,7 +436,7 @@
                                                                 fxShow.gt-sm>
                                                                 TotalAmt</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.TotalAmount}}
+                                                                <span>{{contact.TotalAmount}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -442,7 +445,7 @@
                                                                 fxShow.gt-sm>
                                                                 Packing</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.ConversionFactor}}
+                                                                <span>{{contact.ConversionFactor}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -451,7 +454,7 @@
                                                                 fxShow.gt-sm>
                                                                 Vat%</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.VatPercentage}}
+                                                                <span>{{contact.VatPercentage}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -460,7 +463,7 @@
                                                                 fxShow.gt-sm>
                                                                 Disc%</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.DiscPercentage}}
+                                                                <span>{{contact.DiscPercentage}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -469,7 +472,7 @@
                                                                 fxShow.gt-sm>
                                                                 NetAmt</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.NetAmount.toFixed(2)}}
+                                                                <span>{{contact.NetAmount.toFixed(2)}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -478,7 +481,7 @@
                                                                 fxShow.gt-sm>
                                                                 TotalQty</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                {{contact.TotalQty}}
+                                                                <span>{{contact.TotalQty}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -494,10 +497,10 @@
                                                             </mat-footer-cell>
                                                         </ng-container>
 
-                                                        <mat-header-row class="accent"
+                                                        <mat-header-row class="accent min-width-1500"
                                                             *matHeaderRowDef="displayedColumns1; sticky: true">
                                                         </mat-header-row>
-                                                        <mat-row *matRowDef="let contact; columns: displayedColumns1;"
+                                                        <mat-row class="min-width-1500" *matRowDef="let contact; columns: displayedColumns1;"
                                                             [@animate]="{value:'*',params:{y:'100%'}}">
                                                         </mat-row>
                                                         <mat-footer-row *matFooterRowDef="['loading']"

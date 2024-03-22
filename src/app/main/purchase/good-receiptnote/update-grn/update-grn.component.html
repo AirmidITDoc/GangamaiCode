@@ -1,4 +1,4 @@
-<div id="contacts" fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn" dynamicTableHeight>
+<div id="contacts" fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
     <!-- HEADER -->
 
     <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
@@ -191,14 +191,14 @@
                                             (keyup.enter)="onEnter('BatchNo')" (keyup)="calculateTotalamt()"
                                             autocomplete="off" #conversionfactor
                                             [readonly]="!(vItemName&&vItemName.ItemName)">
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Batch No</mat-label>
                                         <input matInput [(ngModel)]="vBatchNo" name="BatchNo" formControlName="BatchNo"
                                             id="BatchNo" #batchno (keyup.enter)="onEnter('ExpDatess')"
                                             autocomplete="off" required [readonly]="!(vItemName&&vItemName.ItemName)">
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>
 
 
                                     <mat-form-field appearance="outline" fxFlex>
@@ -207,7 +207,7 @@
                                             formControlName="ExpDatess" id="ExpDatess" value="lastDay"
                                             [(ngModel)]="vlastDay" #expdate autocomplete="off" placeholder="mmyyyy"
                                             required [readonly]="!(vItemName&&vItemName.ItemName)">
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Qty</mat-label>
@@ -216,7 +216,7 @@
                                             (keyup)="calculateTotalamt()" formControlName="Qty" type="number" id="Qty"
                                             autocomplete="off" (keyup.enter)="onEnter('FreeQty')" #qty
                                             [readonly]="!(vItemName&&vItemName.ItemName)">
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Free Qty </mat-label>
@@ -224,7 +224,7 @@
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                             formControlName="FreeQty" id="FreeQty" (keyup.enter)="onEnter('MRP')"
                                             autocomplete="off" #freeqty [readonly]="!(vItemName&&vItemName.ItemName)">
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>MRP</mat-label>
@@ -232,7 +232,7 @@
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                                             formControlName="MRP" id="MRP" (keyup.enter)="onEnter('Rate')" #mrp
                                             autocomplete="off" required [readonly]="!(vItemName&&vItemName.ItemName)">
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Rate</mat-label>
@@ -241,7 +241,7 @@
                                             formControlName="Rate" id="Rate" (keyup.enter)="onEnter('Disc')"
                                             (keyup)="OnchekPurchaserateValidation()" #rate required
                                             [readonly]="!(vItemName&&vItemName.ItemName)">
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>
 
                                     <!-- <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Rate </mat-label>
@@ -265,7 +265,7 @@
                                             (keyup)="calculateDiscperAmount()" formControlName="Disc" id="Disc"
                                             (keyup.enter)="onEnter('btnAdd')" (keydown)="onEnterDisc($event)" #disc
                                             required [readonly]="!(vItemName&&vItemName.ItemName)">
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>
 
 
 
@@ -283,7 +283,7 @@
                                         <input matInput [(ngModel)]="vDisAmount" name="DisAmount" type="number"
                                             formControlName="DisAmount" (keyup)="calculateDiscAmount()"
                                             [readonly]="!(vItemName&&vItemName.ItemName)">
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>GST </mat-label>
@@ -399,7 +399,7 @@
                                         class="backgroundBlur">
                                         <div class="spinner-border text-danger"></div>
                                     </div>
-                                    <mat-table #table class="table3" matSort [dataSource]="dsItemNameList"
+                                    <mat-table #table class="table3 h-240" matSort [dataSource]="dsItemNameList"
                                         [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                         <ng-container matColumnDef="buttons" stickyEnd>
@@ -822,11 +822,12 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent"
+                                        <mat-header-row class="accent min-width-4000"
                                             *matHeaderRowDef="displayedColumns2; sticky: true">
                                         </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns2;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns2;"
+                                            class="contact min-width-4000" [@animate]="{value:'*',params:{y:'100%'}}"
+                                            appHighlight></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                         </mat-footer-row>
@@ -848,12 +849,13 @@
                         <form [formGroup]="_GRNList.GRNFinalForm">
                             <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
                                 <div fxFlex fxFlex.gt-xs="40%" fxFlex.xs="100%">
-                                    <mat-table #table class="table4" matSort [dataSource]="dsLastThreeItemList">
+                                    <mat-table #table class="table4 h-240" matSort [dataSource]="dsLastThreeItemList">
                                         <ng-container matColumnDef="SupplierName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-200">
                                                 SupplierName</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.SupplierName}}
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                                <span> {{contact.SupplierName}}</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -861,7 +863,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 R_Qty</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.ReceiveQty}}
+                                                <span> {{contact.ReceiveQty}}</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -869,7 +871,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 F_Qty</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.FreeQty}}
+                                                <span> {{contact.FreeQty}}</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -877,7 +879,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 MRP</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.MRP}}
+                                                <span> {{contact.MRP}}</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -885,7 +887,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Rate</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.Rate}}
+                                                <span> {{contact.Rate}}</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -893,7 +895,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Disc</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.discpercentage}}%
+                                                <span> {{contact.discpercentage}}%</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -901,7 +903,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 DiscAmt</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.DiscAmount}}
+                                                <span>{{contact.DiscAmount}}</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -909,7 +911,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Vat</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.VatPercentage}}%
+                                                <span>{{contact.VatPercentage}}%</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -918,11 +920,11 @@
                                                 no data found...
                                             </mat-footer-cell>
                                         </ng-container>
-                                        <mat-header-row class="min-width-600 accent"
+                                        <mat-header-row class="min-width-700 accent"
                                             *matHeaderRowDef="displayedColumns3; sticky: true">
                                         </mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumns3;"
-                                            class="min-width-600 contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                            class="min-width-700 contact" [@animate]="{value:'*',params:{y:'100%'}}"
                                             appHighlight></mat-row>
 
                                         <mat-footer-row *matFooterRowDef="['noData']"

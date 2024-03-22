@@ -187,3 +187,10 @@
         }
     }
 }
+.mat-form-field-auto {
+    .mat-form-field {
+        .mat-form-field-infix {
+            width: auto;
+        }
+    }
+}

@@ -152,7 +152,7 @@ export class WorkOrderComponent implements OnInit {
   }
 
   getWorkOrdersList() {
-    debugger
+    //debugger
      this.sIsLoading = 'loading-data';
     var m_data = {
       "ToStoreId": 10003,//this._WorkOrderService.myFormGroup.get("StoreId").value.storeid || 0,

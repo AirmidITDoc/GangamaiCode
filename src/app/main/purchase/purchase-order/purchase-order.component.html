@@ -170,7 +170,7 @@
                                                                     PurchaseNo
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.PurchaseNo}}
+                                                                    <span>{{contact.PurchaseNo}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -179,17 +179,18 @@
                                                                     fxShow.gt-sm>
                                                                     Purchase Date </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.PurchaseDate | date:'shortDate'}}
+                                                                    <span>{{contact.PurchaseDate |
+                                                                        date:'shortDate'}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="SupplierName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm class="w-200">
+                                                                    fxShow.gt-sm class="">
                                                                     SupplierName </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                    class="w-200">
-                                                                    {{contact.SupplierName}}
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm [matTooltip]="contact.SupplierName"
+                                                                    class="">
+                                                                    <span>{{contact.SupplierName}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -198,7 +199,8 @@
                                                                     fxShow.gt-sm>
                                                                     Total Amt </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.TotalAmount | number:'1.2-2'}}
+                                                                    <span>{{contact.TotalAmount |
+                                                                        number:'1.2-2'}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -207,7 +209,8 @@
                                                                     fxShow.gt-sm>
                                                                     DiscAmount</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.DiscAmount | date:'shortDate'}}
+                                                                    <span>{{contact.DiscAmount |
+                                                                        date:'shortDate'}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -216,16 +219,17 @@
                                                                     fxShow.gt-sm>
                                                                     Net Amount</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.GrandTotal}}
+                                                                    <span>{{contact.GrandTotal}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="Remarks">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"
                                                                     fxShow.gt-sm>
                                                                     Remarks</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.Remarks}}
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm [matTooltip]="contact.Remarks" class="w-200">
+                                                                    <span>{{contact.Remarks}}
+                                                                    </span>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -234,11 +238,11 @@
                                                                     fxShow.gt-sm>
                                                                     AddedByName</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    {{contact.AddedByName}}
+                                                                    <span>{{contact.AddedByName}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                            <ng-container matColumnDef="action">
+                                                            <ng-container matColumnDef="action" stickyEnd="">
                                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                                     style="color: white;">Action
                                                                 </mat-header-cell>
@@ -297,12 +301,12 @@
                                                                 </mat-footer-cell>
                                                             </ng-container>
 
-                                                            <mat-header-row class="accent"
+                                                            <mat-header-row class="accent min-width-1500"
                                                                 *matHeaderRowDef="displayedColumns; sticky: true">
                                                             </mat-header-row>
                                                             <mat-row
                                                                 *matRowDef="let contact; columns: displayedColumns;"
-                                                                class="contact"
+                                                                class="contact min-width-1500"
                                                                 [@animate]="{value:'*',params:{y:'100%'}}"
                                                                 (click)="getPurchaseItemList(contact)"
                                                                 appHighlight></mat-row>
