@@ -295,6 +295,16 @@
 
                                             <mat-table #table class="table2" matSort [dataSource]="dsIssueItemList"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
+
+                                                <ng-container matColumnDef="Status">
+                                                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-icon [style.color]="contact.selected ? 'green' : 'red'" >
+                                                            {{contact.selected ? 'check_circle' : 'cancel'}}
+                                                          </mat-icon>
+                                                    </mat-cell>
+                                                  </ng-container>
+
                                                 <ng-container matColumnDef="ItemName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                         fxShow.gt-sm>
