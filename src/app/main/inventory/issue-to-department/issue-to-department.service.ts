@@ -67,7 +67,7 @@ export class IssueToDepartmentService {
 
  
   public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Indent_by_ID",Param);
   }
   public getIndentItemDetList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=retrieve_IndentItemList",Param);
@@ -76,10 +76,10 @@ export class IssueToDepartmentService {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IndentItemList_aginstIssue",Param);
   }
   public getIssueToDepList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IssueToDep_list_by_Name",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueToDep_list_by_Name",Param);
   }
   public getIssueItemList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IssueItemList",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_IssueItemList",Param);
   }
   
   public getToStoreSearchList(){

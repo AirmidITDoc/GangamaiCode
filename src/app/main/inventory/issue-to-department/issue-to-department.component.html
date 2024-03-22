@@ -241,6 +241,17 @@
                                                         </mat-cell>
                                                     </ng-container>
 
+                                                    <ng-container matColumnDef="IsAccepted">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                            IsAccepted</mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                            <mat-icon *ngIf="contact.IsAccepted" matTooltip="Accepted"
+                                                                class="pill green-600 s-16">circle</mat-icon>
+                                                            <mat-icon *ngIf="!contact.IsAccepted" matTooltip="Pending"
+                                                                class="pill red-600 s-16">circle</mat-icon>
+                                                        </mat-cell>
+                                                    </ng-container>
+
                                                     <ng-container matColumnDef="action" stickyEnd>
                                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                             style="color: white;">Action
@@ -286,6 +297,16 @@
 
                                             <mat-table #table class="table2" matSort [dataSource]="dsIssueItemList"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
+
+                                                <ng-container matColumnDef="Status">
+                                                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-icon [style.color]="contact.selected ? 'green' : 'red'" >
+                                                            {{contact.selected ? 'check_circle' : 'cancel'}}
+                                                          </mat-icon>
+                                                    </mat-cell>
+                                                  </ng-container>
+
                                                 <ng-container matColumnDef="ItemName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                         fxShow.gt-sm>
@@ -583,9 +604,9 @@
 
                                                         <ng-container matColumnDef="ItemName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                fxShow.gt-sm>
+                                                                fxShow.gt-sm  class="w-180">
                                                                 ItemName </mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-180">
                                                                 {{contact.ItemName}}
                                                             </mat-cell>
                                                         </ng-container>

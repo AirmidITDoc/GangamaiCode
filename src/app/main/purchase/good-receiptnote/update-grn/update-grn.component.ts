@@ -221,7 +221,7 @@ export class UpdateGRNComponent implements OnInit {
       this.GateEntryNo = this.registerObj.GateEntryNo;
       this.SupplierId = this.registerObj.SupplierId;
       this.StoreId = this.registerObj.StoreId;
-
+      this.getSupplierSearchCombo();
       if (this.registerObj.Cash_CreditType)
         this.vCahchecked = 1;
       if (!this.registerObj.Cash_CreditType)
@@ -232,7 +232,6 @@ export class UpdateGRNComponent implements OnInit {
         this.vGrntypechecked = 0;
       this.getGRNItemDetailList(this.registerObj);
     }
-    this.getSupplierSearchCombo();
     this.gePharStoreList();
     this.getGSTtypeList();
   }
@@ -254,6 +253,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   calculateLastDay(inputDate: string) {
+    debugger
     if (inputDate && inputDate.length === 6) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
@@ -314,34 +314,66 @@ export class UpdateGRNComponent implements OnInit {
       this._GRNList.userFormGroup.get('GSTType').setValue(toSelectGSTType);
     }
   }
+
+
+  filteredOptionssupplier:any;
+  noOptionFoundsupplier:any;
+  vSupplierId:any;
+ vsupplierName:any;
+ POsupplierName:any;
+ newSupplier:any;
   getSupplierSearchCombo() {
-    var vdata = {
-      'SupplierName': `${this._GRNList.userFormGroup.get('SupplierId').value}%`,
+    if(this.vPurchaseId > 0){
+     this.vsupplierName = this.vPurchaseOrderSupplierId ;
     }
-    this._GRNList.getSupplierSearchList(vdata).subscribe(data => {
-      this.SupplierList = data;
-      this.optionsSupplier = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._GRNList.userFormGroup.get('SupplierId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-      );
-      if (this.data) {
-        const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == this.registerObj.SupplierId);
+    else if(this.vSupplierId){
+      this.vsupplierName = this._GRNList.userFormGroup.get('SupplierId').value;
+    }
+    else{
+      this.vsupplierName = this.registerObj.SupplierName;
+    }
+  
+    var m_data = {
+      'SupplierName': `${this.vsupplierName}%`
+    }
+    console.log(m_data)
+    this._GRNList.getSupplierSearchList(m_data).subscribe(data => {
+      this.filteredOptionssupplier = data;
+      if (this.filteredOptionssupplier.length == 0) {
+        this.noOptionFoundsupplier = true;
+      } else {
+        this.noOptionFoundsupplier = false;
+      }
+   
+      //for grn update wiil get the supplier id
+      if (this.data.chkNewGRN == 2) { 
+        const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierId);
         this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
         this.vMobile = toSelectSUpplierId.Mobile;
         this.vContact = toSelectSUpplierId.ContactPerson;
+        this.vSupplierId =toSelectSUpplierId.SupplierName;
+        this._GRNList.userFormGroup.get('SupplierId').setValue(this.filteredOptionssupplier[0]);
+      }
+       //for grn againt po wiil get the supplier id
+  
+      else if(this.vPurchaseOrderSupplierId){
+        const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierName == this.vPurchaseOrderSupplierId);
+        this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
+        console.log(toSelectSUpplierId)
+        this.vMobile = toSelectSUpplierId.Mobile;
+        this.vContact = toSelectSUpplierId.ContactPerson;
+        this.vSupplierId =toSelectSUpplierId.SupplierName;
+        this._GRNList.userFormGroup.get('SupplierId').setValue(this.filteredOptionssupplier[0]);
       }
     });
-  }
-  private _filterSupplier(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-      return this.optionsSupplier.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
-    }
   }
   getSelectedSupplierObj(obj) {
     this.vMobile = obj.Mobile;
     this.vContact = obj.ContactPerson;
+    this.SupplierId = obj.SupplierId;
+  }
+  getOptionTextSupplier(option) {
+    return option && option.SupplierName ? option.SupplierName : '';
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -355,7 +387,7 @@ export class UpdateGRNComponent implements OnInit {
       this.chargeslist = data as ItemNameList[];
       this.dsTempItemNameList.data = data as ItemNameList[];
       this.sIsLoading = '';
-      console.log(this.dsItemNameList);
+     // console.log(this.dsItemNameList);
     },
       error => {
         this.sIsLoading = '';
@@ -508,12 +540,10 @@ export class UpdateGRNComponent implements OnInit {
   getOptionTextPayment(option) {
     return option && option.StoreName ? option.StoreName : '';
   }
-  getSelectedObjSupp(obj) {
-    this.SupplierId = obj.SupplierId;
-  }
-  getOptionTextSupplier(option) {
-    return option && option.SupplierName ? option.SupplierName : '';
-  }
+  // getSelectedObjSupp(obj) {
+  //   this.SupplierId = obj.SupplierId;
+  // }
+
   getOptionText(option) {
     if (!option)
       return '';
@@ -573,23 +603,23 @@ export class UpdateGRNComponent implements OnInit {
 
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
-        contact.TotalQty = (((contact.FreeQty) + (contact.ReceiveQty)) * (contact.ConversionFactor));
+        contact.TotalQty = ((parseFloat(contact.FreeQty) +parseFloat (contact.ReceiveQty)) * parseFloat(contact.ConversionFactor));
         //total amt
-        contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
+        contact.TotalAmount = parseFloat(contact.ReceiveQty) * parseFloat(contact.Rate);
         //disc 1
-        contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100)
-        let totalamt = ((contact.TotalAmount) - (contact.DiscAmount));
+        contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100)
+        let totalamt = (parseFloat(contact.TotalAmount) -parseFloat (contact.DiscAmount));
         //disc 2
-        contact.DiscAmt2 = (((totalamt) * (contact.DiscPer2)) / 100);
-        let totalamt2 = ((totalamt) - (contact.DiscAmt2));
+        contact.DiscAmt2 = (((totalamt) * parseFloat(contact.DiscPer2)) / 100);
+        let totalamt2 = ((totalamt) - parseFloat(contact.DiscAmt2));
         //GST cal
-        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
-        contact.CGSTAmt = (((totalamt2) * (contact.CGSTPer)) / 100);
-        contact.SGSTAmt = (((totalamt2) * (contact.SGSTPer)) / 100);
-        contact.IGSTAmt = (((totalamt2) * (contact.IGSTPer)) / 100);
+        contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
+        contact.CGSTAmt = (((totalamt2) * parseFloat(contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((totalamt2) * parseFloat(contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((totalamt2) * parseFloat(contact.IGSTPer)) / 100);
         // contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
-        contact.VatAmount = (((totalamt2) * (contact.VatPercentage)) / 100);
-        contact.NetAmount = ((totalamt2) + (contact.VatAmount)).toFixed(2);
+        contact.VatAmount = (((totalamt2) * parseFloat(contact.VatPercentage)) / 100);
+        contact.NetAmount = ((totalamt2) + parseFloat(contact.VatAmount)).toFixed(2);
         // contact.LandedRate = (contact.NetAmount / contact.TotalQty);
         // ///PurUnitRate
         // contact.PurUnitRate = (((contact.TotalAmount) / (contact.ReceiveQty)) * (contact.ConversionFactor));
@@ -678,7 +708,6 @@ export class UpdateGRNComponent implements OnInit {
     this.calculateDiscperAmount();
   }
   calculateDiscperAmount() {
-    debugger
     let IGSTPer = 0;
     this.vIGST = IGSTPer
     let disc = this._GRNList.userFormGroup.get('Disc').value || 0;
@@ -703,9 +732,10 @@ export class UpdateGRNComponent implements OnInit {
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
         this.isDisc2Selected = true;
+        let dics2 = this.vDisc2 || 0;
         this.vDisAmount = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
         TotalAmt2 = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
-        this.vDisAmount2 = ((parseFloat(TotalAmt2) * parseFloat(this.vDisc2)) / 100).toFixed(2);
+        this.vDisAmount2 = ((parseFloat(TotalAmt2) * parseFloat(dics2)) / 100).toFixed(2);
         TotalAmt = parseFloat(TotalAmt2) - parseFloat(this.vDisAmount2);
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST on MRP Plus FreeQty") {
@@ -877,23 +907,25 @@ export class UpdateGRNComponent implements OnInit {
     this.vDisc2 = discamt2;
   }
   OnchekPurchaserateValidation() {
-    const rate = this._GRNList.userFormGroup.get('Rate').value
-    if (parseFloat(rate || 0) <= parseFloat(this.vMRP)) {
-      this.calculateTotalamt();
+  
 
-    } else {
-      this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      this._GRNList.userFormGroup.get('Rate').setValue(0);
-      this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
-      this._GRNList.userFormGroup.get('DisAmount').setValue(0);
-      this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
-      this._GRNList.userFormGroup.get('CGSTAmount').setValue(0);
-      this._GRNList.userFormGroup.get('SGSTAmount').setValue(0);
-      this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
-      this._GRNList.userFormGroup.get('NetAmount').setValue(0);
-      this.rate.nativeElement.focus();
+    if (this.vRate) {
+      if (parseFloat(this.vRate) <= parseFloat(this.vMRP)) {
+        this.calculateTotalamt();
+      } else {
+        this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        this._GRNList.userFormGroup.get('Rate').setValue(0);
+        this._GRNList.userFormGroup.get('TotalAmount').setValue(0);
+        this._GRNList.userFormGroup.get('DisAmount').setValue(0);
+        this._GRNList.userFormGroup.get('DisAmount2').setValue(0);
+        this._GRNList.userFormGroup.get('CGSTAmount').setValue(0);
+        this._GRNList.userFormGroup.get('SGSTAmount').setValue(0);
+        this._GRNList.userFormGroup.get('GSTAmount').setValue(0);
+        this._GRNList.userFormGroup.get('NetAmount').setValue(0);
+        this.rate.nativeElement.focus();
+      }
     }
   }
 
@@ -954,10 +986,13 @@ export class UpdateGRNComponent implements OnInit {
     }
   }
   calculateDiscper2Amt() {
+
     //disc 1
+    let disc2:any= 0;
+    disc2= this.vDisc2;
     let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
     //disc 2
-    this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(this.vDisc2)) / 100).toFixed(2);
+    this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(disc2)) / 100).toFixed(2);
     let totalamt2 = (parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
 
     //let discamt = this.vDisAmount + this.vDisAmount2 
@@ -1046,7 +1081,9 @@ export class UpdateGRNComponent implements OnInit {
       this.vDisAmount = (((this.vTotalAmount) * (this.vDisc)) / 100);
       let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
       //disc 2
-      this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(this.vDisc2)) / 100).toFixed(2);
+      let disc2:any= 0;
+      disc2= this.vDisc2;
+      this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(disc2)) / 100).toFixed(2);
       let totalamt2 = (parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
 
       //GST cal
@@ -1175,8 +1212,8 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   OnSave() {
-    // this.vsaveflag = true;
-    console.log(this.vPurchaseId)
+   // this.vsaveflag = true;
+   console.log(this.vPurchaseId)
     if (!this.vPurchaseId) {
       if (this.data.chkNewGRN == 1) {
         this.OnSavenew();
@@ -1722,6 +1759,7 @@ export class UpdateGRNComponent implements OnInit {
       this.expdate.nativeElement.focus();
       let batchno = this.vBatchNo.toUpperCase();
       this.vBatchNo = batchno;
+      this.vlastDay ='';
     }
   }
   public onEnterExpDate(event): void {
@@ -1759,7 +1797,7 @@ export class UpdateGRNComponent implements OnInit {
     if (event.which === 13) {
       if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
         this.isDisc2Selected = true;
-        this._GRNList.userFormGroup.get('Disc2').setValue('')
+       // this._GRNList.userFormGroup.get('Disc2').setValue()
         this.disc2.nativeElement.focus();
         return
       }
@@ -1772,6 +1810,16 @@ export class UpdateGRNComponent implements OnInit {
       this.cgst.nativeElement.focus();
       this.add = true
       this.addbutton.nativeElement.focus();
+      // if(this.vDisc2 >0){
+      //   this.add = true
+      //   this.addbutton.nativeElement.focus();
+      // }
+      // else{
+      //   this.vDisc2 = 0;
+      //   this.add = true
+      //   this.addbutton.nativeElement.focus();
+      // }
+     
     }
   }
 
@@ -1886,6 +1934,7 @@ export class UpdateGRNComponent implements OnInit {
   FinalpurUnitRate1: any = 0;
   FinalpurUnitrateWF1: any = 0;
   FinalUnitMRP1: any = 0;
+  vPurchaseOrderSupplierId:any;
   PurchaseOrderList() {
     const _dialogRef = this._matDialog.open(PurchaseorderComponent,
       {
@@ -1895,19 +1944,35 @@ export class UpdateGRNComponent implements OnInit {
       });
 
     _dialogRef.afterClosed().subscribe(result => {
+    
       console.log(result)
       this.vPurchaseId = result[0].PurchaseID;
       this.vpoBalQty = result[0].ReceiveQty;
+      this.vPurchaseOrderSupplierId = result[0].SupplierName
       let other = result[0].FreightCharges + result[0].HandlingCharges + result[0].TransportChanges + result[0].OctriAmount
       this._GRNList.GRNFinalForm.get('OtherCharge').setValue(other);
       this._GRNList.GRNFinalForm.get('Remark').setValue(result[0].Remarks);
 
-      const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
-      this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
-      this.vMobile = toSelectSUpplierId.Mobile;
-      this.vContact = toSelectSUpplierId.ContactPerson;
-      // console.log(toSelectSUpplierId)
-      //console.log(other)
+      this.getSupplierSearchCombo();
+
+    //   debugger
+    // //  const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
+    //   const toSelectSUpplierId = this.SupplierList.data.find(item => item.SupplierId === result[0].SupplierID);
+    //   console.log(toSelectSUpplierId)
+    //   this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
+    //   this.vMobile = toSelectSUpplierId.Mobile;
+    //   this.vContact = toSelectSUpplierId.ContactPerson;
+    //   this._GRNList.userFormGroup.get('SupplierId').setValue(this.SupplierList[0]);
+
+
+    //  const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == result[0].SupplierID);
+    //  this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
+    //   this.vMobile = toSelectSUpplierId.Mobile;
+    //   this.vContact = toSelectSUpplierId.ContactPerson;
+    //   this.vSupplierId =toSelectSUpplierId.SupplierName;
+    //   this._GRNList.userFormGroup.get('SupplierId').setValue(this.filteredOptionssupplier[0]);
+    
+    
 
       this.dsItemNameList1.data = result;
       this.dsItemNameList1.data.forEach((element) => {

@@ -269,7 +269,6 @@ vToStoreId:any=0;
     }
     const isDuplicate = this.dsIndentNameList.data.some(item => item.ItemID === this._IndentService.newIndentFrom.get('ItemName').value.ItemID);
     if (!isDuplicate) {
-      // this.dsIndentNameList.data = [];
       this.chargeslist = this.dsIndentNameList.data;
       this.chargeslist.push(
         {
@@ -325,6 +324,7 @@ vToStoreId:any=0;
       InsertIndentObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
       InsertIndentObj['toStoreId'] = this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId;
       InsertIndentObj['addedby'] = this.accountService.currentUserValue.user.id;
+      InsertIndentObj['comments'] = '';
 
       let InsertIndentDetObj = [];
       this.dsIndentNameList.data.forEach((element) => {

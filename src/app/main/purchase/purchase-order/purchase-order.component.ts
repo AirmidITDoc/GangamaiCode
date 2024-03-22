@@ -169,6 +169,8 @@ export class PurchaseOrderComponent implements OnInit {
   reportPrintObj: PurchaseOrder;
   reportPrintObjTax: PurchaseOrder;
   subscriptionArr: Subscription[] = [];
+  dateTimeObj: any;
+
 
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
@@ -183,20 +185,13 @@ export class PurchaseOrderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.getFromStoreSearch();
-    this.getSupplierSearchCombo();
     this.getPurchaseOrderList();
   }
-
-
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-
-  dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
 
@@ -276,54 +271,6 @@ export class PurchaseOrderComponent implements OnInit {
   toggleDisable() {
     this.disableTextbox = !this.disableTextbox;
   }
-
-  getOptionTextSupplier(option) {
-    return option && option.SupplierName ? option.SupplierName : '';
-  }
-
-  getOptionTextPayment(option) {
-    return option && option.StoreName ? option.StoreName : '';
-  }
-
-  getOptionTextItemName(option) {
-    return option && option.ItemName ? option.ItemName : '';
-  }
-
-  getSupplierSearchCombo() {
-    var vdata={
-      'SupplierName':`${this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value}%`,
-    }
-    this._PurchaseOrder.getSupplierSearchList(vdata).subscribe(data => {
-      this.SupplierList = data;
-      // console.log(data);
-      this.optionsMarital = this.SupplierList.slice();
-      this.filteredoptionsSupplier = this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSupplier(value) : this.SupplierList.slice()),
-      );
-
-    });
-  }
-  private _filterSupplier(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.SupplierName ? value.SupplierName.toLowerCase() : value.toLowerCase();
-      return this.optionsMarital.filter(option => option.SupplierName.toLowerCase().includes(filterValue));
-    }
-  }
-  private _filterPayment(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-      return this.optionsPayment.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-    }
-  }
-
-  private _filterItemName(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.ItemName ? value.ItemName.toLowerCase() : value.toLowerCase();
-      return this.optionsItemName.filter(option => option.ItemName.toLowerCase().includes(filterValue));
-    }
-  }
-
   getFromStoreSearch() {
 
     var data = {
@@ -335,16 +282,27 @@ export class PurchaseOrderComponent implements OnInit {
       this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').setValue(this.FromStoreList[0]);
     });
   }
-  // gePharStoreList() {
-  //   var vdata = {
-  //     Id: this.accountService.currentUserValue.user.storeId
-  //   }
-  //   this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
-  //     this.StoreList = data;
-  //     this._PurchaseOrder.PurchaseStoreform.get('StoreId').setValue(this.StoreList[0]);
-  //     this.StoreName = this._PurchaseOrder.PurchaseSearchGroup.get('StoreId').value;
-  //   });
-  // }
+  filteredOptionssupplier:any;
+  noOptionFoundsupplier:any;
+  vSupplierId:any;
+  getSupplierSearchCombo() {
+    var m_data = {
+      'SupplierName': `${this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value}%`
+    }
+    //console.log(m_data)
+    this._PurchaseOrder.getSupplierSearchList(m_data).subscribe(data => {
+      this.filteredOptionssupplier = data;
+    //  console.log(this.filteredOptionssupplier)
+      if (this.filteredOptionssupplier.length == 0) {
+        this.noOptionFoundsupplier = true;
+      } else {
+        this.noOptionFoundsupplier = false;
+      }
+    });
+  }
+  getOptionTextSupplier(option) {
+    return option && option.SupplierName ? option.SupplierName : '';
+  }
  
  
 
@@ -554,6 +512,7 @@ export class ItemNameList {
   VatAmount:any;
   VatPer:any;
   DefRate:any;
+  SupplierName:any;
   /**
    * Constructor
    *

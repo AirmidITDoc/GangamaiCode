@@ -188,8 +188,8 @@
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm class="">
                                                                     SupplierName </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm [matTooltip]="contact.SupplierName"
-                                                                    class="">
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    [matTooltip]="contact.SupplierName" class="">
                                                                     <span>{{contact.SupplierName}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -224,10 +224,11 @@
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="Remarks">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"
-                                                                    fxShow.gt-sm>
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    class="w-200" fxShow.gt-sm>
                                                                     Remarks</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm [matTooltip]="contact.Remarks" class="w-200">
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    [matTooltip]="contact.Remarks" class="w-200">
                                                                     <span>{{contact.Remarks}}
                                                                     </span>
                                                                 </mat-cell>
