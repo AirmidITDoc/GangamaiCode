@@ -1,23 +1,4 @@
 .indent-section {
     .mat-table {
-        height: calc(100vh - 580px);
-        min-height: 290px;
-        &.table1 {
-        }
-        &.table2 {
-            .mat-header-row,
-            .mat-row {
-                min-width: 1000px;
-            }
-        }
-        // &.table3 {
-        // }
-
-        // &.table4 {
-        //     .mat-header-row,
-        //     .mat-row {
-        //         min-width: 600px;
-        //     }
-        // }
     }
 }

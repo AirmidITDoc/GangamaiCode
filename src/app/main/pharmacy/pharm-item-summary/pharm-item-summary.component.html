@@ -1,45 +1,33 @@
-<mat-tab-group style="width: 100%;">
+<mat-tab-group style="width: 100%;" dynamicTableHeight>
     <mat-tab label="Item Summary Batch Wise Stock">
         <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+            <mat-toolbar class="accent top-header">
+                <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+                    <button mat-icon-button class="sidebar-toggle">
                         <mat-icon>menu</mat-icon>
                     </button>
-                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                        style="color: white;">account_box
+                    <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                     </mat-icon>
-                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                        style="color: white;">
+                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                         Pharma Item Summary
                     </span>
                 </div>
-
-
-
             </mat-toolbar>
-
-
-
-
             <div class="content">
                 <!-- SIDEBAR -->
-                <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-                          margin-left:12px; background-color: white;height:100%;">
-                    <div>
+                <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+                    <div class="sidebar-content">
                         <!-- SIDEBAR HEADER -->
-                        <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
-                            style="margin-top: 3%">
+                        <div class="sidebar-header accent" fxLayout="row" fxLayoutAlign="start center">
                             <span class="search-title">Search Facility</span>
                             <!-- / USER -->
                         </div>
                         <!-- / SIDEBAR HEADER -->
                         <!-- SIDEBAR CONTENT -->
-                        <div>
-                            <div class="nav material2">
+                        <div class="sidebar-body">
+                            <div class="sidebar-form">
 
-                                <form [formGroup]="_PharmaitemsummaryService.SearchGroup"
-                                    style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
+                                <form [formGroup]="_PharmaitemsummaryService.SearchGroup" fusePerfectScrollbar>
                                     <div fxLayout="column" fxLayoutAlign="start none">
 
                                         <mat-form-field appearance="outline" fxFlex>
@@ -55,7 +43,8 @@
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>NonMovingDay</mat-label>
-                                            <input name="NonMovingDay" formControlName="NonMovingDay" matInput required (keyup)="ChkNonMovvalue()">
+                                            <input name="NonMovingDay" formControlName="NonMovingDay" matInput required
+                                                (keyup)="ChkNonMovvalue()">
                                         </mat-form-field>&nbsp;
 
                                         <div style="margin-top: 10px;">
@@ -364,14 +353,14 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="15%" >
+                                        <mat-form-field appearance="outline" fxFlex="15%">
                                             <mat-label>Exp Year</mat-label>
-                                            <input matInput name="ExpYear" formControlName="ExpYear" >
+                                            <input matInput name="ExpYear" formControlName="ExpYear">
                                         </mat-form-field>&nbsp;
 
-                                        <mat-form-field appearance="outline" fxFlex="15%" >
+                                        <mat-form-field appearance="outline" fxFlex="15%">
                                             <mat-label>Exp Month</mat-label>
-                                            <input matInput name="ExpMonth" formControlName="ExpMonth" >
+                                            <input matInput name="ExpMonth" formControlName="ExpMonth">
                                         </mat-form-field>&nbsp;
 
                                         <div style="margin-top: 10px;">

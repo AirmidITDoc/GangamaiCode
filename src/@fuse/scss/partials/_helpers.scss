@@ -165,6 +165,14 @@
         }
     }
 }
+$interval: 50;
+
+@for $i from 1 through 100 {
+    .min-width-#{$i * $interval} {
+        min-width: #{$i * $interval}px;
+    }
+}
+
 @each $prop, $abbrev in (width: w) {
     @for $index from 0 through 50 {
         $size: $index * 10;
@@ -174,7 +182,6 @@
             #{$prop}: $length;
             min-#{$prop}: $length;
             max-#{$prop}: $length;
-            
         }
     }
 }

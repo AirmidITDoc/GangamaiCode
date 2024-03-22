@@ -64,7 +64,7 @@
                             {{shortcutItem.title.substr(0, 1).toUpperCase()}}
                         </span>
 
-                        <p matLine fxFlex>{{shortcutItem.title}}</p>
+                        <p class="m-0" matLine fxFlex>{{shortcutItem.title}}</p>
 
                         <mat-icon class="ml-8 amber-fg">star</mat-icon>
 
@@ -73,7 +73,7 @@
                 </mat-list-item>
 
                 <mat-list-item *ngIf="shortcutItems.length === 0">
-                    <p>
+                    <p class="m-0">
                         <small>No shortcuts yet!</small>
                     </p>
                 </mat-list-item>
@@ -96,7 +96,7 @@
                             {{navigationItem.title.substr(0, 1).toUpperCase()}}
                         </span>
 
-                        <p matLine fxFlex>{{navigationItem.title}}</p>
+                        <p class="m-0" matLine fxFlex>{{navigationItem.title}}</p>
 
                         <mat-icon class="ml-8 amber-fg" *ngIf="isInShortcuts(navigationItem)">star</mat-icon>
 

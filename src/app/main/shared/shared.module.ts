@@ -25,10 +25,11 @@ import { MatSliderModule } from '@angular/material/slider';
 import { EmailSendComponent } from './componets/email-send/email-send.component';  
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { DyanmicTableHeightDirective } from './directives/dynamic-table/dynamicTableHeight.directive';
 
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent],
+  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -57,7 +58,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     TrimPipe,
     CommonDateComponent,
     HeaderComponent,
-    PaymentModeComponent
+    PaymentModeComponent,
+    DyanmicTableHeightDirective
   ],
   entryComponents: []
 })

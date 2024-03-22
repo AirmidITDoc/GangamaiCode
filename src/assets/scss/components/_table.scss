@@ -2,6 +2,7 @@
     border-radius: 4px;
     overflow: auto;
     font-family: inherit;
+    min-height: 200px;
     .mat-header-row,
     .mat-row {
         min-height: auto;
@@ -17,7 +18,7 @@
             text-overflow: ellipsis;
             font-family: $font-primary;
             font-weight: normal;
-            // margin: 0;
+            margin: 0;
             &:not(:first-of-type) {
                 padding: 10px 10px;
             }
@@ -33,7 +34,7 @@
             word-break: break-word;
             line-height: 20px;
             font-family: $font-primary;
-            // margin: 0;
+            margin: 0;
             &:not(:first-of-type) {
                 padding: 3px 10px;
             }
@@ -48,8 +49,12 @@
                     @include font-size(16px);
                 }
             }
-            > span,.text-overflow {
+            > span,
+            .text-overflow {
                 @include line-clamp(1);
+            }
+            .text-overflow-2 {
+                @include line-clamp(2);
             }
         }
         &:hover {
@@ -62,8 +67,8 @@
             background-color: $primary-50;
         }
     }
-    .mat-footer-row{
-        .mat-footer-cell{
+    .mat-footer-row {
+        .mat-footer-cell {
             @include font-size(13px);
         }
     }
@@ -84,7 +89,7 @@
         }
     }
     .mat-checkbox {
-        .mat-checkbox-ripple{
+        .mat-checkbox-ripple {
             height: 0;
             width: 0;
         }

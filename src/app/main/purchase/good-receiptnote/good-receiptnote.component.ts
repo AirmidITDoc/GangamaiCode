@@ -491,7 +491,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       {
         maxWidth: "100%",
         height: '95%',
-        width: '95%',
+        width: '80%',
         data: {
           chkNewGRN: this.chkNewGRN
         }

@@ -304,10 +304,10 @@
                                             no data found...
                                         </mat-footer-cell>
                                     </ng-container>
-                                    <mat-header-row class="accent"
+                                    <mat-header-row class="accent min-width-1400"
                                         *matHeaderRowDef="displayedColumnsnew; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumnsnew;" class="element"
+                                    <mat-row *matRowDef="let row; columns: displayedColumnsnew;" class="element min-width-1400"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
