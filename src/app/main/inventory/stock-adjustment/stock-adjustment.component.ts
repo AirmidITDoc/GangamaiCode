@@ -31,6 +31,7 @@ export class StockAdjustmentComponent implements OnInit {
     'ExpDate',
     'UnitMRP',
     'PurchaseRate',
+    'LandedRate',
     'BalQty',
     'Addition',
     'Deduction',
@@ -147,7 +148,6 @@ AddQty(contact,AddQty){
     this.toastr.success(contact.AddQty + ' Qty Added Successfully.', 'Success !', {
       toastClass: 'tostr-tost custom-toast-success',
     });
-    this.OnSave();
   }else{
     contact.UpdatedQty = 0;
   }
@@ -168,11 +168,10 @@ DeduQty(contact,DeduQty){
     this.toastr.success(contact.DeduQty + ' Qty Deduction Successfully.', 'Success !', {
       toastClass: 'tostr-tost custom-toast-success',
     });
-    this.OnSave();
   } else{
     contact.UpdatedQty = 0;
   }
-  this.OnSave();
+ 
 }
 
 Addeditable:boolean=false;
@@ -180,6 +179,7 @@ Dedueditable:boolean=false;
 Expeditable:boolean=false;
 MRPeditable:boolean=false;
 Rateeditable:boolean=false;
+Landededitable:boolean=false;
 enableEditing(row: StockAdjList) {
   row.Addeditable = true;
 }
@@ -209,6 +209,12 @@ ExpDateenableEditing(row: StockAdjList) {
 }
 ExpDatedisableEditing(row: StockAdjList) {
   row.Expeditable = false;
+}
+LandedenableEditing(row: StockAdjList) {
+  row.Landededitable = true;
+}
+LandeddisableEditing(row: StockAdjList) {
+  row.Landededitable = false;
 }
 OnSave(){
   if ((!this.dsStockAdjList.data.length)) {
@@ -272,6 +278,7 @@ OnSave(){
         toastClass: 'tostr-tost custom-toast-success',
       });
       this.OnReset();
+      this.getStockList();
     } else {
       this.toastr.error('Stock Adjustment Data not saved !, Please check error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
@@ -285,7 +292,8 @@ OnSave(){
 }
 
  OnReset(){
-  this._StockAdjustment.userFormGroup.reset();
+ // this._StockAdjustment.userFormGroup.reset();
+
  }
 }
 export class StockAdjList {
@@ -296,11 +304,13 @@ export class StockAdjList {
   Landedrate:any;
   PurchaseRate:any;
   UpdatedQty:any;
+  LandedRate:any;
   Addeditable:boolean=false;
   Dedueditable:boolean=false;
   Rateeditable:boolean=false;
   MRPeditable:boolean=false;
   Expeditable:boolean=false;
+  Landededitable:boolean=false;
 
   constructor(StockAdjList) {
     {
@@ -311,6 +321,7 @@ export class StockAdjList {
       this.Landedrate = StockAdjList.Landedrate || 0;
       this.PurchaseRate =StockAdjList.PurchaseRate || 0;
       this.UpdatedQty = StockAdjList.UpdatedQty || 0;
+      this.LandedRate = StockAdjList.LandedRate || 0;
     }
   }
 }

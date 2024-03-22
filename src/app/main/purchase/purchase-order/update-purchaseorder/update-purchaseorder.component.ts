@@ -250,7 +250,6 @@ export class UpdatePurchaseorderComponent implements OnInit {
   vSupplierId:any;
   vsupplierName:any;
   getSupplierSearchCombo() {
-    debugger
     if(this.vSupplierId){
       this.vsupplierName = this._PurchaseOrder.userFormGroup.get('SupplierId').value ;
      }
@@ -270,8 +269,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       } else {
         this.noOptionFoundsupplier = false;
       }
-      debugger
-      if (this.data) { 
+      if (this.data.chkNewGRN == 2) { 
         const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierID);
         this._PurchaseOrder.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
         console.log(toSelectSUpplierId)
@@ -287,7 +285,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     });
   }
   getSelectedSupplierObj(obj) {
-    this.SupplierID = obj.SupplierId;
+   // this.SupplierID = obj.SupplierId;
     this.vAddress = obj.Address;
     this.vMobile = obj.Mobile;
     this.vContact = obj.ContactPerson;
