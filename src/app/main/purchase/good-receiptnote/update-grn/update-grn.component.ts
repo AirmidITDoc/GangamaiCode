@@ -887,10 +887,8 @@ export class UpdateGRNComponent implements OnInit {
   
 
     if (this.vRate) {
-      const rate = this._GRNList.userFormGroup.get('Rate').value
-      if (rate <= this.vMRP) {
+      if (parseFloat(this.vRate) <= parseFloat(this.vMRP)) {
         this.calculateTotalamt();
-        
       } else {
         this.toastr.warning('Enter Purchase Rate less than MRP', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
@@ -1927,6 +1925,7 @@ export class UpdateGRNComponent implements OnInit {
       this._GRNList.GRNFinalForm.get('Remark').setValue(result[0].Remarks);
 
       this.getSupplierSearchCombo();
+
     //   debugger
     // //  const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
     //   const toSelectSUpplierId = this.SupplierList.data.find(item => item.SupplierId === result[0].SupplierID);
