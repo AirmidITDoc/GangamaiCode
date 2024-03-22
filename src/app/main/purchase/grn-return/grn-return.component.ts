@@ -45,26 +45,41 @@ export class GRNReturnComponent implements OnInit {
     'action',
   ];
   
-
-
   displayedColumns1 = [
     // "Action",
     "ItemName",
     "BatchNo",
-   
-    // "BatchExpDate"
-    // "ConversionFactor",
-    // "ReceiveQty",
+    "BatchExpiryDate",
+     "Conversion",
     "ReturnQty",
-    // "FreeQty",
-    "MRP"
-    // "Rate"
-    // "TotalAmount"
-    // "VatPercentage",
-    // "DiscPercentage",
-    // "LandedRate",
-    // "NetAmount"
-    // "TotalQty",
+    "TotalQty",
+    "MRP",
+    "LandedRate",
+    "Totalamt",
+    "GST",
+    "GSTAmount",
+    "NetAmount",
+    "StkId",
+  ];
+
+  displayedColumns3 = [
+    // "Action",
+    "ItemName",
+    "BatchNo",
+   
+    "BatchExpDate",
+     "ConversionFactor",
+    "ReceiveQty",
+    "ReturnQty",
+     "FreeQty",
+    "MRP",
+    "Rate",
+    "TotalAmount",
+    "VatPercentage",
+    "DiscPercentage",
+    "LandedRate",
+    "NetAmount",
+    "TotalQty",
     // "stockid"
     // "IsVerified",
     // "IsVerifiedDatetime",
@@ -78,6 +93,23 @@ export class GRNReturnComponent implements OnInit {
     "SupplierName",
     'TotalAmount',
     'NetAmount',
+  ];
+  displayedColumns8 = [
+    'GrnNumber',
+    'GRNDate',
+    'InvoiceNo',
+    'SupplierName',
+    'TotalAmount',
+    'TotalDiscAmount',
+    'TotalVATAmount',
+    'NetAmount',
+    'RoundingAmt',
+    'DebitNote',
+    'CreditNote',
+    // 'InvDate',
+    'Cash_CreditType',
+    'ReceivedBy',
+    'IsClosed',
   ];
   ToStoreList: any = [];
   SupplierList: any;
@@ -285,7 +317,7 @@ getGrnItemDetailList(Params) {
   }
   this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
     this.dsGrnItemList.data = data as ItemNameList[];
-
+    console.log( this.dsGrnItemList.data)
   //  this.VsupplierId=this.dsGrnItemList.data[0]['SupplierId'];
   //  this.getSupplierSearchCombo();
     this.sIsLoading = '';
