@@ -225,30 +225,26 @@
                                     <mat-form-field appearance="outline" fxFlex="4%">
                                         <mat-label>Qty</mat-label>
                                         <input matInput [(ngModel)]="vQty" name="Qty" required 
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                            (keyup)="calculateTotalamt()" formControlName="Qty" type="number" id="Qty"  autocomplete="off"
+                                            (keyup)="calculateTotalamt()" formControlName="Qty" type="text" OnlyNumber id="Qty"  autocomplete="off"
                                             (keyup.enter)="onEnter('FreeQty')" #qty [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="4%">
                                         <mat-label>Free Qty </mat-label>
-                                        <input matInput [(ngModel)]="vFreeQty" name="FreeQty" type="number"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
+                                        <input matInput [(ngModel)]="vFreeQty" name="FreeQty" type="text" OnlyNumber
                                             formControlName="FreeQty" id="FreeQty" (keyup.enter)="onEnter('MRP')" autocomplete="off"
                                             #freeqty [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>MRP</mat-label>
-                                        <input matInput [(ngModel)]="vMRP" name="MRP"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
+                                        <input matInput [(ngModel)]="vMRP" name="MRP" type="text" OnlyNumber
                                             formControlName="MRP" id="MRP" (keydown)="onEnterMRP($event)" #mrp  autocomplete="off" required>
                                     </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Rate</mat-label>
-                                        <input matInput [(ngModel)]="vRate" name="Rate"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
+                                        <input matInput [(ngModel)]="vRate" name="Rate" type="text" OnlyNumber
                                             formControlName="Rate" id="Rate" (keydown)="onEnterRate($event)"
                                             (keyup)="OnchekPurchaserateValidation()"  #rate required>
                                     </mat-form-field>&nbsp;
@@ -271,15 +267,15 @@
                                     <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Disc1 %</mat-label>
                                         <input matInput [(ngModel)]="vDisc" name="Disc"  autocomplete="off"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
-                                            (keyup)="calculateDiscperAmount()" formControlName="Disc" id="Disc"
-                                            (keyup.enter)="onEnter('btnAdd')" (keydown)="onEnterDisc($event)" #disc required [readonly]="!(vItemName&&vItemName.ItemName)">
+                                            (keyup)="calculateDiscperAmount()" formControlName="Disc" id="Disc" 
+                                           (keydown)="onEnterDisc($event)" #disc required >
                                     </mat-form-field>&nbsp;  
                                     
                                     
 
 
-                                    <!-- <mat-form-field appearance="outline" fxFlex="5%">
+                                    <!-- (keyup.enter)="onEnter('btnAdd')"  [readonly]="!(vItemName&&vItemName.ItemName)"
+                                         <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Disc %</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="Disc" required
                                             autocomplete="off" [(ngModel)]="vDisc" #disc (keydown)="onEnterDisc($event)"
@@ -289,7 +285,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Dis Amount </mat-label>
-                                        <input matInput [(ngModel)]="vDisAmount" name="DisAmount" type="number"
+                                        <input matInput [(ngModel)]="vDisAmount" name="DisAmount" type="number" OnlyNumber
                                             formControlName="DisAmount" (keyup)="calculateDiscAmount()" [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>&nbsp;
 
@@ -343,7 +339,6 @@
                                     <mat-form-field appearance="outline" fxFlex="4%" *ngIf="isDisc2Selected">
                                         <mat-label>Disc2%</mat-label>
                                         <input matInput [(ngModel)]="vDisc2" name="Disc2" autocomplete="off"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                             (keyup)="calculateDiscper2Amt()" formControlName="Disc2" id="Disc2"
                                             (keydown)="onEnterDisc2($event)" #disc2 required>
                                     </mat-form-field>&nbsp;

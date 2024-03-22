@@ -253,6 +253,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   calculateLastDay(inputDate: string) {
+    debugger
     if (inputDate && inputDate.length === 6) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
@@ -318,19 +319,22 @@ export class UpdateGRNComponent implements OnInit {
   filteredOptionssupplier:any;
   noOptionFoundsupplier:any;
   vSupplierId:any;
- 
+ vsupplierName:any;
+ POsupplierName:any;
+ newSupplier:any;
   getSupplierSearchCombo() {
-    let vsupplierName:any;
-    let  POsupplierName:any;
-    if(this.registerObj.SupplierName == undefined){
-     // vsupplierName = this.registerObj.SupplierName;
-     POsupplierName = this.vPurchaseOrderSupplierId ;
-    }else{
-     // vsupplierName = this.vPurchaseOrderSupplierId ;
-      vsupplierName = this.registerObj.SupplierName;
+    if(this.vPurchaseId > 0){
+     this.vsupplierName = this.vPurchaseOrderSupplierId ;
     }
+    else if(this.vSupplierId){
+      this.vsupplierName = this._GRNList.userFormGroup.get('SupplierId').value;
+    }
+    else{
+      this.vsupplierName = this.registerObj.SupplierName;
+    }
+  
     var m_data = {
-      'SupplierName': `${this._GRNList.userFormGroup.get('SupplierId').value}%` || `${POsupplierName}%`  || `${vsupplierName}%`
+      'SupplierName': `${this.vsupplierName}%`
     }
     console.log(m_data)
     this._GRNList.getSupplierSearchList(m_data).subscribe(data => {
@@ -340,9 +344,9 @@ export class UpdateGRNComponent implements OnInit {
       } else {
         this.noOptionFoundsupplier = false;
       }
-      debugger
+   
       //for grn update wiil get the supplier id
-      if (this.data) { 
+      if (this.data.chkNewGRN == 2) { 
         const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierId);
         this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
         this.vMobile = toSelectSUpplierId.Mobile;
@@ -353,7 +357,7 @@ export class UpdateGRNComponent implements OnInit {
        //for grn againt po wiil get the supplier id
   
       else if(this.vPurchaseOrderSupplierId){
-        const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.vPurchaseOrderSupplierId);
+        const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierName == this.vPurchaseOrderSupplierId);
         this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
         console.log(toSelectSUpplierId)
         this.vMobile = toSelectSUpplierId.Mobile;
@@ -599,23 +603,23 @@ export class UpdateGRNComponent implements OnInit {
 
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
-        contact.TotalQty = (((contact.FreeQty) + (contact.ReceiveQty)) * (contact.ConversionFactor));
+        contact.TotalQty = ((parseFloat(contact.FreeQty) +parseFloat (contact.ReceiveQty)) * parseFloat(contact.ConversionFactor));
         //total amt
-        contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
+        contact.TotalAmount = parseFloat(contact.ReceiveQty) * parseFloat(contact.Rate);
         //disc 1
-        contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100)
-        let totalamt = ((contact.TotalAmount) - (contact.DiscAmount));
+        contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100)
+        let totalamt = (parseFloat(contact.TotalAmount) -parseFloat (contact.DiscAmount));
         //disc 2
-        contact.DiscAmt2 = (((totalamt) * (contact.DiscPer2)) / 100);
-        let totalamt2 = ((totalamt) - (contact.DiscAmt2));
+        contact.DiscAmt2 = (((totalamt) * parseFloat(contact.DiscPer2)) / 100);
+        let totalamt2 = ((totalamt) - parseFloat(contact.DiscAmt2));
         //GST cal
-        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
-        contact.CGSTAmt = (((totalamt2) * (contact.CGSTPer)) / 100);
-        contact.SGSTAmt = (((totalamt2) * (contact.SGSTPer)) / 100);
-        contact.IGSTAmt = (((totalamt2) * (contact.IGSTPer)) / 100);
+        contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
+        contact.CGSTAmt = (((totalamt2) * parseFloat(contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((totalamt2) * parseFloat(contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((totalamt2) * parseFloat(contact.IGSTPer)) / 100);
         // contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
-        contact.VatAmount = (((totalamt2) * (contact.VatPercentage)) / 100);
-        contact.NetAmount = ((totalamt2) + (contact.VatAmount)).toFixed(2);
+        contact.VatAmount = (((totalamt2) * parseFloat(contact.VatPercentage)) / 100);
+        contact.NetAmount = ((totalamt2) + parseFloat(contact.VatAmount)).toFixed(2);
         // contact.LandedRate = (contact.NetAmount / contact.TotalQty);
         // ///PurUnitRate
         // contact.PurUnitRate = (((contact.TotalAmount) / (contact.ReceiveQty)) * (contact.ConversionFactor));
@@ -728,9 +732,10 @@ export class UpdateGRNComponent implements OnInit {
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
         this.isDisc2Selected = true;
+        let dics2 = this.vDisc2 || 0;
         this.vDisAmount = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
         TotalAmt2 = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
-        this.vDisAmount2 = ((parseFloat(TotalAmt2) * parseFloat(this.vDisc2)) / 100).toFixed(2);
+        this.vDisAmount2 = ((parseFloat(TotalAmt2) * parseFloat(dics2)) / 100).toFixed(2);
         TotalAmt = parseFloat(TotalAmt2) - parseFloat(this.vDisAmount2);
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST on MRP Plus FreeQty") {
@@ -981,10 +986,13 @@ export class UpdateGRNComponent implements OnInit {
     }
   }
   calculateDiscper2Amt() {
+
     //disc 1
+    let disc2:any= 0;
+    disc2= this.vDisc2;
     let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
     //disc 2
-    this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(this.vDisc2)) / 100).toFixed(2);
+    this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(disc2)) / 100).toFixed(2);
     let totalamt2 = (parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
 
     //let discamt = this.vDisAmount + this.vDisAmount2 
@@ -1073,7 +1081,9 @@ export class UpdateGRNComponent implements OnInit {
       this.vDisAmount = (((this.vTotalAmount) * (this.vDisc)) / 100);
       let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
       //disc 2
-      this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(this.vDisc2)) / 100).toFixed(2);
+      let disc2:any= 0;
+      disc2= this.vDisc2;
+      this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(disc2)) / 100).toFixed(2);
       let totalamt2 = (parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
 
       //GST cal
@@ -1749,6 +1759,7 @@ export class UpdateGRNComponent implements OnInit {
       this.expdate.nativeElement.focus();
       let batchno = this.vBatchNo.toUpperCase();
       this.vBatchNo = batchno;
+      this.vlastDay ='';
     }
   }
   public onEnterExpDate(event): void {
@@ -1786,7 +1797,7 @@ export class UpdateGRNComponent implements OnInit {
     if (event.which === 13) {
       if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
         this.isDisc2Selected = true;
-        this._GRNList.userFormGroup.get('Disc2').setValue('')
+       // this._GRNList.userFormGroup.get('Disc2').setValue()
         this.disc2.nativeElement.focus();
         return
       }
@@ -1799,6 +1810,16 @@ export class UpdateGRNComponent implements OnInit {
       this.cgst.nativeElement.focus();
       this.add = true
       this.addbutton.nativeElement.focus();
+      // if(this.vDisc2 >0){
+      //   this.add = true
+      //   this.addbutton.nativeElement.focus();
+      // }
+      // else{
+      //   this.vDisc2 = 0;
+      //   this.add = true
+      //   this.addbutton.nativeElement.focus();
+      // }
+     
     }
   }
 
