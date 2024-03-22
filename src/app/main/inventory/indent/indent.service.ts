@@ -59,7 +59,7 @@ export class IndentService {
   }
 
   public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_IndentItemList",Param);
   }
   public getupdateIndentList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDetailsForIndentUpdate",Param);
