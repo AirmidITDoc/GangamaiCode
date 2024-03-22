@@ -318,16 +318,21 @@ export class UpdateGRNComponent implements OnInit {
   filteredOptionssupplier:any;
   noOptionFoundsupplier:any;
   vSupplierId:any;
+ 
   getSupplierSearchCombo() {
     let vsupplierName:any;
-    if(this.registerObj.SupplierName){
-      vsupplierName = this.registerObj.SupplierName;
+    let  POsupplierName:any;
+    if(this.registerObj.SupplierName == undefined){
+     // vsupplierName = this.registerObj.SupplierName;
+     POsupplierName = this.vPurchaseOrderSupplierId ;
     }else{
-      vsupplierName = this.vPurchaseOrderSupplierId ;
+     // vsupplierName = this.vPurchaseOrderSupplierId ;
+      vsupplierName = this.registerObj.SupplierName;
     }
     var m_data = {
-      'SupplierName': `${this._GRNList.userFormGroup.get('SupplierId').value}%` || `${vsupplierName}%`
+      'SupplierName': `${this._GRNList.userFormGroup.get('SupplierId').value}%` || `${POsupplierName}%`  || `${vsupplierName}%`
     }
+    console.log(m_data)
     this._GRNList.getSupplierSearchList(m_data).subscribe(data => {
       this.filteredOptionssupplier = data;
       if (this.filteredOptionssupplier.length == 0) {
@@ -335,9 +340,22 @@ export class UpdateGRNComponent implements OnInit {
       } else {
         this.noOptionFoundsupplier = false;
       }
+      debugger
+      //for grn update wiil get the supplier id
       if (this.data) { 
         const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierId);
         this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
+        this.vMobile = toSelectSUpplierId.Mobile;
+        this.vContact = toSelectSUpplierId.ContactPerson;
+        this.vSupplierId =toSelectSUpplierId.SupplierName;
+        this._GRNList.userFormGroup.get('SupplierId').setValue(this.filteredOptionssupplier[0]);
+      }
+       //for grn againt po wiil get the supplier id
+  
+      else if(this.vPurchaseOrderSupplierId){
+        const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.vPurchaseOrderSupplierId);
+        this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
+        console.log(toSelectSUpplierId)
         this.vMobile = toSelectSUpplierId.Mobile;
         this.vContact = toSelectSUpplierId.ContactPerson;
         this.vSupplierId =toSelectSUpplierId.SupplierName;
@@ -1889,16 +1907,7 @@ export class UpdateGRNComponent implements OnInit {
   onClose() {
     this.dialogRef.close();
   }
-  getPotoGrnsupplier( ) {
-    var m_data = {
-      'SupplierName':'%'
-    }
-   
-    this._GRNList.getSupplierSearchList(m_data).subscribe(data => {
-   this.SupplierList = data;
-   console.log(this.SupplierList)
-    });
-  }
+
   FinalTotalQty1: any = 0;
   FinalLandedrate1: any = 0;
   FinalpurUnitRate1: any = 0;
@@ -1915,7 +1924,6 @@ export class UpdateGRNComponent implements OnInit {
 
     _dialogRef.afterClosed().subscribe(result => {
     
-      this.getPotoGrnsupplier()
       console.log(result)
       this.vPurchaseId = result[0].PurchaseID;
       this.vpoBalQty = result[0].ReceiveQty;
