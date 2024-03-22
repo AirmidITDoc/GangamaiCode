@@ -21,8 +21,7 @@
             </span>
 
             <div fxLayout="column" fxLayout.gt-xs="row" >
-                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                    style="border-color: red;"></app-common-date>
+                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                 <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
                     (click)="onClose()">
                     close
@@ -366,13 +365,13 @@
                                     </div>
 
 
-                                    <mat-table #table class="table3" matSort [dataSource]="dsItemNameList"
+                                    <mat-table #table class="table3 h-280" matSort [dataSource]="dsItemNameList"
                                         [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
 
 
                                         <ng-container matColumnDef="buttons" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                                            <mat-header-cell *matHeaderCellDef > Action
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let row">
 
@@ -572,10 +571,10 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent"
+                                        <mat-header-row class="accent min-width-2000"
                                             *matHeaderRowDef="displayedColumns2; sticky: true">
                                         </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns2;" class="contact"
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns2;" class=" min-width-2000"
                                             [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -732,9 +731,9 @@
                             </div>
 
                             <div fxLayout="row" style="padding: 10px;">
-                                <mat-card style="width: 50%; height: 210px;">
+                                <mat-card style="width: 50%;">
 
-                                    <mat-table #table class="table4" matSort [dataSource]="dsLastThreeItemList"
+                                    <mat-table #table class="h-200" matSort [dataSource]="dsLastThreeItemList"
                                         style="overflow:auto;">
                                         <ng-container matColumnDef="ItemId">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -745,9 +744,9 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="SupplierName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                                 SupplierName</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180" [matTooltip]="contact.SupplierName">
                                                 {{contact.SupplierName}}
                                             </mat-cell>
                                         </ng-container>
@@ -797,10 +796,10 @@
                                                 no data found...
                                             </mat-footer-cell>
                                         </ng-container>
-                                        <mat-header-row class="accent"
+                                        <mat-header-row class="accent min-width-800"
                                             *matHeaderRowDef="displayedColumns3; sticky: true">
                                         </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns3;" class="contact"
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns3;" class="contact min-width-800"
                                             [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
 
                                         <mat-footer-row *matFooterRowDef="['noData']"

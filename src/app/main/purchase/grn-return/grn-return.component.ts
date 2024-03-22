@@ -187,7 +187,7 @@ export class GRNReturnComponent implements OnInit {
     this._GRNReturnService.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
       console.log(this.SupplierList )
-debugger
+// debugger
       if (this.VsupplierId !=0) {
         const ddValue = this.SupplierList.filter(c => c.SupplierId == this.VsupplierId);
         this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').setValue(ddValue[0]);
@@ -298,7 +298,7 @@ debugger
       console.log(result)
      
       this.dsNewGRNReturnItemList.data = result as ItemNameList[];
-debugger
+// debugger
       console.log(this.dsNewGRNReturnItemList.data)
       this.VsupplierId= this.dsNewGRNReturnItemList.data[0]['SupplierId']
       this.getSupplierSearchCombo()
@@ -341,7 +341,7 @@ getCellCalculation(contact, ReturnQty) {
   this.SelectedArray.push(contact);
 
   console.log(this.SelectedArray)
-  debugger
+  // debugger
   this.RQty = parseInt(ReturnQty);
   if ((parseInt(this.RQty)) > (parseInt(contact.ReceiveQty))) {
     Swal.fire("Return Qty cannot be greater than Qty")
@@ -481,7 +481,7 @@ OnSave(){
   grnReturnSave['isGrnTypeFlag'] = 0;
   grnReturnSave['grnReturnId'] =0
 
-debugger
+// debugger
   let grnReturnDetailSavearray=[];
   this.SelectedArray.forEach((element) => {
 console.log(element)

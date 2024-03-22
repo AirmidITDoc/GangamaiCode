@@ -1,4 +1,4 @@
-<mat-tab-group style="width: 100%;">
+<mat-tab-group style="width: 100%;" dynamicTableHeight>
     <mat-tab label="Work Order List">
         <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
             <mat-toolbar class="top-header accent">
@@ -188,9 +188,9 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    <mat-header-row class="accent min-width-1400" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1400"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -524,7 +524,7 @@
                                                 {{element.Specification}} </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="Action">
+                                        <ng-container matColumnDef="Action" stickyEnd="">
                                             <mat-header-cell *matHeaderCellDef class="table-actions"
                                                 style="color: white;">Action
                                             </mat-header-cell>
@@ -548,10 +548,10 @@
                                                 no data found...
                                             </mat-footer-cell>
                                         </ng-container>
-                                        <mat-header-row class="accent"
+                                        <mat-header-row class="accent min-width-1400"
                                             *matHeaderRowDef="displayedColumnsnew; sticky: true">
                                         </mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumnsnew;" class="element"
+                                        <mat-row *matRowDef="let row; columns: displayedColumnsnew;" class="element min-width-1400"
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -607,10 +607,9 @@
                                 <div class="footer-navigation-container" fxLayout.gt-xs="row">
 
                                     <div style="margin-top: 10px; margin-right: 5px; margin-left: 100px;">
-                                        <button class="next-btn" color="accent"
-                                            style="border-radius: 16px; width: 80px;" (click)="OnSave()"
+                                        <button class="btn btn-danger-outline " id="btncancel">Close</button>
+                                        <button class="btn btn-primary ml-4" color="accent" (click)="OnSave()"
                                             [disabled]="_WorkOrderService.NewWorkForm.invalid">Save</button>
-                                        <button class="footer-btn" id="btncancel">Close</button>
                                     </div>
                                 </div>
 
@@ -671,29 +670,38 @@
             | Reg.No :-BIJ00467ALSSh </span><br><br>
 
 
-        <span style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center; background-color: gray;">Work Order </span>
+        <span
+            style="text-transform: uppercase;font-weight: 500;margin:0;text-align: center; background-color: gray;">Work
+            Order </span>
         <hr> <br>
 
     </div>
     <table>
         <tr>
-            <td > <span style="font-weight: 500;margin-right: 10px;">Supplier Name </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.SupplierName}} </span> </td>
-            <td><span style="font-weight: 500;margin-right:34px;margin-left: 10px;">Order No</span><span style="font-size:11px;"> {{reportPrintObjList[0]?.WOId}} </span> </td>
+            <td> <span style="font-weight: 500;margin-right: 10px;">Supplier Name </span><span
+                    style="font-size:11px; ">{{reportPrintObjList[0]?.SupplierName}} </span> </td>
+            <td><span style="font-weight: 500;margin-right:34px;margin-left: 10px;">Order No</span><span
+                    style="font-size:11px;"> {{reportPrintObjList[0]?.WOId}} </span> </td>
         </tr>
 
         <tr>
-            <td ><span style="font-weight: 500;margin-right: 60px;">Address</span><span style="font-size:11px;">{{reportPrintObjList[0]?.Address}}</span> </td>
-            <td><span style="font-weight: 500;margin-right: 5px;margin-left: 10px;">Order Date</span> <span style="font-size:11px;margin-right: 20px;margin-left: 20px;">{{reportPrintObjList[0]?.Date | date: 'dd/MM/yyyy'}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 60px;">Address</span><span
+                    style="font-size:11px;">{{reportPrintObjList[0]?.Address}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 5px;margin-left: 10px;">Order Date</span> <span
+                    style="font-size:11px;margin-right: 20px;margin-left: 20px;">{{reportPrintObjList[0]?.Date | date:
+                    'dd/MM/yyyy'}}</span> </td>
         </tr>
 
         <tr>
             <td></td>
-            <td><span style="font-weight: 500;margin-right: 34px;margin-left: 10px;">Phone No</span><span style="font-size:11px;">{{reportPrintObjList[0]?.Phone}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 34px;margin-left: 10px;">Phone No</span><span
+                    style="font-size:11px;">{{reportPrintObjList[0]?.Phone}}</span> </td>
         </tr>
 
         <tr>
             <td></td>
-            <td><span style="font-weight: 500;margin-right: 28px;margin-left: 10px;">Mobile No</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.Mobile}} </span></td>
+            <td><span style="font-weight: 500;margin-right: 28px;margin-left: 10px;">Mobile No</span> <span
+                    style="font-size:11px;">{{reportPrintObjList[0]?.Mobile}} </span></td>
         </tr>
     </table>
 
@@ -775,32 +783,32 @@
             <td style="border: 1px solid black;vertical-align: top;
             padding: 0;height: 20px;">{{item?.WORemark}}</td> -->
         </tr>
-         
-    </table><br>
-    
-        <span style="vertical-align: top;padding:0 10px 10px;">
-           
-            <span style="margin-left: 490px;font-weight: 500;margin-right: 20px;">TotalAmount</span>
-            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WOTotalAmount}}</span> <br>
-            <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">DiscAmount</span>
-            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WODiscAmount}}</span> <br>
-            <span style="margin-left: 500px;font-weight: 500;margin-right: 30px;">TaxAmount</span>
-            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WOVatAmount}}</span> <br>
-            <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">NetAmount</span>
-            <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WoNetAmount}}</span> <br>
-        </span><br>
-        <span style="font-weight: 500;"> Total Amount in words :-</span>
-        <hr>
-        <span style="font-weight: 500;">Remark</span><br><br><br><br>
 
-        <div style="display: flex;">
-            <span style="vertical-align: top;padding:0 10px 10px">
-                <span style="font-weight: 500;">ADMIN ADMIN</span>
-                <span style="margin-left: 380px;font-weight: 500; margin-right: 30px;">Authorized Signature</span>
-                
-            </span>
-        </div>
-        
+    </table><br>
+
+    <span style="vertical-align: top;padding:0 10px 10px;">
+
+        <span style="margin-left: 490px;font-weight: 500;margin-right: 20px;">TotalAmount</span>
+        <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WOTotalAmount}}</span> <br>
+        <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">DiscAmount</span>
+        <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WODiscAmount}}</span> <br>
+        <span style="margin-left: 500px;font-weight: 500;margin-right: 30px;">TaxAmount</span>
+        <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WOVatAmount}}</span> <br>
+        <span style="margin-left: 500px;font-weight: 500;margin-right: 25px;">NetAmount</span>
+        <span style="width: 400px;font-size:11px;"> {{reportPrintObjList[0]?.WoNetAmount}}</span> <br>
+    </span><br>
+    <span style="font-weight: 500;"> Total Amount in words :-</span>
+    <hr>
+    <span style="font-weight: 500;">Remark</span><br><br><br><br>
+
+    <div style="display: flex;">
+        <span style="vertical-align: top;padding:0 10px 10px">
+            <span style="font-weight: 500;">ADMIN ADMIN</span>
+            <span style="margin-left: 380px;font-weight: 500; margin-right: 30px;">Authorized Signature</span>
+
+        </span>
+    </div>
+
 
     <table class="table" style="width: 100%;border-collapse: collapse;">
         <tbody>
