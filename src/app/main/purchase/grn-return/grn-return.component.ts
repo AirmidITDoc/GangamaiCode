@@ -80,7 +80,7 @@ export class GRNReturnComponent implements OnInit {
     "LandedRate",
     "NetAmount",
     "TotalQty",
-    // "stockid"
+    "stockid"
     // "IsVerified",
     // "IsVerifiedDatetime",
     // "IsVerifiedUserId"
@@ -341,28 +341,25 @@ getCellCalculation(contact, ReturnQty) {
   this.SelectedArray.push(contact);
 
   console.log(this.SelectedArray)
-  debugger
+  
   this.RQty = parseInt(ReturnQty);
-  if ((parseInt(this.RQty)) > (parseInt(contact.ReceiveQty))) {
-    Swal.fire("Return Qty cannot be greater than Qty")
 
+  
+  if ((parseInt(this.RQty)) < (parseInt(contact.ReceiveQty))) {
+    debugger
     contact.ReturnQty = parseInt(contact.Qty);
     this.RQty = parseInt(contact.Qty);
 
-    let GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
-
-    // let GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+    let GrossAmt = (parseFloat(contact.MRP) * parseInt(this.RQty)).toFixed(2);
     let vPurAmt = (parseFloat(contact.PurchaseRate) * parseInt(this.RQty)).toFixed(2);
-
-
     let  vLandAmt = ((parseFloat(contact.landedRate) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
     let  VatAmount = ((parseFloat(contact.landedRate) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
   
   
-    let CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
-    let SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
-    let IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
-    let TotalAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
+    let CGSTAmount = (((parseFloat(contact.MRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+    let SGSTAmount = (((parseFloat(contact.MRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
+    let IGSTAmount = ((((parseFloat(contact.MRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
+    let TotalAmt = (parseFloat(contact.MRP) * parseInt(this.RQty)).toFixed(2);
     
     // this.TotalAmt = ((parseFloat(contact.UnitMRP) * parseInt(this.RQty)) - (parseFloat(this.DiscAmt))).toFixed(2);
 
@@ -372,9 +369,9 @@ getCellCalculation(contact, ReturnQty) {
       contact.OP_IP_ID = contact.OP_IP_ID,
       contact.ItemName = contact.ItemName,
       contact.BatchNo = contact.BatchNo,
-      contact.UnitMRP = contact.UnitMRP,
+      contact.UnitMRP = contact.MRP,
       contact.Qty = contact.Qty,
-      contact.ReturnQty = contact.ReturnQty
+      // contact.ReturnQty = contact.ReturnQty
       contact.TotalAmount = TotalAmt,
       contact.VatPer = contact.VatPer,
       contact.VatAmount = VatAmount,
@@ -398,6 +395,8 @@ getCellCalculation(contact, ReturnQty) {
 
   }
   else {
+    Swal.fire("Return Qty cannot be greater than Qty")
+
     this.RQty = parseInt(ReturnQty);
     // this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
     // this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) / 100).toFixed(2);

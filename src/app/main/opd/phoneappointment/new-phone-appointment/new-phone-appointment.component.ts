@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -70,7 +70,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   submitted = false;
   sIsLoading: string = '';
   minDate: Date;
-
+  vMobile:any;
   isDepartmentSelected:boolean=false;
   isDoctorSelected:boolean=false;
 
@@ -167,11 +167,11 @@ export class NewPhoneAppointmentComponent implements OnInit {
       PhAppTime: '',
       DepartmentId: '',
       Departmentid: '',
-      MobileNo: ['', [Validators.required,
+    
+
+      MobileNo:['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
-      Validators.maxLength(10),
-      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]],
+      Validators.maxLength(10),]],
       DoctorId: '',
       DoctorID: '',
       AddedBy: '',
@@ -358,6 +358,59 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this.buttonColor = 'red';
     // this.buttonColor: ThemePalette = 'primary';
   }
+
+
+  @ViewChild('fname') fname: ElementRef;
+  @ViewChild('mname') mname: ElementRef;
+  @ViewChild('lname') lname: ElementRef;
+
+  @ViewChild('Address') Address: ElementRef;
+  @ViewChild('mobile') mobile: ElementRef;
+  @ViewChild('dept') dept: ElementRef;
+  @ViewChild('docname') docname: ElementRef;
+
+  public onEnterfname(event): void {
+    if (event.which === 13) {
+      this.mname.nativeElement.focus();
+    }
+  }
+
+  public onEntermname(event): void {
+    if (event.which === 13) {
+      this.lname.nativeElement.focus();
+    }
+  }
+
+  public onEnterlname(event): void {
+    if (event.which === 13) {
+      this.Address.nativeElement.focus();
+    }
+  }
+
+  public onEnterAddress(event): void {
+    if (event.which === 13) {
+      this.mobile.nativeElement.focus();
+    }
+  }
+
+  public onEntermobile(event):void{
+if(event.which===13){
+this.dept.nativeElement.focus();
+}
+  }
+  public onEnterdept(event): void {
+    if (event.which === 13) {
+      this.docname.nativeElement.focus();
+    }
+  }
+  // public onEnterlname(event): void {
+  //   if (event.which === 13) {
+  //     this.Address.nativeElement.focus();
+  //   }
+  // }
+  
+
+
 }
 
 export class PhoneschlistMaster {
