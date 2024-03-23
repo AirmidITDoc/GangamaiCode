@@ -306,7 +306,6 @@ getCellCalculation(contact, ReturnQty) {
 }
 
 OnSave(){
-  debugger
   if ((!this.dsGrnItemList.data.length)) {
     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
@@ -319,13 +318,10 @@ OnSave(){
     });
     return;
   }
-  if (this.isDataAvailableInColumn('ReturnQty')) {
-    this.toastr.warning('Data not available in the ReturnQty column. Cannot perform save operation.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
-  
+  const tableData = this.dsGrnItemList.data;
+  const isDataAvailable = tableData.some((row) => row.ReturnQty === '');
+  if (isDataAvailable) {
+ 
   let grnReturnSave = {};
   grnReturnSave['grnId'] = this.vGRNID || 0;
   grnReturnSave['grnReturnDate'] = this.dateTimeObj.date;
@@ -421,6 +417,12 @@ OnSave(){
       toastClass: 'tostr-tost custom-toast-error',
     });
   });
+} 
+else {
+  this.toastr.warning('Data not available in the ReturnQty column. Cannot perform save operation.', 'Warning !', {
+    toastClass: 'tostr-tost custom-toast-warning',
+  });
+}
 }
 OnReset() { 
   this._GRNReturnService.NewGRNReturnFrom.reset();
