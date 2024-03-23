@@ -188,18 +188,12 @@ export class PharmacyReportComponent implements OnInit {
 
 
   getOptionTextUser(option) {
-    debugger
-    // this.UserId = option.UserId;
-    // this.UserName=option.UserName;
     return option && option.UserName ? option.UserName : '';
-
   }
 
   getOptionTextPaymentMode(option) {
-
     this.PaymentMode = option.PaymentMode;
     return option && option.PaymentMode ? option.PaymentMode : '';
-
   }
 
 

@@ -53,6 +53,7 @@ export class IssueToDepartmentComponent implements OnInit {
         'action'
     ];
     displayedColumns1: string[] = [
+        'Status',
         'ItemName',
         'BatchNo',
         'BatchExpDate',

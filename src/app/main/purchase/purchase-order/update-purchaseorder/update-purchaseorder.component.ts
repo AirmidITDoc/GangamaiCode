@@ -248,11 +248,17 @@ export class UpdatePurchaseorderComponent implements OnInit {
   filteredOptionssupplier:any;
   noOptionFoundsupplier:any;
   vSupplierId:any;
+  vsupplierName:any;
   getSupplierSearchCombo() {
-    debugger
-    this.registerObj.SupplierName
+    if(this.vSupplierId){
+      this.vsupplierName = this._PurchaseOrder.userFormGroup.get('SupplierId').value ;
+     }
+     else{
+       this.vsupplierName = this.registerObj.SupplierName;
+     }
+   
     var m_data = {
-      'SupplierName': `${this._PurchaseOrder.userFormGroup.get('SupplierId').value}%` ||  `${this.registerObj.SupplierName}%`
+      'SupplierName': `${this.vsupplierName}%`
     }
     console.log(m_data)
     this._PurchaseOrder.getSupplierSearchList(m_data).subscribe(data => {
@@ -263,8 +269,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       } else {
         this.noOptionFoundsupplier = false;
       }
-      debugger
-      if (this.data) { 
+      if (this.data.chkNewGRN == 2) { 
         const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierID);
         this._PurchaseOrder.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
         console.log(toSelectSUpplierId)
@@ -280,7 +285,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     });
   }
   getSelectedSupplierObj(obj) {
-    this.SupplierID = obj.SupplierId;
+   // this.SupplierID = obj.SupplierId;
     this.vAddress = obj.Address;
     this.vMobile = obj.Mobile;
     this.vContact = obj.ContactPerson;

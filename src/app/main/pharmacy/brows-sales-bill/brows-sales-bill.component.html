@@ -1,13 +1,13 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar>
-    <mat-toolbar class="top-header">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle ">
                 <mat-icon>menu</mat-icon>
             </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Sales List
             </span>
         </div>
@@ -25,23 +25,18 @@
 
                 <div class="content">
                     <!-- SIDEBAR -->
-                    <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-                      margin-left:12px; background-color: white;height:100%;">
-                        <div>
+                    <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+                        <div class="sidebar-content">
                             <!-- SIDEBAR HEADER -->
-                            <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
-                                style="margin-top: 3%">
-                                <span class="h5" >Search Facility</span>
+                            <div class="sidebar-header accent" fxLayout="row" fxLayoutAlign="start center">
+                                <span class="h5">Search Facility</span>
                                 <!-- / USER -->
                             </div>
                             <!-- / SIDEBAR HEADER -->
                             <!-- SIDEBAR CONTENT -->
-                            <div>
-                                <div class="nav material2">
-
-
-                                    <form [formGroup]="_BrowsSalesBillService.userForm"
-                                        style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
+                            <div class="sidebar-body">
+                                <div class="sidebar-form">
+                                    <form [formGroup]="_BrowsSalesBillService.userForm"fusePerfectScrollbar>
                                         <div fxLayout="column" fxLayoutAlign="start none">
 
                                             <mat-form-field appearance="outline" fxFlex>
@@ -54,7 +49,7 @@
                                                 </mat-select>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                            <mat-form-field appearance="outline" >
                                                 <mat-label>Enter a date range</mat-label>
                                                 <mat-date-range-input [rangePicker]="picker">
                                                     <input matStartDate formControlName="startdate"
@@ -132,34 +127,42 @@
 
                                     <div fxlayout="row">
                                         <div style="width: 100%;">
-                                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                            class="backgroundBlur"  style="height: 100%;">
-                                            <div class="spinner-border text-danger"></div>
-                    
-                                             </div>
+                                            <div matColumnDef="loading"
+                                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                                class="backgroundBlur" style="height: 100%;">
+                                                <div class="spinner-border text-danger"></div>
 
-                                            <mat-table #table matSort [dataSource]="dssaleList1" [@animateStagger]="{value:'50'}">
+                                            </div>
+
+                                            <mat-table #table matSort [dataSource]="dssaleList1"
+                                                [@animateStagger]="{value:'50'}">
                                                 <ng-container matColumnDef="action">
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        style="color: white;">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
-                                                        <button mat-icon-button matTooltip="Print2" (click)="getPrint2(contact)">
+                                                        <button mat-icon-button matTooltip="Print2"
+                                                            (click)="getPrint2(contact)">
                                                             <mat-icon>print3</mat-icon>
                                                         </button>
-                                                        <button mat-icon-button matTooltip="View As Pdf" (click)="viewSalesPdf(contact)">
+                                                        <button mat-icon-button matTooltip="View As Pdf"
+                                                            (click)="viewSalesPdf(contact)">
                                                             <mat-icon>visibility</mat-icon>
                                                         </button>
-                                                        <button mat-icon-button matTooltip="Send Bill On WhatsApp" (click)="getWhatsappshareSales(contact)">
-                                                            <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                                                        <button mat-icon-button matTooltip="Send Bill On WhatsApp"
+                                                            (click)="getWhatsappshareSales(contact)">
+                                                            <img width="100" height="20px"
+                                                                src="assets/images/logos/WhatsApp.png">
                                                         </button>
-                                                        <button mat-icon-button matTooltip="Credit Bill" *ngIf="contact.PaidType=='Credit'"
+                                                        <button mat-icon-button matTooltip="Credit Bill"
+                                                            *ngIf="contact.PaidType=='Credit'"
                                                             (click)="OnPayment(contact)">
                                                             <mat-icon>payment</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
 
-<!-- 
+                                                <!-- 
                                                 <ng-container matColumnDef="payment">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
                                                     </mat-header-cell>
@@ -204,7 +207,8 @@
 
 
                                                 <ng-container matColumnDef="PatientName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-180">
                                                         Patient Name
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
@@ -282,7 +286,8 @@
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;" id="app-table">
 
                                                 <ng-container matColumnDef="ItemName" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">Item
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-180">Item
                                                         Name
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
@@ -463,8 +468,8 @@
                                             <mat-form-field appearance="outline" style="margin-left: 2%;">
                                                 <mat-label>Enter a date range</mat-label>
                                                 <mat-date-range-input [rangePicker]="picker">
-                                                    <input matStartDate formControlName="startdate1" (dateChange)="getSalesReturnList()"
-                                                        placeholder="Start date">
+                                                    <input matStartDate formControlName="startdate1"
+                                                        (dateChange)="getSalesReturnList()" placeholder="Start date">
                                                     <input matEndDate formControlName="enddate1" placeholder="End date">
                                                 </mat-date-range-input>
                                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -555,12 +560,12 @@
                                                         </button>
 
                                                         <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                                        (click)="getWhatsappshareSalesReturn(row)">
-                                                        <img width="100" height="20px"
-                                                            src="assets/images/logos/WhatsApp.png">
+                                                            (click)="getWhatsappshareSalesReturn(row)">
+                                                            <img width="100" height="20px"
+                                                                src="assets/images/logos/WhatsApp.png">
 
-                                                         
-                                                    </button>
+
+                                                        </button>
 
                                                     </mat-cell>
                                                 </ng-container>

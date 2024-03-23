@@ -35,6 +35,7 @@ import { InternetConnectionComponent } from './main/shared/componets/internet-co
 import { ToastrModule } from 'ngx-toastr';
 import { PdfviewerComponent } from './main/pdfviewer/pdfviewer.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { SharedModule } from './main/shared/shared.module';
 
 
 const appRoutes: Routes = [
@@ -186,7 +187,7 @@ class PickDateAdapter extends NativeDateAdapter {
         FuseSharedModule,
         FuseSidebarModule,
         FuseThemeOptionsModule,
-
+        SharedModule,
         // App modules
         LayoutModule,NgxExtendedPdfViewerModule,
         ToastrModule.forRoot({timeOut: 5000,

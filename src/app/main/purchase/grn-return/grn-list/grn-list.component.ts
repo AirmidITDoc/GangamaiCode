@@ -48,7 +48,6 @@ export class GrnListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-   
     this.getSupplierSearchCombo();
   }
   getDateTime(dateTimeObj) {
@@ -57,7 +56,7 @@ export class GrnListComponent implements OnInit {
   getSupplierSearchCombo() {
     this._GRNReturnHeaderList.getSupplierSearchList().subscribe(data => {
       this.SupplierList = data;
-       console.log(data);
+      // console.log(data);
        this.optionsSupplier = this.SupplierList.slice();
        this.filteredoptionsSupplier = this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').valueChanges.pipe(
         startWith(''),
@@ -77,10 +76,10 @@ export class GrnListComponent implements OnInit {
   getGRNList(){
     this.sIsLoading = 'loading-data';
     var Param = {
-      "SupplierId": 1,//this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value.SupplierId || 0,
-      "From_Dt":'2022-09-15 00:00:00.000',// this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt":'2022-10-07 00:00:00.000',// this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "StoreId": 2,//this._loggedService.currentUserValue.user.storeId || 0,
+      "SupplierId": this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value.SupplierId || 0,
+      "From_Dt": this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "To_Dt": this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "StoreId":this._loggedService.currentUserValue.user.storeId || 0,
     }
     console.log(Param);
     this._GRNReturnHeaderList.getGRNList(Param).subscribe(data => {
@@ -108,7 +107,7 @@ export class GrnListComponent implements OnInit {
     this._matDialog.closeAll();
   }
   OnReset(){
-    this._GRNReturnHeaderList.GRNListFrom.reset();
+   // this._GRNReturnHeaderList.GRNListFrom.reset();
     this.dsGRNList.data = []; 
   }
   OnselectGRNList(){

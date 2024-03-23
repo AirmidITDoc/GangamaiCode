@@ -266,7 +266,7 @@
                                             ReturnQty </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
                                             <mat-form-field appearance="legacy">
-                                                <input matInput [(ngModel)]="contact.ReturnQty" type="number"
+                                                <input matInput [(ngModel)]="contact.ReturnQty" type="text" OnlyNumber
                                                 (keyup)="Celldatacalculation(contact,contact.ReturnQty)">
                                             </mat-form-field>
                                         </mat-cell>

@@ -36,8 +36,10 @@ export class GrnReturnService {
   NewGRNReturnFinal() {
     return this._formBuilder.group({
       Remark:[''],
-      TotalAmount:[''],
-      NetAmount:[''],
+      FinalTotalAmount:[''],
+      FinalNetAmount:[''],
+      FinalVatAmount:[''],
+      FinalDiscAmountt:['']
     });
   }
 
@@ -57,13 +59,13 @@ export class GrnReturnService {
     });
   }
   public getGRNReturnList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GRNReturnList_by_Name",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNReturnList_by_Name",Param);
   }
   public getGRNReturnItemDetList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_getGRNReturnList",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=getGRNReturnList",Param);
   }
   public getGRNList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GRNList_by_Name_For_GRNReturn",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name_For_GRNReturn",Param);
   }
   public getSupplierSearchList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName",{});
@@ -77,7 +79,7 @@ export class GrnReturnService {
   }
 
   public getGrnItemList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_GrnItemList",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemList_by_Supplier_Name_For_GRNReturn",Param);
   }
 
   public GRNReturnSave(Param){

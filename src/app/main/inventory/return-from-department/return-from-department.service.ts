@@ -66,19 +66,12 @@ export class ReturnFromDepartmentService {
   public getToStoreSearchList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
   }
-
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
-  }
-  
- 
-  
-  
+  } 
   public getReturnfromDeptview(ReturnId){
     return this._httpClient.get("InventoryTransaction/view-ReturnfromDept?ReturnId=" + ReturnId);
   }
-
-  
   public getReturnfromDeptdatewiseview(FromDate, ToDate, FromStoreId, ToStoreId){
     return this._httpClient.get("InventoryTransaction/view-ReturnfromDeptDatewise?FromDate=" + FromDate + "&ToDate="+ToDate + "&FromStoreId=" +FromStoreId +"&ToStoreId="+ToStoreId);
   }

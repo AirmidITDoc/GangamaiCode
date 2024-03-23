@@ -3,9 +3,6 @@ $table-row-width-small: 600px;
 
 .sales-return-section {
     .mat-table {
-        height: calc(100vh - 675px);
-        min-height: 200px;
-        overflow: auto;
         .mat-header-row,
         .mat-row {
             &.table-left-row {

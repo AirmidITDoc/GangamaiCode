@@ -1,7 +1,7 @@
-<div class="page-layout grn-section">
+<div class="page-layout grn-section" dynamicTableHeight>
     <mat-toolbar class="top-header accent" style="justify-content: space-between;width: 100%;">
-        <div class="top-header-info gap-8" fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+        <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
             <button mat-icon-button class="user-icon">
@@ -70,26 +70,6 @@
                                                     </mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
-
-                                            <!-- <mat-form-field appearance="outline" fxFlex="25%">
-                                                <mat-label>Supplier Name</mat-label>
-                                                <input matAutocompletePosition="below" type="text" name="SupplierId"
-                                                           placeholder="Select Supplier" matInput
-                                                    formControlName="SupplierId" [matAutocomplete]="autoSupllier">
-                                                <span matSuffix style="display: flex;">
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="_GRNService.GRNSearchGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="_GRNService.GRNSearchGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
-                                                </span>
-                                                <mat-autocomplete #autoSupllier="matAutocomplete"
-                                                    [displayWith]="getOptionTextSupplier">
-                                                    <mat-option *ngFor="let option of filteredoptionsSupplier | async"
-                                                        [value]="option">
-                                                        {{option.SupplierName}}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field> -->
 
                                             <mat-form-field appearance="outline" fxFlex="13%">
                                                 <mat-label>Supplier Name</mat-label>
@@ -195,9 +175,9 @@
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="SupplierName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-230">
                                                         SupplierName</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
                                                         <span>{{contact.SupplierName}}</span>
                                                     </mat-cell>
                                                 </ng-container>
@@ -206,7 +186,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         TotalAmt</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.TotalAmount | currency:'INR':'symbol-narrow':'0.2'}}
+                                                        <span>{{contact.TotalAmount |
+                                                            currency:'INR':'symbol-narrow':'0.2'}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -214,8 +195,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         DiscAmt</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.TotalDiscAmount |
-                                                        currency:'INR':'symbol-narrow':'0.2'}}
+                                                        <span> {{contact.TotalDiscAmount |
+                                                            currency:'INR':'symbol-narrow':'0.2'}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -223,8 +204,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         GSTAmt</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.TotalVATAmount |
-                                                        currency:'INR':'symbol-narrow':'0.2'}}
+                                                        <span> {{contact.TotalVATAmount |
+                                                            currency:'INR':'symbol-narrow':'0.2'}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -232,7 +213,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         NetAmt</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.NetAmount | currency:'INR':'symbol-narrow':'0.2'}}
+                                                        <span>{{contact.NetAmount |
+                                                            currency:'INR':'symbol-narrow':'0.2'}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -240,7 +222,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         RoundAmt</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.RoundingAmt | currency:'INR':'symbol-narrow':'0.2'}}
+                                                        <span>{{contact.RoundingAmt |
+                                                            currency:'INR':'symbol-narrow':'0.2'}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -248,7 +231,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         DebitNote</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.DebitNote | currency:'INR':'symbol-narrow':'0.2'}}
+                                                        <span>{{contact.DebitNote |
+                                                            currency:'INR':'symbol-narrow':'0.2'}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -256,7 +240,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         CreditNote</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.CreditNote | currency:'INR':'symbol-narrow':'0.2'}}
+                                                        <span> {{contact.CreditNote |
+                                                            currency:'INR':'symbol-narrow':'0.2'}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -264,7 +249,9 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         CashCreditType</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.Cash_CreditType}}
+                                                        <span>{{contact.Cash_CreditType}}</span>
+
+                                                        <!-- money-bill-alt -->
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -272,7 +259,7 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         ReceivedBy</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.ReceivedBy}}
+                                                        <span> {{contact.ReceivedBy}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -280,16 +267,16 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         IsClosed</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.Cash_CreditType}}
+                                                        <span>{{contact.Cash_CreditType}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <!-- stickyEnd -->
                                                 <ng-container matColumnDef="Action1" stickyEnd>
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-200"
                                                         style="color: white;">Action
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let row">
+                                                    <mat-cell *matCellDef="let row" class="w-200">
                                                         <button mat-icon-button matTooltip="print"
                                                             (click)="viewgetCurrentstockReportPdf(row)">
                                                             <mat-icon>print</mat-icon>
@@ -304,7 +291,6 @@
                                                         <button mat-icon-button (click)="onVerify(row)"
                                                             matTooltip="Verify">
                                                             <mat-icon *ngIf="row.IsVerified==1"
-                                                                
                                                                 title="verify Menu">verified_user</mat-icon>
                                                             <mat-icon title="verify Menu" *ngIf="row.IsVerified==0">
                                                                 verified_user</mat-icon>
@@ -342,13 +328,13 @@
                                                         no data found...
                                                     </mat-footer-cell>
                                                 </ng-container>
-
-                                                <mat-header-row class="accent"
+                                                <!-- Min width is required for fit content in cell. -->
+                                                <mat-header-row class="accent min-width-1800"
                                                     *matHeaderRowDef="displayedColumns; sticky: true">
                                                 </mat-header-row>
 
                                                 <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                    class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                    class="contact min-width-1800" [@animate]="{value:'*',params:{y:'100%'}}"
                                                     (click)="getGrnItemDetailList(contact)"></mat-row>
                                                 <mat-footer-row *matFooterRowDef="['loading']"
                                                     [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>
@@ -366,7 +352,7 @@
 
                                             <mat-table #table matSort class="table2" [dataSource]="dsGrnItemList"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
-                                               
+
                                                 <ng-container matColumnDef="ItemName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                         class="w-200" fxShow.gt-sm>
@@ -534,10 +520,10 @@
                                                     </mat-footer-cell>
                                                 </ng-container>
 
-                                                <mat-header-row class="accent"
+                                                <mat-header-row class="accent min-width-1900"
                                                     *matHeaderRowDef="displayedColumns1; sticky: true">
                                                 </mat-header-row>
-                                                <mat-row *matRowDef="let contact; columns: displayedColumns1;"
+                                                <mat-row class="min-width-1900" *matRowDef="let contact; columns: displayedColumns1;"
                                                     [@animate]="{value:'*',params:{y:'100%'}}"
                                                     (click)="LastThreeItemList(contact)">
                                                 </mat-row>
@@ -621,11 +607,11 @@
                                                         no data found...
                                                     </mat-footer-cell>
                                                 </ng-container>
-                                                <mat-header-row class="accent"
+                                                <mat-header-row class="accent min-width-700"
                                                     *matHeaderRowDef="displayedColumns3; sticky: true">
                                                 </mat-header-row>
                                                 <mat-row *matRowDef="let contact; columns: displayedColumns3;"
-                                                    class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                    class="contact min-width-700" [@animate]="{value:'*',params:{y:'100%'}}"
                                                     appHighlight></mat-row>
 
                                                 <mat-footer-row *matFooterRowDef="['noData']"

@@ -164,7 +164,7 @@ export class DeliverychallanComponent implements OnInit {
       });
   }
   getGrnItemDetailList(Params) {
-    debugger
+    //debugger
     this.sIsLoading = 'loading-data';
     var Param = {
       "GrnId": Params.GRNID
@@ -238,7 +238,7 @@ export class DeliverychallanComponent implements OnInit {
     console.log(m_data);
     this._DeliveryService.getPrintGRNList(m_data).subscribe(data => {
       this.reportPrintObjList = data as GRNList[];
-      // debugger
+      // //debugger
       for (let i = 0; i < 10; i++) {
         this.reportPrintObj = data[0] as GRNList;
         this.TotalAmt += data[i].TotalAmount

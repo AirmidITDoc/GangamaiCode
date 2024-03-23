@@ -1,4 +1,4 @@
-<div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
     <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
             <button mat-icon-button class="sidebar-toggle" style="color: white;">
@@ -92,36 +92,56 @@
                                             <mat-icon>edit</mat-icon></button>
                                     </ng-container>
                                     <ng-template #showInput>
-                                       
-                                            <input [(ngModel)]="contact.BatchExpDate" type="number"
-                                                (blur)="ExpDatedisableEditing(contact)"
-                                                (keyup)="AddQty(contact,contact.BatchExpDate)">
-                                     
+
+                                        <input [(ngModel)]="contact.BatchExpDate" type="text"
+                                            (blur)="ExpDatedisableEditing(contact)" OnlyNumber
+                                            (keyup)="AddQty(contact,contact.BatchExpDate)">
+
                                     </ng-template>
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="Addition">
-                                <th mat-header-cell *matHeaderCellDef> Rate </th>
-                                <td mat-cell *matCellDef="let contact">
-                                  <ng-container *ngIf="!contact.editable; else showInput">
-                                    {{ row.Addition }}
-                                    <button mat-icon-button (click)="enableEditing(contact)">
-                                        <mat-icon>edit</mat-icon></button>
-                                  </ng-container>
-                                  <ng-template #showInput>
-                                    <input type="text" [(ngModel)]="contact.Addition" (blur)="disableEditing(contact)">
-                                  </ng-template>
-                                </td>
-                              </ng-container> -->
+                            <ng-container matColumnDef="LandedRate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    LandedRate
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <ng-container *ngIf="!contact.Landededitable; else showInput">
+                                        {{contact.LandedRate }}
+                                        <button mat-icon-button (click)="LandedenableEditing(contact)">
+                                            <mat-icon>edit</mat-icon></button>
+                                    </ng-container>
+                                    <ng-template #showInput>
+                                        <input type="text" [(ngModel)]="contact.LandedRate" OnlyNumber
+                                            (blur)="LandeddisableEditing(contact)">
+                                    </ng-template>
+                                </mat-cell>
+                            </ng-container>
 
                             <ng-container matColumnDef="UnitMRP">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    UnitMRP
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <ng-container *ngIf="!contact.MRPeditable; else showInput">
+                                        {{contact.UnitMRP}}
+                                        <button mat-icon-button (click)="MRPenableEditing(contact)">
+                                            <mat-icon>edit</mat-icon></button>
+                                    </ng-container>
+                                    <ng-template #showInput>
+                                        <input type="text" [(ngModel)]="contact.UnitMRP" OnlyNumber
+                                            (blur)="MRPdisableEditing(contact)">
+                                    </ng-template>
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="UnitMRP">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Unit MRP</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.UnitMRP}}
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
 
                             <ng-container matColumnDef="PurchaseRate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -133,11 +153,11 @@
                                             <mat-icon>edit</mat-icon></button>
                                     </ng-container>
                                     <ng-template #showInput>
-                                      
-                                            <input  [(ngModel)]="contact.PurUnitRateWF" type="number"  
-                                                (blur)="RatedisableEditing(contact)"
-                                                (keyup)="AddQty(contact,contact.PurUnitRateWF)">
-                                  
+
+                                        <input [(ngModel)]="contact.PurUnitRateWF" type="text" OnlyNumber
+                                            (blur)="RatedisableEditing(contact)"
+                                            (keyup)="AddQty(contact,contact.PurUnitRateWF)">
+
                                     </ng-template>
                                 </mat-cell>
                             </ng-container>
@@ -150,35 +170,25 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="Addition" >
-                                <mat-header-cell *matHeaderCellDef style="color: white;">
-                                    Addition</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.Addition" type="number"
-                                            (click)="AddQty(contact,contact.Addition)"  [disabled]="!contact.Addition">
-                                    </mat-form-field>
-                                    <ng-template #showRate>
-                                        <button mat-icon-button (click)="AddQty(contact)" color="warn" value="1">
-                                            <mat-icon>add</mat-icon></button>
-                                    </ng-template>
-                                </mat-cell>
-                            </ng-container> -->
-
                             <ng-container matColumnDef="Addition">
                                 <mat-header-cell *matHeaderCellDef style="color: white;">
                                     Addition</mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
                                     <ng-container *ngIf="!contact.Addeditable; else showInput">
                                         <button mat-icon-button (click)="enableEditing(contact)">
-                                            <mat-icon>add</mat-icon></button>
+                                            <mat-icon>edit</mat-icon></button>
                                     </ng-container>
                                     <ng-template #showInput>
                                         <mat-form-field appearance="legacy" class="w-60">
                                             <input matInput [(ngModel)]="contact.AddQty" type="number"
                                                 (blur)="disableEditing(contact)"
                                                 (keyup)="AddQty(contact,contact.AddQty)">
+                                                <buttom mati-icon-button >
+                                                    <mat-icon>check</mat-icon>
+                                                </buttom> 
+                                              
                                         </mat-form-field>
+                                       
                                     </ng-template>
                                 </mat-cell>
                             </ng-container>
@@ -189,13 +199,16 @@
                                 <mat-cell *matCellDef="let contact">
                                     <ng-container *ngIf="!contact.Dedueditable; else showInput">
                                         <button mat-icon-button (click)="deduenableEditing(contact)">
-                                            <mat-icon>minimize</mat-icon></button>
+                                            <mat-icon>edit</mat-icon></button>
                                     </ng-container>
                                     <ng-template #showInput>
                                         <mat-form-field appearance="legacy" class="w-60">
                                             <input matInput [(ngModel)]="contact.DeduQty" type="number"
                                                 (keyup)="DeduQty(contact,contact.DeduQty)"
                                                 (blur)="dedudisableEditing(contact)">
+                                                <buttom mati-icon-button >
+                                                    <mat-icon>check</mat-icon>
+                                                </buttom> 
                                         </mat-form-field>
                                     </ng-template>
                                 </mat-cell>
@@ -234,15 +247,6 @@
                         <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="15"
                             showFirstLastButtons>
                         </mat-paginator>
-                    </div>
-
-
-                    <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end">
-                        <div class="sales-footer-buttons gap-8">
-                            <button class="btn btn-primary" (click)="OnSave()">Save</button>&nbsp;
-
-                            <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                        </div>
                     </div>
                 </div>
             </div>

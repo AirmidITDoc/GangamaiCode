@@ -17,12 +17,25 @@
                     background: $gray-300;
                     color: $gray-900;
                 }
+                &:not(.mat-active):not(:hover) {
+                    background: inherit;
+                }
+            }
+        }
+        .mat-autocomplete-panel {
+            .mat-option {
+                &.mat-selected {
+                    &:not(.mat-active):not(:hover) {
+                        background: $gray-300;
+                        color: $gray-900;
+                    }
+                }
             }
         }
     }
-    .mat-menu-panel{
-        .mat-menu-content{
-            .mat-menu-item{
+    .mat-menu-panel {
+        .mat-menu-content {
+            .mat-menu-item {
                 font-family: inherit;
                 font-size: inherit;
                 height: 3rem;
@@ -31,17 +44,16 @@
         }
     }
     .mat-list-base {
-        .mat-list-item ,.mat-list-option{
-            .mat-list-icon{
+        .mat-list-item,
+        .mat-list-option {
+            .mat-list-icon {
                 height: auto;
                 width: auto;
                 font-size: inherit;
-            } 
-            &.mat-list-item-with-avatar{
+            }
+            &.mat-list-item-with-avatar {
                 max-height: 42px;
             }
-        } 
-        
-
+        }
     }
 }

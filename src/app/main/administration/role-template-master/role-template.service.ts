@@ -52,6 +52,9 @@ export class RoleTemplateService {
     public getmenus(Param) {
         return this._httpClient.get("Login/get-menus?RoleId="+Param);
     }
+    public getpermissionmenus(Param) {
+        return this._httpClient.get("Login/get-permission-menu?RoleId="+Param);
+    }
     populateForm(param) {
         this.myform.patchValue(param);
     }
