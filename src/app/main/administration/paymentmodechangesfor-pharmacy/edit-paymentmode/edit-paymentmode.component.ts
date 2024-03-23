@@ -174,41 +174,56 @@ export class EditPaymentmodeComponent implements OnInit {
       return this.optionsBank4.filter(option => option.BankName.toLowerCase().includes(filterValue));
     }
   }
+  balAmount:any=0;
   getBalanceAmt() {
+    // let totalAmountAdded: any = ((this.vcashpay ? parseFloat(this.vcashpay) : 0)
+    //   + (this.vcardpay ? parseFloat(this.vcardpay) : 0)
+    //   + (this.vchequepay ? parseFloat(this.vchequepay) : 0)
+    //   + (this.vneftpay ? parseFloat(this.vneftpay) : 0)
+    //   + (this.vpaytmpay ? parseFloat(this.vpaytmpay) : 0));
+
+    // if ((this.vnetPayAmt - totalAmountAdded) < 0) {
+    //   Swal.fire('Amout should be less than Balance amount', 'Done');
+    //   this.isSaveDisabled = true;
+    //   return;
+    // }
+    // if(parseFloat(this.vnetPayAmt) !== parseFloat(totalAmountAdded)){
+    //   Swal.fire('Please check Amount', 'Warring');
+    //   this.isSaveDisabled = false;
+    //   return;
+    // }
+
+    this.vbalanceAmt = this.vnetPayAmt - parseFloat(this.balAmount);
+    if (parseFloat(this.vbalanceAmt) == 0) {
+      this.isSaveDisabled = true;
+      return;
+    }
+    this.isSaveDisabled = false;
+  
+  }
+
+  getbalAmt(){
     let totalAmountAdded: any = ((this.vcashpay ? parseFloat(this.vcashpay) : 0)
       + (this.vcardpay ? parseFloat(this.vcardpay) : 0)
       + (this.vchequepay ? parseFloat(this.vchequepay) : 0)
       + (this.vneftpay ? parseFloat(this.vneftpay) : 0)
       + (this.vpaytmpay ? parseFloat(this.vpaytmpay) : 0));
+      // let cashpay = this._Paymentmodesevice.paymentform.get('CashPayAmt').value || 0;
+      // this.vbalanceAmt = (parseFloat(this.vbalanceAmt) - parseFloat(cashpay)).toFixed(2);
+  
+      // let chardPay = this._Paymentmodesevice.paymentform.get('CardPayAmt').value || 0;
+      // this.vbalanceAmt = (parseFloat(this.vbalanceAmt) - parseFloat(chardPay)).toFixed(2);
+  
+      // let chequePay = this._Paymentmodesevice.paymentform.get('ChequePayAmt').value || 0;
+      // this.vbalanceAmt = (parseFloat(this.vbalanceAmt) - parseFloat(chequePay)).toFixed(2);
+  
+      // let NEFTPay =this._Paymentmodesevice.paymentform.get('NEFTPayAmount').value || 0;
+      // this.vbalanceAmt = (parseFloat(this.vbalanceAmt) - parseFloat(NEFTPay)).toFixed(2);
 
-    if ((this.vnetPayAmt - totalAmountAdded) < 0) {
-      Swal.fire('Amout should be less than Balance amount', 'Done');
-      this.isSaveDisabled = true;
-      return;
-    }
-    this.vbalanceAmt = this.vnetPayAmt - parseFloat(totalAmountAdded);
-    if (this.vbalanceAmt > 0) {
-      this.isSaveDisabled = true;
-      return;
-    }
-    this.isSaveDisabled = false;
-  }
-
-  CheckCashAmt(){
-    if (this.vbalanceAmt < 0 ){
-      this.vcashpay = 0
-    }else{
-      this.vcashpay = this.vbalanceAmt
-    }
-    this.getBalanceAmt()
-  }
-  CheckCardAmt(){
-    if (this.vbalanceAmt < 0 ){
-      this.vcardpay = 0
-    }else{
-      this.vcardpay = this.vbalanceAmt
-    }
-    this.getBalanceAmt()
+      // let PaytmPay =this._Paymentmodesevice.paymentform.get('PayTMAmount').value || 0;
+      let balamt = (parseFloat(this.vnetPayAmt) - parseFloat(totalAmountAdded)).toFixed(2);
+      this.vbalanceAmt = balamt;
+      return this.vbalanceAmt;
   }
 
   onClose() {
@@ -428,55 +443,55 @@ export class EditPaymentmodeComponent implements OnInit {
     }
  
   }
-  // @ViewChild('cashpay') cashpay: ElementRef;
-  // @ViewChild('CardPayAmt') CardPayAmt: ElementRef;
-  // @ViewChild('CardNo') CardNo : ElementRef;
-  // @ViewChild('CardBankName') CardBankName: ElementRef;
-  // @ViewChild('ChequeNo') ChequeNo: ElementRef;
-  // @ViewChild('chequebank') chequebank: ElementRef;
-  // @ViewChild('NEFTNo') NEFTNo: ElementRef;
-  // @ViewChild('nftbank') nftbank: ElementRef;
-  // @ViewChild('PayTMTranNo') PayTMTranNo: ElementRef;
-  // onEnterCashpay(event) {
-  //   if (event.which === 13) {
-  //     this.CardPayAmt.nativeElement.focus();
-  //   }
-  // }
-  // onEnterCardPayAmt(event) {
-  //   if (event.which === 13) {
-  //     this.CardNo.nativeElement.focus();
-  //   }
-  // }
-  // onEnterCardNo(event) {
-  //   if (event.which === 13) {
-  //    this.CardBankName.nativeElement.focus();
-  //   }
-  // }
-  // onEnterCheckPayAmt(event) {
-  //   if (event.which === 13) {
-  //     this.ChequeNo.nativeElement.focus(); 
-  //   }
-  // }
-  // onEnterChequeNo(event) {
-  //   if (event.which === 13) {
-  //    this.chequebank.nativeElement.focus(); 
-  //   }
-  // }
-  // onEnterNFTPayAmt(event) {
-  //   if (event.which === 13) {
-  //    this.NEFTNo.nativeElement.focus(); 
-  //   }
-  // }
-  // onEnterNEFTNo(event) {
-  //   if (event.which === 13) {
-  //    this.nftbank.nativeElement.focus();
-  //   }
-  // }
-  // onEnterPayTMamt(event) {
-  //   if (event.which === 13) {
-  //    this.PayTMTranNo.nativeElement.focus();
-  //   }
-  // }
+  @ViewChild('cashpay') cashpay: ElementRef;
+  @ViewChild('CardPayAmt') CardPayAmt: ElementRef;
+  @ViewChild('CardNo') CardNo : ElementRef;
+  @ViewChild('CardBankName') CardBankName: ElementRef;
+  @ViewChild('ChequeNo') ChequeNo: ElementRef;
+  @ViewChild('chequebank') chequebank: ElementRef;
+  @ViewChild('NEFTNo') NEFTNo: ElementRef;
+  @ViewChild('nftbank') nftbank: ElementRef;
+  @ViewChild('PayTMTranNo') PayTMTranNo: ElementRef;
+  onEnterCashpay(event) {
+    if (event.which === 13) {
+      this.CardPayAmt.nativeElement.focus();
+    }
+  }
+  onEnterCardPayAmt(event) {
+    if (event.which === 13) {
+      this.CardNo.nativeElement.focus();
+    }
+  }
+  onEnterCardNo(event) {
+    if (event.which === 13) {
+     this.CardBankName.nativeElement.focus();
+    }
+  }
+  onEnterCheckPayAmt(event) {
+    if (event.which === 13) {
+      this.ChequeNo.nativeElement.focus(); 
+    }
+  }
+  onEnterChequeNo(event) {
+    if (event.which === 13) {
+     this.chequebank.nativeElement.focus(); 
+    }
+  }
+  onEnterNFTPayAmt(event) {
+    if (event.which === 13) {
+     this.NEFTNo.nativeElement.focus(); 
+    }
+  }
+  onEnterNEFTNo(event) {
+    if (event.which === 13) {
+     this.nftbank.nativeElement.focus();
+    }
+  }
+  onEnterPayTMamt(event) {
+    if (event.which === 13) {
+     this.PayTMTranNo.nativeElement.focus();
+    }
+  }
 
 
 

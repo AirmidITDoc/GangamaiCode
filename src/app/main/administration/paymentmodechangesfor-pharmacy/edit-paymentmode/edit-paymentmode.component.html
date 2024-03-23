@@ -186,8 +186,7 @@
   <!-- (keydown)="onEnterCashpay($event)" -->
                                                                 <input name="CashPayAmt" formControlName="CashPayAmt" 
                                                                     matInput [(ngModel)]="vcashpay" #cashpay
-                                                                    (input)="CheckCashAmt()"
-                                                                    (keyup)="getBalanceAmt()">
+                                                                    (keyup)="getbalAmt()">
                                                                 <mat-error class="error"
                                                                     *ngIf="_Paymentmodesevice.paymentform.get('CashPayAmt').invalid && _Paymentmodesevice.paymentform.get('CashPayAmt').touched">
                                                                     CashPayAmt is required
@@ -207,8 +206,7 @@
  <!-- (keydown)="onEnterCardPayAmt($event)" -->
                                                                 <input name="CardPayAmt" formControlName="CardPayAmt"
                                                                     matInput [(ngModel)]="vcardpay"
-                                                                    (input)="CheckCardAmt()"
-                                                                    (keyup)="getBalanceAmt()">
+                                                                    (keyup)="getbalAmt()">
                                                                 <mat-error class="error"
                                                                     *ngIf="_Paymentmodesevice.paymentform.get('CardPayAmt').invalid && _Paymentmodesevice.paymentform.get('CardPayAmt').touched">
                                                                     CardPayAmt is required
@@ -265,7 +263,7 @@
 
                                                                 <input name="ChequePayAmt"
                                                                     formControlName="ChequePayAmt" matInput required
-                                                                    [(ngModel)]="vchequepay" #CardPayAmt
+                                                                    [(ngModel)]="vchequepay" #CardPayAmt  (keyup)="getbalAmt()"
                                                                     (keydown)="onEnterCheckPayAmt($event)">
                                                                 <mat-error class="error"
                                                                     *ngIf="_Paymentmodesevice.paymentform.get('ChequePayAmt').invalid && _Paymentmodesevice.paymentform.get('ChequePayAmt').touched">
@@ -321,7 +319,7 @@
                                                                 <input name="NEFTPayAmount"
                                                                     formControlName="NEFTPayAmount" matInput required
                                                                     [(ngModel)]="vneftpay" #NEFTPayAmount
-                                                                    (keyup)="getBalanceAmt()">
+                                                                    (keyup)="getbalAmt()">
                                                                 <mat-error class="error"
                                                                     *ngIf="_Paymentmodesevice.paymentform.get('NEFTPayAmount').invalid && _Paymentmodesevice.paymentform.get('NEFTPayAmount').touched">
                                                                     Card is required
@@ -377,7 +375,7 @@
 
                                                                 <input name="PayTMAmount" formControlName="PayTMAmount"
                                                                     matInput required [(ngModel)]="vpaytmpay"
-                                                                    (keyup)="getBalanceAmt()"
+                                                                    (keyup)="getbalAmt()"
                                                                     (keydown)="onEnterPayTMamt($event)">
                                                                 <mat-error class="error"
                                                                     *ngIf="_Paymentmodesevice.paymentform.get('PayTMAmount').invalid && _Paymentmodesevice.paymentform.get('PayTMAmount').touched">
@@ -430,7 +428,7 @@
                                                 </mat-error>
                                             </mat-form-field>
                                         </div> -->
-                                        <div style="margin-left: 20px;">
+                                        <div style="margin-left:10px;margin-top: 10px;" fxLayoutGap="4px">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>PaidAmount </mat-label>
                                               
