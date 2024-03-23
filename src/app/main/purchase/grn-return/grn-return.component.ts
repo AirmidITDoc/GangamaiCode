@@ -75,12 +75,7 @@ export class GRNReturnComponent implements OnInit {
     'DiscAmount',
     "NetAmount",
     "TotalQty",
-<<<<<<< HEAD
     "stockid"
-=======
-     "stockid",
-     "Action",
->>>>>>> 7550bcef20c874682d5f7bc4230b520dc9406bdf
     // "IsVerified",
     // "IsVerifiedDatetime",
     // "IsVerifiedUserId"
@@ -276,6 +271,7 @@ getNetamt(element) {
   this.vFinalNetAmount = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
   return this.vFinalNetAmount;
 }
+RQty:any;
 getCellCalculation(contact, ReturnQty) {
 
   this.SelectedArray.push(contact);
@@ -288,7 +284,7 @@ getCellCalculation(contact, ReturnQty) {
   if ((parseInt(this.RQty)) < (parseInt(contact.ReceiveQty))) {
     debugger
     contact.ReturnQty = parseInt(contact.Qty);
-    this.RQty = parseInt(contact.Qty);
+    // this.RQty = parseInt(contact.Qty);
 
     let GrossAmt = (parseFloat(contact.MRP) * parseInt(this.RQty)).toFixed(2);
     let vPurAmt = (parseFloat(contact.PurchaseRate) * parseInt(this.RQty)).toFixed(2);
