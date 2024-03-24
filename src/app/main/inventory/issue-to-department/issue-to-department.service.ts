@@ -98,6 +98,9 @@ export class IssueToDepartmentService {
     return this._httpClient.post("InventoryTransaction/IssuetoDepartmentSave",Param);
   }
 
+  public updateStockToMainStock(Param){
+    return this._httpClient.post("Pharmacy/UpdateStockToMainStock",Param);
+  }
   public getCurrentStockItem(param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrive_CurrentStock_ItemList",param);
   }

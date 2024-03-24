@@ -39,6 +39,7 @@ export class IssueToDepartmentComponent implements OnInit {
     vremark: any = '';
 
     displayedColumns: string[] = [
+        'IsAccepted',
         'IssueNo',
         'IssueDate',
         'FromStoreName',
@@ -49,7 +50,6 @@ export class IssueToDepartmentComponent implements OnInit {
         'NetAmount',
         'Remark',
         'Receivedby',
-        'IsAccepted',
         'action'
     ];
     displayedColumns1: string[] = [
@@ -161,7 +161,6 @@ export class IssueToDepartmentComponent implements OnInit {
         public datePipe: DatePipe,
         private reportDownloadService: ExcelDownloadService,
         public toastr: ToastrService,
-        private accountService: AuthenticationService,
         private _loggedService: AuthenticationService
 
     ) { }
@@ -241,7 +240,7 @@ export class IssueToDepartmentComponent implements OnInit {
         }
         this._IssueToDep.getIssueItemList(vdata).subscribe(data => {
             this.dsIssueItemList.data = data as IssueItemList[];
-            console.log(this.dsIssueItemList)
+            console.log(this.dsIssueItemList.data)
             this.dsIssueItemList.sort = this.sort;
             this.dsIssueItemList.paginator = this.paginator;
         });
@@ -284,6 +283,36 @@ export class IssueToDepartmentComponent implements OnInit {
             const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
             return this.ToStoreList1.filter(option => option.StoreName.toLowerCase().includes(filterValue));
         }
+    }
+    ReturntoMainStore(Params){
+        console.log(Params)
+        let updateStockToMainStockObj = {};
+        updateStockToMainStockObj['IssueId'] = Params.IssueId;
+        updateStockToMainStockObj['IssueDetId'] = Params.IssueDepId;
+        updateStockToMainStockObj['ReturnQty'] =  Params.IssueQty;
+        updateStockToMainStockObj['StockId'] = Params.StockId;
+        updateStockToMainStockObj['StoreId'] = Params.StoreId;
+
+        let submitData = {
+          "updateStockToMainStock": updateStockToMainStockObj,
+        };
+        console.log(submitData);
+        this._IssueToDep.updateStockToMainStock(submitData).subscribe(response => {
+          if (response) {
+            this.toastr.success('Record aved Successfully.', 'Saved !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+          } else {
+            this.toastr.error('Not saved !, Please check API error..', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        }, error => {
+          this.toastr.error('Not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        });
+        this.getIssueItemwiseList(Params.IssueId)
     }
     getOptionTextStores(option) {
         return option && option.StoreName ? option.StoreName : '';
@@ -754,19 +783,18 @@ if(!DuplicateItem){
         this.vBatchNo = " ";
         this.vBalanceQty = 0;
         this.vQty = 0;
-        this.vUnitMRP = 0;
+        this.vLandedRate = 0;
         this.vTotalAmount = 0;
     }
     CalculateTotalAmt() {
-        
         if (this.vQty > this.vBalanceQty) {
             this.toastr.warning('Enter Qty less than Balance', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             this._IssueToDep.NewIssueGroup.get('Qty').setValue(0);
         }
-        if (this.vQty && this.vUnitMRP) {
-            this.vTotalAmount = (parseInt(this.vQty) * parseInt(this.vUnitMRP)).toFixed(2);
+        if (this.vQty && this.vLandedRate) {
+            this.vTotalAmount = (parseFloat(this.vQty) * parseFloat(this.vLandedRate)).toFixed(2);
         }
     }
     getTotalamt(element) {
@@ -799,7 +827,7 @@ if(!DuplicateItem){
         insertheaderObj['totalVatAmount'] = this._IssueToDep.NewIssueGroup.get('GSTAmount').value || 0;
         insertheaderObj['netAmount'] = this._IssueToDep.NewIssueGroup.get('FinalNetAmount').value || 0;
         insertheaderObj['remark'] = this._IssueToDep.NewIssueGroup.get('Remark').value || '';
-        insertheaderObj['addedby'] = this.accountService.currentUserValue.user.id || 0;
+        insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
         insertheaderObj['isVerified'] = false;
         insertheaderObj['isclosed'] = false;
         insertheaderObj['indentId'] = 0;
@@ -951,16 +979,14 @@ if(!DuplicateItem){
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log(result);
-
             result = result.selectedData
-
             this.vBatchNo = result.BatchNo;
             this.vBatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
-            this.vMRP = result.UnitMRP;
+            this.vMRP = result.LandedRate;
             this.vQty = '';
             this.vBal = result.BalanceAmt;
             this.GSTPer = result.VatPercentage;
-            this.vTotalMRP = this.vQty * this.vMRP;
+            this.vTotalMRP = this.vQty * this.vLandedRate;
             this.vDiscAmt = 0;
             this.vNetAmt = this.vTotalMRP;
             this.vBalanceQty = result.BalanceQty;
