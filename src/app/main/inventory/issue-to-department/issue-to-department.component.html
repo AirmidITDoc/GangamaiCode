@@ -223,9 +223,9 @@
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="Remark">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                                         Remark </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                                         {{contact.Remark}}
                                                     </mat-cell>
                                                 </ng-container>
@@ -298,17 +298,27 @@
                                             <ng-container matColumnDef="Status">
                                                 <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <mat-icon [style.color]="contact.selected ? 'green' : 'red'">
-                                                        {{contact.selected ? 'check_circle' : 'cancel'}}
-                                                    </mat-icon>
+                                                    <!-- <mat-icon [style.color]="contact.Status ? 'green' : 'red'">
+                                                        {{contact.Status ? 'check_circle' : 'cancel'}}
+                                                    </mat-icon> -->
+                                                    <mat-icon matTooltip="Pending" *ngIf="contact.Status == 0">
+                                                        cancel</mat-icon>
+                                                    <mat-icon matTooltip="Accepted" *ngIf="contact.Status == 1">
+                                                        check_circle</mat-icon>
+                                                    <mat-icon matTooltip="Return to Main Store" *ngIf="contact.Status == 2">
+                                                        assignment_return</mat-icon>
+                                                    <button mat-icon-button (click)="ReturntoMainStore(contact)" matTooltip="Return to Main Store">
+                                                        <mat-icon *ngIf="contact.Status ==0">
+                                                            assignment_return</mat-icon>
+                                                    </button>
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="ItemName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-180">
                                                     ItemName
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                                     {{contact.ItemName}}
                                                 </mat-cell>
                                             </ng-container>
@@ -543,7 +553,7 @@
                                     <mat-form-field appearance="outline" fxFlex="8%">
                                         <mat-label>Unit Rate</mat-label>
                                         <input name="UnitRate" formControlName="UnitRate" matInput #Rate
-                                            [(ngModel)]="vUnitMRP" #Rate
+                                            [(ngModel)]="vLandedRate" #Rate
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                             required autocomplete="off" readonly (keydown)="onEnterRate($event)">
                                     </mat-form-field>
