@@ -46,6 +46,7 @@ import { CrossConsultationComponent } from "./cross-consultation/cross-consultat
 import { ThisReceiver } from "@angular/compiler";
 import { ToastrService } from "ngx-toastr";
 import { NewOPBillingComponent } from "../OPBilling/new-opbilling/new-opbilling.component";
+import { Table } from "jspdf-autotable";
 
 export class DocData {
   doc: any;
@@ -1074,14 +1075,54 @@ export class AppointmentComponent implements OnInit {
   }
   // VisitList
   resultsLength = 0;
+
+  // @F_Name  [nvarchar](50),                              
+  // @L_Name  [nvarchar](50),                            
+  // @Reg_No  [bigint],                            
+  // @Doctor_Id  [bigint],                            
+  // @From_Dt  [DateTime],                              
+  // @To_Dt   [DateTime],      
+  // @IsMark  [tinyint] 
+
   getVisitList() {
-    this.sIsLoading = "loading-data";
+    // this.sIsLoading = "loading-data";
     var D_data = {
       F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
       L_Name: this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
       Reg_No: this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
       Doctor_Id: this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorID || 0,
       From_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+      To_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+      IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
+    };
+    setTimeout(() => {
+      this.isLoadingStr = 'loading';
+      console.log(D_data)
+      this._AppointmentSreviceService.getAppointmentListold(D_data).subscribe(
+        (Visit) => {
+          console.log(Visit)
+          this.dataSource.data = Visit as VisitMaster[];
+          // this.dataSource.sort = this.sort;
+          // this.dataSource.paginator = this.paginator;
+          console.log(this.dataSource.data)
+
+          // this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+        },
+        (error) => {
+          this.isLoading = 'list-loaded';
+        }
+      );
+    }, 1000);
+  }
+
+  getVisitList1() {
+    this.sIsLoading = "loading-data";
+    var D_data = {
+      F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
+      L_Name: this._AppointmentSreviceService.myFilterform.get("LastName").value.trim() + "%" || "%",
+      Reg_No: this._AppointmentSreviceService.myFilterform.get("RegNo").value || 0,
+      Doctor_Id: this._AppointmentSreviceService.myFilterform.get("DoctorId").value.DoctorID || 0,
+      From_Dt:'02/20/2024',// this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("startdate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
       To_Dt: this.datePipe.transform(this._AppointmentSreviceService.myFilterform.get("enddate").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
       IsMark: this._AppointmentSreviceService.myFilterform.get("IsMark").value || 0,
       Start:(this.paginator?.pageIndex??0),
@@ -1091,9 +1132,13 @@ export class AppointmentComponent implements OnInit {
     };
     setTimeout(() => {
       // this.isLoadingStr = 'loading';
+
+      console.log(D_data)
       this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
         (Visit) => {
           this.dataSource.data = Visit["Table1"]??[] as VisitMaster[];
+
+          console.log( this.dataSource.data )
           this.dataSource.sort = this.sort;
           this.resultsLength= Visit["Table"][0]["total_row"];
          // this.dataSource.paginator = this.paginator;
