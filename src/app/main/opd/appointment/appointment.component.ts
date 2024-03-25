@@ -1866,7 +1866,6 @@ export class AppointmentComponent implements OnInit {
       });
     }
     else {
-
       if (this.RegOrPhoneflag) {
         this.registerObj.RegId = this.vPhoneAppId;
       }
@@ -1876,8 +1875,6 @@ export class AppointmentComponent implements OnInit {
       let visitUpdate = {};
 
       let tokenNumberWithDoctorWiseUpdate = {};
-
-
       registrationUpdate['regID'] = this.registerObj.RegId;
       registrationUpdate['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       registrationUpdate['regTime'] = this.dateTimeObj.time,
@@ -1921,7 +1918,6 @@ export class AppointmentComponent implements OnInit {
       visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
       visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
       visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
-
       visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
       visitUpdate['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
       visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
@@ -1929,19 +1925,18 @@ export class AppointmentComponent implements OnInit {
       visitUpdate['IsCancelled'] = 0;
       visitUpdate['IsCancelledBy'] = 0;
       visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-
       visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
       visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
       visitUpdate['PatientOldNew'] = this.Patientnewold;
       visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
       visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-
-      submissionObj['visitUpdate'] = visitUpdate;
+      visitUpdate['crossConsulFlag'] = 0,
+      submissionObj['visitSave'] = visitUpdate;
 
 
       tokenNumberWithDoctorWiseUpdate['patVisitID'] = 0;
-      submissionObj['tokenNumberWithDoctorWiseUpdate'] = tokenNumberWithDoctorWiseUpdate;
+      submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseUpdate;
 
       console.log(submissionObj);
       this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
