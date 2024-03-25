@@ -9,7 +9,7 @@
 
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="font-size: 20px;width: 70%; font-weight: 400;">
-                OP IP BILLING REPORTS
+                OP IP REPORTS
             </span>
 
             <div fxLayout="column" fxLayout.gt-xs="row">
@@ -85,7 +85,7 @@
 
                         <div class="dialog-content-wrapper" style="width: 100%;">
                             <!-- ================================ LABEL HEADER  -->
-                            <form [formGroup]="_OPIPBillreportService.userForm" style="padding: 6px 6px 5px 5px;"
+                            <form [formGroup]="_BrowsSalesBillService.userForm" style="padding: 6px 6px 5px 5px;"
                                 fusePerfectScrollbar>
                                 <div>
                                     <span
@@ -98,21 +98,10 @@
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <br />
 
-                                    <!-- <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                    <mat-form-field appearance="outline" style="margin-left: 2%;">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="startdate" placeholder="Start date">
-                                            <input matEndDate formControlName="enddate" placeholder="End date">
-                                        </mat-date-range-input>
-                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                        <mat-date-range-picker #picker></mat-date-range-picker>
-                                    </mat-form-field> -->
-
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Enter a date range</mat-label>
-                                        <mat-date-range-input [rangePicker]="picker">
-                                            <input matStartDate formControlName="startdate" placeholder="Start date"
-                                               >
                                             <input matEndDate formControlName="enddate" placeholder="End date">
                                         </mat-date-range-input>
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -137,9 +126,9 @@
                                            formControlName="UserId" [matAutocomplete]="autoUser">
                                         <span matSuffix style="display: flex;">
                                           <mat-icon class="mat-icon-close"
-                                            (click)="_OPIPBillreportService.userForm.get('UserId').setValue(''); isUserSelected = false;">close</mat-icon>
+                                            (click)="_BrowsSalesBillService.userForm.get('UserId').setValue(''); isUserSelected = false;">close</mat-icon>
                                           <mat-icon class="mat-icon-close"
-                                            (click)="_OPIPBillreportService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
+                                            (click)="_BrowsSalesBillService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="getOptionTextUser">
                                           <mat-option *ngFor="let option of filteredOptionsUser | async" [value]="option"
@@ -149,22 +138,21 @@
                                         </mat-autocomplete>
                                       </mat-form-field>
                                     </div>
-
-                                    <div  *ngIf="FlagDoctorSelected" style="margin-left: 20px;">     
+                                    <div  *ngIf="FlagPaymentSelected" style="margin-left: 20px;">     
                                       <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%">
-                                        <mat-label>Doctor Name</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId" matInput
-                                           formControlName="DoctorId" [matAutocomplete]="autoDoctorId">
+                                        <mat-label>PayemntMode</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select PaymentMode" matInput
+                                           formControlName="PaymentMode" [matAutocomplete]="autoPayment">
                                         <span matSuffix style="display: flex;">
                                           <mat-icon class="mat-icon-close"
-                                            (click)="_OPIPBillreportService.userForm.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                            (click)="_BrowsSalesBillService.userForm.get('PaymentMode').setValue(''); isPaymentSelected = false;">close</mat-icon>
                                           <mat-icon class="mat-icon-close"
-                                            (click)="_OPIPBillreportService.userForm.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                            (click)="_BrowsSalesBillService.userForm.get('PaymentMode').setValue(''); isPaymentSelected = false;">search</mat-icon>
                                         </span>
-                                        <mat-autocomplete #autoDoctorId="matAutocomplete" [displayWith]="getOptionTextDoctor">
-                                          <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option"
-                                            (onSelectionChange)="DoctorChk(option)">
-                                            {{option.DoctorName}}
+                                        <mat-autocomplete #autoPayment="matAutocomplete" [displayWith]="getOptionTextPaymentMode">
+                                          <mat-option *ngFor="let option of filteredOptionsPaymentmode | async" [value]="option"
+                                            (onSelectionChange)="PaymentModeChk(option)">
+                                            {{option.PaymentMode}}
                                           </mat-option>
                                         </mat-autocomplete>
                                       </mat-form-field>

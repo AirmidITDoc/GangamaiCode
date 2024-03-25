@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { PharmacyReportComponent } from './pharmacy-report.component';
+
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
@@ -33,18 +33,18 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatTableModule } from '@angular/material/table';
-import { OPIPBillReportsComponent } from '../opipbill-reports/opipbill-reports.component';
+import { OPIPBillReportsComponent } from './opipbill-reports.component';
 
 const routes : Routes =[
   {
     path:"**",
-    component:OPIPBillReportsComponent,
+    // component:OPIPBillReportsComponent,
   },
 ];
 
 @NgModule({
   declarations: [
-    OPIPBillReportsComponent,
+    // OPIPBillReportsComponent,
     
   ],
   imports: [
@@ -89,7 +89,7 @@ const routes : Routes =[
     DatePipe,
   ],
   entryComponents: [
-    OPIPBillReportsComponent
+    // OPIPBillReportsComponent
   ]
 })
-export class PharmacyreportModule { }
+export class OPIPBillModule { }
