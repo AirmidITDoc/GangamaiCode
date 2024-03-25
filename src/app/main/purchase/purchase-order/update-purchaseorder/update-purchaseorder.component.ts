@@ -886,7 +886,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
   getTotalNet(element) {
     let NetAmt;
-    this.FinalNetAmount = element.reduce((sum, { GrandTotalAmount }) => sum += +(GrandTotalAmount || 0), 0);
+    this.FinalNetAmount = element.reduce((sum, {GrandTotalAmount}) => sum += +(GrandTotalAmount), 0);
 
     let handlingCharges = this._PurchaseOrder.FinalPurchaseform.get('HandlingCharges').value;
     this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(handlingCharges)).toFixed(2);
