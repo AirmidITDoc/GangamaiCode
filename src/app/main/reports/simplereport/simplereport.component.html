@@ -85,7 +85,7 @@
 
                         <div class="dialog-content-wrapper" style="width: 100%;">
                             <!-- ================================ LABEL HEADER  -->
-                            <form [formGroup]="_OPIPBillreportService.userForm" style="padding: 6px 6px 5px 5px;"
+                            <form [formGroup]="_SimpleReportService.userForm" style="padding: 6px 6px 5px 5px;"
                                 fusePerfectScrollbar>
                                 <div>
                                     <span
@@ -137,9 +137,9 @@
                                            formControlName="UserId" [matAutocomplete]="autoUser">
                                         <span matSuffix style="display: flex;">
                                           <mat-icon class="mat-icon-close"
-                                            (click)="_OPIPBillreportService.userForm.get('UserId').setValue(''); isUserSelected = false;">close</mat-icon>
+                                            (click)="_SimpleReportService.userForm.get('UserId').setValue(''); isUserSelected = false;">close</mat-icon>
                                           <mat-icon class="mat-icon-close"
-                                            (click)="_OPIPBillreportService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
+                                            (click)="_SimpleReportService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="getOptionTextUser">
                                           <mat-option *ngFor="let option of filteredOptionsUser | async" [value]="option"
@@ -157,9 +157,9 @@
                                            formControlName="DoctorId" [matAutocomplete]="autoDoctorId">
                                         <span matSuffix style="display: flex;">
                                           <mat-icon class="mat-icon-close"
-                                            (click)="_OPIPBillreportService.userForm.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                            (click)="_SimpleReportService.userForm.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
                                           <mat-icon class="mat-icon-close"
-                                            (click)="_OPIPBillreportService.userForm.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                            (click)="_SimpleReportService.userForm.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #autoDoctorId="matAutocomplete" [displayWith]="getOptionTextDoctor">
                                           <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option"

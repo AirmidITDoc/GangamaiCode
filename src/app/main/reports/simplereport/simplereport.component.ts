@@ -13,7 +13,6 @@ import { NewRegistrationComponent } from '../../opd/registration/new-registratio
 import { EditRegistrationComponent } from '../../opd/registration/edit-registration/edit-registration.component';
 import { SimpleReportService } from './simplereport.service';
 import { IndentList, Printsal } from 'app/main/pharmacy/sales/sales.component';
-import { OPIPBillreportService } from '../opipbill-reports/opipbillreport.service';
 import { SalesService } from 'app/main/pharmacy/sales/sales.service';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -82,7 +81,7 @@ export class SimplereportComponent implements OnInit {
   dataSource = new MatTableDataSource<ReportDetail>();
   constructor(
     // this.dataSource.data = TREE_DATA;
-    public _OPIPBillreportService: OPIPBillreportService,
+    public _SimpleReportService: SimpleReportService,
     public _PrintPreviewService: PrintPreviewService,
 
     public _BrowsSalesService: SalesService,
@@ -104,18 +103,20 @@ export class SimplereportComponent implements OnInit {
     this.GetUserList();
     this.GetDoctorList();
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
-    this._OPIPBillreportService.userForm.get('UserId').setValue(toSelect);
+    this._SimpleReportService.userForm.get('UserId').setValue(toSelect);
 
     const toSelect1 = this.UserList.find(c => c.UserId == this.UserId);
-    this._OPIPBillreportService.userForm.get('UserId').setValue(toSelect);
+    this._SimpleReportService.userForm.get('UserId').setValue(toSelect);
 
 
   }
 
   bindReportData() {
     // let qry = "SELECT * FROM ReportConfigMaster WHERE IsActive=1 AND IsDeleted=0 AND ReportType=1";
-
-    this._OPIPBillreportService.getDataByQuery().subscribe(data => {
+    var data={
+      ReportSection:"OPIP Reports"
+    }
+    this._SimpleReportService.getDataByQuery(data).subscribe(data => {
       this.dataSource.data = data as any[];
 
     });
@@ -188,36 +189,36 @@ export class SimplereportComponent implements OnInit {
     var data = {
       "StoreId": this._loggedUser.currentUserValue.user.storeId
     }
-    this._OPIPBillreportService.getUserdetailList(data).subscribe(data => {
+    this._SimpleReportService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;
       this.optionsUser = this.UserList.slice();
       console.log(this.UserList);
-      this.filteredOptionsUser = this._OPIPBillreportService.userForm.get('UserId').valueChanges.pipe(
+      this.filteredOptionsUser = this._SimpleReportService.userForm.get('UserId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterUser(value) : this.UserList.slice()),
       );
 
     });
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
-    this._OPIPBillreportService.userForm.get('UserId').setValue(toSelect);
+    this._SimpleReportService.userForm.get('UserId').setValue(toSelect);
 
   }
 
 
   GetDoctorList() {
    
-    this._OPIPBillreportService.getDoctorList().subscribe(data => {
+    this._SimpleReportService.getDoctorList().subscribe(data => {
       this.DoctorList = data;
       this.optionsDoctor = this.DoctorList.slice();
       console.log(this.DoctorList);
-      this.filteredOptionsDoctor = this._OPIPBillreportService.userForm.get('DcotorId').valueChanges.pipe(
+      this.filteredOptionsDoctor = this._SimpleReportService.userForm.get('DcotorId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterUser(value) : this.DoctorList.slice()),
       );
 
     });
     const toSelect = this.DoctorList.find(c => c.DcotorId == this.vDoctorId);
-    this._OPIPBillreportService.userForm.get('DcotorId').setValue(toSelect);
+    this._SimpleReportService.userForm.get('DcotorId').setValue(toSelect);
 
   }
 
@@ -253,16 +254,16 @@ export class SimplereportComponent implements OnInit {
 
   viewOPDailyCollectionPdf() {
     let AddUserId = 0;
-    if (this._OPIPBillreportService.userForm.get('UserId').value)
-      AddUserId = this._OPIPBillreportService.userForm.get('UserId').value.UserId
+    if (this._SimpleReportService.userForm.get('UserId').value)
+      AddUserId = this._SimpleReportService.userForm.get('UserId').value.UserId
 
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
       
-      this._OPIPBillreportService.getOPDailyCollection(
-        this.datePipe.transform(this._OPIPBillreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this.datePipe.transform(this._OPIPBillreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this._SimpleReportService.getOPDailyCollection(
+        this.datePipe.transform(this._SimpleReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._SimpleReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         AddUserId,this.vDoctorId  
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -287,17 +288,17 @@ export class SimplereportComponent implements OnInit {
 
   viewIPDailyCollectionPdf() {
     let AddUserId = 0;
-    if (this._OPIPBillreportService.userForm.get('UserId').value)
+    if (this._SimpleReportService.userForm.get('UserId').value)
       
-    AddUserId = this._OPIPBillreportService.userForm.get('UserId').value.UserId
+    AddUserId = this._SimpleReportService.userForm.get('UserId').value.UserId
 
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
      
-      this._OPIPBillreportService.getIPDailyCollection(
-        this.datePipe.transform(this._OPIPBillreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this.datePipe.transform(this._OPIPBillreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this._SimpleReportService.getIPDailyCollection(
+        this.datePipe.transform(this._SimpleReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._SimpleReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         AddUserId
         
       ).subscribe(res => {
@@ -322,17 +323,17 @@ export class SimplereportComponent implements OnInit {
 
   viewgetOPIPCommanReportPdf() {
     let AddUserId = 0;
-      if (this._OPIPBillreportService.userForm.get('UserId').value)
+      if (this._SimpleReportService.userForm.get('UserId').value)
         
-      AddUserId = this._OPIPBillreportService.userForm.get('UserId').value.UserId
+      AddUserId = this._SimpleReportService.userForm.get('UserId').value.UserId
 
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
       
-      this._OPIPBillreportService.getOPIPCommanSummary(
-        this.datePipe.transform(this._OPIPBillreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this.datePipe.transform(this._OPIPBillreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this._SimpleReportService.getOPIPCommanSummary(
+        this.datePipe.transform(this._SimpleReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._SimpleReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         AddUserId,this.vDoctorId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -359,16 +360,16 @@ export class SimplereportComponent implements OnInit {
 
     debugger
     let AddUserId = 0;
-    if (this._OPIPBillreportService.userForm.get('UserId').value)
-      AddUserId = this._OPIPBillreportService.userForm.get('UserId').value.UserId
+    if (this._SimpleReportService.userForm.get('UserId').value)
+      AddUserId = this._SimpleReportService.userForm.get('UserId').value.UserId
 
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
      
-      this._OPIPBillreportService.getOPIPBILLINgSummary(
-        this.datePipe.transform(this._OPIPBillreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this.datePipe.transform(this._OPIPBillreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      this._SimpleReportService.getOPIPBILLINgSummary(
+        this.datePipe.transform(this._SimpleReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._SimpleReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
        
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -392,16 +393,16 @@ export class SimplereportComponent implements OnInit {
   viewgetSalesPatientWiseReportPdf() {
     this.AdList = true;
     let AddUserId = 0;
-    if (this._OPIPBillreportService.userForm.get('UserId').value)
+    if (this._SimpleReportService.userForm.get('UserId').value)
       
-    AddUserId = this._OPIPBillreportService.userForm.get('UserId').value.UserId
+    AddUserId = this._SimpleReportService.userForm.get('UserId').value.UserId
     // setTimeout(() => {
     //   this.sIsLoading = 'loading-data';
     
-    //   let Frdate=this.datePipe.transform(this._OPIPBillreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    //   let Todate =  this.datePipe.transform(this._OPIPBillreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    //   let Frdate=this.datePipe.transform(this._SimpleReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    //   let Todate =  this.datePipe.transform(this._SimpleReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
       
-    //   this._OPIPBillreportService.getSalesDetail_Patientwise(Frdate,Todate,    
+    //   this._SimpleReportService.getSalesDetail_Patientwise(Frdate,Todate,    
     //     0, 0, AddUserId, this._loggedUser.currentUserValue.user.storeId
     //   ).subscribe(res => {
         
@@ -429,9 +430,9 @@ export class SimplereportComponent implements OnInit {
     // setTimeout(() => {
     //   this.sIsLoading = 'loading-data';
     //   this.AdList = true;
-    //   this._OPIPBillreportService.getSalesReturn(
-    //     this.datePipe.transform(this._OPIPBillreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    //     this.datePipe.transform(this._OPIPBillreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0,
+    //   this._SimpleReportService.getSalesReturn(
+    //     this.datePipe.transform(this._SimpleReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    //     this.datePipe.transform(this._SimpleReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0,
     //     this._loggedUser.currentUserValue.user.storeId
     //   ).subscribe(res => {
     //     const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -456,10 +457,10 @@ export class SimplereportComponent implements OnInit {
   //   setTimeout(() => {
   //     this.sIsLoading = 'loading-data';
   //     this.AdList = true;
-  //     let frdate= this.datePipe.transform(this._OPIPBillreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-  //     let Todate =this.datePipe.transform(this._OPIPBillreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+  //     let frdate= this.datePipe.transform(this._SimpleReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+  //     let Todate =this.datePipe.transform(this._SimpleReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
   //  debugger
-  //     this._OPIPBillreportService.getSalesReturnPatientwise(frdate,Todate,0, 0,this._loggedUser.currentUserValue.user.storeId
+  //     this._SimpleReportService.getSalesReturnPatientwise(frdate,Todate,0, 0,this._loggedUser.currentUserValue.user.storeId
   //     ).subscribe(res => {
   //       const dialogRef = this._matDialog.open(PdfviewerComponent,
   //         {
@@ -484,9 +485,9 @@ export class SimplereportComponent implements OnInit {
     // setTimeout(() => {
     //   this.sIsLoading = 'loading-data';
     //   this.AdList = true;
-    //   this._OPIPBillreportService.getSalesCredit(
-    //     this.datePipe.transform(this._OPIPBillreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    //     this.datePipe.transform(this._OPIPBillreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0, 0,
+    //   this._SimpleReportService.getSalesCredit(
+    //     this.datePipe.transform(this._SimpleReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    //     this.datePipe.transform(this._SimpleReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0, 0,
     //     this._loggedUser.currentUserValue.user.storeId
     //   ).subscribe(res => {
     //     const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -515,9 +516,9 @@ export class SimplereportComponent implements OnInit {
     //   this.sIsLoading = 'loading-data';
     //   this.AdList = true;
 
-    //   this._OPIPBillreportService.getSalesCashBook(
-    //     this.datePipe.transform(this._OPIPBillreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
-    //     this.datePipe.transform(this._OPIPBillreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900', this.PaymentMode,
+    //   this._SimpleReportService.getSalesCashBook(
+    //     this.datePipe.transform(this._SimpleReportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
+    //     this.datePipe.transform(this._SimpleReportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900', this.PaymentMode,
     //     this._loggedUser.currentUserValue.user.storeId
     //   ).subscribe(res => {
     //     const dialogRef = this._matDialog.open(PdfviewerComponent,

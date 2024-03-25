@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { SimplereportComponent } from './simplereport/simplereport.component';
 import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.component';
-import { OPIPBillReportsComponent } from './opipbill-reports/opipbill-reports.component';
+
 
 
 const appRoutes: Routes = [
@@ -36,7 +36,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [OPIPBillReportsComponent],
+    declarations: [],
     imports: [
         CommonModule, RouterModule.forChild(appRoutes)
     ]
