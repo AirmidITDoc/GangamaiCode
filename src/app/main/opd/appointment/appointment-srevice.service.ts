@@ -146,28 +146,27 @@ export class AppointmentSreviceService {
 
   initializeFormGroup() {
     // this.saveForm();
-  }
+}
 
   // Add new registration
   public regInsert(employee) {
     return this._httpClient.post("OutPatient/OPDRegistrationSave", employee);
-  }
+}
 
   // update registration
   public regUpdate(employee) {
     return this._httpClient.post("OutPatient/OPDAppointmentInsert", employee);
-  }
+}
 
   // Add new Appointment
   public appointregInsert(employee) {
-    return this._httpClient.post("OutPatient/OPDAppointmentInsert", employee);
-  }
+    return this._httpClient.post("OutPatient/AppointmentInsert", employee);
+}
 
   // Update  registration
   public appointregupdate(employee) {
-    return this._httpClient.post("OutPatient/OPDAppointmentUpdate", employee);
-  }
-
+    return this._httpClient.post("OutPatient/AppointmentVisitUpdate", employee);
+}
   
 public documentuploadInsert(employee){
   return this._httpClient.post("InPatient/DocAttachment", employee);
@@ -210,8 +209,6 @@ public documentdownloadInsert(employee){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", { "Id": Id })
   }
 
-  
-
   public getGenderMasterCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveGenderMasterForCombo", {})
   }
@@ -230,7 +227,6 @@ public documentdownloadInsert(employee){
   public getPurposeList() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PurposeMasterForCombo", {})
   }
-  
 
   //Marital Combobox List
   public getMaritalStatusCombo() {
