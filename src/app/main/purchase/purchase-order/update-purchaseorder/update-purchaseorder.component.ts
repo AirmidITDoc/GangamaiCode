@@ -511,7 +511,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     updatePurchaseOrderHeaderObj['remarks'] = this._PurchaseOrder.FinalPurchaseform.get('Remark').value || '';
     updatePurchaseOrderHeaderObj['taxID'] = 0;
     updatePurchaseOrderHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-      updatePurchaseOrderHeaderObj['paymentTermId'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentTerm').value.Id || 0;
+    updatePurchaseOrderHeaderObj['paymentTermId'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentTerm').value.Id || 0;
     updatePurchaseOrderHeaderObj['modeofPayment'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentMode').value.Id || 0;
     updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Worrenty').value || 0;
     updatePurchaseOrderHeaderObj['roundVal'] = 0;
@@ -560,7 +560,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       "delete_PurchaseDetails": delete_PurchaseDetailsObj,
       "purchaseDetailInsert": InsertpurchaseDetailObj,
     };
-    //console.log(submitData);
+    console.log(submitData);
     this._PurchaseOrder.InsertPurchaseUpdate(submitData).subscribe(response => {
       if (response) {
         this.toastr.success('Record Updated Successfully.', 'Updated !', {
