@@ -134,9 +134,9 @@ export class PhoneappointmentComponent implements OnInit {
 newPhoneAppointment(){
   const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
     {
-      maxWidth: "95vw",
-      height: '70%',
-      width: '100%',
+      maxWidth: "85vw",
+      height: '60%',
+      width: '70%',
     });
   dialogRef.afterClosed().subscribe(result => {
      console.log('The dialog was closed - Insert Action', result);
