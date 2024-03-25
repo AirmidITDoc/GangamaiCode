@@ -23,9 +23,9 @@ export class PharmacyreportService {
 
       })
     }
-  public getDataByQuery() {
+  public getDataByQuery(emp) {
     // return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
-    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ReportList",{})
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ReportList",emp)
   }
 
   public getUserdetailList(data){
