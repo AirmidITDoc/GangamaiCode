@@ -99,27 +99,28 @@ export class IndentrequestComponent implements OnInit {
   }
 
 
-  chkQty(contact, InQty) {
+  chkQty(contact) {
 //debugger
-    if (this.dsRaisedIndent.data.length > 0) {
-      if (InQty == '' || InQty == null || InQty == 'undefined' || InQty == 0) {
-        this.toastr.warning('Please enter Indent Qty', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-      } 
-      return  this.vsaveflag = false;
-    }
+    // if (this.dsRaisedIndent.data.length > 0) {
+    //   if (InQty == '' || InQty == null || InQty == 'undefined' || InQty == 0) {
+    //     this.toastr.warning('Please enter Indent Qty', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //   } 
+    //   // return  this.vsaveflag = false;
+    // }
    
     // if (!this.vQtyflag) {
     //   this.vsaveflag = true;
     // }
+    console.log(contact)
   }
 
 
 
 
   vQtyflag:boolean=false
-
+  indentqty:any;
 
 
   OnSave() {
@@ -135,29 +136,14 @@ export class IndentrequestComponent implements OnInit {
       });
       return;
     }
-    // if (this.dsRaisedIndent.data.length > 0) {
-    //   this.dsRaisedIndent.data.forEach((element) => {
-    //     debugger
-    //     if (element.IndentQty == '' || element.IndentQty == null || element.IndentQty == 'undefined' || element.IndentQty == 0) {
-    //       this.toastr.warning('Please enter Indent Qty', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //       });
-    //     }
-    //   });
-    //   return;
-    // }
-    if (this.dsRaisedIndent.data.length > 0) {
-     for(let i = 0;i == this.dsRaisedIndent.data.length;i++){
-      console.log(this.dsRaisedIndent.data[i])
-      console.log(this.dsRaisedIndent[i])
-      if (this.dsRaisedIndent[i].IndentQty == '' || this.dsRaisedIndent[i].IndentQty == null || this.dsRaisedIndent[i].IndentQty == 'undefined' || this.dsRaisedIndent[i].IndentQty== 0) {
-        this.toastr.warning('Please enter Indent Qty', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-      }
-     }
-      return;
-    }
+    // this.dsRaisedIndent.data.forEach((element) => { 
+    //   if(element.IndentQty === ''){
+    //     this.toastr.warning('Please enter Indent Qty', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //    });
+    //    return;
+    //   }
+    // });
 
     let InsertIndentObj = {};
     InsertIndentObj['indentDate'] = this.dateTimeObj.date;
@@ -165,9 +151,10 @@ export class IndentrequestComponent implements OnInit {
     InsertIndentObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
     InsertIndentObj['toStoreId'] = this._Reorderlevelsummery.RaisedIndentFrom.get('ToStoreId').value.StoreId;
     InsertIndentObj['addedby'] = this.accountService.currentUserValue.user.id;
+    InsertIndentObj['comments'] = '';
 
     let InsertIndentDetObj = [];
-    this.dsRaisedIndent.data.forEach((element) => {
+    this.dsRaisedIndent.data.forEach((element) => { 
       let IndentDetInsertObj = {};
       IndentDetInsertObj['indentId'] = 0;
       IndentDetInsertObj['itemId'] = element.ItemId;

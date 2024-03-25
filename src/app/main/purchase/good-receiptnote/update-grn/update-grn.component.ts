@@ -386,7 +386,7 @@ export class UpdateGRNComponent implements OnInit {
       this.chargeslist = data as ItemNameList[];
       this.dsTempItemNameList.data = data as ItemNameList[];
       this.sIsLoading = '';
-     // console.log(this.dsItemNameList);
+      console.log(this.dsItemNameList);
     },
       error => {
         this.sIsLoading = '';
@@ -561,7 +561,7 @@ export class UpdateGRNComponent implements OnInit {
     if (contact.ReceiveQty > 0 && contact.Rate > 0) {
       if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
 
-        contact.TotalQty = (((contact.FreeQty) + (contact.ReceiveQty)) * (contact.ConversionFactor));
+        contact.TotalQty = (((contact.ReceiveQty) + (contact.FreeQty)) * (contact.ConversionFactor));
         //total amt
         contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
         //disc
@@ -1133,12 +1133,13 @@ export class UpdateGRNComponent implements OnInit {
   OnSave() {
    // this.vsaveflag = true;
    console.log(this.vPurchaseId)
+   debugger
     if (!this.vPurchaseId) {
       if (this.data.chkNewGRN == 1) {
         this.OnSavenew();
       } else if (this.data.chkNewGRN == 2) {
-        this.OnSaveEdit();
-        this.viewGRNREPORTPdf(this.registerObj.GRNID)
+          this.OnSaveEdit();
+          this.viewGRNREPORTPdf(this.registerObj.GRNID)
       }
     } else {
       this.OnSavePO();
@@ -1282,8 +1283,8 @@ export class UpdateGRNComponent implements OnInit {
       "grnSave": grnSaveObj,
       "grnDetailSave": SavegrnDetailObj,
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray,
-      "update_PO_STATUS_AganistGRN": update_PO_STATUS_AganistGRN,
-      "update_POHeader_Status_AganistGRN": update_POHeader_Status_AganistGRN
+     // "update_PO_STATUS_AganistGRN": update_PO_STATUS_AganistGRN,
+      //"update_POHeader_Status_AganistGRN": update_POHeader_Status_AganistGRN
     };
     console.log(submitData);
     this._GRNList.POtoGRNSave(submitData).subscribe(response => {
@@ -1409,6 +1410,7 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
       grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
       grnDetailSaveObj['StkID'] = element.StkID || 0;
+      
 
       SavegrnDetailObj.push(grnDetailSaveObj);
 
@@ -1526,7 +1528,7 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
       grnDetailSaveObj['grossAmount'] = element.NetAmount || 0;
       grnDetailSaveObj['totalQty'] = this.FinalTotalQty || 0;
-      grnDetailSaveObj['poNo'] = 0; //this.IgstAmt;
+      grnDetailSaveObj['poNo'] = element.PurchaseId || 0;
       grnDetailSaveObj['batchNo'] = element.BatchNo || "";
       grnDetailSaveObj['batchExpDate'] = this.vExpDate;//this.datePipe.transform(element.BatchExpDate, "yyyy-MM") || this.date.value;
       grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
@@ -1543,16 +1545,39 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['isVerifiedDatetime'] = element.IsVerifiedDatetime || 0;
       grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
       grnDetailSaveObj['StkID'] = element.StkID || 0;
+      // grnDetailSaveObj['poId'] = element.PurchaseId || 0;
+      // grnDetailSaveObj['purDetID'] = element.PurDetId || 0;
+      // grnDetailSaveObj['isClosed'] = true;
+      // grnDetailSaveObj['poBalQty'] = element.POBalQty || 0;
 
       SavegrnDetailObj.push(grnDetailSaveObj);
     });
     let delete_GRNDetailsobj = {}
     delete_GRNDetailsobj["GRNId"] = this.registerObj.GRNID;
 
+    let update_PO_STATUS_AganistGRN = [];
+    this.dsItemNameList.data.forEach((element) => {
+      let update_PO_STATUS_AganistGRNObj = {};
+      update_PO_STATUS_AganistGRNObj['poId'] = element.PurchaseId || 0;
+      update_PO_STATUS_AganistGRNObj['purDetID'] = element.PurDetId || 0;
+      update_PO_STATUS_AganistGRNObj['isClosed'] = true;
+      update_PO_STATUS_AganistGRNObj['poBalQty'] = element.POBalQty || 0;
+      update_PO_STATUS_AganistGRN.push(update_PO_STATUS_AganistGRNObj);
+    });
+
+    let update_POHeader_Status_AganistGRN = [];
+    this.dsItemNameList.data.forEach((element) => {
+      let update_POHeader_Status_AganistGRNObj = {};
+      update_POHeader_Status_AganistGRNObj['poId'] = element.PurchaseId || 0;
+      update_POHeader_Status_AganistGRNObj['isClosed'] = true;
+      update_POHeader_Status_AganistGRN.push(update_POHeader_Status_AganistGRNObj);
+    });
+
+
     let submitData = {
       "updateGRNHeader": updateGRNHeaderObj,
       "delete_GRNDetails": delete_GRNDetailsobj,
-      "grnDetailSave": SavegrnDetailObj
+      "grnDetailSave": SavegrnDetailObj,
     };
     console.log(submitData);
     this._GRNList.GRNEdit(submitData).subscribe(response => {

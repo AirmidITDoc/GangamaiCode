@@ -17,10 +17,10 @@
     <div class="content">
         <div class=" center p-12 pb-56" fxFlexAlign="start center">
             <div class="content-card" style="border-radius:4px; ">
-                <form [formGroup]="_Reorderlevelsummery.RaisedIndentFrom">
+               
 
                     <div fxLayout="column" fxLayoutAlign="start none">
-
+                        <form [formGroup]="_Reorderlevelsummery.RaisedIndentFrom">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                             <!-- <from [formGroup]="_IndentService.StoreFrom">
                                     <mat-form-field appearance="outline" fxFlex="300px">
@@ -56,6 +56,7 @@
                             </app-common-date>
 
                         </div>
+                        </form>
 
                         <div fxFlex.gt-sm="100%" fxFlex>
 
@@ -130,7 +131,7 @@
                                             <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.IndentQty" type="number"
-                                                        (keyup)="chkQty(contact,contact.IndentQty)">
+                                                    >
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -174,7 +175,7 @@
                        >Save</button>&nbsp;
                         <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
                     </div>
-                </form>
+               
             </div>
         </div>
     </div>

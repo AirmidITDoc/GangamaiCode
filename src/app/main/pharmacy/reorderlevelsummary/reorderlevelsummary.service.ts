@@ -34,6 +34,7 @@ export class ReorderlevelsummaryService {
   public getToStoreNameSearch(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
   }
+  
   public RaisedIndentSave(Param){
     return this._httpClient.post("InventoryTransaction/IndentSave", Param)
   }

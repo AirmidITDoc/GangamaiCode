@@ -459,12 +459,12 @@ export class ItemNameList {
   ItemName: string;
   Qty: number;
   UOM: number;
-  Rate: number;
-  TotalAmount: number;
-  Dis: number;
-  DiscAmount: number;
+  Rate: any;
+  TotalAmount: any;
+  Dis: any;
+  DiscAmount: any;
   GST: number;
-  GSTAmount: number;
+  GSTAmount: any;
   CGSTPer: any;
   CGSTAmt: any;
   SGSTPer: any;
@@ -472,7 +472,7 @@ export class ItemNameList {
   IGSTPer: any;
   IGSTAmt: any;
   // CGSTPer:any;
-  NetAmount: number;
+  NetAmount: any;
   MRP: number;
   Specification: string;
   position: number;
