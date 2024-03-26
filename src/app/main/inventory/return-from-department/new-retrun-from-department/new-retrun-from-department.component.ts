@@ -60,11 +60,6 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
   screenFromString = 'admission-from';
   sIsLoading: string = '';
   isLoading = true;
-
-  dsItemList = new MatTableDataSource<ItemList>();
-  dsIssueList = new MatTableDataSource<IssueList>();
-  dsItemDetailsList = new MatTableDataSource<ItemList>();
-
   vMRPTotalAmount: any = 0;
   vTotalvatAmount:any=0;
   vPurTotalAmount:any=0;
@@ -75,8 +70,14 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
   vpurchaseTotalAmount: any = 0;
   vtotalVATAmount: any = 0;
   vRemark: any = ''
-  vsaveflag = false
+  Savebtn: boolean = false;
   SpinLoading: boolean = false;
+
+  dsItemList = new MatTableDataSource<ItemList>();
+  dsIssueList = new MatTableDataSource<IssueList>();
+  dsItemDetailsList = new MatTableDataSource<ItemList>();
+
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild('secondPaginator', { static: true }) public secondPaginator: MatPaginator;
@@ -137,13 +138,11 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
       "FromDate": this.datePipe.transform(this._ReturnToDepartmentList.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._ReturnToDepartmentList.userFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     }
-    //console.log(vdata);
     this._ReturnToDepartmentList.getNewReturnToDepartmentList(vdata).subscribe(data => {
       this.dsIssueList.data = data as IssueList[];
       this.dsIssueList.sort = this.sort;
       this.dsIssueList.paginator = this.paginator;
       this.sIsLoading = '';
-     //console.log(this.dsIssueList.data);
     },
       error => {
         this.sIsLoading = '';
@@ -154,13 +153,11 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
     var vdata = {
       "IssueId": param.IssueId
     }
-    // console.log(vdata);
     this._ReturnToDepartmentList.getNewReturnItemList(vdata).subscribe(data => {
       this.dsItemList.data = data as ItemList[];
       this.dsItemList.sort = this.sort;
       this.dsItemList.paginator = this.paginator;
       this.sIsLoading = '';
-      // console.log(this.dsItemList.data);
     },
       error => {
         this.sIsLoading = '';
@@ -168,13 +165,13 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
   }
   chargeslist: any = [];
   getItemdetails(param) {
-    console.log(param)
     this.chargeslist.push(
       {
         ItemId: param.ItemId || 0,
         ItemName: param.ItemName || '',
         BatchExpDate: param.BatchExpDate || 0,
         IssueQty: param.IssueQty || 0,
+        ReturnQty:'',
         PerUnitLandedRate: param.PerUnitLandedRate || 0,
         VatPercentage: param.VatPercentage || 0,
         LandedTotalAmount: param.LandedTotalAmount || 0,
@@ -188,6 +185,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
         UnitPurRate: param.UnitPurRate || 0,
         PurTotalAmount: param.PurTotalAmount || 0,
         IsBatchRequired: param.IsBatchRequired || 0,
+
       });
     this.sIsLoading = '';
     this.dsItemDetailsList.data = this.chargeslist;
@@ -254,7 +252,9 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
       });
       return;
     }
-
+    const isCheckReturnQty = this.dsItemDetailsList.data.some(item => item.ReturnQty === this._ReturnToDepartmentList.userFormGroup.get('ReturnQty').value);
+    if(!isCheckReturnQty){
+    this.Savebtn = true;
     let insertReturnDepartmentHeader = {};
     insertReturnDepartmentHeader['returnDate'] = this.dateTimeObj.date;
     insertReturnDepartmentHeader['returnTime'] = this.dateTimeObj.time;
@@ -268,20 +268,9 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
     insertReturnDepartmentHeader['remark'] = this._ReturnToDepartmentList.NewReturnFinalForm.get('Remark').value || '';
     insertReturnDepartmentHeader['returnId'] = 0;
 
-
     let insertReturnDepartmentDetailarray = [];
     this.dsItemDetailsList.data.forEach(element => {
-
-      // let vtotalMRPAmount = ((element.IssueQty) * (element.UnitMRP)).toFixed(2);
-      // let vatAmount = ((parseFloat(vtotalMRPAmount) * (element.VatPercentage)) / 100).toFixed(2)
-      // let TotalNet = vtotalMRPAmount + vatAmount
-
-      // let vtotalLandedRate = ((element.IssueQty) * (element.PerUnitLandedRate)).toFixed(2);
-      // let remainingQty = 2// element.BalQty - element.ReturnQty;
-      // let totalPurAmount = ((element.IssueQty) * (element.UnitPurRate)).toFixed(2);
-
       let remainingQty = element.IssueQty - element.ReturnQty
-
       let insertReturnDepartmentDetail = {};
       insertReturnDepartmentDetail['returnId'] = 0;
       insertReturnDepartmentDetail['issueId'] = element.IssueId;
@@ -299,9 +288,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
       insertReturnDepartmentDetail['totalMRPAmount'] =element.MRPTotalAmount || 0;
       insertReturnDepartmentDetail['vatPer'] = element.VatPercentage || 0;
       insertReturnDepartmentDetail['vatAmount'] = element.VatAmount || 0;
-      insertReturnDepartmentDetail['remark'] = this._ReturnToDepartmentList.userFormGroup.get('Remark').value || '';
-
-
+      insertReturnDepartmentDetail['remark'] = this._ReturnToDepartmentList.NewReturnFinalForm.get('Remark').value || '';
       insertReturnDepartmentDetailarray.push(insertReturnDepartmentDetail);
     });
 
@@ -311,7 +298,6 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
     };
 
     console.log(submitData);
-
     this._ReturnToDepartmentList.ReturnfromdeptSave(submitData).subscribe(response => {
       if (response) {
         this.toastr.success('Record New Return From Department Saved Successfully.', 'Saved !', {
@@ -320,7 +306,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
         this.viewgetReturnfromdeptReportPdf(response);
         this.OnReset();
         this.onClose();
-
+        this.Savebtn = false;
       } else {
         this.toastr.error('New Return from Department Data not saved !, Please check validation error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -331,6 +317,12 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
+  }
+  else{
+    this.toastr.warning('Please enter ReturnQty.Without ReturnQty Cannot perform save operation.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    }); 
+  }
   }
 
   deleteTableRow(element) {
@@ -405,7 +397,6 @@ export class ItemList {
   position: any;
   StkId:any;
   IssueId:any;
-  RetrunQty:any;
 
   constructor(ItemList) {
     {

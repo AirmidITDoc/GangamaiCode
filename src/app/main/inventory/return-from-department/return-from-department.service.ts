@@ -38,6 +38,7 @@ export class ReturnFromDepartmentService {
       Remark: '' ,
       TotalAmount: '' ,
       TotalvatAmount:'',
+      ReturnQty:['']
     });
   }
   createFinalForm() {

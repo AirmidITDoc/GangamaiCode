@@ -31,6 +31,7 @@
                             <form [formGroup]="_ReturnToDepartmentList.userFormGroup" style="padding-bottom: 10px;">
                                 <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
                                     <mat-card fxFlex="60%" style="padding: 6px 6px 5px 5px;" fxLayoutGap="4px">
+                                        <input  name="ReturnQty" formControlName="ReturnQty" type="hidden">
                                         <mat-form-field appearance="outline" fxFlex="28%">
                                             <mat-label>From Store</mat-label>
                                             <mat-select name="StoreId" formControlName="StoreId">
@@ -155,7 +156,7 @@
                                     </mat-paginator>
                                 </div>
                                 <div fxFlex="40%">
-                                    <div matColumnDef="loading" style="height: 150px;width: 650px;"
+                                    <div matColumnDef="loading" style="height: 150px;width: 700px;"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border text-danger"></div>
                                     </div>
@@ -228,14 +229,6 @@
                             <div>
                                 <mat-table #table matSort [dataSource]="dsItemDetailsList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;height: 120px;">
-
-                                    <!-- <ng-container matColumnDef="IssueId">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            IssueId</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IssueId}}
-                                        </mat-cell>
-                                    </ng-container> -->
 
                                     <ng-container matColumnDef="ItemName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -396,7 +389,7 @@
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Remark</mat-label>
                                         <input matInput placeholder="Remark" [(ngModel)]="vRemark"
-                                            formControlName="Remark" #Remark required>
+                                            formControlName="Remark" #Remark  >
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
@@ -430,7 +423,7 @@
                                         | currency:'INR' }}</span>&nbsp;
 
                                     <div class="sales-footer-buttons gap-8">
-                                        <button class="btn btn-primary" (click)="OnSave()">Save</button>&nbsp;
+                                        <button class="btn btn-primary" (click)="OnSave()" [disabled]="Savebtn">Save</button>&nbsp;
                                         <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
                                     </div>
                                 </div>

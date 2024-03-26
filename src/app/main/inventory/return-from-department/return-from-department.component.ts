@@ -41,13 +41,13 @@ export class ReturnFromDepartmentComponent implements OnInit {
 
   displayedColumns1: string[] = [
     'ItemName',
+    'IssueDate',
+    'BalQty',
+    'ReturnQty',
+    'RemainingQty',
     'UnitLandedRate',
     'TotalLandedRate',
     'VatPer',
-    'ReturnQty',
-    'RemainingQty',
-    'BalQty',
-    'IssueTime'
   ]
 
   SpinLoading:boolean=false;
@@ -97,18 +97,16 @@ export class ReturnFromDepartmentComponent implements OnInit {
   getReturnToDepartmentList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "FromStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.StoreId || 0,
-      "ToStoreId": this._loggedService.currentUserValue.user.storeId || 0,
+      "FromStoreId":this._loggedService.currentUserValue.user.storeId || 0,
+      "ToStoreId": this._ReturnToDepartmentList.ReturnSearchGroup.get('ToStoreId').value.StoreId || 0,
       "From_Dt":this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     }
-    //console.log(vdata);
     this._ReturnToDepartmentList.getReturnToDepartmentList(vdata).subscribe(data => {
       this.dsReturnToDepList.data = data as ReturnTODepList[];
       this.dsReturnToDepList.sort = this.sort;
       this.dsReturnToDepList.paginator = this.paginator;
       this.sIsLoading = '';
-     // console.log(this.dsReturnToDepList.data);
     },
     error => {
       this.sIsLoading = '';
@@ -117,20 +115,17 @@ export class ReturnFromDepartmentComponent implements OnInit {
 
 
   getReturnItemList(Param) {
+    console.log(Param)
     var vdata = {
-      "ReturnId":4,// Param
+      "ReturnId":Param.ReturnId
     }
     this._ReturnToDepartmentList.getReturnItemList(vdata).subscribe(data => {
       this.dsReturnItemList.data = data as IssueItemList[];
-     // console.log(this.dsReturnItemList)
+      console.log(this.dsReturnItemList)
       this.dsReturnItemList.sort = this.sort;
       this.dsReturnItemList.paginator = this.paginator;
     });
   }
-
-
-
-
   getToStoreSearchList() {
     this._ReturnToDepartmentList.getToStoreSearchList().subscribe(data => {
       this.ToStoreList = data;
