@@ -1230,7 +1230,8 @@ export class AppointmentComponent implements OnInit {
   public now: Date = new Date();
   screenFromString = 'admission-form';
 
-  visitObj = new VisitMaster({});
+  // visitObj = new VisitMaster({});
+  
 
   editor: string;
 

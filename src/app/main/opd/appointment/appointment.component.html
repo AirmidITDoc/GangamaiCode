@@ -53,7 +53,7 @@
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="startdate" placeholder="Start date"
-                                                (dateChange)="getVisitList1()" required>
+                                                (dateChange)="getVisitList()" required>
                                             <input matEndDate formControlName="enddate" placeholder="End date">
                                         </mat-date-range-input>
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -62,19 +62,19 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Reg No</mat-label>
-                                        <input name="RegNo" formControlName="RegNo" matInput (keyup)="getVisitList1()">
+                                        <input name="RegNo" formControlName="RegNo" matInput (keyup)="getVisitList()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>First Name</mat-label>
                                         <input name="FirstName" formControlName="FirstName" matInput
-                                            (keyup)="getVisitList1()">
+                                            (keyup)="getVisitList()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Last Name</mat-label>
                                         <input name="LastName" formControlName="LastName" matInput
-                                            (keyup)="getVisitList1()">
+                                            (keyup)="getVisitList()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
@@ -90,7 +90,7 @@
                                         <mat-autocomplete #autoSearchDoctor1="matAutocomplete"
                                             [displayWith]="getOptionTextDoctor">
                                             <mat-option *ngFor="let option of filteredOptionsDoctor| async"
-                                                [value]="option" (onSelectionChange)="getVisitList1()">
+                                                [value]="option" (onSelectionChange)="getVisitList()">
                                                 {{option.DoctorName}}
                                             </mat-option>
                                         </mat-autocomplete>
@@ -100,7 +100,7 @@
                       IsDischarge</mat-slide-toggle> -->
 
                                     <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-                                        <button mat-raised-button (click)="getVisitList1()"
+                                        <button mat-raised-button (click)="getVisitList()"
                                             class="facility-search accent" matTooltip="search">
                                             <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
                                             Search
