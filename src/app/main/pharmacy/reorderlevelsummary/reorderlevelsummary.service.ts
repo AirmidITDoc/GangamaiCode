@@ -24,7 +24,8 @@ export class ReorderlevelsummaryService {
   createRaisedIndentFrom(){
     return this._formBuilder.group({
       ToStoreId:[''],
-      IndentQty:['', Validators.required]
+      IndentQty:[''],
+
     });
   }
   
