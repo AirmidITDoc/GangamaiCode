@@ -134,19 +134,18 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="PatientName" fxLayoutAlign="start center">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            style=" margin-top: 8px; ">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                             PatientName</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180">
                                             {{contact.PatientName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="Address">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                            style=" margin-top: 8px; ">Address
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md  class="w-180">
+                                            Address
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md  class="w-180">
                                             {{contact.Address}}
                                         </mat-cell>
                                     </ng-container>
@@ -161,7 +160,7 @@
 
                                     <ng-container matColumnDef="DepartmentName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                            style=" margin-top: 8px; ">
+                                           >
                                             DepartmentName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
@@ -171,7 +170,7 @@
 
                                     <ng-container matColumnDef="DoctorName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                            style=" margin-top: 8px; ">
+                                           >
                                             DoctorName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>

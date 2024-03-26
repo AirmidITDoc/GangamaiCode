@@ -444,7 +444,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   onSaveOPBill2() {
-
+    this.vOPIPId=2
 
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
@@ -503,12 +503,13 @@ export class NewOPBillingComponent implements OnInit {
     this.dataSource.data.forEach((element) => {
       let BillDetailsInsertObj = {};
       BillDetailsInsertObj['BillNo'] = 0;
-      BillDetailsInsertObj['ChargesId'] = element.ChargesId;
+      BillDetailsInsertObj['ChargesId'] = element.ServiceId;
       Billdetsarr.push(BillDetailsInsertObj);
     });
 
     let InsertAdddetArr = [];
     this.dataSource.data.forEach((element) => {
+      debugger
       let InsertAddChargesObj = {};
       InsertAddChargesObj['ChargeID'] = 0,
         InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
@@ -578,7 +579,7 @@ export class NewOPBillingComponent implements OnInit {
 
           this.balanceamt= result.BalAmt;
         }
-debugger
+
         // let InsertBillUpdateBillNoObj = {};
         // InsertBillUpdateBillNoObj['BillNo'] = 0;
         // InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId,//this.vOPIPId;
@@ -852,6 +853,7 @@ debugger
         });
       this.isLoading = '';
       this.dataSource.data = this.chargeslist;
+      console.log( this.dataSource.data )
       this.changeDetectorRefs.detectChanges();
 
       this.onClearServiceAddList();
@@ -1049,7 +1051,8 @@ debugger
   @ViewChild('disper') disper: ElementRef;
   @ViewChild('discamt') discamt: ElementRef;
   @ViewChild('doctorname') doctorname: ElementRef;
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  @ViewChild('addbutton') addbutton: ElementRef;
+  // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
   @ViewChild('netamt') netamt: ElementRef;
 
   @ViewChild('Doctor') Doctor: MatSelect;
@@ -1112,18 +1115,17 @@ debugger
     }
   }
 
-  // public onEnternetAmount(event): void {
-  //   debugger
-  //   if (event.which === 13) {
-
-  //     this.add = true;
-  //     this.addbutton.focus();
-  //   }
-  // }
+  public onEnternetAmount(event): void {
+    debugger
+    if (event.which === 13) {
+    this.add = true;
+      this.addbutton.nativeElement.focus();
+    }
+  }
 
   addData() {
     this.add = true;
-    this.addbutton.focus();
+    this.addbutton.nativeElement.focus();
   }
 
   public onEnterDoctorname(event): void {
@@ -1158,6 +1160,7 @@ debugger
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
+    debugger
     this._oPSearhlistService.getPatientVisitedListSearch(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
       console.log(data)

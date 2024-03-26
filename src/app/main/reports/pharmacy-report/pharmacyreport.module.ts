@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatRippleModule } from '@angular/material/core';
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -33,6 +33,8 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatTableModule } from '@angular/material/table';
+// import { OPIPBillReportsComponent } from '../opipbill-reports/opipbill-reports.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 const routes : Routes =[
   {
@@ -81,7 +83,9 @@ const routes : Routes =[
     SharedModule,
     MatSelectModule,
     MatTooltipModule,
-    
+    MatNativeDateModule,        // <----- import for date formating(optional)
+    MatMomentDateModule,
+    // MaterialModule,
     MatTreeModule
   ],
   providers:[

@@ -71,26 +71,6 @@
                                                 </mat-autocomplete>
                                             </mat-form-field>
 
-                                            <!-- <mat-form-field appearance="outline" fxFlex="25%">
-                                                <mat-label>Supplier Name</mat-label>
-                                                <input matAutocompletePosition="below" type="text" name="SupplierId"
-                                                           placeholder="Select Supplier" matInput
-                                                    formControlName="SupplierId" [matAutocomplete]="autoSupllier">
-                                                <span matSuffix style="display: flex;">
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="_GRNService.GRNSearchGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="_GRNService.GRNSearchGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
-                                                </span>
-                                                <mat-autocomplete #autoSupllier="matAutocomplete"
-                                                    [displayWith]="getOptionTextSupplier">
-                                                    <mat-option *ngFor="let option of filteredoptionsSupplier | async"
-                                                        [value]="option">
-                                                        {{option.SupplierName}}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field> -->
-
                                             <mat-form-field appearance="outline" fxFlex="13%">
                                                 <mat-label>Supplier Name</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
@@ -195,9 +175,9 @@
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="SupplierName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-230">
                                                         SupplierName</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
                                                         <span>{{contact.SupplierName}}</span>
                                                     </mat-cell>
                                                 </ng-container>
@@ -270,6 +250,8 @@
                                                         CashCreditType</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         <span>{{contact.Cash_CreditType}}</span>
+
+                                                        <!-- money-bill-alt -->
                                                     </mat-cell>
                                                 </ng-container>
 

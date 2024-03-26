@@ -17,23 +17,13 @@
     <div class="content">
         <div class=" center p-12 pb-56" fxFlexAlign="start center">
             <div class="content-card" style="border-radius:4px; ">
-                <form [formGroup]="_Reorderlevelsummery.RaisedIndentFrom">
+               
 
                     <div fxLayout="column" fxLayoutAlign="start none">
-
+                        <form [formGroup]="_Reorderlevelsummery.RaisedIndentFrom">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                            <!-- <from [formGroup]="_IndentService.StoreFrom">
-                                    <mat-form-field appearance="outline" fxFlex="300px">
-                                        <mat-label>From Store</mat-label>
-                                        <mat-select formControlName="FromStoreId" name="FromStoreId">
-                                            <mat-option></mat-option>
-                                            <mat-option *ngFor="let m of FromStoreList" [value]="m">
-                                                {{m.StoreName}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </from> -->
-
+                            <input name="IndentQty" formControlName="IndentQty" type="hidden">
+                           
                             <mat-form-field appearance="outline" fxFlex="30%" style="margin-right: 10px;">
                                 <mat-label>To Store</mat-label>
                                 <input matAutocompletePosition="below" type="text" required placeholder="Select Store"
@@ -56,11 +46,13 @@
                             </app-common-date>
 
                         </div>
+                        </form>
 
                         <div fxFlex.gt-sm="100%" fxFlex>
 
                             <div fxlayout="row">
                                 <div style="width: 100%;">
+                                   
                                     <mat-table #table matSort [dataSource]="dsRaisedIndent"
                                         [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
@@ -110,27 +102,14 @@
                                             </mat-cell>
                                         </ng-container>
 
-<!--                                                                             
                                         <ng-container matColumnDef="IndentQty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                 class="w-80">IndentQty
                                             </mat-header-cell>
                                             <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.IndentQty" type="number"
-                                                        (keyup)="chkQty(contact,contact.IndentQty)">
-                                                </mat-form-field>
-                                            </mat-cell>
-                                        </ng-container> -->
-
-                                        <ng-container matColumnDef="IndentQty">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-80">IndentQty
-                                            </mat-header-cell>
-                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                                                <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.IndentQty" type="number"
-                                                        (keyup)="chkQty(contact,contact.IndentQty)">
+                                                    <input matInput [(ngModel)]="contact.IndentQty" type="text"
+                                                   OnlyNumber >
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -167,14 +146,13 @@
                             </div>
                         </div>
                     </div>
-                    <!-- [disabled]="vsaveflag" -->
-                    <!-- !_Reorderlevelsummery.RaisedIndentFrom.valid -->
+                   
                     <div fxLayoutAlign="end" style="padding: 15px;">
-                        <button class="btn btn-primary" (click)="OnSave()" 
+                        <button class="btn btn-primary" (click)="OnSave()"  [disabled]="Savebtn"
                        >Save</button>&nbsp;
-                        <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
+                        <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>&nbsp;
                     </div>
-                </form>
+               
             </div>
         </div>
     </div>

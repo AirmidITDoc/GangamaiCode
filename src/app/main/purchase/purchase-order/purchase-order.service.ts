@@ -136,16 +136,16 @@ export class PurchaseOrderService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
   }
   public getPurchaseOrderDetail(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDetailsForPurchasepdate", Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemDetailsForPurchasepdate", Param);
   }
   public getItemList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemNameList_GRN", Param);
   }
   public getPurchaseOrder(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PurchaseOrderList_by_Name", Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PurchaseOrderList_by_Name", Param);
   }
   public getPurchaseItemList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PurchaseItemList", Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PurchaseItemList", Param);
   }
   public getFromStoreSearchList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);

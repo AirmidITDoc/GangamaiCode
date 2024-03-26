@@ -202,20 +202,32 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
     return this.vLandedTotalAmount;
   }
   Celldatacalculation(contact,RetrunQty){
-    debugger
-    console.log(contact)
-    console.log(contact.ReturnQty)
-    if(contact.ReturnQty > 0){
-      contact.LandedTotalAmount = contact.ReturnQty * contact.PerUnitLandedRate;
-      contact.MRPTotalAmount = contact.ReturnQty * contact.UnitMRP;
-      contact.PurTotalAmount = contact.ReturnQty * contact.UnitPurRate;
-      contact.VatAmount = ((contact.VatPercentage * contact.MRPTotalAmount) / 100);
-    }else{
+    if(contact.ReturnQty > contact.IssueQty){
+      this.toastr.warning('Return Qty cannot be greater than IssueQty.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      contact.ReturnQty = 0;
+      contact.ReturnQty = '';
       contact.LandedTotalAmount = 0;
       contact.MRPTotalAmount = 0;
       contact.PurTotalAmount = 0;
       contact.VatAmount = 0;
     }
+    else{
+    if(contact.ReturnQty > 0){
+        contact.LandedTotalAmount = (parseFloat(contact.ReturnQty) * parseFloat(contact.PerUnitLandedRate)).toFixed(2);
+        contact.MRPTotalAmount = (parseFloat(contact.ReturnQty) * parseFloat(contact.UnitMRP)).toFixed(2);
+        contact.PurTotalAmount = (parseFloat(contact.ReturnQty) * parseFloat(contact.UnitPurRate)).toFixed(2);
+        contact.VatAmount = ((parseFloat(contact.VatPercentage) * parseFloat(contact.MRPTotalAmount)) / 100).toFixed(2);
+      }
+    else{
+      contact.ReturnQty = 0;
+      contact.LandedTotalAmount = 0;
+      contact.MRPTotalAmount = 0;
+      contact.PurTotalAmount = 0;
+      contact.VatAmount = 0;
+    }
+  }
   }
   OnSave() {
     if ((!this.dsIssueList.data.length)) {

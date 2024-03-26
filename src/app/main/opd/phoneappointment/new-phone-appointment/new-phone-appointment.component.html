@@ -68,20 +68,22 @@
 
                   <mat-form-field appearance="outline" fxFlex="23%" >
                     <mat-label> First Name</mat-label>
-                    <input name="FirstName" formControlName="FirstName" matInput [ngClass]="{ 'is-invalid': submitted && f.FirstName.errors }">
+                    <input name="FirstName" formControlName="FirstName" matInput [ngClass]="{ 'is-invalid': submitted && f.FirstName.errors }"
+                    #fname (keydown)="onEnterfname($event)">
                     <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">First Name is required Enter only Alphabets</span>
                   </mat-form-field>
 
 
                   <mat-form-field appearance="outline" fxFlex="23%">
                     <mat-label>Middle Name</mat-label>
-                    <input name="MiddleName" formControlName="MiddleName" matInput [ngClass]="{ 'is-invalid': submitted && f.MiddleName.errors }">
+                    <input name="MiddleName" formControlName="MiddleName" matInput [ngClass]="{ 'is-invalid': submitted && f.MiddleName.errors }"
+                    #mname (keydown)="onEntermname($event)">
                     <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">Middle Name is required Enter only Alphabets</span>
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" fxFlex="23%" [ngClass]="{ 'is-invalid': submitted && f.LastName.errors }">
                     <mat-label>Last Name</mat-label>
-                    <input name="LastName" formControlName="LastName" matInput>
+                    <input name="LastName" formControlName="LastName" matInput   #lname (keydown)="onEnterlname($event)">
                     <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName Name is required Enter only Alphabets</span>
                   </mat-form-field>
 
@@ -93,18 +95,33 @@
 
                   <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.Address.errors }">
                     <mat-label>Address</mat-label>
-                    <input name="Address" formControlName="Address" placeholder="Address" matInput>
+                    <input name="Address" formControlName="Address" placeholder="Address" matInput
+                    #Address (keydown)="onEnterAddress($event)">
                     <!-- <mat-error>Please enter Address </mat-error> -->
                   </mat-form-field>
 
-                  <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }">
+                  <!-- <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }">
                     <mat-label>MobileNo</mat-label>
                     <input name="MobileNo" formControlName="MobileNo" matInput type="number">
                     <mat-error class="error"
                     *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
                     digits Mobile number is
                     required</mat-error>
-                  </mat-form-field>
+                  </mat-form-field> -->
+
+                  
+                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                style="margin-right:10px;">
+                <mat-label>Mobile Number</mat-label>
+                <input name="Mobile" formControlName="MobileNo" placeholder="Mobile Number" matInput required
+                    [(ngModel)]="vMobile" #mobile (keydown)="onEntermobile($event)" #mobile
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                    type="number" value="Mobile.length">
+                <mat-error class="error"
+                    *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                    digits Mobile number is
+                    required</mat-error>
+            </mat-form-field>
 
 
                 </div>
@@ -115,7 +132,7 @@
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Department</mat-label>
                     <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
-                      formControlName="Departmentid" [matAutocomplete]="autoDep" required>
+                      formControlName="Departmentid" [matAutocomplete]="autoDep" required #dept (keydown)="onEnterdept($event)">
                     <span matSuffix style="display: flex;">
                       <mat-icon class="mat-icon-close"
                         (click)="personalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
@@ -150,7 +167,7 @@
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Doctor Name</mat-label>
                     <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput
-                      formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
+                      formControlName="DoctorId" [matAutocomplete]="autoDoctor" required #docname>
                     <span matSuffix style="display: flex;">
                       <mat-icon class="mat-icon-close"
                         (click)="personalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>

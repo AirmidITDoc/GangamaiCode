@@ -132,8 +132,10 @@ export class PharmacyReportComponent implements OnInit {
 
   bindReportData() {
     // let qry = "SELECT * FROM ReportConfigMaster WHERE IsActive=1 AND IsDeleted=0 AND ReportType=1";
-
-    this._PharmacyreportService.getDataByQuery().subscribe(data => {
+var data={
+  ReportSection:"Pharm Reports"
+}
+    this._PharmacyreportService.getDataByQuery(data).subscribe(data => {
       this.dataSource.data = data as any[];
 
     });
@@ -188,18 +190,12 @@ export class PharmacyReportComponent implements OnInit {
 
 
   getOptionTextUser(option) {
-    debugger
-    // this.UserId = option.UserId;
-    // this.UserName=option.UserName;
     return option && option.UserName ? option.UserName : '';
-
   }
 
   getOptionTextPaymentMode(option) {
-
     this.PaymentMode = option.PaymentMode;
     return option && option.PaymentMode ? option.PaymentMode : '';
-
   }
 
 

@@ -49,12 +49,12 @@
                                             </mat-form-field>
                                         </form>
                                     </div>
-                                    <mat-form-field appearance="outline">
+                                    <mat-form-field appearance="outline" fxFlex="13%">
                                         <mat-label>Supplier Name | Code</mat-label>
                                         <input matAutocompletePosition="below" type="text"
-                                            [(ngModel)]="registerObj.SupplierId" (keydown)="onEnterSupplier($event)"
+                                            [(ngModel)]="vSupplierId" (keydown)="onEnterSupplier($event)"
                                             placeholder="Select Supplier" matInput formControlName="SupplierId"
-                                            [matAutocomplete]="autoSupllier" required>
+                                            [matAutocomplete]="autoSupllier" required (input)="getSupplierSearchCombo()">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
                                                 (click)="_GRNList.userFormGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
@@ -64,12 +64,11 @@
                                         <mat-autocomplete #autoSupllier="matAutocomplete"
                                             [displayWith]="getOptionTextSupplier"
                                             (optionSelected)='getSelectedSupplierObj($event.option.value)'>
-                                            <mat-option *ngFor="let option of filteredoptionsSupplier | async"
-                                                [value]="option">
+                                            <mat-option *ngFor="let option of filteredOptionssupplier"  [value]="option">
                                                 {{option.SupplierName}} || {{option.SupplierId}}
                                             </mat-option>
                                         </mat-autocomplete>
-                                    </mat-form-field>
+                                    </mat-form-field>&nbsp;
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Contact Persion</mat-label>
@@ -178,11 +177,12 @@
                                             Required field cannot be left blank
                                         </mat-error>
                                     </mat-form-field>
-
+                                    <!-- (keydown)="onEnterUOM($event)" -->
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>UOM</mat-label>
                                         <input matInput [(ngModel)]="vUOM" name="UOM" #Uom
-                                            (keydown)="onEnterUOM($event)" formControlName="UOM" readonly>
+                                            (keyup.enter)="onEnter('ConversionFactor')" 
+                                             formControlName="UOM" readonly>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
@@ -224,18 +224,19 @@
                                             formControlName="FreeQty" id="FreeQty" (keyup.enter)="onEnter('MRP')"
                                             autocomplete="off" #freeqty [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>
-
+                                    <!-- (keydown)="onEnterMRP($event)" -->
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>MRP</mat-label>
                                         <input matInput [(ngModel)]="vMRP" name="MRP" type="text" OnlyNumber
-                                            formControlName="MRP" id="MRP" (keydown)="onEnterMRP($event)" #mrp
+                                            formControlName="MRP" id="MRP" #mrp
+                                            (keyup.enter)="onEnter('Rate')"
                                             autocomplete="off" required>
                                     </mat-form-field>
-
+                                    <!-- (keydown)="onEnterRate($event)" -->
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Rate</mat-label>
                                         <input matInput [(ngModel)]="vRate" name="Rate" type="text" OnlyNumber
-                                            formControlName="Rate" id="Rate" (keydown)="onEnterRate($event)"
+                                            formControlName="Rate" id="Rate"  (keyup.enter)="onEnter('Disc')"
                                             (keyup)="OnchekPurchaserateValidation()" #rate required>
                                     </mat-form-field>
 
@@ -254,11 +255,13 @@
                                             autocomplete="off" formControlName="TotalAmount" id="TotalAmount" readonly>
                                     </mat-form-field>
 
+                                    <!-- (keydown)="onEnterDisc($event)" -->
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Disc1 %</mat-label>
                                         <input matInput [(ngModel)]="vDisc" name="Disc" autocomplete="off"
                                             (keyup)="calculateDiscperAmount()" formControlName="Disc" id="Disc"
-                                            (keydown)="onEnterDisc($event)" #disc required>
+                                            (keyup.enter)="onEnter('DiscAmt')"
+                                            #disc required>
                                     </mat-form-field>
 
 
@@ -275,8 +278,9 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Dis Amount </mat-label>
-                                        <input matInput [(ngModel)]="vDisAmount" name="DisAmount" type="number"
+                                        <input matInput [(ngModel)]="vDisAmount" name="DisAmount" type="number" id="DiscAmt"
                                             OnlyNumber formControlName="DisAmount" (keyup)="calculateDiscAmount()"
+                                            (keyup.enter)="onEnter('btnAdd')"
                                             [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>
 
@@ -410,10 +414,10 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="ItemName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
                                                 ItemName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                 {{contact.ItemName}}
                                             </mat-cell>
                                         </ng-container>
@@ -844,7 +848,7 @@
                         <form [formGroup]="_GRNList.GRNFinalForm">
                             <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
                                 <div fxFlex fxFlex.gt-xs="40%" fxFlex.xs="100%">
-                                    <mat-table #table class="table4 h-240" matSort [dataSource]="dsLastThreeItemList">
+                                    <mat-table #table class="table4 h-200" matSort [dataSource]="dsLastThreeItemList">
                                         <ng-container matColumnDef="SupplierName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                 class="w-200">
@@ -1077,11 +1081,11 @@
                                                     [(ngModel)]="registerObj.RoundingAmt">
                                             </mat-form-field>
                                         </div>
-                                        <div>
+                                        <!-- <div>
                                             <span class="h2">
                                                 <marquee>Expiry Date</marquee>
                                             </span>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>

@@ -549,7 +549,7 @@ export class SalesReturnComponent implements OnInit {
       salesReturnDetailCredit['batchNo'] = element.BatchNo;
       salesReturnDetailCredit['batchExpDate'] = element.BatchExpDate;
       salesReturnDetailCredit['unitMRP'] = element.UnitMRP;
-      salesReturnDetailCredit['qty'] = element.Qty;
+      salesReturnDetailCredit['qty'] = element.ReturnQty;
       salesReturnDetailCredit['totalAmount'] = element.TotalAmount;
       salesReturnDetailCredit['vatPer'] = element.VatPer;
       salesReturnDetailCredit['vatAmount'] = element.VatAmount;
@@ -577,7 +577,7 @@ export class SalesReturnComponent implements OnInit {
     this.selectedssaleDetailList.data.forEach((element) => {
       let updateCurStkSalesCredit = {};
       updateCurStkSalesCredit['itemId'] = element.ItemId;
-      updateCurStkSalesCredit['issueQty'] = element.Qty;
+      updateCurStkSalesCredit['issueQty'] = element.ReturnQty;
       updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
         updateCurStkSalesCredit['stkID'] = element.StkID;
 
@@ -587,8 +587,8 @@ export class SalesReturnComponent implements OnInit {
     let Update_SalesReturnQtySalesTblarray = [];
     this.selectedssaleDetailList.data.forEach((element) => {
     let Update_SalesReturnQtySalesTbl = {};
-    Update_SalesReturnQtySalesTbl['SalesDetId'] = this.SalesDetId;
-    Update_SalesReturnQtySalesTbl['ReturnQty'] = this.RQty;
+    Update_SalesReturnQtySalesTbl['SalesDetId'] = element.SalesDetId;
+    Update_SalesReturnQtySalesTbl['ReturnQty'] = element.ReturnQty;
     Update_SalesReturnQtySalesTblarray.push(Update_SalesReturnQtySalesTbl);
   });
 
@@ -599,7 +599,7 @@ export class SalesReturnComponent implements OnInit {
     Cal_GSTAmount_SalesReturn['SalesReturnID'] = 0;
 
     let Insert_ItemMovementReport_Cursor = {};
-    Insert_ItemMovementReport_Cursor['Id'] = this.SalesID;
+    Insert_ItemMovementReport_Cursor['Id'] = 0;
     Insert_ItemMovementReport_Cursor['TypeId'] = 2;
     // console.log("Procced with Payment Option");
 
@@ -667,7 +667,7 @@ export class SalesReturnComponent implements OnInit {
       salesReturnDetailCredit['batchNo'] = element.BatchNo;
       salesReturnDetailCredit['batchExpDate'] = element.BatchExpDate;
       salesReturnDetailCredit['unitMRP'] = element.UnitMRP;
-      salesReturnDetailCredit['qty'] = element.Qty;
+      salesReturnDetailCredit['qty'] = element.ReturnQty;
       salesReturnDetailCredit['totalAmount'] = element.TotalAmount;
       salesReturnDetailCredit['vatPer'] = element.VatPer;
       salesReturnDetailCredit['vatAmount'] = element.VatAmount;
@@ -691,11 +691,12 @@ export class SalesReturnComponent implements OnInit {
       salesReturnDetailInsertCreditarr.push(salesReturnDetailCredit);
     });
  
+      console.log(salesReturnDetailInsertCreditarr);
     let updateCurStkSalesCreditarray = [];
     this.selectedssaleDetailList.data.forEach((element) => {
       let updateCurStkSalesCredit = {};
       updateCurStkSalesCredit['itemId'] = element.ItemId;
-      updateCurStkSalesCredit['issueQty'] = element.Qty;
+      updateCurStkSalesCredit['issueQty'] = element.ReturnQty;
       updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
       updateCurStkSalesCredit['stkID'] = element.StkID;
       updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
@@ -705,7 +706,7 @@ export class SalesReturnComponent implements OnInit {
     this.selectedssaleDetailList.data.forEach((element) => {
     let Update_SalesReturnQtySalesTbl = {};
     Update_SalesReturnQtySalesTbl['SalesDetId'] = element.SalesDetId;
-    Update_SalesReturnQtySalesTbl['ReturnQty'] = element.Qty;
+    Update_SalesReturnQtySalesTbl['ReturnQty'] = element.ReturnQty;
     Update_SalesReturnQtySalesTblarray.push(Update_SalesReturnQtySalesTbl);
   });
 
@@ -716,7 +717,7 @@ export class SalesReturnComponent implements OnInit {
     Cal_GSTAmount_SalesReturn['SalesReturnID'] = 0;
 
     let Insert_ItemMovementReport_Cursor = {};
-    Insert_ItemMovementReport_Cursor['Id'] = this.SalesID;
+    Insert_ItemMovementReport_Cursor['Id'] = 0;
     Insert_ItemMovementReport_Cursor['TypeId'] = 2;
 
     let PaymentInsertobj = {};
@@ -981,6 +982,7 @@ export class SalesDetailList {
   Narration: any;
   IsPurRate: any;
   StkID: any;
+  ReturnQty:any;
   /**
    * Constructor
    *
@@ -1019,6 +1021,7 @@ export class SalesDetailList {
       this.Narration = SalesDetailList.Narration || '';
       this.IsPurRate = SalesDetailList.IsPurRate || 0;
       this.StkID = SalesDetailList.StkID || 0;
+      this.ReturnQty = SalesDetailList.ReturnQty || 0;
     }
   }
 }

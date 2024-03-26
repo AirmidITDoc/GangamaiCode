@@ -185,15 +185,13 @@
                                                 <mat-label>Packing</mat-label>
                                                 <input matInput [(ngModel)]="vConversionFactor" name="ConversionFactor"
                                                     formControlName="ConversionFactor" placeholder="Packing"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                    id="ConversionFactor" type="text" readonly>
+                                                    id="ConversionFactor" type="text" OnlyNumber  readonly>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="6%">
                                                 <mat-label>HSNcode</mat-label>
                                                 <input matInput [(ngModel)]="vHSNcode" name="HSNcode"
                                                     formControlName="HSNcode" placeholder="HSNcode"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                                     id="HSNcode" type="text" readonly>
                                             </mat-form-field>&nbsp;
 
@@ -205,9 +203,8 @@
 
                                             <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Qty</mat-label>
-                                                <input matInput [(ngModel)]="vQty" name="Qty" #qty required type="text"
+                                                <input matInput [(ngModel)]="vQty" name="Qty" #qty required type="text" OnlyNumber 
                                                     (keyup)="calculateTotalAmt()" (keydown)="onEnterQty($event)"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
                                                     formControlName="Qty" id="Qty" required>
 
                                             </mat-form-field>&nbsp;
@@ -235,36 +232,32 @@
                                             <mat-form-field appearance="outline" fxFlex="4%">
                                                 <mat-label>Dis %</mat-label>
                                                 <input matInput [(ngModel)]="vDis" name="Dis" #dis required
-                                                    (keydown)="onEnterDis($event)" type="number"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                    (keydown)="onEnterDis($event)" type="text" OnlyNumber 
                                                     (keyup)="calculateDiscperAmount()" formControlName="Dis">
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Disc Amt</mat-label>
-                                                <input matInput [(ngModel)]="vDiscAmt" name="DiscAmount"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                <input matInput [(ngModel)]="vDiscAmt" name="DiscAmount" type="text" OnlyNumber 
                                                     formControlName="DiscAmount" readonly>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="4%">
                                                 <mat-label>GST %</mat-label>
                                                 <input matInput [(ngModel)]="vGSTPer" name="GST" #gst required readonly
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                    (keydown)="onEnterGST($event)" type="number"
+                                                    (keydown)="onEnterGST($event)" type="text" OnlyNumber 
                                                     (keyup)="calculateDiscperAmount()" formControlName="GSTPer">
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>GST Amt</mat-label>
-                                                <input matInput [(ngModel)]="vGSTAmt" name="GSTAmount"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                <input matInput [(ngModel)]="vGSTAmt" name="GSTAmount" type="text" OnlyNumber 
                                                     formControlName="GSTAmount" readonly>
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="6%">
                                                 <mat-label>Net Amount</mat-label>
-                                                <input name="NetAmount" formControlName="NetAmount" matInput
+                                                <input name="NetAmount" formControlName="NetAmount" matInput type="text" OnlyNumber 
                                                     formControlName="NetAmount" [(ngModel)]="vNetAmount" readonly
                                                     required>
                                             </mat-form-field>&nbsp;
@@ -280,8 +273,7 @@
                                             <mat-form-field appearance="outline" fxFlex="4%">
                                                 <mat-label>Def Rate</mat-label>
                                                 <input matInput [(ngModel)]="vDefRate" name="DefRate" #DefRate readonly
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                    type="number" formControlName="DefRate">
+                                                type="text" OnlyNumber  formControlName="DefRate">
                                             </mat-form-field>&nbsp;
 
                                             <div matTooltip="Select All Value to enable this button!!">
@@ -335,7 +327,7 @@
                                                     Qty</mat-header-cell>
                                                 <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput type="number" [(ngModel)]="contact.Qty"
+                                                        <input matInput   [(ngModel)]="contact.Qty"
                                                             step="0.1" type="number" autocomplete="off"
                                                             (keyup)="getCellCalculation(contact,contact.Qty)">
                                                     </mat-form-field>
@@ -355,7 +347,7 @@
                                                     Rate</mat-header-cell>
                                                 <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput type="number" [(ngModel)]="contact.Rate"
+                                                        <input matInput   [(ngModel)]="contact.Rate"
                                                             step="0.1" type="number" autocomplete="off"
                                                             (keyup)="getCellCalculation(contact,contact.Rate)">
                                                     </mat-form-field>
@@ -383,7 +375,7 @@
                                                     Disc(%)</mat-header-cell>
                                                 <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput type="number" [(ngModel)]="contact.DiscPer"
+                                                        <input matInput  [(ngModel)]="contact.DiscPer"
                                                             step="0.1" type="number" autocomplete="off"
                                                             (keyup)="getCellCalculation(contact,contact.DiscPer)">
                                                     </mat-form-field>
@@ -403,7 +395,7 @@
                                                     CGST(%)</mat-header-cell>
                                                 <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput type="number" [(ngModel)]="contact.CGSTPer"
+                                                        <input matInput   [(ngModel)]="contact.CGSTPer"
                                                             step="0.1" type="number" autocomplete="off"
                                                             (keyup)="getCellCalculation(contact,contact.CGSTPer)">
                                                     </mat-form-field>
@@ -423,7 +415,7 @@
                                                     SGST(%)</mat-header-cell>
                                                 <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput type="number" [(ngModel)]="contact.SGSTPer"
+                                                        <input matInput   [(ngModel)]="contact.SGSTPer"
                                                             step="0.1" type="number" autocomplete="off"
                                                             (keyup)="getCellCalculation(contact,contact.SGSTPer)">
                                                     </mat-form-field>
@@ -467,7 +459,7 @@
                                                     MRP</mat-header-cell>
                                                 <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput type="number" [(ngModel)]="contact.MRP"
+                                                        <input matInput   [(ngModel)]="contact.MRP"
                                                             step="0.1" type="number" autocomplete="off"
                                                             (keyup)="getCellCalculation(contact,contact.MRP)">
                                                     </mat-form-field>
@@ -617,28 +609,28 @@
                                         </span>&nbsp;
                                         <span class="net-amt-value"
                                             style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalAmt(dsItemNameList.data)
-                                            | currency:'INR':'symbol-narrow':'0.2' }}</span>&nbsp;&nbsp;&nbsp;
+                                            | currency:'INR'}}</span>&nbsp;&nbsp;&nbsp;
 
                                         <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Disc
                                             Amt:
                                         </span>&nbsp;
                                         <span class="net-amt-value"
                                             style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalDisc(dsItemNameList.data)
-                                            | currency:'INR':'symbol-narrow':'0.2'}}</span>&nbsp;&nbsp;&nbsp;
+                                            | currency:'INR'}}</span>&nbsp;&nbsp;&nbsp;
 
                                         <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">GST
                                             Amt:
                                         </span>&nbsp;
                                         <span class="net-amt-value"
                                             style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalGST(dsItemNameList.data)
-                                            | currency:'INR':'symbol-narrow':'0.2'}}</span>&nbsp;&nbsp;&nbsp;
+                                            | currency:'INR'}}</span>&nbsp;&nbsp;&nbsp;
 
                                         <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Net
                                             Amt:
                                         </span>&nbsp;
                                         <span class="net-amt-value"
                                             style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalNet(dsItemNameList.data)
-                                            | currency:'INR':'symbol-narrow':'0.2'}}</span>
+                                            | currency:'INR'}}</span>
                                     </div>
                                     <div fxLayout="row" fxLayoutGap="4px">
 

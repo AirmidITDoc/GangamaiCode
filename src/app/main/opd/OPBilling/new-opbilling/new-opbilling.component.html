@@ -299,14 +299,20 @@
                                                 </button>-->
 
                                                 <!-- [disabled]="!add"  -->
-                                                <button mat-raised-button fxLayoutAlign="center center" #addbutton
+                                                <!-- <button mat-raised-button fxLayoutAlign="center center" #addbutton
                                                     class="add-btn" (click)="onAddCharges()">
                                                     <mat-icon> add </mat-icon>
                                                     Add
-                                                </button>
+                                                </button> -->
 
 
-
+                                                <button (click)="onAddCharges()"
+                                                class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
+                                                #addbutton>
+                                                <span class="btn-icon">
+                                                    <mat-icon> add </mat-icon>
+                                                </span>
+                                            </button>
                                             </div>
 
 

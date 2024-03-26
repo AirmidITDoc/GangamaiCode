@@ -53,11 +53,9 @@ export class ReorderlevelsummaryComponent implements OnInit {
       'ReOderQty':this._Reorderlevelsummery.SearchFrom.get('ReorderQty').value,
       'vType': this._Reorderlevelsummery.SearchFrom.get('Type').value
     }
-    console.log(vdata)
     this.sIsLoading = 'loading-data';
      this._Reorderlevelsummery.getIssuTrackerList(vdata).subscribe(data => {
      this.dsReorderlevelSummery.data = data as ReorderlvlList[];
-    console.log(this.dsReorderlevelSummery.data)
      this.dsReorderlevelSummery.sort = this.sort;
      this.dsReorderlevelSummery.paginator = this.paginator;
      this.sIsLoading = '';
@@ -70,7 +68,6 @@ export class ReorderlevelsummaryComponent implements OnInit {
     if (event.checked) {
       this.RaisedIndentList.push(element);
     }
-    console.log(this.RaisedIndentList)
   }
   RaiseIndent() {
     const dialogRef = this._matDialog.open(IndentrequestComponent,

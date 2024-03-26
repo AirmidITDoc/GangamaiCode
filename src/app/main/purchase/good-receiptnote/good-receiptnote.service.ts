@@ -159,7 +159,7 @@ export class GoodReceiptnoteService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_GrnItemList", Param);
   }
 
-  public getGrnItemDetailList(Param) {//Rtrv_ItemDetailsForGRNUpdate
+  public getGrnItemDetailList(Param) {//Rtrv_ItemDetailsForGRNUpdate //m_Rtrvv_ItemDetailsForGRNUpdate
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemDetailsForGRNUpdate", Param);
   }
 
