@@ -186,6 +186,9 @@ export class GoodReceiptnoteService {
   public POtoGRNSave(Param) {
     return this._httpClient.post("Pharmacy/InsertGRNPurchase", Param);
   }
+  public POtoGRNUpated(Param) {
+    return this._httpClient.post("Pharmacy/UpdateGRNPurchase", Param);
+  }
 
   public GRNEdit(Param) {
     return this._httpClient.post("Pharmacy/updateGRN", Param);

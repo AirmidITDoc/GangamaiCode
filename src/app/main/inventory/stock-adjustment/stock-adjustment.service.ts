@@ -39,7 +39,7 @@ export class StockAdjustmentService {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",Param)
   }
   public StockAdjSave(param){
-    return this._httpClient.post('Pharmacy/InsertStockadjustment',param);
+    return this._httpClient.post('InventoryTransaction/StockAdjustment',param);
   }
   
 }

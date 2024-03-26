@@ -28,7 +28,9 @@ import { ToastrService } from 'ngx-toastr';
 export class StockAdjustmentComponent implements OnInit {
   displayedColumns = [
     'BatchNo',
+    'BatchEdit',
     'ExpDate',
+    'ExpDateEdit',
     'UnitMRP',
     'PurchaseRate',
     'LandedRate',
@@ -177,9 +179,10 @@ DeduQty(contact,DeduQty){
 Addeditable:boolean=false;
 Dedueditable:boolean=false;
 Expeditable:boolean=false;
-MRPeditable:boolean=false;
+Batcheditable:boolean=false;
 Rateeditable:boolean=false;
 Landededitable:boolean=false;
+
 enableEditing(row: StockAdjList) {
   row.Addeditable = true;
 }
@@ -198,11 +201,11 @@ RateenableEditing(row: StockAdjList) {
 RatedisableEditing(row: StockAdjList) {
   row.Rateeditable = false;
 }
-MRPenableEditing(row: StockAdjList) {
-  row.MRPeditable = true;
+BatchenableEditing(row: StockAdjList) {
+  row.Batcheditable = true;
 }
-MRPdisableEditing(row: StockAdjList) {
-  row.MRPeditable = false;
+BatchdisableEditing(row: StockAdjList) {
+  row.Batcheditable = false;
 }
 ExpDateenableEditing(row: StockAdjList) {
   row.Expeditable = true;
@@ -231,45 +234,30 @@ OnSave(){
   }
   let insertMRPStockadju ={};
   insertMRPStockadju['storeID']= this.accountService.currentUserValue.user.storeId || 0;
+  insertMRPStockadju['stkId']=this.vStockId || 0;
   insertMRPStockadju['itemId']=  this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
   insertMRPStockadju['batchNo']= this.vBatchNo || '';
   insertMRPStockadju['ad_DD_Type']=  this.AddType ;
   insertMRPStockadju['ad_DD_Qty']= this.vQty || 0;
   insertMRPStockadju['preBalQty']= this.vBalQty ||  0;
   insertMRPStockadju['afterBalQty']= this.vUpdatedQty ||  0;
-  insertMRPStockadju['mrpAdg']= this.vMRP ||  0;
   insertMRPStockadju['addedBy']= this.accountService.currentUserValue.user.id || 0;
-  insertMRPStockadju['updatedBy']=this.accountService.currentUserValue.user.id || 0;
-  insertMRPStockadju['date']= this.dateTimeObj.date;
-  insertMRPStockadju['time']= this.dateTimeObj.time;
-  insertMRPStockadju['stockAdgId']=this.vStockId || 0;
+  insertMRPStockadju['stockAdgId']= 0;
 
-  let updatecurrentstockadjyadd ={};
-  updatecurrentstockadjyadd['storeId']= this.accountService.currentUserValue.user.storeId || 0;
-  updatecurrentstockadjyadd['stockId']= this.vStockId || 0;
-  updatecurrentstockadjyadd['itemId']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
-  updatecurrentstockadjyadd['receivedQty']=  this.vUpdatedQty || 0;
+  let batchAdjustment ={};
+  batchAdjustment['storeId']= this.accountService.currentUserValue.user.storeId || 0;
+  batchAdjustment['itemId']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
+  batchAdjustment['oldBatchNo']=  this.vUpdatedQty || 0;
+  batchAdjustment['oldExpDate']=  this.vUpdatedQty || 0;
+  batchAdjustment['newBatchNo']= this.accountService.currentUserValue.user.storeId || 0;
+  batchAdjustment['newExpDate']= this.vStockId || 0
+  batchAdjustment['addedBy']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
+  batchAdjustment['stkId']= this.vStockId || 0;
 
-  let updatecurrentstockadjydedu ={};
-  updatecurrentstockadjydedu['storeId']= this.accountService.currentUserValue.user.storeId || 0;
-  updatecurrentstockadjydedu['stockId']= this.vStockId || 0
-  updatecurrentstockadjydedu['itemId']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
-  updatecurrentstockadjydedu['receivedQty']=  this.vUpdatedQty || 0;
-
-  let insertitemmovstockadd ={};
-  insertitemmovstockadd['id']=0;
-  insertitemmovstockadd['typeId']=0;
-
-  let insertitemmovstockdedu ={};
-  insertitemmovstockdedu['id']=0;
-  insertitemmovstockdedu['typeId']=0;
 
   let submitData ={
-    'insertMRPStockadju':insertMRPStockadju,
-    'updatecurrentstockadjyadd':updatecurrentstockadjyadd,
-    'updatecurrentstockadjydedu':updatecurrentstockadjydedu,
-    'insertitemmovstockadd':insertitemmovstockadd,
-    'insertitemmovstockdedu':insertitemmovstockdedu
+    'stockAdjustment':insertMRPStockadju,
+    'batchAdjustment':batchAdjustment,
   }
   console.log(submitData);
   this._StockAdjustment.StockAdjSave(submitData).subscribe(response => {
@@ -308,7 +296,7 @@ export class StockAdjList {
   Addeditable:boolean=false;
   Dedueditable:boolean=false;
   Rateeditable:boolean=false;
-  MRPeditable:boolean=false;
+  Batcheditable:boolean=false;
   Expeditable:boolean=false;
   Landededitable:boolean=false;
 
