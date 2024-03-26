@@ -41,5 +41,8 @@ export class StockAdjustmentService {
   public StockAdjSave(param){
     return this._httpClient.post('InventoryTransaction/StockAdjustment',param);
   }
+  public BatchAdjSave(param){
+    return this._httpClient.post('InventoryTransaction/BatchAdjustment',param);
+  }
   
 }
