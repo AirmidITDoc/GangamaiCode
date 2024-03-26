@@ -9,7 +9,7 @@ $sidebar-gap: 12px;
         .sidebar-header {
             padding: 12px;
             .search-title {
-                @include font-size(13px);
+                font-size: 1.1rem;
             }
         }
         .sidebar-body {

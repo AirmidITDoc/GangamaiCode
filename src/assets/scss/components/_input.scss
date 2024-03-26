@@ -152,7 +152,7 @@
 
 // Override styles for elements within mat-form-field
 .mat-form-field {
-    @include font-size(11px);
+    @include font-size(12px);
     font-family: $font-primary;
     .mat-form-field-wrapper {
         .mat-form-field-flex {
@@ -191,6 +191,16 @@
     .mat-form-field {
         .mat-form-field-infix {
             width: auto;
+        }
+    }
+}
+.mat-form-field-100 {
+    .mat-form-field {
+        width: 100%;
+        .mat-form-field-wrapper {
+            .mat-form-field-infix {
+                width: auto;
+            }
         }
     }
 }
