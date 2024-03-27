@@ -833,34 +833,6 @@
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <mat-form-field appearance="outline">
-                                                        <mat-label>Mobile Number</mat-label>
-                                                        <input name="MobileNo" formControlName="MobileNo"
-                                                            placeholder="Mobile Number" matInput required
-                                                            [(ngModel)]="registerObj.MobileNo" minlength="10"
-                                                            maxlength="10" required="required" #mobile
-                                                            (keydown)="onEntermobile($event)"
-                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
-                                                            type="number" value="MobileNo.length">
-                                                        <mat-error class="error"
-                                                            *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                                                            digits Mobile number is
-                                                            required</mat-error>
-                                                    </mat-form-field>
-                                                </div>
-
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>Phone Number</mat-label>
-                                                        <input name="PhoneNo" formControlName="PhoneNo"
-                                                            placeholder="Phone Number" matInput #phone
-                                                            (keydown)="onEnterphone($event)"
-                                                            [(ngModel)]="registerObj.PhoneNo" minlength="10"
-                                                            maxlength="10" type="number" value="9876658688">
-                                                    </mat-form-field>
-                                                </div>
-
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline">
                                                         <mat-label>Marital Status</mat-label>
                                                         <input matAutocompletePosition="below" type="text"
                                                             placeholder="Select Mstatus" matInput #mstatus
@@ -882,6 +854,33 @@
                                                             </mat-option>
                                                         </mat-autocomplete>
                                                     </mat-form-field>
+                                                </div>
+                                                <!-- Phone number -->
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <div fxLayout="row" class="gap-8">
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>Mobile Number</mat-label>
+                                                            <input name="MobileNo" formControlName="MobileNo"
+                                                                placeholder="Mobile Number" matInput required
+                                                                [(ngModel)]="registerObj.MobileNo" minlength="10"
+                                                                maxlength="10" required="required" #mobile
+                                                                (keydown)="onEntermobile($event)"
+                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
+                                                                type="number" value="MobileNo.length">
+                                                            <mat-error class="error"
+                                                                *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                                                                digits Mobile number is
+                                                                required</mat-error>
+                                                        </mat-form-field>
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>Phone Number</mat-label>
+                                                            <input name="PhoneNo" formControlName="PhoneNo"
+                                                                placeholder="Phone Number" matInput #phone
+                                                                (keydown)="onEnterphone($event)"
+                                                                [(ngModel)]="registerObj.PhoneNo" minlength="10"
+                                                                maxlength="10" type="number" value="9876658688">
+                                                        </mat-form-field>
+                                                    </div>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -912,9 +911,11 @@
                                             </div>
                                             <!-- Photo capture -->
                                             <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
-                                                <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
+                                                <div class="photo-capture p-16 border border-radius-4 gap-12"
+                                                    fxLayout="column">
                                                     <div class="photp-capture-image">
-                                                        <img class="h-100-p w-100-p border-radius-4" [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/default.jpg'" />
+                                                        <img class="h-100-p w-100-p border-radius-4"
+                                                            [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/default.jpg'" />
                                                     </div>
                                                     <div class="photo-capture-button ">
                                                         <!-- <mat-label>Photo</mat-label> -->
@@ -935,187 +936,204 @@
                                     </form>
                                 </mat-expansion-panel>
 
-                                <mat-expansion-panel expanded>
+                                <mat-expansion-panel expanded class="mt-12">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             Visit Details
                                         </mat-panel-title>
                                     </mat-expansion-panel-header>
-                                    <form [formGroup]="VisitFormGroup">
+                                    <form [formGroup]="VisitFormGroup" class="mat-form-field-100">
                                         <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
-                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
-                                                fxFlex.sm="33%">
-                                                <mat-label>Hospital Name </mat-label>
-                                                <mat-select formControlName="HospitalId" required #hname
-                                                    (keydown)="onEnterhname($event)">
-                                                    <mat-option *ngFor="let Doc of HospitalList1" [value]="Doc">
-                                                        {{Doc.HospitalName}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Hospital Name </mat-label>
+                                                    <mat-select formControlName="HospitalId" required #hname
+                                                        (keydown)="onEnterhname($event)">
+                                                        <mat-option *ngFor="let Doc of HospitalList1" [value]="Doc">
+                                                            {{Doc.HospitalName}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
 
-                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
-                                                fxFlex.sm="33%">
-                                                <mat-label>Patient Type</mat-label>
-                                                <mat-select formControlName="PatientTypeID"
-                                                    (selectionChange)="onChangePatient($event.value)" #ptype
-                                                    (keydown)="onEnterptype($event)" required>
-                                                    <mat-option *ngFor="let Doc of PatientTypeList" [value]="Doc">
-                                                        {{Doc.PatientType}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Patient Type</mat-label>
+                                                    <mat-select formControlName="PatientTypeID"
+                                                        (selectionChange)="onChangePatient($event.value)" #ptype
+                                                        (keydown)="onEnterptype($event)" required>
+                                                        <mat-option *ngFor="let Doc of PatientTypeList" [value]="Doc">
+                                                            {{Doc.PatientType}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
 
-                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
-                                                fxFlex.sm="33%">
-                                                <mat-label>Tariff Name</mat-label>
-                                                <mat-select formControlName="TariffId" required #tariff
-                                                    (keydown)="onEnterptariff($event)">
-                                                    <mat-option *ngFor="let Doc of TariffList" [value]="Doc">
-                                                        {{Doc.TariffName}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Tariff Name</mat-label>
+                                                    <mat-select formControlName="TariffId" required #tariff
+                                                        (keydown)="onEnterptariff($event)">
+                                                        <mat-option *ngFor="let Doc of TariffList" [value]="Doc">
+                                                            {{Doc.TariffName}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
 
-                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
-                                                fxFlex.sm="33%" *ngIf="isCompanySelected">
-                                                <mat-label>Company Name </mat-label>
-                                                <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Select Company" matInput formControlName="CompanyId"
-                                                    [matAutocomplete]="autoCompany" required>
-                                                <span matSuffix style="display: flex;">
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
-                                                </span>
-                                                <mat-autocomplete #autoCompany="matAutocomplete"
-                                                    [displayWith]="getOptionTextCompany">
-                                                    <mat-option *ngFor="let option of filteredOptionsCompany | async"
-                                                        [value]="option">
-                                                        {{option.CompanyName}}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                *ngIf="isCompanySelected">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Company Name </mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Select Company" matInput
+                                                        formControlName="CompanyId" [matAutocomplete]="autoCompany"
+                                                        required>
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoCompany="matAutocomplete"
+                                                        [displayWith]="getOptionTextCompany">
+                                                        <mat-option
+                                                            *ngFor="let option of filteredOptionsCompany | async"
+                                                            [value]="option">
+                                                            {{option.CompanyName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
 
-                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
-                                                fxFlex.sm="33%" *ngIf="isCompanySelected">
-                                                <mat-label>Sub Company Name </mat-label>
-                                                <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Select SubCompany" matInput
-                                                    formControlName="SubCompanyId" [matAutocomplete]="autoSubCompany"
-                                                    required>
-                                                <span matSuffix style="display: flex;">
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">close</mat-icon>
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">search</mat-icon>
-                                                </span>
-                                                <mat-autocomplete #autoSubCompany="matAutocomplete"
-                                                    [displayWith]="getOptionTextSubCompany">
-                                                    <mat-option *ngFor="let option of filteredOptionsSubCompany | async"
-                                                        [value]="option">
-                                                        {{option.CompanyName}}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                                *ngIf="isCompanySelected">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Sub Company Name </mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Select SubCompany" matInput
+                                                        formControlName="SubCompanyId"
+                                                        [matAutocomplete]="autoSubCompany" required>
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoSubCompany="matAutocomplete"
+                                                        [displayWith]="getOptionTextSubCompany">
+                                                        <mat-option
+                                                            *ngFor="let option of filteredOptionsSubCompany | async"
+                                                            [value]="option">
+                                                            {{option.CompanyName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
 
-                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
-                                                fxFlex.sm="33%">
-                                                <mat-label>Department</mat-label>
-                                                <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Select Department" matInput #dept
-                                                    (keydown)="onEnterdept($event)" formControlName="Departmentid"
-                                                    [matAutocomplete]="autoDep" required>
-                                                <span matSuffix style="display: flex;">
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                                </span>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Department</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Select Department" matInput #dept
+                                                        (keydown)="onEnterdept($event)" formControlName="Departmentid"
+                                                        [matAutocomplete]="autoDep" required>
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                                                    </span>
 
-                                                <mat-autocomplete #autoDep="matAutocomplete"
-                                                    [displayWith]="getOptionTextDep">
-                                                    <mat-option *ngFor="let option of filteredOptionsDep | async"
-                                                        [value]="option"
-                                                        (onSelectionChange)="OnChangeDoctorList(option)">
-                                                        {{option.departmentName}}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field> <!-- &nbsp; -->
+                                                    <mat-autocomplete #autoDep="matAutocomplete"
+                                                        [displayWith]="getOptionTextDep">
+                                                        <mat-option *ngFor="let option of filteredOptionsDep | async"
+                                                            [value]="option"
+                                                            (onSelectionChange)="OnChangeDoctorList(option)">
+                                                            {{option.departmentName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
 
-                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
-                                                fxFlex.sm="33%">
-                                                <mat-label>Doctor Name</mat-label>
-                                                <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Pick one" matInput #deptdoc
-                                                    (keydown)="onEnterdeptdoc($event)" formControlName="DoctorID"
-                                                    [matAutocomplete]="autoDoctor" required>
-                                                <span matSuffix style="display: flex;">
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                                                </span>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Doctor Name</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Pick one" matInput #deptdoc
+                                                        (keydown)="onEnterdeptdoc($event)" formControlName="DoctorID"
+                                                        [matAutocomplete]="autoDoctor" required>
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                                    </span>
 
-                                                <mat-autocomplete #autoDoctor="matAutocomplete"
-                                                    [displayWith]="getOptionTextDoc">
-                                                    <mat-option *ngFor="let option of filteredOptionsDoc | async"
-                                                        [value]="option" (onSelectionChange)="isDoctorSelected = true;">
-                                                        {{option.Doctorname }} <b>|</b> {{option.DepartmentName }}
-                                                        <b>|</b> {{option.DoctorId
-                                                        }}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field>
+                                                    <mat-autocomplete #autoDoctor="matAutocomplete"
+                                                        [displayWith]="getOptionTextDoc">
+                                                        <mat-option *ngFor="let option of filteredOptionsDoc | async"
+                                                            [value]="option"
+                                                            (onSelectionChange)="isDoctorSelected = true;">
+                                                            {{option.Doctorname }} <b>|</b> {{option.DepartmentName }}
+                                                            <b>|</b> {{option.DoctorId
+                                                            }}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
 
-                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
-                                                fxFlex.sm="33%">
-                                                <mat-label>Ref Doctor Name</mat-label>
-                                                <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Select Ref Doctor " matInput #refdoc
-                                                    (keydown)="onEnterrefdoc($event)" formControlName="RefDocId"
-                                                    [matAutocomplete]="autoRefdoc">
-                                                <span matSuffix style="display: flex;">
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('RefDocId').setValue(''); isRefDoctorSelected = false;">close</mat-icon>
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('RefDocId').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
-                                                </span>
-                                                <mat-autocomplete #autoRefdoc="matAutocomplete"
-                                                    [displayWith]="getOptionTextRefDoc">
-                                                    <mat-option *ngFor="let option of filteredOptionsRefDoc | async"
-                                                        [value]="option">
-                                                        {{option.DoctorName}}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Ref Doctor Name</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Select Ref Doctor " matInput #refdoc
+                                                        (keydown)="onEnterrefdoc($event)" formControlName="RefDocId"
+                                                        [matAutocomplete]="autoRefdoc">
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('RefDocId').setValue(''); isRefDoctorSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('RefDocId').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoRefdoc="matAutocomplete"
+                                                        [displayWith]="getOptionTextRefDoc">
+                                                        <mat-option *ngFor="let option of filteredOptionsRefDoc | async"
+                                                            [value]="option">
+                                                            {{option.DoctorName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
 
-                                            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%"
-                                                fxFlex.sm="33%">
-                                                <mat-label>Purpose</mat-label>
-                                                <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Select Purpose" matInput #purpose
-                                                    formControlName="PurposeId" [matAutocomplete]="autoPurpose">
-                                                <span matSuffix style="display: flex;">
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('PurposeId').setValue(''); isPurposeSelected = false;">close</mat-icon>
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="VisitFormGroup.get('PurposeId').setValue(''); isPurposeSelected = false;">search</mat-icon>
-                                                </span>
-                                                <mat-autocomplete #autoPurpose="matAutocomplete"
-                                                    [displayWith]="getOptionTextPurpose">
-                                                    <mat-option *ngFor="let option of filteredOptionsPurpose | async"
-                                                        [value]="option">
-                                                        {{option.PurposeName}}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Purpose</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Select Purpose" matInput #purpose
+                                                        formControlName="PurposeId" [matAutocomplete]="autoPurpose">
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('PurposeId').setValue(''); isPurposeSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('PurposeId').setValue(''); isPurposeSelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoPurpose="matAutocomplete"
+                                                        [displayWith]="getOptionTextPurpose">
+                                                        <mat-option
+                                                            *ngFor="let option of filteredOptionsPurpose | async"
+                                                            [value]="option">
+                                                            {{option.PurposeName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
+
                                         </div>
                                     </form>
                                 </mat-expansion-panel>
                             </mat-accordion>
-                            <div class="new-appointment-actions gap-8" fxLayout="row" fxLayoutAlign="end center">
+                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
                                 <!-- (click)="nextClicked(VisitFormGroup)" -->
                                 <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
                                 <button class="btn btn-primary " color="accent"
