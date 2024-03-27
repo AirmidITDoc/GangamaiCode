@@ -194,19 +194,26 @@ export class PurchaseOrderComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-
+  resultsLength = 0;
 
   getPurchaseOrderList() {
     var Param = {
-      "ToStoreId": this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').value.storeid || 0,
-      "From_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-10-01 00:00:00.000',
-      "To_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-10-01 00:00:00.000',
+      "ToStoreId": this.accountService.currentUserValue.user.storeId, //this._PurchaseOrder.PurchaseSearchGroup.get('FromStoreId').value.storeid || 0,
+      "From_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000"), 
+      "To_Dt": this.datePipe.transform(this._PurchaseOrder.PurchaseSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") ,
       "IsVerify": this._PurchaseOrder.PurchaseSearchGroup.get("Status").value || 0,
       "Supplier_Id": this._PurchaseOrder.PurchaseSearchGroup.get('SupplierId').value.SupplierId || 0,
+      Start:(this.paginator?.pageIndex??1),
+      Length:(this.paginator?.pageSize??10),
+      // Sort:this.sort?.active??'VisitId',
+      // Order:this.sort?.direction??'asc'
     }
+    console.log(Param);
     this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
-      this.dsPurchaseOrder.data = data as PurchaseOrder[];
+      this.dsPurchaseOrder.data = data["Table1"]??[] as PurchaseOrder[];
+      // this.dsPurchaseOrder.data = data as PurchaseOrder[];
       this.dsPurchaseOrder.sort = this.sort;
+      this.resultsLength= data["Table"][0]["total_row"];
       this.dsPurchaseOrder.paginator = this.paginator;
       this.sIsLoading = '';
     },

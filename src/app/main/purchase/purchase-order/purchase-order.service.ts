@@ -142,8 +142,10 @@ export class PurchaseOrderService {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemNameList_GRN", Param);
   }
   public getPurchaseOrder(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PurchaseOrderList_by_Name", Param);
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_PurchaseOrderList_by_Name_Pagn", Param);
   }
+  // m_Rtrv_PurchaseOrderList_by_Name m_Rtrv_PurchaseOrderList_by_Name_Pagn
+  
   public getPurchaseItemList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PurchaseItemList", Param);
   }
