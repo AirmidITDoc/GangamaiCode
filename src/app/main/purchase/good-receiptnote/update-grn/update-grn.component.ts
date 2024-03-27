@@ -1456,7 +1456,7 @@ export class UpdateGRNComponent implements OnInit {
     delete_GRNDetailsobj["GRNId"] = this.registerObj.GRNID;
 
     let submitData = {
-      "updateGRNHeader": updateGRNHeaderObj,
+      //"updateGRNHeader": updateGRNHeaderObj,
       "delete_GRNDetails": delete_GRNDetailsobj,
       "grnDetailSave": SavegrnDetailObj,
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray,
