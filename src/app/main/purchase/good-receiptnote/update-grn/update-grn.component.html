@@ -1091,7 +1091,7 @@
                             </div>
                             <div class="modal-footer">
                                 <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
-                                    <button class="btn btn-primary " (click)="OnSave()">Save</button>
+                                    <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
                                     <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
                                 </div>
                             </div>

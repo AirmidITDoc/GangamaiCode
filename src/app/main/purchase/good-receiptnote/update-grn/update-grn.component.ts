@@ -1151,6 +1151,7 @@ export class UpdateGRNComponent implements OnInit {
       this.OnSavePO();
     }
   }
+  Savebtn:boolean=false;
   OnSavePO() {
     if ((!this.dsItemNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -1168,6 +1169,7 @@ export class UpdateGRNComponent implements OnInit {
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     //
+    this.Savebtn=true;
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1298,6 +1300,7 @@ export class UpdateGRNComponent implements OnInit {
         this.toastr.success('Record PO TO GRN Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
+       this.Savebtn=false;
         this._matDialog.closeAll();
         this.OnReset();
         this.viewGRNREPORTPdf(response)
@@ -1330,69 +1333,40 @@ export class UpdateGRNComponent implements OnInit {
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     //
-    // let grnSaveObj = {};
-    // grnSaveObj['grnDate'] = this.dateTimeObj.date;
-    // grnSaveObj['grnTime'] = this.dateTimeObj.time;
-    // grnSaveObj['storeId'] = this.accountService.currentUserValue.user.storeId;
-    // grnSaveObj['supplierID'] = this._GRNList.userFormGroup.get('SupplierId').value.SupplierId || this.SupplierId;
-    // grnSaveObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || 0;
-    // grnSaveObj['deliveryNo'] = 0;
-    // grnSaveObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || 0;
-    // grnSaveObj['cash_CreditType'] = this._GRNList.userFormGroup.get('PaymentType').value;
-    // grnSaveObj['grnType'] = this._GRNList.userFormGroup.get('GRNType').value;
-    // grnSaveObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
-    // grnSaveObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
-    // grnSaveObj['totalVATAmount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
-    // grnSaveObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
-    // grnSaveObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
-    // grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
-    // grnSaveObj['isVerified'] = false;
-    // grnSaveObj['isClosed'] = false;
-    // grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
-    // grnSaveObj['invDate'] = this._GRNList.userFormGroup.get('DateOfInvoice').value.DateOfInvoice || '01/01/1900';
-    // grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
-    // grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
-    // grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
-    // grnSaveObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
-    // grnSaveObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('CGSTAmount').value || 0;
-    // grnSaveObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('SGSTAmount').value || 0;
-    // grnSaveObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
-    // grnSaveObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
-    // grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
-    // grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
-    // grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
-    // grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount2 || 0;
-    // grnSaveObj['grnid'] = this.registerObj.GRNID;
-
-    let updateGRNHeaderObj = {};
-    updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
-    updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
-    updateGRNHeaderObj['grnTime'] = this.dateTimeObj.time;
-    updateGRNHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
-    updateGRNHeaderObj['supplierID'] = this._GRNList.userFormGroup.get('SupplierId').value.SupplierId || 0;
-    updateGRNHeaderObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || 0;
-    updateGRNHeaderObj['deliveryNo'] = 0;
-    updateGRNHeaderObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || 0;
-    updateGRNHeaderObj['cash_CreditType'] = this._GRNList.userFormGroup.get('PaymentType').value;
-    updateGRNHeaderObj['grnType'] = this._GRNList.userFormGroup.get('GRNType').value;
-    updateGRNHeaderObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
-    updateGRNHeaderObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
-    updateGRNHeaderObj['totalVATAmount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
-    updateGRNHeaderObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
-    updateGRNHeaderObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
-    updateGRNHeaderObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
-    updateGRNHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-    updateGRNHeaderObj['invDate'] = this.dateTimeObj.date;
-    updateGRNHeaderObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
-    updateGRNHeaderObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
-    updateGRNHeaderObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
-    updateGRNHeaderObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
-    updateGRNHeaderObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;
-    updateGRNHeaderObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;
-    updateGRNHeaderObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;
-    updateGRNHeaderObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
-    updateGRNHeaderObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
-    updateGRNHeaderObj['billDiscAmt'] = this.vFinalDisAmount2 || 0;
+    this.Savebtn=true;
+    let grnSaveObj = {};
+    grnSaveObj['grnDate'] = this.dateTimeObj.date;
+    grnSaveObj['grnTime'] = this.dateTimeObj.time;
+    grnSaveObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+    grnSaveObj['supplierID'] = this._GRNList.userFormGroup.get('SupplierId').value.SupplierId || this.SupplierId;
+    grnSaveObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || 0;
+    grnSaveObj['deliveryNo'] = 0;
+    grnSaveObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || 0;
+    grnSaveObj['cash_CreditType'] = this._GRNList.userFormGroup.get('PaymentType').value;
+    grnSaveObj['grnType'] = this._GRNList.userFormGroup.get('GRNType').value;
+    grnSaveObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
+    grnSaveObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
+    grnSaveObj['totalVATAmount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
+    grnSaveObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
+    grnSaveObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
+    grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
+    grnSaveObj['isVerified'] = false;
+    grnSaveObj['isClosed'] = false;
+    grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.id || 0;
+    grnSaveObj['invDate'] = this._GRNList.userFormGroup.get('DateOfInvoice').value.DateOfInvoice || '01/01/1900';
+    grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
+    grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
+    grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
+    grnSaveObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
+    grnSaveObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('CGSTAmount').value || 0;
+    grnSaveObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('SGSTAmount').value || 0;
+    grnSaveObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;//this._GRNList.userFormGroup.get('IGSTAmount').value || 0;
+    grnSaveObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
+    grnSaveObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
+    grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || 0;
+    grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
+    grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount2 || 0;
+    grnSaveObj['grnid'] = this.registerObj.GRNID;
 
     let SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
@@ -1482,7 +1456,7 @@ export class UpdateGRNComponent implements OnInit {
     delete_GRNDetailsobj["GRNId"] = this.registerObj.GRNID;
 
     let submitData = {
-      "updateGRNHeader": updateGRNHeaderObj,
+      //"updateGRNHeader": updateGRNHeaderObj,
       "delete_GRNDetails": delete_GRNDetailsobj,
       "grnDetailSave": SavegrnDetailObj,
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray,
@@ -1496,6 +1470,7 @@ export class UpdateGRNComponent implements OnInit {
         this.toastr.success('Record PO TO GRN Updated Successfully.', 'Updated !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
+        this.Savebtn=false;
         this._matDialog.closeAll();
         this.OnReset();
         this.viewGRNREPORTPdf(data)
@@ -1527,7 +1502,7 @@ export class UpdateGRNComponent implements OnInit {
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
-
+    this.Savebtn=true;
     let grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
@@ -1642,6 +1617,7 @@ export class UpdateGRNComponent implements OnInit {
         this.toastr.success('Record Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
+        this.Savebtn=false;
         this._matDialog.closeAll();
         this.OnReset();
         this.viewGRNREPORTPdf(response)
@@ -1669,6 +1645,7 @@ export class UpdateGRNComponent implements OnInit {
       });
       return;
     }
+    this.Savebtn=true;
     let updateGRNHeaderObj = {};
     updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
     updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
@@ -1789,6 +1766,7 @@ export class UpdateGRNComponent implements OnInit {
         this.toastr.success('Record Updated Successfully.', 'Updated !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
+        this.Savebtn=false;
         this._matDialog.closeAll();
         this.OnReset()
       }
