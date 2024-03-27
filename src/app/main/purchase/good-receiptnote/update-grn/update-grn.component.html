@@ -251,7 +251,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Total Amount</mat-label>
-                                        <input matInput [(ngModel)]="vTotalAmount" name="TotalAmount" type="number"
+                                        <input matInput [(ngModel)]="vTotalAmount" name="TotalAmount" type="text" OnlyNumber
                                             autocomplete="off" formControlName="TotalAmount" id="TotalAmount" readonly>
                                     </mat-form-field>
 
@@ -278,28 +278,28 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Dis Amount </mat-label>
-                                        <input matInput [(ngModel)]="vDisAmount" name="DisAmount" type="number" id="DiscAmt"
+                                        <input matInput [(ngModel)]="vDisAmount" name="DisAmount"  id="DiscAmt"
                                             OnlyNumber formControlName="DisAmount" (keyup)="calculateDiscAmount()"
-                                             (keydown)="onEnterDisc($event)"
+                                             (keydown)="onEnterDisc($event)" type="text" OnlyNumber
                                             [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>GST </mat-label>
-                                        <input matInput [(ngModel)]="vGST" name="GST" type="number"
+                                        <input matInput [(ngModel)]="vGST" name="GST" type="text" OnlyNumber
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                             formControlName="GST" id="GST" (keydown)="onEnterGST($event)" #gst readonly>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>GST Amount</mat-label>
-                                        <input matInput [(ngModel)]="vGSTAmount" required name="GSTAmount" type="number"
+                                        <input matInput [(ngModel)]="vGSTAmount" required name="GSTAmount" type="text" OnlyNumber
                                             formControlName="GSTAmount" id="GSTAmount" readonly>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Net Amount</mat-label>
-                                        <input matInput [(ngModel)]="vNetAmount" name="NetAmount" type="number"
+                                        <input matInput [(ngModel)]="vNetAmount" name="NetAmount" type="text" OnlyNumber
                                             formControlName="NetAmount" id="NetAmount" readonly>
                                     </mat-form-field>
                                 </div>
@@ -314,14 +314,14 @@
 
                                     <mat-form-field appearance="outline" fxFlex *ngIf="isDisc2Selected">
                                         <mat-label>Dis Amount2 </mat-label>
-                                        <input matInput [(ngModel)]="vDisAmount2" name="DisAmount2" type="number"
+                                        <input matInput [(ngModel)]="vDisAmount2" name="DisAmount2" type="text" OnlyNumber
                                             formControlName="DisAmount2" (keyup)="calculateDiscAmt()">
                                     </mat-form-field>
 
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>CGST </mat-label>
-                                        <input matInput [(ngModel)]="vCGST" name="CGST" type="number"
+                                        <input matInput [(ngModel)]="vCGST" name="CGST" type="text" OnlyNumber
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                             (keyup)=" calculateDiscperAmount()" formControlName="CGST" id="CGST"
                                             (keydown)="onEnterCGST($event)" #cgst readonly>
@@ -329,13 +329,13 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>CGST Amount</mat-label>
-                                        <input matInput [(ngModel)]="vCGSTAmount" name="CGSTAmount" type="number"
+                                        <input matInput [(ngModel)]="vCGSTAmount" name="CGSTAmount" type="text" OnlyNumber
                                             formControlName="CGSTAmount" id="CGSTAmount" readonly>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>SGST </mat-label>
-                                        <input matInput [(ngModel)]="vSGST" name="SGST" type="number"
+                                        <input matInput [(ngModel)]="vSGST" name="SGST" type="text" OnlyNumber
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                             (keyup)=" calculateDiscperAmount()" formControlName="SGST" id="SGST"
                                             (keydown)="onEnterSGST($event)" #sgst readonly>
@@ -343,13 +343,13 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>SGST Amount</mat-label>
-                                        <input matInput [(ngModel)]="vSGSTAmount" name="SGSTAmount" type="number"
+                                        <input matInput [(ngModel)]="vSGSTAmount" name="SGSTAmount"type="text" OnlyNumber
                                             formControlName="SGSTAmount" id="SGSTAmount" readonly>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>IGST</mat-label>
-                                        <input matInput [(ngModel)]="vIGST" name="IGST" type="number"
+                                        <input matInput [(ngModel)]="vIGST" name="IGST" type="text" OnlyNumber
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                             (keyup)=" calculateDiscperAmount()" formControlName="IGST" id="IGST"
                                             (keydown)="onEnterIGST($event)" #igst readonly>
@@ -357,7 +357,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>IGST Amount</mat-label>
-                                        <input matInput [(ngModel)]="vIGSTAmount" name="IGSTAmount" type="number"
+                                        <input matInput [(ngModel)]="vIGSTAmount" name="IGSTAmount" type="text" OnlyNumber
                                             formControlName="IGSTAmount" id="IGSTAmount" readonly>
                                     </mat-form-field>
                                     <div matTooltip="Select All Value to enable this button!!">

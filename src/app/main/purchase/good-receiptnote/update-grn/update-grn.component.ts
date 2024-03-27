@@ -255,7 +255,7 @@ export class UpdateGRNComponent implements OnInit {
   }
 
   calculateLastDay(inputDate: string) {
-    debugger
+   // debugger
     if (inputDate && inputDate.length === 6) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
@@ -506,7 +506,8 @@ export class UpdateGRNComponent implements OnInit {
     this._GRNList.userFormGroup.get('ItemName').setValue('');
     this.vNetAmount = 0;
     this.itemid.nativeElement.focus();
-    this.add = false
+    this.add = false;
+    this.vlastDay = '';
   }
 
   ItemReset() {
@@ -909,13 +910,13 @@ export class UpdateGRNComponent implements OnInit {
   calculateDiscper2Amt() {
 
     //disc 1
-    let disc2: any = 0;
-    disc2 = this.vDisc2;
+    let disc2 = this.vDisc2 || 0;
     let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
+    console.log(totalamt)
     //disc 2
     this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(disc2)) / 100).toFixed(2);
     let totalamt2 = (parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
-
+    console.log( this.vDisAmount2)
     //let discamt = this.vDisAmount + this.vDisAmount2 
     //GST cal
     this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
@@ -1041,8 +1042,8 @@ export class UpdateGRNComponent implements OnInit {
     this.vHSNCode = obj.HSNcode;
     this.vRate = '',
       this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
-    // this.vDisc =  " ";
-    this.vDisc2 = 0;
+     this.vDisc =  '';
+    this.vDisc2 = '';
     this.vDisAmount = 0;
     this.vDisAmount2 = 0;
     this.vNetAmount = this.vTotalAmount;
