@@ -219,7 +219,8 @@ LandedenableEditing(row: StockAdjList) {
 LandeddisableEditing(row: StockAdjList) {
   row.Landededitable = false;
 }
-OnSave(){
+
+OnSaveStockAdjustment(){
   if ((!this.dsStockAdjList.data.length)) {
     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
@@ -244,20 +245,8 @@ OnSave(){
   insertMRPStockadju['addedBy']= this.accountService.currentUserValue.user.id || 0;
   insertMRPStockadju['stockAdgId']= 0;
 
-  let batchAdjustment ={};
-  batchAdjustment['storeId']= this.accountService.currentUserValue.user.storeId || 0;
-  batchAdjustment['itemId']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
-  batchAdjustment['oldBatchNo']=  this.vUpdatedQty || 0;
-  batchAdjustment['oldExpDate']=  this.vUpdatedQty || 0;
-  batchAdjustment['newBatchNo']= this.accountService.currentUserValue.user.storeId || 0;
-  batchAdjustment['newExpDate']= this.vStockId || 0
-  batchAdjustment['addedBy']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
-  batchAdjustment['stkId']= this.vStockId || 0;
-
-
   let submitData ={
     'stockAdjustment':insertMRPStockadju,
-    'batchAdjustment':batchAdjustment,
   }
   console.log(submitData);
   this._StockAdjustment.StockAdjSave(submitData).subscribe(response => {
@@ -279,6 +268,52 @@ OnSave(){
   });
 }
 
+OnSaveBatchAdjustment(){
+  if ((!this.dsStockAdjList.data.length)) {
+    this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+    this.toastr.warning('Please enter a vQty', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+
+  let batchAdjustment ={};
+  batchAdjustment['storeId']= this.accountService.currentUserValue.user.storeId || 0;
+  batchAdjustment['itemId']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
+  batchAdjustment['oldBatchNo']=  this.vUpdatedQty || 0;
+  batchAdjustment['oldExpDate']=  this.vUpdatedQty || 0;
+  batchAdjustment['newBatchNo']= this.accountService.currentUserValue.user.storeId || 0;
+  batchAdjustment['newExpDate']= this.vStockId || 0
+  batchAdjustment['addedBy']= this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
+  batchAdjustment['stkId']= this.vStockId || 0;
+
+  let submitData ={
+    'batchAdjustment':batchAdjustment,
+  }
+  console.log(submitData);
+  this._StockAdjustment.BatchAdjSave(submitData).subscribe(response => {
+    if (response) {
+      this.toastr.success('Record Stock Adjustment Saved Successfully.', 'Saved !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+      this.OnReset();
+      this.getStockList();
+    } else {
+      this.toastr.error('Stock Adjustment Data not saved !, Please check error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }
+  }, error => {
+    this.toastr.error('Stock Adjustment Data not saved !, Please check API error..', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  });
+}
  OnReset(){
  // this._StockAdjustment.userFormGroup.reset();
 

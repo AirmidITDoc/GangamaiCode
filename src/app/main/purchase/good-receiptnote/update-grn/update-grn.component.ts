@@ -1454,45 +1454,14 @@ export class UpdateGRNComponent implements OnInit {
 
     let delete_GRNDetailsobj = {}
     delete_GRNDetailsobj["GRNId"] = this.registerObj.GRNID;
-    
-    let updateGRNHeaderObj = {};
-    updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
-    updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
-    updateGRNHeaderObj['grnTime'] = this.dateTimeObj.time;
-    updateGRNHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
-    updateGRNHeaderObj['supplierID'] = this._GRNList.userFormGroup.get('SupplierId').value.SupplierId || 0;
-    updateGRNHeaderObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || 0;
-    updateGRNHeaderObj['deliveryNo'] = 0;
-    updateGRNHeaderObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || 0;
-    updateGRNHeaderObj['cash_CreditType'] = this._GRNList.userFormGroup.get('PaymentType').value;
-    updateGRNHeaderObj['grnType'] = this._GRNList.userFormGroup.get('GRNType').value;
-    updateGRNHeaderObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
-    updateGRNHeaderObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
-    updateGRNHeaderObj['totalVATAmount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
-    updateGRNHeaderObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
-    updateGRNHeaderObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
-    updateGRNHeaderObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
-    updateGRNHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-      updateGRNHeaderObj['invDate'] = this.dateTimeObj.date;
-    updateGRNHeaderObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
-    updateGRNHeaderObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
-    updateGRNHeaderObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
-    updateGRNHeaderObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
-    updateGRNHeaderObj['totCGSTAmt'] = this.CGSTFinalAmount || 0;
-    updateGRNHeaderObj['totSGSTAmt'] = this.SGSTFinalAmount || 0;
-    updateGRNHeaderObj['totIGSTAmt'] = this.IGSTFinalAmount || 0;
-    updateGRNHeaderObj['tranProcessId'] = this._GRNList.userFormGroup.get('GSTType').value.ConstantId || 0;
-    updateGRNHeaderObj['tranProcessMode'] = this._GRNList.userFormGroup.get('GSTType').value.Name || '';
-    updateGRNHeaderObj['billDiscAmt'] = this.vFinalDisAmount2 || 0;
 
     let submitData = {
-      "grnSave": grnSaveObj,
+      "updateGRNHeader": updateGRNHeaderObj,
+      "delete_GRNDetails": delete_GRNDetailsobj,
       "grnDetailSave": SavegrnDetailObj,
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray,
       "update_PO_STATUS_AganistGRN": update_PO_STATUS_AganistGRN,
       "update_POHeader_Status_AganistGRN": update_POHeader_Status_AganistGRN,
-      "updateGRNHeader": updateGRNHeaderObj,
-      "delete_GRNDetails": delete_GRNDetailsobj,
     };
     console.log(submitData);
     this._GRNList.POtoGRNUpated(submitData).subscribe((data) =>{
