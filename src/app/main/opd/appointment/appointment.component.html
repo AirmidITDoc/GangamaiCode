@@ -431,7 +431,7 @@
                                                     [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                             </mat-table>
                                             <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
-                                                showFirstLastButtons [length]="resultsLength" (page)="getVisitList()">
+                                                showFirstLastButtons [length]="resultsLength" (page)="getVisitList1()">
                                             </mat-paginator>
                                             <div style="display: none;">
                                                 <div id="i-card" *ngIf="objICard">

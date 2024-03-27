@@ -1137,7 +1137,6 @@ export class AppointmentComponent implements OnInit {
       this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
         (Visit) => {
           this.dataSource.data = Visit["Table1"]??[] as VisitMaster[];
-
           console.log( this.dataSource.data )
           this.dataSource.sort = this.sort;
           this.resultsLength= Visit["Table"][0]["total_row"];
