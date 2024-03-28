@@ -24,9 +24,9 @@ export class StoreMasterService {
             StoreName: [""],
             IndentPrefix: [""],
             IndentNo: [""],
-            PurchasePrefix: [""], //[Validators.pattern("[a-zA-Z]+$")]],
+            PurchasePrefix: [""],  
             PurchaseNo: [""],
-            GrnPrefix: [""], //[Validators.pattern("[a-zA-Z]+$")]],
+            GrnPrefix: [""],  
             GrnNo: [""],
             GrnreturnNoPrefix: [""],
             GrnreturnNo: [""],
@@ -34,10 +34,9 @@ export class StoreMasterService {
             IssueToDeptNo: [""],
             ReturnFromDeptNoPrefix: [""],
             ReturnFromDeptNo: [""],
-            IsDeleted: [""],
+            IsDeleted: ["1"],
             UpdatedBy: [""],
             AddedByName: [""],
-            action: [""],
         });
     }
 
@@ -62,8 +61,7 @@ export class StoreMasterService {
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.post(
-            "Generic/ExecByQueryStatement?query=" + m_data,
-            {}
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
         );
     }
 

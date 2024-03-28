@@ -376,14 +376,6 @@
                                             (click)="onAdd()" [disabled]="!vRate" #addbutton id="btnAdd">
                                             <mat-icon>add</mat-icon>
                                         </button>
-
-                                        <!-- <button (click)="OnAddUpdate($event)"
-                                            class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
-                                            #addbutton>
-                                            <span class="btn-icon">
-                                                <mat-icon> add </mat-icon>
-                                            </span> -->
-                                        <!-- </button> -->
                                     </div>
                                 </div>
                             </form>
@@ -570,7 +562,7 @@
                                                     <input matInput [(ngModel)]="contact.DiscPercentage"
                                                         [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.DiscPercentage)"
-                                                        step="0.1" type="number" autocomplete="off">
+                                                        step="0.1" type="text" OnlyNumber autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -591,7 +583,7 @@
                                                     <input matInput [(ngModel)]="contact.DiscPer2"
                                                         [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.DiscPer2)"
-                                                        step="0.1" type="number" autocomplete="off">
+                                                        step="0.1" type="text" OnlyNumber autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -633,8 +625,8 @@
                                                 CGST</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput type="number" [(ngModel)]="contact.CGSTPer"
-                                                        step="0.1" type="number"
+                                                    <input matInput  [(ngModel)]="contact.CGSTPer"
+                                                        step="0.1" type="text" OnlyNumber
                                                         [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.CGSTPer)"
                                                         autocomplete="off">
@@ -655,8 +647,8 @@
                                                 SGST</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput type="number" [(ngModel)]="contact.SGSTPer"
-                                                        step="0.1" type="number"
+                                                    <input matInput [(ngModel)]="contact.SGSTPer"
+                                                        step="0.1" type="text" OnlyNumber
                                                         [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.SGSTPer)"
                                                         autocomplete="off">
@@ -677,8 +669,8 @@
                                                 IGST</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput type="number" [(ngModel)]="contact.IGSTPer"
-                                                        step="0.1" type="number"
+                                                    <input matInput [(ngModel)]="contact.IGSTPer"
+                                                        step="0.1" type="text" OnlyNumber
                                                         [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.IGSTPer)"
                                                         autocomplete="off">
@@ -833,11 +825,11 @@
                                             *matHeaderRowDef="displayedColumns2; sticky: true">
                                         </mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumns2; let i= index"
-                                            [ngClass]="{'highlight': selectedRowIndex == contact.SrNo}"
-                                            (click)="highlight(contact, i)"
+                                            [ngClass]="{'highlight': selectedRowIndex == i}"
+                                            (click)="highlight(i)"
                                             tabindex="999"
-                                            (keydown.arrowdown)="arrowDownEvent(contact, selectedRowIndex)"
-                                            (keydown.arrowup)="arrowUpEvent(contact, selectedRowIndex)"
+                                            (keydown.arrowdown)="arrowDownEvent()"
+                                            (keydown.arrowup)="arrowUpEvent()"
                                             class="contact min-width-4000" [@animate]="{value:'*',params:{y:'100%'}}"
                                             appHighlight></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"

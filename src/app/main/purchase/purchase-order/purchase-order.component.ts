@@ -214,7 +214,7 @@ export class PurchaseOrderComponent implements OnInit {
       // this.dsPurchaseOrder.data = data as PurchaseOrder[];
       this.dsPurchaseOrder.sort = this.sort;
       this.resultsLength= data["Table"][0]["total_row"];
-      this.dsPurchaseOrder.paginator = this.paginator;
+     // this.dsPurchaseOrder.paginator = this.paginator;
       this.sIsLoading = '';
     },
       error => {
