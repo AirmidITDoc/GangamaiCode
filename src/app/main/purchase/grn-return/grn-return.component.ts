@@ -62,7 +62,7 @@ export class GRNReturnComponent implements OnInit {
     "ItemName",
     "BatchNo",
     "BatchExpDate",
-     "ConversionFactor",
+    "ConversionFactor",
     "BalanceQty",
     "ReturnQty",
     "MRP",
@@ -74,8 +74,9 @@ export class GRNReturnComponent implements OnInit {
     "DiscPercentage",
     'DiscAmount',
     "NetAmount",
-    "TotalQty",
-    "stockid"
+   // "TotalQty",
+    "stockid",
+    'Action'
     // "IsVerified",
     // "IsVerifiedDatetime",
     // "IsVerifiedUserId"
@@ -163,6 +164,7 @@ export class GRNReturnComponent implements OnInit {
     }
     this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
       this.ToStoreList = data;
+      //console.log(this.ToStoreList)
       this._GRNReturnService.GRNReturnSearchFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
       this._GRNReturnService.NewGRNReturnFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
     });
@@ -204,7 +206,7 @@ export class GRNReturnComponent implements OnInit {
     console.log(Param);
     this._GRNReturnService.getGRNReturnList(Param).subscribe(data => {
       this.dsGRNReturnList.data = data as GRNReturnList[];
-      console.log(this.dsGRNReturnList.data);
+      console.log(this.dsGRNReturnList);
       this.dsGRNReturnList.sort = this.sort;
       this.dsGRNReturnList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -273,109 +275,27 @@ getNetamt(element) {
 }
 RQty:any;
 getCellCalculation(contact, ReturnQty) {
-
-  this.SelectedArray.push(contact);
-
-  console.log(this.SelectedArray)
-  
-  this.RQty = parseInt(ReturnQty);
-
-  
-  if ((parseInt(this.RQty)) < (parseInt(contact.ReceiveQty))) {
-    debugger
-    contact.ReturnQty = parseInt(contact.Qty);
-    // this.RQty = parseInt(contact.Qty);
-
-    let GrossAmt = (parseFloat(contact.MRP) * parseInt(this.RQty)).toFixed(2);
-    let vPurAmt = (parseFloat(contact.PurchaseRate) * parseInt(this.RQty)).toFixed(2);
-    let  vLandAmt = ((parseFloat(contact.landedRate) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-    let  VatAmount = ((parseFloat(contact.landedRate) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
-  
-  
-    let CGSTAmount = (((parseFloat(contact.MRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
-    let SGSTAmount = (((parseFloat(contact.MRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
-    let IGSTAmount = ((((parseFloat(contact.MRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
-    let TotalAmt = (parseFloat(contact.MRP) * parseInt(this.RQty)).toFixed(2);
-    
-    // this.TotalAmt = ((parseFloat(contact.UnitMRP) * parseInt(this.RQty)) - (parseFloat(this.DiscAmt))).toFixed(2);
-
-    
-      contact.SalesNo = contact.SalesNo,
-      contact.SalesDetId = contact.SalesDetId,
-      contact.OP_IP_ID = contact.OP_IP_ID,
-      contact.ItemName = contact.ItemName,
-      contact.BatchNo = contact.BatchNo,
-      contact.UnitMRP = contact.MRP,
-      contact.Qty = contact.Qty,
-      // contact.ReturnQty = contact.ReturnQty
-      contact.TotalAmount = TotalAmt,
-      contact.VatPer = contact.VatPer,
-      contact.VatAmount = VatAmount,
-      contact.DiscPer = 0,//contact.DiscPer,
-      contact.DiscAmount = 0,
-      contact.GrossAmount = GrossAmt,
-      contact.LandedPrice = contact.LandedPrice,
-      contact.TotalLandedAmount = vLandAmt,
-      contact.PurRateWf = contact.PurRateWf,
-      contact.PurTotAmt = vPurAmt,
-      contact.CGSTPer = contact.CGSTPer,
-      contact.CGSTAmount = CGSTAmount,
-      contact.SGSTPer = contact.SGSTPer,
-      contact.SGSTAmount = SGSTAmount,
-      contact.IGSTPer = contact.IGSTPer,
-      contact.IGSTAmount = IGSTAmount,
-      contact.IsPurRate = contact.IsPurRate,
-      contact.StkID = contact.StkID,
-      contact.conversionFactor=contact.ConversionFactor
-      contact.GrnDetID=contact.GRNDetID
-
+  if (parseInt(contact.ReturnQty) > parseInt(contact.BalanceQty)) {
+    this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    contact.ReturnQty = 0;
+    contact.ReturnQty = '';
+    contact.TotalAmount = 0;
+    contact.VatAmount = 0;
+    contact.DiscAmount = 0;
+    contact.NetAmount = 0;
   }
   else {
-    Swal.fire("Return Qty cannot be greater than Qty")
-
-    this.RQty = parseInt(ReturnQty);
-    // this.GrossAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
-    // this.DiscAmt = ((parseFloat(this.GrossAmt) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-    // this.VatAmount = ((parseFloat(contact.UnitMRP) * (parseFloat(contact.VatPer)) / 100) * parseInt(this.RQty)).toFixed(2);
-    // this.CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
-    // this.SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(this.RQty)).toFixed(2);
-    // this.IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(this.RQty)).toFixed(2);
-    //this.TotalAmt = (parseFloat(contact.UnitMRP) * parseInt(this.RQty)).toFixed(2);
-    
-    // this.TotalAmt = ((parseFloat(contact.UnitMRP) * parseInt(this.RQty)) - (parseFloat(this.DiscAmt))).toFixed(2);
-
-  
-      contact.SalesNo = contact.SalesNo,
-      contact.SalesDetId = contact.SalesDetId,
-      contact.OP_IP_ID = contact.OP_IP_ID,
-      contact.ItemName = contact.ItemName,
-      contact.BatchNo = contact.BatchNo,
-      contact.UnitMRP = contact.UnitMRP,
-      contact.Qty = contact.Qty,
-      contact.ReturnQty = this.RQty,
-      // contact.TotalAmount = this.TotalAmt,
-      // contact.VatPer = contact.VatPer,
-      // contact.VatAmount = this.VatAmount,
-      // contact.DiscPer = contact.DiscPer,
-      // contact.DiscAmount = this.DiscAmt,
-      // contact.GrossAmount = this.GrossAmt,
-      // contact.LandedPrice = contact.LandedPrice,
-      // contact.TotalLandedAmount = this.LandAmt,
-      // contact.PurRateWf = contact.PurRateWf,
-      // contact.PurTotAmt = this.PurAmt,
-      // contact.CGSTPer = contact.CGSTPer,
-      // contact.CGSTAmount = this.CGSTAmount,
-      // contact.SGSTPer = contact.SGSTPer,
-      // contact.SGSTAmount = this.SGSTAmount,
-      // contact.IGSTPer = contact.IGSTPer,
-      // contact.IGSTAmount = this.IGSTAmount,
-      contact.IsPurRate = contact.IsPurRate,
-      contact.StkID = contact.StkID
-    // this.selectedssaleDetailList.data = this.Itemselectedlist;
-
+    contact.TotalAmount = (parseFloat(contact.ReturnQty) * parseFloat(contact.LandedRate)).toFixed(2);
+    contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
+    contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
+    let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
+    contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount)).toFixed(2);
+   
   }
 }
-
+Savebtn:boolean=false;
 OnSave(){
   if ((!this.dsGrnItemList.data.length)) {
     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -389,10 +309,9 @@ OnSave(){
     });
     return;
   }
-  const tableData = this.dsGrnItemList.data;
-  const isDataAvailable = tableData.some((row) => row.ReturnQty === '');
-  if (isDataAvailable) {
- 
+  const isCheckReturnQty = this.dsGrnItemList.data.some((item) => item.ReturnQty === this._GRNReturnService.NewGRNReturnFrom.get('Qty').value);
+  if (!isCheckReturnQty) {
+  this.Savebtn = true;
   let grnReturnSave = {};
   grnReturnSave['grnId'] = this.vGRNID || 0;
   grnReturnSave['grnReturnDate'] = this.dateTimeObj.date;
@@ -406,7 +325,7 @@ OnSave(){
   grnReturnSave['totalOtherTaxAmount'] =0;
   grnReturnSave['totalOctroiAmount'] = 0;
   grnReturnSave['netAmount'] = this.vFinalNetAmount || 0;
-  grnReturnSave['cash_Credit'] = this._GRNReturnService.NewGRNReturnFrom.get('CashType').value;
+  grnReturnSave['cash_Credit'] = true//this._GRNReturnService.NewGRNReturnFrom.get('CashType').value;
   grnReturnSave['remark'] = this._GRNReturnService.NewGRNRetFinalFrom.get('Remark').value
   grnReturnSave['isVerified'] = true;
   grnReturnSave['isClosed'] = true;
@@ -478,6 +397,7 @@ OnSave(){
         toastClass: 'tostr-tost custom-toast-success',
       });
       this.OnReset();
+      this.Savebtn = true;
     } else {
       this.toastr.error('New GRN Return Data not saved !, Please check validation error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
@@ -490,7 +410,7 @@ OnSave(){
   });
 } 
 else {
-  this.toastr.warning('Data not available in the ReturnQty column. Cannot perform save operation.', 'Warning !', {
+  this.toastr.warning('Please enter ReturnQty.', 'Warning !', {
     toastClass: 'tostr-tost custom-toast-warning',
   });
 }
@@ -704,7 +624,7 @@ export class ItemNameList {
   EwayBillDate: Date;
   CurrentDate = new Date();
   Tranprocessmode: any;
-  Cash_CreditType: any;
+  Cash_CreditType: boolean;
   tranProcessMode: any;
   EwayBillNo: any;
   TotalQty: any;
@@ -812,6 +732,7 @@ export class ItemNameList {
       this.BalanceQty = ItemNameList.BalanceQty || 0;
       this.GRNDetID = ItemNameList.GRNDetID || 0; 
        this.ReturnQty = ItemNameList.ReturnQty || 0;
+       this.Cash_CreditType = ItemNameList.Cash_CreditType ;
     }
   }
 }

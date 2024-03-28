@@ -1,13 +1,14 @@
 .mat-tab-group {
     font-family: inherit;
     .mat-tab-header {
+        background-color: $gray-100;
         .mat-tab-label-container {
             .mat-tab-labels {
                 .mat-tab-label {
                     font-family: inherit;
                     height: 40px;
                     .mat-tab-label-content {
-                        @include font-size(12px);
+                        font-size: 1rem;
                         font-weight: bold;
                     }
                 }

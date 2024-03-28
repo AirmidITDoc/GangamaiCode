@@ -328,7 +328,7 @@ export class NewOPBillingComponent implements OnInit {
     if (this.dataSource.data.length > 0) {
       this.dataSource.data.forEach((element) => {
         if (obj.ServiceId == element.ServiceId) {
-          debugger
+          //debugger
           Swal.fire('Selected Item already added in the list ');
           // this.toastr.warning('Selected Item already added in the list', 'Warning !', {
           //   toastClass: 'tostr-tost custom-toast-warning',
@@ -509,7 +509,7 @@ export class NewOPBillingComponent implements OnInit {
 
     let InsertAdddetArr = [];
     this.dataSource.data.forEach((element) => {
-      debugger
+      //debugger
       let InsertAddChargesObj = {};
       InsertAddChargesObj['ChargeID'] = element.ServiceId,
         InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
@@ -587,7 +587,7 @@ export class NewOPBillingComponent implements OnInit {
         // InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value; //this.b_concessionamt;
         // InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
         // InsertBillUpdateBillNoObj['PaidAmt'] = 0; //this.BillingForm.get('FinalAmt').value;
-        // debugger
+        // //debugger
         // InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
         // InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
         //   InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
@@ -810,7 +810,7 @@ export class NewOPBillingComponent implements OnInit {
 
   onAddCharges() {
 
-    debugger
+    //debugger
     if ((this.serviceId == 0 || this.b_price == null || this.b_qty == "" || this.b_totalAmount ==0 )) {
       this.toastr.warning('Please select Item Detail', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -880,7 +880,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   onClearServiceAddList() {
-    debugger
+    //debugger
     this.registeredForm.get('SrvcName').reset();
     this.registeredForm.get('price').reset(0);
     this.registeredForm.get('qty').reset('1');
@@ -930,7 +930,7 @@ export class NewOPBillingComponent implements OnInit {
 
 
   calcDiscPersonTotal() {
-    debugger
+    //debugger
     if (this.b_concessionDiscPer > 0 || this.v_ChargeDiscPer > 0) {
       this.b_concessionamt = Math.round((this.b_TotalChargesAmount * parseInt(this.b_concessionDiscPer)) / 100);
 
@@ -1058,7 +1058,7 @@ export class NewOPBillingComponent implements OnInit {
   @ViewChild('Doctor') Doctor: MatSelect;
 
   onEnterservice(event): void {
-    debugger
+    //debugger
     if (event.which === 13) {
       if (this.isDoctor) {
 
@@ -1094,7 +1094,7 @@ export class NewOPBillingComponent implements OnInit {
 
 
   public onEnterdoctor(event): void {
-    debugger
+    //debugger
     if (event.which === 13) {
       this.disper.nativeElement.focus();
 
@@ -1116,7 +1116,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   public onEnternetAmount(event): void {
-    debugger
+    //debugger
     if (event.which === 13) {
     this.add = true;
       this.addbutton.nativeElement.focus();
@@ -1156,7 +1156,7 @@ export class NewOPBillingComponent implements OnInit {
 
   // Patient Search;
   getSearchList() {
-    debugger
+    //debugger
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }

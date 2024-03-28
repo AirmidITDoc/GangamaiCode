@@ -11,7 +11,8 @@
 
     .mat-header-row {
         .mat-header-cell {
-            @include font-size(14px);
+            // @include font-size(13px);
+            font-size: 1rem;
             color: inherit;
             white-space: nowrap;
             overflow: hidden;
@@ -30,7 +31,7 @@
     }
     .mat-row {
         .mat-cell {
-            @include font-size(13.5px);
+            @include font-size(13px);
             word-break: break-word;
             line-height: 20px;
             font-family: $font-primary;
@@ -69,7 +70,7 @@
     }
     .mat-footer-row {
         .mat-footer-cell {
-            @include font-size(13px);
+            @include font-size(14px);
         }
     }
     .mat-form-field {

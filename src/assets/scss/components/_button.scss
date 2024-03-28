@@ -6,7 +6,7 @@
     padding: 0.83rem 1.3rem;
     letter-spacing: 0.28px;
     cursor: pointer;
-    @include font-size(12px);
+    @include font-size(13px);
     border: 1px solid;
     &.btn-xxl {
         padding: 21px 40px;
@@ -34,6 +34,7 @@
         align-items: center;
         white-space: nowrap;
         gap: 4px;
+        justify-content: center;
         span {
             display: flex;
             align-items: center;

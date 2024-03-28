@@ -419,6 +419,7 @@
                         <div fxLayout="column" fxLayoutAlign="start none">
                             <form [formGroup]="_GRNReturnService.NewGRNReturnFrom">
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                    <input name="Qty" formControlName="Qty"  type="hidden">
 
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Store Name</mat-label>
@@ -505,16 +506,7 @@
                                                     <div class="qrcode-flex gap-4" fxLayout="row"
                                                         fxLayoutAlign="start center">
                                                         <span class="text-overflow"> {{contact.ItemName}}</span>
-
                                                     </div>
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="ConversionFactor">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Packing</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.ConversionFactor}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -526,7 +518,6 @@
                                                 </mat-cell>
                                             </ng-container>
 
-
                                             <ng-container matColumnDef="BatchExpDate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     ExpDate</mat-header-cell>
@@ -536,21 +527,21 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                           <ng-container matColumnDef="ReceiveQty">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        Rec_Qty</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.ReceiveQty}}
-                                                    </mat-cell>
-                                                </ng-container>
- 
-                                                  <ng-container matColumnDef="FreeQty">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        F_Qty</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.FreeQty}}
-                                                    </mat-cell>
-                                                </ng-container>
+                                            <ng-container matColumnDef="ConversionFactor">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    Packing</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.ConversionFactor}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="BalanceQty">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    Bal_Qty</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.BalanceQty}}
+                                                </mat-cell>
+                                            </ng-container>
 
                                             <ng-container matColumnDef="ReturnQty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -558,10 +549,9 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
-                                                        <input matInput [(ngModel)]="contact.ReturnQty" type="text"
-                                                            OnlyNumber
+                                                        <input matInput [(ngModel)]="contact.ReturnQty" type="text" OnlyNumber
                                                             (keyup)="getCellCalculation(contact,contact.ReturnQty)"
-                                                            #ReturnQty autocomplete="off">
+                                                            #ReturnQty  >
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -638,56 +628,13 @@
                                                 </mat-cell>
                                             </ng-container>
 
-<<<<<<< HEAD
-                                                <ng-container matColumnDef="stockid">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        stockid</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.stockid}}
-                                                    </mat-cell>
-                                                </ng-container>
-=======
-                                            <ng-container matColumnDef="TotalQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    T_Qty</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.TotalQty}}
-                                                </mat-cell>
-                                            </ng-container>
-
                                             <ng-container matColumnDef="stockid">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    StkId</mat-header-cell>
+                                                    stockid</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.StkID}}
                                                 </mat-cell>
-                                            </ng-container> -
->>>>>>> 7550bcef20c874682d5f7bc4230b520dc9406bdf
-
-                                            <!-- <ng-container matColumnDef="IsVerified">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    IsVerified</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.IsVerified}}
-                                                </mat-cell>
                                             </ng-container>
-
-                                            <ng-container matColumnDef="IsVerifiedDatetime">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    IsVerifiedDate</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.IsVerifiedDatetime | date:'dd/MM/YYYY'}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="IsVerifiedUserId">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    IsVerifiedUserId</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.IsVerifiedUserId}}
-                                                </mat-cell>
-                                            </ng-container> -->
-
 
                                             <ng-container matColumnDef="loading">
                                                 <mat-header-cell *matFooterCellDef colspan="10" style="display: none;">
@@ -763,7 +710,7 @@
 
 
                                     <div fxLayout="row" style="margin-left: 100px;">
-                                        <button class="btn btn-primary " (click)="OnSave()">Save</button>&nbsp;
+                                        <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>&nbsp;
                                         <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
                                     </div>
 

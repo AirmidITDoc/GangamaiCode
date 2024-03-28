@@ -123,7 +123,8 @@ $radio-size: 1.2rem;
                 }
             }
             .mat-radio-label-content {
-                @include font-size(11px);
+                @include font-size(13px);
+                // font-size: 0.9rem;
             }
             .mat-radio-container {
                 height: $radio-size;

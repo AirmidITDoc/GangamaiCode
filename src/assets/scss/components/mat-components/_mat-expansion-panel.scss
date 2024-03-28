@@ -1,5 +1,6 @@
 .mat-expansion-panel {
     .mat-expansion-panel-header {
+        font-family: inherit;
         .mat-expansion-panel-header-title {
             @include font-size(14px);
             font-weight: 600;

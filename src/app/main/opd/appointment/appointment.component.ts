@@ -2878,13 +2878,10 @@ export class AppointmentComponent implements OnInit {
       TariffId: contact.TariffId
     };
     this.advanceDataStored.storage = new SearchInforObj(xx);
-
     const dialogRef = this._matDialog.open(OPBillingComponent,
       {
-        maxWidth: "90%",
-
-        height: '695px !important',
-
+        maxWidth: '90%',
+        height: '80%',
       });
 
     dialogRef.afterClosed().subscribe(result => {
