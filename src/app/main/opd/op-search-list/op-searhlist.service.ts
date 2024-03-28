@@ -289,11 +289,11 @@ public getConcessionCombo()
   }
 
   public InsertOPBilling(employee) : Observable<any> {
-    return this._httpClient.post("OutPatient/OPBilling", employee)
+    return this._httpClient.post("OutPatient/OPBillWithPayment", employee)
   }
 
   public InsertOPBillingCredit(employee) : Observable<any> {
-    return this._httpClient.post("OutPatient/OPBillingCredit", employee)
+    return this._httpClient.post("OutPatient/OPBillingWithCredit", employee)
   }
   
   public InsertOPRefundBilling(employee) {

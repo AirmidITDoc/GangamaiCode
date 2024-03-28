@@ -836,6 +836,7 @@ export class ItemNameList {
   VerifiedDateTime:any;
   PurchaseID:any;
   SupplierName:any;
+  SrNo:number;
   /**
    * Constructor
    *
@@ -913,7 +914,7 @@ export class ItemNameList {
       this.VerifiedDateTime = ItemNameList.VerifiedDateTime || 0;
       this.ReceiveQty=ItemNameList.ReceiveQty || 0
       this.ConversionFactor=ItemNameList.ConversionFactor || 0
-
+      this.SrNo=ItemNameList.SrNo || 0
       
     }
   }

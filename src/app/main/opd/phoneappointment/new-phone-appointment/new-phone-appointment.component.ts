@@ -196,7 +196,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
   private filterDepartment() {
-    // debugger;
+    
     if (!this.DepartmentList) {
       return;
     }
@@ -258,7 +258,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
         this.DoctorList = data;
-        console.log(this.DoctorList);
+       
         // this.filteredDoctor.next(this.DoctorList.slice());
         this.optionsDoc = this.DoctorList.slice();
         this.filteredOptionsDoc = this.personalFormGroup.get('DoctorId').valueChanges.pipe(
@@ -299,8 +299,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
       "phoneAppointmentInsert": {
         "phoneAppId": 0,
         "RegNo":'',
-        "appDate": this.dateTimeObj.date,// this.personalFormGroup.get('AppointmentDate').date.value || "2021-03-31",
-        "appTime": this.dateTimeObj.time,//this.personalFormGroup.get('AppTime').value || "2021-03-31",
+        "appDate": this.dateTimeObj.date,
+        "appTime": this.dateTimeObj.time,
         "firstName": this.personalFormGroup.get('FirstName').value || '',
         "middleName": this.personalFormGroup.get('MiddleName').value || '',
         "lastName": this.personalFormGroup.get('LastName').value || '',
@@ -350,13 +350,13 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
+    
     this.dateTimeObj = dateTimeObj;
   }
 
   changec() {
     this.buttonColor = 'red';
-    // this.buttonColor: ThemePalette = 'primary';
+    
   }
 
 

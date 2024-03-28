@@ -322,45 +322,15 @@ export class NewOPBillingComponent implements OnInit {
 
   getSelectedObj(obj) {
 
-    console.log('obj==', obj);
-
-
     if (this.dataSource.data.length > 0) {
       this.dataSource.data.forEach((element) => {
         if (obj.ServiceId == element.ServiceId) {
-          //debugger
+        
           Swal.fire('Selected Item already added in the list ');
-          // this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-          //   toastClass: 'tostr-tost custom-toast-warning',
-
-
-          // });
+         
           this.onClearServiceAddList();
         }
-        // else {
-
-        //   this.SrvcName = obj.ServiceName;
-        //   this.b_price = obj.Price;
-        //   this.b_totalAmount = obj.Price;
-        //   this.b_netAmount = obj.Price;
-        //   this.serviceId = obj.ServiceId;
-        //   this.b_isPath = obj.IsPathology;
-        //   this.b_isRad = obj.IsRadiology;
-        //   this.b_CreditedtoDoctor = obj.CreditedtoDoctor;
-        //   if (obj.CreditedtoDoctor) {
-        //     this.isDoctor = true;
-        //     this.registeredForm.get('DoctorID').reset();
-        //     this.registeredForm.get('DoctorID').setValidators([Validators.required]);
-        //     this.registeredForm.get('DoctorID').enable();
-
-        //   } else {
-        //     this.isDoctor = false;
-        //     this.registeredForm.get('DoctorID').reset();
-        //     this.registeredForm.get('DoctorID').clearValidators();
-        //     this.registeredForm.get('DoctorID').updateValueAndValidity();
-        //     this.registeredForm.get('DoctorID').disable();
-        //   }
-        // }
+      
       });
 
       this.SrvcName = obj.ServiceName;
@@ -457,7 +427,7 @@ export class NewOPBillingComponent implements OnInit {
     let disamt = this.BillingForm.get('concessionAmt').value;
 
     if (this.b_concessionDiscPer > 0 || this.b_concessionamt > 0) {
-      this.FinalAmt = this.TotalnetPaybleAmt; //this.registeredForm.get('FinalAmt').value;
+      this.FinalAmt = this.TotalnetPaybleAmt; 
       this.netPaybleAmt1 = this.TotalnetPaybleAmt;
     }
     else {
@@ -473,30 +443,30 @@ export class NewOPBillingComponent implements OnInit {
 
     let InsertBillUpdateBillNoObj = {};
     InsertBillUpdateBillNoObj['BillNo'] = 0;
-    InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId,//this.vOPIPId;
-      InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value; //this.totalAmtOfNetAmt;
-    InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value; //this.b_concessionamt;
+    InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
+    InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value;
+    InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value;
     InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['PaidAmt'] = 0; //this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
     InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
+    InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
     InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-      InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-      InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId; //this.BillingForm.get('ConcessionId').value.ConcessionId || 0;
+    InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
+    InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+    InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId; 
     InsertBillUpdateBillNoObj['IsSettled'] = 0;
     InsertBillUpdateBillNoObj['IsPrinted'] = 0;
     InsertBillUpdateBillNoObj['IsFree'] = 0;
     InsertBillUpdateBillNoObj['CompanyId'] = 0;
     InsertBillUpdateBillNoObj['TariffId'] = this.vTariffId || 0;
     InsertBillUpdateBillNoObj['UnitId'] = 1,//this.selectedAdvanceObj.UnitId || 0;
-      InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
+    InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
     InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
     InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
     InsertBillUpdateBillNoObj['TaxPer'] = 0;
     InsertBillUpdateBillNoObj['TaxAmount'] = 0;
-    InsertBillUpdateBillNoObj['DiscComments'] = '',// this.BillingForm.get('CashCounterId').value.CashCounterId || 0;
+    InsertBillUpdateBillNoObj['DiscComments'] = '',
       InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
 
     let Billdetsarr = [];
@@ -509,7 +479,7 @@ export class NewOPBillingComponent implements OnInit {
 
     let InsertAdddetArr = [];
     this.dataSource.data.forEach((element) => {
-      //debugger
+      
       let InsertAddChargesObj = {};
       InsertAddChargesObj['ChargeID'] = element.ServiceId,
         InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
@@ -737,6 +707,11 @@ export class NewOPBillingComponent implements OnInit {
         }
       });
     } else {
+
+      InsertBillUpdateBillNoObj['PaidAmt'] =  this.BillingForm.get('FinalAmt').value || 0;
+
+
+
       let Paymentobj = {};
       Paymentobj['BillNo'] = 0;
       Paymentobj['ReceiptNo'] = "";
@@ -790,8 +765,7 @@ export class NewOPBillingComponent implements OnInit {
             if (result.isConfirmed) {
               let m = response;
               this.viewgetBillReportPdf(response);
-              // this.getPrint(m);
-              // this._matDialog.closeAll();
+            
             }
           });
         } else {
@@ -810,7 +784,6 @@ export class NewOPBillingComponent implements OnInit {
 
   onAddCharges() {
 
-    //debugger
     if ((this.serviceId == 0 || this.b_price == null || this.b_qty == "" || this.b_totalAmount ==0 )) {
       this.toastr.warning('Please select Item Detail', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -853,7 +826,7 @@ export class NewOPBillingComponent implements OnInit {
         });
       this.isLoading = '';
       this.dataSource.data = this.chargeslist;
-      console.log( this.dataSource.data )
+      
       this.changeDetectorRefs.detectChanges();
 
       this.onClearServiceAddList();
@@ -880,7 +853,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   onClearServiceAddList() {
-    //debugger
+    
     this.registeredForm.get('SrvcName').reset();
     this.registeredForm.get('price').reset(0);
     this.registeredForm.get('qty').reset('1');
@@ -930,13 +903,12 @@ export class NewOPBillingComponent implements OnInit {
 
 
   calcDiscPersonTotal() {
-    //debugger
+    
     if (this.b_concessionDiscPer > 0 || this.v_ChargeDiscPer > 0) {
       this.b_concessionamt = Math.round((this.b_TotalChargesAmount * parseInt(this.b_concessionDiscPer)) / 100);
 
       this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
-      console.log(this.TotalnetPaybleAmt);
-
+      
       this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt);
       this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
 
@@ -1033,7 +1005,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   showNewPaymnet() {
-    console.log(this.TotalnetPaybleAmt);
+    
     const dialogRef1 = this._matDialog.open(OpPaymentNewComponent,
       {
         maxWidth: "85vw",
@@ -1052,13 +1024,13 @@ export class NewOPBillingComponent implements OnInit {
   @ViewChild('discamt') discamt: ElementRef;
   @ViewChild('doctorname') doctorname: ElementRef;
   @ViewChild('addbutton') addbutton: ElementRef;
-  // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  
   @ViewChild('netamt') netamt: ElementRef;
 
   @ViewChild('Doctor') Doctor: MatSelect;
 
   onEnterservice(event): void {
-    //debugger
+    
     if (event.which === 13) {
       if (this.isDoctor) {
 
@@ -1094,7 +1066,7 @@ export class NewOPBillingComponent implements OnInit {
 
 
   public onEnterdoctor(event): void {
-    //debugger
+    
     if (event.which === 13) {
       this.disper.nativeElement.focus();
 
@@ -1116,7 +1088,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   public onEnternetAmount(event): void {
-    //debugger
+    
     if (event.which === 13) {
     this.add = true;
       this.addbutton.nativeElement.focus();
@@ -1156,14 +1128,14 @@ export class NewOPBillingComponent implements OnInit {
 
   // Patient Search;
   getSearchList() {
-    //debugger
+    
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
-    debugger
+    
     this._oPSearhlistService.getPatientVisitedListSearch(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
-      console.log(data)
+      
       if (this.PatientListfilteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {
@@ -1175,9 +1147,8 @@ export class NewOPBillingComponent implements OnInit {
 
   getSelectedObj1(obj) {
     this.dataSource.data = [];
-    console.log(obj)
+    
     this.registerObj = obj;
-    // this.PatientName = obj.FirstName + " " + obj.PatientName;
     this.PatientName = obj.FirstName + " " + obj.LastName;
     this.RegId = obj.RegId;
     this.City = obj.City;
