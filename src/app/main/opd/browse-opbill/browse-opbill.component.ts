@@ -139,8 +139,8 @@ PatientHeaderObj['BillId'] = contact.BillNo;
             CreditPaymentobj['paymentId'] = 0;
             CreditPaymentobj['BillNo'] = contact.BillNo;
             CreditPaymentobj['ReceiptNo'] = '';
-            CreditPaymentobj['PaymentDate'] = this.currentDate || '01/01/1900';
-            CreditPaymentobj['PaymentTime'] = this.currentDate || '01/01/1900';
+            CreditPaymentobj['PaymentDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900';//this.currentDate || '01/01/1900';
+            CreditPaymentobj['PaymentTime'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy HH:mm') || '01/01/1900';;
             CreditPaymentobj['CashPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.CashPayAmount) || 0;
             CreditPaymentobj['ChequePayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.ChequePayAmount) || 0;
             CreditPaymentobj['ChequeNo'] = result.submitDataPay.ipPaymentInsert.ChequeNo || '';
@@ -179,13 +179,14 @@ PatientHeaderObj['BillId'] = contact.BillNo;
               "updateBill": updateBill,
               "paymentCreditUpdate": ipPaymentInsert
             };
-
+            console.log(Data)
             this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
               if (response) {
                 Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
                   if (result.isConfirmed) {
-                    // let m = response;
-                    // this.getpaymentPrint(response);
+                    
+                    //Return true so ant print
+                    this.viewgetOPPayemntPdf(response)
                     this._matDialog.closeAll();
                   }
                 });
@@ -203,6 +204,37 @@ PatientHeaderObj['BillId'] = contact.BillNo;
         });
          
     }
+
+
+
+    
+viewgetOPPayemntPdf(PaymentId) {
+  
+  setTimeout(() => {
+  
+  this._BrowseOPDBillsService.getOpPaymentview(
+    PaymentId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Op Payment Receipt Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = '';
+      });
+     
+  });
+ 
+  },100);
+}
+
 
 // Billpayment(contact){
 //   debugger
@@ -426,8 +458,7 @@ createCDKPortal(data, windowInstance) {
     const injector = this.createInjector(data);
     let componentInstance;
     componentInstance = this.attachHeaderContainer(outlet, injector);
-    // console.log(windowInstance.document)
-    let template = windowInstance.document.createElement('div'); // is a node
+   let template = windowInstance.document.createElement('div'); // is a node
     template.innerHTML = this.printTemplate;
     windowInstance.document.body.appendChild(template);
   }

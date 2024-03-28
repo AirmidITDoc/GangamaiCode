@@ -148,10 +148,9 @@ ngOnChanges(changes: SimpleChanges) {
 
 
 viewgetOPPayemntPdf(row) {
-  this.sIsLoading = 'loading-data';
+ 
   setTimeout(() => {
-    
-  //  this.AdList=true;
+
   this._BrowseOpdPaymentReceiptService.getOpPaymentview(
     row.PaymentId
   ).subscribe(res => {
