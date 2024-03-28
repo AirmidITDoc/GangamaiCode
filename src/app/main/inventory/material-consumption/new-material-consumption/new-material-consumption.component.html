@@ -23,8 +23,6 @@
 
                 <form [formGroup]="_MaterialConsumptionService.userFormGroup">
                     <div fxLayout="column" fxLayoutAlign="start none">
-                        <!-- <mat-card
-                            style="background-color: white; padding: 5px,5px,5px,5px; margin-bottom:10px;"> -->
 
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                             <mat-form-field appearance="outline" fxFlex="25%" style="margin-right: 50px;">
@@ -82,29 +80,30 @@
                                     (keydown)="onEnterUsedQty($event)" required onlyNumber (keyup)="QtyCondition()">
                             </mat-form-field>
 
-                            <!-- <mat-form-field appearance="outline" fxFlex="8%">
-                                    <mat-label>Rate</mat-label>
-                                    <input name="Rate" formControlName="Rate" [(ngModel)]="vRate" matInput>
-                                </mat-form-field>  -->
-
                             <mat-form-field appearance="outline" fxFlex="18%">
                                 <mat-label>Remark</mat-label>
                                 <input name="Remark" formControlName="Remark" [(ngModel)]="vRemark" matInput
                                     (keydown)="onEnterRemark($event)" #remark>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex="10%">
+                            <!-- <mat-form-field appearance="outline" fxFlex="10%">
                                 <mat-label>Date</mat-label>
                                 <input name="Date" matInput [matDatepicker]="picker" required [(ngModel)]="vConsumDate"
                                     placeholder="Please select Date"  (keydown)="onEnterdate($event)"
                                     formControlName="Date" #date>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>&nbsp;&nbsp;
+                            </mat-form-field>&nbsp;&nbsp; -->
 
-                            <!-- <app-common-date [screenFrom]="screenFromString"
-                                    (dateTimeEventEmitter)="getDateTime($event)">
-                                </app-common-date>&nbsp;&nbsp;&nbsp;&nbsp; -->
+                            <mat-form-field appearance="outline">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate formControlName="start" placeholder="Start date" (keydown)="onEnterdate($event)" #date>
+                                    <input matEndDate formControlName="end" placeholder="End date" >
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
 
                            
                             <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
@@ -115,8 +114,8 @@
                             </div>
 
                         </div>
-                        <!-- </mat-card> -->
                     </div>
+                    </form>
 
                     <mat-table #table matSort [dataSource]="dsNewmaterialList" [@animateStagger]="{value:'50'}"
                         style="overflow:auto;">
@@ -161,11 +160,27 @@
                             </mat-cell>
                         </ng-container>
 
-                        <ng-container matColumnDef="Rate">
+                        <ng-container matColumnDef="LandedRate">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                Rate </mat-header-cell>
+                                LandedRate </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                {{contact.Rate}}
+                                {{contact.LandedRate | number:'1.2-2'}}
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="PurchaseRate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                PurchaseRate </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{contact.PurchaseRate | number:'1.2-2'}}
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="UnitMRP">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                UnitMRP </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{contact.UnitMRP | number:'1.2-2'}}
                             </mat-cell>
                         </ng-container>
 
@@ -173,7 +188,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                 MRPTotalAmt </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                {{contact.MRPTotalAmt}}
+                                {{contact.MRPTotalAmt | number:'1.2-2'}}
                             </mat-cell>
                         </ng-container>
 
@@ -181,7 +196,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                 LandedTotalAmt </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                {{contact.LandedTotalAmt}}
+                                {{contact.LandedTotalAmt | number:'1.2-2'}}
                             </mat-cell>
                         </ng-container>
 
@@ -189,7 +204,23 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                 PurTotalAmt </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                {{contact.PurTotalAmt}}
+                                {{contact.PurTotalAmt | number:'1.2-2'}}
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="StartDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                StartDate </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{contact.StartDate}}
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="EndDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                EndDate </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{contact.EndDate}}
                             </mat-cell>
                         </ng-container>
 
@@ -244,14 +275,43 @@
                     <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
                     </mat-paginator>
 
-                    <div matTooltip="Select All Value to enable this button!!">
-                        <button class="next-btn" style="width: 80px;border-radius: 16px;margin-left: 1350px;
-                            margin-top: 10px;" (click)="OnSave()">Save</button>
-                        <button class="footer-btn" style="width: 80px;border-radius: 16px;margin-top: 10px;"
-                            (click)="OnReset()">Reset</button>&nbsp;&nbsp;
+                   <form [formGroup]="_MaterialConsumptionService.FinalMaterialForm">
+                    <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start">
+                        <mat-form-field appearance="outline" fxFlex="20%">
+                            <mat-label>Remark</mat-label>
+                            <input matInput placeholder="Remark"
+                                formControlName="Remark" #Remark  >
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="10%">
+                            <mat-label>MRPTotalAmount</mat-label>
+                            <input matInput placeholder="TotalAmount" [(ngModel)]="vMRPTotalAmount"
+                                formControlName="MRPTotalAmount">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="10%">
+                            <mat-label>PurTotalAmount</mat-label>
+                            <input matInput placeholder="PurTotalAmount" [(ngModel)]="vPurTotalAmount"
+                                formControlName="PurTotalAmount">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="10%">
+                            <mat-label>LandedTotalAmount</mat-label>
+                            <input matInput placeholder="LandedTotalAmount" [(ngModel)]="vLandedTotalAmount"
+                                formControlName="LandedTotalAmount">
+                        </mat-form-field>&nbsp;&nbsp;
+
+                        <span class="net-amt-label"
+                        style="width:150px;font-weight: bold;color:blue;padding: 10px;">
+                        Total Amount :</span>&nbsp;<span class="net-amt-value"
+                        style="margin-right: 10px;font-weight: bold;width: 150px;padding: 10px;">{{getTotalamt(dsNewmaterialList.data)
+                        | currency:'INR' }}</span>&nbsp;
+
+                        <div class="sales-footer-buttons gap-8">
+                            <button class="btn btn-primary" (click)="OnSave()" [disabled]="Savebtn">Save</button>&nbsp;
+                            <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                        </div>
                     </div>
-
-
                 </form>
             </div>
         </div>

@@ -84,9 +84,9 @@ export class MaterialConsumptionComponent implements OnInit {
   getMaterialConList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "ToStoreId":10009 ,//this._loggedService.currentUserValue.user.storeId || 0,
-       "From_Dt":"2023-9-29 00:00:00.000" ,// this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       "To_Dt": "2024-03-09 13:50:53.557" //this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "ToStoreId":this._loggedService.currentUserValue.user.storeId || 0,
+       "From_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+       "To_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     }
     console.log(vdata);
       this._MaterialConsumptionService.getMaterialConList(vdata).subscribe(data => {
