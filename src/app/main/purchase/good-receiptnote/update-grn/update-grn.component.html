@@ -833,11 +833,11 @@
                                             *matHeaderRowDef="displayedColumns2; sticky: true">
                                         </mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumns2; let i= index"
-                                            [ngClass]="{'highlight': selectedRowIndex == contact.SrNo}"
-                                            (click)="highlight(contact, i)"
+                                            [ngClass]="{'highlight': selectedRowIndex == i}"
+                                            (click)="highlight(i)"
                                             tabindex="999"
-                                            (keydown.arrowdown)="arrowDownEvent(contact, selectedRowIndex)"
-                                            (keydown.arrowup)="arrowUpEvent(contact, selectedRowIndex)"
+                                            (keydown.arrowdown)="arrowDownEvent()"
+                                            (keydown.arrowup)="arrowUpEvent()"
                                             class="contact min-width-4000" [@animate]="{value:'*',params:{y:'100%'}}"
                                             appHighlight></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"

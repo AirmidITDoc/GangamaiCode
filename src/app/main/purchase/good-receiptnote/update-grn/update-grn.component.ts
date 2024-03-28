@@ -412,19 +412,15 @@ export class UpdateGRNComponent implements OnInit {
       });
   }
   selectedRowIndex: any;
-  arrowUpEvent(contact: object, index: number) {
-    var nextrow = this.dsItemNameList[index - 1];
-    this.highlight(nextrow);
+  arrowUpEvent() {
+    this.selectedRowIndex--;
   }
 
-  arrowDownEvent(contact: object, index: number) {
-    var nextrow = this.dsItemNameList[index + 1];
-    this.highlight(nextrow);
-    console.log(index);
+  arrowDownEvent() {
+    this.selectedRowIndex++;
   }
   highlight(contact: any) {
-    this.selectedRowIndex = contact.SrNo;
-    console.log(contact);
+    this.selectedRowIndex = contact;
   }
   onAdd() {
 
