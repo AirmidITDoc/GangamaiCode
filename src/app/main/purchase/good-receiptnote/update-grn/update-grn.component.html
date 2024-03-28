@@ -181,7 +181,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>UOM</mat-label>
                                         <input matInput [(ngModel)]="vUOM" name="UOM" #Uom
-                                            (keyup.enter)="onEnter('ConversionFactor')" 
+                                            (keyup.enter)="setFocus('ConversionFactor')" 
                                              formControlName="UOM" readonly>
                                     </mat-form-field>
 
@@ -189,7 +189,7 @@
                                         <mat-label>Packing</mat-label>
                                         <input matInput [(ngModel)]="vConversionFactor" name="ConversionFactor"
                                             formControlName="ConversionFactor" id="ConversionFactor" #conversionfactor
-                                            (keyup.enter)="onEnter('BatchNo')" (keyup)="calculateTotalamt()"
+                                            (keyup.enter)="setFocus('BatchNo')" (keyup)="calculateTotalamt()"
                                             autocomplete="off" #conversionfactor
                                             [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>
@@ -197,7 +197,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Batch No</mat-label>
                                         <input matInput [(ngModel)]="vBatchNo" name="BatchNo" formControlName="BatchNo"
-                                            id="BatchNo" #batchno (keyup.enter)="onEnter('ExpDatess')"
+                                            id="BatchNo" #batchno (keyup.enter)="setFocus('ExpDatess')"
                                             autocomplete="off" required [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>
 
@@ -214,14 +214,14 @@
                                         <mat-label>Qty</mat-label>
                                         <input matInput [(ngModel)]="vQty" name="Qty" required
                                             (keyup)="calculateTotalamt()" formControlName="Qty" type="text" OnlyNumber
-                                            id="Qty" autocomplete="off" (keyup.enter)="onEnter('FreeQty')" #qty
+                                            id="Qty" autocomplete="off" (keyup.enter)="setFocus('FreeQty')" #qty
                                             [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Free Qty </mat-label>
                                         <input matInput [(ngModel)]="vFreeQty" name="FreeQty" type="text" OnlyNumber
-                                            formControlName="FreeQty" id="FreeQty" (keyup.enter)="onEnter('MRP')"
+                                            formControlName="FreeQty" id="FreeQty" (keyup.enter)="setFocus('MRP')"
                                             autocomplete="off" #freeqty [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>
                                     <!-- (keydown)="onEnterMRP($event)" -->
@@ -229,14 +229,14 @@
                                         <mat-label>MRP</mat-label>
                                         <input matInput [(ngModel)]="vMRP" name="MRP" type="text" OnlyNumber
                                             formControlName="MRP" id="MRP" #mrp
-                                            (keyup.enter)="onEnter('Rate')"
+                                            (keyup.enter)="setFocus('Rate')"
                                             autocomplete="off" required>
                                     </mat-form-field>
                                     <!-- (keydown)="onEnterRate($event)" -->
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Rate</mat-label>
                                         <input matInput [(ngModel)]="vRate" name="Rate" type="text" OnlyNumber
-                                            formControlName="Rate" id="Rate"  (keyup.enter)="onEnter('Disc')"
+                                            formControlName="Rate" id="Rate"  (keyup.enter)="setFocus('Disc')"
                                             (keyup)="OnchekPurchaserateValidation()" #rate required>
                                     </mat-form-field>
 
@@ -260,14 +260,14 @@
                                         <mat-label>Disc1 %</mat-label>
                                         <input matInput [(ngModel)]="vDisc" name="Disc" autocomplete="off"
                                             (keyup)="calculateDiscperAmount()" formControlName="Disc" id="Disc"
-                                            (keyup.enter)="onEnter('DiscAmt')"
+                                            (keyup.enter)="setFocus('DiscAmt')"
                                             #disc required>
                                     </mat-form-field>
 
 
 
 
-                                    <!-- (keyup.enter)="onEnter('btnAdd')"  [readonly]="!(vItemName&&vItemName.ItemName)"
+                                    <!-- (keyup.enter)="setFocus('btnAdd')"  [readonly]="!(vItemName&&vItemName.ItemName)"
                                          <mat-form-field appearance="outline" fxFlex="5%">
                                         <mat-label>Disc %</mat-label>
                                         <input matInput placeholder="Placeholder" formControlName="Disc" required
@@ -488,11 +488,13 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                >Qty
                                             </mat-header-cell>
-                                            <mat-cell   *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell   *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.ReceiveQty" type="text" OnlyNumber
+                                                    <input matInput [(ngModel)]="contact.ReceiveQty" type="text" OnlyNumber [id]="'Qty_'+index"
                                                         (keyup)="getCellCalculation(contact,contact.ReceiveQty)"
                                                         (keypress)="keyPressAlphanumeric($event)"
+                                                        (keydown.arrowdown)="setFocus('Qty_'+(index+1))"
+                                                        (keydown.arrowup)="setFocus('Qty_'+(index-1))"
                                                         [disabled]="contact.IsVerifiedUserId==1">
                                                 </mat-form-field>
                                             </mat-cell>
@@ -501,12 +503,14 @@
                                         <ng-container matColumnDef="FreeQty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 FreeQty</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                            <mat-cell *matCellDef="let contact;let index = index" fxShow.gt-sm
                                                 [(ngModel)]="contact.FreeQty">
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.FreeQty" type="text" OnlyNumber
+                                                    <input matInput [(ngModel)]="contact.FreeQty" type="text" OnlyNumber [id]="'FreeQty_'+index"
                                                         (keyup)="getCellCalculation(contact,contact.FreeQty)"
                                                         (keypress)="keyPressAlphanumeric($event)"
+                                                        (keydown.arrowdown)="setFocus('FreeQty_'+(index+1))"
+                                                        (keydown.arrowup)="setFocus('FreeQty_'+(index-1))"
                                                         [disabled]="contact.IsVerifiedUserId==1">
                                                 </mat-form-field>
                                                 <!-- {{contact.FreeQty}} -->
@@ -536,12 +540,15 @@
                                         <ng-container matColumnDef="Rate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Rate</mat-header-cell>
-                                            <mat-cell   *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell   *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1"
+                                                    <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1" [id]="'Rate_'+index"
                                                         type="text" autocomplete="off" OnlyNumber
                                                         [disabled]="contact.IsVerifiedUserId==1"
-                                                        (keyup)="getCellCalculation(contact,contact.Rate)">
+                                                        (keyup)="getCellCalculation(contact,contact.Rate)"
+                                                        (keydown.arrowdown)="setFocus('Rate_'+(index+1))"
+                                                        (keydown.arrowup)="setFocus('Rate_'+(index-1))"
+                                                        >
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -557,11 +564,13 @@
                                         <ng-container matColumnDef="Disc">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Disc%</mat-header-cell>
-                                            <mat-cell   *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell   *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.DiscPercentage"
+                                                    <input matInput [(ngModel)]="contact.DiscPercentage" [id]="'DiscPer_'+index"
                                                         [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.DiscPercentage)"
+                                                        (keydown.arrowdown)="setFocus('DiscPer_'+(index+1))"
+                                                        (keydown.arrowup)="setFocus('DiscPer_'+(index-1))"
                                                         step="0.1" type="text" OnlyNumber autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
@@ -578,12 +587,14 @@
                                         <ng-container matColumnDef="Disc2">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Disc2%</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.DiscPer2"
+                                                    <input matInput [(ngModel)]="contact.DiscPer2" [id]="'DiscPer2_'+index"
                                                         [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.DiscPer2)"
-                                                        step="0.1" type="text" OnlyNumber autocomplete="off">
+                                                        step="0.1" type="text" OnlyNumber autocomplete="off"
+                                                        (keydown.arrowdown)="setFocus('DiscPer2_'+(index+1))"
+                                                        (keydown.arrowup)="setFocus('DiscPer2_'+(index-1))">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -623,12 +634,14 @@
                                         <ng-container matColumnDef="CGST">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 CGST</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput  [(ngModel)]="contact.CGSTPer"
+                                                    <input matInput  [(ngModel)]="contact.CGSTPer" [id]="'CGSTPer_'+index"
                                                         step="0.1" type="text" OnlyNumber
                                                         [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.CGSTPer)"
+                                                        (keydown.arrowdown)="setFocus('CGSTPer_'+(index+1))"
+                                                        (keydown.arrowup)="setFocus('CGSTPer_'+(index-1))"
                                                         autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
@@ -645,12 +658,14 @@
                                         <ng-container matColumnDef="SGST">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 SGST</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.SGSTPer"
+                                                    <input matInput [(ngModel)]="contact.SGSTPer" [id]="'SGSTPer_'+index"
                                                         step="0.1" type="text" OnlyNumber
                                                         [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.SGSTPer)"
+                                                        (keydown.arrowdown)="setFocus('SGSTPer_'+(index+1))"
+                                                        (keydown.arrowup)="setFocus('SGSTPer_'+(index-1))"
                                                         autocomplete="off">
                                                 </mat-form-field>
                                             </mat-cell>
@@ -667,13 +682,15 @@
                                         <ng-container matColumnDef="IGST">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 IGST</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.IGSTPer"
+                                                    <input matInput [(ngModel)]="contact.IGSTPer" [id]="'IGSTPer_'+index"
                                                         step="0.1" type="text" OnlyNumber
                                                         [disabled]="contact.IsVerifiedUserId==1"
                                                         (keyup)="getCellCalculation(contact,contact.IGSTPer)"
-                                                        autocomplete="off">
+                                                        autocomplete="off"
+                                                        (keydown.arrowdown)="setFocus('IGSTPer_'+(index+1))"
+                                                        (keydown.arrowup)="setFocus('IGSTPer_'+(index-1))">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>

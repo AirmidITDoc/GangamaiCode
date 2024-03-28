@@ -268,7 +268,7 @@ export class UpdateGRNComponent implements OnInit {
         // console.log(this.vlastDay)
 
         this._GRNList.userFormGroup.get('ExpDatess').setValue(this.vlastDay)
-        this.onEnter('Qty');
+        this.setFocus('Qty');
       } else {
         this.vlastDay = 'Invalid month';
       }
@@ -1887,7 +1887,7 @@ export class UpdateGRNComponent implements OnInit {
       this.batchno.nativeElement.focus();
     }
   }
-  public onEnter(nextElementId): void {
+  public setFocus(nextElementId): void {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
   }
   public onEnterConversionFactor(event, t): void {
