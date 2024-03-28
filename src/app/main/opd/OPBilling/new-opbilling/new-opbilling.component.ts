@@ -511,7 +511,7 @@ export class NewOPBillingComponent implements OnInit {
     this.dataSource.data.forEach((element) => {
       debugger
       let InsertAddChargesObj = {};
-      InsertAddChargesObj['ChargeID'] = 0,
+      InsertAddChargesObj['ChargeID'] = element.ServiceId,
         InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
         InsertAddChargesObj['opD_IPD_Type'] = 0,
         InsertAddChargesObj['opD_IPD_Id'] = this.vOPIPId,

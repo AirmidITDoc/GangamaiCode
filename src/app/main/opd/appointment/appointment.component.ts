@@ -1634,6 +1634,7 @@ export class AppointmentComponent implements OnInit {
             Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
 
             });
+            this.viewgetPatientAppointmentReportPdf(response);
           }
         } else {
           Swal.fire('Error !', 'Appoinment not saved', 'error');
@@ -1730,8 +1731,8 @@ export class AppointmentComponent implements OnInit {
         if (this.vPhoneAppId != 0) {
           Swal.fire('Congratulations !', 'Phone Registered Appoinment Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
-              this.getPrint(response);
-
+              // this.getPrint(response);
+              this.viewgetPatientAppointmentReportPdf(response);
             }
             this.getVisitList();
 
@@ -1741,8 +1742,9 @@ export class AppointmentComponent implements OnInit {
         else {
           Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
-              this.getPrint(response);
+              // this.getPrint(response);
               // this._matDialog.closeAll();
+              this.viewgetPatientAppointmentReportPdf(response);
             }
             this.getVisitList();
 
