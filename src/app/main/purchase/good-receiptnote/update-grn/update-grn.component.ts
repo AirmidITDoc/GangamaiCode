@@ -1890,20 +1890,20 @@ export class UpdateGRNComponent implements OnInit {
   public setFocus(nextElementId): void {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
   }
-  public onEnterConversionFactor(event, t): void {
-    if (event.which === 13) {
-      this.batchno.nativeElement.focus();
-    }
-  }
+  // public onEnterConversionFactor(event, t): void {
+  //   if (event.which === 13) {
+  //     this.batchno.nativeElement.focus();
+  //   }
+  // }
 
-  public onEnterBatchNo(event): void {
-    if (event.which === 13) {
-      this.expdate.nativeElement.focus();
-      let batchno = this.vBatchNo.toUpperCase();
-      this.vBatchNo = batchno;
-      this.vlastDay = '';
-    }
-  }
+  // public onEnterBatchNo(event): void {
+  //   if (event.which === 13) {
+  //     this.expdate.nativeElement.focus();
+  //     let batchno = this.vBatchNo.toUpperCase();
+  //     this.vBatchNo = batchno;
+  //     this.vlastDay = '';
+  //   }
+  // }
   // public onEnterExpDate(event): void {
   //   if (event.which === 13) {
   //     this.qty.nativeElement.focus();

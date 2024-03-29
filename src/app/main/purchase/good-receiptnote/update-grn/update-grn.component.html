@@ -434,12 +434,15 @@
                                         <ng-container matColumnDef="ConversionFactor">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Packing</mat-header-cell>
-                                            <mat-cell   *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell   *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.ConversionFactor"
                                                         (keyup)="getCellCalculation(contact,contact.ConversionFactor)"
                                                         step="0.1" type="text" autocomplete="off" OnlyNumber
-                                                        [disabled]="contact.IsVerifiedUserId==1">
+                                                        [disabled]="contact.IsVerifiedUserId==1" [id]="'Packing_'+index"
+                                                        (keydown.arrowdown)="setFocus('Packing_'+(index+1))"
+                                                        (keydown.arrowup)="setFocus('Packing_'+(index-1))"
+                                                        >
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -463,10 +466,14 @@
                                         <ng-container matColumnDef="BatchNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BatchNo
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.BatchNo"
-                                                        [disabled]="contact.IsVerifiedUserId==1">
+                                                        [disabled]="contact.IsVerifiedUserId==1"
+                                                        [id]="'BatchNo_'+index"
+                                                        (keydown.arrowdown)="setFocus('BatchNo_'+(index+1))"
+                                                        (keydown.arrowup)="setFocus('BatchNo_'+(index-1))"
+                                                        >
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -528,10 +535,13 @@
                                         <ng-container matColumnDef="MRP">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 MRP(Strip)</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.MRP" step="0.1" type="text" OnlyNumber
-                                                        autocomplete="off" [disabled]="contact.IsVerifiedUserId==1">
+                                                    <input matInput [(ngModel)]="contact.MRP" step="0.1" type="text" OnlyNumber [id]="'MRP_'+index"
+                                                        autocomplete="off" [disabled]="contact.IsVerifiedUserId==1"
+                                                        (keydown.arrowdown)="setFocus('MRP_'+(index+1))"
+                                                        (keydown.arrowup)="setFocus('MRP_'+(index-1))"
+                                                        >
                                                 </mat-form-field>
                                                 <!-- {{contact.MRP | number:'1.2-2' }} -->
                                             </mat-cell>
