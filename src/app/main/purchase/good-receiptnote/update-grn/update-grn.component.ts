@@ -841,6 +841,18 @@ export class UpdateGRNComponent implements OnInit {
     let discamt2 = ((parseFloat(this.vDisAmount2) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
     this.vDisc2 = discamt2;
   }
+
+  finalCalculation() {
+    this.calculateTotalamt();
+    this.calculateDiscperAmount();
+    this.calculateDiscperAmount();
+    if (this.dsItemNameList.data.length > 0) {
+      for (let i = 0; i < this.dsItemNameList.data.length; i++) {
+        this.getCellCalculation(this.dsItemNameList.data[i], null);
+      }
+    }
+    this.calculateDiscAmount();
+  }
   OnchekPurchaserateValidation() {
 
 
