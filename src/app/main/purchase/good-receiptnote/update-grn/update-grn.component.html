@@ -117,7 +117,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>-Select GST Type-</mat-label>
                                         <mat-select formControlName="GSTType" name="GSTType" required #GSTType
-                                            (selectionChange)="finalCalculation($event)"
+                                            (selectionChange)="finalCalculation()"
                                             (keydown)="onEnterGSTType($event)">
                                             <mat-option></mat-option>
                                             <mat-option *ngFor="let m of GSTTypeList" [value]="m">
