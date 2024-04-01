@@ -776,10 +776,12 @@ export class NewOPBillingComponent implements OnInit {
     }
     this.dataSource.data = [];
     this.chargeslist = [];
-    this.PatientName = "";
-    this.vOPDNo = "";
+    this.PatientName = " ";
+    this.vOPDNo = " ";
     this.Doctorname = "";
     this.Tarrifname = "";
+    this.searchFormGroup.get('RegId').reset();
+
   }
 
   onAddCharges() {
