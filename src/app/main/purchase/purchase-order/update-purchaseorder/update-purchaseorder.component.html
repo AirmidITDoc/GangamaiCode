@@ -144,14 +144,14 @@
                                                 <mat-form-field appearance="outline" style="width: 180px;">
                                                     <mat-label>-- Select Status3 --</mat-label>
                                                     <mat-select formControlName="Status3" name="Status3" required
-                                                        (selectionChange)="calculateGSTType($event)" #gsttype
+                                                        (selectionChange)="finalCalculation()" #gsttype
                                                         (keydown)="onEnterGSTType($event)">
                                                         <mat-option></mat-option>
                                                         <mat-option *ngFor="let m of GSTTypeList" [value]="m">
                                                             {{m.Name}}
                                                         </mat-option>
                                                     </mat-select>
-
+                                                     <!-- (selectionChange)="calculateGSTType($event)" -->
                                                 </mat-form-field>&nbsp;
 
                                             </div>
@@ -315,9 +315,9 @@
 
                                             <ng-container matColumnDef="ItemName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-200">
+                                                    class="w-180">
                                                     ItemName </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                                     {{contact.ItemName}}
                                                 </mat-cell>
                                             </ng-container>
@@ -325,10 +325,10 @@
                                             <ng-container matColumnDef="Qty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Qty</mat-header-cell>
-                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput   [(ngModel)]="contact.Qty"
-                                                            step="0.1" type="number" autocomplete="off"
+                                                            step="0.1" type="text" OnlyNumber autocomplete="off"
                                                             (keyup)="getCellCalculation(contact,contact.Qty)">
                                                     </mat-form-field>
                                                 </mat-cell>
@@ -345,10 +345,10 @@
                                             <ng-container matColumnDef="Rate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Rate</mat-header-cell>
-                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput   [(ngModel)]="contact.Rate"
-                                                            step="0.1" type="number" autocomplete="off"
+                                                            step="0.1" type="text" OnlyNumber autocomplete="off"
                                                             (keyup)="getCellCalculation(contact,contact.Rate)">
                                                     </mat-form-field>
                                                 </mat-cell>
@@ -373,10 +373,10 @@
                                             <ng-container matColumnDef="Dis">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Disc(%)</mat-header-cell>
-                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput  [(ngModel)]="contact.DiscPer"
-                                                            step="0.1" type="number" autocomplete="off"
+                                                            step="0.1" type="text" OnlyNumber autocomplete="off"
                                                             (keyup)="getCellCalculation(contact,contact.DiscPer)">
                                                     </mat-form-field>
                                                 </mat-cell>
@@ -393,10 +393,10 @@
                                             <ng-container matColumnDef="CGST">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     CGST(%)</mat-header-cell>
-                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput   [(ngModel)]="contact.CGSTPer"
-                                                            step="0.1" type="number" autocomplete="off"
+                                                            step="0.1" type="text" OnlyNumber autocomplete="off"
                                                             (keyup)="getCellCalculation(contact,contact.CGSTPer)">
                                                     </mat-form-field>
                                                 </mat-cell>
@@ -413,10 +413,10 @@
                                             <ng-container matColumnDef="SGST">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     SGST(%)</mat-header-cell>
-                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput   [(ngModel)]="contact.SGSTPer"
-                                                            step="0.1" type="number" autocomplete="off"
+                                                            step="0.1" type="text" OnlyNumber autocomplete="off"
                                                             (keyup)="getCellCalculation(contact,contact.SGSTPer)">
                                                     </mat-form-field>
                                                 </mat-cell>
@@ -457,7 +457,7 @@
                                             <ng-container matColumnDef="MRP">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     MRP</mat-header-cell>
-                                                <mat-cell class="w-90" *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput   [(ngModel)]="contact.MRP"
                                                             step="0.1" type="number" autocomplete="off"

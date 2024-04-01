@@ -573,8 +573,10 @@ export class UpdateGRNComponent implements OnInit {
       }
     }
 
-
+    
     if (contact.ReceiveQty > 0 && contact.Rate > 0) {
+      let IGSTPer =contact.IGSTPer ||  0;
+      contact.IGSTPer = IGSTPer;
       if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
 
         contact.TotalQty = (((contact.ReceiveQty) + (contact.FreeQty)) * (contact.ConversionFactor));
@@ -584,13 +586,13 @@ export class UpdateGRNComponent implements OnInit {
         contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100);
         let TotalAmt = ((contact.TotalAmount) - (contact.DiscAmount));
         //Gst
-        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
-        contact.CGSTAmt = (((TotalAmt) * (contact.CGSTPer)) / 100);
-        contact.SGSTAmt = (((TotalAmt) * (contact.SGSTPer)) / 100);
-        contact.IGSTAmt = (((TotalAmt) * (contact.IGSTPer)) / 100);
+        contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
+        contact.CGSTAmt = (((TotalAmt) * parseFloat(contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((TotalAmt) * parseFloat(contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((TotalAmt) * parseFloat(contact.IGSTPer)) / 100);
         //contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
-        contact.VatAmount = (((TotalAmt) * (contact.VatPercentage)) / 100);
-        contact.NetAmount = ((TotalAmt) + (contact.VatAmount));
+        contact.VatAmount = (((TotalAmt) * parseFloat(contact.VatPercentage)) / 100);
+        contact.NetAmount = ((TotalAmt) + parseFloat(contact.VatAmount));
 
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST Before Disc') {
@@ -599,15 +601,16 @@ export class UpdateGRNComponent implements OnInit {
         //total amt
         contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
         //Gst
-        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
-        contact.CGSTAmt = (((contact.TotalAmount) * (contact.CGSTPer)) / 100);
-        contact.SGSTAmt = (((contact.TotalAmount) * (contact.SGSTPer)) / 100);
-        contact.IGSTAmt = (((contact.TotalAmount) * (contact.IGSTPer)) / 100);
-        contact.VatAmount = (((contact.TotalAmount) * (contact.VatPercentage)) / 100);
-        let totalAmt = ((contact.TotalAmount) + (contact.VatAmount));
+        contact.VatPercentage= (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer));
+   
+        contact.CGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(contact.CGSTPer)) / 100);
+        contact.SGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(contact.SGSTPer)) / 100);
+        contact.IGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(contact.IGSTPer)) / 100);
+        contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPercentage)) / 100);
+        let totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VatAmount));
         //disc
-        contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100);
-        contact.NetAmount = ((totalAmt) - (contact.DiscAmount));
+        contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100);
+        contact.NetAmount = ((totalAmt) - parseFloat(contact.DiscAmount));
         // //LandedRate As New Double
         // contact.LandedRate = (contact.NetAmount / contact.TotalQty);
         // ///PurUnitRate
@@ -646,38 +649,38 @@ export class UpdateGRNComponent implements OnInit {
         let mrpTotal = ((contact.TotalQty) * (contact.ConversionFactor) * (contact.MRP));
         let Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPercentage));
         //GST cal
-        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
-        contact.CGSTAmt = (((Totalmrp) * (contact.CGSTPer)) / 100);
-        contact.SGSTAmt = (((Totalmrp) * (contact.SGSTPer)) / 100);
-        contact.IGSTAmt = (((Totalmrp) * (contact.IGSTPer)) / 100);
+        contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
+        contact.CGSTAmt = (((Totalmrp) * parseFloat(contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((Totalmrp) * parseFloat(contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((Totalmrp) * parseFloat(contact.IGSTPer)) / 100);
         // this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
-        contact.VatAmount = ((Totalmrp * (contact.VatPercentage)) / 100);
-        let GrossAmt = ((contact.TotalAmount) - (contact.DiscAmount));
-        contact.NetAmount = ((GrossAmt) + (contact.VatAmount));
+        contact.VatAmount = ((Totalmrp * parseFloat(contact.VatPercentage)) / 100);
+        let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
+        contact.NetAmount = ((GrossAmt) + parseFloat(contact.VatAmount));
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST on Pur Plus FreeQty") {
         let TotalPurWf = ((contact.TotalQty) * (contact.Rate));
         //GST cal
-        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
-        contact.CGSTAmt = (((TotalPurWf) * (contact.CGSTPer)) / 100);
-        contact.SGSTAmt = (((TotalPurWf) * (contact.SGSTPer)) / 100);
-        contact.IGSTAmt = (((TotalPurWf) * (contact.IGSTPer)) / 100);
-        contact.VatAmount = ((TotalPurWf * (contact.VatPercentage)) / 100);
-        let GrossAmt = ((contact.TotalAmount) + (contact.VatPercentage));
-        contact.NetAmount = ((GrossAmt) - (contact.DiscAmount));
+        contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
+        contact.CGSTAmt = (((TotalPurWf) * parseFloat(contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((TotalPurWf) * parseFloat(contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((TotalPurWf) * parseFloat(contact.IGSTPer)) / 100);
+        contact.VatAmount = ((TotalPurWf * parseFloat(contact.VatPercentage)) / 100);
+        let GrossAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VatPercentage));
+        contact.NetAmount = ((GrossAmt) - parseFloat(contact.DiscAmount));
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST On MRP") {
         let mrpTotal = ((contact.ReceiveQty) * (contact.ConversionFactor) * (contact.MRP));
         let Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPercentage));
         //GST cal
-        contact.VatPercentage = ((contact.CGSTPer) + (contact.SGSTPer) + (contact.IGSTPer))
-        contact.CGSTAmt = (((Totalmrp) * (contact.CGSTPer)) / 100);
-        contact.SGSTAmt = (((Totalmrp) * (contact.SGSTPer)) / 100);
-        contact.IGSTAmt = (((Totalmrp) * (contact.IGSTPer)) / 100);
+        contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
+        contact.CGSTAmt = (((Totalmrp) * parseFloat(contact.CGSTPer)) / 100);
+        contact.SGSTAmt = (((Totalmrp) * parseFloat(contact.SGSTPer)) / 100);
+        contact.IGSTAmt = (((Totalmrp) * parseFloat(contact.IGSTPer)) / 100);
 
-        contact.VatAmount = ((Totalmrp * (contact.VatPercentage)) / 100);
-        let GrossAmt = ((contact.TotalAmount) - (contact.DiscAmount));
-        contact.NetAmount = ((GrossAmt) + (contact.VatAmount));
+        contact.VatAmount = ((Totalmrp * parseFloat(contact.VatPercentage)) / 100);
+        let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
+        contact.NetAmount = ((GrossAmt) + parseFloat(contact.VatAmount));
       }
 
       //LandedRate As New Double

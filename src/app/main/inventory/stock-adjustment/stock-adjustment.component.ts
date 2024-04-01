@@ -16,6 +16,7 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { request } from 'http';
 import { ToastrService } from 'ngx-toastr';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-stock-adjustment',
@@ -118,7 +119,7 @@ export class StockAdjustmentComponent implements OnInit {
 
   getStockList() {
     var Param = {
-      "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
+      "StoreId": 2,// this._loggedService.currentUserValue.user.storeId || 0,
       "ItemId": this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0, //56784
     }
     console.log(Param)
@@ -150,9 +151,9 @@ export class StockAdjustmentComponent implements OnInit {
     if (contact.AddQty > 0) {
       contact.UpdatedQty = contact.BalanceQty + contact.AddQty;
       this.AddType = 1;
-      this.toastr.success(contact.AddQty + ' Qty Added Successfully.', 'Success !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      });
+      // this.toastr.success(contact.AddQty + ' Qty Added Successfully.', 'Success !', {
+      //   toastClass: 'tostr-tost custom-toast-success',
+      // });
     } else {
       contact.UpdatedQty = 0;
     }
@@ -166,9 +167,9 @@ export class StockAdjustmentComponent implements OnInit {
     if (contact.DeduQty > 0) {
       contact.UpdatedQty = contact.BalanceQty - contact.DeduQty;
       this.AddType = 0;
-      this.toastr.success(contact.DeduQty + ' Qty Deduction Successfully.', 'Success !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      });
+      // this.toastr.success(contact.DeduQty + ' Qty Deduction Successfully.', 'Success !', {
+      //   toastClass: 'tostr-tost custom-toast-success',
+      // });
     } else {
       contact.UpdatedQty = 0;
     }
@@ -179,7 +180,7 @@ export class StockAdjustmentComponent implements OnInit {
     this.vBatchNo = contact.BatchNo;
   }
   OneditBatch(contact) {
-    this.vBatchNo = contact.BatchNo;
+    this.vBatchNo = contact.BatchNo
     this.vExpDate = contact.BatchExpDate;
     this.vBatchEdit = contact.BatchEdit;
     this.vExpDateEdit = contact.ExpDateEdit;
@@ -241,27 +242,64 @@ export class StockAdjustmentComponent implements OnInit {
     });
   }
 
+ 
+  getLastDayOfMonth(month: number, year: number): number {
+    return new Date(year, month, 0).getDate();
+  }
+  pad(n: number): string {
+    return n < 10 ? '0' + n : n.toString();
+  }
+  lastDay1: any;
+  vlastDay: string = '';
+  lastDay2: string = '';
 
-  OnSaveBatchAdj() {
-    let isCheckBatchNo: any;
-    let isCheckExpDate: any;
-    if (isCheckBatchNo = this.dsStockAdjList.data.some(item => item.BatchEdit === '')) {
-      if(isCheckBatchNo){
-        this.OnSaveBatchAdjustment();
+  CellcalculateLastDay(contact, inputDate: string) {
+    this.vBatchEdit = contact.BatchEdit;
+    if (inputDate && inputDate.length === 6) {
+      const month = +inputDate.substring(0, 2);
+      const year = +inputDate.substring(2, 6);
+
+      if (month >= 1 && month <= 12) {
+        const lastDay1 = this.getLastDayOfMonth(month, year);
+        this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
+        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
+        //console.log(this.lastDay2)
+        contact.ExpDateEdit = this.lastDay1;
+        this.vExpDateEdit = this.lastDay1;
+      } else {
+        this.vlastDay = 'Invalid month';
       }
+    } else {
+      this.vlastDay = ' ';
     }
-    else if (isCheckExpDate = this.dsStockAdjList.data.some(item => item.ExpDateEdit === '')) {
-      if(isCheckExpDate){
-        this.OnSaveBatchAdjustment();
-      }
-    }
-    else {
-      this.toastr.warning('Please enter a BatchNo & ExpDate', 'Warning !', {
+  }
+  OnSaveBatchAdj(){
+    const chkExpDate = this.dsStockAdjList.data.some((item) => item.ExpDateEdit ==  this.vlastDay);
+    if(!chkExpDate){
+      if(this.vBatchEdit){
+        this.OnSaveBatchAdjustment() 
+      }else{
+        this.toastr.warning('Please enter BatchNo', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        }); 
+      } 
+    }else{
+      this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
   }
-
+  OnSaveBatch(){
+    if(this.vExpDateEdit){
+      this.OnSaveBatchAdjustment();
+    }
+    else{
+      this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
+  }
+  
   OnSaveBatchAdjustment() {
     if ((!this.dsStockAdjList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -269,13 +307,24 @@ export class StockAdjustmentComponent implements OnInit {
       });
       return;
     }
+    this.dsStockAdjList.data.forEach(element =>{
+      if (element.ExpDateEdit && element.ExpDateEdit.length === 10) {
+        const day = +element.ExpDateEdit.substring(0, 2);
+        const month = +element.ExpDateEdit.substring(3, 5);
+        const year = +element.ExpDateEdit.substring(6, 10);
+  
+        this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+        // console.log(this.vExpDate)
+      }
+    })
+   
     let batchAdjustment = {};
     batchAdjustment['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
     batchAdjustment['itemId'] = this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
     batchAdjustment['oldBatchNo'] = this.vBatchNo || '';
     batchAdjustment['oldExpDate'] = this.vExpDate || 0;
     batchAdjustment['newBatchNo'] = this.vBatchEdit || '';
-    batchAdjustment['newExpDate'] = this.datePipe.transform(this.vExpDateEdit, "yyyy-MM-dd 00:00:00.000") || 0;
+    batchAdjustment['newExpDate'] = this.vExpDate;
     batchAdjustment['addedBy'] = this.accountService.currentUserValue.user.id || 0;
     batchAdjustment['stkId'] = this.vStockId || 0;
 
@@ -285,17 +334,17 @@ export class StockAdjustmentComponent implements OnInit {
     console.log(submitData);
     this._StockAdjustment.BatchAdjSave(submitData).subscribe(response => {
       if (response) {
-        this.toastr.success('Record Stock Adjustment Saved Successfully.', 'Saved !', {
+        this.toastr.success('Record Batch Adjustment Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
         this.getStockList();
       } else {
-        this.toastr.error('Stock Adjustment Data not saved !, Please check error..', 'Error !', {
+        this.toastr.error('Batch Adjustment Data not saved !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
     }, error => {
-      this.toastr.error('Stock Adjustment Data not saved !, Please check API error..', 'Error !', {
+      this.toastr.error('Batch Adjustment Data not saved !, Please check API error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });

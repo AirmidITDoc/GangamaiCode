@@ -211,7 +211,8 @@ export class PurchaseOrderComponent implements OnInit {
     console.log(Param);
     this._PurchaseOrder.getPurchaseOrder(Param).subscribe(data => {
       this.dsPurchaseOrder.data = data["Table1"]??[] as PurchaseOrder[];
-      // this.dsPurchaseOrder.data = data as PurchaseOrder[];
+     // this.dsPurchaseOrder.data = data as PurchaseOrder[];
+      //console.log(this.dsPurchaseOrder)
       this.dsPurchaseOrder.sort = this.sort;
       this.resultsLength= data["Table"][0]["total_row"];
      // this.dsPurchaseOrder.paginator = this.paginator;

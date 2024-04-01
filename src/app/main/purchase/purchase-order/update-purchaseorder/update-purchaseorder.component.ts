@@ -312,6 +312,17 @@ export class UpdatePurchaseorderComponent implements OnInit {
       this._PurchaseOrder.userFormGroup.get('NetAmount').setValue(this.vNetAmount);
     }
   }
+  finalCalculation() {
+    this.calculateTotalAmt();
+    this.calculateDiscperAmount();
+    this.calculateDiscperAmount();
+    if (this.dsItemNameList.data.length > 0) {
+      for (let i = 0; i < this.dsItemNameList.data.length; i++) {
+        this.getCellCalculation(this.dsItemNameList.data[i], null);
+      }
+    }
+   // this.calculateDiscAmount();
+  }
   onAdd() {
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
       this.toastr.warning('Please enter a Qty', 'Warning !', {

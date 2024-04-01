@@ -25,6 +25,8 @@
                     <form [formGroup]="_StockAdjustment.userFormGroup" style="padding: 6px 6px 5px 5px;"
                         fusePerfectScrollbar>
                         <div fxLayout="row" fxLayoutGap="8px">
+                            <input  name="BatchEdit" formControlName="BatchEdit" type="hidden" >
+                            <input  name="ExpDateEdit" formControlName="ExpDateEdit" type="hidden">
 
                             <from [formGroup]="_StockAdjustment.StoreFrom">
                                 <mat-form-field appearance="outline" fxFlex="100%">
@@ -95,13 +97,14 @@
                                                 (blur)="BatchdisableEditing(contact)"
                                                 (keyup)="OneditBatch(contact)" autocomplete="off">
                                         </mat-form-field>
-                                        <buttom mati-icon-button (click)="OnSaveBatchAdjustment()" matTooltip="Save">
+                                        <buttom mati-icon-button (click)="OnSaveBatch()" matTooltip="Save">
                                             <mat-icon title="Save Reocrd">check</mat-icon>
                                         </buttom>
                                     </ng-template>
                                 </mat-cell>
                             </ng-container>
 
+                           
 
                             <ng-container matColumnDef="ExpDate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -117,22 +120,22 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
                                     <ng-container *ngIf="!contact.Expeditable; else showInput">
-                                        <button mat-icon-button (click)="ExpDateenableEditing(contact)">
+                                        <button mat-icon-button (click)="ExpDateenableEditing(contact)" class="clear-button">
                                             <mat-icon>edit</mat-icon></button>
                                     </ng-container>
                                     <ng-template #showInput>
                                         <mat-form-field appearance="legacy" class="w-80">
-                                            <input matInput [(ngModel)]="contact.ExpDateEdit" type="text" OnlyNumber
-                                                (blur)="ExpDatedisableEditing(contact)"
-                                                (keyup)="OneditBatch(contact)" autocomplete="off">
+                                            <input matInput #inputField  placeholder="mmyyyy"
+                                               [(ngModel)]="contact.ExpDateEdit"  (blur)="ExpDatedisableEditing(contact)"
+                                                (keyup)="CellcalculateLastDay(contact,inputField.value)" autocomplete="off">
                                         </mat-form-field>
-                                        <buttom mati-icon-button (click)="OnSaveBatchAdjustment()" matTooltip="Save">
+                                        <buttom mati-icon-button (click)="OnSaveBatchAdj()" matTooltip="Save">
                                             <mat-icon title="Save Reocrd">check</mat-icon>
                                         </buttom>
                                     </ng-template>
                                 </mat-cell>
                             </ng-container>
-
+                            
                             <ng-container matColumnDef="LandedRate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     LandedRate</mat-header-cell>

@@ -12,6 +12,7 @@ import { MatSelect } from '@angular/material/select';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-workorder',
@@ -21,6 +22,20 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
   animations: fuseAnimations,
 })
 export class UpdateWorkorderComponent implements OnInit {
+  [x: string]: any;
+  displayedColumnsnew:string[] = [
+    'ItemName',
+    'Qty',
+    'Rate',
+    'TotalAmount',
+    'Disc',
+    'DiscAmt',
+    'Vat',
+    'VatAmt',
+    'NetAmt',
+    'Specification' ,
+    'action'
+  ];
 
   ItemID: any = 0;
   ItemName: any;
@@ -68,25 +83,25 @@ export class UpdateWorkorderComponent implements OnInit {
  FinalDiscAmount: any;
  Remark:any;
 
-  displayedColumnsnew:string[] = [
-    'action',
-    'ItemName',
-    'Qty',
-    'Rate',
-    'TotalAmount',
-    'Disc',
-    'DiscAmt',
-    'Vat',
-    'VatAmt',
-    'NetAmt',
-    'Specification' 
-  ];
+ 
+
+ vQty:any;
+ vRate:any;
+ vDis:any;
+ vTotalAmount:any;
+ vDiscAmt:any;
+ vGST:any;
+ vGSTAmt:any;
+ vNetAmount:any;
+ vSpecification:any;
 
   dsItemNameList = new MatTableDataSource<ItemNameList>();
+ 
 
   constructor(  public _WorkOrderService:WorkOrderService,
     private _fuseSidebarService: FuseSidebarService,
     public _matDialog: MatDialog,
+    public toastr: ToastrService,
     private _formBuilder: FormBuilder,
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -123,7 +138,7 @@ export class UpdateWorkorderComponent implements OnInit {
     this._WorkOrderService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
     
-      this._WorkOrderService.NewWorkForm.get('StoreId').setValue(this.StoreList[0]);
+      this._WorkOrderService.WorkOrderStoreForm.get('StoreId').setValue(this.StoreList[0]);
     });
   }
   getSuppliernameList() {
@@ -134,7 +149,12 @@ export class UpdateWorkorderComponent implements OnInit {
       this._WorkOrderService.NewWorkForm.get('SupplierName').setValue(this.SupplierList[0]);
     });
   }
-
+  focusNext(nextElementId: string): void {
+    const nextElement = this.elementRef.nativeElement.querySelector(`#${nextElementId}`);
+    if (nextElement) {
+      nextElement.focus();
+    }
+  }
   onClose(){
 this._matDialog.closeAll();
 
@@ -333,8 +353,22 @@ this._matDialog.closeAll();
   }
   
   
-  onAdd(event) {
+  onAdd() {
     //debugger
+    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+      this.toastr.warning('Please enter a Qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vRate == '' || this.vRate == null || this.vRate == undefined)) {
+      this.toastr.warning('Please enter a MRP', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId ===  this._WorkOrderService.WorkorderItemForm.get('ItemName').value.ItemID);
+    if (!isDuplicate) { 
     this.dsItemNameList.data = [];
     this.chargeslist.push(
       {
@@ -351,14 +385,31 @@ this._matDialog.closeAll();
         Specification: this.Specification || '',
   
       });
-  
-    this.dsItemNameList.data = this.chargeslist;
-    // this.ResetItem();
+      this.dsItemNameList.data = this.chargeslist;
+
+    } else {
+      this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
+    this.ResetItem();
     this._WorkOrderService.WorkorderItemForm.reset();
     this.itemid.nativeElement.focus();
     this.add = false;
   }
-  
+  ResetItem(){
+    this.ItemID = 0;
+    this.ItemName = '';
+    this.vQty = 0;
+    this.vRate = 0;
+    this.vDis = 0;
+    this.vTotalAmount =0;
+    this.vDiscAmt = 0;
+    this.vGST =0;
+    this.vGSTAmt = 0;
+    this.vNetAmount =0;
+    this.vSpecification = 0;
+  }
   calculateGSTperAmount() {
   
     if (this.GST) {
