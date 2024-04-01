@@ -104,7 +104,7 @@ export class IPAdvanceComponent implements OnInit {
   }
 
   getAdvanceList() {
-    debugger
+    // debugger
     this.isLoadingStr = 'loading';
     var m_data = {
       "AdmissionID": this.selectedAdvanceObj.AdmissionID
@@ -158,7 +158,7 @@ export class IPAdvanceComponent implements OnInit {
   }
 
   onSave() {
-    debugger;
+    // debugger;
     if (this.vAdvanceId == 0) {
       this.isLoading = 'submit';
 
@@ -226,7 +226,7 @@ export class IPAdvanceComponent implements OnInit {
         };
         console.log(submitData);
         this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
-          debugger
+          // debugger
           if (response) {
             Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
@@ -302,7 +302,7 @@ export class IPAdvanceComponent implements OnInit {
         };
         console.log(submitData);
         this._IpSearchListService.InsertAdvanceHeaderUpdate(submitData).subscribe(response => {
-          debugger;
+          // debugger;
           if (response) {
             Swal.fire('Congratulations !', 'IP Advance data Updated Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
@@ -371,7 +371,7 @@ transformpay(value: string) {
   return value;
 }
 getPrint(el) {
-  debugger;
+  // debugger;
   var D_data = {
     "AdvanceDetailID": el,
   }
@@ -450,7 +450,7 @@ print() {
 AdvSummaryPrint(){}
 
 // AdvSummaryPrint(){
-//     debugger
+//     // debugger
 //   var D_data = {
 //     // "From_Dt" : "01/01/1900",//this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
 //     // "To_Dt" :"01/01/1900",// this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
@@ -478,7 +478,7 @@ AdvSummaryPrint(){}
 
 
 // getTemplateadvsummary() {
-//   debugger
+//   // debugger
 // let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=33';
 // this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
 

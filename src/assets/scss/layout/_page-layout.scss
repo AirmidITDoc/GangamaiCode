@@ -30,6 +30,11 @@
             .top-header-title {
                 @include font-size(17px);
             }
+            .common-date-container{
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
         }
         .date-time-container {
             .mat-form-field {

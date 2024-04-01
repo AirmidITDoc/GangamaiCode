@@ -68,7 +68,7 @@ export class IPSearchListComponent implements OnInit {
 
   displayedColumns = [
     'IsMLC',
-    'IsBillGenerated',
+    // 'IsBillGenerated',
     'RegNo',
     'PatientName',
     'DOA',
@@ -278,8 +278,8 @@ export class IPSearchListComponent implements OnInit {
       const dialogRef = this._matDialog.open(IPAdvanceComponent,
         {
           maxWidth: "100%",
-          height: '95%',
-          width: '95%',
+          height: 'auto',
+          width: '80%',
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
@@ -360,7 +360,7 @@ export class IPSearchListComponent implements OnInit {
       });
     }
     else if (m == "Refund of Bill") {
-      debugger;
+    //   debugger;
       console.log(" This is for IP Refund of Bill pop : " + m);
       let xx = {
         RegNo: contact.RegId,

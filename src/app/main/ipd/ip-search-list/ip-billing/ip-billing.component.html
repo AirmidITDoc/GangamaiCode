@@ -1,233 +1,237 @@
-<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px"
-    style="background-color: #F5F5F5;font-size:18px;">
+<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" class="page-layout">
 
 
-    <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
+    <div class="header accent top-header" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
 
         <!-- APP TITLE -->
-        <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;" class="top-header-info">
 
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="font-size:18px; font-weight: 500;width:99%;font-family: sans-serif;">
-                IP BILLING :
-                <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}} (IPD
-                    No:{{selectedAdvanceObj.IPDNo}}) - AdmissionDate:{{selectedAdvanceObj.AdmDateTime}} -
-                    Ward:{{selectedAdvanceObj.WardName}} - Tariff :{{selectedAdvanceObj.TariffName}}</span>
-            </span>
-            <span style="float: right;">
-                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">ri
-                </app-common-date>
-            </span>
+            <div class="modal-header">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class="">
+                    IP BILLING : <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}} (IPD
+                        No:{{selectedAdvanceObj.IPDNo}}) - AdmissionDate:{{selectedAdvanceObj.AdmDateTime}} -
+                        Ward:{{selectedAdvanceObj.WardName}} - Tariff :{{selectedAdvanceObj.TariffName}}</span>
+                </span>
+            </div>
+            <div class="common-date-container" fxLayout="row">
+                <div class="common-date">
+                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">ri
+                    </app-common-date>
+                </div>
 
-            <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
+                <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
         </div>
 
     </div>
 
 
     <mat-drawer-container class="example-container">
-        <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true" style="width:17%;font-size:18px;">
-            <form class="example-form" [formGroup]="Serviceform">
+        <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true" class="fuse-search-sidebar">
+            <div class="sidebar-content">
+                <div class="sidebar-body">
+                    <div class="sidebar-form">
+                        <form class="example-form" [formGroup]="Serviceform" fxLayout="column">
+                            <div fxFlex="100%">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Select</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select" matInput
+                                        formControlName="ChargeClass" [matAutocomplete]="autoclass" required>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="Ipbillform.get('ChargeClass').setValue(''); isClasselected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="Ipbillform.get('ChargeClass').setValue(''); isClasselected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoclass="matAutocomplete" [displayWith]="getOptionTextclass">
+                                        <mat-option *ngFor="let option of filteredOptionsselclass | async"
+                                            [value]="option">
+                                            {{option.ClassName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="100%">
+                                <mat-form-field appearance="outline" style="width:90%;">
+                                    <input type="text" name="SrvcName" formControlName="SrvcName"
+                                        placeholder="Service Name" matInput [matAutocomplete]="auto"
+                                        (input)="getServiceListCombobox()" required>
 
-                <div class="col-md-6">
-                    <!-- <mat-form-field appearance="outline">
-                        <mat-label>Billing Class Name</mat-label>
-                        <mat-select formControlName="ClassId">
-                            <mat-option *ngFor="let Bclass of BillingClassCmbList" [value]="Bclass">
-                                {{Bclass.ClassName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field> -->
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                        showPanel="true" (optionsScroll)="onScroll()"
+                                        (optionSelected)='getSelectedObj($event.option.value)'>
+                                        <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                            {{option.ServiceName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                    <mat-hint>
+                                        <span *ngIf="!noOptionFound">Select Service Name</span>
+                                        <span *ngIf="noOptionFound" style="color: #f44336;">No data
+                                            Found</span>
+                                    </mat-hint>
+                                    <mat-error *ngIf="Serviceform.get('SrvcName').hasError('required')">
+                                        Required field cannot be left blank
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="100%">
+                                <div fxLayout="row">
+                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Price</mat-label>
+                                            <input matInput [(ngModel)]="b_price" name="bPrice"
+                                                (keyup)="calculateTotalAmt()" formControlName="price" required
+                                                type="number">
+                                            <mat-error
+                                                *ngIf="Serviceform.get('price').invalid && Serviceform.get('price').touched">
+                                                Price is required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Qty</mat-label>
+                                            <input matInput [(ngModel)]="b_qty" name="bQty"
+                                                (keyup)="calculateTotalAmt()" formControlName="qty" required
+                                                type="number">
+                                            <mat-error
+                                                *ngIf="Serviceform.get('qty').invalid && Serviceform.get('qty').touched">
+                                                Qty is required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>TotalAmt</mat-label>
+                                    <input matInput [(ngModel)]="b_totalAmount" name="bTotalAmt" readonly
+                                        formControlName="totalAmount" required>
+                                    <mat-error
+                                        *ngIf="Serviceform.get('totalAmount').invalid && Serviceform.get('totalAmount').touched">
+                                        TotalAmount is required</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6" *ngIf="isDoctor">
 
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Select</mat-label>
-                        <input matAutocompletePosition="below" type="text"
-                            placeholder="Select" matInput
-                            formControlName="ChargeClass"
-                            [matAutocomplete]="autoclass" required>
-                        <span matSuffix style="display: flex;">
-                            <mat-icon class="mat-icon-close"
-                                (click)="Ipbillform.get('ChargeClass').setValue(''); isClasselected = false;">close</mat-icon>
-                            <mat-icon class="mat-icon-close"
-                                (click)="Ipbillform.get('ChargeClass').setValue(''); isClasselected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autoclass="matAutocomplete"
-                            [displayWith]="getOptionTextclass">
-                            <mat-option
-                                *ngFor="let option of filteredOptionsselclass | async"
-                                [value]="option">
-                                {{option.ClassName}}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
-                </div>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Doctor Name</mat-label>
+                                    <mat-select formControlName="DoctorID" placeholder="Bank" #singleSelect>
+                                        <mat-option>
+                                            <ngx-mat-select-search [formControl]="doctorFilterCtrl"
+                                                [placeholderLabel]="'Search'"
+                                                [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
+                                            {{element.DoctorName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <br>
+                            </div>
+                            <div class="container">
+                                <div class="row" style="display: flex;">
+                                    <div class="col-md-6" style="width: 48%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Disc %</mat-label>
+                                            <input matInput [(ngModel)]="formDiscPersc" name="formDiscPer"
+                                                (keyup)="calculatePersc()" formControlName="discPer" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-6" style="width: 48%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Disc Amt</mat-label>
+                                            <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"
+                                                formControlName="discAmount" type="number"
+                                                (keyup)="calculatechargesDiscamt()">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>NetAmount</mat-label>
+                                    <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly
+                                        formControlName="netAmount" required type="number">
+                                    <mat-error
+                                        *ngIf="Serviceform.get('netAmount').invalid && Serviceform.get('netAmount').touched">
+                                        NetAmount is required</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="next-btn" (click)="onSaveAddCharges()" [disabled]="Serviceform.invalid"
+                                    style="border-radius: 16px;">
+                                    <span style="display: flex;justify-content: center; ">
+                                        Save <mat-spinner *ngIf="isLoading == 'save'" class="spinner" [diameter]="25"
+                                            color="white">
+                                        </mat-spinner>
+                                    </span>
+                                </button>
 
-                <div class="col-md-6">
-                    <mat-form-field appearance="outline" style="width:90%;">
-                        <input type="text" name="SrvcName" formControlName="SrvcName" placeholder="Service Name"
-                            matInput [matAutocomplete]="auto" (input)="getServiceListCombobox()" required>
+                            </div>
+                            &nbsp; &nbsp;
+                            <div>
 
-                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" showPanel="true"
-                            (optionsScroll)="onScroll()" (optionSelected)='getSelectedObj($event.option.value)'>
-                            <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                                {{option.ServiceName}}
-                            </mat-option>
-                        </mat-autocomplete>
-                        <mat-hint>
-                            <span *ngIf="!noOptionFound">Select Service Name</span>
-                            <span *ngIf="noOptionFound" style="color: #f44336;">No data
-                                Found</span>
-                        </mat-hint>
-                        <mat-error *ngIf="Serviceform.get('SrvcName').hasError('required')">
-                            Required field cannot be left blank
-                        </mat-error>
-                    </mat-form-field>
+                                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
+                                    style=" height: 35px;background-color: rgb(7, 127, 175)">
+                                    <span style="font-size:18px; font-weight: 500; color:white;padding:5px;">Bill
+                                        Summary </span>
 
-                </div>
+                                </div>
+                                <div style="padding: 5px;">
 
-
-                <div class="container">
-                    <div class="row" style="display: flex;">
-                        <div class="col-md-6" style="width: 48%;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Price</mat-label>
-                                <input matInput [(ngModel)]="b_price" name="bPrice" (keyup)="calculateTotalAmt()"
-                                    formControlName="price" required type="number">
-                                <mat-error *ngIf="Serviceform.get('price').invalid && Serviceform.get('price').touched">
-                                    Price is required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-6" style="width: 48%;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Qty</mat-label>
-                                <input matInput [(ngModel)]="b_qty" name="bQty" (keyup)="calculateTotalAmt()"
-                                    formControlName="qty" required type="number">
-                                <mat-error *ngIf="Serviceform.get('qty').invalid && Serviceform.get('qty').touched">
-                                    Qty is required</mat-error>
-                            </mat-form-field>
-                        </div>
+                                    <!-- <mat-form-field appearance="outline" style="background: rgb(225, 240, 202);">
+                                        <mat-label style="font-weight: bold;font-size:20px;">Bill Amount</mat-label>
+                                        <input matInput [(ngModel)]="netPaybleAmt" formControlName="FinalAmount" name="netPaybleAmt"
+                                            readonly style="font-weight:500;font-size: 15px;text-align: right;">
+            
+                                    </mat-form-field> -->
+                                    <div>
+                                        <span style="margin-right: 20px;color: rgb(11, 78, 104);font-weight: bold;">Bill
+                                            Amount :
+                                            {{getNetAmtSum(dataSource.data) | currency:'INR' }}</span>
+                                    </div>
+                                    <!-- <mat-form-field appearance="outline" style="background: rgb(225, 240, 202);">
+                                        <mat-label style="font-weight: bold;font-size: 18px;">Advance Amount</mat-label>
+                                        <input matInput [(ngModel)]="netPaybleAmt" formControlName="FinalAmount" name="netPaybleAmt"
+                                            readonly style="font-weight:500;font-size: 15px;text-align: right;">
+            
+                                    </mat-form-field> -->
+                                    <div>
+                                        <span
+                                            style="margin-right: 20px;color: rgb(11, 78, 104);font-weight: bold;">Advance
+                                            Amount :
+                                            {{getAdvAmtSum(advancedatasource.data) | currency:'INR' }}</span>
+                                    </div>
+                                    <!-- <mat-form-field appearance="outline" style="background: rgb(225, 240, 202);">
+                                        <mat-label style="font-weight: bold;font-size: 18px;">Balance Amount</mat-label>
+                                        <input matInput [(ngModel)]="netPaybleAmt" formControlName="FinalAmount" name="netPaybleAmt"
+                                            readonly style="font-weight:500;font-size: 15px;text-align: right;">
+            
+                                    </mat-form-field> -->
+                                    <div>
+                                        <span
+                                            style="margin-right: 20px;color: rgb(11, 78, 104);font-weight: bold;">Balance
+                                            Amount :
+                                            {{vBalanceAmt}}</span>
+                                    </div>
+                                    <!-- <mat-form-field appearance="outline" style="background: rgb(225, 240, 202);">
+                                        <mat-label style="font-weight: bold;font-size: 18px;">Pharmacy Amount</mat-label>
+                                        <input matInput [(ngModel)]="netPaybleAmt" formControlName="FinalAmount" name="netPaybleAmt"
+                                            readonly style="font-weight:500;font-size: 15px;text-align: right;">
+            
+                                    </mat-form-field> -->
+                                    <span style="margin-right: 20px;color: rgb(11, 78, 104);font-weight: bold;">Pharmacy
+                                        Amount :
+                                        {{netPaybleAmt}}</span>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <div class="col-md-6">
-                    <mat-form-field appearance="outline">
-                        <mat-label>TotalAmt</mat-label>
-                        <input matInput [(ngModel)]="b_totalAmount" name="bTotalAmt" readonly
-                            formControlName="totalAmount" required>
-                        <mat-error
-                            *ngIf="Serviceform.get('totalAmount').invalid && Serviceform.get('totalAmount').touched">
-                            TotalAmount is required</mat-error>
-                    </mat-form-field>
-                </div>
-                <div class="col-md-6" *ngIf="isDoctor">
-
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>Doctor Name</mat-label>
-                        <mat-select formControlName="DoctorID" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="doctorFilterCtrl" [placeholderLabel]="'Search'"
-                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
-                                {{element.DoctorName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <br>
-                </div>
-                <div class="container">
-                    <div class="row" style="display: flex;">
-                        <div class="col-md-6" style="width: 48%;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Disc %</mat-label>
-                                <input matInput [(ngModel)]="formDiscPersc" name="formDiscPer"
-                                    (keyup)="calculatePersc()" formControlName="discPer" type="number">
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-6" style="width: 48%;">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Disc Amt</mat-label>
-                                <input matInput [(ngModel)]="b_disAmount" name="bDisAmount" formControlName="discAmount"
-                                    type="number" (keyup)="calculatechargesDiscamt()">
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <mat-form-field appearance="outline">
-                        <mat-label>NetAmount</mat-label>
-                        <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly formControlName="netAmount"
-                            required type="number">
-                        <mat-error *ngIf="Serviceform.get('netAmount').invalid && Serviceform.get('netAmount').touched">
-                            NetAmount is required</mat-error>
-                    </mat-form-field>
-                </div>
-                <div class="col-md-6">
-                    <button class="next-btn" (click)="onSaveAddCharges()" [disabled]="Serviceform.invalid"
-                        style="border-radius: 16px;">
-                        <span style="display: flex;justify-content: center; ">
-                            Save <mat-spinner *ngIf="isLoading == 'save'" class="spinner" [diameter]="25" color="white">
-                            </mat-spinner>
-                        </span>
-                    </button>
-
-                </div>
-                &nbsp; &nbsp;
-                <div>
-
-                    <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="space-between"
-                        style=" height: 35px;background-color: rgb(7, 127, 175)">
-                        <span style="font-size:18px; font-weight: 500; color:white;padding:5px;">Bill Summary </span>
-
-                    </div>
-                    <div style="padding: 5px;">
-
-                        <!-- <mat-form-field appearance="outline" style="background: rgb(225, 240, 202);">
-                            <mat-label style="font-weight: bold;font-size:20px;">Bill Amount</mat-label>
-                            <input matInput [(ngModel)]="netPaybleAmt" formControlName="FinalAmount" name="netPaybleAmt"
-                                readonly style="font-weight:500;font-size: 15px;text-align: right;">
-
-                        </mat-form-field> -->
-                        <div>
-                            <span style="margin-right: 20px;color: rgb(11, 78, 104);font-weight: bold;">Bill Amount :
-                                {{getNetAmtSum(dataSource.data) | currency:'INR' }}</span>
-                        </div>
-                        <!-- <mat-form-field appearance="outline" style="background: rgb(225, 240, 202);">
-                            <mat-label style="font-weight: bold;font-size: 18px;">Advance Amount</mat-label>
-                            <input matInput [(ngModel)]="netPaybleAmt" formControlName="FinalAmount" name="netPaybleAmt"
-                                readonly style="font-weight:500;font-size: 15px;text-align: right;">
-
-                        </mat-form-field> -->
-                        <div>
-                            <span style="margin-right: 20px;color: rgb(11, 78, 104);font-weight: bold;">Advance Amount :
-                                {{getAdvAmtSum(advancedatasource.data) | currency:'INR' }}</span>
-                        </div>
-                        <!-- <mat-form-field appearance="outline" style="background: rgb(225, 240, 202);">
-                            <mat-label style="font-weight: bold;font-size: 18px;">Balance Amount</mat-label>
-                            <input matInput [(ngModel)]="netPaybleAmt" formControlName="FinalAmount" name="netPaybleAmt"
-                                readonly style="font-weight:500;font-size: 15px;text-align: right;">
-
-                        </mat-form-field> -->
-                        <div>
-                            <span style="margin-right: 20px;color: rgb(11, 78, 104);font-weight: bold;">Balance Amount :
-                                {{vBalanceAmt}}</span>
-                        </div>
-                        <!-- <mat-form-field appearance="outline" style="background: rgb(225, 240, 202);">
-                            <mat-label style="font-weight: bold;font-size: 18px;">Pharmacy Amount</mat-label>
-                            <input matInput [(ngModel)]="netPaybleAmt" formControlName="FinalAmount" name="netPaybleAmt"
-                                readonly style="font-weight:500;font-size: 15px;text-align: right;">
-
-                        </mat-form-field> -->
-                        <span style="margin-right: 20px;color: rgb(11, 78, 104);font-weight: bold;">Pharmacy Amount :
-                            {{netPaybleAmt}}</span>
-                    </div>
-                </div>
-            </form>
+            </div>
         </mat-drawer>
 
 
@@ -235,7 +239,8 @@
         <div class="example-sidenav-content" style="padding-left: 10px;">
 
             <div class="filter-div" style="display: flex; align-items: center;">
-                <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me" style="margin-right: 20px;margin-left:20px ;">
+                <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me"
+                    style="margin-right: 20px;margin-left:20px ;">
                     Show All Charges
                 </mat-checkbox>
                 <div>
@@ -279,7 +284,7 @@
 
             </div>
             <mat-tab-group mat-align-tabs="start" class="tabs-group" mat-stretch-tabs style="margin-right: 7px;"
-            [disableRipple]="true" mat-align-tabs="center">
+                [disableRipple]="true" mat-align-tabs="center">
 
                 <mat-card>
                     <mat-tab label="Charges List" style="margin-left: 7px; min-width: 25px !important;
@@ -619,11 +624,10 @@
 
                             <mat-header-row class="accent" *matHeaderRowDef="PrevBillColumns; sticky: true">
                             </mat-header-row>
-                           
+
                             <mat-row *matRowDef="let contact; columns: PrevBillColumns;"
-                           
-                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                           
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
                             <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':PrevBillColumns!=null}">
                             </mat-footer-row>
                             <mat-footer-row *matFooterRowDef="['noData']"
@@ -638,11 +642,13 @@
             <div class="table-footer">
 
                 <div class="net-amt">
-                    <span class="net-amt-label">No of Items:</span>&nbsp;<span class="net-amt-value"
-                        >{{chargeslist.length }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="net-amt-label">No of Items:</span>&nbsp;<span
+                        class="net-amt-value">{{chargeslist.length }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                     <!-- <span class="net-amt-label">Net Amount:</span>&nbsp; -->
-                    <span class="net-amt-value" style="margin-left: 300px;">Total Amt :{{getTotalAmtSum(dataSource.data) | currency:'INR' }}</span>
-                    <span class="net-amt-value" style="margin-left: 170px;">Net Amt :{{getNetAmtSum(dataSource.data) | currency:'INR' }}</span>
+                    <span class="net-amt-value" style="margin-left: 300px;">Total Amt :{{getTotalAmtSum(dataSource.data)
+                        | currency:'INR' }}</span>
+                    <span class="net-amt-value" style="margin-left: 170px;">Net Amt :{{getNetAmtSum(dataSource.data) |
+                        currency:'INR' }}</span>
                 </div>
             </div>
 
@@ -655,10 +661,10 @@
                     <div class="row row-container" style="width: 100%;">
                         <!-- <div class="som"> -->
                         <div class=" amount-section" style="width: 100%;margin-left: 5px;">
-                          
+
                             <div fxLayout="row">
                                 <!-- class="cdk-visually-hidden" -->
-                               
+
 
                                 <mat-checkbox (change)="Adminchange($event)" (checked)=true>Admin
                                     Charges</mat-checkbox>
@@ -699,7 +705,7 @@
                                     <input matInput name="Remark" formControlName="Remark">
                                 </mat-form-field>
 
-                              
+
                                 <!-- <mat-form-field appearance="outline" fxFlex="8%" style="margin-left:500px;">
                                     <mat-label>Phar Cash</mat-label>
                                     <input matInput [(ngModel)]="vpharcash" formControlName="Pharcash"
@@ -738,7 +744,8 @@
                                         <input matInput name="ipcash" formControlName="vIpCash" [(ngModel)]="vPharcash" readonly style="color: rgb(4, 13, 97);">
                                     </mat-form-field> -->
 
-                                    <mat-checkbox formControlName="GenerateBill" (checked)=true style="margin-left: 30px;">Generate
+                                    <mat-checkbox formControlName="GenerateBill" (checked)=true
+                                        style="margin-left: 30px;">Generate
                                         Bill</mat-checkbox>
                                     <button class="next-btn" (click)="getInterimData()"
                                         style="margin-left: 10px;">Interim</button>
