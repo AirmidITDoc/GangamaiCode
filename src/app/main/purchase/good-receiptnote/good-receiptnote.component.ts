@@ -53,7 +53,7 @@ export class GoodReceiptnoteComponent implements OnInit {
   ];
 
   displayedColumns1 = [
-    //"select",
+    "select",
     "ItemName",
     "BatchNo",
     "BatchExpDate",
