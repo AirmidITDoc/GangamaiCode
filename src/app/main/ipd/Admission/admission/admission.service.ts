@@ -189,10 +189,15 @@ public AdmissionUpdate(employee)
   return this._httpClient.post("InPatient/NewAdmissionUpdate",employee);
 }
 
+// public RegisteredAdmissionInsert(employee)
+// {    
+//   return this._httpClient.post("InPatient/RegisteredAdmissionSave",employee);
+// }
 public RegisteredAdmissionInsert(employee)
 {    
-  return this._httpClient.post("InPatient/RegisteredAdmissionSave",employee);
+  return this._httpClient.post("InPatient/NewAdmissionUpdate",employee);
 }
+
 
 public regInsert(employee)
 {    

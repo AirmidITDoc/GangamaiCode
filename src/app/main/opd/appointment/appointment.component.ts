@@ -1637,6 +1637,7 @@ export class AppointmentComponent implements OnInit {
    
     if (this.patienttype != 2) {
       this.CompanyId = 0;
+      
     } else if (this.patienttype == 2) {
       this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId;
     }
@@ -2454,7 +2455,7 @@ export class AppointmentComponent implements OnInit {
 
   AdList: boolean = false;
   viewgetPatientAppointmentReportPdf(obj,Pflag) {
-   
+   debugger
    let VisitId;
     if(Pflag){
       VisitId=obj.VisitId
