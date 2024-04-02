@@ -26,6 +26,8 @@ export class StockAdjustmentService {
   createUserForm() {
     return this._formBuilder.group({
       ItemID: [''],
+      BatchEdit:[''],
+      ExpDateEdit:['']
     });
   }
    
@@ -39,7 +41,10 @@ export class StockAdjustmentService {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",Param)
   }
   public StockAdjSave(param){
-    return this._httpClient.post('Pharmacy/InsertStockadjustment',param);
+    return this._httpClient.post('InventoryTransaction/StockAdjustment',param);
+  }
+  public BatchAdjSave(param){//InventoryTransaction/BatchAdjustmen
+    return this._httpClient.post('InventoryTransaction/BatchAdjustment',param);
   }
   
 }

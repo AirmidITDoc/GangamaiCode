@@ -1,134 +1,174 @@
-<div class="dialog-content-wrapper">
-    <mat-toolbar matDialogTitle class="mat-accent m-0">
-        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <h3>{{_StoreService.myform.controls.StoreId.value?"Modify Store Master":"New
+<div id="content" class="simple page-layout left-sidebar inner-scroll inner-sidebar">
+    <mat-toolbar style="width: 100%;justify-content: space-between;height:40px;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">menu
+            </mat-icon>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <h3 style="color: white;">{{_StoreService.myform.controls.StoreId.value?"Modify Store Master":"New
                 Store Master"}}</h3>
-            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-toolbar-row>
+        </div>
+        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="color: white;">
+            <mat-icon>close</mat-icon>
+        </button>
     </mat-toolbar>
-</div>
 
-<br />
-<br />
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
 
-<form [formGroup]="_StoreService.myform">
-    <input type="hidden" name="StoreId" formControlName="StoreId">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <form [formGroup]="_StoreService.myform">
+                            <input type="hidden" name="StoreId" formControlName="StoreId" [(ngModel)]="vStoreId">
+
+                            <div>
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>StoreShortName</mat-label>
+                                    <input name="StoreShortName" formControlName="StoreShortName"
+                                        [(ngModel)]="vshortName" placeholder="Select StoreShortName Name" matInput
+                                        required type="text" (keyup.enter)="focusNext('StoreName')">
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>StoreName</mat-label>
+                                    <input name="StoreName" formControlName="StoreName" placeholder="Select Store Name"
+                                        matInput required [(ngModel)]="vStoreName" type="text" id="StoreName"
+                                        (keyup.enter)="focusNext('IndentPrefix')" #StoreName>
+                                </mat-form-field>
+                            </div>
 
 
-    <div>
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="StoreShortName" formControlName="StoreShortName" placeholder="Select StoreShortName Name"
-                matInput required>
-            <mat-error>Please enter StoreShortName </mat-error>
-        </mat-form-field>
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" aria-setsize="70">
 
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="StoreName" formControlName="StoreName" placeholder="Select Store Name" matInput required>
-            <mat-error>Please enter StoreName </mat-error>
-        </mat-form-field>
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>IndentPrefix</mat-label>
+                                    <input name="IndentPrefix" formControlName="IndentPrefix" type="text"
+                                        [(ngModel)]="vIndentPrefix" placeholder="Select IndentPrefix Name" matInput
+                                        required text-length="50" (keyup.enter)="focusNext('IndentNo')"
+                                        id="IndentPrefix" #IndentPrefix>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>IndentNo</mat-label>
+                                    <input name="IndentNo" formControlName="IndentNo" placeholder="Select IndentNo"
+                                        matInput required size="30" type="number" OnlyNumber [(ngModel)]="vIndentNo"
+                                        (keyup.enter)="focusNext('GrnreturnNoPrefix')" id="IndentNo">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>GrnreturnNoPrefix</mat-label>
+                                    <input name="GrnreturnNoPrefix" placeholder="Enter GrnreturnNoPrefix"
+                                        [(ngModel)]="vGrnreturnNoPrefix" formControlName="GrnreturnNoPrefix" matInput
+                                        required type="text" (keyup.enter)="focusNext('GrnreturnNo')"
+                                        id="GrnreturnNoPrefix">
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>GrnreturnNo</mat-label>
+                                    <input name="GrnreturnNo" placeholder="Enter GrnreturnNo" type="number" OnlyNumber
+                                        formControlName="GrnreturnNo" matInput required [(ngModel)]="vGrnreturnNo"
+                                        (keyup.enter)="focusNext('PurchasePrefix')" id="GrnreturnNo">
+                                </mat-form-field>
+                            </div>
+
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>PurchasePrefix</mat-label>
+                                    <input name="PurchasePrefix" placeholder="Enter PurchasePrefix"
+                                        [(ngModel)]="vPurchasePrefix" formControlName="PurchasePrefix" matInput required
+                                        type="text" (keyup.enter)="focusNext('PurchaseNo')" id="PurchasePrefix">
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>PurchaseNo</mat-label>
+                                    <input name="PurchaseNo" placeholder="PurchaseNo" formControlName="PurchaseNo"
+                                        matInput required type="number" OnlyNumber [(ngModel)]="vPurchaseNo"
+                                        (keyup.enter)="focusNext('IssueToDeptPrefix')" id="PurchaseNo">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>IssueToDeptPrefix</mat-label>
+                                    <input name="IssueToDeptPrefix" placeholder="Select IssueToDeptPrefix"
+                                        [(ngModel)]="vIssueToDeptPrefix" formControlName="IssueToDeptPrefix" matInput
+                                        required type="text" (keyup.enter)="focusNext('IssueToDeptNo')"
+                                        id="IssueToDeptPrefix">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>IssueToDeptNo</mat-label>
+                                    <input name="IssueToDeptNo" placeholder="Enter IssueToDeptNo"
+                                        [(ngModel)]="vIssueToDeptNo" formControlName="IssueToDeptNo" matInput required
+                                        type="number" OnlyNumber (keyup.enter)="focusNext('GrnPrefix')"
+                                        id="IssueToDeptNo">
+                                </mat-form-field>
+                            </div>
+
+                            <div>
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>GrnPrefix</mat-label>
+                                    <input name="GrnPrefix" placeholder="Select GrnPrefix" formControlName="GrnPrefix"
+                                        matInput required type="text" [(ngModel)]="vGrnPrefix"
+                                        (keyup.enter)="focusNext('GrnNo')" id="GrnPrefix">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>GrnNo</mat-label>
+                                    <input name="GrnNo" placeholder="Enter GrnNo" formControlName="GrnNo" matInput
+                                        required type="number" OnlyNumber [(ngModel)]="vGrnNo"
+                                        (keyup.enter)="focusNext('ReturnFromDeptNoPrefix')" id="GrnNo">
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>ReturnFromDeptNoPrefix</mat-label>
+                                    <input name="ReturnFromDeptNoPrefix" placeholder="Enter ReturnFromDeptNoPrefix"
+                                        [(ngModel)]="vReturnFromDeptNoPrefix" formControlName="ReturnFromDeptNoPrefix"
+                                        matInput required type="text" (keyup.enter)="focusNext('ReturnFromDeptNo')"
+                                        id="ReturnFromDeptNoPrefix">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                    <mat-label>ReturnFromDeptNo</mat-label>
+                                    <input name="ReturnFromDeptNo" placeholder="Enter ReturnFromDeptNo"
+                                        [(ngModel)]="vReturnFromDeptNo" formControlName="ReturnFromDeptNo" matInput
+                                        required type="number" OnlyNumber (keyup.enter)="focusNext('IsActive')"
+                                        id="ReturnFromDeptNo">
+                                </mat-form-field>
+
+                            </div>
+
+                            <div>
+                                <!-- <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='1'
+                                    [(ngModel)]="vDeleted">
+                                    <mat-radio-button value='1' class="mr-sm-12"
+                                        fxFlex="10%">IsActive</mat-radio-button>
+                                    <mat-radio-button value='0' class="mr-sm-12"
+                                        fxFlex="20%">IsDeactive</mat-radio-button>
+                                </mat-radio-group> -->
+
+                                <mat-radio-group [(ngModel)]="vDeleted" formControlName="IsDeleted">
+                                    <mat-radio-button [value]="1">IsActive</mat-radio-button>
+                                    <mat-radio-button [value]="0"> IsDeactive</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div fxLayoutAlign="end">
+                                <div class="sales-footer-buttons gap-8">
+                                    <button class="btn btn-primary" (click)="onSubmit()"
+                                        [disabled]="Savebtn">Save</button>&nbsp;
+                                    <button class="btn btn-danger-outline" (click)="onClear()">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" aria-setsize="70">
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="IndentPrefix" formControlName="IndentPrefix" placeholder="Select IndentPrefix Name" matInput
-                required text-length="50">
-            <mat-error>Please enter IndentPrefix </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="IndentNo" formControlName="IndentNo" placeholder="Select IndentNo" matInput required size="30">
-            <mat-error>Please enter IndentNo </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="GrnreturnNoPrefix" placeholder="Enter GrnreturnNoPrefix" formControlName="GrnreturnNoPrefix"
-                matInput required>
-            <mat-error>Please enter GrnreturnNoPrefix </mat-error>
-        </mat-form-field>
-
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="GrnreturnNo" placeholder="Enter GrnreturnNo" formControlName="GrnreturnNo" matInput required>
-            <mat-error>Please enter GrnreturnNo</mat-error>
-        </mat-form-field>
-
-
-
-    </div>
-
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="PurchasePrefix" placeholder="Enter PurchasePrefix" formControlName="PurchasePrefix" matInput
-                required>
-            <mat-error>Please enter PurchasePrefix </mat-error>
-        </mat-form-field>
-
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="PurchaseNo" placeholder="PurchaseNo" formControlName="PurchaseNo" matInput required>
-            <mat-error>Please enter PurchaseNo</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="IssueToDeptPrefix" placeholder="Select IssueToDeptPrefix" formControlName="IssueToDeptPrefix"
-                matInput required>
-            <mat-error>Please enter IssueToDeptPrefix </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="IssueToDeptNo" placeholder="Enter IssueToDeptNo" formControlName="IssueToDeptNo" matInput
-                required>
-            <mat-error>Please enter IssueToDeptNo </mat-error>
-        </mat-form-field>
-    </div>
-
-    <div>
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="GrnPrefix" placeholder="Select GrnPrefix" formControlName="GrnPrefix" matInput required>
-            <mat-error>Please enter GrnPrefix </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="GrnNo" placeholder="Enter GrnNo" formControlName="GrnNo" matInput required>
-            <mat-error>Please enter GrnNo </mat-error>
-        </mat-form-field>
-
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="ReturnFromDeptNoPrefix" placeholder="Enter ReturnFromDeptNoPrefix"
-                formControlName="ReturnFromDeptNoPrefix" matInput required>
-            <mat-error>Please enter ReturnFromDeptNoPrefix </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-            <input name="ReturnFromDeptNo" placeholder="Enter ReturnFromDeptNo" formControlName="ReturnFromDeptNo"
-                matInput required>
-            <mat-error>Please enter ReturnFromDeptNo </mat-error>
-        </mat-form-field>
-
-    </div>
-    <div>
-
-        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
-            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsDeactive</mat-radio-button>
-        </mat-radio-group>
-    </div>
-
-
-
-
-</form>
-
-
-<div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-    <div class="button-row">
-        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-            [disabled]="_StoreService.myform.invalid">Save</button>
-        <button mat-raised-button color="warn" (click)="onClose()">Close</button>
-
-    </div>
-</div>

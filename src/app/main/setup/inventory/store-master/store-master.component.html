@@ -1,52 +1,40 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
-
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+   
+    <mat-toolbar style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">menu
+            </mat-icon>
 
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"  style="color: white;">
                 Store Master
             </span>
         </div>
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center">Add
-                <mat-icon color="Primary" title=" Add New Store ">add_to_photos</mat-icon>
+        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+            <button mat-raised-button (click)="onAdd()" fxLayoutAlign="center center" class="py-8">
+                <mat-icon  title=" Add New Store ">add_to_photos</mat-icon>Add
             </button>
-
         </div>
     </mat-toolbar>
-    <!-- / HEADER -->
 
-
-    <!-- CONTENT -->
     <div class="content">
-
-        <!-- SIDEBAR -->
-        <!-- / SIDEBAR -->
-
-        <!-- CENTER -->
         <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <!-- CONTENT -->
             <div class="content-card">
-
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
 
-                        <div fxlayout="row" style="
-                        background-color: white;
-                        padding: 5px 10px 5px 10px;
-                    ">
+                        <div fxlayout="row" style="background-color: white;padding: 5px 10px 5px 10px; ">
                             <form [formGroup]="_StoreService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Store Name" autocomplete="off"
-                                            name="StoreNameSearch" formControlName="StoreNameSearch" />
+                                            name="StoreNameSearch" formControlName="StoreNameSearch" (keyup)="onSearch()" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
+                                            (click)="onSearchClear()" >
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -179,9 +167,9 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="!element.IsDeleted"
-                                                class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="element.IsDeleted"
+                                                class="active-icon green-600 s-16">check_circle</mat-icon>
+                                            <mat-icon *ngIf="!element.IsDeleted"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
@@ -193,8 +181,8 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                    title="Edit Menu">launch</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(row.SupplierId)"
+                                                    title="Edit Menu">edit</mat-icon></button>
+                                            <button mat-icon-button (click)="onDeactive(row.StoreId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
 
                                         </mat-cell>
@@ -224,27 +212,13 @@
                                         [ngClass]="{'hide':!(DSStoreMasterList!=null && DSStoreMasterList.data.length==0)}"></mat-footer-row>
                                 </mat-table>
 
-                                <!-- <mat-card *ngIf="isLoading"
-                                    style="display: flex; justify-content: center; align-items: center; background: white;">
-                                    <mat-progress-spinner color="primary" mode="indeterminate">
-                                    </mat-progress-spinner>
-                                </mat-card> -->
-
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
                                     showFirstLastButtons></mat-paginator>
                             </div>
-
                         </div>
                     </div>
-
-
-
-
                 </div>
             </div>
-            <!-- / CONTENT -->
         </div>
-        <!-- / CENTER -->
     </div>
-    <!-- / CONTENT-->
 </div>

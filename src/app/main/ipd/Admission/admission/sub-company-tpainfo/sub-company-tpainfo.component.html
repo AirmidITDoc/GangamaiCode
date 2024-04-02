@@ -107,11 +107,11 @@
 
               <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <mat-label>Mobile Number</mat-label>
-                <input name="Mobile" formControlName="MobileNo" placeholder="Phone Number" matInput type="number" #phone
+                <input name="MobileNo" formControlName="MobileNo" placeholder="Phone Number" matInput type="number" #phone
                   (keydown)="onEnterphone($event)" required value="9876658688"
                   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
                 <mat-error class="error"
-                  *ngIf="SubcompanyFormGroup.get('Mobile').invalid && SubcompanyFormGroup.get('Mobile').touched">Phone
+                  *ngIf="SubcompanyFormGroup.get('MobileNo').invalid && SubcompanyFormGroup.get('MobileNo').touched">Phone
                   number is required
                 </mat-error>
               </mat-form-field>

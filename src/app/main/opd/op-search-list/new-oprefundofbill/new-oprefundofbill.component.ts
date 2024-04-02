@@ -263,7 +263,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     debugger;
     
     var m_data = {
-      "RegNo": 5,// this.vOPIPId || this.RegId
+      "RegNo": this.vOPIPId || this.RegId
             
     }
     

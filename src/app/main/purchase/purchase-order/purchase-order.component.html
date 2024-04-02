@@ -318,10 +318,13 @@
                                                                 [ngClass]="{'hide':!(dsPurchaseOrder!=null && dsPurchaseOrder.data.length==0)}">
                                                             </mat-footer-row>
                                                         </mat-table>
-
-                                                        <mat-paginator [pageSizeOptions]="[6, 10, 25, 100]"
-                                                            [pageSize]="6" showFirstLastButtons>
-                                                        </mat-paginator>
+                                                        <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12" [length]="resultsLength"
+                                                        showFirstLastButtons (page)="getPurchaseOrderList()">
+                                                    </mat-paginator>
+                                                    <!-- [length]="resultsLength"  -->
+                                                        <!-- <mat-paginator #paginator [pageSizeOptions]="[12, 24, 35, 100]"
+                                                            [pageSize]="12" showFirstLastButtons>
+                                                        </mat-paginator> -->
                                                     </div>
                                                 </div>
 

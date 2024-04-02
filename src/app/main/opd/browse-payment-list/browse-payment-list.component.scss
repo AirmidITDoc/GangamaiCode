@@ -1,170 +1,170 @@
-@import "src/@fuse/scss/fuse";
+// @import "src/@fuse/scss/fuse";
 
-app-browse-payment-list{
-    .loading-spinner {
-        font-size: 50px;
-        color: #319fc0;
-    }
+// app-browse-payment-list{
+//     .loading-spinner {
+//         font-size: 50px;
+//         color: #319fc0;
+//     }
 
-    .loading-overlay {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        z-index: 2;
-      }
+//     .loading-overlay {
+//         align-items: center;
+//         display: flex;
+//         justify-content: center;
+//         z-index: 2;
+//       }
       
-      .container {
-        width: 100%;
-      } 
-.mat-header-row {
-    width: 2000px;
-    max-width: 2000px;
-    min-width: 2000px;  
-    // min-height: 30px;     
-}
+//       .container {
+//         width: 100%;
+//       } 
+// .mat-header-row {
+//     width: 2000px;
+//     max-width: 2000px;
+//     min-width: 2000px;  
+//     // min-height: 30px;     
+// }
 
-.mat-row {
-    width: 2000px;
-    max-width: 2000px;
-    min-width: 2000px;           
-}
+// .mat-row {
+//     width: 2000px;
+//     max-width: 2000px;
+//     min-width: 2000px;           
+// }
 
-.mat-column-RegNo {
-    width:90px;
-    max-width: 90px;
-    min-height: 20px;  
-    min-width: 90px;
-}
+// .mat-column-RegNo {
+//     width:90px;
+//     max-width: 90px;
+//     min-height: 20px;  
+//     min-width: 90px;
+// }
 
-.mat-column-PatientName {
+// .mat-column-PatientName {
    
-    width: 250px;
-    max-width:250px;
-    min-width:250px;
-    text-align: left;
-    justify-content: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    overflow: hidden !important;
-    display: inline-flex;
-    display: inline;
-    margin-right: 20px;
-    padding-top: 10px;
-}
-.mat-column-TotalAmt {
-    width: 120px;
-    max-width: 120px;
-    min-width: 120px;
-    text-align: center;
+//     width: 250px;
+//     max-width:250px;
+//     min-width:250px;
+//     text-align: left;
+//     justify-content: left;
+//     white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     overflow: hidden !important;
+//     display: inline-flex;
+//     display: inline;
+//     margin-right: 20px;
+//     padding-top: 10px;
+// }
+// .mat-column-TotalAmt {
+//     width: 120px;
+//     max-width: 120px;
+//     min-width: 120px;
+//     text-align: center;
     
-}
-.mat-column-BalanceAmt {
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
-    text-align: center;
+// }
+// .mat-column-BalanceAmt {
+//     width: 110px;
+//     max-width: 110px;
+//     min-width: 110px;
+//     text-align: center;
     
-}
+// }
 
-.mat-column-Remark {
-    width:100px;
-    max-width: 100px;
-    min-width: 100px;
-    text-align: center;
+// .mat-column-Remark {
+//     width:100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     text-align: center;
     
-}
+// }
 
-.mat-column-PaymentDate{
-    width:90px;
-    max-width: 90px;
-    min-width: 90px;
-    text-align: center;
-}
-.mat-column-CashPayAmount{
-    width: 100px;
-    max-width:100px;
-    min-width:100px;
-    text-align: center;
+// .mat-column-PaymentDate{
+//     width:90px;
+//     max-width: 90px;
+//     min-width: 90px;
+//     text-align: center;
+// }
+// .mat-column-CashPayAmount{
+//     width: 100px;
+//     max-width:100px;
+//     min-width:100px;
+//     text-align: center;
     
-}
-.mat-column-ChequePayAmount{
-    width: 120px;
-    max-width:120px;
-    min-width:120px;
-    text-align: center;
+// }
+// .mat-column-ChequePayAmount{
+//     width: 120px;
+//     max-width:120px;
+//     min-width:120px;
+//     text-align: center;
     
-}
-.mat-column-CardPayAmount{
-    width: 90px;
-    max-width:90px;
-    min-width:90px;
-    text-align: center;
+// }
+// .mat-column-CardPayAmount{
+//     width: 90px;
+//     max-width:90px;
+//     min-width:90px;
+//     text-align: center;
     
-}
-.mat-column-AdvanceUsedAmount{
-    width: 130px;
-    max-width:130px;
-    min-width:130px;
-    text-align: center;
+// }
+// .mat-column-AdvanceUsedAmount{
+//     width: 130px;
+//     max-width:130px;
+//     min-width:130px;
+//     text-align: center;
     
-}
+// }
 
-.mat-column-UserName {
-    width: 150px;
-    max-width:150px;
-    min-width:150px;
-    text-align: left;
-    justify-content: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    overflow: hidden !important;
-    display: inline-flex;
-    display: inline;
-    margin-right: 20px;
-    padding-top: 10px;
-}
-.mat-column-PBillNo {
-    width:90px;
-    max-width: 90px;
-    min-width: 90px;
-    text-align: center;
-}
-.mat-column-ReceiptNo {
-    width:90px;
-    max-width: 90px;
-    min-width: 90px;
-    text-align: center;
-}
-.mat-column-PayDate {
-    width:100px;
-    max-width: 100px;
-    min-width: 100px;
-    text-align: center;
-}
+// .mat-column-UserName {
+//     width: 150px;
+//     max-width:150px;
+//     min-width:150px;
+//     text-align: left;
+//     justify-content: left;
+//     white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     overflow: hidden !important;
+//     display: inline-flex;
+//     display: inline;
+//     margin-right: 20px;
+//     padding-top: 10px;
+// }
+// .mat-column-PBillNo {
+//     width:90px;
+//     max-width: 90px;
+//     min-width: 90px;
+//     text-align: center;
+// }
+// .mat-column-ReceiptNo {
+//     width:90px;
+//     max-width: 90px;
+//     min-width: 90px;
+//     text-align: center;
+// }
+// .mat-column-PayDate {
+//     width:100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     text-align: center;
+// }
 
-.mat-column-PaidAmount{
-    width: 110px;
-    max-width:110px;
-    min-width:110px;
-    text-align: center;
+// .mat-column-PaidAmount{
+//     width: 110px;
+//     max-width:110px;
+//     min-width:110px;
+//     text-align: center;
     
-}
-.mat-column-NEFTPayAmount{
-    width: 110px;
-    max-width:110px;
-    min-width:110px;
-    text-align: center;
+// }
+// .mat-column-NEFTPayAmount{
+//     width: 110px;
+//     max-width:110px;
+//     min-width:110px;
+//     text-align: center;
     
-}
-.mat-column-PayTMAmount{
-    width: 120px;
-    max-width:120px;
-    min-width:120px;
-    text-align: center;
+// }
+// .mat-column-PayTMAmount{
+//     width: 120px;
+//     max-width:120px;
+//     min-width:120px;
+//     text-align: center;
     
-}
+// }
 
 
-}
+// }

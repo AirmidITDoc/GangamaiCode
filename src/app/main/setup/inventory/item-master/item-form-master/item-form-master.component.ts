@@ -817,8 +817,7 @@ export class ItemFormMasterComponent implements OnInit {
 
         
 
-        if ((this.vHSNcode == undefined || this.vItemName == undefined || this.vItemTypeID == undefined || this.vItemCatageory == undefined ||
-            this.vItemGeneric == undefined || this.vItemClass == undefined || this.vDrugType == undefined || this.vManufId == undefined || this.vCompanyId == undefined)) {
+        if ((this.vHSNcode == undefined || this.vItemName == undefined || this.vItemTypeID == undefined )) {
             this.toastr.warning('Please select All Data Type.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -843,15 +842,15 @@ export class ItemFormMasterComponent implements OnInit {
                     insertItemMaster: {
                        
                         itemName: this._itemService.myform.get("ItemName").value || "%",
-                        itemTypeId: this._itemService.myform.get("ItemTypeID").value.ItemTypeId,
-                        ItemCategaryId: this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId,
+                        itemTypeId: this._itemService.myform.get("ItemTypeID").value.ItemTypeId || 0,
+                        ItemCategaryId: this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId || 0,
                         itemGenericNameId: this._itemService.myform.get("ItemGenericNameId").value.ItemGenericNameId || 0,
-                        itemClassId: this._itemService.myform.get("ItemClassId").value.ItemClassId,
+                        itemClassId: this._itemService.myform.get("ItemClassId").value.ItemClassId || 0,
                         purchaseUOMId: this._itemService.myform.get("PurchaseUOMId").value.UnitOfMeasurementId || 0,
-                        stockUOMId: this._itemService.myform.get("StockUOMId").value.UnitOfMeasurementId || "0",
-                        conversionFactor: this._itemService.myform.get("ConversionFactor").value || "%",
-                        currencyId: this._itemService.myform.get("CurrencyId").value.CurrencyId,
-                        taxPer: this._itemService.myform.get("TaxPer").value || 0,
+                        stockUOMId: this._itemService.myform.get("StockUOMId").value.UnitOfMeasurementId || 0,
+                        conversionFactor: this._itemService.myform.get("ConversionFactor").value || 0,
+                        currencyId: this._itemService.myform.get("CurrencyId").value.CurrencyId || 0,
+                        taxPer: 0,
                         isDeleted: this._itemService.myform.get("IsDeleted").value || 0,
                         addedBy: 1,
                         isBatchRequired: this._itemService.myform.get("IsBatchRequired").value || 0,
@@ -920,15 +919,15 @@ export class ItemFormMasterComponent implements OnInit {
 
                         itemShortName: '%',
                         itemName: this._itemService.myform.get("ItemName").value || "%",
-                        itemTypeID: this._itemService.myform.get("ItemTypeID").value.ItemTypeId,
-                        ItemCategaryId: this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId,
+                        itemTypeID: this._itemService.myform.get("ItemTypeID").value.ItemTypeId || 0,
+                        ItemCategaryId: this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId || 0,
                         itemGenericNameId: this._itemService.myform.get("ItemGenericNameId").value.ItemGenericNameId || 0,
-                        itemClassId: this._itemService.myform.get("ItemClassId").value.ItemClassId,
+                        itemClassId: this._itemService.myform.get("ItemClassId").value.ItemClassId || 0,
                         purchaseUOMId: this._itemService.myform.get("PurchaseUOMId").value.UnitOfMeasurementId,
-                        stockUOMId: this._itemService.myform.get("StockUOMId").value.UnitOfMeasurementId || "0",
-                        conversionFactor: this._itemService.myform.get("ConversionFactor").value || "0",
-                        currencyId: this._itemService.myform.get("CurrencyId").value.CurrencyId || "0",
-                        taxPer: this._itemService.myform.get("TaxPer").value || "0",
+                        stockUOMId: this._itemService.myform.get("StockUOMId").value.UnitOfMeasurementId || 0,
+                        conversionFactor: this._itemService.myform.get("ConversionFactor").value || 0,
+                        currencyId: this._itemService.myform.get("CurrencyId").value.CurrencyId || 0,
+                        taxPer: 0,
                         isBatchRequired: 0,//Boolean(JSON.parse(this._itemService.myform.get("IsBatchRequired").value)),
                         isDeleted: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsDeleted").value)),
                         upDatedBy: 1, // this.accountService.currentUserValue.user.id,

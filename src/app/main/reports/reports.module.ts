@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 
 
+
 const appRoutes: Routes = [
     // {
     //     path: "simplereport",

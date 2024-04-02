@@ -9,19 +9,25 @@ export class WorkOrderService {
   myFormGroup:FormGroup;
   NewWorkForm:FormGroup
   WorkorderItemForm:FormGroup
-  WorkorderFinalForm:FormGroup
+  WorkorderFinalForm:FormGroup;
+  WorkOrderStoreForm:FormGroup;
 
 
   constructor(
     public _formBuilder:FormBuilder,
     public _httpClient:HttpClient
   ) 
-  { this.myFormGroup=this.createMyFormGroup();
+  { this.WorkOrderStoreForm = this.createStoreFrom();
+    this.myFormGroup=this.createMyFormGroup();
   this.NewWorkForm=this.createNewWorkForm()
   this.WorkorderItemForm=this.getWorOrderItemForm()
   this.WorkorderFinalForm=this.getPurchaseOrderFinalForm();
 }
-
+createStoreFrom() {
+  return this._formBuilder.group({
+    StoreId: [''],
+  })
+}
   createMyFormGroup(){
     return this._formBuilder.group({
       startdate: [(new Date()).toISOString()],
@@ -33,7 +39,6 @@ export class WorkOrderService {
   }
   createNewWorkForm(){
     return this._formBuilder.group({
-      StoreId:'',
       SupplierName:'',
       ItemName:'',
       ItemID:'',
@@ -44,7 +49,6 @@ export class WorkOrderService {
       DiscAmt:'',
       GST:'',
       GSTAmount:'',
-      VatAmt:'',
       NetAmount:'',
       Specification:'',
       Remark:[''],

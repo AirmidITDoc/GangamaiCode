@@ -349,9 +349,23 @@
                                     </div>
                                     <div class="gap-8" fxLayout="row" fxLayout.xs="column">
                                         <div fxFlex.gt-xs="60%" fxFlex.xs="100%">
-
                                             <mat-table #table matSort class="table2" [dataSource]="dsGrnItemList"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
+
+                                                <ng-container matColumnDef="select">
+                                                    <th mat-header-cell *matHeaderCellDef>
+                                                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                            [checked]="selection.hasValue()"
+                                                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                                        </mat-checkbox>
+                                                    </th>
+                                                    <td mat-cell *matCellDef="let row">
+                                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                                            (change)="$event ? selection.toggle(row) : null"
+                                                            [checked]="selection.isSelected(row)">
+                                                        </mat-checkbox>
+                                                    </td>
+                                                </ng-container>
 
                                                 <ng-container matColumnDef="ItemName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -438,7 +452,7 @@
 
                                                 <ng-container matColumnDef="VatPercentage">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        Vat</mat-header-cell>
+                                                        GST</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.VatPercentage}}%
                                                     </mat-cell>

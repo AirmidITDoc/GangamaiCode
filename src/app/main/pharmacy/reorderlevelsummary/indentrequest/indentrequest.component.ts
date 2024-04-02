@@ -155,7 +155,7 @@ export class IndentrequestComponent implements OnInit {
         });
       });
     }else{
-      this.toastr.warning('Please enter Indent Qty', 'Saved !', {
+      this.toastr.warning('Please enter Indent Qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-success',
       }); 
     }

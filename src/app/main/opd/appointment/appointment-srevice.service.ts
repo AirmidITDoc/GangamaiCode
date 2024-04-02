@@ -183,11 +183,11 @@ public documentdownloadInsert(employee){
 }
   // display Appointment list
   public getAppointmentList(employee) {
-    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_VisitDetailsList_1", employee)
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_VisitDetailsList_1_Pagi", employee)
   }
 
   public getAppointmentListold(employee) {
-    return this._httpClient.post("Generic/GetDataSetByProc?procName=RetrieveVisitDetailsList_1", employee)
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtvr_VisitDetailsList_1", employee)
   }
 
 

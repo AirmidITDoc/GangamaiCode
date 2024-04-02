@@ -33,6 +33,7 @@ export class GrnListComponent implements OnInit {
   filteredoptionsSupplier: Observable<string[]>;
   optionsSupplier:any;
   sIsLoading: string;
+  Onsave:boolean = true;
 
   dsGRNList = new MatTableDataSource<GRNList>();
   @ViewChild(MatSort) sort: MatSort;
@@ -99,6 +100,7 @@ export class GrnListComponent implements OnInit {
       this.SelectedArray.push(element);
     }
     console.log(this.SelectedArray)
+    this.Onsave=false;
   }
   onClear(){
     this._GRNReturnHeaderList.GRNListFrom.reset();
@@ -117,6 +119,7 @@ export class GrnListComponent implements OnInit {
       });
       return;
     }
+    
     this._dialogRef.close(this.SelectedArray);
   }
 }

@@ -9,7 +9,7 @@ export class MaterialConsumptionService {
 
   userFormGroup: FormGroup;
   SearchGroup :FormGroup;
-
+  FinalMaterialForm : FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
@@ -17,6 +17,7 @@ export class MaterialConsumptionService {
   ) { 
     this.userFormGroup = this.createUserForm();
     this.SearchGroup= this.createSearchFrom();
+    this.FinalMaterialForm = this.createfinalform();
   }
 
   createSearchFrom() {
@@ -37,8 +38,16 @@ export class MaterialConsumptionService {
       Rate:[''],
       Remark: [''],
       ItemID:[''],
-      Date:[''],
-      FooterRemark:['']
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+    });
+  }
+  createfinalform() {
+    return this._formBuilder.group({
+      Remark: [''],
+      MRPTotalAmount: [''],
+      PurTotalAmount:[''],
+      LandedTotalAmount:[''],
       
     });
   }

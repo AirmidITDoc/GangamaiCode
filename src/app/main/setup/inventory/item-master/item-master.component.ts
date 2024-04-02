@@ -93,6 +93,7 @@ export class ItemMasterComponent implements OnInit {
             ItemName:this._itemService.myformSearch.get("ItemNameSearch").value + "%" || "%",
             StoreID: this._loggedService.currentUserValue.user.storeId
         };
+        console.log(m_data)
         this._itemService.getItemMasterList(m_data).subscribe(
             (Menu) => {
                 this.DSItemMasterList.data = Menu as ItemMaster[];

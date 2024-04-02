@@ -60,5 +60,7 @@ public getDailycollectionview(FromDate,ToDate,AddedById){
   return this._httpClient.get("OutPatient/view-OPD-daily-collection?FromDate=" + FromDate+"&ToDate="+ToDate+ "&AddedById="+AddedById);
 }
 
-
+public getOpPaymentview(PaymentId){
+  return this._httpClient.get("OutPatient/view-OP-PaymentReceipt?PaymentId=" + PaymentId);
+}
 }

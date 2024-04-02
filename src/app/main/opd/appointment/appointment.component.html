@@ -360,29 +360,29 @@
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-150">
                                                         <span class="mat-header-text">Action</span>
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let row" class="w-150 gap-4">
+                                                    <mat-cell *matCellDef="let contact" class="w-150 gap-4">
                                                         <button *ngIf="false" mat-icon-button matTooltip="how_to_reg"
-                                                            (click)="getRecord(row,m)">
+                                                            (click)="getRecord(contact,m)">
                                                             <mat-icon>how_to_reg</mat-icon>
                                                         </button>
                                                         <button *ngIf="false" mat-icon-button matTooltip="Edit"
-                                                            (click)="Billpayment(row)">
+                                                            (click)="Billpayment(contact)">
                                                             <mat-icon>edit</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="print"
-                                                            (click)="viewgetPatientAppointmentReportPdf(row,m)">
+                                                            (click)="viewgetPatientAppointmentReportPdf(contact,true)">
                                                             <mat-icon>print</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="Bill"
-                                                            (click)="Billpayment(row)">
+                                                            (click)="Billpayment(contact)">
                                                             <mat-icon>payment</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="CrossConsultation"
-                                                            (click)="NewCrossConsultation(row)">
+                                                            (click)="NewCrossConsultation(contact)">
                                                             <mat-icon>contacts</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="print i card"
-                                                            (click)="printIcard(row)">
+                                                            (click)="printIcard(contact)">
                                                             <mat-icon>print</mat-icon>
                                                         </button>
                                                         <button mat-icon-button [matMenuTriggerFor]="moreMenu"
@@ -431,7 +431,7 @@
                                                     [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                             </mat-table>
                                             <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
-                                                showFirstLastButtons [length]="resultsLength" (page)="getVisitList()">
+                                                showFirstLastButtons [length]="resultsLength" (page)="getVisitList1()">
                                             </mat-paginator>
                                             <div style="display: none;">
                                                 <div id="i-card" *ngIf="objICard">
@@ -613,7 +613,7 @@
                                                     <mat-form-field appearance="outline">
                                                         <mat-label>First Name</mat-label>
                                                         <input name="FirstName" formControlName="FirstName"
-                                                            placeholder="First Name" matInput required
+                                                            placeholder="First Name" matInput required type="text"
                                                             [(ngModel)]="registerObj.FirstName" #fname
                                                             (keydown)="onEnterfname($event)">
                                                         <mat-error
@@ -988,7 +988,7 @@
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select Company" matInput
                                                         formControlName="CompanyId" [matAutocomplete]="autoCompany"
-                                                        required>
+                                                        >
                                                     <span matSuffix style="display: flex;">
                                                         <mat-icon class="mat-icon-close"
                                                             (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
@@ -1013,7 +1013,7 @@
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select SubCompany" matInput
                                                         formControlName="SubCompanyId"
-                                                        [matAutocomplete]="autoSubCompany" required>
+                                                        [matAutocomplete]="autoSubCompany">
                                                     <span matSuffix style="display: flex;">
                                                         <mat-icon class="mat-icon-close"
                                                             (click)="VisitFormGroup.get('SubCompanyId').setValue(''); isSubCompanySelected = false;">close</mat-icon>
@@ -1137,7 +1137,7 @@
                                 <!-- (click)="nextClicked(VisitFormGroup)" -->
                                 <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
                                 <button class="btn btn-primary " color="accent"
-                                    (click)="OnSaveAppointmentwithoutphoto()"
+                                    (click)="onSave()"
                                     [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid">
                                     <span>Save</span>
                                 </button>

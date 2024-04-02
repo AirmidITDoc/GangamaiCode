@@ -193,7 +193,14 @@ export class IPSettlementComponent implements OnInit {
 
 
   
-  viewgetSettlementReportPdf(PaymentId) {
+  viewgetSettlementReportPdf(contact,flag) {
+    console.log(contact)
+    let PaymentId
+    if(flag){
+      PaymentId=contact
+    }else{
+      PaymentId=contact.PaymentId
+    }
     setTimeout(() => {
       this.SpinLoading =true;
     //  this.AdList=true;
@@ -227,7 +234,7 @@ export class IPSettlementComponent implements OnInit {
 
     this.sIsLoading = 'loading-data';
 
-    this.regId=95645 || this.RegId;
+    this.regId=81774// this.RegId;
   
     let query ="Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
   
@@ -249,9 +256,9 @@ export class IPSettlementComponent implements OnInit {
   getCreditBillDetails(){
     debugger
     this.sIsLoading = 'loading-data';
-    this.regId=106549 || this.RegId;
+    this.regId=95572// this.RegId;
     
-    let query = "Select * from lvwBillIPD  where TransactionType =0 and companyid = 0 and RegID= " + this.regId + " and BalanceAmt>0";
+    let query = "Select * from lvwBillIPD  where TransactionType =0 and companyId = 0 and RegID= " + this.regId + " and BalanceAmt>0";
     console.log(query);
     this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
      this.dataSource1.data = Visit as CreditBilldetail[];
@@ -271,7 +278,7 @@ export class IPSettlementComponent implements OnInit {
     this.dataSource1.data =[];
     this.sIsLoading = 'loading-data';
   if(event == true){
-    let query = "Select * from lvwBill where companyid != 0  and BalanceAmt>0";
+    let query = "Select * from lvwBill where companyId != 0  and BalanceAmt>0";
     console.log(query);
     this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
      this.dataSource1.data = Visit as CreditBilldetail[];
@@ -370,7 +377,7 @@ debugger
             Swal.fire('Payment Done  !', 'Ip Settlemet Done Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                debugger
-                this.viewgetSettlementReportPdf(response);
+                this.viewgetSettlementReportPdf(response,true);
                 this._matDialog.closeAll();
               }
             });

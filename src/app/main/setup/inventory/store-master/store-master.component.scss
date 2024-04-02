@@ -1,190 +1,190 @@
-app-store-master {
-    .mat-header-row {
-        width: 2200px;
-        max-width: 2200px;
-        min-width: 2200px;
-        font-weight: bold;
-    }
-    .mat-row {
-        width: 2200px;
-        max-width: 2200px;
-        min-width: 2200px;
-    }
+// app-store-master {
+//     .mat-header-row {
+//         width: 2200px;
+//         max-width: 2200px;
+//         min-width: 2200px;
+//         font-weight: bold;
+//     }
+//     .mat-row {
+//         width: 2200px;
+//         max-width: 2200px;
+//         min-width: 2200px;
+//     }
 
-    .mat-column-StoreId {
-        width: 90px;
-        max-width: 90px;
-        min-width: 90px;
-    }
+//     .mat-column-StoreId {
+//         width: 90px;
+//         max-width: 90px;
+//         min-width: 90px;
+//     }
 
-    .mat-column-StoreShortName {
-        width: 140px;
-        max-width: 140px;
-        min-width: 140px;
-        text-align: left;
-        justify-content: left;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden !important;
-        display: inline-flex;
-        display: inline;
-        margin-right: 20px;
-        margin-top: 20px;
-    }
-    .mat-column-StoreName {
-        width: 140px;
-        max-width: 140px;
-        min-width: 140px;
-        text-align: left;
-        justify-content: left;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden !important;
-        display: inline-flex;
-        display: inline;
-        margin-right: 20px;
-        margin-top: 20px;
-    }
-    .mat-column-IndentPrefix {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-    .mat-column-IndentNo {
-        width: 90px;
-        max-width: 90px;
-        min-width: 90px;
-    }
-    .mat-column-PurchasePrefix {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-    }
-    .mat-column-PurchaseNo {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+//     .mat-column-StoreShortName {
+//         width: 140px;
+//         max-width: 140px;
+//         min-width: 140px;
+//         text-align: left;
+//         justify-content: left;
+//         white-space: nowrap;
+//         overflow: hidden;
+//         text-overflow: ellipsis;
+//         overflow: hidden !important;
+//         display: inline-flex;
+//         display: inline;
+//         margin-right: 20px;
+//         margin-top: 20px;
+//     }
+//     .mat-column-StoreName {
+//         width: 140px;
+//         max-width: 140px;
+//         min-width: 140px;
+//         text-align: left;
+//         justify-content: left;
+//         white-space: nowrap;
+//         overflow: hidden;
+//         text-overflow: ellipsis;
+//         overflow: hidden !important;
+//         display: inline-flex;
+//         display: inline;
+//         margin-right: 20px;
+//         margin-top: 20px;
+//     }
+//     .mat-column-IndentPrefix {
+//         width: 100px;
+//         max-width: 100px;
+//         min-width: 100px;
+//     }
+//     .mat-column-IndentNo {
+//         width: 90px;
+//         max-width: 90px;
+//         min-width: 90px;
+//     }
+//     .mat-column-PurchasePrefix {
+//         width: 120px;
+//         max-width: 120px;
+//         min-width: 120px;
+//     }
+//     .mat-column-PurchaseNo {
+//         width: 100px;
+//         max-width: 100px;
+//         min-width: 100px;
+//     }
 
-    .mat-column-GrnPrefix {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
+//     .mat-column-GrnPrefix {
+//         width: 100px;
+//         max-width: 100px;
+//         min-width: 100px;
+//     }
 
-    .mat-column-GrnNo {
-        width: 80px;
-        max-width: 80px;
-        min-width: 80px;
-    }
+//     .mat-column-GrnNo {
+//         width: 80px;
+//         max-width: 80px;
+//         min-width: 80px;
+//     }
 
-    .mat-column-GrnreturnNoPrefix {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-    }
+//     .mat-column-GrnreturnNoPrefix {
+//         width: 150px;
+//         max-width: 150px;
+//         min-width: 150px;
+//     }
 
-    .mat-column-GrnreturnNo {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-    .mat-column-IssueToDeptPrefix {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-    }
+//     .mat-column-GrnreturnNo {
+//         width: 100px;
+//         max-width: 100px;
+//         min-width: 100px;
+//     }
+//     .mat-column-IssueToDeptPrefix {
+//         width: 150px;
+//         max-width: 150px;
+//         min-width: 150px;
+//     }
 
-    .mat-column-IssueToDeptNo {
-        width: 140px;
-        max-width: 140px;
-        min-width: 140px;
-    }
+//     .mat-column-IssueToDeptNo {
+//         width: 140px;
+//         max-width: 140px;
+//         min-width: 140px;
+//     }
 
-    .mat-column-ReturnFromDeptNoPrefix {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
-    }
+//     .mat-column-ReturnFromDeptNoPrefix {
+//         width: 200px;
+//         max-width: 200px;
+//         min-width: 200px;
+//     }
 
-    .mat-column-ReturnFromDeptNo {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-    }
+//     .mat-column-ReturnFromDeptNo {
+//         width: 150px;
+//         max-width: 150px;
+//         min-width: 150px;
+//     }
 
-    .mat-column-AddedBy {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-    }
+//     .mat-column-AddedBy {
+//         width: 120px;
+//         max-width: 120px;
+//         min-width: 120px;
+//     }
 
-    .mat-column-IsDeleted {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
-        text-align: center;
-        justify-content: center;
-    }
+//     .mat-column-IsDeleted {
+//         width: 70px;
+//         max-width: 70px;
+//         min-width: 70px;
+//         text-align: center;
+//         justify-content: center;
+//     }
 
-    .mat-column-action {
-        // color: white !important;
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: right;
-        justify-content: right;
-    }
-    .mat-icon-button {
-        padding: 0;
-        min-width: 0;
-        width: 40px;
-        height: 20px;
-        flex-shrink: 0;
-        line-height: 20px;
-        border-radius: 50%;
-    }
-}
+//     .mat-column-action {
+//         // color: white !important;
+//         width: 100px;
+//         max-width: 100px;
+//         min-width: 100px;
+//         text-align: right;
+//         justify-content: right;
+//     }
+//     .mat-icon-button {
+//         padding: 0;
+//         min-width: 0;
+//         width: 40px;
+//         height: 20px;
+//         flex-shrink: 0;
+//         line-height: 20px;
+//         border-radius: 50%;
+//     }
+// }
 
-//sidebar
-#toggle,
-#container .e-btn.e-info:hover,
-#toggle:focus {
-    /* csslint allow: adjoining-classes*/
-    background: #00695c;
-    box-shadow: none;
-    border-radius: 0;
-    height: 39px;
-    width: 100px;
-}
+// //sidebar
+// #toggle,
+// #container .e-btn.e-info:hover,
+// #toggle:focus {
+//     /* csslint allow: adjoining-classes*/
+//     background: #00695c;
+//     box-shadow: none;
+//     border-radius: 0;
+//     height: 39px;
+//     width: 100px;
+// }
 
-#close,
-#close:hover,
-#close:active,
-#close:focus {
-    /* csslint allow: adjoining-classes*/
-    background: #fafafa;
-    color: black;
-}
+// #close,
+// #close:hover,
+// #close:active,
+// #close:focus {
+//     /* csslint allow: adjoining-classes*/
+//     background: #fafafa;
+//     color: black;
+// }
 
-#toggle,
-#container .e-btn.e-info:hover,
-#toggle:focus {
-    /* csslint allow: adjoining-classes*/
-    background: #00695c;
-    box-shadow: none;
-    border-radius: 0;
-    height: 39px;
-    width: 100px;
-}
+// #toggle,
+// #container .e-btn.e-info:hover,
+// #toggle:focus {
+//     /* csslint allow: adjoining-classes*/
+//     background: #00695c;
+//     box-shadow: none;
+//     border-radius: 0;
+//     height: 39px;
+//     width: 100px;
+// }
 
-#close,
-#close:hover,
-#close:active,
-#close:focus {
-    /* csslint allow: adjoining-classes*/
-    background: #fafafa;
-    color: black;
-}
+// #close,
+// #close:hover,
+// #close:active,
+// #close:focus {
+//     /* csslint allow: adjoining-classes*/
+//     background: #fafafa;
+//     color: black;
+// }

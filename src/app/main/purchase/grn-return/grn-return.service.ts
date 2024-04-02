@@ -49,6 +49,7 @@ export class GrnReturnService {
       SupplierId:'',
       CashType:['1'],
       start: [(new Date()).toISOString()],
+      Qty:['']
     });
   }
   createGRNList() {
@@ -74,9 +75,9 @@ export class GrnReturnService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  public GRNRetrunSave(Param){
-    return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
-  }
+  // public GRNRetrunSave(Param){
+  //   return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
+  // }
 
   public getGrnItemList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemList_by_Supplier_Name_For_GRNReturn",Param);
