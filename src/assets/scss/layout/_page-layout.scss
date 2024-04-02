@@ -85,4 +85,9 @@
             }
         }
     }
+    &.grid-container{
+     display: grid;   
+     grid-template-rows: 45px auto;
+     height: 100%;
+    }
 }

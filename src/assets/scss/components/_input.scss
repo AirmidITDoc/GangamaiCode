@@ -186,6 +186,15 @@
             }
         }
     }
+    &.padding-fix{
+        .mat-form-field-wrapper{
+            margin: 0;
+            padding: 0;
+            .mat-form-field-infix {
+                padding: 0.7em 0 0.7em 0;
+            }
+        }
+    }
 }
 .mat-form-field-auto {
     .mat-form-field {
