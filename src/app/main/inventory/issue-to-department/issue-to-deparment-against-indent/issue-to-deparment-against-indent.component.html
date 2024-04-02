@@ -100,7 +100,7 @@
                                 <mat-date-range-picker #picker></mat-date-range-picker>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex="30%">
+                            <!-- <mat-form-field appearance="outline" fxFlex="30%">
                                 <mat-label>From Store</mat-label>
                                 <mat-select formControlName="FromStoreId" name="FromStoreId">
                                     <mat-option></mat-option>
@@ -108,6 +108,24 @@
                                         {{m.StoreName}}
                                     </mat-option>
                                 </mat-select>
+                            </mat-form-field> -->
+
+                            <mat-form-field appearance="outline" fxFlex="30%">
+                                <mat-label>To Store</mat-label>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Store"
+                                    matInput formControlName="ToStoreId" [matAutocomplete]="auto2" required >
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_IssueToDep.IndentFrom.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_IssueToDep.IndentFrom.get('ToStoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto2="matAutocomplete" [displayWith]="getOptionTextStores">
+                                    <mat-option *ngFor="let option of filteredOptionsStore | async"
+                                        [value]="option">
+                                        {{option.StoreName}}
+                                    </mat-option>
+                                </mat-autocomplete>
                             </mat-form-field>
 
                             <mat-radio-group name="Status" formControlName="Status" fxFlex="20%" value="0"

@@ -327,7 +327,30 @@ export class IssueToDepartmentComponent implements OnInit {
             this._IssueToDep.StoreFrom.get('FromStoreId').setValue(this.FromStoreList1[0])
         });
     }
+    getCellCalculation(contact,Qty){
 
+        if(contact.Qty > contact.BalanceQty){
+            this.toastr.warning('Issue Qty cannot be greater than BalanceQty.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+              });
+              contact.Qty = 0;
+              contact.Qty = '';
+              contact.VatAmount = 0;
+              contact.TotalAmount = 0;
+            }
+            else{
+            if(contact.Qty > 0){
+                contact.TotalAmount = (parseFloat(contact.Qty) * parseFloat(contact.UnitRate)).toFixed(2);
+                contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.TotalAmount)) / 100).toFixed(2);
+              }
+            else{
+                contact.Qty = 0;
+                contact.Qty = '';
+                contact.VatAmount = 0;
+                contact.TotalAmount = 0;
+            }
+        }
+    }
     Itemchargeslist1: any = [];
     QtyBalchk: any = 0;
     Itemflag: boolean = false;
@@ -798,7 +821,7 @@ if(!DuplicateItem){
         }
     }
     getTotalamt(element) {
-        this.vFinalTotalAmount = (element.reduce((sum, { LandedRateandedTotal }) => sum += +(LandedRateandedTotal || 0), 0)).toFixed(2);
+        this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
         this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
         this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
         return this.vFinalTotalAmount;
@@ -1122,6 +1145,11 @@ if(!DuplicateItem){
             console.log('The dialog was closed - Insert Action', result);
             this.dsNewIssueList1.data = result;
             console.log(result)
+            const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].ToStoreId);
+            this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
+           // console.log(toSelectToStoreId)
+            //console.log(result[0].ToStoreId)
+            //this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(this.ToStoreList1[0]);
         });
     }
     IndentItemDetails(Param) {

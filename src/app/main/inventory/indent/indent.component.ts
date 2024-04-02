@@ -166,6 +166,7 @@ vToStoreId:any=0;
   getToStoreSearchList() {
     this._IndentService.getToStoreNameSearch().subscribe(data => {
       this.ToStoreList1 = data;
+      //console.log(this.ToStoreList1)
     });
   }
 
@@ -200,7 +201,7 @@ vToStoreId:any=0;
       
     this._IndentService.getToStoreNameSearch().subscribe(data => {
       this.ToStoreList = data;
-      console.log(this.ToStoreList)
+      //console.log(this.ToStoreList)
       if (this.vIndentId != 0) {
         const ddValue = this.ToStoreList.filter(c => c.StoreId == this.vToStoreId);
         this._IndentService.newIndentFrom.get('ToStoreId').setValue(ddValue[0]);
@@ -232,10 +233,11 @@ vToStoreId:any=0;
   getIndentItemName() {
     var Param = {
       "ItemName": `${this._IndentService.newIndentFrom.get('ItemName').value}%`,
-      "StoreId": this._IndentService.StoreFrom.get('FromStoreId').value.storeid
+      "StoreId": this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId
     }
     this._IndentService.getIndentNameList(Param).subscribe(data => {
       this.filteredOptions = data;
+      //console.log(this.filteredOptions)
       if (this.filteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {

@@ -119,7 +119,7 @@ export class StockAdjustmentComponent implements OnInit {
 
   getStockList() {
     var Param = {
-      "StoreId": 2,// this._loggedService.currentUserValue.user.storeId || 0,
+      "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
       "ItemId": this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0, //56784
     }
     console.log(Param)
@@ -183,7 +183,7 @@ export class StockAdjustmentComponent implements OnInit {
     this.vBatchNo = contact.BatchNo
     this.vExpDate = contact.BatchExpDate;
     this.vBatchEdit = contact.BatchEdit;
-    this.vExpDateEdit = contact.ExpDateEdit;
+    this.vExpDateEdit = contact.BatchExpDate;
     this.vStockId = contact.StockId;
   }
   onsaveStockAdj() {
@@ -202,6 +202,7 @@ export class StockAdjustmentComponent implements OnInit {
   }
 
   OnSaveStockAdjustment() {
+    this.sIsLoading = 'loading-data';
     if ((!this.dsStockAdjList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -254,7 +255,7 @@ export class StockAdjustmentComponent implements OnInit {
   lastDay2: string = '';
 
   CellcalculateLastDay(contact, inputDate: string) {
-    this.vBatchEdit = contact.BatchEdit;
+
     if (inputDate && inputDate.length === 6) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
@@ -272,14 +273,20 @@ export class StockAdjustmentComponent implements OnInit {
     } else {
       this.vlastDay = ' ';
     }
+    this.vBatchNo = contact.BatchNo
+    this.vExpDate = contact.BatchExpDate;
+    this.vBatchEdit = contact.BatchNo;
+    this.vExpDateEdit = contact.BatchExpDate;
+    this.vStockId = contact.StockId;
+    
   }
   OnSaveBatchAdj(){
     const chkExpDate = this.dsStockAdjList.data.some((item) => item.ExpDateEdit ==  this.vlastDay);
     if(!chkExpDate){
-      if(this.vBatchEdit){
+      if(this.vExpDateEdit){
         this.OnSaveBatchAdjustment() 
       }else{
-        this.toastr.warning('Please enter BatchNo', 'Warning !', {
+        this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         }); 
       } 
@@ -290,14 +297,15 @@ export class StockAdjustmentComponent implements OnInit {
     }
   }
   OnSaveBatch(){
-    if(this.vExpDateEdit){
+    if(this.vBatchEdit){
       this.OnSaveBatchAdjustment();
     }
     else{
-      this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
+      this.toastr.warning('Please enter BatchNo', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
+    
   }
   
   OnSaveBatchAdjustment() {

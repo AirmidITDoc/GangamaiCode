@@ -21,7 +21,7 @@ export class WorkOrderService {
     this.myFormGroup=this.createMyFormGroup();
   this.NewWorkForm=this.createNewWorkForm()
   this.WorkorderItemForm=this.getWorOrderItemForm()
-  this.WorkorderFinalForm=this.getPurchaseOrderFinalForm();
+  this.WorkorderFinalForm=this.getWorkOrderFinalForm();
 }
 createStoreFrom() {
   return this._formBuilder.group({
@@ -62,6 +62,9 @@ createStoreFrom() {
   
   getWorOrderItemForm() {
     return this._formBuilder.group({
+      SupplierName:'',
+      GSTType:'',
+      WorkId:'',
       ItemName:'',
       ItemID:'',
       Qty:'',
@@ -76,10 +79,9 @@ createStoreFrom() {
       Specification:'',
 
     });
-
   }
 
-  getPurchaseOrderFinalForm() {
+  getWorkOrderFinalForm() {
     return this._formBuilder.group({
       FinalNetAmount:[''],
       VatAmount:[''],
@@ -101,8 +103,11 @@ public getWorkOrderPrint(Param){
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  public getSupplierList( ){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName", {});
+  public getSupplierList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", param);
+  }
+  public getGSTtypeList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants",Param);
   }
   public getWorkOrderList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_WorkOrderList_by_Name", Param);

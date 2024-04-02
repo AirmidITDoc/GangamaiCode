@@ -9,6 +9,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-issue-to-deparment-against-indent',
@@ -36,6 +38,9 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   FromStoreList: any = [];
   hasSelectedContacts: boolean = false;
   Charglist:any=[];
+  ToStoreList1:any=[];
+  filteredOptionsStore: Observable<string[]>;
+  isStoreSelected:boolean=false;
 
 
   dsIndentList = new MatTableDataSource<IndentList>();
@@ -55,8 +60,26 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.gePharStoreList();
+    this.getToStoreList();
+    this.filteredOptionsStore = this._IssueToDep.IndentFrom.get('ToStoreId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterToStore(value)),
+  );
   }
+  getToStoreList() {
+    this._IssueToDep.getToStoreSearchList().subscribe(data => {
+        this.ToStoreList1 = data;
+    });
+}
+private _filterToStore(value: any): string[] {
+    if (value) {
+        const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+        return this.ToStoreList1.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+    }
+}
+getOptionTextStores(option) {
+  return option && option.StoreName ? option.StoreName : '';
+}
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -66,7 +89,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   getIndentList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "ToStoreId": this._loggedService.currentUserValue.user.storeId,
+      "ToStoreId": this._IssueToDep.IndentFrom.get('ToStoreId').value.StoreId,
       "From_Dt": this.datePipe.transform(this._IssueToDep.IndentFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._IssueToDep.IndentFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "Status": this._IssueToDep.IndentFrom.get('Status').value
