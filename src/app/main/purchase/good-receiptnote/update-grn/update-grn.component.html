@@ -68,7 +68,7 @@
                                                 {{option.SupplierName}} || {{option.SupplierId}}
                                             </mat-option>
                                         </mat-autocomplete>
-                                    </mat-form-field>&nbsp;
+                                    </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Contact Persion</mat-label>
@@ -440,22 +440,13 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="ItemName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200 border-right">
                                                 ItemName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 border-right">
                                                 {{contact.ItemName}}
                                             </mat-cell>
                                         </ng-container>
-
-                                        <!-- <ng-container matColumnDef="ConversionFactor">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                Packing
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.ConversionFactor}}
-                                            </mat-cell>
-                                        </ng-container> -->
 
                                         <ng-container matColumnDef="ConversionFactor">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -474,17 +465,17 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="UOMId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
                                                 UOM</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="border-right">
                                                 {{contact.UOMId}}
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="HSNCode">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
                                                 HSNCode</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="border-right">
                                                 {{contact.HSNcode}}
                                             </mat-cell>
                                         </ng-container>
@@ -519,10 +510,11 @@
 
                                         <ng-container matColumnDef="Qty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                               >Qty
+                                                class="w-80 border-right">Qty
                                             </mat-header-cell>
-                                            <mat-cell   *matCellDef="let contact;let index = index" fxShow.gt-sm>
+                                            <mat-cell class="w-80 border-right" *matCellDef="let contact" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
+                                                    
                                                     <input matInput [(ngModel)]="contact.ReceiveQty" type="text" OnlyNumber [id]="'Qty_'+index"
                                                         (keyup)="getCellCalculation(contact,contact.ReceiveQty)"
                                                         (keypress)="keyPressAlphanumeric($event)"

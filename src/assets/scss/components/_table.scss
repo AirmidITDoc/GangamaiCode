@@ -33,7 +33,7 @@
         .mat-cell {
             @include font-size(13px);
             word-break: break-word;
-            line-height: 20px;
+            line-height: 26px;
             font-family: $font-primary;
             margin: 0;
             &:not(:first-of-type) {

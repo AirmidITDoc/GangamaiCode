@@ -186,6 +186,15 @@
             }
         }
     }
+    &.padding-fix{
+        .mat-form-field-wrapper{
+            margin: 0;
+            padding: 0;
+            .mat-form-field-infix {
+                padding: 0.7em 0 0.7em 0;
+            }
+        }
+    }
 }
 .mat-form-field-auto {
     .mat-form-field {
@@ -201,6 +210,13 @@
             .mat-form-field-infix {
                 width: auto;
             }
+        }
+    }
+}
+.mat-error-fix{
+    .mat-form-field{
+        .mat-form-field-wrapper{
+            padding-bottom: 14px;
         }
     }
 }

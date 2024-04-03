@@ -104,7 +104,7 @@ export class IPAdvanceComponent implements OnInit {
   }
 
   getAdvanceList() {
-    debugger
+    // debugger
     this.isLoadingStr = 'loading';
     var m_data = {
       "AdmissionID": this.selectedAdvanceObj.AdmissionID
@@ -158,7 +158,7 @@ export class IPAdvanceComponent implements OnInit {
   }
 
   onSave() {
-    debugger;
+    // debugger;
     if (this.vAdvanceId == 0) {
       this.isLoading = 'submit';
 
@@ -226,7 +226,7 @@ export class IPAdvanceComponent implements OnInit {
         };
         console.log(submitData);
         this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
-          debugger
+          // debugger
           if (response) {
             Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
@@ -302,7 +302,7 @@ export class IPAdvanceComponent implements OnInit {
         };
         console.log(submitData);
         this._IpSearchListService.InsertAdvanceHeaderUpdate(submitData).subscribe(response => {
-          debugger;
+          // debugger;
           if (response) {
             Swal.fire('Congratulations !', 'IP Advance data Updated Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {

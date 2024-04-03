@@ -80,3 +80,19 @@
     height: 20px;
     border-radius: 100%;
 }
+ul.list-basic{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li{
+        .list-item{
+            display: flex;
+            justify-content: space-between;
+            gap: 4px;
+            flex-wrap: wrap;
+            .list-item-key{
+                font-weight: 600;
+            }
+        }
+    }
+}

@@ -2,7 +2,9 @@
     font-family: inherit;
     .mat-tab-header {
         background-color: $gray-100;
+        border-radius: 4px;
         .mat-tab-label-container {
+
             .mat-tab-labels {
                 .mat-tab-label {
                     font-family: inherit;
@@ -16,6 +18,24 @@
                     height: 1px;
                 }
             }
+        }
+    }
+    &.mat-tab-header-small{
+        .mat-tab-label-container {
+
+            .mat-tab-labels {
+                .mat-tab-label {
+                    height: 35px;
+                    .mat-tab-label-content {
+                        font-size: 0.9rem;
+                    }
+                }
+            }
+        }
+    }
+    &.inkbar-hidden{
+        .mat-ink-bar{
+            display: none;
         }
     }
 }
