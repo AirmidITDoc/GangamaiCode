@@ -162,6 +162,9 @@ export class StockAdjustmentComponent implements OnInit {
     this.vBalQty = contact.BalanceQty;
     this.vStockId = contact.StockId;
     this.vBatchNo = contact.BatchNo;
+    this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
   }
   DeduQty(contact, DeduQty) {
     if (contact.DeduQty > 0) {
@@ -178,6 +181,9 @@ export class StockAdjustmentComponent implements OnInit {
     this.vBalQty = contact.BalanceQty;
     this.vStockId = contact.StockId;
     this.vBatchNo = contact.BatchNo;
+    this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
   }
   OneditBatch(contact) {
     this.vBatchNo = contact.BatchNo
@@ -185,6 +191,9 @@ export class StockAdjustmentComponent implements OnInit {
     this.vBatchEdit = contact.BatchEdit;
     this.vExpDateEdit = contact.BatchExpDate;
     this.vStockId = contact.StockId;
+    this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
   }
   onsaveStockAdj() {
     let isCheckQty: any;
@@ -278,7 +287,9 @@ export class StockAdjustmentComponent implements OnInit {
     this.vBatchEdit = contact.BatchNo;
     this.vExpDateEdit = contact.BatchExpDate;
     this.vStockId = contact.StockId;
-    
+    this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
   }
   OnSaveBatchAdj(){
     const chkExpDate = this.dsStockAdjList.data.some((item) => item.ExpDateEdit ==  this.vlastDay);
@@ -296,7 +307,9 @@ export class StockAdjustmentComponent implements OnInit {
       });
     }
   }
+  Lastbatch:string = '';
   OnSaveBatch(){
+    //const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit ==  this.Lastbatch);
     if(this.vBatchEdit){
       this.OnSaveBatchAdjustment();
     }
@@ -346,6 +359,7 @@ export class StockAdjustmentComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-success',
         });
         this.getStockList();
+        this.vBatchEdit = '';
       } else {
         this.toastr.error('Batch Adjustment Data not saved !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',

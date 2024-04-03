@@ -97,15 +97,14 @@
                                                 (blur)="BatchdisableEditing(contact)"
                                                 (keyup)="OneditBatch(contact)" autocomplete="off">
                                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <buttom mati-icon-button (click)="OnSaveBatch()" matTooltip="Save" >
+                                    
+                                        <buttom (click)="OnSaveBatch()" matTooltip="Save" >
                                             <mat-icon title="Save Reocrd" class="active-icon green-600 s-16">check</mat-icon>
                                         </buttom>
                                         
                                     </ng-template>
                                 </mat-cell>
-                            </ng-container>
-
-                           
+                            </ng-container>                           
 
                             <ng-container matColumnDef="ExpDate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
