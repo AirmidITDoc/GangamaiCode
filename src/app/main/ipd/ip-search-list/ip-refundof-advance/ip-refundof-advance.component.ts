@@ -128,11 +128,11 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
 
   getReturndetails() {
-    debugger
+    // debugger
     var m_data = {
     "OPIPID": 32//this.selectedAdvanceObj.AdmissionID
     }
-    debugger;
+    // debugger;
     // this.dataSource1.data = [];
     this.isLoading = 'list-loading';
     // let Query = "Select AdvanceId from T_AdvanceHeader where  OPD_IPD_Id=" + this.AdmissionId + " ";
@@ -170,16 +170,16 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   calculateBal()
   {
-    debugger;
+    // debugger;
     
     this.BalanceAdvance=  this.RefundAmount - this.NewRefundAmount;
 
   }
 
   onEdit(row){
-debugger;
+// debugger;
     console.log(row);
-    debugger;
+    // debugger;
     this.BalanceAdvance=0;
     this.RefundAmount=0;
     this.NewRefundAmount=0;
@@ -270,7 +270,7 @@ debugger;
           FromName: "Advance-Refund"
         }
       });
-      // debugger;
+      // // debugger;
     dialogRef.afterClosed().subscribe(result => {
       // console.log(result);
      

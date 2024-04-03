@@ -1,7 +1,14 @@
-$modal-gap:16px;
+$modal-gap: 16px;
+$modalHeader:45px;
+
 .mat-dialog-container {
     .modal-wrapper {
         overflow: auto;
+        &.grid-container{
+            display: grid;   
+            grid-template-rows: $modalHeader 1fr;
+            height: 100%;
+           }
         .modal-header {
             background-color: $primary-600;
             color: $primary-25;
@@ -9,9 +16,10 @@ $modal-gap:16px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 8px $modal-gap;
+                padding: 4px $modal-gap;
+                max-height: $modalHeader;
                 .modal-header-title {
-                    @include font-size(15px);
+                    @include font-size(16px);
                     display: flex;
                     justify-content: flex-start;
                     align-items: center;
@@ -26,6 +34,31 @@ $modal-gap:16px;
                         display: flex;
                         justify-content: center;
                         align-items: center;
+                    }
+                }
+                .comman-date-container {
+                    display: flex;
+                    flex-flow: row;
+                    gap: 4px;
+                    align-items: center;
+                    .mat-form-field {
+                        .mat-form-field-wrapper {
+                            margin: 0;
+                            padding: 0;
+                            .mat-form-field-flex {
+                                .mat-form-field-infix {
+                                    padding: 0.7em 0;
+                                }
+                            }
+                        }
+                        svg {
+                            path {
+                                fill: $gray-200;
+                            }
+                        }
+                        .material-icons {
+                            color: $gray-200;
+                        }
                     }
                 }
             }

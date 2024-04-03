@@ -420,8 +420,8 @@ export class IPSearchListComponent implements OnInit {
       this._IpSearchListService.populateForm2(m_data);
       const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
         {
-          maxWidth: "110vw",
-          maxHeight: "98%", width: '100%', height: "100%"
+          maxWidth: "75vw",
+          maxHeight: "95%", width: '100%', height: "100%"
         });
       dialogRef.afterClosed().subscribe(result => {
         
@@ -455,7 +455,7 @@ export class IPSearchListComponent implements OnInit {
           {
             maxWidth: "90%",
             width:'98%',
-            height: '99%',   
+            height: '90%',   
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);

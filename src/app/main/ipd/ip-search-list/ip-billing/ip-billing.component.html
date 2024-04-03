@@ -1,34 +1,29 @@
-<div fxFlexFill class="page-layout ip-billing-section grid-container">
-
-
-    <div class="header accent top-header" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
-
-        <!-- APP TITLE -->
-        <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;" class="top-header-info">
-
-            <div class="modal-header">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class="logo-text">
-                    IP BILLING
-                </span>
+<div fxFlexFill class="page-layout ip-billing-section grid-container modal-wrapper">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span>IP BILLING</span>
             </div>
-            <div class="common-date-container" fxLayout="row">
-                <div class="common-date">
-                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">ri
-                    </app-common-date>
+            <div class="modal-header-icon">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <span class="modal-icon">
+                                <mat-icon>close</mat-icon>
+                            </span>
+                        </button>
+                    </div>
                 </div>
-
-                <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
-                    <mat-icon>close</mat-icon>
-                </button>
             </div>
         </div>
-
     </div>
 
-
     <mat-drawer-container class="example-container">
-        <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true" class="fuse-search-sidebar">
+        <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true" class="fuse-search-sidebar w-280">
             <div class="sidebar-content">
                 <div class="sidebar-body">
                     <div class="sidebar-form">
@@ -293,7 +288,7 @@
 
                     <mat-tab label="Charges List">
                         <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                            class="table1 mt-8 h-400">
+                            class="table1 mt-8 h-300">
 
                             <ng-container matColumnDef="checkbox" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">
@@ -522,13 +517,18 @@
                                 [ngClass]="{'hide':!(advancedatasource!=null && advancedatasource.data.length==0)}">
                             </mat-footer-row>
                         </mat-table>
-                        <div class="net-amt">
-                            <span class="net-amt-label">No of Items:</span>&nbsp;<span class="net-amt-value"
-                                style="margin-right: 650px;">{{advancedatasource.data.length
-                                }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <!-- <span class="net-amt-label">Net Amount:</span>&nbsp; -->
-                            <span class="net-amt-value">{{getAdvAmtSum(advancedatasource.data) | currency:'INR'
-                                }}</span>
+                        <div class="net-amt-section mb-2 mt-16">
+                            <div class="net-amt gap-24" fxLayout="row" fxLayoutAlign="start center">
+                                <div class="net-amt-box">
+                                    <span class="net-amt-label font-weight-600">No of Items : </span>
+                                    <span class="net-amt-value">{{advancedatasource.data.length }}</span>
+                                </div>
+                                <div class="net-amt-box">
+                                    <span class="net-amt-label font-weight-600">Net amount</span>
+                                    <span class="net-amt-value">{{getAdvAmtSum(advancedatasource.data) |
+                                        currency:'INR'}}</span>
+                                </div>
+                            </div>
                         </div>
                     </mat-tab>
 
@@ -714,7 +714,7 @@
                                             name="vNetBillAmount" readonly required>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" style=" margin-right: 7px;width: 320px;">
+                                    <mat-form-field appearance="outline">
                                         <mat-label>Remark</mat-label>
                                         <input matInput name="Remark" formControlName="Remark">
                                     </mat-form-field>
@@ -761,7 +761,7 @@
 
 </div>
 <mat-drawer #drawer1 class="example-sidenav" id="showTable" mode="side" position="end" class="h-520"
-    style="margin-top: 120px !important;margin-right: 95px;font-size: medium;">
+    style="margin-top: 200px !important;margin-right: 95px;font-size: medium;">
     <div class="mat-drawer-table">
         <div class="service-table1">
             <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}" class="h-480">
