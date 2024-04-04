@@ -40,8 +40,8 @@ constructor(public _httpClient:HttpClient,
       RoomName: '',
       PatientType:'',
       patientstatus:'',
-      start: [new Date().toISOString()],
-      end: [new Date().toISOString()],
+      start: [''],
+      end: [''],
       
     });
   }
@@ -218,6 +218,10 @@ public regInsert(employee)
     // return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_Admtd_Ptnt_Dtls", employee)
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Admtd_Ptnt_Dtls", employee)
   }  
+
+  public getAdmittedPatientList_1(Param) {
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_rtrv_Admtd_Ptnt_Dtls", Param);
+  }
 
   // registration patient list
 public getRegistrationList(employee)
