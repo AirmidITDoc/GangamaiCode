@@ -1,0 +1,52 @@
+
+
+app-pharmacy-report{
+
+    .loading-spinner {
+        font-size: 50px;
+        color: #319fc0;
+    }
+
+    .loading-overlay {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        z-index: 2;
+      }
+      
+      .container {
+        width: 100%;
+      }  
+    .table1 {
+        height:300px !important ;
+        width:25%;
+    }
+    
+    .buttons {
+        // padding-left: 25px;
+        padding-top: 5px;
+        text-align: right;
+    }
+    
+    .mat-header-row {
+        width: 100%;
+        //max-width: 1490px;
+        min-width: 110px;   
+        min-height: 55px;
+    }
+    .mat-row {
+        width: 100%;
+      //  max-width: 1470px;
+        min-width: 110px;   
+        min-height: 25px;
+        // text-align:center;
+    }
+    .mat-column-ReportName {
+        width:420px;
+        max-width: 420px;
+        min-width: 420px;
+        text-align:left;
+    }
+  
+
+}

@@ -761,7 +761,7 @@ export class AppointmentComponent implements OnInit {
       PurposeId: ''
     });
   }
-  IsPhoneAppflag: boolean = false;
+  IsPhoneAppflag: boolean = true;
 
   onChangeReg(event) {
     //
@@ -794,7 +794,7 @@ export class AppointmentComponent implements OnInit {
       this.VisitFormGroup = this.createVisitdetailForm();
       this.VisitFormGroup.markAllAsTouched();
       this.Regflag = true;
-      this.IsPhoneAppflag=false;
+      this.IsPhoneAppflag=true;
       this.isRegSearchDisabled = true;
 
     }
@@ -2880,6 +2880,9 @@ export class AppointmentComponent implements OnInit {
       {
         maxWidth: '90%',
         height: '95%',
+        data: {
+          registerObj: xx,
+        },
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -3149,7 +3152,7 @@ export class AppointmentComponent implements OnInit {
         height: '1195px !important',
 
       });
-    dialogRef.afterClosed().subscribe(result => {
+       dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
 
     });

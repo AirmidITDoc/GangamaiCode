@@ -85,7 +85,7 @@
                         <mat-form-field appearance="outline" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-label>Doctor Name</mat-label>
                             <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput #deptdoc
-                                (keydown)="onEnterdeptdoc($event)" formControlName="DoctorID"
+                                (keydown)="onEnterdeptdoc($event)" formControlName="DoctorID" 
                                 [matAutocomplete]="autoDoctor1" required>
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
@@ -96,7 +96,7 @@
 
                             <mat-autocomplete #autoDoctor1="matAutocomplete" [displayWith]="getOptionTextDoc">
                                 <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
-                                    (onSelectionChange)="isDoctorSelected = true;">
+                                    (onSelectionChange)="isDoctorSelected = true;" (onSelectionChange)="onChangeDoctor(option)">
                                     {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b>
                                     {{option.DoctorId
                                     }}
@@ -145,7 +145,7 @@
                         <div class="next-div">
 
                             <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;"
-                            [disabled]="InfoFormGroup.invalid">
+                            [disabled]="saveflag">
                                 <span style="display: flex;justify-content: center;">
                                     <mat-spinner *ngIf="isLoading=='submit'" [color]="white"
                                         [diameter]="20"></mat-spinner>
