@@ -242,7 +242,7 @@ export class AdmissionComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private advanceDataStored: AdvanceDataStored) {
-    this.getAdmittedPatientList();
+    // this.getAdmittedPatientList();
 
     this.getRegSearchList();
   }
@@ -282,7 +282,7 @@ export class AdmissionComponent implements OnInit {
 
       });
 
-    this.getAdmittedPatientList();
+    // this.getAdmittedPatientList();
     this.getPrefixList();
     this.getHospitalList();
     this.getPrefixList();
@@ -1488,36 +1488,63 @@ onClose(){
     this._onDestroy.complete();
   }
 
-  getAdmittedPatientList() {
-    this.sIsLoading = 'loading-data';
-    var D_data = {
+  // getAdmittedPatientList() {
+  //   this.sIsLoading = 'loading-data';
+  //   var D_data = {
+  //     "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
+  //     "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
+  //     "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || "0",
+  //     "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorId || "0",
+  //     "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+  //     "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+  //     "Admtd_Dschrgd_All": 0,
+  //     "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
+  //     "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
+  //   }
+  // console.log(D_data)
+  //   setTimeout(() => {
+  //     this.sIsLoading = 'loading-data';
+  //     this._AdmissionService.getAdmittedPatientList(D_data).subscribe(data => {
+  //       this.dataSource.data = data as Admission[];
+  //       this.dataSource.sort = this.sort;
+  //       this.dataSource.paginator = this.paginator;
+  //       // let x = {};
+  //       // this.sentCountsToParent.emit(x);
+  //       this.sIsLoading = '';
+  //     },
+  //       error => {
+  //         this.sIsLoading = '';
+  //       });
+  //   }, 200);
+
+
+  // }
+  resultsLength = 0;
+  getAdmittedPatientList_1() {
+    var Param = {
       "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
       "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || "0",
       "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorId || "0",
       "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "Admtd_Dschrgd_All": "0",
+      "Admtd_Dschrgd_All": 0,
       "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
-      "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '%',
+      "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '0',
+      Start:(this.paginator?.pageIndex??1),
+      Length:(this.paginator?.pageSize??10),
     }
-  console.log(D_data)
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this._AdmissionService.getAdmittedPatientList(D_data).subscribe(data => {
-        this.dataSource.data = data as Admission[];
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        // let x = {};
-        // this.sentCountsToParent.emit(x);
+    console.log(Param);
+    this._AdmissionService.getAdmittedPatientList_1(Param).subscribe(data => {
+      this.dataSource.data = data["Table1"]??[] as Admission[];
+      console.log(this.dataSource.data)
+      this.dataSource.sort = this.sort;
+      this.resultsLength= data["Table"][0]["total_row"];
+      this.sIsLoading = '';
+    },
+      error => {
         this.sIsLoading = '';
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 200);
-
-
+      });
   }
 
   
@@ -1601,19 +1628,19 @@ onClose(){
   }
 
   // AdmissionNewComponent
-  addNewAdmission() {
-    const dialogRef = this._matDialog.open(RegAdmissionComponent,
-      {
-        maxWidth: "90vw",
-        height: '850px',
-        width: '100%',
+  // addNewAdmission() {
+  //   const dialogRef = this._matDialog.open(RegAdmissionComponent,
+  //     {
+  //       maxWidth: "90vw",
+  //       height: '850px',
+  //       width: '100%',
 
-      });
-    dialogRef.afterClosed().subscribe(result => {
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
       
-      this.getAdmittedPatientList();
-    });
-  }
+  //     this.getAdmittedPatientList();
+  //   });
+  // }
 
   onClear() {
     this._AdmissionService.myFilterform.reset(

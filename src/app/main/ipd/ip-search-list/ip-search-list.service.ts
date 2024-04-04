@@ -498,8 +498,16 @@ public getAdmittedPatientList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Admtd_Ptnt_Dtls", employee)
 }  
 
+public getAdmittedPatientList_1(Param) {
+  return this._httpClient.post("Generic/GetDataSetByProc?procName=m_rtrv_Admtd_Ptnt_Dtls", Param);
+}
+
 public getDischargedPatientList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_AdmtdWithDischargeDate_Ptnt_Dtls", employee)
+  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_AdmtdWithDischargeDate_Ptnt_Dtls", employee)
+}  
+
+public getDischargedPatientList_1(employee) {
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_rtrv_AdmtdWithDischargeDate_Ptnt_Dtls", employee)
 }  
 
 public getDischargePatientList() {

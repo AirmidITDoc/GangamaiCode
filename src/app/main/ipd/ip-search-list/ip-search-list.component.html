@@ -280,9 +280,9 @@
                                         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
 
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
-                                    showFirstLastButtons>
-                                </mat-paginator>
+                                <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35" [length]="resultsLength"
+                                showFirstLastButtons (page)="getAdmittedPatientList()">
+                            </mat-paginator>
                             </div>
                         </div>
                     </div>
