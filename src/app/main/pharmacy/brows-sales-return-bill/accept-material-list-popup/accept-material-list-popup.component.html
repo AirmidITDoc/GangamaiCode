@@ -20,26 +20,31 @@
                             <ng-container matColumnDef="Action">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                     <span class="material-icons" >
-                                        <!-- <mat-checkbox aria-label="Checked" [(ngModel)]="masterCheckbox" (change)="checkUncheckAll(contact)" checked>
-                                        </mat-checkbox> -->
+                 
                                         cached
                                     </span>
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"
-                                    [(ngModel)]="contact.selected">
+                                    [(ngModel)]="contact.selected" [disabled]="contact.Status==1">
                                     </mat-checkbox>
                                 </mat-cell>
                             </ng-container>
+
+                            
 
                             <ng-container matColumnDef="Status">
                                 <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
                             
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <mat-icon [style.color]="contact.selected ? 'green' : 'red'" >
-                                        {{contact.selected ? 'check_circle' : 'cancel'}}
-                                      </mat-icon>
+                                    <!-- <mat-icon [style.color]="contact.Status==1 ? 'green' : 'red'" >
+                                        {{contact.Status==1 ? 'check_circle' : 'cancel'}}
+                                      </mat-icon> -->
                                     <!-- {{contact.Status}} -->
+                                    <mat-icon *ngIf="contact.Status==1" matTooltip="Verified"
+                                    class="pill green-600 s-16">circle</mat-icon>
+                                    <mat-icon *ngIf="contact.Status==0" matTooltip="Pending"
+                                    class="pill red-600 s-16">circle</mat-icon>
                                 </mat-cell>
                               </ng-container>
                               
