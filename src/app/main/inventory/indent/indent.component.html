@@ -128,7 +128,7 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="Isclosed">
+                                                <!-- <ng-container matColumnDef="Isclosed">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">Close</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
@@ -141,7 +141,7 @@
                                                             *ngIf="!contact.Isclosed" matTooltip="Pending"
                                                             class=" red-600 s-16">circle</mat-icon>
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container> -->
 
                                                 <ng-container matColumnDef="IndentNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -191,11 +191,11 @@
                                                     <mat-cell *matCellDef="let contact">
                                                         <mat-icon
                                                             style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                                            *ngIf="contact.Isverify" matTooltip="Verified"
+                                                            *ngIf="contact.IsInchargeVerify" matTooltip="Verified"
                                                             class=" green-600 s-16">circle</mat-icon>
                                                         <mat-icon
                                                             style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                                            *ngIf="!contact.Isverify" matTooltip="Pending"
+                                                            *ngIf="!contact.IsInchargeVerify" matTooltip="Pending"
                                                             class=" red-600 s-16">circle</mat-icon>
                                                     </mat-cell>
                                                 </ng-container>
