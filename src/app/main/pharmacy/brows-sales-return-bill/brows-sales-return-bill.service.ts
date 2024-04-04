@@ -40,15 +40,15 @@ export class BrowsSalesReturnBillService {
     });
   }
  
-  public getIssuetodeptlist(Param){
+  public getIssuetodeptlist(Param){//m_Rtrv_ReceiveIssueToDep_list_by_Name 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ReceiveIssueToDep_list_by_Name",Param);
   }
 
 
-  public getItemdetailList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IssueItemList",Param);
+  public getItemdetailList(Param){ 
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueItemList",Param);
   }
-
+  
   public getStoreFromList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
   }

@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BrowsSalesReturnBillService } from '../brows-sales-return-bill.service';
 import { fuseAnimations } from '@fuse/animations';
 import { element } from 'protractor';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-accept-material-list-popup',
@@ -43,14 +44,14 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     public _SalesReturn: BrowsSalesReturnBillService,
+    public _loggedService : AuthenticationService
   ) { }
 
   ngOnInit(): void {
     console.log(this.data.Obj.IssueId);
     if (this.data) {
       this.getItemList(this.data.Obj.IssueId);
-      setTimeout(() => {
-      }, 2000);
+    
     }
    
   }
@@ -64,7 +65,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     }
     this._SalesReturn.getItemdetailList(Param).subscribe(data => {
       this.dsItemList.data = data as ItemList[];
-      console.log(this.dsItemList);
+      console.log(this.dsItemList.data);
       this.dsItemList.sort = this.sort;
       this.dsItemList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -73,59 +74,27 @@ export class AcceptMaterialListPopupComponent implements OnInit {
         this.sIsLoading = '';
       });
 
-      this.SelectedRowData=this.dsItemList;
-      this.temparray = this.dsItemList;
-      console.log(this.SelectedRowData);
+     // this.SelectedRowData=this.dsItemList;
   }
-  masterCheckbox: boolean = false;
-  selected: boolean = true;
+  //masterCheckbox: boolean = false;
+  selected: boolean = false;
   
-  checkUncheckAll(contact) {
-    this.dsItemList.data.forEach(contact => contact.selected = this.masterCheckbox);
+  // checkUncheckAll(contact) {
+  //   this.dsItemList.data.forEach(contact => contact.selected = this.masterCheckbox);
 
-      this.SelectedRowData.push(contact);
-      console.log(this.SelectedRowData);
+  //     this.SelectedRowData.push(contact);
+  //     console.log(this.SelectedRowData);
     
    
-  }
+  // }
 
   SelectedRowData:any=[];
-  temparray:any=[];
-  
+  Acceptedchk:any;
   tableElementChecked(event ,contact){
     if(contact.selected){
-      contact.Status = 'Accepted'
-      // this.tempItemlist=this.tempItemlist;
-
       this.tempItemlist.push(contact);
       console.log(this.tempItemlist);
-      // this.temparray = this.S.data;
     }
-    else{
-
-    }
-    // else{
-    //   contact.Status = 'Rejected'
-    //   contact.selected=false;
-    //   debugger
-    
-    //   //let index = this.temparray.indexOf(contact);
-    //   let index1 = this.temparray.data.indexOf(contact);
-    //      if (index1 >= 0) {
-    //     this.temparray.data.splice(index1, 1);
-        
-    //     //this.SelectedRowData.data = [];
-    //    this.temparray.data =  this.SelectedRowData.data ;
-    //   }
-
-    //   console.log(this.temparray.data);
-    //   console.log(this.SelectedRowData.data);
-
-      
-    // }
-    // this.dsItemList= this.SelectedRowData;
-    // console.log(this.dsItemList);
-
   }
   onSubmit() {
     if ((!this.dsItemList.data.length)) {
@@ -135,22 +104,30 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       return;
     }
 
+    if(this.dsItemList.data.length == this.tempItemlist.length){
+      this.Acceptedchk = 1;  
+    }else{
+      this.Acceptedchk = 0;
+    }
+   
     let materialAcceptIssueHeader = {};
     materialAcceptIssueHeader['issueId'] = this.data.Obj.IssueId;
-    materialAcceptIssueHeader['acceptedBy'] = 1;
+    materialAcceptIssueHeader['acceptedBy'] =this._loggedService.currentUserValue.user.id;
+    materialAcceptIssueHeader['IsAccepted'] = this.Acceptedchk;
 
+    
     let materialAcceptIssueDetails = [];
     this.tempItemlist.forEach((element) => {
       let materialAcceptIssueDetailsObj = {};
       materialAcceptIssueDetailsObj['issueId'] = element.IssueId;
       materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId;
-      let statuschk
+      let selectedchk
       if (element.selected == 1) {
-        statuschk = 1;
+        selectedchk = 1;
       } else if (element.selected != 1) {
-        statuschk = 0;
+        selectedchk = 0;
       }
-      materialAcceptIssueDetailsObj['status'] = statuschk;
+      materialAcceptIssueDetailsObj['Status'] = selectedchk;
       materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
     });
 
@@ -175,7 +152,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
         });
       }
     }, error => {
-      this.toastr.error('Category not saved !, Please check API error..', 'Error !', {
+      this.toastr.error('New Accept material not saved !, Please check API error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
     });
@@ -188,12 +165,9 @@ export class ItemList {
   Bal: number;
   StoreId: any;
   StoreName: any;
+ // selected:any;
   selected:any;
-  /**
-   * Constructor
-   *
-   * @param ItemList
-   */
+
   constructor(ItemList) {
     {
       this.ItemName = ItemList.ItemName || "";
@@ -201,7 +175,7 @@ export class ItemList {
       this.Bal = ItemList.Bal || 0;
       this.StoreId = ItemList.StoreId || 0;
       this.StoreName = ItemList.StoreName || '';
-      this.selected = ItemList.selected || true;
+      this.selected = ItemList.selected || 0;
     }
   }
 }

@@ -95,7 +95,7 @@
                                         <mat-label>Invoice No</mat-label>
                                         <input matInput placeholder="InvoiceNo" [(ngModel)]="registerObj.InvoiceNo"
                                             formControlName="InvoiceNo" #InvoiceNo1
-                                            (keydown)="onEnterInvoiceNo($event)">
+                                            (keydown)="onEnterInvoiceNo($event)" (keyup)="checkInvoice()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
@@ -1140,7 +1140,11 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                
                                 <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
+                                    <button mat-raised-button class="py-8" (click)="OnAddItem()"><mat-icon>add</mat-icon>Item</button>
+                                    <button mat-raised-button class="py-8" (click)="OnAddSupplier()"><mat-icon>add</mat-icon>Supplier</button>
+
                                     <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
                                     <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
                                 </div>
