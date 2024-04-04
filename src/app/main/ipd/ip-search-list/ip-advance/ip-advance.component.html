@@ -1,242 +1,226 @@
-<div id="contacts" fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div class="page-layout modal-wrapper grid-container">
     <!-- HEADER -->
-
-    <div class="top-header accent" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
-
-        <!-- APP TITLE -->
-        <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;" class="top-header-info">
-            <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon> -->
-
-            <div class="top-header-content">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class="top-header-title">
-                    IP Advance
-                </span>
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> IP Advance </span>
             </div>
-
-            <div class="common-date-container">
-                <div class="comman-date">
-                    <app-common-date [screenFrom]="screenFromString"
-                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                </div>
-                <div class="close-icon">
-                    <span class="material-icons" (click)="onClose()">
-                        close
-                    </span>
+            <div class="modal-header-icon">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
-
-
 
     <!-- / HEADER -->
 
-
-    <div class="content-card">
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-            <form [formGroup]="_IpSearchListService.myShowDischargeSummaryForm" style="width: 100%;">
-                <div fxFlex.gt-sm="100%" fxFlex>
-                    <div fxlayout="row" class="px-16">
-                        <!-- ================================ LABEL HEADER  -->
-                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-
-                            <div>
-                                <fieldset class="fieldset-div">
-                                    <legend>Patient Information</legend>
-                                    <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                        class="patient-info">
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row"
-                                                fxLayoutAlign="space-between center">
-                                                <div class="flex-item" style="width: 575px;">
-                                                    <h3 class="labels-h3">Patient Name</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">{{PatientHeaderObj.PatientName}}</h6>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row"
-                                                fxLayoutAlign="space-between center">
-                                                <div class="flex-item" style="width: 275px;">
-                                                    <h3 class="labels-h3">Patient Category</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Staff</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row"
-                                                fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Gender</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Male</h6>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row"
-                                                fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Tariff</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Hospital</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row"
-                                                fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Age</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">30</h6>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row"
-                                                fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Company</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Airmid</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row"
-                                                fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Patient Source</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Hospital</h6>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row"
-                                                fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Doctor</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">XYZ XYZ Xyz</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </div>
-                            <div class="patient-info-container" *ngIf="false">
-                                <fieldset class="fieldset-div">
-                                    <legend class="h2">Patient Information</legend>
-                                    <div class="sales-patient-info mb-3" fxLayout="row"
-                                        fxLayoutAlign="space-between center">
-                                        <div class="patient-sub">
-                                            <div class="patient-info-row" fxLayout="row"
-                                                fxLayoutAlign="space-between center">
-                                                <div class="patient-col" fxFlex="25%">
-                                                    <span class="patient-col-key ">Patient Name</span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{PatientHeaderObj.PatientName}}</span>
-                                                </div>
-                                                <div class="patient-col" fxFlex="25%">
-                                                    <span class="patient-col-key">Patient Category</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">Staff</span>
-                                                </div>
-                                                <div class="patient-col" fxFlex="25%">
-                                                    <span class="patient-col-key">Gender</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">Male</span>
-                                                </div>
-                                                <div class="patient-col" fxFlex="25%">
-                                                    <span class="patient-col-key">Tariff</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">Hospital</span>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-row" fxLayout="row"
-                                                fxLayoutAlign="space-between center">
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key ">Age</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">30</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Company</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">Airmid</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Source</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">Hospital</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Doctor</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">XYZ XYZ Xyz</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </div>
-                        </div>
-                        <!-- ================================ LABEL HEADER  -->
-                    </div>
-
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- CONTENT -->
-    <div class="content">
+    <div class="modal-body content" fusePerfectScrollbar>
         <!-- CENTER -->
-        <div class="center p-16 pb-56">
+        <div class="center">
             <!-- CONTENT -->
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row">
+                        <div fxLayout="column" class="gap-8">
                             <!-- style="width: 100%;" -->
+                            <div fxlayout="row">
+                                <form [formGroup]="_IpSearchListService.myShowDischargeSummaryForm" fusePerfectScrollbar
+                                    style="width: 100%;">
+                                    <!-- ================================ LABEL HEADER  -->
+                                    <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+
+                                        <div class="fieldset-container">
+                                            <fieldset class="fieldset-div">
+                                                <legend>Patient Information</legend>
+                                                <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                                    class="patient-info">
+                                                    <div class="patient-sub">
+                                                        <div class="patient-info-1-111" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="flex-item" style="width: 575px;">
+                                                                <h3 class="labels-h3">Patient Name</h3>
+                                                            </div>
+                                                            <div class="flex-item-middle">
+                                                                <h6 class="labels-h6">:</h6>
+                                                            </div>
+                                                            <div class="flex-item">
+                                                                <h6 class="labels-h6">{{PatientHeaderObj.PatientName}}
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="patient-info-1-2" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="flex-item" style="width: 275px;">
+                                                                <h3 class="labels-h3">Patient Category</h3>
+                                                            </div>
+                                                            <div class="flex-item-middle">
+                                                                <h6 class="labels-h6">:</h6>
+                                                            </div>
+                                                            <div class="flex-item">
+                                                                <h6 class="labels-h6">Staff</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="patient-sub">
+                                                        <div class="patient-info-1-111" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="flex-item item-header">
+                                                                <h3 class="labels-h3">Gender</h3>
+                                                            </div>
+                                                            <div class="flex-item-middle">
+                                                                <h6 class="labels-h6">:</h6>
+                                                            </div>
+                                                            <div class="flex-item">
+                                                                <h6 class="labels-h6">Male</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="patient-info-1-2" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="flex-item item-header">
+                                                                <h3 class="labels-h3">Tariff</h3>
+                                                            </div>
+                                                            <div class="flex-item-middle">
+                                                                <h6 class="labels-h6">:</h6>
+                                                            </div>
+                                                            <div class="flex-item">
+                                                                <h6 class="labels-h6">Hospital</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="patient-sub">
+                                                        <div class="patient-info-1-111" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="flex-item item-header">
+                                                                <h3 class="labels-h3">Age</h3>
+                                                            </div>
+                                                            <div class="flex-item-middle">
+                                                                <h6 class="labels-h6">:</h6>
+                                                            </div>
+                                                            <div class="flex-item">
+                                                                <h6 class="labels-h6">30</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="patient-info-1-2" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="flex-item item-header">
+                                                                <h3 class="labels-h3">Company</h3>
+                                                            </div>
+                                                            <div class="flex-item-middle">
+                                                                <h6 class="labels-h6">:</h6>
+                                                            </div>
+                                                            <div class="flex-item">
+                                                                <h6 class="labels-h6">Airmid</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="patient-sub">
+                                                        <div class="patient-info-1-111" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="flex-item item-header">
+                                                                <h3 class="labels-h3">Patient Source</h3>
+                                                            </div>
+                                                            <div class="flex-item-middle">
+                                                                <h6 class="labels-h6">:</h6>
+                                                            </div>
+                                                            <div class="flex-item">
+                                                                <h6 class="labels-h6">Hospital</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="patient-info-1-2" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="flex-item item-header">
+                                                                <h3 class="labels-h3">Doctor</h3>
+                                                            </div>
+                                                            <div class="flex-item-middle">
+                                                                <h6 class="labels-h6">:</h6>
+                                                            </div>
+                                                            <div class="flex-item">
+                                                                <h6 class="labels-h6">XYZ XYZ Xyz</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="patient-info-container" *ngIf="false">
+                                            <fieldset class="fieldset-div">
+                                                <legend class="h2">Patient Information</legend>
+                                                <div class="sales-patient-info mb-3" fxLayout="row"
+                                                    fxLayoutAlign="space-between center">
+                                                    <div class="patient-sub">
+                                                        <div class="patient-info-row" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="patient-col" fxFlex="25%">
+                                                                <span class="patient-col-key ">Patient Name</span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{PatientHeaderObj.PatientName}}</span>
+                                                            </div>
+                                                            <div class="patient-col" fxFlex="25%">
+                                                                <span class="patient-col-key">Patient Category</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">Staff</span>
+                                                            </div>
+                                                            <div class="patient-col" fxFlex="25%">
+                                                                <span class="patient-col-key">Gender</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">Male</span>
+                                                            </div>
+                                                            <div class="patient-col" fxFlex="25%">
+                                                                <span class="patient-col-key">Tariff</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">Hospital</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="patient-info-row" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key ">Age</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">30</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Company</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">Airmid</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Patient Source</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">Hospital</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Doctor</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">XYZ XYZ Xyz</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- ================================ LABEL HEADER  -->
+                            </div>
+
                             <div fxFlex.gt-sm="100%" fxFlex>
 
-                                <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-300">
+                                <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                                    class="h-300">
 
                                     <ng-container matColumnDef="Date">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
@@ -370,21 +354,22 @@
                                 <mat-paginator [pageSizeOptions]="[ 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
                                 </mat-paginator>
                             </div>
-
                         </div>
                         <div class="table-footer">
-                            <div class="net-amt gap-28 mb-2" fxLayout="row">
-                                <div class="total-amt gap-4" fxLayout="row">
-                                    <span class="net-amt-label">Total Advance Amount:</span>
-                                    <span class="text-primary net-amt-value font-weight-600">{{getAdvancetotal(dataSource.data)
-                                        | currency:'INR' }}
-                                    </span>
-                                </div>
-                                <div class="avl-amt gap-4" fxLayout="row">
-                                    <span class="net-amt-label">Total Advance Amount:</span>
-                                    <span class="text-primary net-amt-value font-weight-600">{{getAdvancetotal(dataSource.data)
-                                        | currency:'INR' }}
-                                    </span>
+                            <div class="net-amt-section mb-2">
+                                <div class="net-amt">
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-label">Total Advance Amount : </span>
+                                        <span class="net-amt-value">
+                                            {{getAdvancetotal(dataSource.data)| currency:'INR'}}
+                                        </span>
+                                    </div>
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-label">Total amount : </span>
+                                        <span class="net-amt-value">
+                                            {{getAdvancetotal(dataSource.data)| currency:'INR'}}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -416,26 +401,6 @@
                                                     *ngIf="AdvFormGroup.get('comment').invalid && AdvFormGroup.get('comment').touched">
                                                     Advance Amount is required</mat-error>
                                             </mat-form-field>
-
-                                            <!-- <mat-form-field appearance="outline" style="width: 400px;">
-                                                <mat-label>Cash Counter</mat-label>
-                                                <mat-select formControlName="CashCounterId" required>
-                                                    <mat-option *ngFor="let m of CashCounterList" [value]="m">
-                                                        {{m.CashCounterName}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field> -->
-
-                                        </div>
-                                        <div class="button-row-group">
-                                            <div class="modal-button-close">
-                                                <button class="btn btn-primary-outline"
-                                                    (click)="onClose()">Close</button>
-                                            </div>
-                                            <div class="modal-button-save">
-                                                <button class="btn btn-primary" [disabled]="AdvFormGroup.invalid"
-                                                    (click)="onSave()">Save</button>
-                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -452,4 +417,12 @@
         <!-- / CENTER -->
     </div>
     <!-- / CONTENT-->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" (click)="onSave()" [disabled]="AdvFormGroup.invalid">Save</button>
+            </div>
+        </div>
+    </div>
 </div>

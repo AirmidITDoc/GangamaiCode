@@ -216,7 +216,7 @@
                     <div class="left-content title-content">
                         <div class="billing-header-content">
                             <div class="billin-header-item">
-                                <span><b>RegNo </b> - {{selectedAdvanceObj.RegNo}} - </span>
+                                <span><b>RegNo : </b> {{selectedAdvanceObj.RegNo}} - </span>
                                 <span>{{selectedAdvanceObj.PatientName}} </span>
                             </div>
                             <div class="billin-header-item">
@@ -520,11 +520,11 @@
                         <div class="net-amt-section mb-2 mt-16">
                             <div class="net-amt gap-24" fxLayout="row" fxLayoutAlign="start center">
                                 <div class="net-amt-box">
-                                    <span class="net-amt-label font-weight-600">No of Items : </span>
+                                    <span class="net-amt-label">No of Items : </span>
                                     <span class="net-amt-value">{{advancedatasource.data.length }}</span>
                                 </div>
                                 <div class="net-amt-box">
-                                    <span class="net-amt-label font-weight-600">Net amount</span>
+                                    <span class="net-amt-label">Net amount : </span>
                                     <span class="net-amt-value">{{getAdvAmtSum(advancedatasource.data) |
                                         currency:'INR'}}</span>
                                 </div>
@@ -535,6 +535,7 @@
                     <mat-tab label="Package Det.">
 
                     </mat-tab>
+
                     <mat-tab label="Prev.Bill">
                         <mat-table matSort [dataSource]="prevbilldatasource" [@animateStagger]="{value:'50'}"
                             class="table3 mt-8">
@@ -662,18 +663,18 @@
                             <!-- <div class="som"> -->
                             <div class="amount-section" fxLayout="column" class="gap-12">
                                 <div class="net-amt-section mb-2 mt-16">
-                                    <div class="net-amt gap-24" fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="net-amt gap-24">
                                         <div class="net-amt-box">
-                                            <span class="net-amt-label font-weight-600">No of Items : </span>
+                                            <span class="net-amt-label">No of Items : </span>
                                             <span class="net-amt-value">{{chargeslist.length }}</span>
                                         </div>
                                         <div class="net-amt-box">
-                                            <span class="net-amt-label font-weight-600">Total Amt : </span>
+                                            <span class="net-amt-label">Total Amt : </span>
                                             <span class="net-amt-value">{{getTotalAmtSum(dataSource.data) |
                                                 currency:'INR' }}</span>
                                         </div>
                                         <div class="net-amt-box">
-                                            <span class="net-amt-label font-weight-600">Net Amt : </span>
+                                            <span class="net-amt-label">Net Amt : </span>
                                             <span class="net-amt-value">{{getNetAmtSum(dataSource.data) | currency:'INR'
                                                 }}</span>
                                         </div>
@@ -697,16 +698,14 @@
                                             formControlName="concessionAmt" (keyup)="getNetAmount()">
                                     </mat-form-field>
 
-                                    <div *ngIf="ConShow">
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>Concession Reason Type</mat-label>
-                                            <mat-select formControlName="ConcessionId">
-                                                <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
-                                                    {{Doc.ConcessionReason}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
+                                    <mat-form-field *ngIf="ConShow" appearance="outline" fxFlex="10%">
+                                        <mat-label>Concession Reason Type</mat-label>
+                                        <mat-select formControlName="ConcessionId">
+                                            <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
+                                                {{Doc.ConcessionReason}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Net Amount</mat-label>
@@ -714,7 +713,7 @@
                                             name="vNetBillAmount" readonly required>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline">
+                                    <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Remark</mat-label>
                                         <input matInput name="Remark" formControlName="Remark">
                                     </mat-form-field>
@@ -726,19 +725,22 @@
                                         <mat-checkbox formControlName="GenerateBill" (checked)=true>
                                             Generate Bill
                                         </mat-checkbox>
-                                        <div class="cash-container gap-12" fxLayout="row">
-                                            <div class="h3">
-                                                <span class="font-weight-600">Phar. Cash : </span>
-                                                <span>{{vPharcash}}</span>
-                                            </div>
-                                            <div class="h3">
-                                                <span class="font-weight-600">IP Cash : </span>
-                                                <span>{{vIpCash}}</span>
+                                        <div class="cash-container gap-12" >
+                                            <div class="net-amt-section">
+                                                <div class="net-amt">
+                                                    <div class="net-amt-box">
+                                                        <span class="net-amt-label">Phar. Cash : </span>
+                                                        <span class="net-amt-value">{{vPharcash}}</span>
+                                                    </div>
+                                                    <div class="net-amt-box">
+                                                        <span class="net-amt-label">IP Cash : </span>
+                                                        <span class="net-amt-value">{{vIpCash}}</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>

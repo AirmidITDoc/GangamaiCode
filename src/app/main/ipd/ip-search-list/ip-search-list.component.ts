@@ -386,9 +386,9 @@ export class IPSearchListComponent implements OnInit {
       this._ActRoute.navigate(['opd/new-OpdBilling']);
       const dialogRef = this._matDialog.open(IPRefundofBillComponent,
         {
-          maxWidth: "110vw",
-          height: '99%',
-          width: '95%',
+          maxWidth: "75vw",
+          height: '95%',
+          width: '100%',
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
