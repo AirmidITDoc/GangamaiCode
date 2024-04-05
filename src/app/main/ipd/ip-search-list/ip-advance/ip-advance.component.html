@@ -29,389 +29,260 @@
         <div class="center">
             <!-- CONTENT -->
             <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxLayout="column" class="gap-8">
-                            <!-- style="width: 100%;" -->
-                            <div fxlayout="row">
-                                <form [formGroup]="_IpSearchListService.myShowDischargeSummaryForm" fusePerfectScrollbar
-                                    style="width: 100%;">
-                                    <!-- ================================ LABEL HEADER  -->
-                                    <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-
-                                        <div class="fieldset-container">
-                                            <fieldset class="fieldset-div">
-                                                <legend>Patient Information</legend>
-                                                <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                                    class="patient-info">
-                                                    <div class="patient-sub">
-                                                        <div class="patient-info-1-111" fxLayout="row"
-                                                            fxLayoutAlign="space-between center">
-                                                            <div class="flex-item" style="width: 575px;">
-                                                                <h3 class="labels-h3">Patient Name</h3>
-                                                            </div>
-                                                            <div class="flex-item-middle">
-                                                                <h6 class="labels-h6">:</h6>
-                                                            </div>
-                                                            <div class="flex-item">
-                                                                <h6 class="labels-h6">{{PatientHeaderObj.PatientName}}
-                                                                </h6>
-                                                            </div>
-                                                        </div>
-                                                        <div class="patient-info-1-2" fxLayout="row"
-                                                            fxLayoutAlign="space-between center">
-                                                            <div class="flex-item" style="width: 275px;">
-                                                                <h3 class="labels-h3">Patient Category</h3>
-                                                            </div>
-                                                            <div class="flex-item-middle">
-                                                                <h6 class="labels-h6">:</h6>
-                                                            </div>
-                                                            <div class="flex-item">
-                                                                <h6 class="labels-h6">Staff</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="patient-sub">
-                                                        <div class="patient-info-1-111" fxLayout="row"
-                                                            fxLayoutAlign="space-between center">
-                                                            <div class="flex-item item-header">
-                                                                <h3 class="labels-h3">Gender</h3>
-                                                            </div>
-                                                            <div class="flex-item-middle">
-                                                                <h6 class="labels-h6">:</h6>
-                                                            </div>
-                                                            <div class="flex-item">
-                                                                <h6 class="labels-h6">Male</h6>
-                                                            </div>
-                                                        </div>
-                                                        <div class="patient-info-1-2" fxLayout="row"
-                                                            fxLayoutAlign="space-between center">
-                                                            <div class="flex-item item-header">
-                                                                <h3 class="labels-h3">Tariff</h3>
-                                                            </div>
-                                                            <div class="flex-item-middle">
-                                                                <h6 class="labels-h6">:</h6>
-                                                            </div>
-                                                            <div class="flex-item">
-                                                                <h6 class="labels-h6">Hospital</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="patient-sub">
-                                                        <div class="patient-info-1-111" fxLayout="row"
-                                                            fxLayoutAlign="space-between center">
-                                                            <div class="flex-item item-header">
-                                                                <h3 class="labels-h3">Age</h3>
-                                                            </div>
-                                                            <div class="flex-item-middle">
-                                                                <h6 class="labels-h6">:</h6>
-                                                            </div>
-                                                            <div class="flex-item">
-                                                                <h6 class="labels-h6">30</h6>
-                                                            </div>
-                                                        </div>
-                                                        <div class="patient-info-1-2" fxLayout="row"
-                                                            fxLayoutAlign="space-between center">
-                                                            <div class="flex-item item-header">
-                                                                <h3 class="labels-h3">Company</h3>
-                                                            </div>
-                                                            <div class="flex-item-middle">
-                                                                <h6 class="labels-h6">:</h6>
-                                                            </div>
-                                                            <div class="flex-item">
-                                                                <h6 class="labels-h6">Airmid</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="patient-sub">
-                                                        <div class="patient-info-1-111" fxLayout="row"
-                                                            fxLayoutAlign="space-between center">
-                                                            <div class="flex-item item-header">
-                                                                <h3 class="labels-h3">Patient Source</h3>
-                                                            </div>
-                                                            <div class="flex-item-middle">
-                                                                <h6 class="labels-h6">:</h6>
-                                                            </div>
-                                                            <div class="flex-item">
-                                                                <h6 class="labels-h6">Hospital</h6>
-                                                            </div>
-                                                        </div>
-                                                        <div class="patient-info-1-2" fxLayout="row"
-                                                            fxLayoutAlign="space-between center">
-                                                            <div class="flex-item item-header">
-                                                                <h3 class="labels-h3">Doctor</h3>
-                                                            </div>
-                                                            <div class="flex-item-middle">
-                                                                <h6 class="labels-h6">:</h6>
-                                                            </div>
-                                                            <div class="flex-item">
-                                                                <h6 class="labels-h6">XYZ XYZ Xyz</h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
+                <div fxLayout="column" class="gap-8 pb-3 border-bottom">
+                    <!-- style="width: 100%;" -->
+                    <div fxlayout="row">
+                        <form [formGroup]="_IpSearchListService.myShowDischargeSummaryForm" fusePerfectScrollbar
+                            style="width: 100%;">
+                            <!-- ================================ LABEL HEADER  -->
+                            <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                <div class="patient-info-container">
+                                    <div class="patient-info-box">
+                                        <div class="patient-info-title border-bottom pb-2">
+                                            <span class="h1">Patient Information</span>
                                         </div>
-                                        <div class="patient-info-container" *ngIf="false">
-                                            <fieldset class="fieldset-div">
-                                                <legend class="h2">Patient Information</legend>
-                                                <div class="sales-patient-info mb-3" fxLayout="row"
-                                                    fxLayoutAlign="space-between center">
-                                                    <div class="patient-sub">
-                                                        <div class="patient-info-row" fxLayout="row"
-                                                            fxLayoutAlign="space-between center">
-                                                            <div class="patient-col" fxFlex="25%">
-                                                                <span class="patient-col-key ">Patient Name</span>
-                                                                <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{PatientHeaderObj.PatientName}}</span>
-                                                            </div>
-                                                            <div class="patient-col" fxFlex="25%">
-                                                                <span class="patient-col-key">Patient Category</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">Staff</span>
-                                                            </div>
-                                                            <div class="patient-col" fxFlex="25%">
-                                                                <span class="patient-col-key">Gender</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">Male</span>
-                                                            </div>
-                                                            <div class="patient-col" fxFlex="25%">
-                                                                <span class="patient-col-key">Tariff</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">Hospital</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="patient-info-row" fxLayout="row"
-                                                            fxLayoutAlign="space-between center">
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key ">Age</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">30</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Company</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">Airmid</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Patient Source</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">Hospital</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Doctor</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">XYZ XYZ Xyz</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                        <div class="patient-info-box my-8">
+                                            <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key ">Patient Name</span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{PatientHeaderObj.PatientName}}</span>
                                                 </div>
-                                            </fieldset>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">Patient Category</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">Staff</span>
+                                                </div>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">Gender</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">Male</span>
+                                                </div>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">Tariff</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">Hospital</span>
+                                                </div>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key ">Age</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">30</span>
+                                                </div>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">Company</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">Airmid</span>
+                                                </div>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">Patient Source</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">Hospital</span>
+                                                </div>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">Doctor</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">XYZ XYZ Xyz</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-                                <!-- ================================ LABEL HEADER  -->
-                            </div>
-
-                            <div fxFlex.gt-sm="100%" fxFlex>
-
-                                <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                    class="h-300">
-
-                                    <ng-container matColumnDef="Date">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date | date}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="AdvanceNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Advance No </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.AdvanceNo}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="AdvanceAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Advance Amt </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.AdvanceAmount | currency:'INR'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="UsedAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Used Amt </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.UsedAmount | currency:'INR'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="BalanceAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Balance Amt </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.BalanceAmount | currency:'INR'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="RefundAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Refund Amt </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.RefundAmount | currency:'INR'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="CashPay">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Cash Pay
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.CashPayAmount | currency:'INR'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="ChequePay">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Cheque
-                                            Pay
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.ChequePayAmount | currency:'INR'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="CardPay">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Card Pay
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.CardPayAmount | currency:'INR'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="NeftPay">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Neft Pay
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.NEFTPayAmount | currency:'INR'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="PayTMPay">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>PayTM Pay
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.PayTMAmount | currency:'INR'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="UserName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>User Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.UserName}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="buttons" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
-                                            Action
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <span style="color: #827a7a;" class="material-icons"
-                                                (click)="getPrint(contact)">
-                                                print
-                                            </span>
-
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            no data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'"
-                                                [diameter]='30'>
-                                            </mat-spinner>
-                                            <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-
-                                    <mat-header-row class="accent min-width-1400"
-                                        *matHeaderRowDef="displayedColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                        class="contact min-width-1400"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-                                </mat-table>
-
-                                <mat-paginator [pageSizeOptions]="[ 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
-                                </mat-paginator>
-                            </div>
-                        </div>
-                        <div class="table-footer">
-                            <div class="net-amt-section mb-2">
-                                <div class="net-amt">
-                                    <div class="net-amt-box">
-                                        <span class="net-amt-label">Total Advance Amount : </span>
-                                        <span class="net-amt-value">
-                                            {{getAdvancetotal(dataSource.data)| currency:'INR'}}
-                                        </span>
-                                    </div>
-                                    <div class="net-amt-box">
-                                        <span class="net-amt-label">Total amount : </span>
-                                        <span class="net-amt-value">
-                                            {{getAdvancetotal(dataSource.data)| currency:'INR'}}
-                                        </span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div fxlayout="row">
+                        </form>
+                        <!-- ================================ LABEL HEADER  -->
+                    </div>
 
-                            <div class="dialog-content-wrapper">
-                                <!-- ================================ LABEL HEADER  -->
+                    <div fxFlex.gt-sm="100%" fxFlex>
 
-                                <form [formGroup]="AdvFormGroup" class="mat-error-fix">
-                                    <div class="bill-amts" fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                        fxLayoutAlign="space-between start">
-                                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                            <mat-form-field appearance="outline" style="width:200px ;">
-                                                <mat-label>Advance Amount</mat-label>
-                                                <input matInput [(ngModel)]="advanceAmount" formControlName="advanceAmt"
-                                                    name="advanceAmt" required type="number">
-                                                <mat-error class="error"
-                                                    *ngIf="AdvFormGroup.get('advanceAmt').hasError('required') && AdvFormGroup.get('advanceAmt').touched">
-                                                    Advance Amount is required</mat-error>
-                                                <mat-error class="error"
-                                                    *ngIf="AdvFormGroup.get('advanceAmt').hasError('pattern') && AdvFormGroup.get('advanceAmt').touched">
-                                                    Please enter valid Amount</mat-error>
-                                            </mat-form-field>
+                        <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="h-300">
 
-                                            <mat-form-field appearance="outline" style="width: 400px;">
-                                                <mat-label>Reason Of Advacne</mat-label>
-                                                <input matInput formControlName="comment" name="comment">
-                                                <mat-error class="error"
-                                                    *ngIf="AdvFormGroup.get('comment').invalid && AdvFormGroup.get('comment').touched">
-                                                    Advance Amount is required</mat-error>
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                </form>
+                            <ng-container matColumnDef="Date">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Date | date}}
+                                </mat-cell>
+                            </ng-container>
 
-                                <!-- ================================ LABEL HEADER  -->
+                            <ng-container matColumnDef="AdvanceNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Advance No </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.AdvanceNo}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="AdvanceAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Advance Amt </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.AdvanceAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="UsedAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Used Amt </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.UsedAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="BalanceAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Balance Amt </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.BalanceAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="RefundAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Refund Amt </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.RefundAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="CashPay">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Cash Pay
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.CashPayAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ChequePay">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Cheque
+                                    Pay
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.ChequePayAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="CardPay">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Card Pay
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.CardPayAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="NeftPay">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Neft Pay
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.NEFTPayAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="PayTMPay">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>PayTM Pay
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.PayTMAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="UserName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>User Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.UserName}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="buttons" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                    Action
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <span style="color: #827a7a;" class="material-icons" (click)="getPrint(contact)">
+                                        print
+                                    </span>
+
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    <mat-spinner style="float:left;" *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                    </mat-spinner>
+                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                </mat-footer-cell>
+                            </ng-container>
+
+
+                            <mat-header-row class="accent min-width-1400"
+                                *matHeaderRowDef="displayedColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1400"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                        </mat-table>
+
+                        <mat-paginator [pageSizeOptions]="[ 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
+                        </mat-paginator>
+                    </div>
+                </div>
+                <div class="table-footer mt-8">
+                    <div class="net-amt-section mb-2">
+                        <div class="net-amt">
+                            <div class="net-amt-box">
+                                <span class="net-amt-label">Total Advance Amount : </span>
+                                <span class="net-amt-value">
+                                    {{getAdvancetotal(dataSource.data)| currency:'INR'}}
+                                </span>
                             </div>
-
+                            <div class="net-amt-box">
+                                <span class="net-amt-label">Total amount : </span>
+                                <span class="net-amt-value">
+                                    {{getAdvancetotal(dataSource.data)| currency:'INR'}}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div fxlayout="row">
+
+                    <div class="dialog-content-wrapper">
+                        <!-- ================================ LABEL HEADER  -->
+
+                        <form [formGroup]="AdvFormGroup" class="mat-error-fix">
+                            <div class="bill-amts" fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                fxLayoutAlign="space-between start">
+                                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                    <mat-form-field appearance="outline" style="width:200px ;">
+                                        <mat-label>Advance Amount</mat-label>
+                                        <input matInput [(ngModel)]="advanceAmount" formControlName="advanceAmt"
+                                            name="advanceAmt" required type="number">
+                                        <mat-error class="error"
+                                            *ngIf="AdvFormGroup.get('advanceAmt').hasError('required') && AdvFormGroup.get('advanceAmt').touched">
+                                            Advance Amount is required</mat-error>
+                                        <mat-error class="error"
+                                            *ngIf="AdvFormGroup.get('advanceAmt').hasError('pattern') && AdvFormGroup.get('advanceAmt').touched">
+                                            Please enter valid Amount</mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" style="width: 400px;">
+                                        <mat-label>Reason Of Advacne</mat-label>
+                                        <input matInput formControlName="comment" name="comment">
+                                        <mat-error class="error"
+                                            *ngIf="AdvFormGroup.get('comment').invalid && AdvFormGroup.get('comment').touched">
+                                            Advance Amount is required</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- ================================ LABEL HEADER  -->
+                    </div>
+
+                </div>
             </div>
+
             <!-- / CONTENT -->
         </div>
         <!-- / CENTER -->

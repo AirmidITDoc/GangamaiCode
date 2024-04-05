@@ -159,10 +159,11 @@
     }
 }
 @for $i from 1 through 100 {
-    @if $i % 2 == 0 {
-        .gap-#{$i} {
-            gap: #{$i}px;
-        }
+    .gap-#{$i} {
+        gap: #{$i}px;
+    }
+    .row-gap-#{$i}{
+        row-gap: #{$i}px;
     }
 }
 $interval: 50;
