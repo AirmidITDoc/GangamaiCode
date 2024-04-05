@@ -96,15 +96,15 @@
                                             <input matInput [(ngModel)]="contact.BatchEdit" type="text"
                                                 (blur)="BatchdisableEditing(contact)"
                                                 (keyup)="OneditBatch(contact)" autocomplete="off">
-                                        </mat-form-field>
-                                        <buttom mati-icon-button (click)="OnSaveBatch()" matTooltip="Save">
-                                            <mat-icon title="Save Reocrd">check</mat-icon>
+                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    
+                                        <buttom (click)="OnSaveBatch()" matTooltip="Save" >
+                                            <mat-icon title="Save Reocrd" class="active-icon green-600 s-16">check</mat-icon>
                                         </buttom>
+                                        
                                     </ng-template>
                                 </mat-cell>
-                            </ng-container>
-
-                           
+                            </ng-container>                           
 
                             <ng-container matColumnDef="ExpDate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -128,9 +128,9 @@
                                             <input matInput #inputField  placeholder="mmyyyy"
                                                [(ngModel)]="contact.ExpDateEdit"  (blur)="ExpDatedisableEditing(contact)"
                                                 (keyup)="CellcalculateLastDay(contact,inputField.value)" autocomplete="off">
-                                        </mat-form-field>
+                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <buttom mati-icon-button (click)="OnSaveBatchAdj()" matTooltip="Save">
-                                            <mat-icon title="Save Reocrd">check</mat-icon>
+                                            <mat-icon title="Save Reocrd" class="active-icon green-600 s-16">check</mat-icon>
                                         </buttom>
                                     </ng-template>
                                 </mat-cell>
@@ -181,9 +181,9 @@
                                             <input matInput [(ngModel)]="contact.AddQty" type="text" OnlyNumber
                                                 (blur)="disableEditing(contact)" autocomplete="off"
                                                 (keyup)="AddQty(contact,contact.AddQty)">
-                                        </mat-form-field>
+                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <buttom mati-icon-button (click)="onsaveStockAdj()" matTooltip="Save">
-                                            <mat-icon title="Save Reocrd">check</mat-icon>
+                                            <mat-icon title="Save Reocrd" class="active-icon green-600 s-16">check</mat-icon>
                                         </buttom>
                                     </ng-template>
                                 </mat-cell>
@@ -202,9 +202,9 @@
                                             <input matInput [(ngModel)]="contact.DeduQty" type="text" OnlyNumber
                                                 (keyup)="DeduQty(contact,contact.DeduQty)" autocomplete="off"
                                                 (blur)="dedudisableEditing(contact)">
-                                        </mat-form-field>
+                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <buttom mati-icon-button (click)="onsaveStockAdj()" matTooltip="Save">
-                                            <mat-icon title="Save Reocrd">check</mat-icon>
+                                            <mat-icon title="Save Reocrd" class="active-icon green-600 s-16">check</mat-icon>
                                         </buttom>
                                     </ng-template>
                                 </mat-cell>

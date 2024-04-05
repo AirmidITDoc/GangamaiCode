@@ -159,7 +159,7 @@ export class IPSearchListComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-
+  resultsLength = 0;
   getAdmittedPatientList() {
     if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "0" || this._IpSearchListService.myFilterform.get("IsDischarge").value == false) {
       this.isLoadingStr = 'loading';
@@ -170,20 +170,21 @@ export class IPSearchListComponent implements OnInit {
         "Doctor_Id": this._IpSearchListService.myFilterform.get("DoctorId").value || 0,
         "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-        "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value ||1,
+        "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value || 0,
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
-        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || '%',
+        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
+        Start:(this.paginator?.pageIndex??1),
+        Length:(this.paginator?.pageSize??20),
       }
       console.log(D_data);
       setTimeout(() => {
-        this.isLoadingStr = 'loading';
-        this._IpSearchListService.getAdmittedPatientList(D_data).subscribe(data => {
-          this.dataSource.data = data as Admission[];
+          this.isLoadingStr = 'loading';
+          this._IpSearchListService.getAdmittedPatientList_1(D_data).subscribe(data => {
+          this.dataSource.data = data["Table1"]??[] as Admission[];
+          console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-          this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-          // this.sIsLoading = '';
-          // this.click = false;
+          this.resultsLength= data["Table"][0]["total_row"];
+          this.sIsLoading = '';
         },
           error => {
             this.sIsLoading = '';
@@ -192,7 +193,7 @@ export class IPSearchListComponent implements OnInit {
     }
     else {
       this.isLoadingStr = 'loading';
-      var D_data = {
+      var Params = {
         "F_Name": this._IpSearchListService.myFilterform.get("FirstName").value + '%' || "%",
         "L_Name": this._IpSearchListService.myFilterform.get("LastName").value + '%' || "%",
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
@@ -201,14 +202,18 @@ export class IPSearchListComponent implements OnInit {
         "From_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
         "To_Dt": this.datePipe.transform(this._IpSearchListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
         "Admtd_Dschrgd_All": this._IpSearchListService.myFilterform.get('IsDischarge').value,
-        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || '%'
+        "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
+        Start:(this.paginator?.pageIndex??1),
+        Length:(this.paginator?.pageSize??20),
       }
       setTimeout(() => {
         this.isLoadingStr = 'loading';
-        this._IpSearchListService.getDischargedPatientList(D_data).subscribe(data => {
-          this.dataSource.data = data as Admission[];
+        this._IpSearchListService.getDischargedPatientList_1(Params).subscribe(data => {
+          // this.dataSource.data = data as Admission[];
+          this.dataSource.data = data["Table1"]??[] as Admission[];
           this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
+          this.resultsLength= data["Table"][0]["total_row"];
+          // this.dataSource.paginator = this.paginator;
           this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
           // this.sIsLoading = '';
           // this.click = false;

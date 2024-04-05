@@ -70,14 +70,13 @@ export class BrowsSalesReturnBillComponent implements OnInit {
     private _loggedService: AuthenticationService,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    private accountService: AuthenticationService,
     public toastr: ToastrService,
 
   ) { }
   editbutton:boolean=true;
   ngOnInit(): void {
     this.getIndentStoreList();
-    this.getIssueTodept()
+    this.getIssueTodept();
   }
 
   toggleSidebar(name): void {
@@ -206,6 +205,7 @@ export class ItemList {
   Bal: number;
   StoreId: any;
   StoreName: any;
+  selected:any;
   /**
    * Constructor
    *
@@ -218,6 +218,7 @@ export class ItemList {
       this.Bal = ItemList.Bal || 0;
       this.StoreId = ItemList.StoreId || 0;
       this.StoreName = ItemList.StoreName || '';
+      this.selected = ItemList.selected || 0;
     }
   }
 }

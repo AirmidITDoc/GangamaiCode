@@ -491,7 +491,7 @@ export class GoodReceiptnoteComponent implements OnInit {
       {
         maxWidth: "100%",
         height: '95%',
-        width: '85%',
+        width: '95%',
         data: {
           chkNewGRN: this.chkNewGRN
         }
@@ -502,6 +502,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     });
     this.getGRNList();
   }
+  
   GRNEmail(contact) {
     const dialogRef = this._matDialog.open(EmailSendComponent,
       {

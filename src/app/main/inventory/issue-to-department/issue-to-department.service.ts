@@ -11,6 +11,7 @@ export class IssueToDepartmentService {
   IssueSearchGroup :FormGroup;
   StoreFrom:FormGroup;
   IndentFrom:FormGroup;
+  IssueFinalForm:FormGroup;
   
 
   constructor(
@@ -21,6 +22,7 @@ export class IssueToDepartmentService {
     this.IssueSearchGroup= this.IssueSearchFrom();
     this.StoreFrom = this.CreateStoreFrom();
     this.IndentFrom = this.createIndentFrom();
+    this.IssueFinalForm = this.createfinal();
   }
 
   IssueSearchFrom() {
@@ -50,6 +52,14 @@ export class IssueToDepartmentService {
       FinalNetAmount:['']  
     });
   }
+  createfinal(){
+    return this._formBuilder.group({
+      Remark:[''],
+      GSTAmount:[''],
+      FinalTotalAmount:[''],
+      FinalNetAmount:['']  
+    }); 
+  }
   CreateStoreFrom(){
     return this._formBuilder.group({
       FromStoreId:'',
@@ -60,6 +70,7 @@ export class IssueToDepartmentService {
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
       FromStoreId:[''],
+      ToStoreId:[''],
       Status:['0']
      
     });

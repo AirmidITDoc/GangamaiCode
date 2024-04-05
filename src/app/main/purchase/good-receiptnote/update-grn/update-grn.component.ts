@@ -24,6 +24,8 @@ import { PODetailList, PurchaseorderComponent } from './purchaseorder/purchaseor
 import { MatSelect } from '@angular/material/select';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
+import { SupplierFormMasterComponent } from 'app/main/setup/inventory/supplier-master/supplier-form-master/supplier-form-master.component';
 
 const moment = _rollupMoment || _moment;
 @Component({
@@ -326,6 +328,7 @@ export class UpdateGRNComponent implements OnInit {
   POsupplierName: any;
   newSupplier: any;
   PoID: any;
+  vcheckSupplierId:any;
   getSupplierSearchCombo() {
     if (this.vPurchaseId > 0) {
       this.vsupplierName = this.vPurchaseOrderSupplierId;
@@ -372,6 +375,7 @@ export class UpdateGRNComponent implements OnInit {
     this.vMobile = obj.Mobile;
     this.vContact = obj.ContactPerson;
     this.SupplierId = obj.SupplierId;
+    this.vcheckSupplierId = obj.SupplierId;
   }
   getOptionTextSupplier(option) {
     return option && option.SupplierName ? option.SupplierName : '';
@@ -383,6 +387,7 @@ export class UpdateGRNComponent implements OnInit {
     var Param = {
       "GRNID": el.GRNID,
     }
+    console.log(Param);
     this._GRNList.getGrnItemDetailList(Param).subscribe(data => {
       this.dsItemNameList.data = data as ItemNameList[];
       this.chargeslist = data as ItemNameList[];
@@ -514,12 +519,12 @@ export class UpdateGRNComponent implements OnInit {
       });
     }
     this.ItemReset();
-    this.date.setValue(new Date());
+    //this.date.setValue(new Date());
     this._GRNList.userFormGroup.get('ItemName').setValue('');
-    this.vNetAmount = 0;
+    //this.vNetAmount = 0;
     this.itemid.nativeElement.focus();
     this.add = false;
-    this.vlastDay = '';
+    //this.vlastDay = '';
   }
 
   ItemReset() {
@@ -530,6 +535,7 @@ export class UpdateGRNComponent implements OnInit {
     this.vUOM = "";
     this.vHSNCode = "";
     this.vBatchNo = "";
+    this.vlastDay = "";
     this.vQty = 0;
     this.vFreeQty = 0;
     this.vMRP = 0;
@@ -579,12 +585,12 @@ export class UpdateGRNComponent implements OnInit {
       contact.IGSTPer = IGSTPer;
       if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
 
-        contact.TotalQty = (((contact.ReceiveQty) + (contact.FreeQty)) * (contact.ConversionFactor));
+        contact.TotalQty = ((parseFloat(contact.ReceiveQty) + parseFloat(contact.FreeQty)) * parseFloat(contact.ConversionFactor));
         //total amt
         contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
         //disc
-        contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100);
-        let TotalAmt = ((contact.TotalAmount) - (contact.DiscAmount));
+        contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100);
+        let TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
         //Gst
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
         contact.CGSTAmt = (((TotalAmt) * parseFloat(contact.CGSTPer)) / 100);
@@ -596,10 +602,10 @@ export class UpdateGRNComponent implements OnInit {
 
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST Before Disc') {
-        contact.TotalQty = (((contact.FreeQty) + (contact.ReceiveQty)) * (contact.ConversionFactor));
+        contact.TotalQty = ((parseFloat(contact.FreeQty) + parseFloat(contact.ReceiveQty)) * parseFloat(contact.ConversionFactor));
 
         //total amt
-        contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
+        contact.TotalAmount = parseFloat(contact.ReceiveQty) * parseFloat(contact.Rate);
         //Gst
         contact.VatPercentage= (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer));
    
@@ -646,7 +652,7 @@ export class UpdateGRNComponent implements OnInit {
         // contact.UnitMRP = ((contact.MRP) / (contact.ConversionFactor));
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST on MRP Plus FreeQty") {
-        let mrpTotal = ((contact.TotalQty) * (contact.ConversionFactor) * (contact.MRP));
+        let mrpTotal = (parseFloat(contact.TotalQty) * parseFloat(contact.ConversionFactor) * parseFloat(contact.MRP));
         let Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPercentage));
         //GST cal
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
@@ -659,7 +665,7 @@ export class UpdateGRNComponent implements OnInit {
         contact.NetAmount = ((GrossAmt) + parseFloat(contact.VatAmount));
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST on Pur Plus FreeQty") {
-        let TotalPurWf = ((contact.TotalQty) * (contact.Rate));
+        let TotalPurWf = (parseFloat(contact.TotalQty) * parseFloat(contact.Rate));
         //GST cal
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
         contact.CGSTAmt = (((TotalPurWf) * parseFloat(contact.CGSTPer)) / 100);
@@ -670,7 +676,7 @@ export class UpdateGRNComponent implements OnInit {
         contact.NetAmount = ((GrossAmt) - parseFloat(contact.DiscAmount));
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST On MRP") {
-        let mrpTotal = ((contact.ReceiveQty) * (contact.ConversionFactor) * (contact.MRP));
+        let mrpTotal = (parseFloat(contact.ReceiveQty) * parseFloat(contact.ConversionFactor) * parseFloat(contact.MRP));
         let Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPercentage));
         //GST cal
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
@@ -684,12 +690,12 @@ export class UpdateGRNComponent implements OnInit {
       }
 
       //LandedRate As New Double
-      contact.LandedRate = (contact.NetAmount / contact.TotalQty);
+      contact.LandedRate = parseFloat(contact.NetAmount) / parseFloat(contact.TotalQty);
       ///PurUnitRate
-      contact.PurUnitRate = (((contact.TotalAmount) / (contact.ConversionFactor)));
+      contact.PurUnitRate = ((parseFloat(contact.TotalAmount) / parseFloat(contact.ConversionFactor)));
       //PurUnitRateWF
-      contact.PurUnitRateWF = (((contact.TotalAmount) / (contact.TotalQty)));
-      contact.UnitMRP = ((contact.MRP) / (contact.ConversionFactor));
+      contact.PurUnitRateWF = ((parseFloat(contact.TotalAmount) / parseFloat(contact.TotalQty)));
+      contact.UnitMRP = (parseFloat(contact.MRP) / parseFloat(contact.ConversionFactor));
 
     }
     else {
@@ -1739,7 +1745,7 @@ export class UpdateGRNComponent implements OnInit {
       grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
       grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
       grnDetailSaveObj['grossAmount'] = element.NetAmount || 0;
-      grnDetailSaveObj['totalQty'] = this.FinalTotalQty || 0;
+      grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
       grnDetailSaveObj['poNo'] = element.PurchaseId || 0;
       grnDetailSaveObj['batchNo'] = element.BatchNo || "";
       grnDetailSaveObj['batchExpDate'] = this.vExpDate;//this.datePipe.transform(element.BatchExpDate, "yyyy-MM") || this.date.value;
@@ -2075,6 +2081,7 @@ export class UpdateGRNComponent implements OnInit {
     this.dialogRef.close();
   }
 
+
   FinalTotalQty1: any = 0;
   FinalLandedrate1: any = 0;
   FinalpurUnitRate1: any = 0;
@@ -2220,8 +2227,45 @@ export class UpdateGRNComponent implements OnInit {
 
     }, 100);
   }
+ OnAddItem(){
+    const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
+      maxWidth: "100%",
+      height: '95%',
+      width: '95%',
+  });
+  dialogRef.afterClosed().subscribe((result) => {
+      console.log("The dialog was closed - Insert Action", result);
+  });
+  }
+  OnAddSupplier(){
+    const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
+      maxWidth: "100%",
+      height: '95%',
+      width: '95%',
+  });
+  dialogRef.afterClosed().subscribe((result) => {
+      console.log("The dialog was closed - Insert Action", result);
+  });
+  }
+msg:any;
+  checkInvoice(){
+    let Query = "select InvoiceNo from T_GRNHeader Where SupplierId="+this.vcheckSupplierId + "and StoreId=" + this.accountService.currentUserValue.user.storeId;
+    console.log(Query)
+    this._GRNList.getCheckInvoiceNo(Query).subscribe(data =>{
+      this.msg = data
+      console.log(data)
+     // console.log(this.msg.InvoiceNo)
+      const checkInvoice = this.msg.some(item => item.InvoiceNo == this._GRNList.userFormGroup.get('InvoiceNo').value);
 
-
+      if(checkInvoice){
+        this.toastr.warning('Invoice Number already there exists', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        this._GRNList.userFormGroup.get('InvoiceNo').setValue('');
+        this.InvoiceNo1.nativeElement.focus()
+      }
+    })
+  }
 }
 export class LastThreeItemList {
   ItemID: any;

@@ -20,7 +20,7 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class CrossConsultationComponent implements OnInit {
 
- 
+
   InfoFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'advance';
@@ -36,20 +36,20 @@ export class CrossConsultationComponent implements OnInit {
 
   filteredOptionsDep: Observable<string[]>;
   filteredOptionsDoc: Observable<string[]>;
-
+  saveflag: boolean = true;
 
   optionsDep: any[] = [];
   optionsDoc: any[] = [];
   PatientHeaderObj: AdvanceDetailObj;
-  VisitId:any;
-  PatientName:any;
-  vUnitId:any;
-  vPatienttypeId:any;
+  VisitId: any;
+  PatientName: any;
+  vUnitId: any;
+  vPatienttypeId: any;
 
 
   date: Date;
 
-  
+
   constructor(public _AdmissionService: AdmissionService,
     private formBuilder: FormBuilder,
     private accountService: AuthenticationService,
@@ -62,14 +62,14 @@ export class CrossConsultationComponent implements OnInit {
     private router: Router
   ) {
     //  this.date = new Date().toISOString().slice(0, 16);
-     this.date = new Date();
-     
-   }
+    this.date = new Date();
+
+  }
 
   ngOnInit(): void {
 
     this.InfoFormGroup = this.createCrossConForm();
-   
+
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
@@ -80,10 +80,10 @@ export class CrossConsultationComponent implements OnInit {
       this.PatientHeaderObj = this.data;
       this.VisitId = this.PatientHeaderObj.VisitId;
       this.PatientName = this.PatientHeaderObj.PatientName;
-    
+
       console.log(this.PatientHeaderObj);
-      }
-     
+    }
+
 
   }
 
@@ -102,7 +102,7 @@ export class CrossConsultationComponent implements OnInit {
 
 
   getDepartmentList() {
-    
+
     this._opappointmentService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       this.optionsDep = this.DepartmentList.slice();
@@ -180,65 +180,70 @@ export class CrossConsultationComponent implements OnInit {
     if (event.which === 13) {
       // if(this.refdoc) this.refdoc.focus();
       // this.refdoc.nativeElement.focus();
+      this.saveflag = false;
     }
+  }
+  onChangeDoctor(option) {
+    if (option)
+      this.saveflag = false;
   }
 
 
+  onSubmit() {
 
- onSubmit() {
+    this.submitted = true;
+    this.isLoading = 'submit';
+    let submissionObj = {};
+    let crossConsult = {};
 
-  this.submitted = true;
-  this.isLoading = 'submit';
-  let submissionObj = {};
-  let crossConsult = {};
-
-  crossConsult['VisitID'] = 0;
-      crossConsult['RegId'] = this.PatientHeaderObj.RegId;
-      crossConsult['VisitDate'] = this.datePipe.transform(this.InfoFormGroup.get("VisitDate").value, 'MM/dd/yyyy') || this.dateTimeObj.date
-      crossConsult['VisitTime'] = this.datePipe.transform(this.InfoFormGroup.get("VisitDate").value, 'MM/dd/yyyy HH:mm:ss') || this.dateTimeObj.time,
+    crossConsult['VisitID'] = 0;
+    crossConsult['RegId'] = this.PatientHeaderObj.RegId;
+    crossConsult['VisitDate'] = this.datePipe.transform(this.InfoFormGroup.get("VisitDate").value, 'MM/dd/yyyy') || this.dateTimeObj.date
+    crossConsult['VisitTime'] = this.datePipe.transform(this.InfoFormGroup.get("VisitDate").value, 'MM/dd/yyyy HH:mm:ss') || this.dateTimeObj.time,
       crossConsult['UnitId'] = this.PatientHeaderObj.HospitalId;
-      crossConsult['PatientTypeId'] = this.PatientHeaderObj.PatientTypeId;
-      crossConsult['ConsultantDocId'] = this.InfoFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
-      crossConsult['RefDocId'] = this.PatientHeaderObj.RefDoctorId || 0;
+    crossConsult['PatientTypeId'] = this.PatientHeaderObj.PatientTypeId;
+    crossConsult['ConsultantDocId'] = this.InfoFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
+    crossConsult['RefDocId'] = this.PatientHeaderObj.RefDoctorId || 0;
 
-      crossConsult['TariffId'] = this.PatientHeaderObj.TariffId;
-      crossConsult['CompanyId'] = this.PatientHeaderObj.CompanyId || 0;
-      crossConsult['AddedBy'] = this.accountService.currentUserValue.user.id;
-      crossConsult['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
+    crossConsult['TariffId'] = this.PatientHeaderObj.TariffId;
+    crossConsult['CompanyId'] = this.PatientHeaderObj.CompanyId || 0;
+    crossConsult['AddedBy'] = this.accountService.currentUserValue.user.id;
+    crossConsult['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
       crossConsult['IsCancelled'] = 0;
-      crossConsult['IsCancelledBy'] = 0;
-      crossConsult['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+    crossConsult['IsCancelledBy'] = 0;
+    crossConsult['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
 
       crossConsult['ClassId'] = this.PatientHeaderObj.ClassId;
-      crossConsult['DepartmentId'] = this.InfoFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
-      crossConsult['PatientOldNew'] = 1,//this.Patientnewold;
+    crossConsult['DepartmentId'] = this.InfoFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
+    crossConsult['PatientOldNew'] = 1,//this.Patientnewold;
       crossConsult['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
       crossConsult['appPurposeId'] = 0,//this.PatientHeaderObj.App
       crossConsult['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-     // crossConsult['PhoneAppId'] = 0,//this.PatientHeaderObj.App
-      
+      // crossConsult['PhoneAppId'] = 0,//this.PatientHeaderObj.App
+
       crossConsult['CrossConsulFlag'] = 1
 
 
 
-      submissionObj['crossConsultationSave'] = crossConsult;
+    submissionObj['crossConsultationSave'] = crossConsult;
 
-      console.log(submissionObj);
-      this._opappointmentService.CrossConsultationInsert(submissionObj).subscribe(response => {
-        if (response) {
-          Swal.fire('Congratulations !', 'Cross Consultation Saved Successfully  !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              // this.getPrint(response);
-              this._matDialog.closeAll();
-            }
-            // this.getVisitList();
-          });
-        } else {
-          Swal.fire('Error !', 'Cross Consultation not Updated', 'error');
-        }
-        this.isLoading = '';
-      });
-}
+    console.log(submissionObj);
+    this._opappointmentService.CrossConsultationInsert(submissionObj).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'Cross Consultation Saved Successfully  !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            // this.getPrint(response);
+            this._matDialog.closeAll();
+          }
+          // this.getVisitList();
+        });
+      } else {
+        Swal.fire('Error !', 'Cross Consultation not Updated', 'error');
+      }
+      this.isLoading = '';
+    });
+    this.saveflag = true;
+  }
 
 
   getDateTime(dateTimeObj) {

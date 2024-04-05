@@ -1,5 +1,5 @@
-<mat-tab-group style="width: 100%;" dynamicTableHeight>
-    <mat-tab label="Work Order List">
+<!-- <mat-tab-group style="width: 100%;" dynamicTableHeight>
+    <mat-tab label="Work Order List"> -->
         <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
             <mat-toolbar class="top-header accent">
                 <div fxLayout="row" fxLayoutAlign="start center">
@@ -56,7 +56,7 @@
                                     </mat-select>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Supplier Name</mat-label>
                                     <mat-select formControlName="SupplierName" name="SupplierName">
                                         <mat-option></mat-option>
@@ -64,7 +64,24 @@
                                             {{m.SupplierName}}
                                         </mat-option>
                                     </mat-select>
-                                </mat-form-field>&nbsp;&nbsp;
+                                </mat-form-field>&nbsp;&nbsp; -->
+
+                                <mat-form-field appearance="outline" fxFlex="30%">
+                                    <input type="text" name="SupplierName" formControlName="SupplierName" #SupplierName
+                                        placeholder="SupplierName (enter 2 char) " matInput [matAutocomplete]="Supplierauto"
+                                        (input)="getSuppliernameList()">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_WorkOrderService.myFormGroup.get('SupplierName').setValue(''); isSupplierIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_WorkOrderService.myFormGroup.get('SupplierName').setValue(''); isSupplierIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #Supplierauto="matAutocomplete" [displayWith]="getOptionTextSupplier">
+                                        <mat-option *ngFor="let option of filteredOptionssupplier" [value]="option">
+                                            {{option.SupplierName}} || {{option.SupplierId}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
 
                                 <div style="margin-top: 10px;">
                                     <button mat-raised-button class="clearbutton" matTooltip="close">
@@ -105,7 +122,7 @@
                                                 <mat-icon>print</mat-icon>
                                             </button>
                                             <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
-                                                <mat-icon>launch</mat-icon>
+                                                <mat-icon>edit</mat-icon>
                                             </button>
                                         </mat-cell>
                                     </ng-container>
@@ -153,7 +170,7 @@
 
                                     <ng-container matColumnDef="WOVatAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Vat Amt </mat-header-cell>
+                                            GST Amt </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.WOVatAmount }}
                                         </mat-cell>
@@ -210,8 +227,8 @@
 
             </div>
         </div>
-    </mat-tab>
-    <mat-tab label="New Work Order List">
+    <!-- </mat-tab> -->
+    <!-- <mat-tab label="New Work Order List">
         <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
             <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
                 <div fxLayout="row" fxLayoutAlign="start center">
@@ -274,28 +291,7 @@
                                     style="background-color: white; padding: 5px,5px,5px,5px; margin-bottom:10px;">
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                        <!-- <mat-form-field appearance="outline" fxFlex="50%">
-                                            <mat-label>ItemName</mat-label>
-                                            <input type="text" name="ItemID" formControlName="ItemID" #itemid
-                                                placeholder="Item Name " matInput [matAutocomplete]="auto"
-                                                (input)="getSearchItemList()">
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_WorkOrderService.NewWorkForm.get('ItemID').setValue(''); isItemIdSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_WorkOrderService.NewWorkForm.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
-                                                (optionSelected)='getSelectedObjItem($event.option.value)'>
-                                                <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
-                                                    {{option.ItemID}} | {{option.ItemName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                            <mat-error class="error"
-                                                *ngIf="_WorkOrderService.NewWorkForm.get('ItemID').invalid &&  _WorkOrderService.NewWorkForm.get('ItemID').touched">
-                                                Select ItemName
-                                            </mat-error>
-                                        </mat-form-field>&nbsp;&nbsp; -->
+                                      
 
                                         <mat-form-field appearance="outline" fxFlex="15%">
                                             <mat-label>Item Name</mat-label>
@@ -385,35 +381,7 @@
                                         </div>
 
                                     </div>
-                                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                                        <mat-form-field appearance="outline" fxFlex="30%">
-                                            <mat-label>Specification</mat-label>
-                                            <input name="Specification" formControlName="Specification" [(ngModel)]="Specification" matInput>
-                                        </mat-form-field>&nbsp;&nbsp;
-
-                                        <mat-form-field appearance="outline" fxFlex="20%">
-                                            <mat-label>-- Select Status3 --</mat-label>
-                                            <mat-select formControlName="Status3" name="Status3"
-                                            (selectionChange)="onChangeStatus3($event)">
-                                                <mat-option></mat-option>
-                                                <mat-option *ngFor="let m of Status3List" [value]="m">
-                                                    {{m.name}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field> -->
-
-                                    <!-- <mat-form-field class="section-dropdown"
-                                            style="width:25%;">
-                                            <mat-label>-- Select Status3 --</mat-label>
-                                            <mat-select formControlName="Status3" name="Status3"
-                                                (selectionChange)="onChangeStatus3($event)">
-                                                <mat-option></mat-option>
-                                                <mat-option *ngFor="let m of Status3List" [value]="m">
-                                                    {{m.name}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div> -->
+                                  
                                 </mat-card>
 
                                 <div style="margin-bottom: 20px;">
@@ -426,18 +394,6 @@
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 {{element.ItemName}} </mat-cell>
                                         </ng-container>
-
-                                        <!-- <ng-container matColumnDef="Qty">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                Qty </mat-header-cell>
-                                            <mat-cell *matCellDef="let element;let index = index" fxHide fxShow.gt-sm>
-                                                                                          <mat-form-field floatLabel="never" 
-                                             [ngClass]="editMode ? 'no-underline': ''">
-                                            <input matInput [value]="element.Qty" [(ngModel)]="Qty" (click)="toggleEdit(index)" 
-                                            [readonly]="editMode && index == editableColumn" (keyup)="calculateTotalAmount(element)" (keydown)="onEnterQty($event)">
-                                            </mat-form-field>
-                                            </mat-cell>
-                                        </ng-container> -->
 
 
                                         <ng-container matColumnDef="Qty">
@@ -452,15 +408,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <!-- <ng-container matColumnDef="ReturnQty">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReturnQty
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.ReturnQty" (keyup)="getCellCalculation(contact,contact.ReturnQty)" #ReturnQty type="number">
-                                                </mat-form-field>
-                                            </mat-cell>
-                                        </ng-container> -->
+                                     
 
                                         <ng-container matColumnDef="Rate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Rate
@@ -614,32 +562,6 @@
                                 </div>
 
                             </div>
-                            <!-- <div fxLayout.gt-xs="row" style="margin-left: 710px;">
-                                <mat-form-field appearance="outline"
-                                    style="margin-top: 10px;width: 300px;background-color: white;">
-                                    <mat-label>vat Amount</mat-label>
-                                    <input type="text" name="GST Amount" formControlName="VatAmount" matInput required>
-                                </mat-form-field>&nbsp;&nbsp;
-                                <mat-form-field appearance="outline"
-                                    style="margin-top: 10px;width: 300px;background-color: white;">
-                                    <mat-label>Net Amount</mat-label>
-                                    <input type="text" name="Total Amount" formControlName="NetAmount" matInput
-                                        required>
-
-                                </mat-form-field>
-
-                                <div class="footer-navigation-container" fxLayout.gt-xs="row">
-
-                                    <div style="margin-top: 10px; margin-right: 5px; margin-left: 60px;">
-                                        <button class="next-btn" color="accent"
-                                            style="border-radius: 16px; width: 80px;">Save</button>
-                                        <button class="footer-btn" id="btncancel">Close</button>
-                                    </div>
-                                </div>
-                            </div> -->
-
-
-
 
                         </form>
 
@@ -648,8 +570,8 @@
                 </div>
             </div>
         </div>
-    </mat-tab>
-</mat-tab-group>
+    </mat-tab> -->
+<!-- </mat-tab-group> -->
 
 
 

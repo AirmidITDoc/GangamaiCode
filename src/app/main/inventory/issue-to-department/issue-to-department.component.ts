@@ -327,7 +327,30 @@ export class IssueToDepartmentComponent implements OnInit {
             this._IssueToDep.StoreFrom.get('FromStoreId').setValue(this.FromStoreList1[0])
         });
     }
+    getCellCalculation(contact,Qty){
 
+        if(contact.Qty > contact.BalanceQty){
+            this.toastr.warning('Issue Qty cannot be greater than BalanceQty.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+              });
+              contact.Qty = 0;
+              contact.Qty = '';
+              contact.VatAmount = 0;
+              contact.LandedRateandedTotal = 0;
+            }
+            else{
+            if(contact.Qty > 0){
+                contact.LandedRateandedTotal = (parseFloat(contact.Qty) * parseFloat(contact.LandedRate)).toFixed(2);
+                contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
+              }
+            else{
+                contact.Qty = 0;
+                contact.Qty = '';
+                contact.VatAmount = 0;
+                contact.LandedRateandedTotal = 0;
+            }
+        }
+    }
     Itemchargeslist1: any = [];
     QtyBalchk: any = 0;
     Itemflag: boolean = false;
@@ -532,7 +555,7 @@ export class IssueToDepartmentComponent implements OnInit {
                     BatchExpDate: this.vBatchExpDate || '01/01/1900',
                     BalanceQty: this.vBalanceQty || 0,
                     Qty: this.vQty || 0,
-                    UnitRate: this.vLandedRate || 0,
+                    LandedRate: this.vLandedRate || 0,
                     UnitMRP:this.vUnitMRP || 0,
                     VatPer: gstper || 0,
                     VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
@@ -546,7 +569,7 @@ export class IssueToDepartmentComponent implements OnInit {
                     RoundNetAmt: Math.round(LandedRateandedTotal),// Math.round(TotalNet),
                     mrpTotalAmount:TotalMRP,
 
-                    LandedRate: this.vLandedRate,
+                    //LandedRate: this.vLandedRate,
                     LandedRateandedTotal: LandedRateandedTotal,
                     CgstPer: this.vCgstPer,
                     //   CGSTAmt: CGSTAmt,
@@ -916,13 +939,13 @@ if(!DuplicateItem){
             this.itemid.nativeElement.focus();
         }
 
-        this.dsNewIssueList1.data = [];
-        this.dsNewIssueList2.data = [];
-        this.dsNewIssueList3.data = [];
-        this.BarcodetempDatasource = [];
-        this.chargeslist.data = [];
-        this.tempDatasource.data = [];
-        this.dsTempItemNameList.data = [];
+        // this.dsNewIssueList1.data = [];
+        // this.dsNewIssueList2.data = [];
+        // this.dsNewIssueList3.data = [];
+        // this.BarcodetempDatasource = [];
+        // this.chargeslist.data = [];
+        // this.tempDatasource.data = [];
+        // this.dsTempItemNameList.data = [];
     }
     public onEnteritemid(event): void {
         if (event.which === 13) {
@@ -1122,6 +1145,11 @@ if(!DuplicateItem){
             console.log('The dialog was closed - Insert Action', result);
             this.dsNewIssueList1.data = result;
             console.log(result)
+            const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].ToStoreId);
+            this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
+           // console.log(toSelectToStoreId)
+            //console.log(result[0].ToStoreId)
+            //this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(this.ToStoreList1[0]);
         });
     }
     IndentItemDetails(Param) {

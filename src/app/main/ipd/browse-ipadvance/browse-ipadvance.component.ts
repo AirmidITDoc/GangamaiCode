@@ -69,29 +69,6 @@ export class BrowseIPAdvanceComponent implements OnInit {
     this.dataSource.paginator=this.paginator;
   }
 
-  getTemplate() {
-    let query = 'select tempId,TempDesign,JSON_QUERY(TempKeys) as TempKeys from Tg_Htl_Tmp where TempId=1';
-    this._advanceService.getTemplate(query).subscribe((resData: any) => {
-          this.printTemplate = resData[0].TempDesign;
-     
-       let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','AdvanceNo','RegNo','AdvanceNo','Date','PatientName','AgeDay','AgeMonth','Age','IPDNo','AdmissionDate','PatientType','AdvanceAmount','reason','Addedby','Remark',
-       'CardNo','CardPayAmount','CardDate','CardBankName','BankName','ChequeNo','ChequePayAmount','ChequeDate','CashPayAmount','NEFTPayAmount','PayTMAmount','TariffName'];// resData[0].TempKeys;
-        for (let i = 0; i < keysArray.length; i++) {
-          let reString = "{{" + keysArray[i] + "}}";
-          let re = new RegExp(reString, "g");
-          this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-        }
-
-        this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
-
-        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform1(new Date().toString()));
-        this.printTemplate = this.printTemplate.replace('StrAddmissionDate', this.transform1(this.reportPrintObj.AdmissionDate));
-        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-        setTimeout(() => {
-          this.print();
-        }, 1000);
-    });
-  }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -121,81 +98,6 @@ export class BrowseIPAdvanceComponent implements OnInit {
   }
 
   
-
-  convertToWord(e) {
-    
-    return converter.toWords(e);
-  }
-
-  
- 
-  transform(value: string) {
-    var datePipe = new DatePipe("en-US");
-     value = datePipe.transform(value, 'dd/MM/yyyy ');
-     return value;
- }
-
- transform1(value: string) {
-  var datePipe = new DatePipe("en-US");
-  value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-  return value;
-}
-
-
-
-
-  getPrint(el) {
-  
-    var D_data = {
-      "AdvanceDetailID":el.AdvanceDetailID,
-    }
-    
-    let printContents;
-    this.subscriptionArr.push(
-      this._advanceService.getAdvanceBrowsePrint(D_data).subscribe(res => {
-        this.reportPrintObj = res[0] as IpdAdvanceBrowseModel;
-        this.getTemplate();
-     })
-    );
-  }
-
-  print() {
-    
-    let popupWin, printContents;
-   
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-
-    if(this.reportPrintObj.CashPayAmount === 0) {
-      popupWin.document.getElementById('idCashpay').style.display = 'none';
-    }
-    if(this.reportPrintObj.CardPayAmount === 0) {
-      popupWin.document.getElementById('idCardpay').style.display = 'none';
-    }
-    if(this.reportPrintObj.ChequePayAmount === 0) {
-      popupWin.document.getElementById('idChequepay').style.display = 'none';
-    }
-    if(this.reportPrintObj.NEFTPayAmount === 0) {
-      popupWin.document.getElementById('idNeftpay').style.display = 'none';
-    }
-    if(this.reportPrintObj.PayTMAmount === 0) {
-      popupWin.document.getElementById('idPaytmpay').style.display = 'none';
-    }
-    
-    if(this.reportPrintObj.reason=== '') {
-      popupWin.document.getElementById('idremark').style.display = 'none';
-    }
-    popupWin.document.close();
-  }
 
   
 viewgetIPAdvanceReportPdf(contact) {

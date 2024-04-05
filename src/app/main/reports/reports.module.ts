@@ -1,37 +1,51 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { IpReportComponent } from './ip-report/ip-report.component';
+import { IpBillingReportComponent } from './ip-billing-report/ip-billing-report.component';
+import { OPBillingReportComponent } from './opbilling-report/opbilling-report.component';
 
 
 
 
 const appRoutes: Routes = [
-    // {
-    //     path: "simplereport",
-    //     loadChildren: () =>
-    //         import("./simplereport/simplereport.module").then(
-    //             (m) => m.SimpleReportModule
-    //         ),
-    // },
+    {
+        path: "opbillingreport",
+        loadChildren: () =>
+            import("./opbilling-report/opbillingreport.module").then(
+                (m) => m.OpbillingreportModule
+            ),
+    },
     {
         path: "pharmacyreport",
         loadChildren: () =>
             import("./pharmacy-report/pharmacyreport.module").then(
                 (m) => m.PharmacyreportModule
             ),
-        // loadChildren: () =>
-        // import("./simplereport/simplereport.module").then(
-        //     (m) => m.SimpleReportModule
-        // ),
+
     },
 
-    // {
-    //     path: "pharmacyreport",
-    //     loadChildren: () =>
-    //         import("./opipbill-reports/opipbill.module").then(
-    //             (m) => m.OPIPBillModule
-    //         ),
-    // },
+    {
+        path: "ipreport",
+        loadChildren: () =>
+            import("./ip-report/ipreort.module").then(
+                (m) => m.IPReortModule
+            ),
+    },
+    {
+        path: "ipbillingreport",
+        loadChildren: () =>
+            import("./ip-billing-report/ipbilling.module").then(
+                (m) => m.IpbillingModule
+            ),
+    },
+    {
+        path: "opreports",
+        loadChildren: () =>
+            import("./op-reports/opreports.module").then(
+                (m) => m.OPReportsModule
+            ),
+    }
 ];
 
 @NgModule({

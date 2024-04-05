@@ -17,6 +17,7 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { MatTabGroup } from '@angular/material/tabs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 
 @Component({
   selector: 'app-indent',
@@ -28,7 +29,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 export class IndentComponent implements OnInit {
   displayedColumns = [
     'IsInchargeVerify',
-    'Isclosed',
+    //'Isclosed',
     'IndentNo',
     'IndentDate',
     'FromStoreName',
@@ -166,6 +167,7 @@ vToStoreId:any=0;
   getToStoreSearchList() {
     this._IndentService.getToStoreNameSearch().subscribe(data => {
       this.ToStoreList1 = data;
+      //console.log(this.ToStoreList1)
     });
   }
 
@@ -200,7 +202,7 @@ vToStoreId:any=0;
       
     this._IndentService.getToStoreNameSearch().subscribe(data => {
       this.ToStoreList = data;
-      console.log(this.ToStoreList)
+      //console.log(this.ToStoreList)
       if (this.vIndentId != 0) {
         const ddValue = this.ToStoreList.filter(c => c.StoreId == this.vToStoreId);
         this._IndentService.newIndentFrom.get('ToStoreId').setValue(ddValue[0]);
@@ -232,10 +234,11 @@ vToStoreId:any=0;
   getIndentItemName() {
     var Param = {
       "ItemName": `${this._IndentService.newIndentFrom.get('ItemName').value}%`,
-      "StoreId": this._IndentService.StoreFrom.get('FromStoreId').value.storeid
+      "StoreId": this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId
     }
     this._IndentService.getIndentNameList(Param).subscribe(data => {
       this.filteredOptions = data;
+      console.log(this.filteredOptions)
       if (this.filteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {
@@ -251,9 +254,32 @@ vToStoreId:any=0;
   getSelectedObj(obj) {
     this.vItemId = obj.ItemID,
       this.ItemName = obj.ItemName;
-    this.vQty = '';
-    this.qty.nativeElement.focus();
+      this.vQty = obj.BalQty;
+    if (this.vQty > 0) {
+      this.getBatch();
   }
+  }
+  getBatch() {
+    this.qty.nativeElement.focus();
+    const dialogRef = this._matDialog.open(SalePopupComponent,
+        {
+            maxWidth: "800px",
+            minWidth: '800px',
+            width: '800px',
+            height: '380px',
+            disableClose: true,
+            data: {
+                "ItemId": this._IndentService.newIndentFrom.get('ItemName').value.ItemID,
+                "StoreId": this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId
+            }
+        });
+    dialogRef.afterClosed().subscribe(result => {
+        console.log(result);
+        result = result.selectedData
+        this.vQty = result.BalanceQty;
+    });
+}
+
   onAdd() {
     if ((this.vItemName == '' || this.vItemName == null || this.vItemName == undefined)) {
       this.toastr.warning('Please enter a item', 'Warning !', {

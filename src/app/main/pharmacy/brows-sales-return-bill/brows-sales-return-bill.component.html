@@ -208,12 +208,19 @@
                                             <button mat-icon-button matTooltip="Print" (click)="viewgetMaterialrecfrdeptReportPdf(row)">
                                                 <mat-icon>print</mat-icon>
                                             </button>
-                                            <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit"  [disabled]="row.IsAccepted">
-                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted !=true"
+                                            <!-- <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit">
+                                                <mat-icon title="Edit Menu" 
                                                     class="disabled-icon">
                                                     edit</mat-icon>
-                                                <!-- <mat-icon title="Edit Menu" *ngIf="row.IsAccepted != true">
-                                                    edit</mat-icon> -->
+                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted != true">
+                                                    edit</mat-icon>
+                                            </button> -->
+                                            <button mat-icon-button (click)="onEdit(row)" matTooltip="Edit">
+                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted==1"
+                                                    [disabled]="row.disabled" class="disabled-icon">
+                                                    edit</mat-icon>
+                                                <mat-icon title="Edit Menu" *ngIf="row.IsAccepted==0">
+                                                    edit</mat-icon>
                                             </button>
                                         </mat-cell>
                                     </ng-container>
