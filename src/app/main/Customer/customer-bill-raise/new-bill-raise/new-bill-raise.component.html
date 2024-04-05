@@ -1,0 +1,82 @@
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+            style="color: white;">account_box
+        </mat-icon>
+        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+            style="color: white;">
+            New BIll Raise
+        </span>
+    </div>
+    <button mat-icon-button (click)="onClose()" aria-label="Close dialog" style="margin-left: 1010px;color: white;">
+        <mat-icon>close</mat-icon>
+    </button>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <form [formGroup]="_CustomerBill.myform">
+
+                            <div fxLayoutGap="4px">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Invoice Number</mat-label>
+                                    <input name="InvoiceNo" formControlName="InvoiceNo" matInput required
+                                    (keyup.enter)="focusNext('InvoiceDate')" [(ngModel)]="vInvoiceNo" type="text" OnlyNUmber>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>InvoiceDate</mat-label>
+                                    <input name="InvoiceDate" matInput [matDatepicker]="picker"
+                                         formControlName="InvoiceDate" id=InvoiceDate (keyup.enter)="focusNext('CustomerId')">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>CustomerId</mat-label>
+                                    <input name="CustomerId" formControlName="CustomerId" matInput required type="text" OnlyNUmber
+                                    (keyup.enter)="focusNext('Amount')" id="CustomerId" [(ngModel)]="vCustomerId">
+                                </mat-form-field>
+                            </div>
+
+
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Amount</mat-label>
+                                    <input name="Amount" formControlName="Amount" type="text" OnlyNUmber
+                                      matInput required text-length="10" (keyup.enter)="focusNext('InvoiceRaisedId')"
+                                        id="Amount" [(ngModel)]="vAmount">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>InvoiceRaisedId</mat-label>
+                                    <input name="InvoiceRaisedId" formControlName="InvoiceRaisedId" matInput required  type="text" OnlyNumber
+                                    OnlyNumber  id="InvoiceRaisedId" [(ngModel)]="vInvoiceRaisedId">
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayoutAlign="end" style="padding: 15px;">
+                                <div class="sales-footer-buttons gap-8">
+                                    <button class="btn btn-primary" (click)="onSubmit()"
+                                        [disabled]="Savebtn">Save</button>&nbsp;
+                                    <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

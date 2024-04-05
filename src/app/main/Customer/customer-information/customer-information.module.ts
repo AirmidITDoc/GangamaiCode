@@ -34,31 +34,24 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
-import { PharmacyClearenceComponent } from '../pharmacy-clearence/pharmacy-clearence.component';
-import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component';
-import { ImageViewComponent } from './image-view/image-view.component';
-import { CustomerBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/customer-bill-raise.component';
-import { CustomerInformationComponent } from 'app/main/Customer/customer-information/customer-information.component';
-import { NewCustomerComponent } from 'app/main/Customer/customer-information/new-customer/new-customer.component';
-import { NewBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/new-bill-raise/new-bill-raise.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NewCustomerComponent } from './new-customer/new-customer.component';
+import { CustomerInformationComponent } from './customer-information.component';
 
 const routes: Routes = [
   { 
       path: '**', 
-      component: PharmacyClearenceComponent 
+      component: CustomerInformationComponent 
   },
 ];
 
 @NgModule({
   declarations: [
-    PharmacyClearenceComponent,
-    NewIssueTrackerComponent,
-    ImageViewComponent,
     CustomerInformationComponent,
-    CustomerBillRaiseComponent,
-    NewCustomerComponent,
-    NewBillRaiseComponent
+    NewCustomerComponent
   ],
+
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -100,14 +93,12 @@ const routes: Routes = [
     MatChipsModule,
     // NgMultiSelectDropDownModule.forRoot(),
     MatTooltipModule
-        
   ],
   providers: [
-    
-    DatePipe,
-],
-entryComponents: [
-  PharmacyClearenceComponent,
-]
+      DatePipe,
+  ],
+  entryComponents: [
+    CustomerInformationComponent,
+  ]
 })
-export class PharmacyClearenceModule { }
+export class CustomerInformationModule { }

@@ -12,8 +12,23 @@
                 Issue tracker
             </span>
         </div>
+        <button mat-raised-button style="background-color: white;color: brown;margin-left:400px !important" (click)="CustomerList()">
+            Customer Info List
+        </button>
 
-        <button mat-raised-button style="background-color: white;color: brown;margin-left:2% !important"(click)="OpenPopUp()">
+        <button mat-raised-button (click)="NewCustomer()" fxLayoutAlign="center center" class="py-8">
+            <mat-icon>add</mat-icon>New Customer
+        </button>
+
+        <button mat-raised-button style="background-color: white;color: brown;" (click)="CustomerbillList()">
+            Customer Bill List
+        </button>
+
+        <button mat-raised-button style="background-color: white;color: brown;" (click)="NewCustomerBill()">
+            New Bill
+        </button>
+
+        <button mat-raised-button style="background-color: white;color: brown;" (click)="OpenPopUp()">
             New Issue tracker
         </button>
     </mat-toolbar>

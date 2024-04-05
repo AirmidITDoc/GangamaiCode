@@ -1,0 +1,102 @@
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+            style="color: white;">account_box
+        </mat-icon>
+        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+            style="color: white;">
+            New Customer
+        </span>
+    </div>
+    <button mat-icon-button (click)="onClose()" aria-label="Close dialog" style="margin-left: 1010px;color: white;">
+        <mat-icon>close</mat-icon>
+    </button>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="15px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <form [formGroup]="_CustomerInfo.myform">
+
+                            <div fxLayoutGap="4px">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Customer Name</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                    <input name="name" formControlName="CustomerName" matInput required
+                                    (keyup.enter)="focusNext('InstallationDate')" [(ngModel)]="vCustomerName">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>InstallationDate</mat-label>
+                                    <input name="InstallationDate" matInput [matDatepicker]="picker"
+                                         formControlName="InstallationDate" id=InstallationDate (keyup.enter)="focusNext('address')">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Address</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">home</mat-icon>
+                                    <input name="address" formControlName="Address" matInput required
+                                    (keyup.enter)="focusNext('MobileNo')" id="address" [(ngModel)]="vaddress">
+                                </mat-form-field>
+                            </div>
+
+
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>MobileNo</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">phone</mat-icon>
+                                    <input name="MobileNo" formControlName="MobileNo" type="Number" ONlyNUmber
+                                      matInput required text-length="10" (keyup.enter)="focusNext('PinCode')"
+                                        id="MobileNo" [(ngModel)]="vMobileNo">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>PinCode</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">place</mat-icon>
+                                    <input name="PinCode" formControlName="PinCode" matInput required  type="number" 
+                                    OnlyNumber (keyup.enter)="focusNext('personName')" id="PinCode" [(ngModel)]="vPinCode">
+                                </mat-form-field>
+                            </div>
+
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Contact PersonName</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                    <input name="personName" formControlName="personName" matInput required
+                                    type="text" id="personName" (keyup.enter)="focusNext('PersonMobileNo')" [(ngModel)]="vpersonName">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Contact PersonMobileNo</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">phone</mat-icon>
+                                    <input name="PersonMobileNo" formControlName="PersonMobileNo" matInput required
+                                    type="number" text-length="10" id="PersonMobileNo" [(ngModel)]="vPersonMobileNo">
+                                </mat-form-field>
+
+                            </div>
+                            <div fxLayoutAlign="end" style="padding: 15px;">
+                                <div class="sales-footer-buttons gap-8">
+                                    <button class="btn btn-primary" (click)="onSubmit()"
+                                        [disabled]="Savebtn">Save</button>&nbsp;
+                                    <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

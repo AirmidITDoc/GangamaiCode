@@ -682,8 +682,9 @@ if(!DuplicateItem){
             "StoreId": this._loggedService.currentUserValue.user.storeId || 0
         }
         this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
-            console.log(draftdata)
+           // console.log(draftdata)
             this.Itemchargeslist1 = draftdata as any;
+            console.log(this.Itemchargeslist1)
             if (this.Itemchargeslist1.length == 0) {
                 Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
             }
@@ -720,7 +721,7 @@ if(!DuplicateItem){
     RQty: any = 0;
     getFinalCalculation(contact, DraftQty) {
         
-        console.log(contact)
+        //console.log(contact)
 
         this.RQty = parseInt(DraftQty);
         if (this.RQty && contact.UnitMRP) {
@@ -783,7 +784,7 @@ if(!DuplicateItem){
                     SalesDraftId: 1
 
                 });
-            console.log(this.chargeslist);
+            //console.log(this.chargeslist);
             this.dsNewIssueList3.data = this.chargeslist
         }
        
@@ -1144,8 +1145,8 @@ if(!DuplicateItem){
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
             this.dsNewIssueList1.data = result;
-            console.log(result)
-            const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].ToStoreId);
+           // console.log(result)
+            const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
             this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
            // console.log(toSelectToStoreId)
             //console.log(result[0].ToStoreId)
