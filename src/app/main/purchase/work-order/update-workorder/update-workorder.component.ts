@@ -89,22 +89,37 @@ export class UpdateWorkorderComponent implements OnInit {
     if (this.data.Obj) {
       this.registerObj=this.data.Obj;
       console.log(this.registerObj)
-      this.vWorkId = this.registerObj.WorkId
+      this.vWorkId = this.registerObj.WOId
       this.FinalDiscAmount=this.registerObj.WODiscAmount;
       this.FinalTotalAmount=this.registerObj.WOTotalAmount;
       this.FinalNetAmount=this.registerObj.WoNetAmount;
       this.FinalVatAmount=this.registerObj.WOVatAmount;
       this.getSuppliernameList();
       console.log(this.FinalNetAmount, this.FinalTotalAmount);
+      this.getWorkOrderItemDetailList(this.registerObj);
     }
     
     this.gePharStoreList();
     this.getGSTtypeList();
   }
 
- 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
+  }
+  getWorkOrderItemDetailList(el) {
+    var Param = {
+      "WOId": el.WOId,
+    }
+    this._WorkOrderService.getItemListUpdates(Param).subscribe(data => {
+      this.dsItemNameList.data = data as ItemNameList[];
+      this.chargeslist = data as ItemNameList[];
+      this.chargeslist.data = data as ItemNameList[];
+      this.sIsLoading = '';
+      console.log(this.dsItemNameList);
+    },
+      error => {
+        this.sIsLoading = '';
+      });
   }
   getGSTtypeList() {
     var vdata = {
@@ -217,12 +232,12 @@ export class UpdateWorkorderComponent implements OnInit {
         Qty: this.vQty || 0,
         Rate: this.vRate || 0,
         TotalAmount: this.vTotalAmount || 0,
-        Disc: this.vDis || 0,
-        DiscAmt: this.vDiscAmt || 0,
-        Vat: this.vGST || 0,
-        VatAmt: this.vGSTAmt || 0,
-        NetAmt: this.vNetAmount || 0,
-        Specification: this.vSpecification || '',
+        DiscPer: this.vDis || 0,
+        DiscAmount: this.vDiscAmt || 0,
+        VATPer: this.vGST || 0,
+        VATAmount: this.vGSTAmt || 0,
+        NetAmount: this.vNetAmount || 0,
+        Remark: this.vSpecification || '',
       });
       this.dsItemNameList.data = this.chargeslist;
 
@@ -309,21 +324,63 @@ finalCalculation() {
   this.calculateDiscperAmount();
   if (this.dsItemNameList.data.length > 0) {
     for (let i = 0; i < this.dsItemNameList.data.length; i++) {
-      //this.getCellCalculation(this.dsItemNameList.data[i], null);
+      this.getCellCalculation(this.dsItemNameList.data[i], null);
     }
   }
  // this.calculateDiscAmount();
 }
+keyPressAlphanumeric(event) {
+  var inp = String.fromCharCode(event.keyCode);
+  if (/[a-zA-Z0-9]/.test(inp)) {
+    return true;
+  } else {
+    event.preventDefault();
+    return false;
+  }
+}
+getCellCalculation(contact, ReceiveQty) {
+
+  if (contact.Qty > 0 && contact.Rate > 0) {
+    if (this._WorkOrderService.WorkorderItemForm.get('GSTType').value.Name == 'GST After Disc') {
+
+      //total amt
+      contact.TotalAmount = (parseFloat(contact.Qty) * parseFloat(contact.Rate)).toFixed(2);;
+      //disc
+      contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);;
+      let TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
+      //Gst
+      contact.VATAmount = (((TotalAmt) * parseFloat(contact.VATPer)) / 100).toFixed(2);;
+      contact.NetAmount = ((TotalAmt) + parseFloat(contact.VATAmount)).toFixed(2);;
+
+    }
+    else if (this._WorkOrderService.WorkorderItemForm.get('GSTType').value.Name == 'GST Before Disc') {
+      //total amt
+      contact.TotalAmount = (parseFloat(contact.Qty) * parseFloat(contact.Rate)).toFixed(2);;
+      //Gst
+      contact.VATAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VATPer)) / 100).toFixed(2);;
+      let totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VATAmount));
+      //disc
+      contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);;
+      contact.NetAmount = ((totalAmt) - parseFloat(contact.DiscAmount)).toFixed(2);;
+    }
+  }
+  else {
+    contact.TotalAmount = 0;
+    contact.DiscAmount = 0;
+    contact.VATAmount = 0;
+    contact.NetAmount = 0;
+  }
+}
 getTotalNet(element) { 
-  this.FinalNetAmount = element.reduce((sum, { NetAmt }) => sum += +(NetAmt || 0), 0).toFixed(2);
+  this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
   return this.FinalNetAmount;
 }
 getTotalVAT(element) {
-  this.FinalVatAmount = (element.reduce((sum, { VatAmt }) => sum += +(VatAmt || 0), 0)).toFixed(2);
+  this.FinalVatAmount = (element.reduce((sum, { VATAmount }) => sum += +(VATAmount || 0), 0)).toFixed(2);
   return this.FinalVatAmount;
 }
 getTotalDisc(element) {
-  this.FinalDiscAmount = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0).toFixed(2);
+  this.FinalDiscAmount = element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0).toFixed(2);
   return this.FinalDiscAmount;
 }
 getTotalAmt(element) {
@@ -350,7 +407,8 @@ getTotalAmt(element) {
       });
       return;
     }
-    if(!this._WorkOrderService.WorkorderItemForm.get('WorkId').value) {
+    if(!this.registerObj.WOId) {
+      this.Savebtn=true;
     let workorderHeaderInsertObj = {};
     workorderHeaderInsertObj['date'] = this.dateTimeObj.date;
     workorderHeaderInsertObj['time'] = this.dateTimeObj.time;
@@ -375,12 +433,12 @@ getTotalAmt(element) {
       insertWorkDetailaObj['qty'] = element.Qty;
       insertWorkDetailaObj['rate'] = element.Rate;
       insertWorkDetailaObj['totalAmount'] = element.TotalAmount;
-      insertWorkDetailaObj['discAmount'] = element.DiscAmt;
-      insertWorkDetailaObj['discPer'] = element.Disc;
-      insertWorkDetailaObj['vatAmount'] = element.VatAmt;
-      insertWorkDetailaObj['vatPer'] = element.Vat;;
-      insertWorkDetailaObj['netAmount'] = element.NetAmt;
-      insertWorkDetailaObj['remark'] = element.Specification;
+      insertWorkDetailaObj['discAmount'] = element.DiscAmount;
+      insertWorkDetailaObj['discPer'] = element.DiscPer;
+      insertWorkDetailaObj['vatAmount'] = element.VATAmount;
+      insertWorkDetailaObj['vatPer'] = element.VATPer;;
+      insertWorkDetailaObj['netAmount'] = element.NetAmount;
+      insertWorkDetailaObj['remark'] = element.Remark;
      
       InsertWorkDetailarrayObj.push(insertWorkDetailaObj);
     });
@@ -397,7 +455,7 @@ getTotalAmt(element) {
         });
         this.OnReset();
         this._matDialog.closeAll();
-        this.Savebtn=true;
+        this.Savebtn=false;
       } else {
         this.toastr.error('New WorkOrder Data not Saved !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -411,9 +469,9 @@ getTotalAmt(element) {
   } 
   else{
     let workorderHeaderUpdateObj = {};
-    workorderHeaderUpdateObj['woId'] = this.registerObj.WorkId;
+    workorderHeaderUpdateObj['woId'] = this.registerObj.WOId;
     workorderHeaderUpdateObj['storeId'] = this.accountService.currentUserValue.user.storeId;
-    workorderHeaderUpdateObj['supplierID'] = this._WorkOrderService.myFormGroup.get('SupplierName').value.SupplierId || 0;
+    workorderHeaderUpdateObj['supplierID'] = this._WorkOrderService.WorkorderItemForm.get('SupplierName').value.SupplierId || 0;
     workorderHeaderUpdateObj['totalAmount'] = this.FinalTotalAmount;
     workorderHeaderUpdateObj['vatAmount'] = this.FinalVatAmount;
     workorderHeaderUpdateObj['discAmount'] = this.FinalDiscAmount;
@@ -425,23 +483,23 @@ getTotalAmt(element) {
     let InsertWorkDetailarrayObj = [];
     this.dsItemNameList.data.forEach((element) => {
       let insertWorkDetailaObj = {};
-      insertWorkDetailaObj['woId'] = 0;
+      insertWorkDetailaObj['woId'] = this.registerObj.WOId;
       insertWorkDetailaObj['itemName'] = element.ItemName;
       insertWorkDetailaObj['qty'] = element.Qty;
       insertWorkDetailaObj['rate'] = element.Rate;
       insertWorkDetailaObj['totalAmount'] = element.TotalAmount;
-      insertWorkDetailaObj['discAmount'] = element.DiscAmt;
-      insertWorkDetailaObj['discPer'] = element.Disc;
-      insertWorkDetailaObj['vatAmount'] = element.VatAmt;
-      insertWorkDetailaObj['vatPer'] = element.Vat;;
-      insertWorkDetailaObj['netAmount'] = element.NetAmt;
-      insertWorkDetailaObj['remark'] = element.Specification;
+      insertWorkDetailaObj['discAmount'] = element.DiscAmount;
+      insertWorkDetailaObj['discPer'] = element.DiscPer;
+      insertWorkDetailaObj['vatAmount'] = element.VATAmount;
+      insertWorkDetailaObj['vatPer'] = element.VATPer;;
+      insertWorkDetailaObj['netAmount'] = element.NetAmount;
+      insertWorkDetailaObj['remark'] = element.Remark;
      
       InsertWorkDetailarrayObj.push(insertWorkDetailaObj);
     });
   
     let delete_WorkDetailsObj = {};
-    delete_WorkDetailsObj['woid'] = 0;
+    delete_WorkDetailsObj['woid'] =this.registerObj.WOId;
   
     let submitData = {
       "updateWorkOrderHeader": workorderHeaderUpdateObj,
@@ -525,7 +583,7 @@ getTotalAmt(element) {
   public onEnterDis(event): void {
     if (event.which === 13) {
       this.gst.nativeElement.focus();
-      this.addbtn=false;
+    
     }
   }
   public onEnterGST(event): void {
@@ -535,14 +593,27 @@ getTotalAmt(element) {
   } 
   public onEnterSpecification(event): void {
     if (event.which === 13) {
-      this.add = true;
-      this.addbutton.focus();
+      this.addbtn=false;
     }
   }
   public onEnterRemark(event): void {
     if (event.which === 13) {
       //this.FinalDiscAmount1.nativeElement.focus();
     }
+  }
+  public setFocus(nextElementId): void {
+    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+  }
+  selectedRowIndex: any;
+  arrowUpEvent() {
+    this.selectedRowIndex--;
+  }
+
+  arrowDownEvent() {
+    this.selectedRowIndex++;
+  }
+  highlight(contact: any) {
+    this.selectedRowIndex = contact;
   }
   // focusNext(nextElementId: string): void {
   //   const nextElement = this.elementRef.nativeElement.querySelector(`#${nextElementId}`);
@@ -558,12 +629,12 @@ export class ItemNameList{
   Qty:any;
   Rate:any;
   TotalAmount:any;
-  Disc:any;
-  DiscAmt:any;
-  Vat:number;
-  VatAmt:number;
-  NetAmt:number;
-  Specification:number;
+  DiscAmount:any;
+  DiscPer:any;
+  VATPer:number;
+  VATAmount:number;
+  NetAmount:number;
+  Remark:string;
   WorkId:any;
   ConstantId:any;
   WORemark:any;
@@ -579,12 +650,12 @@ export class ItemNameList{
       this.Qty = ItemNameList.Qty || 0;
       this.Rate = ItemNameList.Rate || 0;
       this.TotalAmount = ItemNameList.TotalAmount || 0;
-      this.Disc = ItemNameList.Disc || 0;
-      this.DiscAmt = ItemNameList.DiscAmt || 0;
-      this.Vat = ItemNameList.Vat || 0;
-      this.VatAmt = ItemNameList.VatAmt || 0;
-      this.NetAmt = ItemNameList.NetAmt || 0;
-      this.Specification =ItemNameList.Specification || "";
+      this.DiscPer = ItemNameList.DiscPer || 0;
+      this.DiscAmount = ItemNameList.DiscAmount || 0;
+      this.VATPer = ItemNameList.VATPer || 0;
+      this.VATAmount = ItemNameList.VATAmount || 0;
+      this.NetAmount = ItemNameList.NetAmount || 0;
+      this.Remark =ItemNameList.Remark || "";
       this.WorkId = ItemNameList.WorkId || 0;
       this.ConstantId = ItemNameList.ConstantId || 0;
     }

@@ -132,7 +132,7 @@ export class WorkOrderComponent implements OnInit {
       this.StoreList = data;
       // console.log(this.StoreList);
       this._WorkOrderService.myFormGroup.get('StoreId').setValue(this.StoreList[0]);
-      this._WorkOrderService.NewWorkForm.get('StoreId').setValue(this.StoreList[0]);
+      //this._WorkOrderService.NewWorkForm.get('StoreId').setValue(this.StoreList[0]);
     });
   }
 

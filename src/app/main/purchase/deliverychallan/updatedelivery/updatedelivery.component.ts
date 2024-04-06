@@ -20,6 +20,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { PODetailList, PurchaseorderComponent } from '../../good-receiptnote/update-grn/purchaseorder/purchaseorder.component';
 import { MatSelect } from '@angular/material/select';
+import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
+import { SupplierFormMasterComponent } from 'app/main/setup/inventory/supplier-master/supplier-form-master/supplier-form-master.component';
 
 @Component({
   selector: 'app-updatedelivery',
@@ -188,7 +190,7 @@ export class UpdatedeliveryComponent implements OnInit {
   lastDay2: string = '';
   vExpDate: string = '';
   dateTimeObj: any;
-
+  vcheckSupplierId:any;
 
   dsItemNameList = new MatTableDataSource<ItemNameList>();
   dsTempItemNameList = new MatTableDataSource<ItemNameList>();
@@ -383,6 +385,7 @@ export class UpdatedeliveryComponent implements OnInit {
     this.vMobile = obj.Mobile;
     this.vContact = obj.ContactPerson;
     this.SupplierId = obj.SupplierId;
+    this.vcheckSupplierId =obj.SupplierId;
   }
   getOptionTextSupplier(option) {
     return option && option.SupplierName ? option.SupplierName : '';
@@ -466,7 +469,7 @@ export class UpdatedeliveryComponent implements OnInit {
       if (contact.ReceiveQty > contact.POQty) {
         Swal.fire("Qty Should Be less than PO Qty")
       } else {
-        contact.POBalQty = ((contact.POQty) - (contact.ReceiveQty))
+        contact.POBalQty = (parseFloat(contact.POQty) - parseFloat(contact.ReceiveQty))
       }
     }
     
@@ -475,12 +478,12 @@ export class UpdatedeliveryComponent implements OnInit {
       contact.IGSTPer = IGSTPer;
       if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
 
-        contact.TotalQty = (((contact.ReceiveQty) + (contact.FreeQty)) * (contact.ConversionFactor));
+        contact.TotalQty = ((parseFloat(contact.ReceiveQty) + parseFloat(contact.FreeQty)) * parseFloat(contact.ConversionFactor));
         //total amt
-        contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
+        contact.TotalAmount = parseFloat(contact.ReceiveQty) * parseFloat(contact.Rate);
         //disc
-        contact.DiscAmount = (((contact.TotalAmount) * (contact.DiscPercentage)) / 100);
-        let TotalAmt = ((contact.TotalAmount) - (contact.DiscAmount));
+        contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100);
+        let TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
         //Gst
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
         contact.CGSTAmt = (((TotalAmt) * parseFloat(contact.CGSTPer)) / 100);
@@ -492,10 +495,10 @@ export class UpdatedeliveryComponent implements OnInit {
 
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == 'GST Before Disc') {
-        contact.TotalQty = (((contact.FreeQty) + (contact.ReceiveQty)) * (contact.ConversionFactor));
+        contact.TotalQty = ((parseFloat(contact.FreeQty) + parseFloat(contact.ReceiveQty)) * parseFloat(contact.ConversionFactor));
 
         //total amt
-        contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
+        contact.TotalAmount = parseFloat(contact.ReceiveQt) * parseFloat(contact.Rate);
         //Gst
         contact.VatPercentage= (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer));
    
@@ -542,7 +545,7 @@ export class UpdatedeliveryComponent implements OnInit {
         // contact.UnitMRP = ((contact.MRP) / (contact.ConversionFactor));
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST on MRP Plus FreeQty") {
-        let mrpTotal = ((contact.TotalQty) * (contact.ConversionFactor) * (contact.MRP));
+        let mrpTotal = (parseFloat(contact.TotalQty) * parseFloat(contact.ConversionFactor) * parseFloat(contact.MRP));
         let Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPercentage));
         //GST cal
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
@@ -555,7 +558,7 @@ export class UpdatedeliveryComponent implements OnInit {
         contact.NetAmount = ((GrossAmt) + parseFloat(contact.VatAmount));
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST on Pur Plus FreeQty") {
-        let TotalPurWf = ((contact.TotalQty) * (contact.Rate));
+        let TotalPurWf = (parseFloat(contact.TotalQty) * parseFloat(contact.Rate));
         //GST cal
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
         contact.CGSTAmt = (((TotalPurWf) * parseFloat(contact.CGSTPer)) / 100);
@@ -566,7 +569,7 @@ export class UpdatedeliveryComponent implements OnInit {
         contact.NetAmount = ((GrossAmt) - parseFloat(contact.DiscAmount));
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST On MRP") {
-        let mrpTotal = ((contact.ReceiveQty) * (contact.ConversionFactor) * (contact.MRP));
+        let mrpTotal = (parseFloat(contact.ReceiveQty) * parseFloat(contact.ConversionFactor) * parseFloat(contact.MRP));
         let Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPercentage));
         //GST cal
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
@@ -580,12 +583,12 @@ export class UpdatedeliveryComponent implements OnInit {
       }
 
       //LandedRate As New Double
-      contact.LandedRate = (contact.NetAmount / contact.TotalQty);
+      contact.LandedRate = parseFloat(contact.NetAmount) / parseFloat(contact.TotalQty);
       ///PurUnitRate
-      contact.PurUnitRate = (((contact.TotalAmount) / (contact.ConversionFactor)));
+      contact.PurUnitRate = ((parseFloat(contact.TotalAmount) / parseFloat(contact.ConversionFactor)));
       //PurUnitRateWF
-      contact.PurUnitRateWF = (((contact.TotalAmount) / (contact.TotalQty)));
-      contact.UnitMRP = ((contact.MRP) / (contact.ConversionFactor));
+      contact.PurUnitRateWF = ((parseFloat(contact.TotalAmount) / parseFloat(contact.TotalQty)));
+      contact.UnitMRP = (parseFloat(contact.MRP) / parseFloat(contact.ConversionFactor));
 
     }
     else {
@@ -653,14 +656,14 @@ export class UpdatedeliveryComponent implements OnInit {
         TotalAmt = parseFloat(TotalAmt2) - parseFloat(this.vDisAmount2);
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST on MRP Plus FreeQty") {
-        let mrpTotal = ((this.FinalTotalQty) * (this.vConversionFactor) * (this.vMRP));
+        let mrpTotal = (parseFloat(this.FinalTotalQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
         TotalAmt = (mrpTotal * 100) / (100 + this.vGST);
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST on Pur Plus FreeQty") {
-        let TotalAmt = ((this.FinalTotalQty) * (this.vRate)).toFixed(2);
+        let TotalAmt = (parseFloat(this.FinalTotalQty) * parseFloat(this.vRate)).toFixed(2);
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST On MRP") {
-        let mrpTotal = ((this.vQty) * (this.vConversionFactor) * (this.vMRP));
+        let mrpTotal = (parseFloat(this.vQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
         TotalAmt = (mrpTotal * 100) / (100 + this.vGST);
       }
       //Gst
@@ -879,7 +882,7 @@ export class UpdatedeliveryComponent implements OnInit {
       this._DeliveryService.userFormGroup.get('NetAmount').setValue(this.vNetAmount);
     }
     else if (event.value.Name == "GST on MRP Plus FreeQty") {
-      let mrpTotal = ((this.FinalTotalQty) * (this.vConversionFactor) * (this.vMRP));
+      let mrpTotal = (parseFloat(this.FinalTotalQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
       let Totalmrp = ((mrpTotal * 100) / (100 + this.vGST));
       //GST cal
       this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
@@ -893,7 +896,7 @@ export class UpdatedeliveryComponent implements OnInit {
       this.vNetAmount = (parseFloat(GrossAmt) + parseFloat(this.vGSTAmount)).toFixed(2);
     }
     else if (event.value.Name == "GST on Pur Plus FreeQty") {
-      let TotalPurWf = ((this.FinalTotalQty) * (this.vRate));
+      let TotalPurWf = (parseFloat(this.FinalTotalQty) * parseFloat(this.vRate));
       //GST cal
       this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
       this.vCGSTAmount = ((TotalPurWf * parseFloat(this.vCGST)) / 100).toFixed(2);
@@ -906,7 +909,7 @@ export class UpdatedeliveryComponent implements OnInit {
       this.vNetAmount = (parseFloat(GrossAmt) - parseFloat(this.vDisAmount)).toFixed(2);
     }
     else if (event.value.Name == "GST On MRP") {
-      let mrpTotal = ((this.vQty) * (this.vConversionFactor) * (this.vMRP));
+      let mrpTotal = (parseFloat(this.vQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
       let Totalmrp = ((mrpTotal * 100) / (100 + this.vGST));
       //GST cal
       this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
@@ -1684,7 +1687,7 @@ export class UpdatedeliveryComponent implements OnInit {
       grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
       grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
       grnDetailSaveObj['grossAmount'] = element.NetAmount || 0;
-      grnDetailSaveObj['totalQty'] = this.FinalTotalQty || 0;
+      grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
       grnDetailSaveObj['poNo'] = element.PurchaseId || 0;
       grnDetailSaveObj['batchNo'] = element.BatchNo || "";
       grnDetailSaveObj['batchExpDate'] = this.vExpDate;//this.datePipe.transform(element.BatchExpDate, "yyyy-MM") || this.date.value;
@@ -2108,6 +2111,45 @@ export class UpdatedeliveryComponent implements OnInit {
       });
 
     }, 100);
+  }
+  OnAddItem(){
+    const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
+      maxWidth: "100%",
+      height: '95%',
+      width: '95%',
+  });
+  dialogRef.afterClosed().subscribe((result) => {
+      console.log("The dialog was closed - Insert Action", result);
+  });
+  }
+  OnAddSupplier(){
+    const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
+      maxWidth: "100%",
+      height: '95%',
+      width: '95%',
+  });
+  dialogRef.afterClosed().subscribe((result) => {
+      console.log("The dialog was closed - Insert Action", result);
+  });
+  }
+  msg:any;
+  checkInvoice(){
+    let Query = "select InvoiceNo from T_GRNHeader Where SupplierId="+this.vcheckSupplierId + "and StoreId=" + this.accountService.currentUserValue.user.storeId;
+    console.log(Query)
+    this._DeliveryService.getCheckInvoiceNo(Query).subscribe(data =>{
+      this.msg = data
+      console.log(data)
+     // console.log(this.msg.InvoiceNo)
+      const checkInvoice = this.msg.some(item => item.InvoiceNo == this._DeliveryService.userFormGroup.get('InvoiceNo').value);
+
+      if(checkInvoice){
+        this.toastr.warning('Invoice Number already there exists', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        this._DeliveryService.userFormGroup.get('InvoiceNo').setValue('');
+        this.InvoiceNo1.nativeElement.focus()
+      }
+    })
   }
 }
 export class LastThreeItemList {

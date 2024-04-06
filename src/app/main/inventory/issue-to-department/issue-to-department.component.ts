@@ -682,7 +682,7 @@ if(!DuplicateItem){
             "StoreId": this._loggedService.currentUserValue.user.storeId || 0
         }
         this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
-           // console.log(draftdata)
+            console.log(draftdata)
             this.Itemchargeslist1 = draftdata as any;
             console.log(this.Itemchargeslist1)
             if (this.Itemchargeslist1.length == 0) {
@@ -827,7 +827,7 @@ if(!DuplicateItem){
         this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
         return this.vFinalTotalAmount;
     }
-
+    savebtn:boolean=false;
     OnSave() {
         this.vsaveflag = true;
         if ((!this.dsNewIssueList3.data.length)) {
@@ -842,6 +842,7 @@ if(!DuplicateItem){
         //     });
         //     return;
         // }
+        this.savebtn=true;
         let insertheaderObj = {};
         insertheaderObj['issueDate'] = this.dateTimeObj.date;
         insertheaderObj['issueTime'] = this.dateTimeObj.time;
@@ -904,7 +905,7 @@ if(!DuplicateItem){
                 this.viewgetIssuetodeptReportPdf(response, this.vprintflag);
                 this.OnReset();
                 this.getIssueToDep();
-
+                this.savebtn=false;
             } else {
                 this.toastr.error('New Issue To Department Data not saved !, Please check validation error..', 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',

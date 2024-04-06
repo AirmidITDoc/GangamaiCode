@@ -851,7 +851,7 @@
 
                                 <div class="sales-footer-buttons gap-8" fxLayout="row">
                                     <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                                    <button class="btn btn-primary " (click)="OnSave()" #save>Save</button>
+                                    <button class="btn btn-primary " (click)="OnSave()" [disabled]="savebtn">Save</button>
 
                                 </div>
                             </div>

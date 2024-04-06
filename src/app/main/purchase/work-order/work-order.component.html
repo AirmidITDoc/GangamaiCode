@@ -68,7 +68,7 @@
 
                                 <mat-form-field appearance="outline" fxFlex="30%">
                                     <input type="text" name="SupplierName" formControlName="SupplierName" #SupplierName
-                                        placeholder="SupplierName (enter 2 char) " matInput [matAutocomplete]="Supplierauto"
+                                        placeholder="SupplierName (enter 2 char) " matInput [matAutocomplete]="SupplierIdauto"
                                         (input)="getSuppliernameList()">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -76,7 +76,7 @@
                                         <mat-icon class="mat-icon-close"
                                             (click)="_WorkOrderService.myFormGroup.get('SupplierName').setValue(''); isSupplierIdSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #Supplierauto="matAutocomplete" [displayWith]="getOptionTextSupplier">
+                                    <mat-autocomplete #SupplierIdauto="matAutocomplete" [displayWith]="getOptionTextSupplier">
                                         <mat-option *ngFor="let option of filteredOptionssupplier" [value]="option">
                                             {{option.SupplierName}} || {{option.SupplierId}}
                                         </mat-option>

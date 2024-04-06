@@ -89,7 +89,7 @@ getOptionTextStores(option) {
   getIndentList() {
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "ToStoreId": this._IssueToDep.IndentFrom.get('ToStoreId').value.StoreId,
+      "ToStoreId": this._IssueToDep.IndentFrom.get('ToStoreId').value.StoreId || 0,
       "From_Dt": this.datePipe.transform(this._IssueToDep.IndentFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._IssueToDep.IndentFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "Status": this._IssueToDep.IndentFrom.get('Status').value

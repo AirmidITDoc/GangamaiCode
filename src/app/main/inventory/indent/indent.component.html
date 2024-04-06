@@ -381,7 +381,7 @@
 
                                     <div fxLayout="column" fxLayoutAlign="start none">
 
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px">
                                             <from [formGroup]="_IndentService.StoreFrom">
                                                 <mat-form-field appearance="outline" fxFlex="100%">
                                                     <mat-label>From Store</mat-label>
@@ -417,7 +417,7 @@
 
 
 
-                                            <app-common-date style="margin-left:120px;" [screenFrom]="screenFromString"
+                                            <app-common-date style="margin-left:120px;margin-top: 0px;" [screenFrom]="screenFromString"
                                                 (dateTimeEventEmitter)="getDateTime($event)">
                                             </app-common-date>
 
@@ -474,7 +474,7 @@
 
                                         <div fxlayout="row">
                                             <div style="width: 100%;">
-                                                <mat-table #table class="table3" matSort [dataSource]="dsIndentNameList"
+                                                <mat-table #table  matSort [dataSource]="dsIndentNameList"
                                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                                     <ng-container matColumnDef="Action">
@@ -548,10 +548,9 @@
                                     </div>
                                 </div>
 
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px"
-                                    style="padding: 10px;">
+                                <div fxLayout="row" fxLayoutGap="8px" style="padding: 10px;">
 
-                                    <mat-form-field appearance="outline" fxFlex="30%">
+                                    <mat-form-field appearance="outline" fxFlex="30%" style="margin-right: 800px;">
                                         <mat-label>Remark</mat-label>
                                         <input name="Remark" formControlName="Remark" [(ngModel)]="vRemark" matInput>
                                     </mat-form-field>
@@ -566,7 +565,7 @@
                                         </div>
                                     </div>
                                      -->
-                                    <div class="sales-footer-buttons gap-8" fxLayout="row" fxFlexAlign="end">
+                                    <div class="sales-footer-buttons gap-8" fxLayout="row" >
                                         <button class="btn btn-primary " (click)="OnSave()">Save</button>
                                         <button class="btn btn-danger-outline" (click)="OnReset()"
                                             >Reset</button>
