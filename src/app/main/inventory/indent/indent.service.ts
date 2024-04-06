@@ -73,8 +73,8 @@ export class IndentService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Params);
   }
   
-  public getToStoreNameSearch(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
+  public getToStoreNameSearch(){//Retrieve_ToStoreName
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
   }
 
   public InsertIndentSave(Param){

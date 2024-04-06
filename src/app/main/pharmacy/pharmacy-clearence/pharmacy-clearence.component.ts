@@ -8,6 +8,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
 import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component';
+import { CustomerInformationComponent } from 'app/main/Customer/customer-information/customer-information.component';
+import { CustomerBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/customer-bill-raise.component';
+import { NewCustomerComponent } from 'app/main/Customer/customer-information/new-customer/new-customer.component';
+import { NewBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/new-bill-raise/new-bill-raise.component';
 
 @Component({
   selector: 'app-pharmacy-clearence',
@@ -127,7 +131,56 @@ console.log(vdata)
       this.getIssuTrackerList();
     });
   }
-
+  CustomerList(){
+    const dialogRef = this._matDialog.open(CustomerInformationComponent,
+      {
+        maxWidth: "85vw",
+        height: '85%',
+        width: '100%',
+        
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      //this.getIssuTrackerList();
+    });
+  }
+  NewCustomer(){
+    const dialogRef = this._matDialog.open(NewCustomerComponent,
+      {
+        maxWidth: "85vw",
+        height: '85%',
+        width: '100%',
+        
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
+  NewCustomerBill(){
+    const dialogRef = this._matDialog.open(NewBillRaiseComponent,
+      {
+        maxWidth: "85vw",
+        height: '85%',
+        width: '100%',
+        
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
+  CustomerbillList(){
+    const dialogRef = this._matDialog.open(CustomerBillRaiseComponent,
+      {
+        maxWidth: "85vw",
+        height: '85%',
+        width: '100%',
+        
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      //this.getIssuTrackerList();
+    });
+  }
   onEdit(contact) {
     const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
       {

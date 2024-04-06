@@ -186,6 +186,8 @@ export class DeliverychallanService {
   public getPdfGRN(GRNID) {
     return this._httpClient.get("Pharmacy/view-GRNReport?GRNID=" + GRNID);
   }
-
+  public getCheckInvoiceNo(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data,  {});
+  }
 }
 

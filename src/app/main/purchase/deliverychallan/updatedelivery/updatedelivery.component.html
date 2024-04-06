@@ -95,7 +95,7 @@
                                         <mat-label>Invoice No</mat-label>
                                         <input matInput placeholder="InvoiceNo" [(ngModel)]="registerObj.InvoiceNo"
                                             formControlName="InvoiceNo" #InvoiceNo1
-                                            (keydown)="onEnterInvoiceNo($event)">
+                                            (keydown)="onEnterInvoiceNo($event)" (keyup)="checkInvoice()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
@@ -446,7 +446,7 @@
                                                     <input matInput [(ngModel)]="contact.ConversionFactor"
                                                         (keyup)="getCellCalculation(contact,contact.ConversionFactor)"
                                                         step="0.1" type="text" autocomplete="off" OnlyNumber
-                                                        [disabled]="contact.IsVerifiedUserId==1" [id]="'Packing_'+index"
+                                                        [disabled]="contact.IsVerifiedUserId>0" [id]="'Packing_'+index"
                                                         (keydown.arrowdown)="setFocus('Packing_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('Packing_'+(index-1))"
                                                         >
@@ -476,7 +476,7 @@
                                             <mat-cell *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.BatchNo"
-                                                        [disabled]="contact.IsVerifiedUserId==1"
+                                                        [disabled]="contact.IsVerifiedUserId>0"
                                                         [id]="'BatchNo_'+index"
                                                         (keydown.arrowdown)="setFocus('BatchNo_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('BatchNo_'+(index-1))"
@@ -493,7 +493,7 @@
                                                     <input matInput #inputField
                                                         (keyup)="CellcalculateLastDay(contact,inputField.value)"
                                                         [(ngModel)]="contact.BatchExpDate" placeholder="mmyyyy"
-                                                        [disabled]="contact.IsVerifiedUserId==1">
+                                                        [disabled]="contact.IsVerifiedUserId>0">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -510,7 +510,7 @@
                                                         (keypress)="keyPressAlphanumeric($event)"
                                                         (keydown.arrowdown)="setFocus('Qty_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('Qty_'+(index-1))"
-                                                        [disabled]="contact.IsVerifiedUserId==1">
+                                                        [disabled]="contact.IsVerifiedUserId>0">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -526,7 +526,7 @@
                                                         (keypress)="keyPressAlphanumeric($event)"
                                                         (keydown.arrowdown)="setFocus('FreeQty_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('FreeQty_'+(index-1))"
-                                                        [disabled]="contact.IsVerifiedUserId==1">
+                                                        [disabled]="contact.IsVerifiedUserId>0">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -545,7 +545,7 @@
                                             <mat-cell *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.MRP" step="0.1" type="text" OnlyNumber [id]="'MRP_'+index"
-                                                        autocomplete="off" [disabled]="contact.IsVerifiedUserId==1"
+                                                        autocomplete="off" [disabled]="contact.IsVerifiedUserId>0"
                                                         (keydown.arrowdown)="setFocus('MRP_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('MRP_'+(index-1))"
                                                         >
@@ -560,7 +560,7 @@
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1" [id]="'Rate_'+index"
                                                         type="text" autocomplete="off" OnlyNumber
-                                                        [disabled]="contact.IsVerifiedUserId==1"
+                                                        [disabled]="contact.IsVerifiedUserId>0"
                                                         (keyup)="getCellCalculation(contact,contact.Rate)"
                                                         (keydown.arrowdown)="setFocus('Rate_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('Rate_'+(index-1))"
@@ -583,7 +583,7 @@
                                             <mat-cell   *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.DiscPercentage" [id]="'DiscPer_'+index"
-                                                        [disabled]="contact.IsVerifiedUserId==1"
+                                                        [disabled]="contact.IsVerifiedUserId>0"
                                                         (keyup)="getCellCalculation(contact,contact.DiscPercentage)"
                                                         (keydown.arrowdown)="setFocus('DiscPer_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('DiscPer_'+(index-1))"
@@ -606,7 +606,7 @@
                                             <mat-cell *matCellDef="let contact;let index = index" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.DiscPer2" [id]="'DiscPer2_'+index"
-                                                        [disabled]="contact.IsVerifiedUserId==1"
+                                                        [disabled]="contact.IsVerifiedUserId>0"
                                                         (keyup)="getCellCalculation(contact,contact.DiscPer2)"
                                                         step="0.1" type="text" OnlyNumber autocomplete="off"
                                                         (keydown.arrowdown)="setFocus('DiscPer2_'+(index+1))"
@@ -646,7 +646,7 @@
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput  [(ngModel)]="contact.CGSTPer" [id]="'CGSTPer_'+index"
                                                         step="0.1" type="text" OnlyNumber
-                                                        [disabled]="contact.IsVerifiedUserId==1"
+                                                        [disabled]="contact.IsVerifiedUserId>0"
                                                         (keyup)="getCellCalculation(contact,contact.CGSTPer)"
                                                         (keydown.arrowdown)="setFocus('CGSTPer_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('CGSTPer_'+(index-1))"
@@ -670,7 +670,7 @@
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.SGSTPer" [id]="'SGSTPer_'+index"
                                                         step="0.1" type="text" OnlyNumber
-                                                        [disabled]="contact.IsVerifiedUserId==1"
+                                                        [disabled]="contact.IsVerifiedUserId>0"
                                                         (keyup)="getCellCalculation(contact,contact.SGSTPer)"
                                                         (keydown.arrowdown)="setFocus('SGSTPer_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('SGSTPer_'+(index-1))"
@@ -694,7 +694,7 @@
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="contact.IGSTPer" [id]="'IGSTPer_'+index"
                                                         step="0.1" type="text" OnlyNumber
-                                                        [disabled]="contact.IsVerifiedUserId==1"
+                                                        [disabled]="contact.IsVerifiedUserId>0"
                                                         (keyup)="getCellCalculation(contact,contact.IGSTPer)"
                                                         autocomplete="off"
                                                         (keydown.arrowdown)="setFocus('IGSTPer_'+(index+1))"
@@ -1111,6 +1111,9 @@
                             </div>
                             <div class="modal-footer">
                                 <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
+                                    <button mat-raised-button class="py-8" (click)="OnAddItem()"><mat-icon>add</mat-icon>Item</button>
+                                    <button mat-raised-button class="py-8" (click)="OnAddSupplier()"><mat-icon>add</mat-icon>Supplier</button>
+
                                     <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
                                     <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
                                 </div>

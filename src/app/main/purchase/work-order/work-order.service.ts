@@ -120,6 +120,10 @@ public getWorkOrderPrint(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param);
   }
 
+  public getItemListUpdates(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDetailsForWorkOrderUpdate",Param);
+  }
+
   public InsertWorkorderSave(Param){
     return this._httpClient.post("Pharmacy/InsertWorkorder", Param)
   }

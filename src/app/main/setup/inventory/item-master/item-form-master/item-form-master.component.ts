@@ -814,9 +814,6 @@ export class ItemFormMasterComponent implements OnInit {
     assets:[]
     
     onSubmit() {
-
-        
-
         if ((this.vHSNcode == undefined || this.vItemName == undefined || this.vItemTypeID == undefined )) {
             this.toastr.warning('Please select All Data Type.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -824,23 +821,17 @@ export class ItemFormMasterComponent implements OnInit {
             return;
         }
         else {
-
-
             if (!this._itemService.myform.get("ItemID").value) {
                 var data2 = [];
                 // for (var val of this._itemService.myform.get("StoreId").value) {
                     var data = {
                         storeId: this._itemService.myform.get("StoreId").value.Storeid,
                         itemId: 0,
-                    };
-                    
+                    }; 
                     data2.push(data);
-                // }
-
-                
+                // 
                 var m_data = {
                     insertItemMaster: {
-                       
                         itemName: this._itemService.myform.get("ItemName").value || "%",
                         itemTypeId: this._itemService.myform.get("ItemTypeID").value.ItemTypeId || 0,
                         ItemCategaryId: this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId || 0,

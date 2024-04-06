@@ -8,8 +8,8 @@
         style="color: white;">account_box
       </mat-icon>
       <!-- <h3>Registration </h3> -->
-      <h3>New Item Master </h3>
-      <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+      <h3 style="color: white;">New Item Master </h3>
+      <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="margin-left: 1150px;color: white;">
         <mat-icon>close</mat-icon>
       </button>
     </mat-toolbar-row>
@@ -205,21 +205,21 @@
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>CGST</mat-label>
               <input name="CGST" placeholder="Enter CGST" [(ngModel)]="registerObj.CGST" formControlName="CGST" matInput
-              type="number" OnlyNumber (keydown)="onEnterCGST($event)" #CGST required>
+              type="number"  step="0.01" (keydown)="onEnterCGST($event)" #CGST required>
               <mat-error>CGST is required Enter only Numberr </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>SGST</mat-label>
               <input name="SGST" placeholder="Enter SGST" [(ngModel)]="registerObj.SGST" formControlName="SGST" matInput
-              type="number" OnlyNumber (keydown)="onEnterSGST($event)" #SGST required>
+              type="number" step="0.01" (keydown)="onEnterSGST($event)" #SGST required>
               <mat-error>SGST is required Enter only Numberr </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>IGST</mat-label>
               <input name="IGST" placeholder="Enter IGST" [(ngModel)]="registerObj.IGST" formControlName="IGST" matInput
-              type="number" OnlyNumber (keydown)="onEnterIGST($event)" #IGST required>
+              type="number"  step="0.01" (keydown)="onEnterIGST($event)" #IGST required>
               <mat-error>IGST is required Enter only Numberr </mat-error>
             </mat-form-field>
 

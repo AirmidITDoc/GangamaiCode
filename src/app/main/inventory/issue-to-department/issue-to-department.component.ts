@@ -684,6 +684,7 @@ if(!DuplicateItem){
         this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
             console.log(draftdata)
             this.Itemchargeslist1 = draftdata as any;
+            console.log(this.Itemchargeslist1)
             if (this.Itemchargeslist1.length == 0) {
                 Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
             }
@@ -720,7 +721,7 @@ if(!DuplicateItem){
     RQty: any = 0;
     getFinalCalculation(contact, DraftQty) {
         
-        console.log(contact)
+        //console.log(contact)
 
         this.RQty = parseInt(DraftQty);
         if (this.RQty && contact.UnitMRP) {
@@ -783,7 +784,7 @@ if(!DuplicateItem){
                     SalesDraftId: 1
 
                 });
-            console.log(this.chargeslist);
+            //console.log(this.chargeslist);
             this.dsNewIssueList3.data = this.chargeslist
         }
        
@@ -826,7 +827,7 @@ if(!DuplicateItem){
         this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
         return this.vFinalTotalAmount;
     }
-
+    savebtn:boolean=false;
     OnSave() {
         this.vsaveflag = true;
         if ((!this.dsNewIssueList3.data.length)) {
@@ -841,6 +842,7 @@ if(!DuplicateItem){
         //     });
         //     return;
         // }
+        this.savebtn=true;
         let insertheaderObj = {};
         insertheaderObj['issueDate'] = this.dateTimeObj.date;
         insertheaderObj['issueTime'] = this.dateTimeObj.time;
@@ -903,7 +905,7 @@ if(!DuplicateItem){
                 this.viewgetIssuetodeptReportPdf(response, this.vprintflag);
                 this.OnReset();
                 this.getIssueToDep();
-
+                this.savebtn=false;
             } else {
                 this.toastr.error('New Issue To Department Data not saved !, Please check validation error..', 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
@@ -1144,8 +1146,8 @@ if(!DuplicateItem){
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
             this.dsNewIssueList1.data = result;
-            console.log(result)
-            const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].ToStoreId);
+           // console.log(result)
+            const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
             this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
            // console.log(toSelectToStoreId)
             //console.log(result[0].ToStoreId)
