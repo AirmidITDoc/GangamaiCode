@@ -9,7 +9,7 @@
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
-           
+
         </div>
 
         <div fxLayout="row" fxLayoutGap="5px">
@@ -149,46 +149,45 @@
                                                                 fxLayoutAlign="center">
                                                                 <div class="pill-icon">
                                                                     <mat-icon style="border-radius:100% ;"
-                                                                        *ngIf="contact.PatientOldNew=='2' || contact.PatientOldNew=='2'"
+                                                                        *ngIf="contact.PatientOldNew=='1' || contact.PatientOldNew=='1'"
                                                                         matTooltip="PatientNew"
                                                                         class="green-600 s-16">circle</mat-icon>
                                                                     <mat-icon style="border-radius:100% ;"
-                                                                        *ngIf="contact.PatientOldNew=='1' "
+                                                                        *ngIf="contact.PatientOldNew=='2' "
                                                                         matTooltip="PatientOld"
                                                                         class=" orange-600 s-16">circle
                                                                     </mat-icon>
                                                                 </div>
                                                             </div>
-                                                            <div class="mp-bill-no" fxLayout="row"
-                                                                fxLayoutAlign="center">
-                                                                <div class="pill-icon">
-                                                                    <mat-icon style=" border-radius:100% ;"
-                                                                        *ngIf="contact.MPbillNo=='1'|| contact.MPbillNo=='2' "
-                                                                        matTooltip="Bill Generated"
-                                                                        class=" red-600 s-16">circle</mat-icon>
-                                                                    <mat-icon
-                                                                        style=" border: black 1px solid; border-radius:100% ;"
-                                                                        *ngIf="contact.MPbillNo=='0' "
-                                                                        matTooltip="Did not Generated Bill"
-                                                                        class=" white-600 s-16">
-                                                                        circle</mat-icon>
-                                                                </div>
-                                                            </div>
-                                                            <div class="phone-app" fxLayout="row"
-                                                                fxLayoutAlign="center">
-                                                                <div class="pill-icon">
-                                                                    <!-- <mat-icon style="border-radius:100% ;"
+                                                            <mat-icon
+                                                                *ngIf="contact.MPbillNo=='1'|| contact.MPbillNo=='2' "
+                                                                matTooltip="Bill Generated"
+                                                                class=" red-600 s-16">circle</mat-icon>
+                                                            <mat-icon
+                                                                style=" border: black 1px solid; border-radius:100% ;"
+                                                                *ngIf="contact.MPbillNo=='0' "
+                                                                matTooltip="Did not Generated Bill"
+                                                                class=" white-600 s-16">
+                                                                circle</mat-icon>
+
+                                                        </div>
+
+                                                        <div class="phone-app" fxLayout="row" fxLayoutAlign="center">
+                                                            <div class="pill-icon">
+                                                                <!-- <mat-icon style="border-radius:100% ;"
                                                                         *ngIf="contact.PhoneAppId !==null"
                                                                         matTooltip="Phone Appointment"
                                                                         class=" cyan-600 s-16">circle
                                                                     </mat-icon> -->
 
-                                                                    <mat-icon  *ngIf="contact.PhoneAppId == 0"   matTooltip="Phone Appointment" class=" cyan-600 s-16">
-                                                                        settings_phone</mat-icon>
+                                                                <mat-icon *ngIf="contact.PhoneAppId == 0"
+                                                                    matTooltip="Phone Appointment"
+                                                                    class=" cyan-600 s-16">
+                                                                    settings_phone</mat-icon>
 
-                                                                </div>
                                                             </div>
                                                         </div>
+
                                                     </mat-cell>
                                                 </ng-container>
                                                 <!-- <ng-container matColumnDef="MPbillNo" *ngIf="false">
@@ -988,8 +987,7 @@
                                                     <mat-label>Company Name </mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select Company" matInput
-                                                        formControlName="CompanyId" [matAutocomplete]="autoCompany"
-                                                        >
+                                                        formControlName="CompanyId" [matAutocomplete]="autoCompany">
                                                     <span matSuffix style="display: flex;">
                                                         <mat-icon class="mat-icon-close"
                                                             (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
@@ -1137,8 +1135,7 @@
                             <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
                                 <!-- (click)="nextClicked(VisitFormGroup)" -->
                                 <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
-                                <button class="btn btn-primary " color="accent"
-                                    (click)="onSave()"
+                                <button class="btn btn-primary " color="accent" (click)="onSave()"
                                     [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid">
                                     <span>Save</span>
                                 </button>

@@ -174,7 +174,7 @@ var data={
     this._OPReportsService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;
       this.optionsUser = this.UserList.slice();
-      console.log(this.UserList);
+      // console.log(this.UserList);
       this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterUser(value) : this.UserList.slice()),

@@ -52,6 +52,6 @@ export class BrowseRefundlistService {
   }   
 
   public getOpRefundview(RefundId){
-    return this._httpClient.get("OutPatient/view-OPRefundofBill?RefundId=" + RefundId);
+    return this._httpClient.get("OutPatient/view-OPRefundofBill?RefundId="+RefundId);
   }
   }

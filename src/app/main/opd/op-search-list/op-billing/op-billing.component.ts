@@ -224,6 +224,7 @@ export class OPBillingComponent implements OnInit {
         this.PatientHeaderObj = this.data.registerObj;
         console.log(this.PatientHeaderObj);
         this.vOPDNo = this.PatientHeaderObj.AdmissionID;
+        this.vOPIPId = this.PatientHeaderObj.AdmissionID;
         this.PatientName = this.PatientHeaderObj.PatientName;
          this.Doctorname= this.PatientHeaderObj.Doctorname;
         this.CompanyName= this.PatientHeaderObj.CompanyId;
@@ -436,8 +437,7 @@ export class OPBillingComponent implements OnInit {
   }
 
   onSaveOPBill2() {
-    this.vOPIPId=2
-
+    
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -462,7 +462,7 @@ export class OPBillingComponent implements OnInit {
     let ConcessionId = 0;
     if (this.BillingForm.get('ConcessionId').value)
       ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
-
+debugger
     let InsertBillUpdateBillNoObj = {};
     InsertBillUpdateBillNoObj['BillNo'] = 0;
     InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
@@ -671,7 +671,7 @@ export class OPBillingComponent implements OnInit {
                 if (result.isConfirmed) {
                   let m = response;
                   this.viewgetBillReportPdf(response);
-                  // this._matDialog.closeAll();
+                  this.dialogRef.close();
                 }
               });
             } else {
@@ -716,7 +716,7 @@ export class OPBillingComponent implements OnInit {
                     if (result.isConfirmed) {
                       let m = response;
                       this.viewgetBillReportPdf(response);
-                      // this._matDialog.closeAll();
+                      this.dialogRef.close();
                     }
                   });
                 } else {
@@ -787,7 +787,7 @@ export class OPBillingComponent implements OnInit {
             if (result.isConfirmed) {
               let m = response;
               this.viewgetBillReportPdf(response);
-            
+              this.dialogRef.close();
             }
           });
         } else {

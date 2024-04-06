@@ -164,7 +164,7 @@ var data={
     this._IPBillingService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;
       this.optionsUser = this.UserList.slice();
-      console.log(this.UserList);
+      // console.log(this.UserList);
       this.filteredOptionsUser = this._IPBillingService.userForm.get('UserId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterUser(value) : this.UserList.slice()),

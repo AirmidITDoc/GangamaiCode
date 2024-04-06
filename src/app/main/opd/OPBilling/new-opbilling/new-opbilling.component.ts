@@ -414,8 +414,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   onSaveOPBill2() {
-    this.vOPIPId=2
-
+    
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

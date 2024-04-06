@@ -109,7 +109,7 @@ var data={
   }
 
   ReportSelection(el) {
-    debugger
+    
     this.ReportName = el.ReportName;
     this.ReportID = el.ReportId;
     if (this.ReportName == 'Admitted Patient List') {
@@ -224,7 +224,7 @@ var data={
     this._IPReportService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;
       this.optionsUser = this.UserList.slice();
-      console.log(this.UserList);
+      // console.log(this.UserList);
       this.filteredOptionsUser = this._IPReportService.userForm.get('UserId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterUser(value) : this.UserList.slice()),
@@ -292,7 +292,7 @@ var data={
 
   getAdmittedPatientListview() {
     // this.sIsLoading = 'loading-data';
-    debugger
+    
     setTimeout(() => {
       
      this.AdList=true;
@@ -326,7 +326,7 @@ var data={
   
   getAdmittedPatientCasepaperview() {
     // this.sIsLoading = 'loading-data';
-debugger
+
     let AdmissionID=this._IPReportService.userForm.get('AdmissionID').value || 0;
     // if(flag){
     //   AdmissionID=AdmissionId

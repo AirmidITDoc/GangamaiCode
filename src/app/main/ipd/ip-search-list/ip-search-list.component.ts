@@ -353,10 +353,9 @@ export class IPSearchListComponent implements OnInit {
         {
 
           maxWidth: "95vw",
-       
           height: '110vh',
           width: '100%',
-
+          data:m_data
 
         });
 
@@ -762,6 +761,8 @@ export class AdvanceDetailObj {
   IsMLC: any;
   NetPayableAmt: any;
   OPD_IPD_Id:any;
+  RegID:any;
+  CompanyName:any;
   /**
   * Constructor
   *
@@ -800,6 +801,8 @@ export class AdvanceDetailObj {
       this.PatientTypeID = AdvanceDetailObj.PatientTypeID || 0;
       this.NetPayableAmt = AdvanceDetailObj.NetPayableAmt || 0;
       this.OPD_IPD_Id = AdvanceDetailObj.OPD_IPD_Id || 0;
+      this.RegID = AdvanceDetailObj.RegID || 0;
+      this.CompanyName=AdvanceDetailObj.CompanyName || ''
     }
   }
 }

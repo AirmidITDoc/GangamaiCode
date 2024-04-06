@@ -673,14 +673,26 @@ export class IPBillingComponent implements OnInit {
 
   admin: boolean = false;
   Adminchange($event) {
+    
     if ($event)
       this.admin = true;
     if (!$event)
       this.admin = false;
   }
 
+  vGenbillflag:boolean=false
+
+
+  generateBillchk($event){
+  if($event)
+    this.vGenbillflag=true;
+  if (!$event)
+    this.vGenbillflag = false;
+  }
+
+
   CalAdmincharge() {
-    debugger
+    
     let Percentage = this.Ipbillform.get('Percentage').value;
     if (this.Ipbillform.get('Percentage').value) {
       this.vDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100);
@@ -763,7 +775,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   SaveBill() {
-    debugger
+    
     let InterimOrFinal = 1;
     if (this.dataSource.data.length > 0 && (this.vNetBillAmount > 0)) {
       this.isLoading = 'submit';
@@ -790,14 +802,18 @@ export class IPBillingComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         // console.log('============================== Save IP Billing ===========');
-        console.log(result.submitDataPay.ipPaymentInsert);
+        console.log(result);
         this.paidamt = result.PaidAmt;
+        this.flagSubmit = result.IsSubmitFlag
 
-        if (result.submitDataAdvancePay) {
-          this.balanceamt = result.submitDataAdvancePay.BalanceAmount;
+        if (this.flagSubmit) {
+          this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+          this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
         }
+
         else {
-          this.balanceamt = result.BalAmt;
+
+          this.balanceamt= result.BalAmt;
         }
 
         // if (this.concessionAmtOfNetAmt > 0) {
@@ -815,14 +831,14 @@ export class IPBillingComponent implements OnInit {
         // }
 
         // this.CompDisamount = this.AdminDiscamt + this.concessionAmtOfNetAmt;
-        debugger
+        
         this.flagSubmit = result.IsSubmitFlag
         //
         let InsertBillUpdateBillNoObj = {};
         InsertBillUpdateBillNoObj['BillNo'] = 0;
-        InsertBillUpdateBillNoObj['AdmissionID'] = this.selectedAdvanceObj.AdmissionID,
+        // InsertBillUpdateBillNoObj['AdmissionID'] = this.selectedAdvanceObj.AdmissionID,
           InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
-          InsertBillUpdateBillNoObj['TotalAmt'] = this.Ipbillform.get('TotalAmt').value || 0;
+          InsertBillUpdateBillNoObj['TotalAmt'] =  this.vTotalBillAmount || this.Ipbillform.get('TotalAmt').value || 0;
         InsertBillUpdateBillNoObj['ConcessionAmt'] = this.Ipbillform.get('concessionAmt').value || 0;
         InsertBillUpdateBillNoObj['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
         InsertBillUpdateBillNoObj['PaidAmt'] = this.paidamt,
@@ -845,8 +861,8 @@ export class IPBillingComponent implements OnInit {
         InsertBillUpdateBillNoObj['TaxPer'] = 0//this.Ipbillform.get('Percentage').value || 0,
         InsertBillUpdateBillNoObj['TaxAmount'] = 0//this.Ipbillform.get('Amount').value || 0,
         InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
-        // InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || '';
-        InsertBillUpdateBillNoObj['CashCounterId'] = 2;//this.Ipbillform.get('CashCounterId').value.CashCounterId || 0;
+        InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || '';
+        // InsertBillUpdateBillNoObj['CashCounterId'] = 2;//this.Ipbillform.get('CashCounterId').value.CashCounterId || 0;
         let Billdetsarr = [];
 
         this.dataSource.data.forEach((element) => {
@@ -906,7 +922,7 @@ export class IPBillingComponent implements OnInit {
             UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
             UpdateAdvanceHeaderObj['BalanceAmount'] = 0
         }
-        debugger
+        
         if (this.flagSubmit == true) {
           let submitData = {
             "InsertBillUpdateBillNo": InsertBillUpdateBillNo,
@@ -922,7 +938,7 @@ export class IPBillingComponent implements OnInit {
           console.log(submitData)
           this._IpSearchListService.InsertIPBilling(submitData).subscribe(response => {
             if (response) {
-              debugger
+              
               Swal.fire('Bill successfully !', 'IP final bill generated successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
 
@@ -938,22 +954,22 @@ export class IPBillingComponent implements OnInit {
           });
         }
         else {
-
-          this.balanceamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+          debugger
+          this.balanceamt = result.BalAmt;
           if (this.concessionAmtOfNetAmt > 0) {
             this.balanceamt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
             this.ConcessionId = this.Ipbillform.get('ConcessionId').value.ConcessionId;
 
           } else {
-            this.balanceamt = this.totalAmtOfNetAmt;
+            // this.balanceamt = this.totalAmtOfNetAmt;
             this.ConcessionId = 0;
           }
 
           let InsertBillUpdateBillNoObj = {};
           InsertBillUpdateBillNoObj['BillNo'] = 0;
-          InsertBillUpdateBillNoObj['AdmissionID'] = this.selectedAdvanceObj.AdmissionID,
+          // InsertBillUpdateBillNoObj['AdmissionID'] = this.selectedAdvanceObj.AdmissionID,
             InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
-            InsertBillUpdateBillNoObj['TotalAmt'] = this.Ipbillform.get('TotalAmt').value || 0;
+            InsertBillUpdateBillNoObj['TotalAmt'] = this.vTotalBillAmount || this.Ipbillform.get('TotalAmt').value || 0;
           InsertBillUpdateBillNoObj['ConcessionAmt'] = this.Ipbillform.get('concessionAmt').value || 0;
           InsertBillUpdateBillNoObj['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
           InsertBillUpdateBillNoObj['PaidAmt'] = this.paidAmt;
@@ -976,8 +992,8 @@ export class IPBillingComponent implements OnInit {
           InsertBillUpdateBillNoObj['TaxPer'] = 0;
           InsertBillUpdateBillNoObj['TaxAmount'] = 0;
           InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
-          InsertBillUpdateBillNoObj['CashCounterId'] = 2;//this.Ipbillform.get('CashCounterId').value.CashCounterId;
-
+          // InsertBillUpdateBillNoObj['CashCounterId'] = 2;//this.Ipbillform.get('CashCounterId').value.CashCounterId;
+          InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || '';
           // InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
           const InsertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
 
@@ -1069,7 +1085,7 @@ export class IPBillingComponent implements OnInit {
           Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              this.viewgetDraftBillReportPdf(response);
+              // this.viewgetDraftBillReportPdf(response);
               // this.getPrintDraft(response);
             }
           });
@@ -1553,7 +1569,7 @@ export class IPBillingComponent implements OnInit {
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            debugger;
+            
             this.SaveBill();
           }
         })
@@ -1570,7 +1586,7 @@ export class IPBillingComponent implements OnInit {
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            debugger;
+            
             this.onSaveDraft();
           }
 

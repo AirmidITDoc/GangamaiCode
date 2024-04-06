@@ -136,16 +136,21 @@
               </textarea>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex>
+          
+
+            <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
               <mat-label>Pin Number</mat-label>
-              <input name="PinNo" formControlName="PinNo" placeholder="Phone Number" matInput max="999999" min="100000"
-                maxlength="6" type="number" value="987665" #pin>
+              <input name="PinNo" formControlName="PinNo" placeholder="Pin Number"
+                  matInput 
+                  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 6);"
+                  required="required" type="number" value="987665">
               <!-- <mat-error class="error"
-                  *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">Phone
-                  number is required
-                </mat-error> -->
-            </mat-form-field>
+                  *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                  digits Mobile number is
+                  required</mat-error> -->
+          </mat-form-field>
           </div>
+
 
           <mat-checkbox aria-label="Remember Me" formControlName="IsActive" style="margin-right: 20px;">
             IsActive

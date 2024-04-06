@@ -29,7 +29,7 @@ import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popu
 export class IndentComponent implements OnInit {
   displayedColumns = [
     'IsInchargeVerify',
-    //'Isclosed',
+    'Isclosed',
     'IndentNo',
     'IndentDate',
     'FromStoreName',

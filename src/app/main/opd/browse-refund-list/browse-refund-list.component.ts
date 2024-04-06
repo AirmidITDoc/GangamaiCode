@@ -187,10 +187,9 @@ export class BrowseRefundListComponent implements OnInit {
   
 // SpinLoading:boolean=false;
 viewgetOPRefundofBillPdf(row) {
-  this.sIsLoading = 'loading-data';
+  // this.sIsLoading = 'loading-data';
+  debugger
   setTimeout(() => {
-    // this.SpinLoading =true;
-  //  this.AdList=true;
   this._BrowseOPDReturnsService.getOpRefundview(
     row.RefundId
   ).subscribe(res => {

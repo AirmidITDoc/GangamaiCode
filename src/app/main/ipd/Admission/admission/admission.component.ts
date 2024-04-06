@@ -1334,7 +1334,7 @@ export class AdmissionComponent implements OnInit {
           
           Swal.fire('Congratulations !', 'Admission save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              debugger
+              
               this.getAdmittedPatientCasepaperview(response,true);
               // this._matDialog.closeAll();
               this.personalFormGroup.reset();
@@ -1422,7 +1422,7 @@ export class AdmissionComponent implements OnInit {
               this.hospitalFormGroup.reset();
               this.wardFormGroup.reset();
               this.otherFormGroup.reset();
-              debugger
+              
               this.getAdmittedPatientCasepaperview(response,true);
             }
           });
@@ -1438,6 +1438,10 @@ export class AdmissionComponent implements OnInit {
   }
 
 onClose(){
+
+  this.searchFormGroup.get('RegId').reset();
+  this.searchFormGroup.get('RegId').disable();
+
 
   this.isCompanySelected = false;
     this.hospitalFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
@@ -1552,7 +1556,7 @@ onClose(){
 
   getAdmittedPatientListview() {
     // this.sIsLoading = 'loading-data';
-    debugger
+    
     setTimeout(() => {
       
      this.AdList=true;

@@ -188,8 +188,12 @@ export class IPBillBrowseListComponent implements OnInit {
     PatientHeaderObj['Date'] = contact.BillDate;
     PatientHeaderObj['PatientName'] = contact.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
+    PatientHeaderObj['RegID'] = contact.RegID;
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     PatientHeaderObj['BillId'] = contact.BillNo;
+    PatientHeaderObj['CompanyName'] = contact.CompanyName;
+    
+
 
     const dialogRef = this._matDialog.open(IPSettlementComponent,
       {
@@ -197,7 +201,7 @@ export class IPBillBrowseListComponent implements OnInit {
         height: '740px',
         width: '100%',
         data: {
-          vPatientHeaderObj: contact,
+          registerObj: contact,
           FromName: "IP-Bill"
         }
       });

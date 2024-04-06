@@ -60,6 +60,10 @@ export class IPSettlementComponent implements OnInit {
   RegId:any;
   isRegIdSelected: boolean = false;
   vAdmissionID:any;
+  vCompanyName:any;
+  vTariif:any;
+
+  PatientHeaderObj: AdvanceDetailObj;
 
   dataSource = new MatTableDataSource<PaidBilldetail>();
   displayedColumns: string[] = [
@@ -93,7 +97,7 @@ export class IPSettlementComponent implements OnInit {
   constructor(public _IpSearchListService: IPSettlementService,
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
-    // @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder,
@@ -106,8 +110,20 @@ export class IPSettlementComponent implements OnInit {
     this.searchFormGroup.get('RegId').enable();
     this.isRegSearchDisabled = false;
 
-    this.getPaidBillDetails();
-    this.getCreditBillDetails();
+    if (this.data) {
+      this.PatientHeaderObj = this.data.registerObj;
+      console.log(this.PatientHeaderObj);
+      this.vAdmissionID = this.PatientHeaderObj.OPD_IPD_Id;
+      this.RegId = this.PatientHeaderObj.RegID;
+      this.PatientName = this.PatientHeaderObj.PatientName;
+      //  this.Doctorname= this.PatientHeaderObj.Doctorname;
+      this.vCompanyName= this.PatientHeaderObj.CompanyName;
+      this.vTariif= this.PatientHeaderObj.TariffName;
+     
+      }
+
+      this.getPaidBillDetails();
+      this.getCreditBillDetails();
 
   }
 
@@ -234,7 +250,7 @@ export class IPSettlementComponent implements OnInit {
 
     this.sIsLoading = 'loading-data';
 
-    this.regId=81774// this.RegId;
+    this.regId=this.RegId;
   
     let query ="Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
   
@@ -256,7 +272,7 @@ export class IPSettlementComponent implements OnInit {
   getCreditBillDetails(){
     debugger
     this.sIsLoading = 'loading-data';
-    this.regId=95572// this.RegId;
+    this.regId= 60272//this.RegId;
     
     let query = "Select * from lvwBillIPD  where TransactionType =0 and companyId = 0 and RegID= " + this.regId + " and BalanceAmt>0";
     console.log(query);
