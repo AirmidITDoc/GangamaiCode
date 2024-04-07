@@ -229,7 +229,7 @@ export class IPRefundofBillComponent implements OnInit {
 
   //Give BillNumber For List
   getRefundofBillIPDList() {
-    debugger;
+    // debugger;
     console.log(this.selectedAdvanceObj.RegNo);
     var m_data = {
       "RegNo": 33// this.selectedAdvanceObj.RegNo
@@ -247,7 +247,7 @@ export class IPRefundofBillComponent implements OnInit {
 
 // //Give BillNumber For List
 //   getBilldetailList() {
-//     debugger;
+//     // debugger;
 //     var m_data = {
 //       "BillNo": 1212,//this._IpSearchListService.myRefundAdvanceForm.get("BillNo").value || 0,
 //     }
@@ -339,7 +339,7 @@ export class IPRefundofBillComponent implements OnInit {
 
 
   getSelectedServicetotSum(element) {
-    // debugger;
+    // // debugger;
     let netAmt1;
     netAmt1 = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.totalAmtOfNetAmt1 = netAmt1;
@@ -388,7 +388,7 @@ export class IPRefundofBillComponent implements OnInit {
   }
 
   onSave() {
-    debugger;
+    // debugger;
     this.isLoading = 'submit';
 
     if(this.TotalRefundAmount <= this.RefundBalAmount){
@@ -414,7 +414,7 @@ export class IPRefundofBillComponent implements OnInit {
     let RefundDetailarr = [];
     let InsertRefundDetailObj = {};
     console.log(this.dataSource.data);
-    debugger;
+    // debugger;
     this.dataSource.data.forEach((element) => {
       InsertRefundDetailObj['RefundID'] = 0;
       InsertRefundDetailObj['ServiceId'] = this.serviceId || 0;
@@ -548,7 +548,7 @@ getServiceListCombobox() {
 }
 
 Serviceselect(row,event){
-debugger;
+// debugger;
 console.log(row);
 this.RefAmt=this.RefundBalAmount;
 
@@ -589,7 +589,7 @@ onEdit(row) {
 
   this.getserviceetailList();
 
-  debugger;
+  // debugger;
   var m_data1 = {
     "BillId": 190178// row.BillNo
   }
@@ -612,7 +612,7 @@ populateiprefund(employee) {
 }
 
 calculateTotalRefund() {
-    debugger
+    // debugger
   this.RefundBalAmount = this.RefundBalAmount- this.TotalRefundAmount;
  
   // this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));

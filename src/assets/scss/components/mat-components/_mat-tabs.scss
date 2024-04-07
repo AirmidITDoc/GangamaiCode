@@ -4,7 +4,6 @@
         background-color: $gray-100;
         border-radius: 4px;
         .mat-tab-label-container {
-
             .mat-tab-labels {
                 .mat-tab-label {
                     font-family: inherit;
@@ -13,6 +12,11 @@
                         font-size: 1rem;
                         font-weight: bold;
                     }
+                    &.mat-tab-label-active {
+                        .mat-tab-label-content {
+                            color: $gray-900;
+                        }
+                    }
                 }
                 .mat-ink-bar {
                     height: 1px;
@@ -20,9 +24,8 @@
             }
         }
     }
-    &.mat-tab-header-small{
+    &.mat-tab-header-small {
         .mat-tab-label-container {
-
             .mat-tab-labels {
                 .mat-tab-label {
                     height: 35px;
@@ -33,8 +36,8 @@
             }
         }
     }
-    &.inkbar-hidden{
-        .mat-ink-bar{
+    &.inkbar-hidden {
+        .mat-ink-bar {
             display: none;
         }
     }

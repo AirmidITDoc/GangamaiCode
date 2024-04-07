@@ -36,7 +36,7 @@
                 gap: 8px;
             }
         }
-        .date-time-container {
+        .date-time-container,.comman-date-container {
             .mat-form-field {
                 .mat-form-field-wrapper {
                     margin: 0;
@@ -76,7 +76,7 @@
         .patient-col {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 3px;
             @include font-size(14px);
             .patient-col-key {
                 font-weight: 700;
@@ -84,10 +84,5 @@
             .patient-col-value {
             }
         }
-    }
-    &.grid-container{
-     display: grid;   
-     grid-template-rows: 45px auto;
-     height: 100%;
     }
 }
