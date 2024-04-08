@@ -288,7 +288,7 @@
 
                     <mat-tab label="Charges List">
                         <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                            class="table1 mt-8 h-300">
+                            class="table1 mt-8" style="height: calc(100vh - 500px);">
 
                             <ng-container matColumnDef="checkbox" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">
@@ -451,7 +451,7 @@
 
                     <mat-tab label="Advance">
                         <mat-table #table matSort [dataSource]="advancedatasource" [@animateStagger]="{value:'50'}"
-                            class="table2 mt-8">
+                            class="table2 mt-8" style="height: calc(100vh - 500px);">
 
                             <ng-container matColumnDef="Date">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
@@ -538,7 +538,7 @@
 
                     <mat-tab label="Prev.Bill">
                         <mat-table matSort [dataSource]="prevbilldatasource" [@animateStagger]="{value:'50'}"
-                            class="table3 mt-8">
+                            class="table3 mt-8" style="height: calc(100vh - 500px);">
 
                             <ng-container matColumnDef="BDate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>BDate</mat-header-cell>
