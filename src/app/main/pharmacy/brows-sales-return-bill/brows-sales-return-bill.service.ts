@@ -44,7 +44,6 @@ export class BrowsSalesReturnBillService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ReceiveIssueToDep_list_by_Name",Param);
   }
 
-
   public getItemdetailList(Param){ 
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_AcceptIssueItemDetList",Param);
   }
@@ -66,8 +65,6 @@ export class BrowsSalesReturnBillService {
   public AcceptmaterialSave(Param){
     return this._httpClient.post("Pharmacy/UpdateMaterialAcceptance",Param);
   }
-
-
    
   public getMaterialreceivedfrDeptview(IssueId){
     return this._httpClient.get("Pharmacy/view-MaterialRecivedFrDept_Report?IssueId=" + IssueId);

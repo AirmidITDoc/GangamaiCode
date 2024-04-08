@@ -51,7 +51,6 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     console.log(this.data.Obj.IssueId);
     if (this.data) {
       this.getItemList(this.data.Obj.IssueId);
-    
     }
    
   }
