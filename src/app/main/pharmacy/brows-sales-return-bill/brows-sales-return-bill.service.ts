@@ -46,7 +46,10 @@ export class BrowsSalesReturnBillService {
 
 
   public getItemdetailList(Param){ 
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueItemList",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_AcceptIssueItemDetList",Param);
+  }
+  public getItemDetList(Param){ 
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_IssueItemList",Param);
   }
   
   public getStoreFromList(){

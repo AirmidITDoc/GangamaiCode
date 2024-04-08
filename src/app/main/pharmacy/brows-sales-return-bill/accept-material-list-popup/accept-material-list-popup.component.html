@@ -37,14 +37,12 @@
                                 <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
                             
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <!-- <mat-icon [style.color]="contact.Status==1 ? 'green' : 'red'" >
-                                        {{contact.Status==1 ? 'check_circle' : 'cancel'}}
-                                      </mat-icon> -->
-                                    <!-- {{contact.Status}} -->
                                     <mat-icon *ngIf="contact.Status==1" matTooltip="Verified"
                                     class="pill green-600 s-16">circle</mat-icon>
                                     <mat-icon *ngIf="contact.Status==0" matTooltip="Pending"
                                     class="pill red-600 s-16">circle</mat-icon>
+                                    <!-- <mat-icon *ngIf="contact.Status==2" matTooltip="Returned"
+                                    class="pill orenge-600 s-16">circle</mat-icon> -->
                                 </mat-cell>
                               </ng-container>
                               

@@ -51,18 +51,21 @@ export class BrowsSalesReturnBillComponent implements OnInit {
     'action',
   ];
 
-  displayedColumns1 = [
+  displayedColumns1: string[] = [
+    'Status',
     'ItemName',
     'BatchNo',
     'BatchExpDate',
-    'IssueQty',
+    'Qty',
+    'VatPercentage',
     'PerUnitLandedRate',
     'LandedTotalAmount',
-    'VatPercentage'
-  ];
+]
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  dsIssueItemList = new MatTableDataSource<IssueItemList>();
+
 
   constructor(
     public _SalesReturn: BrowsSalesReturnBillService,
@@ -113,23 +116,36 @@ export class BrowsSalesReturnBillComponent implements OnInit {
       });
   }
 
-  getItemList(Params) {
-    var Param = {
-      "IssueId": Params.IssueId
+  // getItemList(Params) {
+  //   var Param = {
+  //     "IssueId": Params.IssueId
+  //   }
+  //   this._SalesReturn.getItemdetailList(Param).subscribe(data => {
+  //     this.dsItemList.data = data as ItemList[];
+  //     console.log( this.dsItemList.data )
+  //     this.dsItemList.sort = this.sort;
+  //     this.dsItemList.paginator = this.paginator;
+  //     this.sIsLoading = '';
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+  // }
+  getIssueItemwiseList(Param) {
+    var vdata = {
+        "IssueId": Param.IssueId
     }
-    this._SalesReturn.getItemdetailList(Param).subscribe(data => {
-      this.dsItemList.data = data as ItemList[];
-      this.dsItemList.sort = this.sort;
-      this.dsItemList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
+    console.log(vdata)
+    this._SalesReturn.getItemDetList(vdata).subscribe(data => {
+        this.dsIssueItemList.data = data as IssueItemList[];
+        console.log(this.dsIssueItemList.data)
+        this.dsIssueItemList.sort = this.sort;
+        this.dsIssueItemList.paginator = this.paginator;
+    });
+}
 
   onEdit(contact) {
-    if(this._SalesReturn.MaterialReturnFrDept.get('Status').value == 0){
+    if(contact.PendingByDepartment > 0){
       console.log(contact);
       const dialogRef = this._matDialog.open(AcceptMaterialListPopupComponent,
         {
@@ -249,6 +265,33 @@ export class Issuetodept {
       this.Receivedby = Issuetodept.Receivedby || "";
 
     }
+  }
+}
+export class IssueItemList {
+  ItemId: any;
+  ItemName: string;
+  BatchNo: number;
+  BatchExpDate: number;
+  Qty: number;
+  PerUnitLandedRate: number;
+  LandedTotalAmount: number;
+  VatPercentage: number;
+  StoreId: any;
+  StoreName: any;
+
+  constructor(IssueItemList) {
+      {
+          this.ItemId = IssueItemList.ItemId || 0;
+          this.ItemName = IssueItemList.ItemName || "";
+          this.BatchNo = IssueItemList.BatchNo || 0;
+          this.BatchExpDate = IssueItemList.BatchExpDate || 0;
+          this.Qty = IssueItemList.Qty || 0;
+          this.PerUnitLandedRate = IssueItemList.PerUnitLandedRate || 0;
+          this.LandedTotalAmount = IssueItemList.LandedTotalAmount || 0;
+          this.VatPercentage = IssueItemList.VatPercentage || 0;
+          this.StoreId = IssueItemList.StoreId || 0;
+          this.StoreName = IssueItemList.StoreName || "";
+      }
   }
 }
 
