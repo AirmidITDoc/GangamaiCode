@@ -660,7 +660,7 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         GSTPer</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.VatPer}}
+                                                        {{contact.VatPercentage}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -819,9 +819,9 @@
 
 
                                 <div style="padding: 15px;">
-                                    <span class="net-amt-label" style="width: 150px;font-weight: bold;color:blue;">No of
+                                    <!-- <span class="net-amt-label" style="width: 150px;font-weight: bold;color:blue;">No of
                                         Items:</span>&nbsp;<span class="net-amt-value"
-                                        style="margin-right: 100px;font-weight: bold">{{dsNewIssueList3.data.length}}</span>
+                                        style="margin-right: 100px;font-weight: bold">{{dsNewIssueList3.data.length}}</span> -->
                                     <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;">
                                         Total Amount :</span>&nbsp;<span class="net-amt-value"
                                         style="margin-right: 10px;font-weight: bold">{{getTotalamt(dsNewIssueList3.data)
