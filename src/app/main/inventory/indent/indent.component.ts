@@ -254,31 +254,8 @@ vToStoreId:any=0;
   getSelectedObj(obj) {
     this.vItemId = obj.ItemID,
       this.ItemName = obj.ItemName;
-      this.vQty = obj.BalQty;
-    if (this.vQty > 0) {
-      this.getBatch();
+      this.vQty = '' ; //obj.BalQty;
   }
-  }
-  getBatch() {
-    this.qty.nativeElement.focus();
-    const dialogRef = this._matDialog.open(SalePopupComponent,
-        {
-            maxWidth: "800px",
-            minWidth: '800px',
-            width: '800px',
-            height: '380px',
-            disableClose: true,
-            data: {
-                "ItemId": this._IndentService.newIndentFrom.get('ItemName').value.ItemID,
-                "StoreId": this._IndentService.newIndentFrom.get('ToStoreId').value.StoreId
-            }
-        });
-    dialogRef.afterClosed().subscribe(result => {
-        console.log(result);
-        result = result.selectedData
-        this.vQty = result.BalanceQty;
-    });
-}
 
   onAdd() {
     if ((this.vItemName == '' || this.vItemName == null || this.vItemName == undefined)) {
