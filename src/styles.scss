@@ -432,11 +432,6 @@ body.theme-default .accent {
 
 // Patient Details
 
-.patient-details mat-error {
-    margin-top: 10px;
-    font-size: 14px;
-}
-
 .patient-bill-info {
     display: flex;
 }
@@ -497,7 +492,7 @@ legend {
     cursor: pointer;
     pointer-events: visible;
 }
-.disable-1-add {
+.disable-1-add,.disabled {
     pointer-events: none;
     // cursor: ar;
 }

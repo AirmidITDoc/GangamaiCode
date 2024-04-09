@@ -107,14 +107,14 @@ export class OpPaymentNewComponent implements OnInit {
     // private snackBarService: SnackBarService
   ) {
     this.nowDate = new Date();
-    debugger
+    
     if (data) {
       this.PatientHeaderObj = data;
       this.advanceData = this.data.vPatientHeaderObj;
       console.log(data)
     }
     if (this.data.FromName == "Advance") {
-      debugger
+      
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
       this.amount1 = parseInt(this.advanceData.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.NetPayAmount);
@@ -137,7 +137,7 @@ export class OpPaymentNewComponent implements OnInit {
       this.Paymentobj['TransactionType'] = 0;
       this.IsCreditflag = false
     } 
-    debugger
+    
     if (this.data.FromName == "OP_SETTLEMENT") {
       this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
       this.amount1 = this.cashAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
@@ -218,7 +218,7 @@ export class OpPaymentNewComponent implements OnInit {
 
   ngOnInit(): void {
     this.patientDetailsFormGrp = this.createForm();
-    debugger
+    
     if (this.PatientHeaderObj.FromName == "SalesSETTLEMENT") {
       this.PatientHeaderObj = this.data.vPatientHeaderObj;
       this.advanceData = this.data.vPatientHeaderObj;
@@ -228,7 +228,7 @@ export class OpPaymentNewComponent implements OnInit {
       this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.getBalanceAmt();
       this.paymentRowObj["cash"] = true;
-      debugger
+      
       this.onPaymentChange(1, 'cash');
       this.paidAmt = this.netPayAmt;
 
@@ -299,7 +299,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onChangePaymnt(event: any) {
-    debugger
+    
     let value = event.value;
     if (value != 'cash') {
       this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
@@ -345,7 +345,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onAddClick(paymentOption: string) {
-    debugger
+    
     this.paymentRowObj[paymentOption] = true;
     switch (paymentOption) {
       case 'cash':
@@ -535,7 +535,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onPaymentChange(rowId: number, value: string) {
-    debugger
+    
 
     if (value == 'upi') {
 
@@ -1010,13 +1010,13 @@ export class OpPaymentNewComponent implements OnInit {
       this.Paymentobj['CashPayAmount'] = parseInt(this.amount5.toString());
       return;
     }
-    // debugger
+    // 
     console.log(this.Paymentobj)
     return;
   }
 
   getChequeObj(type: string) {
-    debugger
+    
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['ChequePayAmount'] = this.amount1;
       this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
@@ -1058,7 +1058,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getCardObj(type: string) {
-    // debugger
+    // 
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['CardPayAmount'] = this.amount1;
       this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
@@ -1099,7 +1099,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getNeftObj(type: string) {
-    debugger
+    
     console.log(this.patientDetailsFormGrp.get("paymentType1").value)
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['NEFTPayAmount'] = this.amount1;
@@ -1141,7 +1141,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getUpiObj(type: string) {
-    debugger
+    
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['PayTMAmount'] = this.amount1;
       this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
@@ -1262,7 +1262,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onClose1() {
-    debugger
+    
     let IsSubmit = {
       "IsSubmitFlag": false,
       "BalAmt": this.netPayAmt

@@ -50,8 +50,9 @@
     }
     &.btn-dark {
     }
-    &:disabled {
+    &:disabled,&.btn-disabled {
         opacity: 0.2;
+        pointer-events: none;
     }
     &.btn-primary {
     }
