@@ -1,0 +1,98 @@
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                MRP Adjustment
+            </span>
+        </div>
+        <button mat-icon-button (click)="onClose()" aria-label="Close dialog" style="margin-left: 510px;color: white;">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <form [formGroup]="_StockAdjustment.MRPAdjform">
+
+                            <div fxLayoutGap="4px" style="margin-right: 10px;">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Old MRP</mat-label>
+                                    <input name="OldMRP" formControlName="OldMRP" matInput required readonly
+                                    (keyup.enter)="focusNext('LandedRate')" [(ngModel)]="vOldMRP" type="text" OnlyNUmber>
+                                </mat-form-field>
+
+                                <!-- <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>LandedRate</mat-label>
+                                    <input name="LandedRate" matInput [matDatepicker]="picker"
+                                         formControlName="LandedRate" id=LandedRate (keyup.enter)="focusNext('CustomerId')">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field> -->
+                                
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Old LandedRate</mat-label>
+                                    <input name="LandedRate" formControlName="LandedRate" matInput required type="text" OnlyNUmber
+                                    (keyup.enter)="focusNext('PurchaseRate')" id="LandedRate" [(ngModel)]="vLandedRate" readonly>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Old PurchaseRate</mat-label>
+                                    <input name="PurchaseRate" formControlName="PurchaseRate" matInput required type="text" OnlyNUmber
+                                    (keyup.enter)="focusNext('ConversionFactor')" id="PurchaseRate" [(ngModel)]="vPurchaseRate" readonly>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Packing</mat-label>
+                                    <input name="ConversionFactor" formControlName="ConversionFactor" matInput required type="text" OnlyNUmber
+                                    (keyup.enter)="focusNext('Amount')" id="ConversionFactor" [(ngModel)]="vConversionFactor" readonly>
+                                </mat-form-field>
+                            </div>
+                           
+
+
+                            <div fxLayout="row" fxLayoutGap="4px">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>New MRP</mat-label>
+                                    <input name="NewMRP" formControlName="NewMRP" type="text" OnlyNUmber
+                                      matInput required  (keyup.enter)="focusNext('newLandedRate')"
+                                        id="NewMRP" [(ngModel)]="vNewMRP">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>New LandedRate</mat-label>
+                                    <input name="newLandedRate" formControlName="newLandedRate" matInput required type="text" OnlyNUmber
+                                    (keyup.enter)="focusNext('NewPurchaseRate')" id="newLandedRate" [(ngModel)]="vNewLandedRate"  >
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>New PurchaseRate</mat-label>
+                                    <input name="NewPurchaseRate" formControlName="NewPurchaseRate" matInput required type="text" OnlyNUmber
+                                    (keyup.enter)="focusNext('ConversionFactor')" id="NewPurchaseRate" [(ngModel)]="vNewPurchaseRatee"  >
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayoutAlign="end" style="padding: 15px;margin-top: 50px;">
+                                <div class="sales-footer-buttons gap-8">
+                                    <button class="btn btn-primary" (click)="onSubmit()"
+                                        [disabled]="Savebtn">Save</button>&nbsp;
+                                    <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

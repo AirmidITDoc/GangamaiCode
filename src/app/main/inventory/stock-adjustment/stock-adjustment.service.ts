@@ -9,7 +9,7 @@ export class StockAdjustmentService {
 
   userFormGroup: FormGroup;
   StoreFrom:FormGroup;
-
+  MRPAdjform:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
@@ -17,6 +17,7 @@ export class StockAdjustmentService {
   ) { 
     this.StoreFrom = this.CreateStoreFrom();
     this.userFormGroup = this.createUserForm();
+    this.MRPAdjform = this.createMRPAdjForm();
   }
   CreateStoreFrom(){
     return this._formBuilder.group({
@@ -28,6 +29,18 @@ export class StockAdjustmentService {
       ItemID: [''],
       BatchEdit:[''],
       ExpDateEdit:['']
+    });
+  }
+  createMRPAdjForm() {
+    return this._formBuilder.group({
+      OldMRP:[''],
+      LandedRate:[''],
+      PurchaseRate:[''],
+      ConversionFactor:[''],
+      NewMRP:[''],
+      newLandedRate:[''],
+      NewPurchaseRate:[''],
+      InvoiceDate:[new Date()],
     });
   }
    

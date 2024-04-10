@@ -17,6 +17,7 @@ import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { request } from 'http';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
+import { MRPAdjustmentComponent } from './mrpadjustment/mrpadjustment.component';
 
 @Component({
   selector: 'app-stock-adjustment',
@@ -69,6 +70,7 @@ export class StockAdjustmentComponent implements OnInit {
     private _loggedService: AuthenticationService,
     private accountService: AuthenticationService,
     public datePipe: DatePipe,
+    public _matDialog: MatDialog,
     public toastr: ToastrService,
   ) { }
 
@@ -372,7 +374,22 @@ export class StockAdjustmentComponent implements OnInit {
     });
 
   }
-
+  EditMRP(contact){
+      console.log(contact)
+      const dialogRef = this._matDialog.open(MRPAdjustmentComponent,
+        {
+          maxWidth: "100%",
+          height: '55%',
+          width: '55%',
+          data: {
+            Obj: contact,
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getStockList();
+      });
+    }
   Addeditable: boolean = false;
   Dedueditable: boolean = false;
   Expeditable: boolean = false;

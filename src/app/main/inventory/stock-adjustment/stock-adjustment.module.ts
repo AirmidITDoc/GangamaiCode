@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { StockAdjustmentComponent } from './stock-adjustment.component';
+import { MRPAdjustmentComponent } from './mrpadjustment/mrpadjustment.component';
 
 const routes: Routes = [
   { 
@@ -46,6 +47,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     StockAdjustmentComponent,
+    MRPAdjustmentComponent,
     
   ],
   imports: [

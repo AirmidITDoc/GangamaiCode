@@ -31,7 +31,6 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 export class UpdatePurchaseorderComponent implements OnInit {
   vsaveflag:boolean=true;
   displayedColumns2 = [
-
     // 'ItemID',
     'ItemName',
     'UOM',
@@ -175,9 +174,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
     public _matDialog: MatDialog,
-    private _formBuilder: FormBuilder,
     private _fuseSidebarService: FuseSidebarService,
-    private snackBarService: SnackBarService,
     public datePipe: DatePipe,
     public dialogRef: MatDialogRef<UpdatePurchaseorderComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -191,7 +188,11 @@ export class UpdatePurchaseorderComponent implements OnInit {
       console.log(this.registerObj)
       this.getSupplierSearchCombo();
       this.getOldPurchaseOrder(this.registerObj.PurchaseID);
-    
+    }
+    if(this.registerObj.PurchaseID){
+      this._PurchaseOrder.userFormGroup.get('PurchaseDate').setValue(this.registerObj.PurchaseDate);
+    }else{
+      this._PurchaseOrder.userFormGroup.get('PurchaseDate').setValue(new Date());
     }
     this.getGSTtypeList();
     this.getPaymentTermList();
@@ -503,7 +504,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       return;
     }
     let updatePurchaseOrderHeaderObj = {};
-    updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date;
+    updatePurchaseOrderHeaderObj['purchaseDate'] =  this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
     updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId;
     updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;
@@ -604,7 +605,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     }
     debugger
     let purchaseHeaderInsertObj = {};
-    purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
+    purchaseHeaderInsertObj['purchaseDate'] =  this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
     purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
     purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;
@@ -948,10 +949,11 @@ export class UpdatePurchaseorderComponent implements OnInit {
   @ViewChild('HandlingCharges') HandlingCharges: ElementRef;
   @ViewChild('ConversionFactor') ConversionFactor: ElementRef;
   @ViewChild('HSNcode') HSNcode: ElementRef;
+  @ViewChild('PurchaseDate') PurchaseDate: ElementRef;
 
   public onEnterSupplier(event): void {
     if (event.which === 13) {
-      this.itemid.nativeElement.focus();
+      this.PurchaseDate.nativeElement.focus();
     }
   }
   public onEnterGSTType(event): void {
