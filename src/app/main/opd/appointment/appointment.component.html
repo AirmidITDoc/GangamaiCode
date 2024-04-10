@@ -369,7 +369,7 @@
                                                             (click)="Billpayment(contact)">
                                                             <mat-icon>edit</mat-icon>
                                                         </button>
-                                                        <button mat-icon-button matTooltip="print"
+                                                        <button mat-icon-button matTooltip="print" [disabled]="chkprint"
                                                             (click)="viewgetPatientAppointmentReportPdf(contact,true)">
                                                             <mat-icon>print</mat-icon>
                                                         </button>

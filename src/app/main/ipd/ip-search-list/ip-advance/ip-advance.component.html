@@ -273,6 +273,10 @@
                                             *ngIf="AdvFormGroup.get('comment').invalid && AdvFormGroup.get('comment').touched">
                                             Advance Amount is required</mat-error>
                                     </mat-form-field>
+                                    <mat-checkbox aria-label="Cash Payment" formControlName="cashpay" (checked)=true
+                                    class="font-weight-600 text-primary">
+                                    Cash Payment
+                                </mat-checkbox>
                                 </div>
                             </div>
                         </form>
@@ -290,6 +294,7 @@
     <!-- / CONTENT-->
     <div class="modal-footer">
         <div class="footer-navigation-container">
+           
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button class="btn btn-primary" (click)="onSave()" [disabled]="AdvFormGroup.invalid">Save</button>

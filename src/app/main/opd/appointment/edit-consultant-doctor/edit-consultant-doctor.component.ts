@@ -19,11 +19,10 @@ export class EditConsultantDoctorComponent implements OnInit {
   
   
   dateTimeObj: any;
-  // registerObj = new AdmissionPersonlModel({});
-  DoctorList: any = [];
+   DoctorList: any = [];
   DepartmentList:any =[];
   DoctorId: any;
-  // selectedAdvanceObj: Editdetail;
+  
   AdmissionID: any;
   screenFromString = 'admission-form';
   PatientHeaderObj: AdvanceDetailObj;
@@ -31,7 +30,6 @@ export class EditConsultantDoctorComponent implements OnInit {
     PatientName: any;
     searchFormGroup: FormGroup;
     VisitId:any;
-//department filter
 
 //department filter
 public departmentFilterCtrl: FormControl = new FormControl();
@@ -44,16 +42,13 @@ public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
   private _onDestroy = new Subject<void>();
   
   constructor( 
-    // public _AdmissionService: AdmissionService,
+
     public _OpAppointmentService: AppointmentSreviceService,
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
-    // public dialogRef: MatDialogRef<ListComponent>,
     private router: Router,
-    // private advanceDataStored: AdvanceDataStored
     ) { }
 
   ngOnInit(): void {
@@ -71,8 +66,7 @@ public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     this.getDoctorList();
     this.getDepartmentList();
-    // this.getDoctor1List();
-
+    
     this.doctorFilterCtrl.valueChanges
     .pipe(takeUntil(this._onDestroy))
     .subscribe(() => {
@@ -110,8 +104,7 @@ public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
           data => { 
             this.DoctorList = data; 
             console.log(data)
-          // data => {
-          //   this.DoctorList = data;
+         
             this.filteredDoctor.next(this.DoctorList.slice());
           })
       }
@@ -159,7 +152,6 @@ public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 }
 
 OnChangeDoctorList(departmentObj) {
-  // debugger;
   console.log("departmentObj", departmentObj)
   this._OpAppointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
     data => {
@@ -182,13 +174,13 @@ OnChangeDoctorList(departmentObj) {
   }
 
   onSubmit() {
-    debugger;
+    
     this.DoctorId = this.searchFormGroup.get('DoctorId').value.DoctorId;
     let query = "Update VisitDetails set ConsultantDocId= " +  this.DoctorId +" where Visitid=" + this.VisitId+ " ";
 
     console.log(query);
     this._OpAppointmentService.UpdateQueryByStatement(query).subscribe(response => {
-      console.log(response);
+      
       if (response) {
         Swal.fire('updated !', 'Consultant Doctor Data Updated Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {

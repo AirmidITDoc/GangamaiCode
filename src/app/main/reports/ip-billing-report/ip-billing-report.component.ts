@@ -274,7 +274,7 @@ var data={
     
       if (this._IPBillingService.userForm.get('DoctorId').value)
         
-      AddUserId = this._IPBillingService.userForm.get('DoctorId').value.DoctorID
+        DoctorId = this._IPBillingService.userForm.get('DoctorId').value.DoctorID
 
 
     setTimeout(() => {

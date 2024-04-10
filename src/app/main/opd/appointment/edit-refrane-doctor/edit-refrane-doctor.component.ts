@@ -21,7 +21,7 @@ import { fuseAnimations } from '@fuse/animations';
 export class EditRefraneDoctorComponent implements OnInit {
 
   dateTimeObj: any;
-  // registerObj = new AdmissionPersonlModel({});
+  
   VisitId:any;
   Doctor1List: any = [];
   DoctorList :any =[];
@@ -40,16 +40,14 @@ export class EditRefraneDoctorComponent implements OnInit {
 
   
   constructor(
-    //  public _AdmissionService: AdmissionService,
+  
     public _OpAppointmentService: AppointmentSreviceService,
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
-    // public dialogRef: MatDialogRef<ListComponent>,
     private router: Router,
-    // private advanceDataStored: AdvanceDataStored
+    
     ) { }
 
   ngOnInit(): void {
@@ -61,7 +59,7 @@ export class EditRefraneDoctorComponent implements OnInit {
       this.PatientName = this.PatientHeaderObj.PatientName;
       this.RefDoctorId = this.PatientHeaderObj.RefDoctorId;
      
-      console.log(this.PatientHeaderObj);
+      // console.log(this.PatientHeaderObj);
     }
 
     this.getDoctor1List();
@@ -80,10 +78,6 @@ export class EditRefraneDoctorComponent implements OnInit {
     });
   }
   setDropdownObjs() {
-    debugger;
-      
-        // const toSelectDoc1 = this.Doctor1List.find(c => c.DoctorID == this.registerObj.DoctorId);
-        // this.searchFormGroup.get('DoctorID').setValue(toSelectDoc1);
                
         this.searchFormGroup.updateValueAndValidity();
       }
@@ -122,7 +116,7 @@ export class EditRefraneDoctorComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger;
+    
     this.RefDoctorId = this.searchFormGroup.get('DoctorId').value.DoctorId;
     
    let query = "Update VisitDetails set RefDocId= " + this.RefDoctorId +" where VisitId=" + this.VisitId + " ";

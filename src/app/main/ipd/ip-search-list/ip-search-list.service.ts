@@ -284,7 +284,7 @@ constructor(public _httpClient:HttpClient,
      DocNameID:[''],
      Doctorname:'',
      DischargeTypeId:['',Validators.required],
-     DischargeDate:['',Validators.required],
+     DischargeDate:[''],
      DischargeTime:'',
      Modeofdischarge:'',
      DOT: ''  

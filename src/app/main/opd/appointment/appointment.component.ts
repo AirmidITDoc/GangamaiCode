@@ -147,7 +147,7 @@ export class AppointmentComponent implements OnInit {
   newRegSelected: any = 'registration';
   dataArray = {};
   HospitalList1: any = [];
-  Patientnewold: any = 1;
+  Patientnewold: any = 0;
 
 
   IsPathRad: any;
@@ -1112,7 +1112,7 @@ export class AppointmentComponent implements OnInit {
       Start: (this.paginator?.pageIndex ?? 0),
       Length: (this.paginator?.pageSize ?? 10),
       Sort: this.sort?.active ?? 'VisitId',
-      Order: this.sort?.direction ?? 'asc'
+      Order: this.sort?.direction ?? 'desc'
     };
     setTimeout(() => {
      
@@ -2436,8 +2436,9 @@ export class AppointmentComponent implements OnInit {
 
 
   AdList: boolean = false;
-
+  chkprint: boolean = false;
   viewgetPatientAppointmentReportPdf(obj,Pflag) {
+    this.chkprint=true;
    let VisitId;
     if(Pflag){
         VisitId=obj.VisitId
@@ -2445,7 +2446,7 @@ export class AppointmentComponent implements OnInit {
         VisitId=obj
     }
 
-    // this.sIsLoading = 'loading-data';
+    this.sIsLoading = 'loading-data';
     setTimeout(() => {
       this.AdList = true;
       this._opappointmentService.getAppointmentReport(
@@ -2468,6 +2469,7 @@ export class AppointmentComponent implements OnInit {
       });
 
     }, 100);
+    this.chkprint=false;
   }
 
 

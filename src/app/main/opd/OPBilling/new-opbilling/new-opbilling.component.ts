@@ -1162,6 +1162,34 @@ export class NewOPBillingComponent implements OnInit {
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
   }
+
+
+  viewgetOPPayemntPdf(row) {
+ 
+    setTimeout(() => {
+  
+    this._oPSearhlistService.getOpPaymentview(
+      row.PaymentId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Op Payment Receipt Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          // this.sIsLoading = '';
+        });
+       
+    });
+   
+    },100);
+  }
 }
 
 

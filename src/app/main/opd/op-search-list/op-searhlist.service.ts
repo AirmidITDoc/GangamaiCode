@@ -407,7 +407,7 @@ public getConcessionCombo()
   }
 
   public getPatientVisitedListSearch(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
   }
 
   public getrptAppointmentList(employee){
@@ -449,17 +449,22 @@ public prescriptionDetails(visistId) {
     return this._httpClient.post("OutPatient/CasePaperPrescriptionSave", param);
   }
 
+  // public getRefundofBillServiceList(employee)
+  // {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IPBill_For_Refund",employee)
+  // }
+
   public getRefundofBillServiceList(employee)
   {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IPBill_For_Refund",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OPBill_For_Refund",employee)
   }
-
   public getRefundofBillDetailList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=RtrvIPDRefundAgainstBill_List", employee)
   }
   public getRefundofBillOPDList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList1",employee)
     }
+    
     public InsertOPSettlementPayment (employee){
       // return this._httpClient.post("InPatient/IPBillingCreditInsert", employee)
        return this._httpClient.post("InPatient/IPSettlement", employee)
@@ -483,6 +488,11 @@ public prescriptionDetails(visistId) {
 
   getOprefundofbillview(RefundId){
     return this._httpClient.get("getOprefundofbillview?RefundId="+RefundId)
+  }
+
+  
+  public getOpPaymentview(PaymentId){
+    return this._httpClient.get("OutPatient/view-OP-PaymentReceipt?PaymentId=" + PaymentId);
   }
 
   getPaymentArr() {

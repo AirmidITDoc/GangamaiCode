@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,11 +12,14 @@ import Swal from 'sweetalert2';
 import { AdvanceDataStored } from '../../advance';
 import { AdvanceDetailObj } from '../ip-search-list.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-discharge-summary',
   templateUrl: './discharge-summary.component.html',
-  styleUrls: ['./discharge-summary.component.scss']
+  styleUrls: ['./discharge-summary.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class DischargeSummaryComponent implements OnInit {
 
@@ -54,6 +57,7 @@ export class DischargeSummaryComponent implements OnInit {
   isdoctor3Selected: boolean = false;
 
   menuActions: Array<string> = [];
+  vAdmissionId:any=0;
 
   constructor(public _IpSearchListService: IPSearchListService,
     public _matDialog: MatDialog,
@@ -71,17 +75,18 @@ export class DischargeSummaryComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       // this.PatientHeaderObj = this.advanceDataStored.storage;
+      this.vAdmissionId=this.selectedAdvanceObj.AdmissionID;
     }
 
 
-    let AdmissionId = this._IpSearchListService.myShowDischargeSummaryForm.get("AdmissionId").value
+    let AdmissionId = this.DischargesumForm.get("AdmissionId").value
 
     this.getAdmissionInfo();
     this.getDischargeSummaryData();
 
     this.getDoctorList1();
     this.getDoctorList2();
-    this.getDoctorList2();
+    this.getDoctorList3();
 
     
   }
@@ -188,16 +193,16 @@ export class DischargeSummaryComponent implements OnInit {
   }
 
 
-  getDoctorList() {
-    this._IpSearchListService.getDischaregDoctor1Combo().subscribe(data => {
-      this.Doctor1List = data;
-       this.optionsDoc1 = this.Doctor1List.slice();
-      this.filteredOptionDoctor1 = this.DischargesumForm.get('DischargeDoctor1').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
-      );
-    });
-  }
+  // getDoctorList() {
+  //   this._IpSearchListService.getDischaregDoctor1Combo().subscribe(data => {
+  //     this.Doctor1List = data;
+  //      this.optionsDoc1 = this.Doctor1List.slice();
+  //     this.filteredOptionDoctor1 = this.DischargesumForm.get('DischargeDoctor1').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
+  //     );
+  //   });
+  // }
 
 
   getDoctorList1() {
@@ -215,7 +220,7 @@ export class DischargeSummaryComponent implements OnInit {
     this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor2List = data;
        this.optionsDoc2 = this.Doctor2List.slice();
-      this.filteredOptionDoctor2 = this.DischargesumForm.get('DischargeDoctor3').valueChanges.pipe(
+      this.filteredOptionDoctor2 = this.DischargesumForm.get('DischargeDoctor2').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterdoc2(value) : this.Doctor2List.slice()),
       );
@@ -225,8 +230,9 @@ export class DischargeSummaryComponent implements OnInit {
   getDoctorList3() {
     this._IpSearchListService.getDoctorMaster2Combo().subscribe(data => {
       this.Doctor3List = data;
+      console.log( this.Doctor3List )
        this.optionsDoc3 = this.Doctor3List.slice();
-      this.filteredOptionDoctor3 = this.DischargesumForm.get('DoctorID3').valueChanges.pipe(
+      this.filteredOptionDoctor3 = this.DischargesumForm.get('DischargeDoctor3').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterdoc3(value) : this.Doctor3List.slice()),
       );
@@ -272,7 +278,7 @@ export class DischargeSummaryComponent implements OnInit {
   lngAdmId: any = [];
   // ============================================================================
   getAdmissionInfo() {
-    let Query = "select Isnull(AdmissionId,0) as AdmId from T_DischargeSummary where AdmissionId=" + this._IpSearchListService.myShowDischargeSummaryForm.get("AdmissionId").value + ""
+    let Query = "select Isnull(AdmissionId,0) as AdmId from T_DischargeSummary where AdmissionId=" + this.DischargesumForm.get("AdmissionId").value + ""
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
      
       this.lngAdmId = data;
@@ -290,7 +296,7 @@ export class DischargeSummaryComponent implements OnInit {
 
   getDischargeSummaryData() {
     var m_data2 = {
-      "AdmissionId": this._IpSearchListService.myShowDischargeSummaryForm.get("AdmissionId").value || "0"
+      "AdmissionId": this.DischargesumForm.get("AdmissionId").value || "0"
     }
     this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data: any) => {
       if (data && data.length > 0) {
@@ -303,7 +309,7 @@ export class DischargeSummaryComponent implements OnInit {
   }
 
   onClose() {
-    this._IpSearchListService.myShowDischargeSummaryForm.reset();
+    this.DischargesumForm.reset();
     this._matDialog.closeAll();
   }
 
@@ -313,27 +319,27 @@ export class DischargeSummaryComponent implements OnInit {
     this.isLoading = 'submit';
     // console.log(this.DischargeSList.DischargeSummaryId);
     // if ((this.DischargeSList.DischargeSummaryId != 0) && (this.DischargeSList.DischargeSummaryId !=undefined)) {
-    if(this._IpSearchListService.myShowDischargeSummaryForm.get("AdmissionId").value){
+    if(this.DischargesumForm.get("AdmissionId").value){
       var m_data = {
         "updateIPDDischargSummary": {
-          "DischargesummaryId":29678,// this._IpSearchListService.myShowDischargeSummaryForm.get("DischargesummaryId").value || "0",
-          "DischargeId": this._IpSearchListService.myShowDischargeSummaryForm.get("DischargeId").value || "0",
-          "History": this._IpSearchListService.myShowDischargeSummaryForm.get("History").value || "",
-          "Diagnosis": this._IpSearchListService.myShowDischargeSummaryForm.get("Diagnosis").value || "",
-          "Investigation": this._IpSearchListService.myShowDischargeSummaryForm.get("Investigation").value || "",
-          "ClinicalFinding": this._IpSearchListService.myShowDischargeSummaryForm.get("ClinicalFinding").value || "",
-          "OpertiveNotes": this._IpSearchListService.myShowDischargeSummaryForm.get("OpertiveNotes").value || "",
-          "TreatmentGiven": this._IpSearchListService.myShowDischargeSummaryForm.get("TreatmentGiven").value || "",
-          "TreatmentAdvisedAfterDischarge": this._IpSearchListService.myShowDischargeSummaryForm.get("TreatmentAdvisedAfterDischarge").value || "",
-          "Followupdate": this._IpSearchListService.myShowDischargeSummaryForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
-          "Remark": this._IpSearchListService.myShowDischargeSummaryForm.get("Remark").value || "",
-          "OPDate": this._IpSearchListService.myShowDischargeSummaryForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
-          "OPTime": this._IpSearchListService.myShowDischargeSummaryForm.get("OPTime").value || "2021-05-24T06:18:37.533Z",
-          "DischargeDoctor1": this._IpSearchListService.myShowDischargeSummaryForm.get("DischargeDoctor1").value || "0",
-          "DischargeDoctor2": this._IpSearchListService.myShowDischargeSummaryForm.get("DischargeDoctor2").value || "0",
-          "DischargeDoctor3": this._IpSearchListService.myShowDischargeSummaryForm.get("DischargeDoctor3").value || "0",
+          "DischargesummaryId":29678,// this.DischargesumForm.get("DischargesummaryId").value || "0",
+          "DischargeId": this.DischargesumForm.get("DischargeId").value || "0",
+          "History": this.DischargesumForm.get("History").value || "",
+          "Diagnosis": this.DischargesumForm.get("Diagnosis").value || "",
+          "Investigation": this.DischargesumForm.get("Investigation").value || "",
+          "ClinicalFinding": this.DischargesumForm.get("ClinicalFinding").value || "",
+          "OpertiveNotes": this.DischargesumForm.get("OpertiveNotes").value || "",
+          "TreatmentGiven": this.DischargesumForm.get("TreatmentGiven").value || "",
+          "TreatmentAdvisedAfterDischarge": this.DischargesumForm.get("TreatmentAdvisedAfterDischarge").value || "",
+          "Followupdate": this.DischargesumForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
+          "Remark": this.DischargesumForm.get("Remark").value || "",
+          "OPDate": this.dateTimeObj.date,//this.DischargesumForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
+          "OPTime": this.dateTimeObj.date,// this.DischargesumForm.get("OPTime").value || "2021-05-24T06:18:37.533Z",
+          "DischargeDoctor1": this.DischargesumForm.get("DischargeDoctor1").value.DoctorID || 0,
+          "DischargeDoctor2": this.DischargesumForm.get("DischargeDoctor2").value.DoctorID || 0,
+          "DischargeDoctor3": this.DischargesumForm.get("DischargeDoctor3").value.DoctorID || 0,
           "DischargeSummaryTime":  this.dateTimeObj.time,
-          "DoctorAssistantName": this._IpSearchListService.myShowDischargeSummaryForm.get("DoctorAssistantName").value || "",
+          "DoctorAssistantName": this.DischargesumForm.get("DoctorAssistantName").value || "",
 
           
        
@@ -359,29 +365,31 @@ export class DischargeSummaryComponent implements OnInit {
     else {
       var m_data1 = {
         "insertIPDDischargSummary": {
-          "DischargesummaryId": 0,// this._IpSearchListService.myShowDischargeSummaryForm.get("DischargesummaryId").value || "0",
-          "AdmissionId": this._IpSearchListService.myShowDischargeSummaryForm.get("AdmissionId").value || "0",
-          "DischargeId": this._IpSearchListService.myShowDischargeSummaryForm.get("DischargeId").value || "0",
-          "History": this._IpSearchListService.myShowDischargeSummaryForm.get("History").value || "",
-          "Diagnosis": this._IpSearchListService.myShowDischargeSummaryForm.get("Diagnosis").value || "",
-          "Investigation": this._IpSearchListService.myShowDischargeSummaryForm.get("Investigation").value || "",
-          "ClinicalFinding": this._IpSearchListService.myShowDischargeSummaryForm.get("ClinicalFinding").value || "",
-          "OpertiveNotes": this._IpSearchListService.myShowDischargeSummaryForm.get("OpertiveNotes").value || "",
-          "TreatmentGiven": this._IpSearchListService.myShowDischargeSummaryForm.get("TreatmentGiven").value || "",
-          "TreatmentAdvisedAfterDischarge": this._IpSearchListService.myShowDischargeSummaryForm.get("TreatmentAdvisedAfterDischarge").value || "",
-          "Followupdate": this._IpSearchListService.myShowDischargeSummaryForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
-          "Remark": this._IpSearchListService.myShowDischargeSummaryForm.get("Remark").value || "",
+          "DischargesummaryId": 0,// this.DischargesumForm.get("DischargesummaryId").value || "0",
+          "AdmissionId":this.vAdmissionId,// this.DischargesumForm.get("AdmissionId").value || "0",
+          "DischargeId": this.DischargesumForm.get("DischargeId").value || "0",
+          "History": this.DischargesumForm.get("History").value || "",
+          "Diagnosis": this.DischargesumForm.get("Diagnosis").value || "",
+          "Investigation": this.DischargesumForm.get("Investigation").value || "",
+          "ClinicalFinding": this.DischargesumForm.get("ClinicalConditionOnAdmisssion").value || "",
+          "OpertiveNotes": this.DischargesumForm.get("OpertiveNotes").value || "",
+          "TreatmentGiven": this.DischargesumForm.get("TreatmentGiven").value || "",
+          "TreatmentAdvisedAfterDischarge": this.DischargesumForm.get("TreatmentAdvisedAfterDischarge").value || "",
+          "Followupdate": this.DischargesumForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
+          "Remark": this.DischargesumForm.get("Remark").value || "",
           "DischargeSummaryDate":  this.dateTimeObj.date,
-          "OPDate": this._IpSearchListService.myShowDischargeSummaryForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
-          "OPTime": this._IpSearchListService.myShowDischargeSummaryForm.get("OPTime").value || "2021-05-24T06:18:37.533Z",
-          "DischargeDoctor1": this._IpSearchListService.myShowDischargeSummaryForm.get("DischargeDoctor1").value || "0",
-          "DischargeDoctor2": this._IpSearchListService.myShowDischargeSummaryForm.get("DischargeDoctor2").value || "0",
-          "DischargeDoctor3": this._IpSearchListService.myShowDischargeSummaryForm.get("DischargeDoctor3").value || "0",
+          "OPDate": this.dateTimeObj.date,// this.DischargesumForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
+          "OPTime": this.dateTimeObj.time,//this.DischargesumForm.get("OPTime").value || "2021-05-24T06:18:37.533Z",
+          "DischargeDoctor1": this.DischargesumForm.get("DischargeDoctor1").value.DoctorID || 0,
+          "DischargeDoctor2": this.DischargesumForm.get("DischargeDoctor2").value.DoctorID || 0,
+          "DischargeDoctor3": this.DischargesumForm.get("DischargeDoctor3").value.DoctorID || 0,
           "DischargeSummaryTime":  this.dateTimeObj.time,
-          "DoctorAssistantName": this._IpSearchListService.myShowDischargeSummaryForm.get("DoctorAssistantName").value || "",
+          "DoctorAssistantName": this.DischargesumForm.get("DoctorAssistantName").value || "",
         
         }
       }
+      debugger
+      console.log(m_data1)
       setTimeout(() => {
         this._IpSearchListService.insertIPDDischargSummary(m_data1).subscribe(response => {
           console.log(response);

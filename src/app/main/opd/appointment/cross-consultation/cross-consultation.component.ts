@@ -61,7 +61,7 @@ export class CrossConsultationComponent implements OnInit {
     public dialogRef: MatDialogRef<CrossConsultationComponent>,
     private router: Router
   ) {
-    //  this.date = new Date().toISOString().slice(0, 16);
+    
     this.date = new Date();
 
   }
@@ -141,7 +141,7 @@ export class CrossConsultationComponent implements OnInit {
 
   }
   OnChangeDoctorList(departmentObj) {
-    debugger
+    
     this.isDepartmentSelected = true;
     this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
@@ -202,23 +202,23 @@ export class CrossConsultationComponent implements OnInit {
     crossConsult['VisitTime'] = this.datePipe.transform(this.InfoFormGroup.get("VisitDate").value, 'MM/dd/yyyy HH:mm:ss') || this.dateTimeObj.time,
       crossConsult['UnitId'] = this.PatientHeaderObj.HospitalId;
     crossConsult['PatientTypeId'] = this.PatientHeaderObj.PatientTypeId;
-    crossConsult['ConsultantDocId'] = this.InfoFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
+    crossConsult['ConsultantDocId'] = this.InfoFormGroup.get('DoctorID').value.DoctorId || 0;
     crossConsult['RefDocId'] = this.PatientHeaderObj.RefDoctorId || 0;
 
     crossConsult['TariffId'] = this.PatientHeaderObj.TariffId;
     crossConsult['CompanyId'] = this.PatientHeaderObj.CompanyId || 0;
     crossConsult['AddedBy'] = this.accountService.currentUserValue.user.id;
-    crossConsult['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
+    crossConsult['updatedBy'] = 0,
       crossConsult['IsCancelled'] = 0;
     crossConsult['IsCancelledBy'] = 0;
     crossConsult['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
 
       crossConsult['ClassId'] = this.PatientHeaderObj.ClassId;
-    crossConsult['DepartmentId'] = this.InfoFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
+    crossConsult['DepartmentId'] = this.InfoFormGroup.get('Departmentid').value.Departmentid; 
     crossConsult['PatientOldNew'] = 1,//this.Patientnewold;
-      crossConsult['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-      crossConsult['appPurposeId'] = 0,//this.PatientHeaderObj.App
-      crossConsult['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+      crossConsult['FirstFollowupVisit'] = 0,
+      crossConsult['appPurposeId'] = 0,
+      crossConsult['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', 
       // crossConsult['PhoneAppId'] = 0,//this.PatientHeaderObj.App
 
       crossConsult['CrossConsulFlag'] = 1

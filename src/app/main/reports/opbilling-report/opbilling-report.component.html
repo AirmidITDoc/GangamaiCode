@@ -126,9 +126,9 @@
                                            formControlName="UserId" [matAutocomplete]="autoUser">
                                         <span matSuffix style="display: flex;">
                                           <mat-icon class="mat-icon-close"
-                                            (click)="_IPReportService.userForm.get('UserId').setValue(''); isUserSelected = false;">close</mat-icon>
+                                            (click)="_OPReportsService.userForm.get('UserId').setValue(''); isUserSelected = false;">close</mat-icon>
                                           <mat-icon class="mat-icon-close"
-                                            (click)="_IPReportService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
+                                            (click)="_OPReportsService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="getOptionTextUser">
                                           <mat-option *ngFor="let option of filteredOptionsUser | async" [value]="option"
@@ -147,9 +147,9 @@
                                                 [matAutocomplete]="autosearchDoctorReport2" required>
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
-                                                    (click)="_IPReportService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
+                                                    (click)="_OPReportsService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
                                                 <mat-icon class="mat-icon-close"
-                                                    (click)="_IPReportService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
+                                                    (click)="_OPReportsService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
                                             </span>
                                             <mat-autocomplete #autosearchDoctorReport2="matAutocomplete"
                                                 [displayWith]="getOptionTextsearchDoctor">

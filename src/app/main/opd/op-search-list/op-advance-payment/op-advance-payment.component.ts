@@ -803,7 +803,7 @@ export class OPAdvancePaymentComponent implements OnInit {
       Paymentobj['ReceiptNo'] = '',//'RE';
       Paymentobj['PaymentDate'] = '',//this.dateTimeObj.date;
       Paymentobj['PaymentTime'] = '',//this.dateTimeObj.time;
-      Paymentobj['CashPayAmount'] = 0,// parseInt(this.cashAmt.toString());
+      Paymentobj['CashPayAmount'] =  parseInt(this.cashAmt.toString());
       Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
       Paymentobj['ChequeNo'] = 0,//this.chequeNo;
       Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;
