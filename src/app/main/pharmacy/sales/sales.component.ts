@@ -1234,7 +1234,7 @@ export class SalesComponent implements OnInit {
 
   }
   calculateTotalAmt() {
-    
+
 
     debugger
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
@@ -1537,46 +1537,46 @@ export class SalesComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result1 => {
       debugger
-      let result =result1.selectedData
-      let vescflag=result1.vEscflag
+      let result = result1.selectedData
+      let vescflag = result1.vEscflag
       console.log(result);
 
-      if(vescflag){
+      if (vescflag) {
         this._salesService.IndentSearchGroup.get('ItemId').setValue('')
-      this.itemid.nativeElement.focus();
-      }else if(!vescflag){
-       this.Quantity.nativeElement.focus();
-     
-      this.BatchNo = result.BatchNo;
-      this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
-      this.MRP = result.UnitMRP;
-      this.Qty = '';
-      this.Bal = result.BalanceAmt;
-      this.GSTPer = result.VatPercentage;
+        this.itemid.nativeElement.focus();
+      } else if (!vescflag) {
+        this.Quantity.nativeElement.focus();
 
-      this.TotalMRP = this.Qty * this.MRP;
-      this.DiscPer = result.DiscPer;
-      this.DiscAmt = 0;
-      this.NetAmt = this.TotalMRP;
-      this.BalanceQty = result.BalanceQty;
-      this.ItemObj = result;
+        this.BatchNo = result.BatchNo;
+        this.BatchExpDate = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
+        this.MRP = result.UnitMRP;
+        this.Qty = '';
+        this.Bal = result.BalanceAmt;
+        this.GSTPer = result.VatPercentage;
 
-      this.VatPer = result.VatPercentage;
-      // console.log(this.VatPer);
-      this.CgstPer = result.CGSTPer;
-      this.SgstPer = result.SGSTPer;
-      this.IgstPer = result.IGSTPer;
+        this.TotalMRP = this.Qty * this.MRP;
+        this.DiscPer = result.DiscPer;
+        this.DiscAmt = 0;
+        this.NetAmt = this.TotalMRP;
+        this.BalanceQty = result.BalanceQty;
+        this.ItemObj = result;
 
-      this.VatAmount = result.VatPercentage;
-      this.StockId = result.StockId
-      this.StoreId = result.StoreId;
-      this.LandedRate = result.LandedRate;
-      this.PurchaseRate = result.PurchaseRate;
-      this.UnitMRP = result.UnitMRP;
+        this.VatPer = result.VatPercentage;
+        // console.log(this.VatPer);
+        this.CgstPer = result.CGSTPer;
+        this.SgstPer = result.SGSTPer;
+        this.IgstPer = result.IGSTPer;
+
+        this.VatAmount = result.VatPercentage;
+        this.StockId = result.StockId
+        this.StoreId = result.StoreId;
+        this.LandedRate = result.LandedRate;
+        this.PurchaseRate = result.PurchaseRate;
+        this.UnitMRP = result.UnitMRP;
       }
     });
 
-   
+
   }
 
   focusNextService() {
@@ -2013,7 +2013,7 @@ export class SalesComponent implements OnInit {
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] = this.PatientName || '';
+      SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] = 0;
@@ -2067,7 +2067,7 @@ export class SalesComponent implements OnInit {
       updateCurStkSales['itemId'] = element.ItemId;
       updateCurStkSales['issueQty'] = element.Qty;
       updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
-      updateCurStkSales['stkID'] = element.StockId;
+        updateCurStkSales['stkID'] = element.StockId;
       updateCurStkSalestarr.push(updateCurStkSales);
     });
 
@@ -2085,35 +2085,35 @@ export class SalesComponent implements OnInit {
     let PaymentInsertobj = {};
 
     PaymentInsertobj['BillNo'] = 0,
-    PaymentInsertobj['ReceiptNo'] = '',
-    PaymentInsertobj['PaymentDate'] = this.newDateTimeObj.date; //  this.dateTimeObj.date;
+      PaymentInsertobj['ReceiptNo'] = '',
+      PaymentInsertobj['PaymentDate'] = this.newDateTimeObj.date; //  this.dateTimeObj.date;
     PaymentInsertobj['PaymentTime'] = this.newDateTimeObj.time; //  this.dateTimeObj.time;
     PaymentInsertobj['CashPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //NetAmt;
     PaymentInsertobj['ChequePayAmount'] = 0,
-    PaymentInsertobj['ChequeNo'] = 0,
-    PaymentInsertobj['BankName'] = '',
-    PaymentInsertobj['ChequeDate'] = '01/01/1900',
-    PaymentInsertobj['CardPayAmount'] = 0,
-    PaymentInsertobj['CardNo'] = '',
-    PaymentInsertobj['CardBankName'] = '',
-    PaymentInsertobj['CardDate'] = '01/01/1900',
-    PaymentInsertobj['AdvanceUsedAmount'] = 0;
+      PaymentInsertobj['ChequeNo'] = 0,
+      PaymentInsertobj['BankName'] = '',
+      PaymentInsertobj['ChequeDate'] = '01/01/1900',
+      PaymentInsertobj['CardPayAmount'] = 0,
+      PaymentInsertobj['CardNo'] = '',
+      PaymentInsertobj['CardBankName'] = '',
+      PaymentInsertobj['CardDate'] = '01/01/1900',
+      PaymentInsertobj['AdvanceUsedAmount'] = 0;
     PaymentInsertobj['AdvanceId'] = 0;
     PaymentInsertobj['RefundId'] = 0;
     PaymentInsertobj['TransactionType'] = 4;
     PaymentInsertobj['Remark'] = '',
-    PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-    PaymentInsertobj['IsCancelled'] = 0;
+      PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+      PaymentInsertobj['IsCancelled'] = 0;
     PaymentInsertobj['IsCancelledBy'] = 0;
     PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
-    PaymentInsertobj['OPD_IPD_Type'] = 3;
+      PaymentInsertobj['OPD_IPD_Type'] = 3;
     PaymentInsertobj['NEFTPayAmount'] = 0,
-    PaymentInsertobj['NEFTNo'] = '',
-    PaymentInsertobj['NEFTBankMaster'] = '',
-    PaymentInsertobj['NEFTDate'] = '01/01/1900',
-    PaymentInsertobj['PayTMAmount'] = 0,
-    PaymentInsertobj['PayTMTranNo'] = '',
-    PaymentInsertobj['PayTMDate'] = '01/01/1900'
+      PaymentInsertobj['NEFTNo'] = '',
+      PaymentInsertobj['NEFTBankMaster'] = '',
+      PaymentInsertobj['NEFTDate'] = '01/01/1900',
+      PaymentInsertobj['PayTMAmount'] = 0,
+      PaymentInsertobj['PayTMTranNo'] = '',
+      PaymentInsertobj['PayTMDate'] = '01/01/1900'
 
     let submitData = {
       "salesInsert": SalesInsert,
@@ -2128,13 +2128,27 @@ export class SalesComponent implements OnInit {
     let vMobileNo = this.MobileNo;
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
-        this.toastr.success('Record Saved Successfully.', 'Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.getPrint3(response);
-        this.getWhatsappshareSales(response, vMobileNo);
-        this.Itemchargeslist = [];
-        this._matDialog.closeAll();
+        if (response == -1) {
+          this.toastr.error('Stock has been updated. few items are out of stock.', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+        else {
+          this.toastr.success('Record Saved Successfully.', 'Save !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.getPrint3(response);
+          this.getWhatsappshareSales(response, vMobileNo);
+          this.Itemchargeslist = [];
+          this._matDialog.closeAll();
+          this.ItemFormreset();
+          this.patientDetailsFormGrp.reset();
+          this.Formreset();
+          this.ItemSubform.get('ConcessionId').reset();
+          // this.PatientName = '';
+          // this.MobileNo = '';
+          this.saleSelectedDatasource.data = [];
+        }
 
       } else {
         this.toastr.error('API Error!', 'Error !', {
@@ -2148,13 +2162,6 @@ export class SalesComponent implements OnInit {
       });
     });
 
-    this.ItemFormreset();
-    this.patientDetailsFormGrp.reset();
-    this.Formreset();
-    this.ItemSubform.get('ConcessionId').reset();
-    // this.PatientName = '';
-    // this.MobileNo = '';
-    this.saleSelectedDatasource.data = [];
 
 
     // }
@@ -2311,13 +2318,20 @@ export class SalesComponent implements OnInit {
           console.log(submitData)
           this._salesService.InsertCashSales(submitData).subscribe(response => {
             if (response) {
-              this.toastr.success('Record Saved Successfully.', 'Save !', {
-                toastClass: 'tostr-tost custom-toast-success',
-              });
-              this.getPrint3(response);
-              this.getWhatsappshareSales(response, vMobileNo)
-              this.Itemchargeslist = [];
-              this._matDialog.closeAll();
+              if (response == -1) {
+                this.toastr.error('Stock has been updated. few items are out of stock.', 'Error !', {
+                  toastClass: 'tostr-tost custom-toast-error',
+                });
+              }
+              else {
+                this.toastr.success('Record Saved Successfully.', 'Save !', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                });
+                this.getPrint3(response);
+                this.getWhatsappshareSales(response, vMobileNo)
+                this.Itemchargeslist = [];
+                this._matDialog.closeAll();
+              }
             } else {
               this.toastr.error('API Error!', 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
@@ -3018,7 +3032,7 @@ export class SalesComponent implements OnInit {
     SalesInsert['isPrint'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-    SalesInsert['externalPatientName'] = this.PatientName || '';
+      SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] = 0;
@@ -3335,28 +3349,28 @@ export class SalesComponent implements OnInit {
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-        debugger
+          debugger
 
 
           if (contact.IssueQty != null) {
 
             this.DraftQty = element.Qty + contact.IssueQty;
-            if (this.DraftQty  > contact.BalanceQty) {
-              Swal.fire("Enter Qty less than Balance :" ,contact.BalanceQty);
+            if (this.DraftQty > contact.BalanceQty) {
+              Swal.fire("Enter Qty less than Balance :", contact.BalanceQty);
               element.Qty = this.DraftQty - contact.IssueQty;
               this.ItemFormreset();
             }
-            
+
           } else {
             this.DraftQty = element.Qty + 1;
-            if (this.DraftQty  > contact.BalanceQty) {
-              Swal.fire("Enter Qty less than Balance :",contact.BalanceQty);
+            if (this.DraftQty > contact.BalanceQty) {
+              Swal.fire("Enter Qty less than Balance :", contact.BalanceQty);
               element.Qty = this.DraftQty - 1;
               this.ItemFormreset();
             }
           }
 
-          
+
           let TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
           let Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
           let vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
@@ -3372,10 +3386,10 @@ export class SalesComponent implements OnInit {
 
           let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
           let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
-    
 
 
-          let BalQty = contact.BalanceQty -  this.DraftQty
+
+          let BalQty = contact.BalanceQty - this.DraftQty
 
           this.saleSelectedDatasource.data[i].Qty = this.DraftQty;
           this.saleSelectedDatasource.data[i].VatAmount = Vatamount;
@@ -3404,25 +3418,25 @@ export class SalesComponent implements OnInit {
 
           this.saleSelectedDatasource.data[i].BalanceQty = BalQty;
           this.saleSelectedDatasource.data[i].StockId = contact.StockId;
-          
+
         }
         i++;
       });
 
-    } 
+    }
     if (!this.Itemflag) {
 
       if (contact.IssueQty != null) {
         this.DraftQty = DraftQty + contact.IssueQty;
-        
-        if (this.DraftQty  > contact.BalanceQty) {
+
+        if (this.DraftQty > contact.BalanceQty) {
           Swal.fire("Enter Qty less than Balance");
           this.DraftQty = DraftQty - contact.IssueQty;
           this.ItemFormreset();
         }
       } else {
         this.DraftQty = DraftQty + 1;
-        if (this.DraftQty  > contact.BalanceQty) {
+        if (this.DraftQty > contact.BalanceQty) {
           Swal.fire("Enter Qty less than Balance");
           this.DraftQty = DraftQty - 1;
           this.ItemFormreset();
@@ -3450,7 +3464,7 @@ export class SalesComponent implements OnInit {
           ItemId: contact.ItemId || 0,
           ItemName: contact.ItemName || '',
           BatchNo: contact.BatchNo,
-          BatchExpDate:  this.datePipe.transform(contact.BatchExpDate, "yyyy-MM-dd") || '01/01/1900',
+          BatchExpDate: this.datePipe.transform(contact.BatchExpDate, "yyyy-MM-dd") || '01/01/1900',
           BalanceQty: contact.BalanceQty,
           Qty: this.DraftQty || 0,
           UnitMRP: contact.UnitMRP,
@@ -3458,7 +3472,7 @@ export class SalesComponent implements OnInit {
           GSTAmount: Vatamount || 0,
           TotalMRP: TotalMRP,
           DiscPer: contact.DiscPer,
-          DiscAmt:DiscAmt|| 0,
+          DiscAmt: DiscAmt || 0,
           NetAmt: TotalNet,
           RoundNetAmt: parseInt(TotalNet),// Math.round(TotalNet),
           StockId: contact.StockId,
@@ -3482,7 +3496,7 @@ export class SalesComponent implements OnInit {
     }
     this.saleSelectedDatasource.data = this.chargeslistBarcode
     console.log(this.saleSelectedDatasource.data)
- 
+
     this.vBarcode = 0;
     this.vBarcodeflag = false;
   }
