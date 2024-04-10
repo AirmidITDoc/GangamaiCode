@@ -692,7 +692,7 @@ export class UpdateGRNComponent implements OnInit {
       //LandedRate As New Double
       contact.LandedRate = parseFloat(contact.NetAmount) / parseFloat(contact.TotalQty);
       ///PurUnitRate
-      contact.PurUnitRate = ((parseFloat(contact.TotalAmount) / parseFloat(contact.ConversionFactor)));
+      contact.PurUnitRate = (parseFloat(contact.TotalAmount) / (parseInt(contact.ReceiveQty) * parseInt(contact.ConversionFactor)));
       //PurUnitRateWF
       contact.PurUnitRateWF = ((parseFloat(contact.TotalAmount) / parseFloat(contact.TotalQty)));
       contact.UnitMRP = (parseFloat(contact.MRP) / parseFloat(contact.ConversionFactor));
@@ -743,7 +743,7 @@ export class UpdateGRNComponent implements OnInit {
       this._GRNList.userFormGroup.get('Disc').setValue('');
     }
     if (disc >= 0) {
-      let disc = this._GRNList.userFormGroup.get('Disc').value;
+      let disc = this._GRNList.userFormGroup.get('Disc').value || 0;
       let TotalAmt = 0, TotalAmt2 = "0";
       this.vGST = parseFloat(this.vCGST) + parseFloat(this.vSGST) + parseFloat(this.vIGST);
       if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
@@ -794,7 +794,7 @@ export class UpdateGRNComponent implements OnInit {
       }
     }
     this.FinalLandedrate = (parseInt(this.vNetAmount) / parseInt(this.FinalTotalQty)) || 0,
-      this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / parseInt(this.vConversionFactor)) || 0
+    this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / (parseInt(this.vQty) * parseInt(this.vConversionFactor))) || 0
     this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty)) || 0
     this.FinalUnitMRP = (parseInt(this.vMRP) / parseInt(this.vConversionFactor)) || 0
     // this.add = true
@@ -831,16 +831,13 @@ export class UpdateGRNComponent implements OnInit {
         this.vSGSTAmount = ((parseFloat(this.vTotalAmount) * parseFloat(this.vSGST)) / 100).toFixed(2);
         this.vIGSTAmount = ((parseFloat(this.vTotalAmount) * parseFloat(this.vIGST)) / 100).toFixed(2);
         this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
-
         let TotalAmt = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
-
         this.vDisc = ((parseFloat(discAmount1) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
-
         this.vNetAmount = (parseFloat(TotalAmt) - parseFloat(discAmount1)).toFixed(2);
       }
     }
     this.FinalLandedrate = (parseInt(this.vNetAmount) / parseInt(this.FinalTotalQty)) || 0,
-      this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / parseInt(this.vQty) * parseInt(this.vConversionFactor)) || 0
+    this.FinalpurUnitRate = (parseInt(this.vTotalAmount) / (parseInt(this.vQty) * parseInt(this.vConversionFactor))) || 0
     this.FinalpurUnitrateWF = (parseInt(this.vTotalAmount) / parseInt(this.FinalTotalQty) * parseInt(this.vConversionFactor)) || 0
   }
 
