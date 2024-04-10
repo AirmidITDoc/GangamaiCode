@@ -302,6 +302,8 @@ export class IssueToDepartmentComponent implements OnInit {
             this.toastr.success('Record aved Successfully.', 'Saved !', {
               toastClass: 'tostr-tost custom-toast-success',
             });
+            this.getIssueToDep();
+            this.getIssueItemwiseList(Params.IssueId)
           } else {
             this.toastr.error('Not saved !, Please check API error..', 'Error !', {
               toastClass: 'tostr-tost custom-toast-error',
@@ -312,6 +314,7 @@ export class IssueToDepartmentComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-error',
           });
         });
+        this.getIssueToDep();
         this.getIssueItemwiseList(Params.IssueId)
     }
     getOptionTextStores(option) {
