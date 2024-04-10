@@ -189,7 +189,6 @@ export class UpdatePurchaseorderComponent implements OnInit {
     if (this.data.chkNewGRN == 2) {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
-      console.log(this.registerObj.SupplierName)
       this.getSupplierSearchCombo();
       this.getOldPurchaseOrder(this.registerObj.PurchaseID);
     
@@ -235,6 +234,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
+    console.log(this.dateTimeObj)
   }
   gePharStoreList() {
     var vdata = {
@@ -260,10 +260,8 @@ export class UpdatePurchaseorderComponent implements OnInit {
     var m_data = {
       'SupplierName': `${this.vsupplierName}%`
     }
-    console.log(m_data)
     this._PurchaseOrder.getSupplierSearchList(m_data).subscribe(data => {
       this.filteredOptionssupplier = data;
-      console.log(this.filteredOptionssupplier)
       if (this.filteredOptionssupplier.length == 0) {
         this.noOptionFoundsupplier = true;
       } else {
@@ -272,7 +270,6 @@ export class UpdatePurchaseorderComponent implements OnInit {
       if (this.data.chkNewGRN == 2) { 
         const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierID);
         this._PurchaseOrder.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
-        console.log(toSelectSUpplierId)
         this.vContact = toSelectSUpplierId.ContactPerson;
         this.vSupplierId =toSelectSUpplierId.SupplierName;
         this.SupplierID = toSelectSUpplierId.SupplierId;
@@ -321,8 +318,9 @@ export class UpdatePurchaseorderComponent implements OnInit {
         this.getCellCalculation(this.dsItemNameList.data[i], null);
       }
     }
-   // this.calculateDiscAmount();
+    //this.calculateDiscAmount();
   }
+ 
   onAdd() {
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
       this.toastr.warning('Please enter a Qty', 'Warning !', {
@@ -469,11 +467,9 @@ export class UpdatePurchaseorderComponent implements OnInit {
       // console.log(this.vDefRate)
     });
   }
-
-
-
-
-
+  public setFocus(nextElementId): void {
+    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+  }
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -876,6 +872,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this._PurchaseOrder.FinalPurchaseform.reset();
     this.dsItemNameList.data = [];
     this.ItemFormreset();
+    this._matDialog.closeAll();
   }
 
   ItemFormreset() {

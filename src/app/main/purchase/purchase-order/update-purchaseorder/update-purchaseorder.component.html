@@ -16,10 +16,10 @@
                 </span>
 
                 <app-common-date [screenFrom]="screenFromString" style="margin-left: 850px;"
-                    (dateTimeEventEmitter)="getDateTime($event)">
+                    (dateTimeEventEmitter)="getDateTime($event)" >
                 </app-common-date>
 
-                <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="color: white;">
                     <mat-icon>close</mat-icon>
                 </button>
 
@@ -657,20 +657,19 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex="80%">
+                                         <mat-form-field appearance="outline" fxFlex="80%">
                                             <mat-label>Remark</mat-label>
-                                            <input matInput placeholder="Remark" formControlName="Remark" #Remark
-                                                [(ngModel)]="registerObj.Remarks" type="text"
-                                                (keydown)="onEnterRemark($event)">
-                                        </mat-form-field>
-
+                                             <textarea rows="1" matInput formControlName="Remark" #Remark [(ngModel)]="registerObj.Remarks"
+                                             type="text"  placeholder="Remark"></textarea>
+                                        </mat-form-field> 
+                                        <!-- (keyup.enter)="setFocus('HandlingCharges')" -->
                                     </div>
                                     <div fxLayout="row" fxLayoutGap="4px">
                                         <mat-form-field appearance="outline" fxFlex="15%">
                                             <mat-label>Handling Charges</mat-label>
                                             <input matInput #HandlingCharges [(ngModel)]="registerObj.HandlingCharges"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                type="number" formControlName="HandlingCharges"
+                                                type="number" formControlName="HandlingCharges" id="HandlingCharges"
                                                 (keydown)="onEnterHandlingcharge($event)">
                                         </mat-form-field>
 
@@ -711,7 +710,7 @@
                                         <div class="sales-footer-buttons gap-8" fxLayout="row">
                                             <button class="btn btn-primary " (click)="OnSave()">Save</button>
 
-                                            <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
                                         </div>
                                     </div>
                                 </div>

@@ -302,8 +302,6 @@ export class IssueToDepartmentComponent implements OnInit {
             this.toastr.success('Record aved Successfully.', 'Saved !', {
               toastClass: 'tostr-tost custom-toast-success',
             });
-            this.getIssueToDep();
-            this.getIssueItemwiseList(Params.IssueId)
           } else {
             this.toastr.error('Not saved !, Please check API error..', 'Error !', {
               toastClass: 'tostr-tost custom-toast-error',
@@ -314,7 +312,6 @@ export class IssueToDepartmentComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-error',
           });
         });
-        this.getIssueToDep();
         this.getIssueItemwiseList(Params.IssueId)
     }
     getOptionTextStores(option) {
@@ -344,7 +341,7 @@ export class IssueToDepartmentComponent implements OnInit {
             else{
             if(contact.Qty > 0){
                 contact.LandedRateandedTotal = (parseFloat(contact.Qty) * parseFloat(contact.LandedRate)).toFixed(2);
-                contact.VatAmount = ((parseFloat(contact.VatPercentage) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
+                contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
               }
             else{
                 contact.Qty = 0;
@@ -618,187 +615,189 @@ export class IssueToDepartmentComponent implements OnInit {
     //     }
     // }
 
-    AddIndentItem(contact){
+    // AddIndentItem(contact){
+    //     console.log(contact)
+    //     let DuplicateItem=0;
+    //     this.dsNewIssueList3.data.forEach((element) => {
+    //         if (element.ItemId == contact.ItemId) {
+    //             this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+    //                 toastClass: 'tostr-tost custom-toast-warning',
+    //             });
+    //             DuplicateItem = 1;
+    //         }
+    //     });
+    //     var m_data = {
+    //         "ItemId": contact.ItemId,
+    //         "StoreId": this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0 ,///this._loggedService.currentUserValue.user.storeId || 0
+    //     }
+    //     this._IssueToDep.getIndentItemBatch(m_data).subscribe((data) => {
+    //         console.log(data)
+    //         this.dsNewIssueList3.data = data as NewIssueList3[];
+    //         this.chargeslist = data as NewIssueList3[];
+    //         console.log(this.dsNewIssueList3.data)
+    //         // if (this.Itemchargeslist1.length == 0) {
+    //         //     Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
+    //         // }
+    //     });
+    // }
+    AddIndentItem(contact) {
         console.log(contact)
         let DuplicateItem=0;
-        this.dsNewIssueList3.data.forEach((element) => {
-            if (element.ItemId == contact.ItemId) {
-                this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                DuplicateItem = 1;
-            }
-        });
+        
+        if (this.dsNewIssueList3.data.length > 0) {
+            this.dsNewIssueList3.data.forEach((element) => {
+                if (element.ItemId == contact.ItemId) {
+                    this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    DuplicateItem=1
+                }
+                      this.Itemchargeslist1.forEach((element) => {
+
+                    //             let IndQty=contact.Qty
+
+                    //             if (ItemID != element.ItemId) {
+                    //                 this.QtyBalchk = 0;
+                    //             }
+                    //             if (this.QtyBalchk != 1) {
+                    //                 if (IndQty <= element.BalanceQty) {
+                    //                     this.QtyBalchk = 1;
+                    //                       this.getFinalCalculation(element, contact.Qty);
+                    //                     ItemID = element.ItemId;
+                    //                 }
+                    //                 else if(IndQty > element.BalanceQty){
+                    //                     Swal.fire("Balance Qty is :", element.Qty)
+                    //                     this.QtyBalchk = 0;
+                    //                     Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
+                    //                 }
+                    //             }
+                    //         });
+                    //     }
+
+                    // });
+
+
+                    //end
+                })
+            });
+        }
+        //   else  {
+    debugger        
+        if(!DuplicateItem){
+        this.Itemchargeslist1 = [];
+        this.QtyBalchk = 0;
+
         var m_data = {
             "ItemId": contact.ItemId,
-            "StoreId": this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0 ,///this._loggedService.currentUserValue.user.storeId || 0
+            "StoreId": this._loggedService.currentUserValue.user.storeId || 0
         }
-        this._IssueToDep.getIndentItemBatch(m_data).subscribe((data) => {
-            console.log(data)
-            this.dsNewIssueList3.data = data as NewIssueList3[];
-            this.chargeslist = data as NewIssueList3[];
-            console.log(this.dsNewIssueList3.data)
-            // if (this.Itemchargeslist1.length == 0) {
-            //     Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
-            // }
+        this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
+            console.log(draftdata)
+            this.Itemchargeslist1 = draftdata as any;
+            console.log(this.Itemchargeslist1)
+            if (this.Itemchargeslist1.length == 0) {
+                Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
+            }
+            else if (this.Itemchargeslist1.length > 0) {
+                let ItemID = contact.ItemId;
+                this.Itemchargeslist1.forEach((element) => {
+
+                    let IndQty = contact.Qty
+
+                    if (ItemID != element.ItemId) {
+                        this.QtyBalchk = 0;
+                    }
+                    if (this.QtyBalchk != 1) {
+                        if (contact.Qty <= element.BalanceQty) {
+                            this.QtyBalchk = 1;
+                            this.getFinalCalculation(element, contact.Qty);
+                            ItemID = element.ItemId;
+                        }
+                        else if (IndQty > element.BalanceQty) {
+                            Swal.fire("Balance Qty is :", element.Qty)
+                            this.QtyBalchk = 0;
+                            Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
+                        }
+                    }
+                });
+            }
+
         });
+
+        }
+
     }
-//     AddIndentItem(contact) {
-//         console.log(contact)
-//         let DuplicateItem=0;
-        
-//         if (this.dsNewIssueList3.data.length > 0) {
-//             this.dsNewIssueList3.data.forEach((element) => {
-//                 if (element.ItemId == contact.ItemId) {
-//                     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-//                         toastClass: 'tostr-tost custom-toast-warning',
-//                     });
-//                     DuplicateItem=1
-//                       this.Itemchargeslist1.forEach((element) => {
-
-//                     //             let IndQty=contact.Qty
-
-//                     //             if (ItemID != element.ItemId) {
-//                     //                 this.QtyBalchk = 0;
-//                     //             }
-//                     //             if (this.QtyBalchk != 1) {
-//                     //                 if (IndQty <= element.BalanceQty) {
-//                     //                     this.QtyBalchk = 1;
-//                     //                       this.getFinalCalculation(element, contact.Qty);
-//                     //                     ItemID = element.ItemId;
-//                     //                 }
-//                     //                 else if(IndQty > element.BalanceQty){
-//                     //                     Swal.fire("Balance Qty is :", element.Qty)
-//                     //                     this.QtyBalchk = 0;
-//                     //                     Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
-//                     //                 }
-//                     //             }
-//                     //         });
-//                     //     }
-
-//                     // });
-
-
-//                     //end
-//                 }
-//             });
-//         }
-//         //   else  {
-            
-// if(!DuplicateItem){
-//         this.Itemchargeslist1 = [];
-//         this.QtyBalchk = 0;
-
-//         var m_data = {
-//             "ItemId": contact.ItemId,
-//             "StoreId": this._loggedService.currentUserValue.user.storeId || 0
-//         }
-//         this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
-//             console.log(draftdata)
-//             this.Itemchargeslist1 = draftdata as any;
-//             console.log(this.Itemchargeslist1)
-//             if (this.Itemchargeslist1.length == 0) {
-//                 Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
-//             }
-//             else if (this.Itemchargeslist1.length > 0) {
-//                 let ItemID = contact.ItemId;
-//                 this.Itemchargeslist1.forEach((element) => {
-
-//                     let IndQty = contact.Qty
-
-//                     if (ItemID != element.ItemId) {
-//                         this.QtyBalchk = 0;
-//                     }
-//                     if (this.QtyBalchk != 1) {
-//                         if (contact.Qty <= element.BalanceQty) {
-//                             this.QtyBalchk = 1;
-//                             this.getFinalCalculation(element, contact.Qty);
-//                             ItemID = element.ItemId;
-//                         }
-//                         else if (IndQty > element.BalanceQty) {
-//                             Swal.fire("Balance Qty is :", element.Qty)
-//                             this.QtyBalchk = 0;
-//                             Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
-//                         }
-//                     }
-//                 });
-//             }
-
-//         });
-
-//         }
-
-//     }
 
    RQty: any = 0;
-//     getFinalCalculation(contact, DraftQty) {
+    getFinalCalculation(contact, DraftQty) {
         
-//         //console.log(contact)
+        //console.log(contact)
 
-//         this.RQty = parseInt(DraftQty);
-//         if (this.RQty && contact.UnitMRP) {
-//             let TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
+        this.RQty = parseInt(DraftQty);
+        if (this.RQty && contact.UnitMRP) {
+            let TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
 
-//             let LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
-//             let PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
+            let LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
+            let PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
 
-//             let v_marginamt = (parseFloat(LandedRateandedTotal) - parseFloat(LandedRateandedTotal)).toFixed(2);
+            let v_marginamt = (parseFloat(LandedRateandedTotal) - parseFloat(LandedRateandedTotal)).toFixed(2);
 
-//             let GSTAmount = (((contact.LandedRate) * (contact.VatPercentage) / 100) * parseInt(this.RQty)).toFixed(2);
-//             let CGSTAmt = (((contact.LandedRate) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
-//             let SGSTAmt = (((contact.LandedRate) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
-//             let IGSTAmt = (((contact.LandedRate) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+            let GSTAmount = (((contact.LandedRate) * (contact.VatPercentage) / 100) * parseInt(this.RQty)).toFixed(2);
+            let CGSTAmt = (((contact.LandedRate) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+            let SGSTAmt = (((contact.LandedRate) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+            let IGSTAmt = (((contact.LandedRate) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
 
-//             let NetAmt = ((parseFloat(LandedRateandedTotal) + parseFloat(GSTAmount))).toFixed(2);
+            let NetAmt = ((parseFloat(LandedRateandedTotal) + parseFloat(GSTAmount))).toFixed(2);
 
-//             let BQty = contact.BalanceQty - this.RQty;
+            let BQty = contact.BalanceQty - this.RQty;
 
 
-//             if (contact.DiscPer > 0) {
-//                 // let  DiscAmt = ((TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
-//                 // let   NetAmt = (TotalMRP - this.DiscAmt).toFixed(2);
+            if (contact.DiscPer > 0) {
+                // let  DiscAmt = ((TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
+                // let   NetAmt = (TotalMRP - this.DiscAmt).toFixed(2);
 
-//             }
+            }
 
-//             this.chargeslist = this.dsTempItemNameList.data;
-//             let gstper
-//             this.chargeslist.push(
-//                 {
-//                     ItemId: contact.ItemId || 0,
-//                     ItemName: contact.ItemName || '',
-//                     BatchNo: contact.BatchNo,
-//                     BatchExpDate: this.datePipe.transform(contact.BatchExpDate, "MM-dd-yyyy"),
-//                     BalanceQty: BQty || 0,
-//                     Qty: this.RQty || 0,
-//                     UnitRate: contact.UnitRate,
-//                     UnitMRP: contact.UnitMRP,
+            this.chargeslist = this.dsTempItemNameList.data;
+            let gstper
+            this.chargeslist.push(
+                {
+                    ItemId: contact.ItemId || 0,
+                    ItemName: contact.ItemName || '',
+                    BatchNo: contact.BatchNo,
+                    BatchExpDate: this.datePipe.transform(contact.BatchExpDate, "MM-dd-yyyy"),
+                    BalanceQty: BQty || 0,
+                    Qty: this.RQty || 0,
+                    UnitRate: contact.UnitRate,
+                    UnitMRP: contact.UnitMRP,
                     
-//                     TotalAmount: NetAmt || 0,
-//                     VatPer: contact.VatPercentage || 0,
-//                     VatAmount: GSTAmount || 0,
-//                     TotalMRP: TotalMRP,
-//                     DiscPer: 0,// contact.DiscPer || 0,
-//                     DiscAmt: 0,
-//                     NetAmt: NetAmt,
-//                     RoundNetAmt: parseInt(NetAmt),// Math.round(TotalNet),
-//                     StockId: contact.StockId1,
-//                     LandedRate: contact.LandedRate,
-//                     LandedRateandedTotal: LandedRateandedTotal,
-//                     CgstPer: contact.CGSTPer,
-//                     CGSTAmt: CGSTAmt,
-//                     SgstPer: contact.SGSTPer,
-//                     SGSTAmt: SGSTAmt,
-//                     IgstPer: contact.IGSTPer,
-//                     IGSTAmt: IGSTAmt,
-//                     PurchaseRate: contact.PurchaseRate,
-//                     PurTotAmt: PurTotAmt,
-//                     MarginAmt: v_marginamt,
-//                     SalesDraftId: 1
+                    TotalAmount: NetAmt || 0,
+                    VatPer: contact.VatPercentage || 0,
+                    VatAmount: GSTAmount || 0,
+                    TotalMRP: TotalMRP,
+                    DiscPer: 0,// contact.DiscPer || 0,
+                    DiscAmt: 0,
+                    NetAmt: NetAmt,
+                    RoundNetAmt: parseInt(NetAmt),// Math.round(TotalNet),
+                    StockId: contact.StockId1,
+                    LandedRate: contact.LandedRate,
+                    LandedRateandedTotal: LandedRateandedTotal,
+                    CgstPer: contact.CGSTPer,
+                    CGSTAmt: CGSTAmt,
+                    SgstPer: contact.SGSTPer,
+                    SGSTAmt: SGSTAmt,
+                    IgstPer: contact.IGSTPer,
+                    IGSTAmt: IGSTAmt,
+                    PurchaseRate: contact.PurchaseRate,
+                    PurTotAmt: PurTotAmt,
+                    MarginAmt: v_marginamt,
+                    SalesDraftId: 1
 
-//                 });
-//             //console.log(this.chargeslist);
-//             this.dsNewIssueList3.data = this.chargeslist
-//       }
+                });
+            //console.log(this.chargeslist);
+            this.dsNewIssueList3.data = this.chargeslist
+      }
+    }
 
     deleteTableRow(element) {
             let index = this.chargeslist.indexOf(element);
