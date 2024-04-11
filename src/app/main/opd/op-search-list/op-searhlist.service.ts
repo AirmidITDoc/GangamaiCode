@@ -456,13 +456,13 @@ public prescriptionDetails(visistId) {
 
   public getRefundofBillServiceList(employee)
   {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OPBill_For_Refund",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_OPBill_For_Refund",employee)
   }
   public getRefundofBillDetailList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=RtrvIPDRefundAgainstBill_List", employee)
   }
   public getRefundofBillOPDList(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList1",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_OPBillListforRefund",employee)
     }
     
     public InsertOPSettlementPayment (employee){

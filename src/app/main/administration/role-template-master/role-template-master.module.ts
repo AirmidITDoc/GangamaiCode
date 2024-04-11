@@ -17,6 +17,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { RoleTemplateMasterComponent } from "./role-template-master.component";
 import { RoleTemplateService } from "./role-template.service";
+import { NewSchdulerComponent } from "../new-schduler/new-schduler.component";
 
 
 const routes: Routes = [
@@ -27,7 +28,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [RoleTemplateMasterComponent],
+  declarations: [RoleTemplateMasterComponent,NewSchdulerComponent],
   imports: [
     RouterModule.forChild(routes),
 

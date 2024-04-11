@@ -192,7 +192,7 @@ PatientHeaderObj['BillId'] = contact.BillNo;
               if (response) {
                 Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
                   if (result.isConfirmed) {
-                   
+                   debugger
                     this.viewgetOPPayemntPdf(response)
                     this._matDialog.closeAll();
                     this.getBrowseOPDBillsList();

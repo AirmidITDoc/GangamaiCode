@@ -43,6 +43,7 @@ export class EditRefraneDoctorComponent implements OnInit {
   
     public _OpAppointmentService: AppointmentSreviceService,
     private formBuilder: FormBuilder,
+    private dialogRef :MatDialogRef<EditRefraneDoctorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
@@ -112,7 +113,7 @@ export class EditRefraneDoctorComponent implements OnInit {
   }
   
   onClose() {
-    // this.dialogRef.close();
+    this.dialogRef.close();
   }
 
   onSubmit() {
