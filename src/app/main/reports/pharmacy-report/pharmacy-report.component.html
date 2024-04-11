@@ -31,7 +31,7 @@
             <!-- CONTENT -->
             <div class="content-card" style="width: 100% !important; height: 100% !important;">
                 <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                    <div fxlayout="column" style="width: 50%;">
+                    <div fxlayout="column" style="width: 40%;">
                         <!-- style="width: 100%;" -->
                         <div fxFlex.gt-sm="100%" style="width: 99%;">
                             <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
@@ -119,8 +119,8 @@
                                     </mat-form-field>
  -->
 
-                                    <div  *ngIf="FlagUserSelected" style="margin-left: 20px;">                                 
-                                          <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%">
+                                    <div  *ngIf="FlagUserSelected" style="margin-left: 10px;">                                 
+                                          <mat-form-field appearance="outline" fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="60%">
                                         <mat-label>User</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select User" matInput
                                            formControlName="UserId" [matAutocomplete]="autoUser">
@@ -138,7 +138,7 @@
                                         </mat-autocomplete>
                                       </mat-form-field>
                                     </div>
-                                    <div  *ngIf="FlagPaymentSelected" style="margin-left: 20px;">     
+                                    <div  *ngIf="FlagPaymentSelected" style="margin-left: 10px;">     
                                       <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%">
                                         <mat-label>PayemntMode</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select PaymentMode" matInput
@@ -156,6 +156,17 @@
                                           </mat-option>
                                         </mat-autocomplete>
                                       </mat-form-field>
+                                    </div>
+                                    <div  *ngIf="FlagStoreSelected" style="margin-left: 10px;" fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%"> 
+                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Store Name</mat-label>
+                                        <mat-select formControlName="StoreId" name="StoreId1" required>
+                                            <mat-option></mat-option>
+                                            <mat-option *ngFor="let m of StoreList" [value]="m">
+                                                {{m.StoreName}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
                                     </div>
 
 

@@ -459,7 +459,7 @@ public prescriptionDetails(visistId) {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_OPBill_For_Refund",employee)
   }
   public getRefundofBillDetailList(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=RtrvIPDRefundAgainstBill_List", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_OPDRefundAgainstBillList", employee)
   }
   public getRefundofBillOPDList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_OPBillListforRefund",employee)
@@ -487,7 +487,7 @@ public prescriptionDetails(visistId) {
 
 
   getOprefundofbillview(RefundId){
-    return this._httpClient.get("getOprefundofbillview?RefundId="+RefundId)
+    return this._httpClient.get("OutPatient/view-OPRefundofBill?RefundId="+RefundId)
   }
 
   

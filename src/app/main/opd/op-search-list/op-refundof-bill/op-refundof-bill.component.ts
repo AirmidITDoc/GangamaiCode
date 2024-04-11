@@ -351,7 +351,7 @@ export class OPRefundofBillComponent implements OnInit {
     let InsertRefundDetailObj = {};
     
     debugger;
-    // this.dataSource.data.forEach((element) => {
+    this.dataSource.data.forEach((element) => {
       InsertRefundDetailObj['RefundID'] = 0;
       InsertRefundDetailObj['ServiceId'] = this.serviceId || 0;
       InsertRefundDetailObj['ServiceAmount'] = this.ServiceAmount || 0;
@@ -362,7 +362,7 @@ export class OPRefundofBillComponent implements OnInit {
       InsertRefundDetailObj['ChargesId'] = this.ChargeId;
 
       RefundDetailarr.push(InsertRefundDetailObj);
-   
+    });
     let AddchargesRefundAmountarr = [];
     let AddchargesRefundAmountObj = {};
     
@@ -377,7 +377,7 @@ export class OPRefundofBillComponent implements OnInit {
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
-    PatientHeaderObj['NetPayAmount'] =   this.TotalRefundAmount;
+    PatientHeaderObj['RefundAmount'] =   this.TotalRefundAmount;
     PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
    
     const insertRefund = new InsertRefund(InsertRefundObj);
@@ -388,7 +388,6 @@ export class OPRefundofBillComponent implements OnInit {
         height: '540px',
         width: '100%',
         data: {
-          
           advanceObj: PatientHeaderObj, //this.advanceAmount
           FromName: "Advance-Refund",
         }
@@ -402,7 +401,7 @@ export class OPRefundofBillComponent implements OnInit {
         "insertOPPayment": result.submitDataPay.ipPaymentInsert
       };
 
-      
+      console.log(submitData)
       this._OpSearchListService.InsertOPRefundBilling(submitData).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'OP Refund Bill data saved Successfully !', 'success').then((result) => {

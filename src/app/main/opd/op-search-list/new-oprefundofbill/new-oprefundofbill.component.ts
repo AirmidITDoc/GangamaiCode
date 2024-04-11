@@ -263,7 +263,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     debugger;
     
     var m_data = {
-      "RegNo": this.vOPIPId || this.RegId
+      "RegId": 2// this.vOPIPId || this.RegId
             
     }
     
@@ -293,7 +293,7 @@ export class NewOPRefundofbillComponent implements OnInit {
 
   getserviceetailList() {
     var m_data = {
-      "BillNo": this.BillNo
+      "BillNo": 74//this.BillNo
     }
     
     this.isLoadingStr = 'loading';
@@ -405,8 +405,10 @@ export class NewOPRefundofbillComponent implements OnInit {
     // }
   }
   chkform:boolean=true;
+  
   onSave() {
-
+    // Validation
+    this.vOPIPId=1; 
     debugger
    if( !this.RefundOfBillFormGroup.invalid && this.vOPIPId !==0)
    {
@@ -488,16 +490,14 @@ export class NewOPRefundofbillComponent implements OnInit {
         "insertOPPayment": result.submitDataPay.ipPaymentInsert
       };
 
-      
+      console.log(submitData)
       this._OpSearchListService.InsertOPRefundBilling(submitData).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'OP Refund Bill data saved Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              
-            let m=response
-            this.viewgetOPRefundofbillPdf(m);
-
-              this._matDialog.closeAll();
+            
+            this.viewgetOPRefundofbillPdf(response);
+            this._matDialog.closeAll();
 
             }
           });
@@ -516,19 +516,19 @@ Swal.fire("Refund Amount is More than RefundBalance")
     this.dataSource.data=[];
     this.dataSource1.data=[];
     this.dataSource2.data=[];
+    this.dataSource3.data=[];
     this.RefundOfBillFormGroup.reset();
   }
   }
 
   
 SpinLoading:boolean=false;
-viewgetOPRefundofbillPdf(row) {
-  debugger
-  setTimeout(() => {
+viewgetOPRefundofbillPdf(RefundId) {
+    setTimeout(() => {
     this.SpinLoading =true;
   //  this.AdList=true;
   this._OpSearchListService.getOprefundofbillview(
-    row.RefundId
+    RefundId
   ).subscribe(res => {
     const dialogRef = this._matDialog.open(PdfviewerComponent,
       {
