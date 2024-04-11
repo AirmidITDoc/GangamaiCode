@@ -61,7 +61,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [  RolePermissionComponent ],
+  declarations: [  ],
   imports: [
     RouterModule.forChild(appRoutes),
     MatToolbarModule,

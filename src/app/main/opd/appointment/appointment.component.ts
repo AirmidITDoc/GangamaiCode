@@ -147,7 +147,7 @@ export class AppointmentComponent implements OnInit {
   newRegSelected: any = 'registration';
   dataArray = {};
   HospitalList1: any = [];
-  Patientnewold: any = 0;
+  Patientnewold: any = 1;
 
 
   IsPathRad: any;
