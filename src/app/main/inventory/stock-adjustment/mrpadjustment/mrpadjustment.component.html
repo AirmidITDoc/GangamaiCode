@@ -17,27 +17,20 @@
     </mat-toolbar>
 
     <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
+        <div class="center p-24 pb-56" >
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
 
-                        <form [formGroup]="_StockAdjustment.MRPAdjform">
+                        <form [formGroup]="_StockAdjustment.MRPAdjform" >
 
-                            <div fxLayoutGap="4px" style="margin-right: 10px;">
+                            <div fxLayout="row" fxLayoutGap="4px">
+
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Old MRP</mat-label>
                                     <input name="OldMRP" formControlName="OldMRP" matInput required readonly
                                     (keyup.enter)="focusNext('LandedRate')" [(ngModel)]="vOldMRP" type="text" OnlyNUmber>
                                 </mat-form-field>
-
-                                <!-- <mat-form-field appearance="outline" fxFlex="10%">
-                                    <mat-label>LandedRate</mat-label>
-                                    <input name="LandedRate" matInput [matDatepicker]="picker"
-                                         formControlName="LandedRate" id=LandedRate (keyup.enter)="focusNext('CustomerId')">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field> -->
                                 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Old LandedRate</mat-label>
@@ -51,35 +44,48 @@
                                     (keyup.enter)="focusNext('ConversionFactor')" id="PurchaseRate" [(ngModel)]="vPurchaseRate" readonly>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex="20%">
                                     <mat-label>Packing</mat-label>
                                     <input name="ConversionFactor" formControlName="ConversionFactor" matInput required type="text" OnlyNUmber
-                                    (keyup.enter)="focusNext('Amount')" id="ConversionFactor" [(ngModel)]="vConversionFactor" readonly>
-                                </mat-form-field>
+                                    (keyup.enter)="focusNext('AddedDate')" id="ConversionFactor" [(ngModel)]="vConversionFactor" readonly>
+                                </mat-form-field> -->
+
+                                <!-- <mat-form-field appearance="outline" fxFlex="25%" style="padding-right: 19px;">
+                                    <mat-label>AddedDate</mat-label>
+                                    <input name="AddedDate" matInput [matDatepicker]="picker"
+                                       formControlName="AddedDate" id="AddedDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field> -->
                             </div>
-                           
-
-
                             <div fxLayout="row" fxLayoutGap="4px">
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New MRP</mat-label>
                                     <input name="NewMRP" formControlName="NewMRP" type="text" OnlyNUmber
                                       matInput required  (keyup.enter)="focusNext('newLandedRate')"
-                                        id="NewMRP" [(ngModel)]="vNewMRP">
+                                        id="NewMRP" [(ngModel)]="vNewMRP" (keyup)="calculationAmt()">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New LandedRate</mat-label>
                                     <input name="newLandedRate" formControlName="newLandedRate" matInput required type="text" OnlyNUmber
-                                    (keyup.enter)="focusNext('NewPurchaseRate')" id="newLandedRate" [(ngModel)]="vNewLandedRate"  >
+                                    (keyup.enter)="focusNext('NewPurchaseRate')" id="newLandedRate" [(ngModel)]="vNewLandedRate" 
+                                    (keyup)="calculationAmt()" >
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New PurchaseRate</mat-label>
                                     <input name="NewPurchaseRate" formControlName="NewPurchaseRate" matInput required type="text" OnlyNUmber
-                                    (keyup.enter)="focusNext('ConversionFactor')" id="NewPurchaseRate" [(ngModel)]="vNewPurchaseRatee"  >
+                                     [(ngModel)]="vNewPurchaseRate"  id="NewPurchaseRate" (keyup)="calculationAmt()">
                                 </mat-form-field>
+
+                                <!-- <mat-form-field appearance="outline" fxFlex="20%">
+                                    <mat-label>Packing</mat-label>
+                                    <input name="ConversionFactor" formControlName="ConversionFactor" matInput required type="text" OnlyNUmber
+                                    (keyup.enter)="focusNext('AddedDate')" id="ConversionFactor" [(ngModel)]="vConversionFactor" readonly>
+                                </mat-form-field> -->
+
                             </div>
 
                             <div fxLayoutAlign="end" style="padding: 15px;margin-top: 50px;">

@@ -40,12 +40,12 @@ export class StockAdjustmentService {
       NewMRP:[''],
       newLandedRate:[''],
       NewPurchaseRate:[''],
-      InvoiceDate:[new Date()],
+     // AddedDate:[new Date()],
     });
   }
    
-  public getStockList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
+  public getStockList(Param){//Retrieve_BatchNoForMrpAdj
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BatchNoForMrpAdj",Param);
   }
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
@@ -58,6 +58,9 @@ export class StockAdjustmentService {
   }
   public BatchAdjSave(param){//InventoryTransaction/BatchAdjustmen
     return this._httpClient.post('InventoryTransaction/BatchAdjustment',param);
+  }
+  public MRPAdjSave(param){
+    return this._httpClient.post('Pharmacy/InsertMRPadjustment',param);
   }
   
 }

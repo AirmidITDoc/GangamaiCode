@@ -420,8 +420,8 @@
                             <form [formGroup]="_GRNReturnService.NewGRNReturnFrom">
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                                     <input name="Qty" formControlName="Qty"  type="hidden">
-
-                                    <mat-form-field appearance="outline" fxFlex="20%">
+                                    <form [formGroup]="_GRNReturnService.GRNReturnStoreFrom">
+                                    <mat-form-field appearance="outline" fxFlex="100%">
                                         <mat-label>Store Name</mat-label>
                                         <mat-select formControlName="ToStoreId" name="ToStoreId">
                                             <mat-option></mat-option>
@@ -430,6 +430,7 @@
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
+                                   </form>
 
                                     <mat-form-field appearance="outline" fxFlex="30%">
                                         <mat-label>Supplier Name</mat-label>

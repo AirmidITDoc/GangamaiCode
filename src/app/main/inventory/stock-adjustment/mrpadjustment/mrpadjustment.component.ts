@@ -22,7 +22,7 @@ export class MRPAdjustmentComponent implements OnInit {
   vConversionFactor:any;
   vNewMRP:any;
   vNewLandedRate:any;
-  vNewPurchaseRatee:any;
+  vNewPurchaseRate:any;
   registerObj:any;
 
   constructor(
@@ -55,41 +55,105 @@ export class MRPAdjustmentComponent implements OnInit {
       nextElement.focus();
     }
   }
+  PerUnitMRP:any;
+  PurUnitPurchase:any;
+  TotalQty:any;
+  Qty:any=1;
+  TotalAmount:any;
+  PerUnitLandedRate:any;
+  calculationAmt(){
+          // //LandedRate As New Double
+          // contact.LandedRate = parseFloat(contact.NetAmount) / parseFloat(contact.TotalQty);
+          // ///PurUnitRate
+          // contact.PurUnitRate = (parseFloat(contact.TotalAmount) / (parseInt(contact.ReceiveQty) * parseInt(contact.ConversionFactor)));
+          // //PurUnitRateWF
+          // contact.PurUnitRateWF = ((parseFloat(contact.TotalAmount) / parseFloat(contact.TotalQty)));
+          // contact.UnitMRP = (parseFloat(contact.MRP) / parseFloat(contact.ConversionFactor))
+
+          this.TotalQty = (parseFloat(this.Qty) * parseFloat(this.registerObj.ConversionFactor)).toFixed(2);
+          this.PerUnitLandedRate = parseFloat(this.vNewLandedRate) / parseFloat(this.TotalQty);
+          this.TotalAmount =(parseFloat(this.Qty) * parseFloat(this.PerUnitLandedRate)).toFixed(2);
+          this.PurUnitPurchase = ((parseFloat(this.TotalAmount) / parseFloat(this.TotalQty)));
+          this.PerUnitMRP = (parseFloat(this.vNewMRP) / parseFloat(this.registerObj.ConversionFactor)).toFixed(2);
+  }
   Savebtn:boolean=false;
   onSubmit(){
-  
+    if (this._StockAdjustment.MRPAdjform.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vNewMRP == '' || this.vNewMRP == null || this.vNewMRP == undefined)) {
+      this.toastr.warning('Please enter a New MRP', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vNewLandedRate == '' || this.vNewLandedRate == null || this.vNewLandedRate == undefined)) {
+      this.toastr.warning('Please enter a New LandedRate', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vNewPurchaseRate == '' || this.vNewPurchaseRate == null || this.vNewPurchaseRate == undefined)) {
+      this.toastr.warning('Please enter a New PurchaseRate', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+   
   this.Savebtn = true;
-  let customerInvoiceRaiseInsert = {};
-  customerInvoiceRaiseInsert['invNumber'] = this._StockAdjustment.MRPAdjform.get('InvoiceNo').value || 0;
-  customerInvoiceRaiseInsert['invDate'] = this._StockAdjustment.MRPAdjform.get('InvoiceDate').value || '';
-  customerInvoiceRaiseInsert['customerId'] = this._StockAdjustment.MRPAdjform.get('CustomerId').value || '';
-  customerInvoiceRaiseInsert['amount'] = this._StockAdjustment.MRPAdjform.get('Amount').value || 0;
-  customerInvoiceRaiseInsert['invoiceRaisedId'] = this._StockAdjustment.MRPAdjform.get('InvoiceRaisedId').value;
-  customerInvoiceRaiseInsert['createdBy'] = this._loggedService.currentUserValue.user.id || 0;
+  let insertMRPAdju = {};
+  insertMRPAdju['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
+  insertMRPAdju['itemId'] = this. registerObj.ItemId || 0;
+  insertMRPAdju['batchNo'] =  this. registerObj.BatchNo || '';
+  insertMRPAdju['oldMrp'] = this._StockAdjustment.MRPAdjform.get('OldMRP').value || 0;
+  insertMRPAdju['oldLandedRate'] = this._StockAdjustment.MRPAdjform.get('LandedRate').value || 0;
+  insertMRPAdju['oldPurRate'] = this._StockAdjustment.MRPAdjform.get('PurchaseRate').value || 0;
+  insertMRPAdju['qty'] = 0;
+  insertMRPAdju['mrp'] = this._StockAdjustment.MRPAdjform.get('NewMRP').value ||  0;
+  insertMRPAdju['landedRate'] = this._StockAdjustment.MRPAdjform.get('newLandedRate').value ||  0;
+  insertMRPAdju['purRate'] = this._StockAdjustment.MRPAdjform.get('NewPurchaseRate').value || 0;
+  insertMRPAdju['addedBy'] = this._loggedService.currentUserValue.user.id || 0;
+  insertMRPAdju['addedDateTime'] = new Date();
+
+  let insertMRPAdjuNew = {};
+  insertMRPAdjuNew['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
+  insertMRPAdjuNew['stockid'] = this. registerObj.StockId || 0;
+  insertMRPAdjuNew['itemId'] = this. registerObj.ItemId || 0;
+  insertMRPAdjuNew['batchNo'] =  this. registerObj.BatchNo || '';
+  insertMRPAdjuNew['perUnitMrp'] = this.PerUnitMRP ||  0;
+  insertMRPAdjuNew['perUnitPurrate'] = this.PurUnitPurchase ||  0;
+  insertMRPAdjuNew['perUnitLanedrate'] = this.PerUnitLandedRate || 0;
+  insertMRPAdjuNew['oldUnitMrp'] = this._StockAdjustment.MRPAdjform.get('OldMRP').value ||  0;
+  insertMRPAdjuNew['oldUnitPur'] = this._StockAdjustment.MRPAdjform.get('PurchaseRate').value ||  0;
+  insertMRPAdjuNew['oldUnitLanded'] = this._StockAdjustment.MRPAdjform.get('LandedRate').value || 0;
 
 
   let submitData = {
-    "customerInvoiceRaiseInsert": customerInvoiceRaiseInsert,
+    "insertMRPAdju": insertMRPAdju,
+    "insertMRPAdjuNew" :insertMRPAdjuNew
   };
   console.log(submitData);
-  // this._StockAdjustment.SaveCustomerBill(submitData).subscribe(response => {
-  //   if (response) {
-  //     this.toastr.success('Record Saved Successfully.', 'Saved !', {
-  //       toastClass: 'tostr-tost custom-toast-success',
-  //     }); this._matDialog.closeAll();
-  //     this.Savebtn = false;
-  //   }
-  //   else {
-  //     this.toastr.error('New Custome Data not saved !, Please check API error..', 'Error !', {
-  //       toastClass: 'tostr-tost custom-toast-error',
-  //     });
-  //   }
+  this._StockAdjustment.MRPAdjSave(submitData).subscribe(response => {
+    if (response) {
+      this.toastr.success('Record Saved Successfully.', 'Saved !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      }); this._matDialog.closeAll();
+      this.Savebtn = false;
+    }
+    else {
+      this.toastr.error('MRP Adjustment Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }
 
-  // }, error => {
-  //   this.toastr.error('New Custome Data not saved !, Please check API error..', 'Error !', {
-  //     toastClass: 'tostr-tost custom-toast-error',
-  //   });
-  // });
+  }, error => {
+    this.toastr.error('MRP Adjustment Data not saved !, Please check API error..', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  });
   }
   onReset(){
     this._StockAdjustment.MRPAdjform.reset(); 

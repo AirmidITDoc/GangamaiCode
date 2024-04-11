@@ -39,7 +39,7 @@ export class StockAdjustmentComponent implements OnInit {
     'BalQty',
     'Addition',
     'Deduction',
-    'UpdatedQty'
+    'ConversionFactor'
   ];
 
   sIsLoading: string = '';
@@ -151,11 +151,8 @@ export class StockAdjustmentComponent implements OnInit {
   vDeudQty: any;
   AddQty(contact, AddQty) {
     if (contact.AddQty > 0) {
-      contact.UpdatedQty = contact.BalanceQty + contact.AddQty;
+      contact.UpdatedQty =parseFloat(contact.BalanceQty) + parseFloat(contact.AddQty);
       this.AddType = 1;
-      // this.toastr.success(contact.AddQty + ' Qty Added Successfully.', 'Success !', {
-      //   toastClass: 'tostr-tost custom-toast-success',
-      // });
     } else {
       contact.UpdatedQty = 0;
     }
@@ -170,11 +167,8 @@ export class StockAdjustmentComponent implements OnInit {
   }
   DeduQty(contact, DeduQty) {
     if (contact.DeduQty > 0) {
-      contact.UpdatedQty = contact.BalanceQty - contact.DeduQty;
+      contact.UpdatedQty = parseFloat(contact.BalanceQty) - parseFloat(contact.DeduQty);
       this.AddType = 0;
-      // this.toastr.success(contact.DeduQty + ' Qty Deduction Successfully.', 'Success !', {
-      //   toastClass: 'tostr-tost custom-toast-success',
-      // });
     } else {
       contact.UpdatedQty = 0;
     }
@@ -379,8 +373,8 @@ export class StockAdjustmentComponent implements OnInit {
       const dialogRef = this._matDialog.open(MRPAdjustmentComponent,
         {
           maxWidth: "100%",
-          height: '55%',
-          width: '55%',
+          height: '45%',
+          width: '50%',
           data: {
             Obj: contact,
           }
