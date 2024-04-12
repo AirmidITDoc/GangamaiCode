@@ -106,7 +106,13 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-
+                                <div class="table-spinner">
+                                    <div matColumnDef="loading"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                        class="backgroundBlur" style="height: 100%;">
+                                        <div class="spinner-border text-danger"></div>
+                                    </div>
+                                </div>
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
@@ -227,7 +233,7 @@
                                         <mat-cell *matCellDef="let contact">
                                             <button mat-icon-button
                                                 (click)="getViewbill(contact)"><mat-icon>how_to_reg</mat-icon></button>
-                                            <button mat-icon-button (click)="getIpPaymentReceiptview(contact)"
+                                            <button mat-icon-button (click)="getIpPaymentReceiptview(contact)" [disabled]="chkprint"
                                                 matTooltip="Print"><mat-icon>print</mat-icon></button>
                                             <!-- <button mat-icon-button class="material-icons"
                                                 (click)="getRecord(contact,'EMAIL')"

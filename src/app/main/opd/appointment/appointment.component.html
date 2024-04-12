@@ -113,6 +113,11 @@
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
                                     </span>
 
+
+                                    <div style="color: blue;"><mat-icon  class="blue-600 s-16">circle</mat-icon>Total Count :{{Vtotalcount}}</div>
+                                    <div style="color: green"><mat-icon  class="green-600 s-16">circle</mat-icon> New Patient :{{VNewcount}}</div>
+                                        <div style="color: orange"> <mat-icon  class="orange s-16">circle</mat-icon>  FollowUp :{{VFollowupcount}}</div>
+                                            <div style="color: red"><mat-icon  class="red-600 s-16">circle</mat-icon>Bill Count : {{VBillcount}}</div>
                                 </div>
                             </form>
                         </div>
@@ -430,9 +435,17 @@
                                                 <mat-footer-row *matFooterRowDef="['noData']"
                                                     [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                             </mat-table>
+                                            <!-- <span>Total Count: <span class="net-amt-value text-primary">{{dataSource.data.length}}</span>
+                                             </span>
+                                        <span><span class="net-amt-value text-primary">{{getNewPatient(dataSource.data)}}
+                                        </span></span> -->
+
                                             <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
                                                 showFirstLastButtons [length]="resultsLength" (page)="getVisitList1()">
                                             </mat-paginator>
+                                          
+
+
                                             <div style="display: none;">
                                                 <div id="i-card" *ngIf="objICard">
                                                     <div
@@ -875,10 +888,10 @@
 
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>Mobile Number</mat-label>
-                                                            <input name="MobileNo" formControlName="MobileNo"  #mobile
+                                                            <input name="MobileNo" formControlName="MobileNo" #mobile
                                                                 placeholder="Mobile Number" matInput required
-                                                                [(ngModel)]="registerObj.MobileNo" max="9999999999" min="1000000000"
-                                                                autocomplete="off" maxlength="10"
+                                                                [(ngModel)]="registerObj.MobileNo" max="9999999999"
+                                                                min="1000000000" autocomplete="off" maxlength="10"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                                                 required="required" value="9876658688"
                                                                 (keydown.enter)="onEntermobile($event)"

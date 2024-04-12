@@ -23,7 +23,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 })
 export class IpdPaymentreceiptComponent implements OnInit {
 
-
+  chkprint: boolean = false;
 BrowseOpdPaymentReceiptList: any;
 msg: any;
 sIsLoading: string = '';
@@ -153,9 +153,9 @@ getBrowseIPDPaymentReceiptList() {
 
 SpinLoading:boolean=false;
 getIpPaymentReceiptview(row) {
-  debugger
+  this.chkprint=true;
   setTimeout(() => {
-    this.SpinLoading =true;
+    this.sIsLoading = 'loading-data';
   //  this.AdList=true;
   this._BrowseIPDPaymentReceiptService.getIpPaymentReceiptView(
   row.PaymentId
@@ -173,13 +173,14 @@ getIpPaymentReceiptview(row) {
 
       matDialog.afterClosed().subscribe(result => {
         // this.AdList=false;
-        this.SpinLoading = false;
+        // this.SpinLoading = false;
+        this.sIsLoading = '';
       });
   });
  
   },100);
 
- 
+  this.chkprint=false;
 }
 
 getViewbill(contact)

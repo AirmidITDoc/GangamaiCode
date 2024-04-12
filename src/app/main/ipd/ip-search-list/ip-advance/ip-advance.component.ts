@@ -21,6 +21,7 @@ import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-ne
 import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { debug } from 'console';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 
 
 @Component({
@@ -208,8 +209,8 @@ export class IPAdvanceComponent implements OnInit {
       // const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
 
       // console.log(this.AdvFormGroup.get('cashpay').value)
-      if (this.AdvFormGroup.get('cashpay').value != 1) {
-        const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+      // if (this.AdvFormGroup.get('cashpay').value != 1) {
+        const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
           {
             maxWidth: "100vw",
             height: '740px',
@@ -217,7 +218,8 @@ export class IPAdvanceComponent implements OnInit {
 
             data: {
               vPatientHeaderObj: PatientHeaderObj,
-              FromName: "Advance"
+              FromName: "Advance",
+              advanceObj: PatientHeaderObj,
             }
           });
         dialogRef.afterClosed().subscribe(result => {
@@ -245,7 +247,7 @@ export class IPAdvanceComponent implements OnInit {
           });
 
         });
-      }
+      // }
       // else if (this.AdvFormGroup.get('cashpay').value == 1) {
 
       //   let Paymentobj = {};
@@ -346,8 +348,8 @@ export class IPAdvanceComponent implements OnInit {
 
       const advanceHeaderUpdate = new AdvanceHeaderUpdate(advanceHeaderObj);
       const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
-      if (this.AdvFormGroup.get('cashpay').value != 1) {
-        const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+      
+        const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
           {
             maxWidth: "100vw",
             height: '600px',
@@ -355,7 +357,8 @@ export class IPAdvanceComponent implements OnInit {
 
             data: {
               vPatientHeaderObj: PatientHeaderObj,
-              FromName: "Advance"
+              FromName: "Advance",
+              advanceObj: PatientHeaderObj,
             }
           });
         dialogRef.afterClosed().subscribe(result => {
@@ -384,66 +387,66 @@ export class IPAdvanceComponent implements OnInit {
           });
 
         });
-      }
-      else if (this.AdvFormGroup.get('cashpay').value == 1) {
+      // }
+      // else if (this.AdvFormGroup.get('cashpay').value == 1) {
 
-        let Paymentobj = {};
-        Paymentobj['BillNo'] = 0;
-        Paymentobj['ReceiptNo'] = "";
-        Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-          Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
-          Paymentobj['CashPayAmount'] = this.advanceAmount || 0;
-        Paymentobj['ChequePayAmount'] = 0;
-        Paymentobj['ChequeNo'] = 0;
-        Paymentobj['BankName'] = "";
-        Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-          Paymentobj['CardPayAmount'] = 0;
-        Paymentobj['CardNo'] = 0;
-        Paymentobj['CardBankName'] = "";
-        Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-          Paymentobj['AdvanceUsedAmount'] = 0;
-        Paymentobj['AdvanceId'] = 0;
-        Paymentobj['RefundId'] = 0;
-        Paymentobj['TransactionType'] = 0;
-        Paymentobj['Remark'] = "Cashpayment";
-        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-          Paymentobj['IsCancelled'] = 0;
-        Paymentobj['IsCancelledBy'] = 0;
-        Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-          Paymentobj['CashCounterId'] = 0;
-        Paymentobj['NEFTPayAmount'] = 0;
-        Paymentobj['NEFTNo'] = 0;
-        Paymentobj['NEFTBankMaster'] = "";
-        Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-          Paymentobj['PayTMAmount'] = 0;
-        Paymentobj['PayTMTranNo'] = 0;
-        Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-          Paymentobj['PaidAmt'] = this.advanceAmount || 0;
-        Paymentobj['BalanceAmt'] = 0;
+      //   let Paymentobj = {};
+      //   Paymentobj['BillNo'] = 0;
+      //   Paymentobj['ReceiptNo'] = "";
+      //   Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      //     Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
+      //     Paymentobj['CashPayAmount'] = this.advanceAmount || 0;
+      //   Paymentobj['ChequePayAmount'] = 0;
+      //   Paymentobj['ChequeNo'] = 0;
+      //   Paymentobj['BankName'] = "";
+      //   Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      //     Paymentobj['CardPayAmount'] = 0;
+      //   Paymentobj['CardNo'] = 0;
+      //   Paymentobj['CardBankName'] = "";
+      //   Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      //     Paymentobj['AdvanceUsedAmount'] = 0;
+      //   Paymentobj['AdvanceId'] = 0;
+      //   Paymentobj['RefundId'] = 0;
+      //   Paymentobj['TransactionType'] = 0;
+      //   Paymentobj['Remark'] = "Cashpayment";
+      //   Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      //     Paymentobj['IsCancelled'] = 0;
+      //   Paymentobj['IsCancelledBy'] = 0;
+      //   Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      //     Paymentobj['CashCounterId'] = 0;
+      //   Paymentobj['NEFTPayAmount'] = 0;
+      //   Paymentobj['NEFTNo'] = 0;
+      //   Paymentobj['NEFTBankMaster'] = "";
+      //   Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      //     Paymentobj['PayTMAmount'] = 0;
+      //   Paymentobj['PayTMTranNo'] = 0;
+      //   Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      //     Paymentobj['PaidAmt'] = this.advanceAmount || 0;
+      //   Paymentobj['BalanceAmt'] = 0;
 
-        let submitData = {
-          "advanceHeaderUpdate": advanceHeaderUpdate,
-          "advanceDetailInsert1": advanceDetailInsert,
-          "ipPaymentInsert": Paymentobj
-        };
-        console.log(submitData);
-        this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
+      //   let submitData = {
+      //     "advanceHeaderUpdate": advanceHeaderUpdate,
+      //     "advanceDetailInsert1": advanceDetailInsert,
+      //     "ipPaymentInsert": Paymentobj
+      //   };
+      //   console.log(submitData);
+      //   this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
 
-          if (response) {
-            Swal.fire('Congratulations !', 'IP Advance Cash data saved Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                this.viewgetAdvanceReceiptReportPdf(response);
+      //     if (response) {
+      //       Swal.fire('Congratulations !', 'IP Advance Cash data saved Successfully !', 'success').then((result) => {
+      //         if (result.isConfirmed) {
+      //           this.viewgetAdvanceReceiptReportPdf(response);
 
-                this._matDialog.closeAll();
-              }
-            });
-          } else {
-            Swal.fire('Error !', 'IP Advance data not saved', 'error');
-          }
-          this.isLoading = '';
-        });
+      //           this._matDialog.closeAll();
+      //         }
+      //       });
+      //     } else {
+      //       Swal.fire('Error !', 'IP Advance data not saved', 'error');
+      //     }
+      //     this.isLoading = '';
+      //   });
 
-      }
+      // }
 
     }
     this.AdvFormGroup.get('advanceAmt').reset(0);

@@ -489,7 +489,7 @@ export class IPBillingComponent implements OnInit {
 
   getPrevBillList() {
     var D_data = {
-      "IP_Id": 104,//this.selectedAdvanceObj.AdmissionID
+      "IP_Id": this.selectedAdvanceObj.AdmissionID
 
     }
 
@@ -755,7 +755,9 @@ export class IPBillingComponent implements OnInit {
         IsBillGenerated: this.selectedAdvanceObj.IsBillGenerated,
         UnitId: this.selectedAdvanceObj.UnitId
       };
+      console.log(xx)
       this.advanceDataStored.storage = new Bill(xx);
+      
       console.log('this.interimArray==', this.interimArray);
       this._matDialog.open(InterimBillComponent,
         {
@@ -763,6 +765,7 @@ export class IPBillingComponent implements OnInit {
           //maxHeight: "65vh",
           width: '100%', height: "500px",
           data: this.interimArray
+
         });
     }
   }
@@ -789,21 +792,23 @@ export class IPBillingComponent implements OnInit {
       console.log('============================== Save IP Billing ===========');
       //==============-======--==============Payment======================
       // IPAdvancePaymentComponent
-      const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+      const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
         {
           maxWidth: "85vw",
           height: '740px',
           width: '100%',
           data: {
             vPatientHeaderObj: PatientHeaderObj,
-            FromName: "IP-Bill"
+            FromName: "IP-Bill",
+            advanceObj: PatientHeaderObj
           }
         });
 
       dialogRef.afterClosed().subscribe(result => {
         // console.log('============================== Save IP Billing ===========');
         console.log(result);
-        this.paidamt = result.PaidAmt;
+        debugger
+        // this.paidamt = result.PaidAmt;
         this.flagSubmit = result.IsSubmitFlag
 
         if (this.flagSubmit) {
@@ -929,7 +934,7 @@ export class IPBillingComponent implements OnInit {
             "BillDetailsInsert": Billdetsarr,
             "Cal_DiscAmount_IPBill": Cal_DiscAmount_IPBill,
             "AdmissionIPBillingUpdate": AdmissionIPBillingUpdate,
-            "ipInsertPayment": result.submitDataPay.ipPaymentInsert,
+            "ipInsertPayment":result.submitDataPay.ipPaymentInsert,
             "ipBillBalAmount": UpdateBillBalAmtObj,
             "ipAdvanceDetailUpdate": UpdateAdvanceDetailarr,
             "ipAdvanceHeaderUpdate": UpdateAdvanceHeaderObj
@@ -1634,6 +1639,7 @@ export class Bill {
   ChequePayAmount: any;
   CardPayAmount: any;
   AdvanceUsedAmount: any;
+  PatientName:any;
 
   constructor(InsertBillUpdateBillNoObj) {
     this.AdmissionID = InsertBillUpdateBillNoObj.AdmissionID || 0;
@@ -1670,6 +1676,7 @@ export class Bill {
     this.ChequePayAmount = InsertBillUpdateBillNoObj.ChequePayAmount || '';
     this.CardPayAmount = InsertBillUpdateBillNoObj.CardPayAmount || '';
     this.AdvanceUsedAmount = InsertBillUpdateBillNoObj.AdvanceUsedAmount || '';
+    this.PatientName= InsertBillUpdateBillNoObj.PatientName || ''
   }
 
 }

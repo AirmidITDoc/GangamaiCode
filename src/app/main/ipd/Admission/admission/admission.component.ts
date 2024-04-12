@@ -545,8 +545,8 @@ export class AdmissionComponent implements OnInit {
 
   private _filterSearchdoc(value: any): string[] {
     if (value) {
-      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-      return this.optionsSearchDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsSearchDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
     }
 
   }

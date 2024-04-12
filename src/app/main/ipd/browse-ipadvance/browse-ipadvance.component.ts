@@ -21,12 +21,12 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 })
 export class BrowseIPAdvanceComponent implements OnInit {
 
-
+  chkprint: boolean = false;
   hasSelectedContacts: boolean;
   outputWords=''
   BrowseOPDBillsList:any;
   msg:any;
-  sIsLoading:any;
+  sIsLoading: string = "";
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator:MatPaginator;
   // @Input() dataArray: any; 
@@ -101,9 +101,11 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
   
 viewgetIPAdvanceReportPdf(contact) {
-debugger
+  debugger
+  this.chkprint=true;
+  this.sIsLoading = 'loading-data';
   setTimeout(() => {
-    this.SpinLoading =true;
+    // this.SpinLoading =true;
    this.AdList=true;
    
   this._advanceService.getViewAdvanceReceipt(
@@ -121,11 +123,12 @@ debugger
       });
       matDialog.afterClosed().subscribe(result => {
         this.AdList=false;
-        this.SpinLoading = false;
+        this.sIsLoading = '';
       });
   });
  
   },100)
+  this.chkprint=false;
 }
 
   getViewAdvance(contact)

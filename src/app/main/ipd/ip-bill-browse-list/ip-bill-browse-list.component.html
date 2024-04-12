@@ -101,6 +101,15 @@
                                     </button>
 
                                 </div>
+                                <!-- <button (click)="viewgetBillReportDatewisePdf(dataSource)" matTooltip="Pdf"
+                                style="width: 45px;border-color: white;">
+                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                                  </button>&nbsp; -->
+                                  <button (click)="exportBillDatewiseReportExcel()"
+                                [disabled]="! (dataSource.data.length > 0)"
+                                style="background-color: white;color: white;width: 45px;">
+                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                               </button>
 
                                 <span *ngIf="SpinLoading" style="width:60px;height: 60px;">
                                     Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
@@ -131,6 +140,13 @@
                                         style="background-color: #8e67e0;color: white;">
                                         <mat-icon style="margin-right: 15px;">cloud_download</mat-icon>Export Table(PDF)
                                     </button>
+                                </div>
+                                <div class="table-spinner">
+                                    <div matColumnDef="loading"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                        class="backgroundBlur" style="height: 100%;">
+                                        <div class="spinner-border text-danger"></div>
+                                    </div>
                                 </div>
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
