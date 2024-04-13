@@ -472,7 +472,7 @@
                                         <mat-label>To Store</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select Store"
                                             matInput formControlName="ToStoreId" [matAutocomplete]="auto2" required
-                                            (keydown)="onEnterFromstore($event)">
+                                            (keydown)="onEnterFromstore($event)" [(ngModel)]="vTostoreId">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
                                                 (click)="_IssueToDep.NewIssueGroup.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>

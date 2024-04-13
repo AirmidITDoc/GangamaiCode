@@ -35,7 +35,8 @@
                                 <mat-label>SupplierName</mat-label>
                                 <input matAutocompletePosition="below" type="text" formControlName="SupplierName"
                                     placeholder="SupplierName (enter 2 char) " matInput [matAutocomplete]="Supplierauto"
-                                    (input)="getSuppliernameList()" required [(ngModel)]="vSupplierId">
+                                    (input)="getSuppliernameList()" required [(ngModel)]="vSupplierId" 
+                                     (keyup.enter)="setFocus('ReturnDate')" >
                                 <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
                                         (click)="_GRNReturnService.NewGRNReturnFrom.get('SupplierName').setValue(''); isSupplierIdSelected = false;">close</mat-icon>
@@ -52,24 +53,23 @@
                             <mat-form-field appearance="outline" fxFlex="10%">
                                 <mat-label>Return Date</mat-label>
                                 <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
-                                    formControlName="start">
+                                    formControlName="ReturnDate" id="ReturnDate"  (keyup.enter)="setFocus('ItemName')">
                                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
                             </mat-form-field>
 
-                            <mat-radio-group name="CashType" formControlName="CashType" fxFlex="30%" value="1"
-                                style="padding:15px;">
-                                <mat-radio-button value="0" class="mr-sm-12">GST Return
-                                </mat-radio-button>
-                                <mat-radio-button value="1" class="mr-sm-12">Without GST
-                                </mat-radio-button>
+                            <mat-radio-group name="GSTType" formControlName="GSTType"  value="0" 
+                                style="padding:15px;" (change)="CalculateTotalAmt()">
+                                <mat-radio-button value="0" >GST Return</mat-radio-button>
+                                <mat-radio-button value="1" >Without GST</mat-radio-button>
                             </mat-radio-group>
+
                         </div>
                         <div fxLayout="row" fxLayoutGap="4px">
                             <mat-form-field appearance="outline" fxFlex="30%">
-                                <input type="text" name="ItemName" formControlName="ItemName" #itemid
+                                <input type="text" name="ItemName" formControlName="ItemName" #itemid id="ItemName"
                                     [(ngModel)]="vItemName" placeholder="Item Name (enter 2 char) " matInput
-                                    [matAutocomplete]="auto" (input)="getGRNReturnItemList()">
+                                    [matAutocomplete]="auto" (input)="getGRNReturnItemList()"  (keyup.enter)="setFocus('BatchNo')">
                                 <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
                                         (click)="_GRNReturnService.NewGRNReturnFrom.get('ItemName').setValue(''); isItemIdSelected = false;">close</mat-icon>
@@ -92,9 +92,8 @@
                             <mat-form-field appearance="outline" fxFlex="8%">
                                 <mat-label>Batch No</mat-label>
                                 <input matInput [(ngModel)]="vBatchNo" name="BatchNo" formControlName="BatchNo"
-                                    id="BatchNo" #batchno required readonly>
+                                    id="BatchNo" #batchno required readonly >
                             </mat-form-field>
-
 
                             <mat-form-field appearance="outline" fxFlex="8%">
                                 <mat-label>MMYYYY</mat-label>
@@ -110,8 +109,8 @@
 
                             <mat-form-field appearance="outline" fxFlex="5%">
                                 <mat-label>Qty </mat-label>
-                                <input matInput [(ngModel)]="vQty" name="Qty" type="text" OnlyNumber
-                                    formControlName="Qty" id="Qty" autocomplete="off">
+                                <input matInput [(ngModel)]="vQty" name="Qty" type="text" OnlyNumber  autocomplete="off"
+                                    formControlName="Qty" id="Qty" (keyup.enter)="setFocus('addbtn')" (keyup)="CalculateTotalAmt()">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="6%">
@@ -143,9 +142,13 @@
                                 <input matInput [(ngModel)]="vNetAmount" name="NetAmount" type="text" OnlyNumber
                                     formControlName="NetAmount" id="NetAmount" readonly required>
                             </mat-form-field>&nbsp;
-                            <button type="button" class="btn btn-primary" (click)="onAdd()">
-                                <mat-icon>add</mat-icon>
-                            </button>
+
+                            <div matTooltip="Select All Value to enable this button!!">
+                                <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()"
+                                id="addbtn">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
                         </div>
                     </form>
 
@@ -155,7 +158,7 @@
                             <div class="spinner-border text-danger"></div>
                         </div>
                         <mat-table #table matSort [dataSource]="dsItemList" [@animateStagger]="{value:'50'}"
-                            style="overflow:auto;">
+                            >
 
                             <ng-container matColumnDef="buttons" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef style="color: white;"> Action
@@ -164,7 +167,6 @@
                                     <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
-
                                 </mat-cell>
                             </ng-container>
 
@@ -328,14 +330,12 @@
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent min-width-4000"
+                            <mat-header-row class="accent min-width-1200"
                                 *matHeaderRowDef="displayedColumns2; sticky: true">
                             </mat-header-row>
                             <mat-row *matRowDef="let contact; columns: displayedColumns2; let i= index"
-                                [ngClass]="{'highlight': selectedRowIndex == i}" (click)="highlight(i)" tabindex="999"
-                                (keydown.arrowdown)="arrowDownEvent()" (keydown.arrowup)="arrowUpEvent()"
-                                class="contact min-width-4000" [@animate]="{value:'*',params:{y:'100%'}}"
-                                appHighlight></mat-row>
+                                [ngClass]="{'highlight': selectedRowIndex == i}" 
+                                 [@animate]="{value:'*',params:{y:'100%'}}"  appHighlight></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                             </mat-footer-row>
@@ -349,10 +349,8 @@
                         </mat-paginator>
                     </div>
 
-                    <!-- <form [formGroup]="_GRNList.GRNFinalForm">
+                    <form [formGroup]="_GRNReturnService.ReturnFinalForm">
                         <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
-
-                            <div fxFlex fxFlex.gt-xs="60%" fxFlex.xs="100%">
                                 <div fxLayout="column" fxLayoutGap="6px">
                                     <div fxLayout="row" class="gap-4">
                                         <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No
@@ -372,69 +370,69 @@
                                         <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total
                                             GST Amount:
                                         </span>&nbsp;
-                                        <span class="net-amt-value text-primary"
-                                            style="margin-left:10px;font-weight:bolder;">{{getTotalAmt(dsItemList.data)
+                                        <span class="net-amt-value text-primary" style="margin-left:10px;font-weight:bolder;">{{getGSTTotalAmt(dsItemList.data)
+                                            |
+                                            currency:'INR' }}</span>
+                                        <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total
+                                            Net Amount:
+                                        </span>&nbsp;
+                                        <span class="net-amt-value text-primary" style="margin-left:10px;font-weight:bolder;">{{getNetTotalAmt(dsItemList.data)
                                             |
                                             currency:'INR' }}</span>
 
                                     </div>
                                     <div fxLayout="row" class="gap-4">
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" fxFlex="60%">
                                             <mat-label>Remark</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="Remark" #Remark
-                                                type="text" [(ngModel)]="registerObj.Remark">
+                                                type="text"  >
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" fxFlex="12%">
                                             <mat-label>Total Amount</mat-label>
-                                            <input matInput placeholder="Placeholder" formControlName="TotalAmt"
+                                            <input matInput placeholder="Placeholder" formControlName="FinalTotalAmt"
                                                 [(ngModel)]="vTotalFinalAmount" type="number"
-                                                [(ngModel)]="registerObj.TotalAmount" readonly
-                                                (keydown)="onEnterDiscAmount($event)">
+                                                 readonly>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" fxFlex="10%">
                                             <mat-label>DiscAmt</mat-label>
-                                            <input matInput placeholder="Placeholder" formControlName="DiscAmount"
+                                            <input matInput placeholder="Placeholder" formControlName="FinalDiscAmount"
                                                 [(ngModel)]="vFinalDisAmount" #DiscAmount type="number"
-                                                [(ngModel)]="registerObj.TotalDiscAmount" readonly
-                                                (keydown)="onEnterDiscAmount($event)">
-                                        </mat-form-field>
+                                               readonly>
+                                        </mat-form-field> -->
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" fxFlex="12%">
                                             <mat-label>GST Amt</mat-label>
-                                            <input matInput placeholder="Placeholder" formControlName="VatAmount"
+                                            <input matInput placeholder="Placeholder" formControlName="FinalVatAmount"
                                                 [(ngModel)]="vFinalVatAmount" #VatAmount
-                                                [(ngModel)]="registerObj.totalVATAmount" readonly
-                                                (keydown)="onEnterVatAmount($event)" type="number">
+                                                 readonly type="number">
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" fxFlex="12%">
                                             <mat-label>Net Pay Amt</mat-label>
-                                            <input matInput placeholder="Placeholder" formControlName="NetPayamt"
+                                            <input matInput placeholder="Placeholder" formControlName="FinalNetPayamt"
                                                 type="number" readonly [(ngModel)]="vFinalNetAmount"
-                                                [(ngModel)]="registerObj.NetAmount" #NetPayamt
-                                                (keydown)="onEnterNetPayamt($event)">
+                                                #NetPayamt>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <mat-form-field appearance="outline" fxFlex="12%">
                                             <mat-label>Rounding Amt</mat-label>
                                             <input matInput placeholder="Placeholder" formControlName="RoundingAmt"
-                                                #RoundingAmt [(ngModel)]="vDiffNetRoundAmt" readonly
-                                                [(ngModel)]="registerObj.RoundingAmt">
+                                                #RoundingAmt [(ngModel)]="vNetRoundAmt" readonly>
                                         </mat-form-field>
+
+                                            <div class="modal-footer-buttons gap-8" fxLayout="row" style="margin-left: 190px;">
+                                                <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
+                                                <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                                            </div>
+                                       
                                     </div>
                                 </div>
-                            </div>
+                            
                         </div>
-                        <div class="modal-footer">
-
-                            <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
-                                <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
-                                <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                            </div>
-                        </div>
-                    </form> -->
+                      
+                    </form>
                 </div>
             </div>
         </div>

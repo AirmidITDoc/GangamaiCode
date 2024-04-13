@@ -57,8 +57,11 @@ export class NewGRNReturnComponent implements OnInit {
   sIsLoading: string = '';
   ItemName:any;
   chargeslist:any=[];
+  vGSTType:any;
 
  dsItemList = new MatTableDataSource<ItemNameList>();
+ dsTempItemNameList = new MatTableDataSource<ItemNameList>();
+
   constructor(
     public _GRNReturnService: GRNReturnWithoutGRNService,
     public _matDialog: MatDialog,
@@ -180,7 +183,7 @@ export class NewGRNReturnComponent implements OnInit {
 
     if (!isDuplicate) {
       this.dsItemList.data = [];
-     // this.chargeslist = this.dsTempItemNameList.data;
+      this.chargeslist = this.dsTempItemNameList.data;
       this.chargeslist.push(
         {
           ItemId: this._GRNReturnService.NewGRNReturnFrom.get('ItemName').value.ItemID || 0,
@@ -217,6 +220,9 @@ export class NewGRNReturnComponent implements OnInit {
         this.dsItemList.data = [];
         this.dsItemList.data = this.chargeslist;
       }
+      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
     }
   ItemReset() {
     this.vItemName = '';
@@ -232,27 +238,66 @@ export class NewGRNReturnComponent implements OnInit {
     this.vGSTAmount = 0;
     this.vNetAmount = 0;
   }
+ 
+  CalculateTotalAmt(){
+    if(this.vQty > 0 && this.vBalQty > this.vQty){
+      this.vPurTotal = (parseFloat(this.vQty) * parseFloat(this.vPurRate)).toFixed(2);
+      this.vNetAmount = this.vPurRate;
+    }else{
+      this.vQty = '';
+      this.vPurTotal = 0;
+      this.vGSTAmount =0;
+      this.vNetAmount = 0;
+      this.toastr.warning('Please Qty lessthan BalQty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
+    let RadioValue = this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value || 1 ;
+    console.log(RadioValue);
+    if(RadioValue == 0){
+      this.vGSTAmount = ((parseFloat(this.vGST) * parseFloat(this.vPurTotal)) / 100).toFixed(2);
+      this.vNetAmount = (parseFloat(this.vPurTotal) + parseFloat(this.vGSTAmount)).toFixed(2);
+    }else{
+      this.vGSTAmount = 0;
+    }
+  }
+  vTotalFinalAmount:any;
+  vFinalDisAmount:any;
+  vFinalVatAmount:any;
+  vFinalNetAmount:any;
+  vNetRoundAmt:any;
+
+  getGSTTotalAmt(element) {
+    this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+    return this.vFinalVatAmount;
+  }
   getTotalAmt(element) {
-    let FinalRoundAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+    this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
+    return this.vTotalFinalAmount;
+  }
 
-    // this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
-    // this.vFinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
-    // this.vFinalDisAmount2 = (element.reduce((sum, { DiscAmt2 }) => sum += +(DiscAmt2 || 0), 0)).toFixed(2);
-    // this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+  getNetTotalAmt(element) {
+     let FinalRoundAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+     this.vFinalNetAmount = Math.round(FinalRoundAmt).toFixed(2); 
+     this.vNetRoundAmt = (parseFloat(this.vFinalNetAmount) - (FinalRoundAmt)).toFixed(2);
 
-    // let Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge").value || 0;
-    // FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(Othercharge));
-
-    // let DebitAmount = this._GRNList.GRNFinalForm.get("DebitAmount").value || 0;
-    // FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(DebitAmount));
-
-    // let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount").value || 0;
-    // FinalRoundAmt = (parseFloat(FinalRoundAmt) - parseFloat(CreditAmount));
-    // let FinalnetAmt = FinalRoundAmt;
-    // this.vFinalNetAmount = Math.round(FinalnetAmt).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
-    // this.vDiffNetRoundAmt = (parseFloat(this.vFinalNetAmount) - (FinalnetAmt)).toFixed(2);
-
-    // return this.vTotalFinalAmount;
+    return this.vFinalNetAmount;
+  }
+  Savebtn:boolean=false;
+  OnSave(){
+    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+      this.toastr.warning('Please enter a Qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
+  OnReset(){
+    this.dsItemList.data = [];
+    this.chargeslist.data = [];
+    this.dsTempItemNameList .data = [];
+    this._GRNReturnService.NewGRNReturnFrom.reset();
+    this._GRNReturnService.ReturnFinalForm.reset();
   }
   onClose(){
     this._matDialog.closeAll();
