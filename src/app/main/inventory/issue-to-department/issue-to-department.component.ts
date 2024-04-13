@@ -1071,7 +1071,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
 
     viewgetIssuetodeptReportPdf(contact, vprintflag) {
-        
+        debugger
         let IssueId
         if (vprintflag) {
             IssueId = contact.IssueId

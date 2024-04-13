@@ -370,10 +370,10 @@
                                                             (click)="getRecord(contact,m)">
                                                             <mat-icon>how_to_reg</mat-icon>
                                                         </button>
-                                                        <button *ngIf="false" mat-icon-button matTooltip="Edit"
+                                                        <!-- <button *ngIf="false" mat-icon-button matTooltip="Edit"
                                                             (click)="Billpayment(contact)">
                                                             <mat-icon>edit</mat-icon>
-                                                        </button>
+                                                        </button> -->
                                                         <button mat-icon-button matTooltip="print" [disabled]="chkprint"
                                                             (click)="viewgetPatientAppointmentReportPdf(contact,true)">
                                                             <mat-icon>print</mat-icon>
@@ -426,10 +426,10 @@
                                                 </mat-header-row>
                                                 <mat-row class="table1-row" #table1Row
                                                     *matRowDef="let contact; columns: displayedColumns;"
-                                                    [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"
+                                                    [ngClass]="contact.IsCancelled == '1' ? 'self-row' : ''"
                                                     [@animate]="{value:'*',params:{y:'100%'}}">
                                                 </mat-row>
-
+                                                <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" [ngClass]="{'make-gold': contact.IsCancelled }"></mat-row> -->
                                                 <mat-footer-row *matFooterRowDef="['loading']"
                                                     [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
                                                 <mat-footer-row *matFooterRowDef="['noData']"

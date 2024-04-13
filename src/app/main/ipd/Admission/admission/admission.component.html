@@ -1021,7 +1021,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Relationship Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Relationship"
-                                        matInput #relation formControlName="RelationshipId"
+                                        matInput #relation formControlName="RelationshipId" required
                                         [matAutocomplete]="autoRelation">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"

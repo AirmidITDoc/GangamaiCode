@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
+import { NewSchdulerService } from './new-schduler.service';
 
 @Component({
   selector: 'app-new-schduler',
@@ -23,7 +24,8 @@ export class NewSchdulerComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private _ActRoute: Router,
-    private dialogRef: MatDialogRef<NewSchdulerComponent>,) { }
+    private _NewSchdulerService :NewSchdulerService,
+    private dialogRef: MatDialogRef<NewSchdulerComponent>) { }
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();

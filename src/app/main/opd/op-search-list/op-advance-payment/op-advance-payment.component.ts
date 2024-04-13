@@ -106,7 +106,7 @@ export class OPAdvancePaymentComponent implements OnInit {
       this.cashAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
       this.billNo = parseInt(this.advanceData.advanceObj.BillId);
-
+      this.PatientName = this.advanceData.advanceObj.PatientName;
     }
     if (this.advanceData.FromName == "OP-Bill") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);

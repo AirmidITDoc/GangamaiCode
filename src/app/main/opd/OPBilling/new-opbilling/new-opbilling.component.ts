@@ -14,9 +14,9 @@ import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { OpPaymentNewComponent } from '../../op-search-list/op-payment-new/op-payment-new.component';
-import { IpPaymentInsert } from '../../op-search-list/op-advance-payment/op-advance-payment.component';
+import { IpPaymentInsert, OPAdvancePaymentComponent } from '../../op-search-list/op-advance-payment/op-advance-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { RegInsert } from '../../appointment/appointment.component';
+import { AdvanceDetailObj, RegInsert } from '../../appointment/appointment.component';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
@@ -31,7 +31,6 @@ import { MatSelect } from '@angular/material/select';
 
 })
 export class NewOPBillingComponent implements OnInit {
-
 
   saveclick: boolean = false;
   hasSelectedContacts: boolean;
@@ -138,7 +137,7 @@ export class NewOPBillingComponent implements OnInit {
   netPaybleAmt1: any;
 
   TotalnetPaybleAmt: any = 0;
-
+  PatientHeaderObj: AdvanceDetailObj;
   private nextPage$ = new Subject();
   noOptionFound: boolean = false;
   SrvcName: any;
@@ -184,8 +183,9 @@ export class NewOPBillingComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private renderer: Renderer2,
     public datePipe: DatePipe,
+    // @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
-    // private dialogRef: MatDialogRef<NewOPBillingComponent>,
+    // private dialogRef: MatDialogRef<OPBillingComponent>,
     public _httpClient: HttpClient,
     public toastr: ToastrService,
     private formBuilder: FormBuilder) { }
@@ -208,6 +208,18 @@ export class NewOPBillingComponent implements OnInit {
       .subscribe(() => {
         this.filterDoctor();
       });
+
+      // if (this.data) {
+      //   this.PatientHeaderObj = this.data.registerObj;
+      //   console.log(this.PatientHeaderObj);
+      //   this.vOPDNo = this.PatientHeaderObj.AdmissionID;
+      //   this.vOPIPId = this.PatientHeaderObj.AdmissionID;
+      //   this.PatientName = this.PatientHeaderObj.PatientName;
+      //    this.Doctorname= this.PatientHeaderObj.Doctorname;
+      //   this.CompanyName= this.PatientHeaderObj.CompanyId;
+      //   this.Tarrifname= this.PatientHeaderObj.TariffName;
+       
+      //   }
   }
 
   createSearchForm() {
@@ -446,7 +458,7 @@ export class NewOPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value;
     InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value;
     InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
-    InsertBillUpdateBillNoObj['PaidAmt'] = 0; //this.BillingForm.get('FinalAmt').value;
+    InsertBillUpdateBillNoObj['PaidAmt'] = 0//this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
     InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
     InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
@@ -525,14 +537,15 @@ export class NewOPBillingComponent implements OnInit {
     PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
     if (!this.BillingForm.get('cashpay').value) {
-      const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+      const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
         {
           maxWidth: "100vw",
-          height: '600px',
+          height: '650px',
           width: '100%',
           data: {
             vPatientHeaderObj: PatientHeaderObj,
-            FromName: "OP-Bill"
+            FromName: "OP-Bill",
+            advanceObj: PatientHeaderObj,
           }
         });
 
@@ -548,7 +561,7 @@ export class NewOPBillingComponent implements OnInit {
 
           this.balanceamt= result.BalAmt;
         }
-
+        InsertBillUpdateBillNoObj['PaidAmt'] = result.submitDataPay.ipPaymentInsert.PaidAmt;
         // let InsertBillUpdateBillNoObj = {};
         // InsertBillUpdateBillNoObj['BillNo'] = 0;
         // InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId,//this.vOPIPId;
@@ -648,7 +661,7 @@ export class NewOPBillingComponent implements OnInit {
                 if (result.isConfirmed) {
                   let m = response;
                   this.viewgetBillReportPdf(response);
-                  // this._matDialog.closeAll();
+                  // this.dialogRef.close();
                 }
               });
             } else {
@@ -676,7 +689,7 @@ export class NewOPBillingComponent implements OnInit {
 
 
             if (flag.isConfirmed) {
-              InsertBillUpdateBillNoObj['BalanceAmt'] =  result.BalAmt;
+              InsertBillUpdateBillNoObj['BalanceAmt'] =  result.submitDataPay.ipPaymentInsert.CashPayAmount;
               // const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
               // InsertBillUpdateBillNoObj['BalanceAmt'] = this.BillingForm.get('FinalAmt').value;
 
@@ -693,7 +706,7 @@ export class NewOPBillingComponent implements OnInit {
                     if (result.isConfirmed) {
                       let m = response;
                       this.viewgetBillReportPdf(response);
-                      // this._matDialog.closeAll();
+                      // this.dialogRef.close();
                     }
                   });
                 } else {
@@ -764,7 +777,7 @@ export class NewOPBillingComponent implements OnInit {
             if (result.isConfirmed) {
               let m = response;
               this.viewgetBillReportPdf(response);
-            
+              // this.dialogRef.close();
             }
           });
         } else {
@@ -998,11 +1011,15 @@ export class NewOPBillingComponent implements OnInit {
       this.ConcessionReasonList = data;
     })
   }
+  onClear(){
+    this.registeredForm.reset();
+    this.dataSource.data = [];
 
+  }
  
   onClose() {
-        this.registeredForm.reset();
-    this.dataSource.data = [];
+  // this.dialogRef.close();
+     
   }
 
   showNewPaymnet() {
@@ -1147,6 +1164,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   getSelectedObj1(obj) {
+    console.log(obj)
     this.dataSource.data = [];
     
     this.registerObj = obj;
@@ -1157,38 +1175,10 @@ export class NewOPBillingComponent implements OnInit {
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
     this.Doctorname = obj.DoctorName;
-    this.vOPIPId = obj.VisitId;
-    this.vOPDNo = obj.OPDNo;
+    this.vOPIPId = obj.RegId;
+    this.vOPDNo = obj.RegId;//obj.OPDNo;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
-  }
-
-
-  viewgetOPPayemntPdf(row) {
- 
-    setTimeout(() => {
-  
-    this._oPSearhlistService.getOpPaymentview(
-      row.PaymentId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Op Payment Receipt Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          // this.sIsLoading = '';
-        });
-       
-    });
-   
-    },100);
   }
 }
 
@@ -1575,8 +1565,3 @@ export class Post {
   }
 }
 
-
-
-function takeWhileInclusive(arg0: (p: any) => boolean): import("rxjs").OperatorFunction<unknown, unknown> {
-  throw new Error('Function not implemented.');
-}

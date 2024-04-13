@@ -1162,6 +1162,12 @@ export class AdmissionComponent implements OnInit {
       this.hospitalFormGroup.get('CompanyId').setValidators([Validators.required]);
        this.isCompanySelected = false;
     }
+
+    if (value.PatientTypeId == 2) {
+      this.patienttype = 2;
+    } else if (value.PatientTypeId !== 2) {
+      this.patienttype = 1;
+    }
   }
 
   onReset() {
@@ -1231,10 +1237,10 @@ export class AdmissionComponent implements OnInit {
  OnSaveAdmission() {
 
   
-  if (this.patienttype == 1) {
+  if (this.patienttype != 2) {
     this.CompanyId = 0;
     this.SubCompanyId = 0;
-  } else if (this.patienttype != 2) {
+  } else if (this.patienttype == 2) {
     this.CompanyId = this.hospitalFormGroup.get('CompanyId').value.CompanyId;
     this.SubCompanyId = this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId;
   }
@@ -1326,8 +1332,13 @@ export class AdmissionComponent implements OnInit {
       submissionObj['admissionNewInsert'] = admissionNewInsert;
 
 
-      let query = "Update BedMaster set IsAvailible=0 where BedId=" + this.wardFormGroup.get('BedId').value.BedId;
-      console.log(submissionObj);
+      // let query = "Update BedMaster set IsAvailible=0 where BedId=" + this.wardFormGroup.get('BedId').value.BedId;
+      let BedStatusUpdate={};
+      BedStatusUpdate['BedId']=this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
+ 
+      submissionObj['bedStatusUpdate']=BedStatusUpdate;
+ 
+          console.log(submissionObj);
          this._AdmissionService.AdmissionInsert(submissionObj).subscribe(response => {
          
         if (response) {
@@ -1336,7 +1347,6 @@ export class AdmissionComponent implements OnInit {
             if (result.isConfirmed) {
               
               this.getAdmittedPatientCasepaperview(response,true);
-              // this._matDialog.closeAll();
               this.personalFormGroup.reset();
               this.hospitalFormGroup.reset();
               this.wardFormGroup.reset();
@@ -1357,59 +1367,57 @@ export class AdmissionComponent implements OnInit {
       let submissionObj = {};
       let admissionInsert = {};
 
-      admissionInsert['AdmissionId'] = 0;
-      // admissionInsert['regId'] = this.registerObj.RegId;
+   
+      admissionInsert['admissionID'] = 0;
+      admissionInsert['regId'] = this.registerObj.RegId;
       admissionInsert['admissionDate'] = this.dateTimeObj.date || '01/01/1900',
       admissionInsert['admissionTime'] = this.dateTimeObj.time || '01/01/1900',
 
-      admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId : 0;
-      admissionInsert['hospitalId'] = 1;//this.searchFormGroup.get('HospitalId').value.HospitalId || 0;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
-      // admissionInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId ? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
-      
-      // admissionInsert['wardID'] = this.wardFormGroup.get('RoomId').value.RoomId ? this.wardFormGroup.get('RoomId').value.RoomId : 0;
-      // admissionInsert['bedid'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
-      // admissionInsert['dischargeDate'] = '01/01/1900';
-      // admissionInsert['dischargeTime'] = '01/01/1900';
+      admissionInsert['patientTypeId'] = this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//tTypeId ? this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
+      admissionInsert['hospitalID'] = this.searchFormGroup.get('HospitalId').value.HospitalId || 1;  //? this.hospitalFormGroup.get('HospitalId').value.HospitalId : 0;
+      admissionInsert['docNameId'] = this.hospitalFormGroup.get('DoctorId').value.DoctorId || 0;//? this.hospitalFormGroup.get('DoctorId').value.DoctorId : 0;
+      admissionInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorID || 0 ;//? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
 
-      // admissionInsert['isDischarged'] = 0;
-      // admissionInsert['isBillGenerated'] = 0;
-      admissionInsert['CompanyId'] = this.CompanyId;// this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
+      admissionInsert['wardID'] = this.wardFormGroup.get('RoomId').value.RoomId ? this.wardFormGroup.get('RoomId').value.RoomId : 0;
+      admissionInsert['bedid'] = this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
+      admissionInsert['dischargeDate'] = '01/01/1900';
+      admissionInsert['dischargeTime'] = '01/01/1900';
+
+      admissionInsert['isDischarged'] = 0;
+      admissionInsert['isBillGenerated'] = 0;
+      admissionInsert['CompanyId'] = this.CompanyId;//this.hospitalFormGroup.get('CompanyId').value.CompanyId ? this.hospitalFormGroup.get('CompanyId').value.CompanyId : 0;
       admissionInsert['tariffId'] = this.hospitalFormGroup.get('TariffId').value.TariffId ? this.hospitalFormGroup.get('TariffId').value.TariffId : 0;
 
       admissionInsert['classId'] = this.wardFormGroup.get('ClassId').value.ClassId ? this.wardFormGroup.get('ClassId').value.ClassId : 0;
-      admissionInsert['departmentId'] = this.hospitalFormGroup.get('Departmentid').value.Departmentid ? this.hospitalFormGroup.get('Departmentid').value.Departmentid : 0;
-     
-      admissionInsert['AdmittedNameID'] = 1,//this.wardFormGroup.get('ClassId').value.ClassId ? this.wardFormGroup.get('ClassId').value.ClassId : 0;
-      admissionInsert['refDocNameId'] = this.hospitalFormGroup.get('refDoctorId').value.DoctorID ? this.hospitalFormGroup.get('refDoctorId').value.DoctorID : 0;
-
+      admissionInsert['departmentId'] = this.hospitalFormGroup.get('Departmentid').value.Departmentid;// ? this.hospitalFormGroup.get('DepartmentId').value.DepartmentId : 0;
       admissionInsert['relativeName'] = this.otherFormGroup.get('RelativeName').value ? this.otherFormGroup.get('RelativeName').value : '';
       admissionInsert['relativeAddress'] = this.otherFormGroup.get('RelativeAddress').value ? this.otherFormGroup.get('RelativeAddress').value : '';
 
-      admissionInsert['RelativePhoneNo'] = this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-      // admissionInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
+      admissionInsert['phoneNo'] = this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+      admissionInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
       admissionInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId ? this.otherFormGroup.get('RelationshipId').value.RelationshipId : 0;
-    
+      admissionInsert['addedBy'] = this.accountService.currentUserValue.user.id;
+
       admissionInsert['isMLC'] = this.otherFormGroup.get('IsMLC').value || false;
       admissionInsert['motherName'] = '';
-      admissionInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorIdOne ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorId : 0;
-      admissionInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorIdTwo ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorId : 0;
-
+      admissionInsert['admittedDoctor1'] = this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID ? this.hospitalFormGroup.get('admittedDoctor1').value.DoctorID : 0;
+      admissionInsert['admittedDoctor2'] = this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID ? this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID : 0;
       admissionInsert['RefByTypeId'] = 0;
       admissionInsert['RefByName'] = 0;
-      admissionInsert['SubTpaComId'] =this.SubCompanyId;// this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId ? this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId : 0;
-      admissionInsert['PolicyNo'] = 0; //this.hospitalFormGroup.get('PolicyNo').value.DoctorIdOne ? this.hospitalFormGroup.get('DoctorIdOne').value.DoctorId : 0;
-      // admissionInsert['AprovAmount'] = 0; //this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorIdTwo ? this.hospitalFormGroup.get('DoctorIdTwo').value.DoctorId : 0;
+      admissionInsert['SubTpaComId'] =this.SubCompanyId;//this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId ? this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId : 0;
+      admissionInsert['PolicyNo'] = 0;
+      admissionInsert['AprovAmount'] = 0;
+      admissionInsert['CompDOD'] = this.dateTimeObj.date || '01/01/1900',
+      admissionInsert['IsPackagePatient'] = 0;
+      admissionInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
 
-      // admissionInsert['CompDOD'] = this.dateTimeObj.date || '01/01/1900',
-      admissionInsert['IsOpToIPConv'] = 0;
-        admissionInsert['isUpdatedBy'] = this.accountService.currentUserValue.user.id;
+      submissionObj['admissionNewInsert'] = admissionInsert;
 
-      // admissionInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
-      // admissionInsert['admissionType']=0;
-      // admissionInsert['admissionInsert'] = admissionInsert;
-      // admissionInsert['bedUpdate'] = { bedId: this.bedObj.BedId ? this.bedObj.BedId : 0 };
+     let BedStatusUpdate={};
+     BedStatusUpdate['BedId']=this.wardFormGroup.get('BedId').value.BedId ? this.wardFormGroup.get('BedId').value.BedId : 0;
 
-      submissionObj['admissionNewUpdate'] = admissionInsert;
+     submissionObj['bedStatusUpdate']=BedStatusUpdate;
+
 
       console.log(submissionObj);
       this._AdmissionService.RegisteredAdmissionInsert(submissionObj).subscribe(response => {
@@ -1434,6 +1442,7 @@ export class AdmissionComponent implements OnInit {
 
     }
   }
+  
   this.onClose();
   }
 
@@ -1450,7 +1459,7 @@ onClose(){
     this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
     this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
     this.patienttype = 1;
-
+    this.personalFormGroup.get('CityId').reset();
 }
   onEdit(row) {
     

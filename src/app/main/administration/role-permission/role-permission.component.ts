@@ -52,11 +52,8 @@ export class RolePermissionComponent implements OnInit {
   ) {
     this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
     //this.nestedDataSource = TREE_DATA;
-    this._RoleService.getpermissionmenus(this.data.RoleId).subscribe((Menu) => {
+    this._RoleService.getmenus(1).subscribe((Menu) => {
       this.nestedDataSource = Menu as FileNode[];
-      setTimeout(() => {
-        this.nestedTreeControl.expandAll();
-      }, 1000);
     });
   }
 
@@ -67,6 +64,10 @@ export class RolePermissionComponent implements OnInit {
   ngOnInit(): void {
     if (this.data) {
       this.getPermissionList(this.data.RoleId);
+      setTimeout(() => {
+
+        this.nestedTreeControl.expandAll();
+      }, 2000);
     }
   }
   getPermissionList(RoleId: number) {
@@ -114,9 +115,6 @@ export class RolePermissionComponent implements OnInit {
       for (let i = 0; i < obj.children.length; i++) {
         this.chkunchk(obj.children[i], type, proptype, $event);
       }
-    }
-    else {
-      this.chkunchk(obj, type, proptype, $event);
     }
     //let lstItem = obj;// this.nestedDataSource.find(x => x.id == obj.id);
     // if (type == 'view') {

@@ -226,6 +226,7 @@ export class AppointmentComponent implements OnInit {
   vPhoneFlage = 0;
   vPhoneAppId: any = 0;
   vOPDNo: any = 0;
+  vTariffId=3;
 
   VisitFlagDisp: boolean = false;
   DoctorId: any;
@@ -335,7 +336,7 @@ export class AppointmentComponent implements OnInit {
       // this.menuActions.push("Update Registration");
       this.menuActions.push("Update Consultant Doctor");
       this.menuActions.push("Update Referred Doctor");
-      // this.menuActions.push("Upload Documents");
+      this.menuActions.push("Cancle Appointment");
       // this.menuActions.push("Capture Photo");
       // this.menuActions.push("Generate Patient Barcode");
 
@@ -612,8 +613,7 @@ export class AppointmentComponent implements OnInit {
 
   }
 
-  c
-
+  
   private _filterCity(value: any): string[] {
     if (value) {
       const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
@@ -902,6 +902,39 @@ export class AppointmentComponent implements OnInit {
     this.getSelectedObj(row);
   }
 
+  AppointmentCancle(visitId){
+    Swal.fire({
+      title: 'Do you want to Cancle Appointment',
+      // showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+
+    }).then((flag) => {
+
+
+      if (flag.isConfirmed) {
+        let appointmentcancle={};
+        appointmentcancle['visitId'] =  visitId;
+       
+        let submitData = {
+          "appointmentcancle": appointmentcancle
+        
+        };
+        console.log(submitData);
+        this._AppointmentSreviceService.Appointmentcancle(submitData).subscribe(response => {
+          if (response) {
+            Swal.fire('Appointment cancelled !', 'Appointment cancelled Successfully!', 'success').then((result) => {
+              
+            });
+          } else {
+            Swal.fire('Error !', 'Appointment cancelled data not saved', 'error');
+          }
+          this.isLoading = '';
+        });
+      }
+    });
+    this.getVisitList1();
+  }
   getClassList() {
     this._opappointmentService.getClassMasterCombo().subscribe(data => { this.ClassList = data; })
   }
@@ -1144,6 +1177,11 @@ export class AppointmentComponent implements OnInit {
   VBillcount = 0;
 
   Appointdetail(data) {
+    this.Vtotalcount = 0;
+    this.VNewcount = 0;
+    this.VFollowupcount = 0;
+    this.VBillcount = 0;
+
     console.log(data)
     this.Vtotalcount;
     debugger
@@ -1551,10 +1589,11 @@ export class AppointmentComponent implements OnInit {
   OnsaveNewRegister() {
 
 
-    if (this.patienttype == 1) {
+    if (this.patienttype != 2) {
       this.CompanyId = 0;
-    } else if (this.patienttype != 2) {
+    } else if (this.patienttype == 2) {
       this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId;
+      // this.vTariffId=2;
     }
 
     if (this.searchFormGroup.get('regRadio').value == "registration") {
@@ -1770,421 +1809,6 @@ export class AppointmentComponent implements OnInit {
 
 
 
-
-
-  // OnSaveAppointmentwithoutphoto() {
-
-
-  //   if (this.searchFormGroup.get('regRadio').value == "registration") {
-
-  //     this.isLoading = 'submit';
-  //     let submissionObj = {};
-  //     let registrationSave = {};
-  //     let visitSave = {};
-  //     let tokenNumberWithDoctorWiseInsert = {};
-
-  //     registrationSave['regID'] = 0;
-  //     registrationSave['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-  //       registrationSave['regTime'] = this.dateTimeObj.time,
-  //       registrationSave['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
-  //     registrationSave['firstName'] = this.registerObj.FirstName;
-  //     registrationSave['middleName'] = this.registerObj.MiddleName || '';
-  //     registrationSave['lastName'] = this.registerObj.LastName;
-  //     registrationSave['address'] = this.registerObj.Address || '';
-  //     registrationSave['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
-  //     registrationSave['pinNo'] = '123';
-  //     registrationSave['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
-  //       registrationSave['age'] = this.registerObj.AgeYear;
-  //     registrationSave['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
-  //     registrationSave['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
-  //     registrationSave['mobileNo'] = this.registerObj.MobileNo || 0;
-  //     registrationSave['addedBy'] = this.accountService.currentUserValue.user.id;
-  //     registrationSave['ageYear'] = this.registerObj.AgeYear || 0;
-  //     registrationSave['ageMonth'] = this.registerObj.AgeMonth || 0;
-  //     registrationSave['ageDay'] = this.registerObj.AgeDay || 0;
-  //     registrationSave['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
-  //     registrationSave['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
-  //     registrationSave['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
-  //     registrationSave['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
-  //     registrationSave['isCharity'] = false;
-  //     registrationSave['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
-  //     registrationSave['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-  //     registrationSave['Aadharcardno'] = 0;//this.registerObj.AadharCardNo; // this.personalFormGroup.get('Aadharcardno').value || '';
-  //     registrationSave['Pancardno'] = this.registerObj.PanCardNo || '';// this.personalFormGroup.get('Pancardno').value || '';
-  //     registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
-  //     registrationSave['Photo'] = '';
-  //     // const base64 = this.sanitizeImagePreview;
-  //     // const imageName = 'name.png';
-  //     // const imageBlob = this.dataURItoBlob(base64);
-  //     // const imageFile = new File([imageBlob], imageName, { type: 'image/png' });
-  //     // registrationSave["ImgFile"]=imageFile;
-  //     submissionObj['RegistrationSave'] = registrationSave;
-
-  //     visitSave['VisitId'] = 0;
-  //     visitSave['RegID'] = 0;
-  //     visitSave['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-  //       visitSave['VisitTime'] = this.dateTimeObj.time,
-  //       visitSave['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
-  //     visitSave['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-  //     visitSave['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
-  //     visitSave['RefDocId'] = this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
-  //     visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-  //     visitSave['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
-  //     visitSave['AddedBy'] = this.accountService.currentUserValue.user.id;
-  //     //visitSave['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
-  //     visitSave['IsCancelled'] = false;
-  //     visitSave['IsCancelledBy'] = 0;
-  //     visitSave['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-  //       visitSave['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
-  //     visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
-  //     visitSave['PatientOldNew'] = this.Patientnewold;
-  //     visitSave['FirstFollowupVisit'] = 0,// this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-  //       visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;// ? this.VisitFormGroup.get('RelativeAddress').value : '';
-  //     visitSave['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',// this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-  //       visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
-
-  //       submissionObj['visitSave'] = visitSave;
-
-  //     tokenNumberWithDoctorWiseInsert['patVisitID'] = 0;
-  //     submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseInsert;
-
-  //     console.log(submissionObj)
-
-  //     const formData = new FormData();
-  //     //let finalData = { Files: data };
-
-
-  //     // comment for save without photo
-  //     // let finalData={OpdAppointmentParams:submissionObj};
-  //     // this.CreateFormData(finalData, formData);
-
-  //     this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
-  //       if (response) {
-
-  //         Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
-  //           // if (result.isConfirmed) {
-  //           // this._matDialog.closeAll();
-  //           this.getPrint(result);
-  //           // this.getVisitList();
-  //           // }
-  //         });
-  //       } else {
-  //         Swal.fire('Error !', 'Appoinment not saved', 'error');
-  //       }
-  //       this.isLoading = '';
-  //     });
-  //   }
-  //   else {
-  //     if (this.RegOrPhoneflag) {
-  //       this.registerObj.RegId = this.vPhoneAppId;
-  //     }
-  //     this.isLoading = 'submit';
-  //     let submissionObj = {};
-  //     let registrationUpdate = {};
-  //     let visitUpdate = {};
-
-  //     let tokenNumberWithDoctorWiseUpdate = {};
-  //     registrationUpdate['regID'] = this.registerObj.RegId;
-  //     registrationUpdate['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-  //       registrationUpdate['regTime'] = this.dateTimeObj.time,
-  //       registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
-  //     registrationUpdate['firstName'] = this.registerObj.FirstName;
-  //     registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
-  //     registrationUpdate['lastName'] = this.registerObj.LastName;
-  //     registrationUpdate['address'] = this.registerObj.Address || '';
-  //     registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
-  //     registrationUpdate['pinNo'] = '';
-  //     registrationUpdate['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy") || this.personalFormGroup.get('DateofBirth').value.DateofBirth;
-  //     registrationUpdate['age'] = this.registerObj.AgeYear;
-  //     registrationUpdate['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
-  //     registrationUpdate['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
-  //     registrationUpdate['mobileNo'] = this.registerObj.MobileNo || 0;
-  //     registrationUpdate['addedBy'] = this.accountService.currentUserValue.user.id;
-  //     registrationUpdate['ageYear'] = this.registerObj.AgeYear || 0;
-  //     registrationUpdate['ageMonth'] = this.registerObj.AgeMonth || 0;
-  //     registrationUpdate['ageDay'] = this.registerObj.AgeDay || 0;
-  //     registrationUpdate['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
-  //     registrationUpdate['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
-  //     registrationUpdate['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
-  //     registrationUpdate['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
-  //     registrationUpdate['isCharity'] = false;
-  //     registrationUpdate['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
-  //     registrationUpdate['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-  //     registrationUpdate['Aadharcardno'] = 0,//this.personalFormGroup.get('Aadharcardno').value || '';
-  //       registrationUpdate['Pancardno'] = this.personalFormGroup.get('PanCardNo').value || '';
-  //     registrationUpdate['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
-  //     registrationUpdate['Photo'] = ''
-
-
-  //     // this.CompanyId = this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
-  //     submissionObj['registrationUpdate'] = registrationUpdate;
-  //     // visit detail
-  //     visitUpdate['VisitId'] = 0;
-  //     visitUpdate['RegID'] = this.registerObj.RegId;
-  //     visitUpdate['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-  //       visitUpdate['VisitTime'] = this.dateTimeObj.time,
-  //       visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
-  //     visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-  //     visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
-  //     visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
-  //     visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-  //     visitUpdate['CompanyId'] = this.VisitFormGroup.get('CompanyId').value.CompanyId || 0;
-  //     visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
-  //     visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
-  //       visitUpdate['IsCancelled'] = 0;
-  //     visitUpdate['IsCancelledBy'] = 0;
-  //     visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-  //       visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
-  //     visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
-  //     visitUpdate['PatientOldNew'] = this.Patientnewold;
-  //     visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-  //       visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
-  //     visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-  //       visitUpdate['crossConsulFlag'] = 0,
-  //       submissionObj['visitSave'] = visitUpdate;
-
-
-  //     tokenNumberWithDoctorWiseUpdate['patVisitID'] = 0;
-  //     submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseUpdate;
-
-  //     console.log(submissionObj);
-  //     this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
-  //       if (response) {
-  //         if (this.RegOrPhoneflag) {
-  //           Swal.fire('Congratulations !', 'Phone Registered Appoinment Saved Successfully  !', 'success').then((result) => {
-  //             if (result.isConfirmed) {
-  //               this.getPrint(response);
-  //               // this._matDialog.closeAll();
-  //             }
-  //             this.getVisitList();
-
-  //           });
-
-  //         }
-  //         else {
-  //           Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
-  //             if (result.isConfirmed) {
-  //               this.getPrint(response);
-  //               // this._matDialog.closeAll();
-  //             }
-  //             this.getVisitList();
-
-  //           });
-  //         }
-
-  //       } else {
-  //         Swal.fire('Error !', 'Appointment not Updated', 'error');
-  //       }
-  //       this.isLoading = '';
-  //     });
-
-  //     // }
-  //   }
-  //   //Reset Page
-  //   this.onClose();
-  // }
-
-  // OnSaveAppointment() {
-
-  //   if (this.searchFormGroup.get('regRadio').value == "registration") {
-
-  //     this.isLoading = 'submit';
-  //     let submissionObj = {};
-  //     let registrationSave = {};
-  //     let visitSave = {};
-  //     let tokenNumberWithDoctorWiseInsert = {};
-
-  //     registrationSave['regID'] = 0;
-  //     registrationSave['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-  //       registrationSave['regTime'] = this.dateTimeObj.time,
-  //       registrationSave['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
-  //     registrationSave['firstName'] = this.registerObj.FirstName;
-  //     registrationSave['middleName'] = this.registerObj.MiddleName || '';
-  //     registrationSave['lastName'] = this.registerObj.LastName;
-  //     registrationSave['address'] = this.registerObj.Address || '';
-  //     registrationSave['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
-  //     registrationSave['pinNo'] = '123';
-  //     registrationSave['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
-  //       registrationSave['age'] = this.registerObj.AgeYear;
-  //     registrationSave['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
-  //     registrationSave['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
-  //     registrationSave['mobileNo'] = this.registerObj.MobileNo || 0;
-  //     registrationSave['addedBy'] = this.accountService.currentUserValue.user.id;
-  //     registrationSave['ageYear'] = this.registerObj.AgeYear || 0;
-  //     registrationSave['ageMonth'] = this.registerObj.AgeMonth || 0;
-  //     registrationSave['ageDay'] = this.registerObj.AgeDay || 0;
-  //     registrationSave['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
-  //     registrationSave['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
-  //     registrationSave['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
-  //     registrationSave['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
-  //     registrationSave['isCharity'] = false;
-  //     registrationSave['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
-  //     registrationSave['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-  //     registrationSave['Aadharcardno'] = 0; // this.personalFormGroup.get('Aadharcardno').value || '';
-  //     registrationSave['Pancardno'] = this.registerObj.PanCardNo || '';// this.personalFormGroup.get('Pancardno').value || '';
-  //     registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
-  //     registrationSave['Photo'] = '';
-  //     const base64 = this.sanitizeImagePreview;
-  //     const imageName = 'name.png';
-  //     const imageBlob = this.dataURItoBlob(base64);
-  //     const imageFile = new File([imageBlob], imageName, { type: 'image/png' });
-  //     registrationSave["ImgFile"] = imageFile;
-  //     submissionObj['RegistrationSave'] = registrationSave;
-
-  //     visitSave['VisitId'] = 0;
-  //     visitSave['RegID'] = 0;
-  //     visitSave['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-  //       visitSave['VisitTime'] = this.dateTimeObj.time,
-
-  //       visitSave['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
-  //     visitSave['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-  //     visitSave['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
-  //     visitSave['RefDocId'] = this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
-
-  //     visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-  //     visitSave['CompanyId'] = this.CompanyId;
-  //     visitSave['AddedBy'] = this.accountService.currentUserValue.user.id;
-  //     visitSave['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
-  //       visitSave['IsCancelled'] = false;
-  //     visitSave['IsCancelledBy'] = 0;
-  //     visitSave['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-
-  //       visitSave['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
-  //     visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
-  //     visitSave['PatientOldNew'] = this.Patientnewold;
-  //     visitSave['FirstFollowupVisit'] = 0,// this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-  //       visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;// ? this.VisitFormGroup.get('RelativeAddress').value : '';
-  //     visitSave['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',// this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-  //       visitSave['crossConsulFlag'] = 0,// this.VisitFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
-
-  //       submissionObj['visitSave'] = visitSave;
-
-  //     tokenNumberWithDoctorWiseInsert['patVisitID'] = 0;
-  //     submissionObj['tokenNumberWithDoctorWiseSave'] = tokenNumberWithDoctorWiseInsert;
-
-  //     console.log(submissionObj)
-
-  //     const formData = new FormData();
-  //     //let finalData = { Files: data };
-
-
-  //     // comment for save without photo
-  //     let finalData = { OpdAppointmentParams: submissionObj };
-  //     this.CreateFormData(finalData, formData);
-
-  //     this._opappointmentService.appointregInsert(submissionObj).subscribe(response => {
-  //       if (response) {
-
-  //         Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
-  //        this.viewgetPatientAppointmentReportPdf(response,false);
-  //         });
-  //       } else {
-  //         Swal.fire('Error !', 'Appoinment not saved', 'error');
-  //       }
-  //       this.isLoading = '';
-  //     });
-  //   }
-  //   else {
-
-  //     this.isLoading = 'submit';
-  //     let submissionObj = {};
-  //     let registrationUpdate = {};
-  //     let visitUpdate = {};
-
-  //     let tokenNumberWithDoctorWiseUpdate = {};
-
-
-  //     registrationUpdate['regID'] = this.registerObj.RegId;
-  //     registrationUpdate['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-  //       registrationUpdate['regTime'] = this.dateTimeObj.time,
-  //       registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
-  //     registrationUpdate['firstName'] = this.registerObj.FirstName;
-  //     registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
-  //     registrationUpdate['lastName'] = this.registerObj.LastName;
-  //     registrationUpdate['address'] = this.registerObj.Address || '';
-  //     registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
-  //     registrationUpdate['pinNo'] = '';
-  //     registrationUpdate['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
-  //       registrationUpdate['age'] = this.registerObj.AgeYear;
-  //     registrationUpdate['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
-  //     registrationUpdate['phoneNo'] = this.personalFormGroup.get('PhoneNo').value || 0;
-  //     registrationUpdate['mobileNo'] = this.registerObj.MobileNo || 0;
-  //     registrationUpdate['addedBy'] = this.accountService.currentUserValue.user.id;
-  //     registrationUpdate['ageYear'] = this.registerObj.AgeYear || 0;
-  //     registrationUpdate['ageMonth'] = this.registerObj.AgeMonth || 0;
-  //     registrationUpdate['ageDay'] = this.registerObj.AgeDay || 0;
-  //     registrationUpdate['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
-  //     registrationUpdate['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
-  //     registrationUpdate['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
-  //     registrationUpdate['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
-  //     registrationUpdate['isCharity'] = false;
-  //     registrationUpdate['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
-  //     registrationUpdate['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-  //     registrationUpdate['Aadharcardno'] = "",//this.personalFormGroup.get('Aadharcardno').value || '';
-  //       registrationUpdate['Pancardno'] = this.personalFormGroup.get('PanCardNo').value || '';
-  //     registrationUpdate['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
-  //     registrationUpdate['Photo'] = ''
-
-
-
-  //     submissionObj['registrationUpdate'] = registrationUpdate;
-  //     // visit detail
-  //     visitUpdate['VisitId'] = 0;
-  //     visitUpdate['RegID'] = this.registerObj.RegId;
-  //     visitUpdate['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-  //       visitUpdate['VisitTime'] = this.dateTimeObj.time,
-  //       visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
-  //     visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
-  //     visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
-  //     visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
-
-  //     visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
-  //     visitUpdate['CompanyId'] = this.CompanyId;
-  //     visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
-  //     visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
-  //       visitUpdate['IsCancelled'] = 0;
-  //     visitUpdate['IsCancelledBy'] = 0;
-  //     visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-
-  //       visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
-  //     visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
-  //     visitUpdate['PatientOldNew'] = this.Patientnewold;
-  //     visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-  //       visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
-  //     visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-
-  //       submissionObj['visitUpdate'] = visitUpdate;
-
-
-  //     tokenNumberWithDoctorWiseUpdate['patVisitID'] = 0;
-  //     submissionObj['tokenNumberWithDoctorWiseUpdate'] = tokenNumberWithDoctorWiseUpdate;
-
-  //     console.log(submissionObj);
-  //     this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
-  //       if (response) {
-  //         Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
-  //           if (result.isConfirmed) {
-  //             this.viewgetPatientAppointmentReportPdf(response,false);
-  //           }
-  //           this.getVisitList();
-  //         });
-  //       } else {
-  //         Swal.fire('Error !', 'Appointment not Updated', 'error');
-  //       }
-  //       this.isLoading = '';
-  //     });
-  //     this.searchFormGroup.get('RegId').reset();
-  //   }
-  //   this.RegOrPhoneflag="";
-  //   //Reset Page
-
-
-  //   this.onClose();
-
-  // }
-
-
-
   objICard = {};
   QrCode = "";
   printIcard(row) {
@@ -2356,8 +1980,11 @@ export class AppointmentComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => {
         console.log("The dialog was closed - Insert Action", result);
       });
+    }else if (m == "Cancle Appointment") {
+      console.log(contact)
+    this.AppointmentCancle(contact.VisitId,);
     }
-
+    
   }
 
   newappointment() {
@@ -3258,6 +2885,7 @@ export class VisitMaster {
   MPbillNo: number;
   RegNo: any;
   PhoneAppId: any;
+  IsCancelled:any;
   /**
    * Constructor
    *
@@ -3290,6 +2918,7 @@ export class VisitMaster {
       this.MPbillNo = VisitMaster.MPbillNo || "";
       this.RegNo = VisitMaster.RegNo || "";
       this.PhoneAppId = VisitMaster.PhoneAppId || 0
+      this.IsCancelled = VisitMaster.IsCancelled || 0
     }
   }
 }

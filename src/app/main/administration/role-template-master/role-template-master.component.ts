@@ -126,8 +126,8 @@ export class RoleTemplateMasterComponent implements OnInit {
     const dialogRef = this._matDialog.open(RolePermissionComponent,
       {
         maxWidth: "50vw",
-          height: 'auto',
-          maxHeight:'90vh',
+          height: '80vh',
+          maxHeight:'790vh',
           width: '100%',
           data : {
             RoleId : RoleId,
@@ -145,19 +145,19 @@ export class RoleTemplateMasterComponent implements OnInit {
     
   }
 
-  newSchduler(){
-    const dialogRef = this._matDialog.open(NewSchdulerComponent,
-      {
-        maxWidth: "70vw",
-        height: "510px",
-        width: "90%",
+  // newSchduler(){
+  //   const dialogRef = this._matDialog.open(NewSchdulerComponent,
+  //     {
+  //       maxWidth: "70vw",
+  //       height: "510px",
+  //       width: "90%",
          
-      });
-    dialogRef.afterClosed().subscribe(result => {
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
     
-    });
+  //   });
    
-  }
+  // }
 
 
   onDeactive(RoleId) {

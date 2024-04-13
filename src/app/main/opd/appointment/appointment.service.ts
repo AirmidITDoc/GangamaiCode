@@ -64,8 +64,8 @@ export class AppointmentService {
   public appointregupdate(employee) {
     return this._httpClient.post("OutPatient/RegistrationUpdate", employee);
   }
-
   
+
   // Feeback 
   public feedbackInsert(employee) {
     return this._httpClient.post("OutPatient/PatientFeedback", employee);

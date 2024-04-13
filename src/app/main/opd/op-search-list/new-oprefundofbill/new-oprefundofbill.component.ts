@@ -21,6 +21,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import {default as _rollupMoment, Moment} from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { fuseAnimations } from '@fuse/animations';
+import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 type NewType = Observable<any[]>;
 
 
@@ -170,8 +171,6 @@ export class NewOPRefundofbillComponent implements OnInit {
     this.RefundOfBillFormGroup = this.refundForm();
     this.searchFormGroup = this.createSearchForm();
    
-
-       
     this.refundBillForm();
     this.getRefundofBillIPDList();
     // this.getServiceListCombobox();
@@ -244,10 +243,12 @@ export class NewOPRefundofbillComponent implements OnInit {
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
     this.Doctorname = obj.DoctorName;
-    this.vOPIPId = obj.VisitId;
-    this.vOPDNo = obj.OPDNo;
+    this.vOPIPId = obj.RegId;
+    this.vOPDNo = obj.RegId;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
+
+    this.getRefundofBillIPDList();
   }
 
   getOptionText1(option) {
@@ -263,7 +264,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     debugger;
     
     var m_data = {
-      "RegId": 2// this.vOPIPId || this.RegId
+      "RegId":  this.vOPIPId || this.RegId //2
             
     }
     
@@ -293,7 +294,7 @@ export class NewOPRefundofbillComponent implements OnInit {
 
   getserviceetailList() {
     var m_data = {
-      "BillNo": 74//this.BillNo
+      "BillNo": this.BillNo //74//
     }
     
     this.isLoadingStr = 'loading';
@@ -470,14 +471,15 @@ export class NewOPRefundofbillComponent implements OnInit {
    
     const insertRefund = new InsertRefund(InsertRefundObj);
    
-    const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "100vw",
         height: '600px',
         width: '100%',
         data: {
           vPatientHeaderObj: PatientHeaderObj,
-          FromName: "Advance-Refund"
+          FromName: "Advance-Refund",
+          advanceObj: PatientHeaderObj
         }
       });
       
