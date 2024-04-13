@@ -90,6 +90,10 @@ export class WorkOrderComponent implements OnInit {
   GST: any;
   WorkOrderlist:any=[];
   Specification: any;
+  NewDate= new Date();
+  CurrentDate:any;
+  FromDate:any='FromDate'
+  ToDate:any='ToDate'
   dsWorkOrderList = new MatTableDataSource<WorkOrderList>();
   NewWorkOrderList = new MatTableDataSource<NewWorkOrderList>();
 
@@ -111,7 +115,7 @@ export class WorkOrderComponent implements OnInit {
   ngOnInit(): void {
     this.gePharStoreList();
     this.getWorkOrdersList();
- 
+    this.CurrentDate=this.datePipe.transform(this.NewDate ,"MM-dd-yyyy");
   }
 
 
@@ -201,15 +205,12 @@ export class WorkOrderComponent implements OnInit {
    console.log(m_data);
     this._WorkOrderService.getWorkOrderPrint(m_data).subscribe(data => {
         this.reportPrintObjList = data as WorkOrderList[];
-        
         this.reportPrintObj = data[0] as WorkOrderList;
         console.log(this.reportPrintObjList);
-        
-        setTimeout(() => {
-          this.print3();
-        }, 1000);
-      
       })
+      setTimeout(() => {
+        this.print3();
+      }, 1000);
     
   }
 
@@ -440,7 +441,7 @@ export class WorkOrderList {
   Mobile:any;
    Phone:any;
   Address:any;
-  
+  AddedbyName:any;
   // ItemName:any;
   // Qty:any;
   // Rate:any;

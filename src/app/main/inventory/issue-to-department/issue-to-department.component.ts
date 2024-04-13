@@ -138,6 +138,7 @@ export class IssueToDepartmentComponent implements OnInit {
     vFinalGSTAmount: any;
     ItemID: any;
     dateTimeObj: any;
+    vTostoreId:any;
     filteredOptionsStore: Observable<string[]>;
     filteredOptionsStoreList: Observable<string[]>;
 
@@ -845,6 +846,13 @@ export class IssueToDepartmentComponent implements OnInit {
             });
             return;
         }
+       
+        if ((this. vTostoreId == '' || this. vTostoreId == null || this. vTostoreId == undefined)) {
+            this.toastr.warning('Please select TostoreId', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
         // if (this._IssueToDep.NewIssueGroup.invalid) {
         //     this.toastr.warning('please check from is invalid', 'Warning !', {
         //         toastClass: 'tostr-tost custom-toast-warning',

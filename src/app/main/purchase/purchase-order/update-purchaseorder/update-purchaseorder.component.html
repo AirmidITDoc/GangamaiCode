@@ -89,10 +89,10 @@
                                                     </mat-autocomplete>
                                                 </mat-form-field> -->
 
-                                                <mat-form-field appearance="outline" fxFlex="13%">
+                                                <mat-form-field appearance="outline" fxFlex="16%">
                                                     <mat-label>Supplier Name </mat-label>
                                                     <input matAutocompletePosition="below" type="text"
-                                                        [(ngModel)]="vSupplierId" (keyup.enter)="setFocus('PurchaseDate')"
+                                                        [(ngModel)]="vSupplierId" (keyup.enter)="setFocus('ItemName')"
                                                         placeholder="Select Supplier" matInput formControlName="SupplierId"
                                                         [matAutocomplete]="autoSupllier" required (input)="getSupplierSearchCombo()">
                                                     <span matSuffix style="display: flex;">
@@ -110,46 +110,46 @@
                                                     </mat-autocomplete>
                                                 </mat-form-field>&nbsp;
 
-                                                <mat-form-field appearance="outline" fxFlex="6%">
+                                                <mat-form-field appearance="outline" fxFlex="8%">
                                                     <mat-label>Contact Persion</mat-label>
                                                     <input matInput [(ngModel)]="vContact" name="Contact" readonly
                                                         formControlName="Contact">
                                                 </mat-form-field>&nbsp;
 
-                                                <mat-form-field appearance="outline" fxFlex="14%">
+                                                <mat-form-field appearance="outline" fxFlex="19%">
                                                     <mat-label>Address</mat-label>
                                                     <input matInput [(ngModel)]="vAddress" name="Address" readonly
                                                         formControlName="Address">
                                                 </mat-form-field>&nbsp;
 
-                                                <mat-form-field appearance="outline" fxFlex="6%">
+                                                <mat-form-field appearance="outline" fxFlex="7%">
                                                     <mat-label>Mobile No.</mat-label>
                                                     <input matInput [(ngModel)]="vMobile" name="Mobile" readonly
                                                         formControlName="Mobile">
                                                 </mat-form-field>&nbsp;
 
-                                                <mat-form-field appearance="outline" fxFlex="8%">
+                                                <mat-form-field appearance="outline" fxFlex="9%">
                                                     <mat-label>GST No.</mat-label>
                                                     <input matInput [(ngModel)]="vGSTNo" name="GSTNo" readonly
                                                         formControlName="GSTNo">
                                                 </mat-form-field>&nbsp;
 
-                                                <mat-form-field appearance="outline" fxFlex="10%">
+                                                <mat-form-field appearance="outline" fxFlex="12%">
                                                     <mat-label>Email</mat-label>
                                                     <input matInput [(ngModel)]="vEmail" name="Email" readonly
                                                         formControlName="Email">
                                                 </mat-form-field>&nbsp;
 
-                                                <mat-form-field appearance="outline" fxFlex="8%">
+                                                <!-- <mat-form-field appearance="outline" fxFlex="8%">
                                                     <mat-label>PurchaseDate</mat-label>
                                                     <input name="PurchaseDate" matInput [matDatepicker]="picker"
                                                          formControlName="PurchaseDate" (keyup.enter)="setFocus('ItemName')"
                                                      id="PurchaseDate">
                                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                     <mat-datepicker #picker></mat-datepicker>
-                                                </mat-form-field>&nbsp;
+                                                </mat-form-field>&nbsp; -->
                                         
-                                                <mat-form-field appearance="outline" fxFlex="9%">
+                                                <mat-form-field appearance="outline" fxFlex="10%">
                                                     <mat-label>-- Select Status3 --</mat-label>
                                                     <mat-select formControlName="Status3" name="Status3" required
                                                         (selectionChange)="finalCalculation()" #gsttype

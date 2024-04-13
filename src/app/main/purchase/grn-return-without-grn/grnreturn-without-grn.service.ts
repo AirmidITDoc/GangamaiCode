@@ -9,6 +9,7 @@ export class GRNReturnWithoutGRNService {
   GRNReturnSearchFrom:FormGroup;
   NewGRNReturnFrom:FormGroup;
   GRNReturnStoreFrom:FormGroup;
+  ReturnFinalForm:FormGroup;
   constructor(
     private _formBuilder: FormBuilder,
     public _httpClient:HttpClient
@@ -17,6 +18,7 @@ export class GRNReturnWithoutGRNService {
    this.GRNReturnSearchFrom = this.CreateReturnSearchForm();
    this.NewGRNReturnFrom = this.CreateNewGRNReturnForm();
    this.GRNReturnStoreFrom = this.CreateStoreForm();
+   this.ReturnFinalForm = this.CreateFinalForm();
   }
   CreateReturnSearchForm() {
     return this._formBuilder.group({
@@ -36,12 +38,28 @@ export class GRNReturnWithoutGRNService {
     return this._formBuilder.group({
       FromStoreId: '',
       SupplierName:'',
-      Status:['0'],
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      GSTType:['0'],
+      ReturnDate: [(new Date()).toISOString()],
       ItemName:[''],
       BatchNo:[''],
       ExpDates:[''],
+      BalQty:[''],
+      Qty:[''],
+      PurRate:[''],
+      PurTotal:[''],
+      GST:[''],
+      GSTAmount:[''],
+      NetAmount:[''],
+    });
+  }
+  CreateFinalForm() {
+    return this._formBuilder.group({
+      Remark: [''],
+      FinalTotalAmt:[''],
+      FinalDiscAmount:[''],
+      FinalVatAmount:[''],
+      FinalNetPayamt:[''],
+      RoundingAmt:[''],
       BalQty:[''],
       Qty:[''],
       PurRate:[''],

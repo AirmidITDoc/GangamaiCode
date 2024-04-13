@@ -407,7 +407,7 @@ getTotalAmt(element) {
       });
       return;
     }
-    if(!this.registerObj.WOId) {
+    if(!this.vWorkId) {
       this.Savebtn=true;
     let workorderHeaderInsertObj = {};
     workorderHeaderInsertObj['date'] = this.dateTimeObj.date;
