@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -17,6 +17,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { RoleTemplateMasterComponent } from "./role-template-master.component";
 import { RoleTemplateService } from "./role-template.service";
+import { RolePermissionComponent } from "../role-permission/role-permission.component";
 
 
 const routes: Routes = [
@@ -27,7 +28,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [RoleTemplateMasterComponent],
+  declarations: [RoleTemplateMasterComponent,RolePermissionComponent],
   imports: [
     RouterModule.forChild(routes),
 
@@ -46,6 +47,9 @@ const routes: Routes = [
     MatSnackBarModule,
     FuseSharedModule,
     FuseSidebarModule,
+],
+schemas: [
+  CUSTOM_ELEMENTS_SCHEMA
 ],
 providers: [RoleTemplateService],
 entryComponents: [RoleTemplateMasterComponent],

@@ -182,7 +182,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
 
     let PatientHeaderObj = {};
-    debugger
+    
     PatientHeaderObj['Date'] = contact.BillDate;
     PatientHeaderObj['PatientName'] = contact.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
@@ -191,8 +191,6 @@ export class IPBillBrowseListComponent implements OnInit {
     PatientHeaderObj['BillId'] = contact.BillNo;
     PatientHeaderObj['CompanyName'] = contact.CompanyName;
     
-
-
     const dialogRef = this._matDialog.open(IPSettlementComponent,
       {
         maxWidth: "95vw",
@@ -233,8 +231,6 @@ export class IPBillBrowseListComponent implements OnInit {
 
       const iPsettlementAdvanceHeaderUpdate = new UpdateBill(iPsettlementAdvanceHeaderUpdateobj);
 
-
-      debugger
       let CreditPaymentobj = {};
       CreditPaymentobj['paymentId'] = 0;
       CreditPaymentobj['BillNo'] = contact.BillNo;
@@ -295,7 +291,7 @@ export class IPBillBrowseListComponent implements OnInit {
             }
           });
         } else {
-          Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+          Swal.fire('Error !', 'IP Billing Payment not saved', 'error');
         }
 
       });

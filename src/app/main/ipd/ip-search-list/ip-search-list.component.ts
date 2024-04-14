@@ -387,7 +387,7 @@ export class IPSearchListComponent implements OnInit {
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
 
-      this._ActRoute.navigate(['opd/new-OpdBilling']);
+      // this._ActRoute.navigate(['opd/new-OpdBilling']);
       const dialogRef = this._matDialog.open(IPRefundofBillComponent,
         {
           maxWidth: "75vw",

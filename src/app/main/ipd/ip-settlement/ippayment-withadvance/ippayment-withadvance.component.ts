@@ -28,6 +28,8 @@ export class IPpaymentWithadvanceComponent implements OnInit {
     { name: 'Wrf Option', state: false }
   ];
 
+  BillDate: any;
+  PatientName: any;
   paymentForm: FormGroup;
   advanceData: any;
   now: Date;
@@ -89,6 +91,13 @@ export class IPpaymentWithadvanceComponent implements OnInit {
       this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
     
+    }
+    if (this.advanceData.FromName ==  "SETTLEMENT") {
+      this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.PatientName = this.advanceData.advanceObj.PatientName;
+      this.BillDate = this.advanceData.advanceObj.Date;
     }
   }
 

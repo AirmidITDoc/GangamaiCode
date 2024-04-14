@@ -130,9 +130,19 @@ export class IPAdvancePaymentComponent implements OnInit {
       this.BillDate = this.advanceData.advanceObj.Date;
 
     }
+    if (this.advanceData.FromName == "SETTLEMENT") {
+      this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.billNo = parseInt(this.advanceData.advanceObj.BillId);
+      this.PatientName = this.advanceData.advanceObj.PatientName;
+      this.BillDate = this.advanceData.advanceObj.Date;
+
+    }
     else {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.PatientName = this.advanceData.advanceObj.PatientName;
       this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.getBalanceAmt();
     }
@@ -419,6 +429,7 @@ export class IPAdvancePaymentComponent implements OnInit {
               Validators.minLength(10),
               Validators.maxLength(10)
             ]);
+            
             this.paymentForm.controls['paytmMobileNoController'].updateValueAndValidity();
             this.paymentForm.patchValue({ paytmDateController: new Date() });
             break;
