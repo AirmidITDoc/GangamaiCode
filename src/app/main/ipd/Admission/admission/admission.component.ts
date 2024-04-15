@@ -27,6 +27,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { RFC_2822 } from 'moment';
 import { MatSelect } from '@angular/material/select';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admission',
@@ -241,6 +242,7 @@ export class AdmissionComponent implements OnInit {
     public datePipe: DatePipe,
     private router: Router,
     private formBuilder: FormBuilder,
+    public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored) {
     // this.getAdmittedPatientList();
 
@@ -248,7 +250,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.getAdmittedPatientList_1()
 
     if (this.data) {
 
@@ -352,7 +354,7 @@ export class AdmissionComponent implements OnInit {
       AgeDay: [''],
       PhoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       MobileNo: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      // AadharCardNo: ['',[Validators.pattern("^\d{12}$")]],
+      
       AadharCardNo:
       ['', [
         Validators.minLength(12),
@@ -697,8 +699,8 @@ export class AdmissionComponent implements OnInit {
     return option && option.PrefixName ? option.PrefixName : '';
   }
 
-  getOptionTextCity(option) {
-    return option.CityName;
+  getOptionTextCity1(option) {
+    return option && option.CityName ? option.CityName : '';
   }
 
   getOptionTextDep(option) {
@@ -754,45 +756,7 @@ export class AdmissionComponent implements OnInit {
     return option && option.CompanyName ? option.CompanyName : '';
   }
 
-  // getOPIPPatientList() {
-  //   let data;
-  //   if ((this._AdmissionService.myFilterform.get('RegNo').value != "") || (this._AdmissionService.myFilterform.get('FirstName').value !== "") || (this._AdmissionService.myFilterform.get('LastName').value != "")) {
-  //     this.sIsLoading = 'loading-data';
-  //     var m_data = {
-  //       "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || '%',
-  //       "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || '%',
-  //       "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
-  //       "From_Dt": '01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //       "To_Dt": '01/01/1900',// this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-  //       "MobileNo": '%'
-  //     }
-  //     data = m_data;
-  //   }
-  //   else {
-  //     var m_data1 = {
-  //       "F_Name": '1',//this._opappointmentService.myFilterform.get("FirstName").value + '%' || '%',
-  //       "L_Name": '2',//this._opappointmentService.myFilterform.get("LastName").value + '%' || '%',
-  //       "Reg_No": 0, //this._opappointmentService.myFilterform.get("RegNo").value || 0,
-  //       "From_Dt": '01/01/1900',
-  //       "To_Dt": '01/01/1900',
-  //       "MobileNo": '%'
-  //     }
-  //     data = m_data1;
-  //   }
-  //   setTimeout(() => {
-  //     this.sIsLoading = 'loading-data';
-  //     this._AdmissionService.getOPPatient(data).subscribe(Visit => {
-  //     this.dataSource1.data = Visit as OPIPPatientModel[];
-  //     this.dataSource.sort = this.sort;
-  //     this.dataSource.paginator = this.paginator;
-  //      this.sIsLoading = ' ';
-  //     },
-  //       error => {
-  //         this.sIsLoading = '';
-  //       });
-  //   }, 50);
 
-  // }
 
   onChangeReg(event) {
     if (event.value == 'registration') {
@@ -982,7 +946,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   getOptionTextsearchDoctor(option) {
-    return option && option.Doctorname ? option.Doctorname : '';
+    return option && option.DoctorName ? option.DoctorName : '';
   }
 
   getDoctorList() {
@@ -1152,14 +1116,18 @@ export class AdmissionComponent implements OnInit {
 
 
   onChangePatient(value) {
+    
     if (value.PatientTypeId !== 1) {
       this.hospitalFormGroup.get('CompanyId').clearValidators();
       this.hospitalFormGroup.get('SubCompanyId').clearValidators();
       this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
       this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
       this.isCompanySelected = true;
-    } else {
+    } else if(value.PatientTypeId == 2){
+      this.hospitalFormGroup.get('CompanyId').reset();
       this.hospitalFormGroup.get('CompanyId').setValidators([Validators.required]);
+      this.hospitalFormGroup.get('SubCompanyId').setValidators([Validators.required]);
+   
        this.isCompanySelected = false;
     }
 
@@ -1241,10 +1209,18 @@ export class AdmissionComponent implements OnInit {
     this.CompanyId = 0;
     this.SubCompanyId = 0;
   } else if (this.patienttype == 2) {
+    debugger
     this.CompanyId = this.hospitalFormGroup.get('CompanyId').value.CompanyId;
     this.SubCompanyId = this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId;
+
+    if ((this.CompanyId == 0 || this.CompanyId == undefined || this.SubCompanyId == 0)) {
+      this.toastr.warning('Please select Company.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
   }
-    
+  
   if(!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)
   {
     if (this.searchFormGroup.get('regRadio').value == "registration") {
@@ -1254,7 +1230,7 @@ export class AdmissionComponent implements OnInit {
       let regInsert = {};
       let admissionNewInsert = {};
       regInsert['RegId'] = 0;
-      regInsert['regDate'] = this.dateTimeObj.date || '01/01/1900', //this.registerObj.RegDate;
+      regInsert['regDate'] = this.dateTimeObj.date || '01/01/1900', 
       regInsert['regTime'] = this.dateTimeObj.time || '01/01/1900',
       regInsert['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
       regInsert['firstName'] = this.registerObj.FirstName || '';
@@ -1538,7 +1514,7 @@ onClose(){
       "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
       "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || "0",
-      "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorId || "0",
+      "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorID || "0",
       "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "Admtd_Dschrgd_All": 0,
@@ -2070,10 +2046,15 @@ public onEnterbday(event): void {
 
 
 public onEnteragey(event): void {
+  debugger
   if (event.which === 13) {
     this.agem.nativeElement.focus();
     // this.addbutton.focus();
   }
+
+  // if(event> 120){
+  //   Swal.fire("Enter Proper Age")
+  // }
 }
 public onEnteragem(event): void {
   if (event.which === 13) {
@@ -2208,7 +2189,7 @@ public onEnterrelativemobile(event): void {
     // if(this.purpose) this.purpose.focus();
     this.relation.nativeElement.focus();
     
-    this.registration.nativeElement.focus();
+    // this.registration.nativeElement.focus();
   }
 }
 
@@ -2216,6 +2197,36 @@ public onEnterrelationship(event): void {
   if (event.which === 13) {
   
     // this.registration.nativeElement.focus();
+  }
+}
+
+ageyearcheck(event){
+
+  if (event > 110) {
+    this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+}
+
+agemonthcheck(event){
+
+  if (event > 12) {
+    this.toastr.warning('Please Enter Valid Month.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+}
+
+agedaycheck(event){
+  
+  if (event > 31) {
+    this.toastr.warning('Please Enter Valid Ageday.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
   }
 }
 
@@ -2559,9 +2570,9 @@ export class AdmissionPersonlModel {
       this.AadharCardNo = AdmissionPersonl.AadharCardNo || '';
       this.Address = AdmissionPersonl.Address || '';
       this.Age = AdmissionPersonl.Age || '';
-      this.AgeDay = AdmissionPersonl.AgeDay || 0;
-      this.AgeMonth = AdmissionPersonl.AgeMonth || 0;
-      this.AgeYear = AdmissionPersonl.AgeYear || 0;
+      this.AgeDay = AdmissionPersonl.AgeDay || '';
+      this.AgeMonth = AdmissionPersonl.AgeMonth || '';
+      this.AgeYear = AdmissionPersonl.AgeYear || '';
       this.AreaId = AdmissionPersonl.AreaId || '';
       this.CityName = AdmissionPersonl.CityName || '';
       this.CityId = AdmissionPersonl.CityId || '';
