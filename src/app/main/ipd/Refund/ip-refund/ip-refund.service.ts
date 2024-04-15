@@ -56,7 +56,7 @@ public getserviceCombo() {
   return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ServiceMasterForCombo", {})
 }
 public getRefundofBillIPDList(employee){
-  return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundofBillIPD_List",employee)
+  return this._httpClient.post("Generic/GetByProc?procName=m_IPBillListforRefund",employee)
   }
 
 

@@ -1533,6 +1533,12 @@ export class UpdateGRNComponent implements OnInit {
       });
       return;
     }
+    if ((this._GRNList.userFormGroup.get('InvoiceNo').value == '' || this._GRNList.userFormGroup.get('InvoiceNo').value == null)) {
+      this.toastr.warning('Please enter a InvoiceNo', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
@@ -1869,6 +1875,7 @@ export class UpdateGRNComponent implements OnInit {
   public onEnterInvoiceNo(event): void {
     if (event.which === 13) {
       this.GateEntryNo1.nativeElement.focus()
+      this.checkInvoice();
     }
     // this.getGSTtypeList()
   }
@@ -2251,7 +2258,7 @@ msg:any;
     this._GRNList.getCheckInvoiceNo(Query).subscribe(data =>{
       this.msg = data
       console.log(data)
-     // console.log(this.msg.InvoiceNo)
+     //console.log(this.msg.InvoiceNo)
       const checkInvoice = this.msg.some(item => item.InvoiceNo == this._GRNList.userFormGroup.get('InvoiceNo').value);
 
       if(checkInvoice){

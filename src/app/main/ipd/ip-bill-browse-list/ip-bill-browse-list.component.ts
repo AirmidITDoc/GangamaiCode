@@ -10,7 +10,6 @@ import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDataStored } from '../advance';
 import { IPBrowseBillService } from './ip-browse-bill.service';
 import { DatePipe } from '@angular/common';
-// import { PrintServiceService } from 'app/core/services/print-service.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { SmsEmailTemplateComponent } from 'app/main/shared/componets/sms-email-template/sms-email-template.component';
@@ -45,7 +44,7 @@ export class IPBillBrowseListComponent implements OnInit {
   isCompanySelected: boolean = false;
   optionsCompany: any[] = [];
   filteredOptionsCompany: Observable<string[]>;
-
+  chkprint: boolean = false;
 
   @ViewChild('pdfTemplate') pdfTemplate: ElementRef;
   public companyFilterCtrl: FormControl = new FormControl();
@@ -150,7 +149,6 @@ export class IPBillBrowseListComponent implements OnInit {
 
   getRecord(contact, m): void {
     if (m == "Print Final Bill") {
-    //  this.getPrint(contact);
     if(contact.InterimOrFinal)
     this.viewgetBillReportPdf(contact.BillNo)
    else
@@ -184,7 +182,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
 
     let PatientHeaderObj = {};
-    debugger
+    
     PatientHeaderObj['Date'] = contact.BillDate;
     PatientHeaderObj['PatientName'] = contact.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
@@ -193,8 +191,6 @@ export class IPBillBrowseListComponent implements OnInit {
     PatientHeaderObj['BillId'] = contact.BillNo;
     PatientHeaderObj['CompanyName'] = contact.CompanyName;
     
-
-
     const dialogRef = this._matDialog.open(IPSettlementComponent,
       {
         maxWidth: "95vw",
@@ -235,8 +231,6 @@ export class IPBillBrowseListComponent implements OnInit {
 
       const iPsettlementAdvanceHeaderUpdate = new UpdateBill(iPsettlementAdvanceHeaderUpdateobj);
 
-
-      debugger
       let CreditPaymentobj = {};
       CreditPaymentobj['paymentId'] = 0;
       CreditPaymentobj['BillNo'] = contact.BillNo;
@@ -290,14 +284,14 @@ export class IPBillBrowseListComponent implements OnInit {
         if (response) {
           Swal.fire('IP Bill With Settlement!', 'Bill Payment Successfully !', 'success').then((result) => {
             if (result) {
-              // let m = response;
-              // this.getPrint(response);
+            
               this.viewgetBillReportPdf(response)
               this._matDialog.closeAll();
+              this.onShow_IpdBrowse();
             }
           });
         } else {
-          Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+          Swal.fire('Error !', 'IP Billing Payment not saved', 'error');
         }
 
       });
@@ -407,140 +401,14 @@ export class IPBillBrowseListComponent implements OnInit {
 
   dummyGrpNameArr = [];
   groupWiseObj: any = {};
-  ///// REPORT  TEMPOATE
-  getFinalBillTemplate() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=3';
-    this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'EmailId', 'Phone', 'RegId', 'GroupName', 'BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'Doctorname', 'RefDocName', 'RoomName', 'BedName', 'RegNo',
-        'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'TotalAmt', 'AdvanceUsedAmount', 'ConcessionAmount', 'PaidAmount', 'PayTMPayAmount', 'CashPayAmount', 'ChequePayAmount', 'NEFTPayAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AdvanceRefundAmount', 'UserName']; // resData[0].TempKeys;
-
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      let onlyGrpName = [];
-      this.reportPrintObjList.forEach(ele => onlyGrpName.push(ele.GroupName));
-      
-      let grpNamesArr = [...new Set(onlyGrpName)];
-      grpNamesArr.forEach(ele => this.dummyGrpNameArr.push({groupName: ele, isHidden: false}));
-
-      this.groupWiseObj = this.reportPrintObjList.reduce((acc, item: any) => {
-        if (!acc[item.GroupName]) {
-          acc[item.GroupName] = [];
-        }
-        acc[item.GroupName].push(item);
-        return acc;
-      }, {})
-      console.log(this.groupWiseObj);
-
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        var objreportPrint = this.reportPrintObjList[i - 1];
-
-        let docname;
-        if (objreportPrint.ChargesDoctorName)
-          docname = objreportPrint.ChargesDoctorName;
-        else
-          docname = '';
-        var strabc = this.getGroupName(objreportPrint.GroupName) + `
-   <div style="display:flex;margin:8px 0">
-    <div style="display:flex;width:80px;margin-left:20px;">
-        <div>`+ i + `</div>
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-        <div>`+ objreportPrint.ServiceName + `</div> 
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-    <div>`+ docname + `</div> 
-    </div>
-    <div style="display:flex;width:70px;justify-content: right;">
-    <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> 
-    </div>
-    <div style="display:flex;width:70px;margin-left:10px;justify-content: center;">
-        <div>`+ objreportPrint.Qty + `</div> 
-    </div>
-    <div style="display:flex;width:110px;justify-content: right;">
-        <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> 
-    </div>
-</div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-
-      console.log(objPrintWordInfo);
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrGroup', (objPrintWordInfo.GroupName));
-
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      // console.log(this.printTemplate);
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      this.isShow = true;
-      setTimeout(() => {
-        // this.print();
-        this.printfinalbill();
-      }, 1000);
-    });
-  }
-
-  getGroupName(groupName: String) {
-    let groupDiv;
-    for(let i = 0; i < this.dummyGrpNameArr.length; i++) {
-      if(this.dummyGrpNameArr[i].groupName == groupName && !this.dummyGrpNameArr[i].isHidden) {
-        let groupHeader = `<div style="display:flex;width:960px;margin-left:20px;justify-content:space-between;">
-          <div> <h3>`+ groupName + `</h3></div>
-          <div> <h3>`+ this.getGroupTotalAmount(groupName) + `</h3></div>
-        </div>`;
-        this.dummyGrpNameArr[i].isHidden = true;
-        groupDiv = groupHeader;
-        break;
-      } else {
-        groupDiv = ``;
-      }
-    }
-    return groupDiv;
-  }
-
-  getGroupTotalAmount(groupName: any) {
-    let totalGrpAmt = 0;
-    if(this.groupWiseObj[groupName]) {
-      let groupArr = this.groupWiseObj[groupName];
-      groupArr.forEach(element => {
-        totalGrpAmt = totalGrpAmt + element.ChargesTotalAmt;
-      });
-    }
-    return '₹ ' + totalGrpAmt.toFixed(2);
-  }
-
-
-  transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-    return value;
-  }
-
-
-  transform1(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform((new Date), 'dd/MM/yyyy');
-    return value;
-  }
-
-  convertToWord(e) {
-    
-    return converter.toWords(e);
-  }
+  
 
   viewgetBillReportPdf(BillNo) {
     setTimeout(() => {
-      this.SpinLoading =true;
+      // this.SpinLoading =true;
+      this.chkprint=true;
+      this.sIsLoading = 'loading-data';
+
      this.AdList=true;
     this._IpBillBrowseListService.getIpFinalBillReceipt(
     BillNo
@@ -557,7 +425,8 @@ export class IPBillBrowseListComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.AdList=false;
-          this.SpinLoading = false;
+          // this.SpinLoading = false;
+          this.sIsLoading = '';
         });
     });
    
@@ -589,6 +458,9 @@ export class IPBillBrowseListComponent implements OnInit {
    
     },100);
   }
+
+  
+
 
 
   viewgetBillReportwardwisePdf(row) {
@@ -643,523 +515,12 @@ export class IPBillBrowseListComponent implements OnInit {
     },100);
   }
   
-
-  // GET DATA FROM DATABASE 
-  getPrint(el) {
-
-    if (el.InterimOrFinal == 1) {
-      var D_data = {
-        "BillNo": el.BillNo,
-      }
-
-      let printContents; 
-      this.subscriptionArr.push(
-        this._IpBillBrowseListService.getIPBILLBrowsePrint(D_data).subscribe(res => {
-          console.log(res);
-          this.reportPrintObjList = res as ReportPrintObj[];
-          this.reportPrintObj = res[0] as ReportPrintObj;
-
-          console.log(this.reportPrintObj);
-          this.getFinalBillTemplate();
-        
-        })
-      );
-    }
-    else {
-
-      this.getIPIntreimBillPrint(el);
-    
-    }
-  }
-  isShow = false;
-  printTemplate1: any
-
-
-  // PRINT 
-  print() {
-
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
-      <head><style type="text/css">`);
-    popupWin.document.write(`
-        </style>
-            <title></title>
-        </head>
-      `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-      </html>`);
-      if(this.reportPrintObjList.length > 0) {
-        // console.log(this.reportPrintObjList.length)
-        // if(this.reportPrintObjList[0].AdvanceUsedAmount === 0) {
-        //   popupWin.document.getElementById('idUseAdvAmt').style.display = 'none';
-        // }
-      }
-    popupWin.document.close();
-  }
-
-  printfinalbill(){
-  
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
-      <head><style type="text/css">`);
-    popupWin.document.write(`
-        </style>
-            <title></title>
-        </head>
-      `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-      </html>`);
-      if(this.reportPrintObjList.length > 0) {
-      
-        this.reportPrintObjList.forEach((element) => {
-          debugger
-         
-         this.Groupname = element.GroupName;
-         if(element.GenderName == this.Groupname)
-         {
-          console.log(this.Groupname )
-          popupWin.document.getElementById('idgroup').style.display = 'none';
-         }
-        });
-
-        // if(this.reportPrintObjList[0].AdvanceUsedAmount === 0) {
-        //   popupWin.document.getElementById('idUseAdvAmt').style.display = 'none';
-        // }
-      }
-    popupWin.document.close();
-  }
-
-
-  getSummaryFinalBillPrint(el) {
-    debugger;
-    if (el.InterimOrFinal == 0) {
-      var D_data = {
-        "BillNo": el.BillNo,
-      }
-    
-      let printContents; 
-      this.subscriptionArr.push(
-        this._IpBillBrowseListService.getIPBILLBrowsePrint(D_data).subscribe(res => {
-        
-          this.reportPrintObjList = res as ReportPrintObj[];
-          this.reportPrintObj = res[0] as ReportPrintObj;
-
-          this.getSummaryFinalBillTemplate();
-         
-
-        })
-      );
-    }
-    else {
-
-            this.getIPIntreimBillPrint(el);
-    }
-  }
-  getSummaryFinalBillTemplate() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=18';
-    this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'EmailId', 'Phone', 'BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName', 'RoomName', 'BedName', 'ConcessionAmount',
-        'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'TotalAmt', 'AdvanceUsedAmount', 'PaidAmount', 'PayTMPayAmount', 'CashPayAmount', 'ChequePayAmount', 'NEFTPayAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AdvanceRefundAmount', 'UserName']; // resData[0].TempKeys;
-
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        // var strabc = ` <hr >
-        var strabc = ` 
-<div style="display:flex;margin:8px 0">
-    <div style="display:flex;width:80px;margin-left:30px;">
-        <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:800px;margin-left:30px;">
-        <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:100px;margin-left:30px;align-text:right;">
-    <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-    <div style="display:flex;width:70px;margin-left:30px;align-text:right;">
-        <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-    </div>
-    <div style="display:flex;width:150px;margin-left:30px;align-text:left;margin-right:50px">
-        <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-</div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.TotalAmt));
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-     
-      this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      setTimeout(() => {
-        this.print();
-      }, 1000);
-    });
-  }
-
-  //for Draft bill
-
-  ///// REPORT  TEMPOATE
-  getTemplateDraft() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=17';
-    this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'EmailId', 'Phone', 'RegId', 'GroupName', 'BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'Doctorname', 'RefDocName', 'RoomName', 'BedName', 'RegNo',
-      'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'NetPayableAmt','TotalAmt', 'AdvanceUsedAmount', 'ConcessionAmount', 'PaidAmount', 'PayTMPayAmount', 'CashPayAmount', 'ChequePayAmount', 'NEFTPayAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AdvanceRefundAmount', 'UserName']; // resData[0].TempKeys;
-
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        // var strabc = ` <hr >
-
-        let docname;
-        if (objreportPrint.ChargesDoctorName)
-          docname = objreportPrint.ChargesDoctorName;
-        else
-          docname = '';
-        var strabc = ` 
-<div style="display:flex;margin:8px 0">
-    <div style="display:flex;width:80px;margin-left:20px;">
-        <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-        <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-    <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:70px;justify-content: right;">
-    <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-    <div style="display:flex;width:70px;margin-left:10px;justify-content: center;">
-        <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-    </div>
-    <div style="display:flex;width:110px;justify-content: right;">
-        <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-</div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord1(objPrintWordInfo.PaidAmount));
-   
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-     
-      this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      setTimeout(() => {
-        this.print();
-      }, 1000);
-    });
-  }
-
-
-  getTemplateInterim() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=16';
-    this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'EmailId', 'Phone', 'RegId', 'GroupName', 'BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'Doctorname', 'RefDocName', 'RoomName', 'BedName', 'RegNo',
-        'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'TotalAmt', 'AdvanceUsedAmount','NetPayableAmt', 'ConcessionAmount', 'PaidAmount', 'PayTMPayAmount', 'CashPayAmount', 'ChequePayAmount', 'NEFTPayAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AdvanceRefundAmount', 'UserName']; // resData[0].TempKeys;
-
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        // var strabc = ` <hr >
-
-        let docname;
-        if (objreportPrint.ChargesDoctorName)
-          docname = objreportPrint.ChargesDoctorName;
-        else
-          docname = '';
-        var strabc = ` 
-<div style="display:flex;margin:8px 0">
-    <div style="display:flex;width:80px;margin-left:20px;">
-        <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-        <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-    <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:70px;justify-content: right;">
-    <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-    <div style="display:flex;width:70px;margin-left:10px;justify-content: center;">
-        <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-    </div>
-    <div style="display:flex;width:110px;justify-content: right;">
-        <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-</div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord1(objPrintWordInfo.PaidAmount));
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      setTimeout(() => {
-        this.print();
-      }, 1000);
-    });
-  }
-
-  convertToWord1(e) {
-  
-    return converter.toWords(e);
-  }
-
-  // GET DATA FROM DATABASE 
-  getIPIntreimBillPrint(el) {
-    debugger;
-    var D_data = {
-      "BillNo": el.BillNo,
-    }
-
-    let printContents;
-    this.subscriptionArr.push(
-      this._IpBillBrowseListService.getIPIntriemBILLBrowsePrint(D_data).subscribe(res => {
-        
-        this.reportPrintObjList = res as ReportPrintObj[];
-        this.reportPrintObj = res[0] as ReportPrintObj;
-        
-        this.getTemplateInterim();
-
-      })
-    );
-  }
-
-  
-  getPrintWardWise(el) {
-    debugger;
-    if (el.InterimOrFinal == 1) {
-      var D_data = {
-        "BillNo": el.BillNo,
-      }
-      let printContents; 
-      this.subscriptionArr.push(
-        this._IpBillBrowseListService.getIPBILLBrowsePrint(D_data).subscribe(res => {
-          console.log(res);
-          this.reportPrintObjList = res as ReportPrintObj[];
-          this.reportPrintObj = res[0] as ReportPrintObj;
-
-          this.getFinalbillwardwiseTemplate();
-         
-        })
-      );
-    }
-    else {
-
-      this.getIPIntreimBillPrint(el);
-    }
-  }
-
-
-  getPrintDatewise(el) {
-    debugger;
-    if (el.InterimOrFinal == 1) {
-      var D_data = {
-        "BillNo": el.BillNo,
-      }
-      let printContents; 
-      this.subscriptionArr.push(
-        this._IpBillBrowseListService.getIPBILLBrowsedatewisePrint(D_data).subscribe(res => {
-          
-          this.reportPrintObjList = res as ReportPrintObj[];
-          this.reportPrintObj = res[0] as ReportPrintObj;
-
-          this.getFinalbilldatewiseTemplate();
-         
-        })
-      );
-    }
-    else {
-
-      this.getIPIntreimBillPrint(el);
-    }
-  }
-
-  getFinalbilldatewiseTemplate() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=34';
-    this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'EmailId', 'Phone', 'RegId', 'GroupName', 'BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'Doctorname', 'RefDocName', 'RoomName', 'BedName', 'RegNo',
-      'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'TotalAmt', 'AdvanceUsedAmount', 'ConcessionAmount', 'PaidAmount', 'PayTMPayAmount', 'CashPayAmount', 'ChequePayAmount', 'NEFTPayAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AdvanceRefundAmount', 'UserName']; // resData[0].TempKeys;
-
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        var objreportPrint = this.reportPrintObjList[i - 1];
-
-        let docname;
-        if (objreportPrint.ChargesDoctorName)
-          docname = objreportPrint.ChargesDoctorName;
-        else
-          docname = '';
-        var strabc = ` 
-    <div style="display:flex;width:300px;margin-left:10px;">
-        <div>`+ this.datePipe.transform(objreportPrint.ChargesDate, 'dd/MM/yyyy') + `</div>
-    </div>
-<div style="display:flex;margin:8px 0">
-    <div style="display:flex;width:80px;margin-left:20px;">
-        <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-        <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-    <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:70px;margin-left:10px;">
-    <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-    <div style="display:flex;width:70px;margin-left:10px;">
-        <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-    </div>
-    <div style="display:flex;width:150px;align-text:left;">
-        <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-</div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-
-      console.log(objPrintWordInfo);
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.TotalAmt));
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-
-      //console.log(this.printTemplate);
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      console.log(this.printTemplate);
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      this.isShow = true;
-      setTimeout(() => {
-        this.print();
-      }, 1000);
-    });
-  }
-  
-
-  getFinalbillwardwiseTemplate() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=35';
-    this._IpBillBrowseListService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'EmailId', 'Phone', 'RegId', 'GroupName', 'BillNo', 'IPDNo', 'BillDate', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'Doctorname', 'RefDocName', 'RoomName', 'BedName', 'RegNo',
-      'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'TotalAmt', 'AdvanceUsedAmount', 'ConcessionAmount', 'PaidAmount', 'PayTMPayAmount', 'CashPayAmount', 'ChequePayAmount', 'NEFTPayAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AdvanceRefundAmount', 'UserName']; // resData[0].TempKeys;
-
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        var objreportPrint = this.reportPrintObjList[i - 1];
-
-        let docname;
-        if (objreportPrint.ChargesDoctorName)
-          docname = objreportPrint.ChargesDoctorName;
-        else
-          docname = '';
-        var strabc = ` 
-    <div style="display:flex;width:300px;margin-left:10px;">
-        <div>`+ 'Ward Name' + `</div>
-    </div>
-<div style="display:flex;margin:8px 0">
-    <div style="display:flex;width:80px;margin-left:20px;">
-        <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-        <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;">
-    <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:70px;margin-left:10px;">
-    <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-    <div style="display:flex;width:70px;margin-left:10px;">
-        <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-    </div>
-    <div style="display:flex;width:150px;align-text:left;">
-        <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-</div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-
-      console.log(objPrintWordInfo);
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.TotalAmt));
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-  
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      console.log(this.printTemplate);
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      this.isShow = true;
-      setTimeout(() => {
-        this.print();
-      }, 1000);
-    });
+  exportBillDatewiseReportExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['SelfOrCompany', 'InterimOrFinal', 'BalanceAmt', 'BillDate', 'PBillNo', 'RegID', 'PatientName', 'TotalAmt', 'ConcessionAmt','NetPayableAmt','CashPay','CardPay','ChequePay','NEFTPay','PayTMPay','AdvPay'];
+    this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Ip Bill Datewise');
+    this.dataSource.data = [];
+    this.sIsLoading = '';
   }
 
   exportReportPdf() {

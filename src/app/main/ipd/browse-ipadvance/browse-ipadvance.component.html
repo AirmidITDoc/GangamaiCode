@@ -108,7 +108,13 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-
+                                <div class="table-spinner">
+                                    <div matColumnDef="loading"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                        class="backgroundBlur" style="height: 100%;">
+                                        <div class="spinner-border text-danger"></div>
+                                    </div>
+                                </div>
                                 <mat-table #table matSort table="table1" [dataSource]="dataArray"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
@@ -202,7 +208,7 @@
                                                 <mat-icon>how_to_reg</mat-icon>
                                             </button>
 
-                                            <button mat-icon-button (click)="viewgetIPAdvanceReportPdf(contact)" matTooltip="how_to_reg">
+                                            <button mat-icon-button (click)="viewgetIPAdvanceReportPdf(contact)" matTooltip="Advance Print" [disabled]="chkprint">
                                                 <mat-icon>print</mat-icon>
                                             </button>
 

@@ -469,7 +469,7 @@ debugger
     InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value;
     InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value;
     InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
-    InsertBillUpdateBillNoObj['PaidAmt'] = 0; //this.BillingForm.get('FinalAmt').value;
+    InsertBillUpdateBillNoObj['PaidAmt'] = 0//this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
     InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
     InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
@@ -548,14 +548,15 @@ debugger
     PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
     if (!this.BillingForm.get('cashpay').value) {
-      const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+      const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
         {
           maxWidth: "100vw",
-          height: '600px',
+          height: '650px',
           width: '100%',
           data: {
             vPatientHeaderObj: PatientHeaderObj,
-            FromName: "OP-Bill"
+            FromName: "OP-Bill",
+            advanceObj: PatientHeaderObj,
           }
         });
 
@@ -571,7 +572,7 @@ debugger
 
           this.balanceamt= result.BalAmt;
         }
-
+        InsertBillUpdateBillNoObj['PaidAmt'] = result.submitDataPay.ipPaymentInsert.PaidAmt;
         // let InsertBillUpdateBillNoObj = {};
         // InsertBillUpdateBillNoObj['BillNo'] = 0;
         // InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId,//this.vOPIPId;
@@ -699,7 +700,7 @@ debugger
 
 
             if (flag.isConfirmed) {
-              InsertBillUpdateBillNoObj['BalanceAmt'] =  result.BalAmt;
+              InsertBillUpdateBillNoObj['BalanceAmt'] =  result.submitDataPay.ipPaymentInsert.CashPayAmount;
               // const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
               // InsertBillUpdateBillNoObj['BalanceAmt'] = this.BillingForm.get('FinalAmt').value;
 

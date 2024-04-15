@@ -121,9 +121,28 @@ export class IPAdvancePaymentComponent implements OnInit {
       this.BillDate = this.advanceData.advanceObj.Date;
 
     }
+    if (this.advanceData.FromName == "Advance") {
+      this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.billNo = parseInt(this.advanceData.advanceObj.BillId);
+      this.PatientName = this.advanceData.advanceObj.PatientName;
+      this.BillDate = this.advanceData.advanceObj.Date;
+
+    }
+    if (this.advanceData.FromName == "SETTLEMENT") {
+      this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.billNo = parseInt(this.advanceData.advanceObj.BillId);
+      this.PatientName = this.advanceData.advanceObj.PatientName;
+      this.BillDate = this.advanceData.advanceObj.Date;
+
+    }
     else {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.PatientName = this.advanceData.advanceObj.PatientName;
       this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.getBalanceAmt();
     }
@@ -410,6 +429,7 @@ export class IPAdvancePaymentComponent implements OnInit {
               Validators.minLength(10),
               Validators.maxLength(10)
             ]);
+            
             this.paymentForm.controls['paytmMobileNoController'].updateValueAndValidity();
             this.paymentForm.patchValue({ paytmDateController: new Date() });
             break;
@@ -670,6 +690,43 @@ export class IPAdvancePaymentComponent implements OnInit {
         Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
       }
       else if (this.advanceData.FromName == "OP-Bill") {
+        // Paymentobj['PaymentId'] = 0;
+        Paymentobj['BillNo'] = this.billNo;
+        Paymentobj['ReceiptNo'] = '';
+        Paymentobj['PaymentDate'] = this.dateTimeObj.date;
+        Paymentobj['PaymentTime'] = this.dateTimeObj.date;
+        Paymentobj['CashPayAmount'] = parseInt(this.cashAmt.toString());
+        Paymentobj['ChequePayAmount'] = parseInt(this.chequeAmt.toString());
+        Paymentobj['ChequeNo'] = this.chequeNo;
+        Paymentobj['BankName'] = this.paymentForm.get('chequeBankNameController').value.BankName;
+        Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+        Paymentobj['CardPayAmount'] = parseInt(this.cardAmt.toString());
+        Paymentobj['CardNo'] = this.cardNo;
+        Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName;
+        Paymentobj['CardDate'] = this.dateTimeObj.date;
+        Paymentobj['AdvanceUsedAmount'] = 0;
+        Paymentobj['AdvanceId'] = 0;
+        Paymentobj['RefundId'] = 0;
+        Paymentobj['TransactionType'] = 0;
+        Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
+        Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+          Paymentobj['IsCancelled'] = 0;
+        Paymentobj['IsCancelledBy'] = 0;
+        Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
+        Paymentobj['CashCounterId'] = 0;
+        Paymentobj['IsSelfORCompany'] = 0;
+        Paymentobj['CompanyId'] = 0;
+        Paymentobj['NEFTPayAmount'] = parseInt(this.neftAmt.toString());
+        Paymentobj['NEFTNo'] = this.neftNo;
+        Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName;
+        Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+        Paymentobj['PayTMAmount'] = parseInt(this.paytmAmt.toString());
+        Paymentobj['PayTMTranNo'] = this.paytmTransNo;
+        Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+        Paymentobj['PaidAmt'] = this.paymentForm.get('paidAmountController').value;
+        Paymentobj['BalanceAmt'] = this.paymentForm.get('balanceAmountController').value;
+      }
+      else if (this.advanceData.FromName == "IP-Bill") {
         // Paymentobj['PaymentId'] = 0;
         Paymentobj['BillNo'] = this.billNo;
         Paymentobj['ReceiptNo'] = '';

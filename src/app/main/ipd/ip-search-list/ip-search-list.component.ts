@@ -283,7 +283,7 @@ export class IPSearchListComponent implements OnInit {
       const dialogRef = this._matDialog.open(IPAdvanceComponent,
         {
           maxWidth: "100%",
-          height: '80%',
+          height: '90%',
           width: '80%',
         });
       dialogRef.afterClosed().subscribe(result => {
@@ -291,7 +291,7 @@ export class IPSearchListComponent implements OnInit {
       });
     }
     else if (m == "Discharge Summary") {
-      // debugger;
+      console.log(contact);
       var m_data1 = {
         "RegNo": contact.RegNo,
         "PatientName": contact.PatientName,
@@ -305,7 +305,7 @@ export class IPSearchListComponent implements OnInit {
         "DocNameID": contact.DocNameID,
         "IsDischarged": contact.IsDischarged
       }
-      // console.log(m_data1);
+     
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data1);
       this._IpSearchListService.populateForm1(m_data1);
       const dialogRef = this._matDialog.open(DischargeSummaryComponent,
@@ -322,7 +322,7 @@ export class IPSearchListComponent implements OnInit {
       });
     } 
     else if (m == "Payment") {
-      // debugger;
+      
       var m_data = {
         RegNo: contact.RegNo,
         RegId: contact.RegID,
@@ -364,7 +364,7 @@ export class IPSearchListComponent implements OnInit {
       });
     }
     else if (m == "Refund of Bill") {
-    //   debugger;
+    
       console.log(" This is for IP Refund of Bill pop : " + m);
       let xx = {
         RegNo: contact.RegId,
@@ -387,7 +387,7 @@ export class IPSearchListComponent implements OnInit {
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
 
-      this._ActRoute.navigate(['opd/new-OpdBilling']);
+      // this._ActRoute.navigate(['opd/new-OpdBilling']);
       const dialogRef = this._matDialog.open(IPRefundofBillComponent,
         {
           maxWidth: "75vw",

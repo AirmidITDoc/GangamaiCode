@@ -144,13 +144,26 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="UnitMRP">
+                            <!-- <ng-container matColumnDef="UnitMRP">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Unit MRP</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.UnitMRP}}
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
+
+                            <ng-container matColumnDef="UnitMRP">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    UnitMRP
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    {{contact.UnitMRP}}
+                                    <ng-container>
+                                        <button mat-icon-button (click)="EditMRP(contact)">
+                                            <mat-icon>edit</mat-icon></button>
+                                    </ng-container>
+                                </mat-cell>
+                            </ng-container> 
 
                             <ng-container matColumnDef="PurchaseRate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -210,11 +223,11 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="UpdatedQty">
+                            <ng-container matColumnDef="ConversionFactor">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    UpdatedQty</mat-header-cell>
+                                    Packing</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.UpdatedQty}}
+                                    {{contact.ConversionFactor}}
                                 </mat-cell>
                             </ng-container>
 

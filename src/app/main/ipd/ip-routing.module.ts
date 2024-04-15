@@ -29,14 +29,12 @@ const appRoutes: Routes = [
         loadChildren: () =>
         import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
     },
-    // {
-    //     path: "ip-addCharges",
-    //     loadChildren: () =>
-        
-    //     import("./ip-settlement/company-settlement.module").then((m) => m.CompanySettlementModule),
-    //     // import("./browse-ipd-payment-receipt/ipd-browse-paymentreceipt.module").then((m) => m.IpdBrowsePaymentreceiptModule),
-        
-    // },
+    {
+        path: "ip-refund-browse",
+        loadChildren: () =>
+        import("./Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.module").then((m) => m.IPBrowseRefundofBillModule),
+                
+    },
     {
         path: "refund",
         loadChildren: () =>import("./Refund/ip-refund/ip-refund.module").then((m) => m.IPRefundModule),

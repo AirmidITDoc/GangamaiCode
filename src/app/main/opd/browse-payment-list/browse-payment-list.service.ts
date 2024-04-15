@@ -58,4 +58,6 @@ export class BrowsePaymentListService {
   public getOpPaymentview(PaymentId){
     return this._httpClient.get("OutPatient/view-OP-PaymentReceipt?PaymentId=" + PaymentId);
   }
+
+  
 }

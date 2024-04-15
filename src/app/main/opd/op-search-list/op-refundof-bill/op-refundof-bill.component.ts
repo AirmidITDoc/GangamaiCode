@@ -351,7 +351,7 @@ export class OPRefundofBillComponent implements OnInit {
     let InsertRefundDetailObj = {};
     
     debugger;
-    // this.dataSource.data.forEach((element) => {
+    this.dataSource.data.forEach((element) => {
       InsertRefundDetailObj['RefundID'] = 0;
       InsertRefundDetailObj['ServiceId'] = this.serviceId || 0;
       InsertRefundDetailObj['ServiceAmount'] = this.ServiceAmount || 0;
@@ -362,7 +362,7 @@ export class OPRefundofBillComponent implements OnInit {
       InsertRefundDetailObj['ChargesId'] = this.ChargeId;
 
       RefundDetailarr.push(InsertRefundDetailObj);
-   
+    });
     let AddchargesRefundAmountarr = [];
     let AddchargesRefundAmountObj = {};
     
@@ -377,7 +377,7 @@ export class OPRefundofBillComponent implements OnInit {
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
-    PatientHeaderObj['NetPayAmount'] =   this.TotalRefundAmount;
+    PatientHeaderObj['RefundAmount'] =   this.TotalRefundAmount;
     PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
    
     const insertRefund = new InsertRefund(InsertRefundObj);
@@ -388,7 +388,6 @@ export class OPRefundofBillComponent implements OnInit {
         height: '540px',
         width: '100%',
         data: {
-          
           advanceObj: PatientHeaderObj, //this.advanceAmount
           FromName: "Advance-Refund",
         }
@@ -402,15 +401,14 @@ export class OPRefundofBillComponent implements OnInit {
         "insertOPPayment": result.submitDataPay.ipPaymentInsert
       };
 
-      
+      console.log(submitData)
       this._OpSearchListService.InsertOPRefundBilling(submitData).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'OP Refund Bill data saved Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               
             let m=response
-            this.getPrint(m);
-
+           
               this._matDialog.closeAll();
             }
           });
@@ -539,93 +537,8 @@ calculateTotalRefund() {
  
 
 }
-
+// m_Rtrv_PatientRegistrationList
 //for printing
-convertToWord(e){
-  
-   return converter.toWords(e);
-     }
- 
-     getTemplate() {
-      let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=9';
-      this._OpSearchListService.getTemplate(query).subscribe((resData: any) => {
-        this.printTemplate = resData[0].TempDesign;
-        let keysArray = ['HospitalName','HospitalAddress','Phone','EmailId','PBillNo','BillDate','RegNo','OPDNo','RefundNo','RefundAmount','RefundDate','PaymentDate','PatientName','AgeYear','AgeDay','AgeMonth','GenderName','ConsultantDoctorName','Remark','Addedby','NetPayableAmt']; // resData[0].TempKeys;
-          for (let i = 0; i < keysArray.length; i++) {
-            let reString = "{{" + keysArray[i] + "}}";
-            let re = new RegExp(reString, "g");
-            this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-          }
-          this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
-        
-          this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-          this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-          setTimeout(() => {
-            this.print();
-          }, 1000);
-      });
-    }
-
-    getPrint(el) {
- 
-      var D_data = {
-        "RefundId": el,
-      }
-      
-      let printContents; 
-      this.subscriptionArr.push(
-        this._OpSearchListService.getRefundBrowsePrint(D_data).subscribe(res => {
-          if(res){
-          this.reportPrintObj = res[0] as RefundMaster;
-          console.log(this.reportPrintObj);
-         }
-        
-          this.getTemplate();
-                    
-        })
-      );
-    }
-
-    transformBilld(value: string) {
-      var datePipe = new DatePipe("en-US");
-      value = datePipe.transform(value, 'dd/MM/yyyy');
-      return value;
-    }
-transform(value: string) {
-  var datePipe = new DatePipe("en-US");
-   value = datePipe.transform(value, 'dd/MM/yyyy');
-   return value;
-}
-
-transform1(value: string) {
-var datePipe = new DatePipe("en-US");
-value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
- return value;
-}
-
-transform2(value: string) {
-var datePipe = new DatePipe("en-US");
-value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-return value;
-}
-
-print() {
-  
-  let popupWin, printContents;
-  
-  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  // popupWin.document.open();
-  popupWin.document.write(` <html>
-  <head><style type="text/css">`);
-  popupWin.document.write(`
-    </style>
-        <title></title>
-    </head>
-  `);
-  popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-  </html>`);
-  popupWin.document.close();
-}
 
  
 }

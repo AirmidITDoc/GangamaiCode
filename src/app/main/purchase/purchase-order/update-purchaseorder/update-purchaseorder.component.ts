@@ -31,7 +31,6 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 export class UpdatePurchaseorderComponent implements OnInit {
   vsaveflag:boolean=true;
   displayedColumns2 = [
-
     // 'ItemID',
     'ItemName',
     'UOM',
@@ -175,9 +174,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
     public _matDialog: MatDialog,
-    private _formBuilder: FormBuilder,
     private _fuseSidebarService: FuseSidebarService,
-    private snackBarService: SnackBarService,
     public datePipe: DatePipe,
     public dialogRef: MatDialogRef<UpdatePurchaseorderComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -189,10 +186,13 @@ export class UpdatePurchaseorderComponent implements OnInit {
     if (this.data.chkNewGRN == 2) {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
-      console.log(this.registerObj.SupplierName)
       this.getSupplierSearchCombo();
       this.getOldPurchaseOrder(this.registerObj.PurchaseID);
-    
+    }
+    if(this.registerObj.PurchaseID){
+      this._PurchaseOrder.userFormGroup.get('PurchaseDate').setValue(this.registerObj.PurchaseDate);
+    }else{
+      this._PurchaseOrder.userFormGroup.get('PurchaseDate').setValue(new Date());
     }
     this.getGSTtypeList();
     this.getPaymentTermList();
@@ -235,6 +235,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
+    console.log(this.dateTimeObj)
   }
   gePharStoreList() {
     var vdata = {
@@ -260,10 +261,8 @@ export class UpdatePurchaseorderComponent implements OnInit {
     var m_data = {
       'SupplierName': `${this.vsupplierName}%`
     }
-    console.log(m_data)
     this._PurchaseOrder.getSupplierSearchList(m_data).subscribe(data => {
       this.filteredOptionssupplier = data;
-      console.log(this.filteredOptionssupplier)
       if (this.filteredOptionssupplier.length == 0) {
         this.noOptionFoundsupplier = true;
       } else {
@@ -272,7 +271,6 @@ export class UpdatePurchaseorderComponent implements OnInit {
       if (this.data.chkNewGRN == 2) { 
         const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierID);
         this._PurchaseOrder.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
-        console.log(toSelectSUpplierId)
         this.vContact = toSelectSUpplierId.ContactPerson;
         this.vSupplierId =toSelectSUpplierId.SupplierName;
         this.SupplierID = toSelectSUpplierId.SupplierId;
@@ -321,8 +319,9 @@ export class UpdatePurchaseorderComponent implements OnInit {
         this.getCellCalculation(this.dsItemNameList.data[i], null);
       }
     }
-   // this.calculateDiscAmount();
+    //this.calculateDiscAmount();
   }
+ 
   onAdd() {
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
       this.toastr.warning('Please enter a Qty', 'Warning !', {
@@ -469,11 +468,9 @@ export class UpdatePurchaseorderComponent implements OnInit {
       // console.log(this.vDefRate)
     });
   }
-
-
-
-
-
+  public setFocus(nextElementId): void {
+    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+  }
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -507,7 +504,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       return;
     }
     let updatePurchaseOrderHeaderObj = {};
-    updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date;
+    updatePurchaseOrderHeaderObj['purchaseDate'] =  this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
     updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId;
     updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;
@@ -608,7 +605,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     }
     debugger
     let purchaseHeaderInsertObj = {};
-    purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date;
+    purchaseHeaderInsertObj['purchaseDate'] =  this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
     purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
     purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;
@@ -876,6 +873,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this._PurchaseOrder.FinalPurchaseform.reset();
     this.dsItemNameList.data = [];
     this.ItemFormreset();
+    this._matDialog.closeAll();
   }
 
   ItemFormreset() {
@@ -951,10 +949,11 @@ export class UpdatePurchaseorderComponent implements OnInit {
   @ViewChild('HandlingCharges') HandlingCharges: ElementRef;
   @ViewChild('ConversionFactor') ConversionFactor: ElementRef;
   @ViewChild('HSNcode') HSNcode: ElementRef;
+  @ViewChild('PurchaseDate') PurchaseDate: ElementRef;
 
   public onEnterSupplier(event): void {
     if (event.which === 13) {
-      this.itemid.nativeElement.focus();
+      this.PurchaseDate.nativeElement.focus();
     }
   }
   public onEnterGSTType(event): void {

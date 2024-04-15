@@ -73,5 +73,9 @@ export class PharmacyreportService {
     return this._httpClient.get("Sales/view-SalesSummary_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&AddedBy="+AddedBy+"&StoreId="+StoreId);
   }
 
+  
+  getStoreList(){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{})
+  }
 }
 

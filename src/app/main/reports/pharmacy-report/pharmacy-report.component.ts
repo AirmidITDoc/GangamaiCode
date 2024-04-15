@@ -30,7 +30,7 @@ export class PharmacyReportComponent implements OnInit {
   @ViewChild('SalesDailycollectiontemplate') SalesDailycollectiontemplate: ElementRef;
   @ViewChild('SalesReturntemplate') SalesReturntemplate: ElementRef;
   @ViewChild('billTemplate') billTemplate: ElementRef;
-
+  StoreList: any = [];
   UserList: any = [];
   PaymentList: any = [];
   sIsLoading: string = '';
@@ -61,6 +61,7 @@ export class PharmacyReportComponent implements OnInit {
 
   FlagUserSelected: boolean = false;
   FlagPaymentSelected: boolean = false;
+  FlagStoreSelected: boolean = true;
 
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
@@ -124,11 +125,22 @@ export class PharmacyReportComponent implements OnInit {
   ngOnInit(): void {
     this.bindReportData();
     this.GetUserList();
+    this.gePharStoreList();
     this.GetPaymentModeList();
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
     this._BrowsSalesBillService.userForm.get('UserId').setValue(toSelect);
 
   }
+
+  gePharStoreList() {
+   
+    this._PharmacyreportService.getStoreList().subscribe(data => {
+      this.StoreList = data;
+      // this._BrowsSalesBillService.userForm.get('StoreId').setValue(this.StoreList[0]);
+
+    });
+  }
+
 
   bindReportData() {
     // let qry = "SELECT * FROM ReportConfigMaster WHERE IsActive=1 AND IsDeleted=0 AND ReportType=1";
@@ -271,9 +283,15 @@ var data={
 
 
   viewDailyCollectionPdf() {
+    debugger
     let AddUserId = 0;
     if (this._BrowsSalesBillService.userForm.get('UserId').value)
       AddUserId = this._BrowsSalesBillService.userForm.get('UserId').value.UserId
+
+    let storeId =this._loggedUser.currentUserValue.user.storeId;
+    if (this._BrowsSalesBillService.userForm.get('StoreId').value.StoreId)
+      storeId = this._BrowsSalesBillService.userForm.get('StoreId').value.StoreId
+
 
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
@@ -282,7 +300,7 @@ var data={
       this._PharmacyreportService.getSalesDailyCollectionNew(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this._loggedUser.currentUserValue.user.storeId, AddUserId
+        storeId , AddUserId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -310,6 +328,11 @@ var data={
       
     AddUserId = this._BrowsSalesBillService.userForm.get('UserId').value.UserId
 
+    let storeId =this._loggedUser.currentUserValue.user.storeId;
+    if (this._BrowsSalesBillService.userForm.get('StoreId').value.StoreId)
+      storeId = this._BrowsSalesBillService.userForm.get('StoreId').value.StoreId
+
+
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
@@ -317,7 +340,7 @@ var data={
       this._PharmacyreportService.getSalesDailyCollectionSummary(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this._loggedUser.currentUserValue.user.storeId,AddUserId
+       storeId,AddUserId
         
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -345,6 +368,11 @@ var data={
         
       AddUserId = this._BrowsSalesBillService.userForm.get('UserId').value.UserId
 
+      let storeId =this._loggedUser.currentUserValue.user.storeId;
+    if (this._BrowsSalesBillService.userForm.get('StoreId').value.StoreId)
+      storeId = this._BrowsSalesBillService.userForm.get('StoreId').value.StoreId
+
+
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
@@ -352,7 +380,7 @@ var data={
       this._PharmacyreportService.getSalesDailyCollectionSummaryDayuserwise(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this._loggedUser.currentUserValue.user.storeId,AddUserId
+        storeId,AddUserId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -381,6 +409,11 @@ var data={
     if (this._BrowsSalesBillService.userForm.get('UserId').value)
       AddUserId = this._BrowsSalesBillService.userForm.get('UserId').value.UserId
 
+    let storeId =this._loggedUser.currentUserValue.user.storeId;
+    if (this._BrowsSalesBillService.userForm.get('StoreId').value.StoreId)
+      storeId = this._BrowsSalesBillService.userForm.get('StoreId').value.StoreId
+
+
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
@@ -388,7 +421,7 @@ var data={
       this._PharmacyreportService.getSalesDetailSummary(
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-         0, 0, AddUserId,this._loggedUser.currentUserValue.user.storeId
+         0, 0, AddUserId,storeId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {

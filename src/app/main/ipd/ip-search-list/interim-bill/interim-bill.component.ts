@@ -90,12 +90,19 @@ export class InterimBillComponent implements OnInit {
 
       this.InterimFormGroup=this.InterimForm();
       if(data) {
+        console.log(data);
       this.interimArray =data;
-      // console.log(this.interimArray);
       this.totalCount = data.length;
       data.filter(element => {
         this.netAmount = this.netAmount + parseInt(element.NetAmount);
       });
+
+      
+    if (this.advanceDataStored.storage) {
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj )
+      // this.PatientHeaderObj = this.advanceDataStored.storage;
+    }
     }
   }
 
@@ -106,7 +113,7 @@ export class InterimBillComponent implements OnInit {
 
     if(this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.vPatientHeaderObj =this.advanceDataStored.storage;
+      // this.vPatientHeaderObj =this.advanceDataStored.storage;
       // this.ConcessionId=this.selectedAdvanceObj.concessionReasonId
       // console.log(this.selectedAdvanceObj);
     } 
@@ -211,6 +218,7 @@ export class InterimBillComponent implements OnInit {
     });  
 
     let PatientHeaderObj = {};
+    PatientHeaderObj['patientName'] = this.selectedAdvanceObj.PatientName;
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID || 0; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
     PatientHeaderObj['NetPayAmount'] = this.netAmount;
@@ -224,9 +232,8 @@ export class InterimBillComponent implements OnInit {
         height: '540px',
         width: '100%',
         data: {
-          patientName:"RK" ,//this._IpSearchListService.myShowAdvanceForm.get("PatientName").value,
           advanceObj: PatientHeaderObj,
-          FromName: "OP-Bill"
+          FromName: "IP-Bill"
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -470,7 +477,7 @@ export class Bill {
   discComments : String;
   CashCounterId:any;
   CompDiscAmt:any;
-
+  PatientName:any;
   constructor(Bill) {
     {
       this.AdmissionID = Bill.AdmissionID || 0;
@@ -501,6 +508,7 @@ export class Bill {
       this.discComments  = Bill.discComments  || '';
       this.CashCounterId  = Bill.CashCounterId  || 0;
       this.CompDiscAmt  = Bill.CompDiscAmt  || 0;
+      this.PatientName  = Bill.PatientName  || '';
     }
   }
 }

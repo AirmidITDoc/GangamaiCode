@@ -13,6 +13,7 @@ import { IPSearchListService } from '../ip-search-list.service';
 import Swal from 'sweetalert2';
 import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-payment.component';
 import { fuseAnimations } from '@fuse/animations';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -128,18 +129,15 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
 
   getReturndetails() {
-    // debugger
+    
     var m_data = {
-    "OPIPID": 32//this.selectedAdvanceObj.AdmissionID
+    "OPIPID": 15//this.selectedAdvanceObj.AdmissionID
     }
-    // debugger;
-    // this.dataSource1.data = [];
+ 
     this.isLoading = 'list-loading';
     // let Query = "Select AdvanceId from T_AdvanceHeader where  OPD_IPD_Id=" + this.AdmissionId + " ";
     this._IpSearchListService.getReturndetails(m_data).subscribe(data => {
-    // this._IpSearchListService.getReturndetails(Query).subscribe(data => {
-      // this.AdvanceId = data;
-      this.dataSource1.data = data as IPRefundofAdvance[];
+    this.dataSource1.data = data as IPRefundofAdvance[];
 
       console.log(this.dataSource1.data);
     });
@@ -147,7 +145,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   getRefundofAdvanceList() {
     var m_data = {
-      "RefundId": 97317//xthis._IpSearchListService.myRefundAdvanceForm.get("RefundId").value || "0",
+      "RefundId": this._IpSearchListService.myRefundAdvanceForm.get("RefundId").value || "0",
     }
     this.isLoadingStr = 'loading';
     this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(Visit => {
@@ -170,16 +168,15 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   calculateBal()
   {
-    // debugger;
-    
+   
     this.BalanceAdvance=  this.RefundAmount - this.NewRefundAmount;
 
   }
 
   onEdit(row){
-// debugger;
+
     console.log(row);
-    // debugger;
+    
     this.BalanceAdvance=0;
     this.RefundAmount=0;
     this.NewRefundAmount=0;
@@ -272,8 +269,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       });
       // // debugger;
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(result);
-     
+      
       console.log('============================== Return RefAdv ===========');
       let submitData = {
         "insertIPRefundofAdvance": IPRefundofAdvanceInsert,
@@ -291,8 +287,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
             if (result.isConfirmed) {
               this.getRefundofAdvanceList();
             this.getReturndetails();
-            let m=response;
-          this.getPrint(m);
+          this.viewgetRefundofAdvanceReportPdf(response);
+          
           this.dialogRef.close();
             }
           });
@@ -306,6 +302,35 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   }
 
+  sIsLoading: string = '';
+  viewgetRefundofAdvanceReportPdf(RefundId) {
+    setTimeout(() => {
+      // this.SpinLoading =true;
+      this.sIsLoading = 'loading-data';
+    //  this.AdList=true;
+    this._IpSearchListService.getRefundofAdvanceview(
+      RefundId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Refund Of Bill  Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = '';
+          // this.SpinLoading = false;
+        });
+      
+    });
+   
+    },100);
+  }
   convertToWord(e){
     
     //  return converter.toWords(e);

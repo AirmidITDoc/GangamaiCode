@@ -9,7 +9,7 @@ export class StockAdjustmentService {
 
   userFormGroup: FormGroup;
   StoreFrom:FormGroup;
-
+  MRPAdjform:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
@@ -17,6 +17,7 @@ export class StockAdjustmentService {
   ) { 
     this.StoreFrom = this.CreateStoreFrom();
     this.userFormGroup = this.createUserForm();
+    this.MRPAdjform = this.createMRPAdjForm();
   }
   CreateStoreFrom(){
     return this._formBuilder.group({
@@ -30,9 +31,21 @@ export class StockAdjustmentService {
       ExpDateEdit:['']
     });
   }
+  createMRPAdjForm() {
+    return this._formBuilder.group({
+      OldMRP:[''],
+      LandedRate:[''],
+      PurchaseRate:[''],
+      ConversionFactor:[''],
+      NewMRP:[''],
+      newLandedRate:[''],
+      NewPurchaseRate:[''],
+     // AddedDate:[new Date()],
+    });
+  }
    
-  public getStockList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BatchNoForMrpAdj",Param);
+  public getStockList(Param){//Retrieve_BatchNoForMrpAdj
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BatchNoForMrpAdj",Param);
   }
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
@@ -45,6 +58,9 @@ export class StockAdjustmentService {
   }
   public BatchAdjSave(param){//InventoryTransaction/BatchAdjustmen
     return this._httpClient.post('InventoryTransaction/BatchAdjustment',param);
+  }
+  public MRPAdjSave(param){
+    return this._httpClient.post('Pharmacy/InsertMRPadjustment',param);
   }
   
 }

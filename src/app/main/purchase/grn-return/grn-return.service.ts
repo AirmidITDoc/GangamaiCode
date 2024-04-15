@@ -12,6 +12,7 @@ export class GrnReturnService {
   GRNReturnSearchFrom :FormGroup;
   NewGRNReturnFrom :FormGroup;
   GRNListFrom:FormGroup;
+  GRNReturnStoreFrom:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
@@ -21,8 +22,13 @@ export class GrnReturnService {
     this.GRNReturnSearchFrom= this.GRNSearchFrom();
     this.NewGRNReturnFrom = this.NewGRNItemList();
     this.GRNListFrom = this.createGRNList();
+    this.GRNReturnStoreFrom = this.createStoreForm();
   }
-
+  createStoreForm() {
+    return this._formBuilder.group({
+      ToStoreId: '',
+    });
+  }
   GRNSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: '',

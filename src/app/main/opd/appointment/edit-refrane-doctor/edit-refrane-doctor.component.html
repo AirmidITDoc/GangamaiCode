@@ -10,7 +10,7 @@
     <div style="padding:5px;">
         <div class="content-card">
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                <!-- <form [formGroup]="_AdmissionService.mySaveForm" style="width: 100%;"> -->
+                
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
                             <!-- ================================ LABEL HEADER  -->
@@ -23,31 +23,21 @@
                                     style="align-items: baseline;">
 
                                     <span class="label">Visit Id :</span>
-                                    <!-- <span class="data_input">{{_AdmissionService.mySaveForm.get("AdmissionID").value}}</span> -->
                                     <span class="data_input">{{PatientHeaderObj.VisitId}}</span>
 
                                     <span class="label"> Patient Name : </span>
                                     <span class="data_input">{{PatientHeaderObj.PatientName}}</span>
-
-                                    <!-- <span class="label">Admission ON : </span>
-                                    <span class="data_input">{{AdmissionDate}} -->
-
-                                    <!-- </span> -->
-
                                     <app-common-date [screenFrom]="screenFromString"
                                         (dateTimeEventEmitter)="getDateTime($event)">
                                     </app-common-date>
-                                    <!-- <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs()"
-                                        style="border-radius: 16px;display: none;">
-                                        Show
-                                    </button> -->
+                                    
                                 </div>
                             </mat-card>
                             <!-- ================================ LABEL HEADER  -->
                         </div>
 
                     </div>
-                <!-- </form> -->
+                
             </div>
         </div>
 

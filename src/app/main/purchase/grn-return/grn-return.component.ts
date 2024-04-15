@@ -166,7 +166,7 @@ export class GRNReturnComponent implements OnInit {
       this.ToStoreList = data;
       //console.log(this.ToStoreList)
       this._GRNReturnService.GRNReturnSearchFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
-      this._GRNReturnService.NewGRNReturnFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
+      this._GRNReturnService.GRNReturnStoreFrom.get('ToStoreId').setValue(this.ToStoreList[0]);
     });
   }
   
@@ -418,7 +418,7 @@ else {
 OnReset() { 
   this._GRNReturnService.NewGRNReturnFrom.reset();
   this._GRNReturnService.NewGRNRetFinalFrom.reset();
-  this.dsNewGRNReturnItemList.data = [];
+  this.dsGrnItemList.data = [];
 }
 onClear() { }
 vGRNID:any=0;

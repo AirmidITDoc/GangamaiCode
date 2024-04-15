@@ -106,7 +106,7 @@ export class OPAdvancePaymentComponent implements OnInit {
       this.cashAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
       this.billNo = parseInt(this.advanceData.advanceObj.BillId);
-
+      this.PatientName = this.advanceData.advanceObj.PatientName;
     }
     if (this.advanceData.FromName == "OP-Bill") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
@@ -122,6 +122,13 @@ export class OPAdvancePaymentComponent implements OnInit {
       this.billNo = parseInt(this.advanceData.advanceObj.BillId);
       this.PatientName = this.advanceData.advanceObj.PatientName;
       this.BillDate = this.advanceData.advanceObj.Date;
+
+    }
+    if (this.advanceData.FromName == "Advance") {
+      this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.billNo = parseInt(this.advanceData.advanceObj.BillId);
 
     }
     else {
@@ -803,7 +810,7 @@ export class OPAdvancePaymentComponent implements OnInit {
       Paymentobj['ReceiptNo'] = '',//'RE';
       Paymentobj['PaymentDate'] = '',//this.dateTimeObj.date;
       Paymentobj['PaymentTime'] = '',//this.dateTimeObj.time;
-      Paymentobj['CashPayAmount'] = 0,// parseInt(this.cashAmt.toString());
+      Paymentobj['CashPayAmount'] =  parseInt(this.cashAmt.toString());
       Paymentobj['ChequePayAmount'] = 0,// parseInt(this.chequeAmt.toString());
       Paymentobj['ChequeNo'] = 0,//this.chequeNo;
       Paymentobj['BankName'] = '',//this.paymentForm.get('chequeBankNameController').value.BankName;

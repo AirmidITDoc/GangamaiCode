@@ -168,6 +168,9 @@ export class AppointmentSreviceService {
     return this._httpClient.post("OutPatient/AppointmentVisitUpdate", employee);
 }
   
+public Appointmentcancle(employee) {
+  return this._httpClient.post("OutPatient/AppointmentCancle", employee);
+}
 public documentuploadInsert(employee){
   return this._httpClient.post("InPatient/DocAttachment", employee);
 }

@@ -21,6 +21,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import {default as _rollupMoment, Moment} from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { fuseAnimations } from '@fuse/animations';
+import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 type NewType = Observable<any[]>;
 
 
@@ -170,8 +171,6 @@ export class NewOPRefundofbillComponent implements OnInit {
     this.RefundOfBillFormGroup = this.refundForm();
     this.searchFormGroup = this.createSearchForm();
    
-
-       
     this.refundBillForm();
     this.getRefundofBillIPDList();
     // this.getServiceListCombobox();
@@ -244,10 +243,12 @@ export class NewOPRefundofbillComponent implements OnInit {
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
     this.Doctorname = obj.DoctorName;
-    this.vOPIPId = obj.VisitId;
-    this.vOPDNo = obj.OPDNo;
+    this.vOPIPId = obj.RegId;
+    this.vOPDNo = obj.RegId;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
+
+    this.getRefundofBillIPDList();
   }
 
   getOptionText1(option) {
@@ -263,7 +264,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     debugger;
     
     var m_data = {
-      "RegNo": this.vOPIPId || this.RegId
+      "RegId":  this.vOPIPId || this.RegId //2
             
     }
     
@@ -293,7 +294,7 @@ export class NewOPRefundofbillComponent implements OnInit {
 
   getserviceetailList() {
     var m_data = {
-      "BillNo": this.BillNo
+      "BillNo": this.BillNo //74//
     }
     
     this.isLoadingStr = 'loading';
@@ -405,8 +406,10 @@ export class NewOPRefundofbillComponent implements OnInit {
     // }
   }
   chkform:boolean=true;
+  
   onSave() {
-
+    // Validation
+    this.vOPIPId=1; 
     debugger
    if( !this.RefundOfBillFormGroup.invalid && this.vOPIPId !==0)
    {
@@ -468,14 +471,15 @@ export class NewOPRefundofbillComponent implements OnInit {
    
     const insertRefund = new InsertRefund(InsertRefundObj);
    
-    const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "100vw",
         height: '600px',
         width: '100%',
         data: {
           vPatientHeaderObj: PatientHeaderObj,
-          FromName: "Advance-Refund"
+          FromName: "Advance-Refund",
+          advanceObj: PatientHeaderObj
         }
       });
       
@@ -488,16 +492,14 @@ export class NewOPRefundofbillComponent implements OnInit {
         "insertOPPayment": result.submitDataPay.ipPaymentInsert
       };
 
-      
+      console.log(submitData)
       this._OpSearchListService.InsertOPRefundBilling(submitData).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'OP Refund Bill data saved Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              
-            let m=response
-            this.viewgetOPRefundofbillPdf(m);
-
-              this._matDialog.closeAll();
+            
+            this.viewgetOPRefundofbillPdf(response);
+            this._matDialog.closeAll();
 
             }
           });
@@ -516,19 +518,19 @@ Swal.fire("Refund Amount is More than RefundBalance")
     this.dataSource.data=[];
     this.dataSource1.data=[];
     this.dataSource2.data=[];
+    this.dataSource3.data=[];
     this.RefundOfBillFormGroup.reset();
   }
   }
 
   
 SpinLoading:boolean=false;
-viewgetOPRefundofbillPdf(row) {
-  debugger
-  setTimeout(() => {
+viewgetOPRefundofbillPdf(RefundId) {
+    setTimeout(() => {
     this.SpinLoading =true;
   //  this.AdList=true;
   this._OpSearchListService.getOprefundofbillview(
-    row.RefundId
+    RefundId
   ).subscribe(res => {
     const dialogRef = this._matDialog.open(PdfviewerComponent,
       {

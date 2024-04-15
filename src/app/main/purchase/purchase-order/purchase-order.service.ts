@@ -82,7 +82,8 @@ export class PurchaseOrderService {
       Contact:'',
       GSTNo:'',
       Email:'',
-      DefRate:''
+      PurchaseDate: [new Date()],
+      DefRate:'',
     });
 
   }

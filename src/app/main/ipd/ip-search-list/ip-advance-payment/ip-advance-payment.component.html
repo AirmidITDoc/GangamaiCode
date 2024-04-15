@@ -165,7 +165,7 @@
                             </mat-form-field>
 
 
-                            <mat-form-field appearance="outline" fxFlex>
+                            <!-- <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Select Bank Name</mat-label>
                                 <input matAutocompletePosition="below" type="text" placeholder="Select Prefix" matInput
                                   formControlName="cardbankFilterCtrl" [matAutocomplete]="autoPrefix" required>
@@ -181,7 +181,7 @@
                                     {{option.BankName}}
                                   </mat-option>
                                 </mat-autocomplete>
-                              </mat-form-field>
+                              </mat-form-field> -->
 
                         </div>
                         <div style="margin-right: 10px;">
@@ -353,12 +353,26 @@
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
-                            <mat-form-field appearance="outline">
+                            <!-- <mat-form-field appearance="outline">
                                 <mat-label>Trans ID/Mobile No</mat-label>
                                 <input matInput [(ngModel)]="paytmTransNo" formControlName="paytmMobileNoController">
                                 <mat-error class="error"
                                     *ngIf="paymentForm.get('paytmMobileNoController').invalid && paymentForm.get('paytmMobileNoController').touched">
                                     Please enter valid 10 Digit</mat-error>
+                            </mat-form-field> -->
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Trans ID/Mobile No</mat-label>
+                                <input name="MobileNo" formControlName="paytmMobileNoController" #mobile
+                                    placeholder="Mobile Number" matInput required
+                                    [(ngModel)]="paytmTransNo" max="9999999999"
+                                    min="1000000000" autocomplete="off" maxlength="10"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                    required="required" value="9876658688">
+                                <mat-error class="error"
+                                    *ngIf="paymentForm.get('paytmMobileNoController').invalid && paymentForm.get('paytmMobileNoController').touched">10
+                                    digits Mobile number is
+                                    required</mat-error>
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">

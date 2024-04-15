@@ -9,11 +9,14 @@ import { RoleTemplateService } from "./role-template.service";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { RolePermissionComponent } from "../role-permission/role-permission.component";
+import { NewSchdulerComponent } from "../new-schduler/new-schduler.component";
 
 @Component({
   selector: 'app-role-template-master',
   templateUrl: './role-template-master.component.html',
-  styleUrls: ['./role-template-master.component.scss']
+  styleUrls: ['./role-template-master.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class RoleTemplateMasterComponent implements OnInit {
   msg: any;
@@ -123,8 +126,8 @@ export class RoleTemplateMasterComponent implements OnInit {
     const dialogRef = this._matDialog.open(RolePermissionComponent,
       {
         maxWidth: "50vw",
-          height: 'auto',
-          maxHeight:'90vh',
+          height: '80vh',
+          maxHeight:'790vh',
           width: '100%',
           data : {
             RoleId : RoleId,
@@ -141,6 +144,21 @@ export class RoleTemplateMasterComponent implements OnInit {
     // );
     
   }
+
+  // newSchduler(){
+  //   const dialogRef = this._matDialog.open(NewSchdulerComponent,
+  //     {
+  //       maxWidth: "70vw",
+  //       height: "510px",
+  //       width: "90%",
+         
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+    
+  //   });
+   
+  // }
+
 
   onDeactive(RoleId) {
     this.confirmDialogRef = this._matDialog.open(

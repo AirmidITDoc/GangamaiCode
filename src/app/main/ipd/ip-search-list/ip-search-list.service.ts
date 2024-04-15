@@ -284,7 +284,7 @@ constructor(public _httpClient:HttpClient,
      DocNameID:[''],
      Doctorname:'',
      DischargeTypeId:['',Validators.required],
-     DischargeDate:['',Validators.required],
+     DischargeDate:[''],
      DischargeTime:'',
      Modeofdischarge:'',
      DOT: ''  
@@ -616,7 +616,7 @@ public updateIPDDischargSummary(employee)
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPRefundAdvanceDetails",employee)
   }
   public getReturndetails(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPRefundDetails",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPRefundDetails",employee)
   }
 
   public getrefundAdvanceReceiptPrint(RefundId){
@@ -637,7 +637,7 @@ public updateIPDDischargSummary(employee)
   }
 
   public getRefundofBillIPDList(employee){
-  return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundofBillIPD_List",employee)
+  return this._httpClient.post("Generic/GetByProc?procName=m_IPBillListforRefund",employee)
   }
 
      // Get CashCounter List 
@@ -961,6 +961,10 @@ public getAdvancedetail(Id){
 
 public getRefundofAdvanceview(RefundId){
   return this._httpClient.get("InPatient/view-IP-ReturnOfAdvanceReceipt?RefundId=" + RefundId);
+}
+
+public getRefundofbillview(RefundId){
+  return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
 }
 }
 

@@ -303,7 +303,7 @@ public getRegistrationList(employee)
   }
 
   public getDoctorMaster() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
   //Doctor 2 Combobox List
   public getDoctorMaster2Combo() {

@@ -117,11 +117,14 @@ var data={
       this.FlagDoctorSelected = false;
 
     }
-    //  else if (this.ReportName == 'OP IP COMMAN COLLECTION') {
-    //   this.FlagUserSelected = true;
-    //   this.FlagPaymentSelected = false;
+     else if (this.ReportName == 'OP DAILY COLLECTION USERWISE') {
+      this.FlagBillNoSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
 
-    // } else if (this.ReportName == 'OP IP BILL SUMMARY') {
+    }
+    
+    // else if (this.ReportName == 'OP IP BILL SUMMARY') {
     //   this.FlagUserSelected = true;
     //   this.FlagPaymentSelected = false;
 
@@ -187,7 +190,7 @@ var data={
   }
 
   getOptionTextsearchDoctor(option) {
-    return option && option.Doctorname ? option.Doctorname : '';
+    return option && option.DoctorName ? option.DoctorName : '';
   }
 
   getDoctorList() {
@@ -216,9 +219,10 @@ var data={
       this.viewgetOPBillReportPdf();
       
     }
-    //  else if (this.ReportName == 'OP IP COMMAN COLLECTION') {
-    //   this.viewgetOPIPCommanReportPdf();
-    // } else if (this.ReportName == 'OP IP BILL SUMMARY') {
+     else if (this.ReportName == 'OP Daily COLLECTION UserWise') {
+      this.viewOpDailyCollectionUserwisePdf();
+    } 
+    // else if (this.ReportName == 'OP IP BILL SUMMARY') {
     //   this.viewgetOPIPBillSummaryReportPdf();
     // }
     //  else if (this.ReportName == 'Sales Return Summary Report') {
@@ -246,10 +250,10 @@ var data={
     let DoctorId =0
 
     if (this._OPReportsService.userForm.get('UserId').value)
-    DoctorId = this._OPReportsService.userForm.get('UserId').value.UserId
-
+      AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
+    
     if (this._OPReportsService.userForm.get('DoctorId').value)
-      AddUserId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID
+      DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID
 
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
@@ -279,6 +283,43 @@ var data={
     }, 100);
   }
 
+  viewOpDailyCollectionUserwisePdf() {
+    let AddUserId = 0;
+    let DoctorId =0
+
+    if (this._OPReportsService.userForm.get('UserId').value)
+      AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
+    
+    if (this._OPReportsService.userForm.get('DoctorId').value)
+      DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID
+
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this.AdList = true;
+      
+      this._OPReportsService.getOpDailyCollection(
+        this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        AddUserId,DoctorId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '1000px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "OP Daily Collection User Wise Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
+
+    }, 100);
+  }
 
   // viewIPDailyCollectionPdf() {
   //   let AddUserId = 0;

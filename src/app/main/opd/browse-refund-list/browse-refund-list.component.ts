@@ -39,6 +39,7 @@ export class BrowseRefundListComponent implements OnInit {
   MouseEvent = true;
   displayedColumns = [
     'RefundDate',
+    'RegId',
     'PatientName',
     'PaymentDate',
     'RefundAmount',
@@ -107,13 +108,13 @@ export class BrowseRefundListComponent implements OnInit {
       "Reg_No": this._BrowseOPDReturnsService.myFilterform.get("RegNo").value || 0
 
     }
-
+    console.log(D_data)
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       console.log(D_data);
       this._BrowseOPDReturnsService.getBrowseOPDReturnReceiptList(D_data).subscribe(Visit => {
         this.dataSource.data = Visit as RefundMaster[];
-        
+        console.log(this.dataSource.data);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.sIsLoading = '';

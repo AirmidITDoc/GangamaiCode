@@ -24,11 +24,10 @@
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
                                     style="align-items: baseline;font-size: 18px;color: rgb(6, 96, 99);">
                                     <span class="label">VisitId :</span>
-                                    <!-- <span class="data_input">{{_AdmissionService.mySaveForm.get("AdmissionID").value}}</span> -->
                                     <span class="data_input">{{PatientHeaderObj.VisitId}}</span>
 
                                     <span class="label">RegNo :</span>
-                                    <!-- <span class="data_input">{{_AdmissionService.mySaveForm.get("AdmissionID").value}}</span> -->
+                                    
                                     <span class="data_input">{{PatientHeaderObj.RegNo}}</span>
 
                                     <span class="label"> Patient Name : </span>
@@ -128,17 +127,6 @@
                          
                         </div>
                     </div>
-
-
-                    <!-- <div class="footer-navigation-container" style=" float: right;">
-                   
-            <div class="next-div">
-              
-              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;"> Save </button>
-  
-              <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;" >Cancel</button>
-            </div>
-          </div>  -->
 
                     <div class="footer-navigation-container" style=" float: right;">
 

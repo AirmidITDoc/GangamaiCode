@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component';
 import { Observable, Subscription } from 'rxjs';
@@ -15,11 +15,14 @@ import Swal from 'sweetalert2';
 import { IPRefundService } from '../ip-refund.service';
 import { IPAdvancePaymentComponent } from 'app/main/ipd/ip-search-list/ip-advance-payment/ip-advance-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { fuseAnimations } from '@fuse/animations';
 type NewType = Observable<any[]>;
 @Component({
   selector: 'app-ip-refundof-bill',
   templateUrl: './ip-refundof-bill.component.html',
-  styleUrls: ['./ip-refundof-bill.component.scss']
+  styleUrls: ['./ip-refundof-bill.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class IPRefundofBillComponent implements OnInit {
   SpinLoading:boolean=false;
@@ -163,7 +166,7 @@ export class IPRefundofBillComponent implements OnInit {
     this.refundBillForm();
     this.getRefundofBillIPDList();
     // this.getAdmittedDoctorList();
-    this.getServiceListCombobox();
+    // this.getServiceListCombobox();
     // this.getBilldetailList();
     
     // this.serviceDetailForm();
@@ -225,10 +228,10 @@ export class IPRefundofBillComponent implements OnInit {
 
   //Give BillNumber For List
   getRefundofBillIPDList() {
-    debugger;
+    
     console.log(this.selectedAdvanceObj.RegNo);
     var m_data = {
-      "RegNo": 90069// this.selectedAdvanceObj.RegNo
+      "RegId": 1// this.selectedAdvanceObj.RegNo
       
     }
     // this.isLoadingStr = 'loading';
@@ -369,7 +372,7 @@ viewgetRefundofbillReportPdf(RefundId) {
 
 
   getSelectedServicetotSum(element) {
-    // debugger;
+    
     let netAmt1;
     netAmt1 = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.totalAmtOfNetAmt1 = netAmt1;
@@ -397,7 +400,7 @@ viewgetRefundofbillReportPdf(RefundId) {
 
 
   getServicetotSum(element) {
-    // debugger;
+    
     let netAmt;
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.totalAmtOfNetAmt = netAmt;
@@ -444,7 +447,7 @@ viewgetRefundofbillReportPdf(RefundId) {
     let RefundDetailarr = [];
     let InsertRefundDetailObj = {};
     console.log(this.dataSource.data);
-    debugger;
+    
     this.dataSource.data.forEach((element) => {
       InsertRefundDetailObj['RefundID'] = 0;
       InsertRefundDetailObj['ServiceId'] = this.serviceId || 0;
@@ -578,7 +581,7 @@ getServiceListCombobox() {
 }
 
 Serviceselect(row,event){
-debugger;
+
 console.log(row);
 this.RefAmt=this.RefundBalAmount;
 
@@ -619,9 +622,8 @@ onEdit(row) {
 
   this.getserviceetailList();
 
-  debugger;
   var m_data1 = {
-    "BillId": 190178// row.BillNo
+    "BillId":row.BillNo
   }
   this.isLoadingStr = 'loading';
   this._IPRefundService.getRefundofBillDetailList(m_data1).subscribe(Visit => {

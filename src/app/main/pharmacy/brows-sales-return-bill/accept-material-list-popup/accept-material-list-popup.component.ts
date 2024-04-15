@@ -120,13 +120,15 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       let materialAcceptIssueDetailsObj = {};
       materialAcceptIssueDetailsObj['issueId'] = element.IssueId;
       materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId;
-      let selectedchk
+      let selectedchk="0";
       if (element.selected == 1) {
-        selectedchk = 1;
+        selectedchk = "1";
       } else if (element.selected != 1) {
-        selectedchk = 0;
+        selectedchk = "0";
       }
-      materialAcceptIssueDetailsObj['Status'] = selectedchk;
+
+      debugger
+      materialAcceptIssueDetailsObj['Status'] = selectedchk.toString();
       materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
     });
 

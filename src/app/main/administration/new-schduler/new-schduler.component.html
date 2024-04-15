@@ -1,0 +1,145 @@
+<!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="modal-wrapper">
+     
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <div class="modal-header-title">
+                        <div class="title-icon">
+                            <span>
+                                <mat-icon class="logo-icon"
+                                    [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                                </mat-icon>
+                            </span>
+                        </div>
+                        <div class="title">
+                            <span>New Scheduler</span>
+                        </div>
+                    </div>
+                    <div class="modal-header-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <span class="modal-icon">
+                                <mat-icon>close</mat-icon>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="content" *ngIf="true">
+                    <div class="center px-12" fxFlexAlign="start center">
+                        <form [formGroup]="searchFormGroup">
+
+                            <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start"
+                                fxLayoutAlign.gt-sm="space-between center" class="appointment-header gap-12">
+                              
+                                <div class="redio-container" style="border:1px solid grey;text-align:center;padding:2px;background-color: lightsteelblue;margin-top: 20px;">
+                                  
+                                    <label style="padding: 20px;">Scheduler Type</label>
+                                    <mat-radio-group aria-label="Select an option" formControlName="schduleRadio"
+                                        name="schduleRadio" (change)="onChangeschduleRadio($event)" >
+                                        <mat-radio-button value="1">Daily
+                                        </mat-radio-button>
+                                        <mat-radio-button value="2">Weekly</mat-radio-button>
+                                        <mat-radio-button value="3">Monthly</mat-radio-button>
+                                        <mat-radio-button value="4">Custome</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                                <div fxLayout="column" fxLayout.gt-sm="row"  *ngIf="Dailydisplay" style="margin-left: 20px;margin-top: 20px;">
+        
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Hours</mat-label>
+                                        <input name="DailyHours" formControlName="DailyHours" placeholder="Hours" matInput
+                                            required type="text">
+        
+                                    </mat-form-field>
+                                </div>
+                           
+                                
+                            <div fxLayout="column" fxLayout.gt-sm="row"  *ngIf="Weeklydisplay" style="margin-left: 20px;margin-top: 20px;">
+        
+                                     <section class="example-section">
+                                       
+                                        <mat-checkbox formControlName="Weekdays" value="true" (change)="getValue($event)" style="margin-right: 10px;">Monday</mat-checkbox>
+                                        <mat-checkbox (change)="getValue($event)" style="margin-right: 10px;">Tuesday</mat-checkbox>
+                                        <mat-checkbox (change)="getValue($event)" style="margin-right: 10px;">WhenesDay</mat-checkbox>
+                                        <mat-checkbox (change)="getValue($event)" style="margin-right: 10px;">Thursday</mat-checkbox>
+                                        <mat-checkbox (change)="getValue($event)" style="margin-right: 10px;">Friday</mat-checkbox>
+                                        <mat-checkbox (change)="getValue($event)" style="margin-right: 10px;">Saturday</mat-checkbox>
+                                        <mat-checkbox (change)="getValue($event)" style="margin-right: 10px;">Sunday</mat-checkbox>
+                                       
+                                    </section>
+                    
+                                    <mat-form-field appearance="outline" style="margin-left: 20px;">
+                                        <mat-label>Weekdays</mat-label>
+                                        <input name="Weekdays" formControlName="Weekdays" placeholder="Weekdays" matInput
+                                            required>
+                                    </mat-form-field>
+        
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Hours</mat-label>
+                                        <input name="WeekHours" formControlName="Weekdays" placeholder="Hours" matInput
+                                            required>
+                                    </mat-form-field>
+                                   
+                                </div>
+        
+                                <div fxLayout="column" fxLayout.gt-sm="row"  *ngIf="Monthlydisplay" style="margin-left: 20px;margin-top: 20px;">
+        
+                      
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Date</mat-label>
+                                        <input name="Monthdate" formControlName="Monthdate" placeholder="Date" matInput
+                                            required>
+        
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Hours</mat-label>
+                                        <input name="MonthHours" formControlName="MonthHours" placeholder="Hours" matInput
+                                            required>
+        
+                                    </mat-form-field>
+                                </div>
+        
+                                <div fxLayout="row" *ngIf="Customdisplay" style="margin-left: 20px;margin-top: 20px;">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Date(s)</mat-label>
+                                        <input name="Customdate" formControlName="Customdate" placeholder="Customdate" matInput
+                                            required>
+        
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Hour(s)</mat-label>
+                                        <input name="CustomHours" formControlName="CustomHours" placeholder="CustomHours"
+                                            matInput required>
+        
+                                    </mat-form-field>
+                                </div>
+        
+                           
+        
+                            <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start"
+                            fxLayoutAlign.gt-sm="space-between center" class="appointment-header gap-12" style="margin-top: 100px;margin-left: 20px;">
+        
+                                <textarea rows="8" cols="150">
+                                   Query
+                                </textarea>
+                            </div>
+        
+        
+                            <div class="button-row-group" style="margin-top: 20px;">
+                                <button class="btn btn-primary" type="submit" (click)="onSubmit()">
+                                    Save
+                                </button>
+                                <button class="btn btn-danger-outline" (click)="onClear()">
+                                    Clear
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+          
+        
+    </div>
+</div> -->

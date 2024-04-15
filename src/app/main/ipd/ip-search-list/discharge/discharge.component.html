@@ -230,7 +230,7 @@
                                 </div>
                             </div>
                         </mat-card>
-                        <div fxLayout="row" fxLayoutAlign="end center" style="margin-top: 20px;">
+                        <!-- <div fxLayout="row" fxLayoutAlign="end center" style="margin-top: 20px;">
                             <button class="next-btn" color="accent" (click)="onDischarge()"
                                 [disabled]="isLoading=='submit'" style="border-radius: 16px;">
                                 <span>
@@ -243,6 +243,15 @@
 
 
 
+                        </div> -->  
+                        <div class="footer-navigation-container mb-4" fxLayout="row wrap"
+                        fxLayoutAlign="space-between center">
+                        <div class="next-div button-row-group">
+                            <button class="btn btn-primary" color="accent" (click)="onDischarge()"  [disabled]="_IpSearchListService.mySaveForm.invalid">
+                                <span>Save</span>
+                            </button>
+                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        </div>
                         </div>
                     </div>
                 </form>

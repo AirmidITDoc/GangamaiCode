@@ -94,8 +94,8 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Invoice No</mat-label>
                                         <input matInput placeholder="InvoiceNo" [(ngModel)]="registerObj.InvoiceNo"
-                                            formControlName="InvoiceNo" #InvoiceNo1
-                                            (keydown)="onEnterInvoiceNo($event)" (keyup)="checkInvoice()">
+                                            formControlName="InvoiceNo" #InvoiceNo1 required
+                                            (keydown)="onEnterInvoiceNo($event)" >
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>

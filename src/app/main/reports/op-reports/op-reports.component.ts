@@ -114,6 +114,7 @@ var data={
       this.FlagVisitSelected=false
       this.FlagPaymentIdSelected=true
       // this.viewgetOPPayemntPdf();
+      this.FlagRefundIdSelected = false;
       
     } 
      else if (this.ReportName == 'OP RefundofBill') {

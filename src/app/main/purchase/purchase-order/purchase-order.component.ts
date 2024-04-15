@@ -521,6 +521,7 @@ export class ItemNameList {
   VatPer:any;
   DefRate:any;
   SupplierName:any;
+  PurchaseDate:any;
   /**
    * Constructor
    *
