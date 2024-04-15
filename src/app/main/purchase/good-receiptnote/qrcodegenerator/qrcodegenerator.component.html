@@ -42,6 +42,13 @@
                                 </div>
                                 <div fxLayout="row">
                                     <mat-form-field appearance="outline">
+                                        <mat-label>Between Space (Space between 2 qr code in mm) </mat-label>
+                                        <input [(ngModel)]="item.Between" value="{{item.Between}}" matInput type="number"
+                                            autocomplete="off" required>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row">
+                                    <mat-form-field appearance="outline">
                                         <mat-label>Margin Bottom </mat-label>
                                         <input [(ngModel)]="item.Margin" value="{{item.Margin}}" matInput type="number"
                                             autocomplete="off" required>
@@ -55,7 +62,7 @@
                         </div>
                         <div id="dvPrint" style="display: none;">
                             <div *ngFor="let obj of QrData" style="display: block;width: 100mm;">
-                                <div *ngFor="let item of [].constructor(obj.Qty); let i = index" style="display: inline-block;width: {{obj.Width}}mm;height: {{obj.Width}}mm;margin-left: 3mm;margin-bottom: {{obj.Margin+1}}mm;">
+                                <div *ngFor="let item of [].constructor(obj.Qty); let i = index" style="display: inline-block;width: {{obj.Width}}mm;height: {{obj.Width}}mm;margin-left: {{obj.Between}}mm;margin-bottom: {{obj.Margin+1}}mm;">
                                     <ngx-qrcode elementType="url" [value]="obj.QrCodeData"
                                         width="{{(obj.Width*3.78).toFixed(0)}}" errorCorrectionLevel="L">
                                     </ngx-qrcode>
