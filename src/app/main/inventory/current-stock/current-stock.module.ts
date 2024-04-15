@@ -36,6 +36,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { CurrentStockComponent } from './current-stock.component';
 import { ItemMovementSummeryComponent } from './item-movement-summery/item-movement-summery.component';
+import { IssueSummeryComponent } from './issue-summery/issue-summery.component';
+import { SalesSummeryComponent } from './sales-summery/sales-summery.component';
+import { SalesReturnSummeryComponent } from './sales-return-summery/sales-return-summery.component';
 
 const routes: Routes = [
   { 
@@ -47,7 +50,10 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     CurrentStockComponent,
-    ItemMovementSummeryComponent
+    ItemMovementSummeryComponent,
+    IssueSummeryComponent,
+    SalesSummeryComponent,
+    SalesReturnSummeryComponent
     
   ],
   imports: [

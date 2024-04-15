@@ -846,29 +846,22 @@ export class IssueToDepartmentComponent implements OnInit {
             });
             return;
         }
-       
         if ((this. vTostoreId == '' || this. vTostoreId == null || this. vTostoreId == undefined)) {
             this.toastr.warning('Please select TostoreId', 'Warning !', {
               toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
           }
-        // if (this._IssueToDep.NewIssueGroup.invalid) {
-        //     this.toastr.warning('please check from is invalid', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
         this.savebtn=true;
         let insertheaderObj = {};
         insertheaderObj['issueDate'] = this.dateTimeObj.date;
         insertheaderObj['issueTime'] = this.dateTimeObj.time;
         insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
         insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
-        insertheaderObj['totalAmount'] = this._IssueToDep.NewIssueGroup.get('FinalTotalAmount').value || 0;
-        insertheaderObj['totalVatAmount'] = this._IssueToDep.NewIssueGroup.get('GSTAmount').value || 0;
-        insertheaderObj['netAmount'] = this._IssueToDep.NewIssueGroup.get('FinalNetAmount').value || 0;
-        insertheaderObj['remark'] = this._IssueToDep.NewIssueGroup.get('Remark').value || '';
+        insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
+        insertheaderObj['totalVatAmount'] = this._IssueToDep.IssueFinalForm.get('GSTAmount').value || 0;
+        insertheaderObj['netAmount'] = this._IssueToDep.IssueFinalForm.get('FinalNetAmount').value || 0;
+        insertheaderObj['remark'] = this._IssueToDep.IssueFinalForm.get('Remark').value || '';
         insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
         insertheaderObj['isVerified'] = false;
         insertheaderObj['isclosed'] = false;

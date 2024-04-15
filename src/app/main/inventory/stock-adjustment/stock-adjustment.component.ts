@@ -124,10 +124,10 @@ export class StockAdjustmentComponent implements OnInit {
       "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
       "ItemId": this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0, //56784
     }
-    console.log(Param)
+    //console.log(Param)
     this._StockAdjustment.getStockList(Param).subscribe(data => {
       this.dsStockAdjList.data = data as StockAdjList[];
-      console.log(this.dsStockAdjList)
+     // console.log(this.dsStockAdjList)
       this.dsStockAdjList.sort = this.sort;
       this.dsStockAdjList.paginator = this.paginator;
       this.sIsLoading = '';

@@ -15,6 +15,9 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { map, startWith } from 'rxjs/operators';
 import { ItemMovementSummeryComponent } from './item-movement-summery/item-movement-summery.component';
+import { IssueSummeryComponent } from './issue-summery/issue-summery.component';
+import { SalesSummeryComponent } from './sales-summery/sales-summery.component';
+import { SalesReturnSummeryComponent } from './sales-return-summery/sales-return-summery.component';
 
 @Component({
   selector: 'app-current-stock',
@@ -36,7 +39,7 @@ export class CurrentStockComponent implements OnInit {
     'ReceivedQty',
     'IssueQty',
     'BalanceQty',
-    // 'GenericName'
+    'ReturnQty'
   ];
   displayedColumnsDayWise = [
     'LedgerDate',
@@ -358,6 +361,54 @@ getOptionTextPurchaseItemList(option) {
   getItemdetails(contact){
     //console.log(contact)
     const dialogRef = this._matDialog.open(ItemMovementSummeryComponent,
+      {
+        maxWidth: "100%",
+        height: '85%',
+        width: '85%',
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getCurrentStockList();
+    });
+  }
+  getIssueSummery(contact){
+    //console.log(contact)
+    const dialogRef = this._matDialog.open(IssueSummeryComponent,
+      {
+        maxWidth: "100%",
+        height: '85%',
+        width: '85%',
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getCurrentStockList();
+    });
+  }
+  getSalesSummery(contact){
+    //console.log(contact)
+    const dialogRef = this._matDialog.open(SalesSummeryComponent,
+      {
+        maxWidth: "100%",
+        height: '85%',
+        width: '85%',
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getCurrentStockList();
+    });
+  }
+  getSalesReturnSummery(contact){
+    //console.log(contact)
+    const dialogRef = this._matDialog.open(SalesReturnSummeryComponent,
       {
         maxWidth: "100%",
         height: '85%',

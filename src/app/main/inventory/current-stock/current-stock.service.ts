@@ -113,6 +113,12 @@ export class CurrentStockService {
   public getItemFormList(param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",param);
   }
+  public getIssueSummeryList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_Phar_IssueList_CurrentSumry",param);
+  }
+  public getIssueSummeryDetailList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_Phar_IssueList_CurrentDet",param);
+  }
   public getDaywisestockview(LedgerDate,StoreId){
     return this._httpClient.get("InventoryTransaction/view-InvDaywiseStock?LedgerDate=" + LedgerDate+"&StoreId="+StoreId);
   }
@@ -127,5 +133,17 @@ export class CurrentStockService {
 
   public ItemWisePurchaseView(FromDate,todate,StoreId){
     return this._httpClient.get("InventoryTransaction/view-ItemWisePurchase?FromDate=" + FromDate+"&todate="+todate +"&StoreId="+StoreId);
+  }
+  public getSalesSummeryList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_Phar_SalesList_CurrentSumry",param);
+  }
+  public getSalesDetailSummeryList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_Phar_SalesList_CurrentDet",param);
+  }
+  public getSalesReturnSummeryList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_Phar_SalesRetrunList_CurrentSumry ",param);
+  }
+  public getSalesReturnDetailSummeryList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_Phar_SalesRetrunList_CurrentDet",param);
   }
 }
