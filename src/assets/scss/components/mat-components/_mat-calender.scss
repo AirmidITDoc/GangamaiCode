@@ -4,8 +4,9 @@
         font-size: inherit;
         .mat-calendar-previous-button,.mat-calendar-next-button{
             &::after{
-                margin: 1rem;
+                margin: 12px;
             }
         }
     }
+    
 }

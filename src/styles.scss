@@ -237,117 +237,8 @@ html {
 }
 
 //spinner start
+// spinner styles are moved into /assets/scss/components/_spinner.scss
 
-.backgroundBlur {
-    text-align: center;
-    // background-color: #818181;
-    position: absolute;
-    z-index: 1000;
-    // height: 470px;
-    // opacity: 0.5;
-    background: rgba(0, 0, 0, 0.4);
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
-.spinner-border {
-    display: inline-block;
-    width: 2rem;
-    height: 2rem;
-    vertical-align: -0.125em;
-    border: 0.25em solid currentColor;
-    border-right-color: transparent;
-    border-radius: 50%;
-    -webkit-animation: 0.75s linear infinite spinner-border;
-    animation: 0.75s linear infinite spinner-border;
-
-    //spinner width
-    color: $primary-600;
-    border-width: 10px;
-    margin: auto;
-    width: 80px;
-    height: 80px;
-    // margin-top: 140px;
-    text-align: center;
-    // margin-right: 280px;
-}
-
-.spinner-border-sm {
-    width: 1rem;
-    height: 1rem;
-    border-width: 0.2em;
-}
-
-@-webkit-keyframes spinner-grow {
-    0% {
-        -webkit-transform: scale(0);
-        transform: scale(0);
-    }
-
-    50% {
-        opacity: 1;
-        -webkit-transform: none;
-        transform: none;
-    }
-}
-
-@keyframes spinner-grow {
-    0% {
-        -webkit-transform: scale(0);
-        transform: scale(0);
-    }
-
-    50% {
-        opacity: 1;
-        -webkit-transform: none;
-        transform: none;
-    }
-}
-
-.spinner-grow {
-    display: inline-block;
-    width: 2rem;
-    height: 2rem;
-    vertical-align: -0.125em;
-    background-color: currentColor;
-    border-radius: 50%;
-    opacity: 0;
-    // -webkit-animation: .75s linear infinite spinner-grow;
-    //animation: .75s linear infinite spinner-grow
-    -webkit-animation: 0.5s linear infinite spinner-grow;
-    animation: loading 0.5s linear infinite;
-}
-
-.spinner-grow-sm {
-    width: 1rem;
-    height: 1rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .spinner-border,
-    .spinner-grow {
-        -webkit-animation-duration: 0.2s;
-        //animation-duration: 1.5s
-        animation-duration: 0.2s;
-    }
-}
-
-@-webkit-keyframes spinner-border {
-    to {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes spinner-border {
-    to {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
 
 .footer-btn {
     width: 70px;
@@ -395,23 +286,68 @@ html {
     border: 1px solid #b7e6fd;
 }
 
-// dropdown search list Text color
-.mat-option-text:hover {
-    // background:  rgb(226, 178, 186); // Hover remove
-    // color:black;
-}
 // Body Them Color
-body.theme-default .accent {
-    background-color: $primary-600 !important;
-    color: $primary-25;
+body .accent {
+    @include themed() {
+        background-color: t($ngt-primary) !important;
+        color: t($ngt-primary-text) !important;
+        .mat-form-field {
+            color: t($ngt-primary-text);
+            .mat-form-field-wrapper {
+                .mat-form-field-flex {
+                    .mat-form-field-outline {
+                    }
+                    .mat-form-field-infix {
+                        // padding: 0.9em 0 0.9em 0;
+                        .mat-select{
+                            .mat-select-value{
+                                .mat-select-value-text{
+                                    color: t($ngt-primary-light);
+                                }
+                            }
+                            .mat-select-arrow-wrapper{
+                                .mat-select-arrow{
+                                    color: inherit;
+                                }
+                            }
+                        }
+                        .mat-form-field-label-wrapper {
+                            .mat-form-field-label {
+                                color: t($ngt-primary-light);
+                            }
+                        }
+                    }
+                    .mat-form-field-suffix{
+                        .mat-datepicker-toggle{
+                            svg{
+                                fill:t($ngt-primary-light);
+                            }
+                        }
+                    }
+                }
+            }
+            &.mat-form-field-appearance-outline {
+                .mat-form-field-outline-thick,
+                .mat-form-field-outline {
+                    .mat-form-field-outline-start,
+                    .mat-form-field-outline-end,
+                    .mat-form-field-outline-gap {
+                        border-width: 1px;
+                    }
+                    color: t($ngt-primary-light);
+                }
+                &.mat-focused {
+                    .mat-form-field-outline,
+                    .mat-form-field-outline-thick {
+                        color: t($ngt-primary-light);
+                    }
+                }
+            }
+        }
+    }
     // background-color: #0479b4 !important;
     // color: black !important;
 }
-
-.mat-toolbar {
-    background-color: $primary-600 !important;
-}
-
 // Button
 
 .footer-btn {
@@ -453,7 +389,7 @@ fieldset {
 }
 .fieldset-div {
     // background-color: #191a1c21;
-    background-color: $primary-50;
+    background-color: inherit;
 }
 legend {
     padding: 10px;
@@ -492,7 +428,8 @@ legend {
     cursor: pointer;
     pointer-events: visible;
 }
-.disable-1-add,.disabled {
+.disable-1-add,
+.disabled {
     pointer-events: none;
     // cursor: ar;
 }
@@ -555,17 +492,17 @@ legend {
 // }
 
 .mat-form-field-appearance-outline .mat-form-field-outline {
-    color: #a69e9e !important;
+    // color: #a69e9e !important;
 }
 
 /* To change mat form field border color on focus */
 .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline {
-    color: #a69e9e !important;
+    // color: #a69e9e !important;
 }
 
 .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid
     .mat-form-field-outline-thick {
-    color: $red-600 !important;
+    // color: $red-600 !important;
 }
 
 .mat-header-text {

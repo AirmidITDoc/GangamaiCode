@@ -1,58 +1,67 @@
 .mat-typography {
-    &.theme-default,
-    .mat-select-panel {
-        .mat-option {
-            @include font-size(13px);
-            font-family: inherit;
-            height: 3rem;
-            line-height: 3rem;
-            &:hover:not(.mat-option-disabled),
-            &:focus:not(.mat-option-disabled),
-            &.mat-active {
-                background-color: $gray-300;
-                color: $gray-900;
-            }
-            &.mat-selected {
-                &:not(.mat-option-multiple):not(.mat-option-disabled) {
-                    background: $gray-300;
-                    color: $gray-900;
-                }
-                &:not(.mat-active):not(:hover) {
-                    background: inherit;
-                }
-            }
-        }
+    @include themed() {
+        .mat-select-panel,
         .mat-autocomplete-panel {
+            background-color: t(bg-color);
+            color: t($text-color);
+            @include box-shadow-small();
             .mat-option {
+                @include font-size(13px);
+                font-family: inherit;
+                height: 3rem;
+                line-height: 3rem;
+                color: inherit;
+                &:hover:not(.mat-option-disabled),
+                &:focus:not(.mat-option-disabled),
+                &.mat-active {
+                    background-color: t($ngt-inverse);
+                    // color: $gray-900;
+                    color: inherit;
+                }
                 &.mat-selected {
+                    &:not(.mat-option-multiple):not(.mat-option-disabled) {
+                        background-color: t($ngt-inverse);
+                        // color: $gray-900;
+                        color: inherit;
+                    }
                     &:not(.mat-active):not(:hover) {
-                        background: $gray-300;
-                        color: $gray-900;
+                        background: inherit;
+                        color: inherit;
                     }
                 }
             }
         }
-    }
-    .mat-menu-panel {
-        .mat-menu-content {
-            .mat-menu-item {
-                font-family: inherit;
-                font-size: inherit;
-                height: 3rem;
-                line-height: 3rem;
+        .mat-menu-panel {
+            background-color: t(bg-color);
+            color: t($text-color);
+            .mat-menu-content {
+                .mat-menu-item {
+                    font-family: inherit;
+                    font-size: inherit;
+                    height: 3rem;
+                    line-height: 3rem;
+                    color: inherit;
+                    .mat-icon-no-color {
+                        color: inherit;
+                    }
+                    &:hover {
+                        background-color: t($ngt-inverse);
+                    }
+                }
             }
         }
-    }
-    .mat-list-base {
-        .mat-list-item,
-        .mat-list-option {
-            .mat-list-icon {
-                height: auto;
-                width: auto;
-                font-size: inherit;
-            }
-            &.mat-list-item-with-avatar {
-                max-height: 42px;
+        .mat-list-base {
+            .mat-list-item,
+            .mat-list-option {
+                color: inherit;
+                .mat-list-icon {
+                    height: auto;
+                    width: auto;
+                    font-size: inherit;
+                }
+                &.mat-list-item-with-avatar {
+                    max-height: 42px;
+                }
             }
         }
     }
