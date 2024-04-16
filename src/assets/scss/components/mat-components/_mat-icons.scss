@@ -14,5 +14,10 @@
         display: inline-flex;
         justify-content: center;
         align-items: center;
+        &.secondary-text{
+            @include themed(){
+                color: t($ngt-inverse-dark);
+            }
+        }
     }
 }

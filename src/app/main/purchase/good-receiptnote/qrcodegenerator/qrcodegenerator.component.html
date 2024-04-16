@@ -42,6 +42,13 @@
                                 </div>
                                 <div fxLayout="row">
                                     <mat-form-field appearance="outline">
+                                        <mat-label>Between Space (Space between 2 qr code in mm) </mat-label>
+                                        <input [(ngModel)]="item.Between" value="{{item.Between}}" matInput type="number"
+                                            autocomplete="off" required>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row">
+                                    <mat-form-field appearance="outline">
                                         <mat-label>Margin Bottom </mat-label>
                                         <input [(ngModel)]="item.Margin" value="{{item.Margin}}" matInput type="number"
                                             autocomplete="off" required>
@@ -54,13 +61,13 @@
                             </div>
                         </div>
                         <div id="dvPrint" style="display: none;">
-                            <div *ngFor="let obj of QrData" style="display: block;width: 100%;">
-                                <div *ngFor="let item of [].constructor(obj.Qty); let i = index">
+                            <div *ngFor="let obj of QrData" style="display: block;width: 100mm;">
+                                <div *ngFor="let item of [].constructor(obj.Qty); let i = index" style="display: inline-block;width: {{obj.Width}}mm;height: {{obj.Width}}mm;margin-left: {{obj.Between}}mm;margin-bottom: {{obj.Margin+1}}mm;">
                                     <ngx-qrcode elementType="url" [value]="obj.QrCodeData"
-                                        [width]="obj.Width" errorCorrectionLevel="L">
+                                        width="{{(obj.Width*3.78).toFixed(0)}}" errorCorrectionLevel="L">
                                     </ngx-qrcode>
                                     <div
-                                        style="text-align: left;margin-left: {{obj.Width/2}}px;font-size: 10px;margin-bottom: {{obj.Margin}}px;">
+                                        style="text-align: left;margin-left: 2mm;font-size: 10px;margin-bottom: {{obj.Margin}}mm;">
                                         ||{{obj.QrCodeData}}||</div>
                                 </div>
                             </div>

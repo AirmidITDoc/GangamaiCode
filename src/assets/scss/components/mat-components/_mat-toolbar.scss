@@ -20,9 +20,6 @@
                     justify-content: center;
                     .nav-item {
                         height: 100%;
-                        &.seperator-right-0 {
-                            border-right: 1px solid #afafaf;
-                        }
                         button {
                             display: flex;
                             justify-content: center;
@@ -45,5 +42,10 @@
         font: inherit;
         // @include font-size(12px);
         font-size: 1rem;
+        @include themed(){
+            .toolbar-separator{
+                background-color: t($ngt-inverse);
+            }
+        }
     }
 }

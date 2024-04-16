@@ -50,8 +50,9 @@
     }
     &.btn-dark {
     }
-    &:disabled {
+    &:disabled,&.btn-disabled {
         opacity: 0.2;
+        pointer-events: none;
     }
     &.btn-primary {
     }
@@ -84,8 +85,8 @@
     }
     @include themed() {
         &.btn-primary {
-            background: $primary-600;
-            border-color: $primary-600;
+            background: t($ngt-primary);
+            border-color: t($ngt-primary);
             color: $primary-25;
         }
         &.btn-danger {
@@ -102,11 +103,11 @@
         }
         &.btn-primary-outline {
             background: transparent;
-            color: $primary-600;
-            border-color: $primary-600;
+            color: t($ngt-primary);
+            border-color: t($ngt-primary);
             &.btn-hover {
                 &:hover {
-                    background-color: $primary-600;
+                    background-color: t($ngt-primary);
                     color: $primary-25;
                 }
             }

@@ -25,7 +25,7 @@
 
             <div class="title">LOGIN TO YOUR ACCOUNT</div>
 
-            <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+            <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate class="mat-error-fix">
                 <mat-form-field appearance="outline">
                     <mat-label>Username</mat-label>
                     <input matInput formControlName="username" />
@@ -70,7 +70,7 @@
                     </a>
                 </div> -->
 
-                <button mat-raised-button color="accent" class="submit-button" aria-label="LOGIN"
+                <button color="accent" class="btn btn-primary w-100-p" aria-label="LOGIN"
                     [disabled]="loginForm.invalid">
                     LOGIN
                 </button>

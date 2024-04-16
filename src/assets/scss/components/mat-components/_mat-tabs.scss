@@ -1,44 +1,82 @@
-.mat-tab-group {
-    font-family: inherit;
-    .mat-tab-header {
-        background-color: $gray-100;
-        border-radius: 4px;
-        .mat-tab-label-container {
-            .mat-tab-labels {
-                .mat-tab-label {
-                    font-family: inherit;
-                    height: 40px;
-                    .mat-tab-label-content {
-                        font-size: 1rem;
-                        font-weight: bold;
-                    }
-                    &.mat-tab-label-active {
+.mat-typography {
+    .mat-tab-group {
+        font-family: inherit;
+        .mat-tab-header {
+            border-radius: 4px;
+            .mat-tab-label-container {
+                .mat-tab-labels {
+                    .mat-tab-label {
+                        font-family: inherit;
+                        height: 40px;
                         .mat-tab-label-content {
-                            color: $gray-900;
+                            font-size: 1rem;
+                            font-weight: bold;
+                        }
+                        &.mat-tab-label-active {
+                            .mat-tab-label-content {
+                                color: $gray-900;
+                            }
+                        }
+                    }
+                    .mat-ink-bar {
+                        height: 1px;
+                    }
+                }
+            }
+        }
+        &.mat-tab-header-small {
+            .mat-tab-label-container {
+                .mat-tab-labels {
+                    .mat-tab-label {
+                        height: 35px;
+                        .mat-tab-label-content {
+                            font-size: 0.9rem;
                         }
                     }
                 }
-                .mat-ink-bar {
-                    height: 1px;
-                }
             }
         }
-    }
-    &.mat-tab-header-small {
-        .mat-tab-label-container {
-            .mat-tab-labels {
-                .mat-tab-label {
-                    height: 35px;
-                    .mat-tab-label-content {
-                        font-size: 0.9rem;
+        &.inkbar-hidden {
+            .mat-ink-bar {
+                display: none;
+            }
+        }
+        @include themed() {
+            .mat-tab-header {
+                background-color: $gray-100;
+                background-color: t($ngt-tab);
+                color: t($text-color);
+                .mat-tab-label-container {
+                    .mat-tab-labels {
+                        .mat-tab-label {
+                            color: inherit;
+                            .mat-tab-label-content {
+                            }
+                            &.mat-tab-label-active {
+                                .mat-tab-label-content {
+                                    color: inherit;
+                                }
+                            }
+                        }
+                        .mat-ink-bar {
+                        }
                     }
                 }
             }
-        }
-    }
-    &.inkbar-hidden {
-        .mat-ink-bar {
-            display: none;
+            &.mat-tab-header-small {
+                .mat-tab-label-container {
+                    .mat-tab-labels {
+                        .mat-tab-label {
+                            .mat-tab-label-content {
+                            }
+                        }
+                    }
+                }
+            }
+            &.inkbar-hidden {
+                .mat-ink-bar {
+                }
+            }
         }
     }
 }

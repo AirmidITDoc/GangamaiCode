@@ -1,10 +1,26 @@
-.mat-expansion-panel {
-    .mat-expansion-panel-header {
-        font-family: inherit;
-        .mat-expansion-panel-header-title {
-            @include font-size(14px);
-            font-weight: 600;
-            letter-spacing: 0.6px;
+.mat-typography {
+    .mat-expansion-panel {
+        .mat-expansion-panel-header {
+            font-family: inherit;
+            .mat-expansion-panel-header-title {
+                @include font-size(14px);
+                font-weight: 600;
+                letter-spacing: 0.6px;
+            }
+        }
+        @include themed() {
+            background-color: t($ngt-card);
+            color: t($text-color);
+            .mat-expansion-panel-header {
+                .mat-expansion-panel-header-title {
+                    color: inherit;
+                }
+                .mat-expansion-indicator {
+                    &::after {
+                        color: inherit;
+                    }
+                }
+            }
         }
     }
 }

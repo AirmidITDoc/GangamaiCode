@@ -4,8 +4,6 @@ login {
     #login {
         width: 100%;
         overflow: hidden;
-        
-        background: white;
         // background: url("/assets/images/backgrounds/dark-material-bg.jpg")
         //     no-repeat;
         background-size: cover;
@@ -26,14 +24,12 @@ login {
                 font-size: 42px;
                 font-weight: 300;
                 line-height: 1;
-                color: black;
             }
 
             .description {
                 padding-top: 16px;
                 font-size: 14px;
                 max-width: 600px;
-                color: black;
             }
         }
 

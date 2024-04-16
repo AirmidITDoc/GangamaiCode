@@ -182,7 +182,10 @@
                                                     ReceivedQty
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <mat-icon (click)="getIssueSummery(contact)" >visibility</mat-icon>  {{contact.ReceivedQty}}  
+                                                    <mat-icon (click)="getIssueSummery(contact)" >visibility</mat-icon>  
+                                                    <span>
+                                                        {{contact.ReceivedQty}}  
+                                                    </span>
                                                 </mat-cell>
                                             </ng-container>
 

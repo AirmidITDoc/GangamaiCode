@@ -6,6 +6,12 @@ $input-border: "input-border";
 $input-control-label: "input-control-label";
 
 // Basics
+$ngt-primary: "ngt-primary";
+$ngt-primary-light: "ngt-primary-light";
+$ngt-primary-text: "ngt-primary-text";
+$ngt-primary-50: "ngt-primary-50";
+$ngt-card: "ngt-card";
+$ngt-tab: "ngt-tab";
 $ngt-warning: "ngt-warning";
 $ngt-danger: "ngt-danger";
 $ngt-inverse: "ngt-inverse";
@@ -18,55 +24,105 @@ $switch-border: "switch-border";
 $switch-color: "switch-color";
 
 $themes: (
-  light: (
-    bg-color: $primary-25,
-    text-color: $gray-900,
-    input-border: $primary-200,
-    input-control-label: $gray-700,
-    ngt-warning: $yellow-700,
-    ngt-danger: $red-600,
-    ngt-inverse: $primary-25,
-    ngt-inverse-dark: $gray-900,
-    ngt-secondary: $primary-300,
-    switch-bg: $gray-400,
-    switch-border: $gray-400,
-    switch-color: $primary-600
-  ),
-  dark: (
-    bg-color: $gray-900,
-    text-color: $primary-25,
-    input-border: $gray-200,
-    input-control-label: $gray-700,
-    ngt-warning: $yellow-700,
-    ngt-danger: $red-600,
-    ngt-inverse: $gray-900,
-    ngt-inverse-dark: $primary-25,
-    ngt-secondary: $primary-300,
-    switch-bg: $gray-400,
-    switch-border: $gray-400,
-    switch-color: $primary-600
-  )
+    light: (
+        bg-color: $primary-25,
+        text-color: $gray-900,
+        input-border: $gray-400,
+        input-control-label: $gray-700,
+        ngt-primary: $primary-600,
+        ngt-primary-text: $primary-25,
+        ngt-primary-light: $primary-100,
+        ngt-primary-50: $primary-50,
+        ngt-card: $primary-25,
+        ngt-tab: $gray-100,
+        ngt-warning: $yellow-700,
+        ngt-danger: $red-600,
+        ngt-inverse: $gray-300,
+        ngt-inverse-dark: $gray-700,
+        ngt-secondary: $primary-300,
+        switch-bg: $gray-400,
+        switch-border: $gray-400,
+        switch-color: $primary-600,
+    ),
+    dark: (
+        bg-color: $gray-900,
+        text-color: $primary-25,
+        input-border: $gray-400,
+        input-control-label: $gray-300,
+        ngt-primary: $primary-600,
+        ngt-primary-text: $primary-25,
+        ngt-primary-light: $primary-100,
+        ngt-primary-50: $gray-700,
+        ngt-card: $gray-800,
+        ngt-tab: $gray-800,
+        ngt-warning: $yellow-700,
+        ngt-danger: $red-600,
+        ngt-inverse: $gray-700,
+        ngt-inverse-dark: $gray-300,
+        ngt-secondary: $primary-300,
+        switch-bg: $gray-400,
+        switch-border: $gray-400,
+        switch-color: $primary-600,
+    ),
+    // "dark-indigo": (
+    //     bg-color: $gray-900,
+    //     text-color: $primary-25,
+    //     input-border: $gray-400,
+    //     input-control-label: $gray-300,
+    //     ngt-primary: $indigo-600,
+    //     ngt-primary-text: $primary-25,
+    //     ngt-primary-light: $indigo-100,
+    //     ngt-primary-50: $gray-700,
+    //     ngt-card: $gray-800,
+    //     ngt-warning: $yellow-700,
+    //     ngt-danger: $red-600,
+    //     ngt-inverse: $gray-700,
+    //     ngt-inverse-dark: $gray-300,
+    //     ngt-secondary: $indigo-300,
+    //     switch-bg: $gray-400,
+    //     switch-border: $gray-400,
+    //     switch-color: $indigo-600,
+    // ),
+    // "indigo": (
+    //     bg-color: $primary-25,
+    //     text-color: $gray-900,
+    //     input-border: $gray-400,
+    //     input-control-label: $gray-700,
+    //     ngt-primary: $indigo-600,
+    //     ngt-primary-text: $primary-25,
+    //     ngt-primary-light: $indigo-100,
+    //     ngt-primary-50: $indigo-50,
+    //     ngt-card: $primary-25,
+    //     ngt-warning: $yellow-700,
+    //     ngt-danger: $red-600,
+    //     ngt-inverse: $gray-300,
+    //     ngt-inverse-dark: $gray-700,
+    //     ngt-secondary: $indigo-300,
+    //     switch-bg: $gray-400,
+    //     switch-border: $gray-400,
+    //     switch-color: $indigo-600,
+    // ),
 );
 
 @mixin themed() {
-  @each $theme, $map in $themes {
-    .theme-#{$theme} & {
-      $theme-map: () !global;
-      @each $key, $submap in $map {
-        $value: map-get(map-get($themes, $theme), "#{$key}");
-        $theme-map: map-merge(
-          $theme-map,
-          (
-            $key: $value
-          )
-        ) !global;
-      }
-      @content;
-      $theme-map: null !global;
+    @each $theme, $map in $themes {
+        .theme-#{$theme} & {
+            $theme-map: () !global;
+            @each $key, $submap in $map {
+                $value: map-get(map-get($themes, $theme), "#{$key}");
+                $theme-map: map-merge(
+                    $theme-map,
+                    (
+                        $key: $value,
+                    )
+                ) !global;
+            }
+            @content;
+            $theme-map: null !global;
+        }
     }
-  }
 }
 
 @function t($key) {
-  @return map-get($theme-map, $key);
+    @return map-get($theme-map, $key);
 }

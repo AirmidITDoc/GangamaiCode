@@ -1,0 +1,21 @@
+.mat-typography {
+    .mat-drawer-container {
+        .mat-drawer {
+            .mat-drawer-inner-container {
+            }
+        }
+        .mat-drawer-content {
+        }
+        @include themed() {
+            background-color: t($bg-color);
+            color: t($text-color);
+            .mat-drawer {
+                color: inherit;
+                .mat-drawer-inner-container {
+                }
+                .mat-drawer-content {
+                }
+            }
+        }
+    }
+}

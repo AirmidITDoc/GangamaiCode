@@ -7,15 +7,15 @@
     login {
         #login {
             #login-intro {
-                color: white;
+                // color: white;
             }
 
             #login-form-wrapper {
-                @if ($is-dark) {
-                    background: mat-color($fuse-navy, 600);
-                } @else {
-                    background: map-get($background, card);
-                }
+                // @if ($is-dark) {
+                //     background: mat-color($fuse-navy, 600);
+                // } @else {
+                //     background: map-get($background, card);
+                // }
 
                 #login-form {
                     .separator {
