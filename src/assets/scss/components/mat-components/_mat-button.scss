@@ -15,9 +15,12 @@
     }
     @include themed() {
         .mat-raised-button {
-            background-color: t($bg-color);
+            background-color: t($ngt-card);
             color: t($text-color);
-            @include box-shadow-small();
+            &:not([class*=mat-elevation-z]){
+                // @include box-shadow-small(2px);
+
+            }
             .mat-icon {
             }
         }

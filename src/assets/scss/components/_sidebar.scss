@@ -5,7 +5,7 @@ fuse-sidebar {
         @include font-size(16px);
     }
     .clearbutton {
-        margin-right: 10px;
+        // margin-right: 10px;
     }
 }
 .fuse-search-sidebar,.fuse-search-sidebar.mat-drawer {
@@ -68,7 +68,7 @@ fuse-sidebar {
             }
             .action-buttons {
                 .mat-icon {
-                    color: t($ngt-primary);
+                    color: t($text-color);
                 }
             }
         }

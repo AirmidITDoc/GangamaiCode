@@ -29,7 +29,7 @@ $modalHeader: 45px;
                         .title-icon {
                         }
                     }
-                    .modal-header-icon {
+                    .modal-header-icon,.c {
                         .modal-icon {
                             display: flex;
                             justify-content: center;
@@ -79,7 +79,7 @@ $modalHeader: 45px;
             }
         }
         @include themed() {
-            background-color: t($bg-color);
+            background-color: t($bg-color-light);
             color: t($text-color);
             .modal-wrapper {
                 &.grid-container {

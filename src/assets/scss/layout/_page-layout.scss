@@ -22,8 +22,9 @@
         justify-content: space-between;
         align-items: center;
         padding: 8px 16px;
-        @include themed(){
+        @include themed() {
             background-color: t($ngt-primary);
+            color: t($ngt-primary-text);
         }
         .top-header-info {
             display: flex;
@@ -33,13 +34,16 @@
             .top-header-title {
                 @include font-size(17px);
             }
-            .common-date-container{
+            .common-date-container {
                 display: flex;
                 align-items: center;
                 gap: 8px;
             }
         }
-        .date-time-container,.comman-date-container {
+        .top-header-right {
+        }
+        .date-time-container,
+        .comman-date-container {
             .mat-form-field {
                 .mat-form-field-wrapper {
                     margin: 0;
@@ -72,19 +76,19 @@
             @include font-size(17px);
         }
     }
-    .patient-info-row {
+}
+.patient-info-row {
+    display: flex;
+    align-items: center;
+    .patient-col {
         display: flex;
         align-items: center;
-        .patient-col {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            @include font-size(14px);
-            .patient-col-key {
-                font-weight: 700;
-            }
-            .patient-col-value {
-            }
+        gap: 3px;
+        @include font-size(14px);
+        .patient-col-key {
+            font-weight: 700;
+        }
+        .patient-col-value {
         }
     }
 }
