@@ -136,13 +136,13 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                            <ng-container matColumnDef="StoreName">
+                                            <!-- <ng-container matColumnDef="StoreName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Store Name </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     <span> {{contact.StoreName}}</span>
                                                 </mat-cell>
-                                            </ng-container>
+                                            </ng-container> -->
 
                                             <ng-container matColumnDef="SupplierName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -215,12 +215,11 @@
                                                 </mat-footer-cell>
                                             </ng-container>
 
-                                            <mat-header-row class="accent min-width-1200"
+                                            <mat-header-row class="accent"
                                                 *matHeaderRowDef="displayedColumns; sticky: true">
                                             </mat-header-row>
 
-                                            <mat-row class=" min-width-1200"
-                                                *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                            <mat-row  *matRowDef="let contact; columns: displayedColumns;" class="contact"
                                                 [@animate]="{value:'*',params:{y:'100%'}}"
                                                 (click)="getGRNReturnItemDetList(contact)"></mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
@@ -232,6 +231,8 @@
                                         <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
                                             showFirstLastButtons>
                                         </mat-paginator>
+
+                                       
 
 
                                     </div>

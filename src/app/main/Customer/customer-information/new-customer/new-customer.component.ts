@@ -178,6 +178,7 @@ if ((this.vMobileNo == '' || this.vMobileNo == null || this.vMobileNo == undefin
   }
   onReset(){
 this._CustomerInfo.myform.reset();
+this.onClose();
   }
   onClose(){
     this._matDialog.closeAll();

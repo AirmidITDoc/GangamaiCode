@@ -170,6 +170,8 @@ export class SalesComponent implements OnInit {
   roundoffAmt: any;
   Functionflag = 0;
 
+ 
+
   patientDetailsFormGrp: FormGroup;
   paymentArr1: any[] = this.opService.getPaymentArr();
   paymentArr2: any[] = this.opService.getPaymentArr();
@@ -321,6 +323,9 @@ export class SalesComponent implements OnInit {
   newDateTimeObj: any = {};
   vextAddress: any = '';
 
+  vPharExtOpt: any = 0;
+  vPharOPOpt: any = 0;
+  vPharIPOpt: any = 0;
 
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
@@ -374,6 +379,11 @@ export class SalesComponent implements OnInit {
     this.getBankNameList3();
     this.getBankNameList4();
     this.getDraftorderList();
+
+    console.log(this._loggedService.currentUserValue.user);
+    this.vPharExtOpt = this._loggedService.currentUserValue.user.PharExtOpt;
+    this.vPharOPOpt=this._loggedService.currentUserValue.user.PharOPOpt;
+    this.vPharIPOpt=this._loggedService.currentUserValue.user.PharIPOpt;
   }
 
 

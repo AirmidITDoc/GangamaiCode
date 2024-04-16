@@ -23,7 +23,7 @@ export class GRNReturnWithoutGRNService {
   CreateReturnSearchForm() {
     return this._formBuilder.group({
       FromStoreId: '',
-      SupplierName:'',
+      SupplierId:[''],
       Status:['0'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
@@ -45,8 +45,8 @@ export class GRNReturnWithoutGRNService {
       ExpDates:[''],
       BalQty:[''],
       Qty:[''],
-      PurRate:[''],
-      PurTotal:[''],
+      Rate:[''],
+      TotalAmount:[''],
       GST:[''],
       GSTAmount:[''],
       NetAmount:[''],
@@ -72,7 +72,8 @@ export class GRNReturnWithoutGRNService {
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  public getSupplierList(param){
+
+    public getSupplierList(param) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", param);
   }
   public getGRNReturnList(Param){
@@ -84,5 +85,8 @@ export class GRNReturnWithoutGRNService {
   public getItemNameList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
   }
-
+  public GRNReturnSave(Param){
+    return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
+  }
+  
 }
