@@ -18,7 +18,7 @@ export class CustomerBillRaiseService {
    Createmyform(){
     return this._formbuilder.group({
       InvoiceNo:[''],
-      InvoiceRaisedId:[''],
+      Description:[''],
       Amount:[''],
       CustomerId:[''],
       InvoiceDate:[new Date()],
@@ -27,5 +27,8 @@ export class CustomerBillRaiseService {
    }
    public SaveCustomerBill(Param){
     return this._httpClient.post("CustomerInformation/CustomerInvoiceRaiseSave", Param)
+  }
+  public getCustomerSearchCombo(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CustomerNameCombo", param);
   }
 }

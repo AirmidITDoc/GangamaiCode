@@ -65,7 +65,7 @@
 
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>ItemName</mat-label>
-                            <input matAutocompletePosition="below" type="text" required placeholder="Select Item"
+                            <input matAutocompletePosition="below" type="text"  placeholder="Select Item"
                                 matInput formControlName="ItemID" [matAutocomplete]="auto2"
                                 (input)="getStockItemList()">
                             <span matSuffix style="display: flex;">
@@ -77,6 +77,24 @@
                             <mat-autocomplete #auto2="matAutocomplete" [displayWith]="getOptionTextItemList">
                                 <mat-option *ngFor="let option of ItemListfilteredOptions" [value]="option">
                                     {{option.ItemName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>BatchNo</mat-label>
+                            <input matAutocompletePosition="below" type="text"  placeholder="Select BatchNo"
+                                matInput formControlName="BatchNo" [matAutocomplete]="auto3"
+                                (input)="getBatchNoList()">
+                            <span matSuffix style="display: flex;">
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_ItemMovemnentService.ItemSearchGroup.get('BatchNo').setValue(''); isBatchNoSelected = false;">close</mat-icon>
+                                <mat-icon class="mat-icon-close"
+                                    (click)="_ItemMovemnentService.ItemSearchGroup.get('BatchNo').setValue(''); isBatchNoSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #auto3="matAutocomplete" [displayWith]="getOptionTextBatchNoList">
+                                <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                    {{option.BatchNo}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>

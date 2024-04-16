@@ -22,15 +22,19 @@ export class NewGRNReturnComponent implements OnInit {
   displayedColumns2 = [
     'ItemName',
     'BatchNo',
+    'ConversionFactor',
     'ExpDate',
     'BalQty',
     'Qty',
-    'PurRate',
+    'LandedRate',
     'TotalAmount',
+    'UnitMRP',
+    'PurchaseRate',
     "GST",
     'GSTAmount',
     'NetAmount',
     'BalanceQty',
+    'StockId',
     'buttons',
   ];
 
@@ -45,8 +49,8 @@ export class NewGRNReturnComponent implements OnInit {
   vExpDates:any;
   vBalQty:any;
   vQty:any;
-  vPurRate:any;
-  vPurTotal:any;
+  vLandedRate:any;
+  vTotalAmount:any;
   vGST:any;
   vGSTAmount:any;
   vNetAmount:any;
@@ -58,6 +62,7 @@ export class NewGRNReturnComponent implements OnInit {
   ItemName:any;
   chargeslist:any=[];
   vGSTType:any;
+  screenFromString:'GrnReturn-Form'
 
  dsItemList = new MatTableDataSource<ItemNameList>();
  dsTempItemNameList = new MatTableDataSource<ItemNameList>();
@@ -144,6 +149,12 @@ export class NewGRNReturnComponent implements OnInit {
       this.getBatch();
     }
   }
+  vLandedrate:any;
+  vUnitMRP:any;
+  vStockId:any;
+  vConversionFactor:any;
+  vPurchaseRate:any;
+
   getBatch() {
     this.setFocus('Qty');
     const dialogRef = this._matDialog.open(SalePopupComponent,
@@ -165,11 +176,17 @@ export class NewGRNReturnComponent implements OnInit {
         this.vExpDates = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
         this.vQty = '';
         this.vBalQty = result.BalanceQty;
-        this.vPurRate = result.PurchaseRate;
-        this.vPurTotal = 0;
+        this.vLandedRate = result.PurchaseRate;
+        this.vTotalAmount = 0;
         this.vGST = result.VatPercentage;
         this.vGSTAmount = 0;
         this.vNetAmount = 0;
+        this.vLandedrate = result.LandedRate;
+        this.vUnitMRP = result.UnitMRP;
+        this.vStockId = result.StockId;
+        this.vConversionFactor = result.ConversionFactor;
+        this.vPurchaseRate = result.PurchaseRate;
+
     });
 }
   onAdd(){
@@ -189,15 +206,19 @@ export class NewGRNReturnComponent implements OnInit {
           ItemId: this._GRNReturnService.NewGRNReturnFrom.get('ItemName').value.ItemID || 0,
           ItemName: this._GRNReturnService.NewGRNReturnFrom.get('ItemName').value.ItemName || '',
           BatchNo: this.vBatchNo || '',
+          ConversionFactor: this.vConversionFactor || 0,
           ExpDate: this.vExpDates,
           BalQty: this.vBalQty || 0,
           Qty: this.vQty || 0,
-          PurRate: this.vPurRate || 0,
-          TotalAmount: this.vPurTotal || 0,
+          LandedRate: this.vLandedRate || 0,
+          TotalAmount: this.vTotalAmount || 0,
+          UnitMRP:this.vUnitMRP || 0,
+          PurchaseRate:this.vPurchaseRate || 0,
           VatPercentage: this.vGST || 0,
           VatAmount: this.vGSTAmount || 0,
           NetAmount: this.vNetAmount || 0,
-          BalanceQty:(parseFloat(this.vBalQty) - parseFloat(this.vQty))
+          BalanceQty:(parseFloat(this.vBalQty) - parseFloat(this.vQty)),
+          StockId:this.vStockId || 0
         });
       this.dsItemList.data = this.chargeslist
     }
@@ -207,6 +228,7 @@ export class NewGRNReturnComponent implements OnInit {
       });
     }
     this.ItemReset();
+    this.setFocus('ItemName');
     //this.date.setValue(new Date());
     //this._GRNReturnService.userFormGroup.get('ItemName').setValue('');
     //this.vNetAmount = 0;
@@ -232,8 +254,8 @@ export class NewGRNReturnComponent implements OnInit {
     this.vExpDates = '';
     this.vBalQty = 0;
     this.vQty =  0;
-    this.vPurRate = 0;
-    this.vPurTotal = 0;
+    this.vLandedRate = 0;
+    this.vTotalAmount = 0;
     this.vGST = 0;
     this.vGSTAmount = 0;
     this.vNetAmount = 0;
@@ -241,11 +263,11 @@ export class NewGRNReturnComponent implements OnInit {
  
   CalculateTotalAmt(){
     if(this.vQty > 0 && this.vBalQty > this.vQty){
-      this.vPurTotal = (parseFloat(this.vQty) * parseFloat(this.vPurRate)).toFixed(2);
-      this.vNetAmount = this.vPurRate;
+      this.vTotalAmount = (parseFloat(this.vQty) * parseFloat(this.vLandedRate)).toFixed(2);
+      this.vNetAmount = this.vTotalAmount;
     }else{
       this.vQty = '';
-      this.vPurTotal = 0;
+      this.vTotalAmount = 0;
       this.vGSTAmount =0;
       this.vNetAmount = 0;
       this.toastr.warning('Please Qty lessthan BalQty', 'Warning !', {
@@ -255,8 +277,8 @@ export class NewGRNReturnComponent implements OnInit {
     let RadioValue = this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value || 1 ;
     console.log(RadioValue);
     if(RadioValue == 0){
-      this.vGSTAmount = ((parseFloat(this.vGST) * parseFloat(this.vPurTotal)) / 100).toFixed(2);
-      this.vNetAmount = (parseFloat(this.vPurTotal) + parseFloat(this.vGSTAmount)).toFixed(2);
+      this.vGSTAmount = ((parseFloat(this.vGST) * parseFloat(this.vTotalAmount)) / 100).toFixed(2);
+      this.vNetAmount = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
     }else{
       this.vGSTAmount = 0;
     }
@@ -266,6 +288,7 @@ export class NewGRNReturnComponent implements OnInit {
   vFinalVatAmount:any;
   vFinalNetAmount:any;
   vNetRoundAmt:any;
+  mrpTotalAmount:any;
 
   getGSTTotalAmt(element) {
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
@@ -278,6 +301,7 @@ export class NewGRNReturnComponent implements OnInit {
 
   getNetTotalAmt(element) {
      let FinalRoundAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+     this.mrpTotalAmount =  (element.reduce((sum, { UnitMRP }) => sum += +(UnitMRP || 0), 0)).toFixed(2);
      this.vFinalNetAmount = Math.round(FinalRoundAmt).toFixed(2); 
      this.vNetRoundAmt = (parseFloat(this.vFinalNetAmount) - (FinalRoundAmt)).toFixed(2);
 
@@ -285,12 +309,115 @@ export class NewGRNReturnComponent implements OnInit {
   }
   Savebtn:boolean=false;
   OnSave(){
-    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-      this.toastr.warning('Please enter a Qty', 'Warning !', {
+    if ((!this.dsItemList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
+    if ((this.vSupplierId == '' || this.vSupplierId == null || this.vSupplierId == undefined)) {
+      this.toastr.warning('Please Select Supplier name.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    this.Savebtn = true;
+    let grnReturnSave = {};
+    grnReturnSave['grnId'] = 0;
+    grnReturnSave['grnReturnDate'] = this.datePipe.transform(this._GRNReturnService.NewGRNReturnFrom.get('ReturnDate').value ,'MM/dd/YYYY');
+    grnReturnSave['grnReturnTime'] =this.dateTimeObj.time;
+    grnReturnSave['storeId'] =this._loggedService.currentUserValue.user.storeId || 0;
+    grnReturnSave['supplierID'] =this._GRNReturnService.NewGRNReturnFrom.get('SupplierName').value.SupplierId;
+    grnReturnSave['totalAmount'] =  this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value|| 0;
+    grnReturnSave['grnReturnAmount'] = this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value || 0;
+    grnReturnSave['totalDiscAmount'] = 0;
+    grnReturnSave['totalVATAmount'] =  this._GRNReturnService.ReturnFinalForm.get('FinalVatAmount').value || 0;
+    grnReturnSave['totalOtherTaxAmount'] =0;
+    grnReturnSave['totalOctroiAmount'] = 0;
+    grnReturnSave['netAmount'] =  this._GRNReturnService.ReturnFinalForm.get('FinalNetPayamt').value || 0;
+    grnReturnSave['cash_Credit'] = true//this._GRNReturnService.NewGRNReturnFrom.get('CashType').value;
+    grnReturnSave['remark'] = this._GRNReturnService.ReturnFinalForm.get('Remark').value || '';
+    grnReturnSave['isVerified'] = true;
+    grnReturnSave['isClosed'] = true;
+    grnReturnSave['addedby'] =this._loggedService.currentUserValue.user.id || 0;
+    grnReturnSave['isCancelled'] =true;
+    grnReturnSave['grnType'] = 0 ;
+    grnReturnSave['isGrnTypeFlag'] = true;
+    grnReturnSave['grnReturnId'] =0;
+  
+    let grnReturnDetailSavearray=[];
+    this.dsItemList.data.forEach((element) => {
+
+      let totalQty = (parseFloat(element.Qty) * parseFloat(element.ConversionFactor))
+  
+      let grnDetailSaveObj = {};
+      grnDetailSaveObj['grnReturnId'] = 0;
+      grnDetailSaveObj['itemId'] = element.ItemId || 0;
+      grnDetailSaveObj['batchNo'] = element.BatchNo || '';
+      grnDetailSaveObj['batchExpiryDate'] = element.ExpDate || 0;
+      grnDetailSaveObj['returnQty'] = element.Qty || 0;
+      grnDetailSaveObj['landedRate'] =  element.LandedRate ||  0;
+      grnDetailSaveObj['mrp'] = element.UnitMRP || 0;
+      grnDetailSaveObj['unitPurchaseRate'] = element.PurchaseRate || 0;
+      grnDetailSaveObj['vatPercentage'] = element.VatPercentage || 0;
+      grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
+      grnDetailSaveObj['taxAmount'] = 0;
+      grnDetailSaveObj['otherTaxAmount'] = 0;
+      grnDetailSaveObj['octroiPer'] =  0;
+      grnDetailSaveObj['octroiAmt'] =  0;
+      grnDetailSaveObj['landedTotalAmount'] =  element.TotalAmount || 0;
+      grnDetailSaveObj['mrpTotalAmount'] = this.mrpTotalAmount || 0;
+      grnDetailSaveObj['conversion'] = element.ConversionFactor || 0;
+      grnDetailSaveObj['remarks'] = '';
+      grnDetailSaveObj['cf'] = element.ConversionFactor || 0;
+      grnDetailSaveObj['totalQty'] =totalQty || 0;
+      grnDetailSaveObj['grnId'] =  0
+      grnReturnDetailSavearray.push(grnDetailSaveObj);
+  
+    });
+  
+    let grnReturnUpdateCurrentStockarray = [];
+    this.dsItemList.data.forEach((element) => {
+      let grnReturnUpdateCurrentStockObj = {};
+      grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
+      grnReturnUpdateCurrentStockObj['issueQty'] = element.BalQty || 0;
+      grnReturnUpdateCurrentStockObj['stkId'] = element.StockId || 0;
+      grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.user.storeId || 0;
+      grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);
+    });
+  
+    let grnReturnUpateReturnQtyarray = [];
+    this.dsItemList.data.forEach((element) => {
+      let grnReturnUpateReturnQty = {};
+      grnReturnUpateReturnQty['grnDetID'] = 0;
+      grnReturnUpateReturnQty['returnQty'] = element.Qty || 0;
+      grnReturnUpateReturnQtyarray.push(grnReturnUpateReturnQty);
+    });
+  
+    let submitdata={
+      'grnReturnSave':grnReturnSave,
+      'grnReturnDetailSave':grnReturnDetailSavearray,
+      'grnReturnUpdateCurrentStock':grnReturnUpdateCurrentStockarray,
+      'grnReturnUpateReturnQty':grnReturnUpateReturnQtyarray
+    }
+    console.log(submitdata)
+    this._GRNReturnService.GRNReturnSave(submitdata).subscribe(response => {
+      if (response) {
+        this.toastr.success('Record New GRN Return Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.OnReset();
+        this.Savebtn = true;
+      } else {
+        this.toastr.error('New GRN Return Data not saved !, Please check validation error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    }, error => {
+      this.toastr.error('New GRN Return Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });
   }
   OnReset(){
     this.dsItemList.data = [];
@@ -298,6 +425,7 @@ export class NewGRNReturnComponent implements OnInit {
     this.dsTempItemNameList .data = [];
     this._GRNReturnService.NewGRNReturnFrom.reset();
     this._GRNReturnService.ReturnFinalForm.reset();
+    this._matDialog.closeAll();
   }
   onClose(){
     this._matDialog.closeAll();

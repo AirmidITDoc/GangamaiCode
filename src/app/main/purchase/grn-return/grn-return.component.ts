@@ -31,7 +31,7 @@ export class GRNReturnComponent implements OnInit {
     'GRNReturnId',
     'GRNReturnNo',
     'GRNReturnDate',
-    'StoreName',
+    //'StoreName',
     'SupplierName',
     'UserName',
     'GSTAmount',

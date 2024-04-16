@@ -24,7 +24,7 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
     'GRNReturnId',
     'GRNReturnNo',
     'GRNReturnDate',
-    'StoreName',
+    //'StoreName',
     'SupplierName',
     'UserName',
     'GSTAmount',
@@ -88,60 +88,63 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
     }
     this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
-      console.log(this.StoreList)
       this._GRNReturnService.GRNReturnSearchFrom.get('FromStoreId').setValue(this.StoreList[0]);
     });
   }
-
-  getSuppliernameList() {
-    // if(this.vSupplierId){
-    //   this.vsupplierName = this._WorkOrderService.WorkorderItemForm.get('SupplierName').value ;
-    //  }
-    //  else{
-    //    this.vsupplierName = this.registerObj.SupplierName;
-    //  }
+ 
+  getSupplierSearchCombo() {
     var m_data = {
-      'SupplierName': `${this._GRNReturnService.GRNReturnSearchFrom.get('SupplierName').value}%`
+      'SupplierName': `${this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').value}%`
     }
     this._GRNReturnService.getSupplierList(m_data).subscribe(data => {
       this.filteredOptionssupplier = data;
-      console.log(this.filteredOptionssupplier)
       if (this.filteredOptionssupplier.length == 0) {
         this.noOptionFoundsupplier = true;
       } else {
         this.noOptionFoundsupplier = false;
       }
-      // if (this.registerObj.SupplierId > 0) { 
-      //   const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierId);
-      //   this._GRNReturnService.GRNReturnSearchFrom.get('SupplierName').setValue(toSelectSUpplierId);
-      //   console.log(toSelectSUpplierId)
-      //   this._GRNReturnService.GRNReturnSearchFrom.get('SupplierName').setValue(this.filteredOptionssupplier[0]);
-      // }
-    })
+    });
   }
   getOptionTextSupplier(option) {
     return option && option.SupplierName ? option.SupplierName : '';
   }
-  getGRNReturnList(){
-    this.sIsLoading = 'loading-data';
+
+  getGRNReturnList() {
     var Param = {
       "ToStoreId": this._loggedService.currentUserValue.user.storeId || 0,
       "From_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "SupplierId": this._GRNReturnService.GRNReturnSearchFrom.get('SupplierName').value.SupplierId || 0,
+      "SupplierId": this._GRNReturnService.GRNReturnSearchFrom.get('SupplierId').value.SupplierId || 0 ,
       "IsVerify": this._GRNReturnService.GRNReturnSearchFrom.get("Status").value || 0,
     }
     console.log(Param);
-    this._GRNReturnService.getGRNReturnList(Param).subscribe(data => {
+    this._GRNReturnService.getGRNReturnList(Param).subscribe((data) => {
       this.dsGRNReturnWithoutList.data = data as GRNReturnList[];
       console.log(this.dsGRNReturnWithoutList.data);
       this.dsGRNReturnWithoutList.sort = this.sort;
       this.dsGRNReturnWithoutList.paginator = this.paginator;
       this.sIsLoading = '';
     },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+ 
+  getGRNReturnItemDetList(Params) {
+    this.sIsLoading = 'loading-data';
+    var Param = {
+      "GRNReturnId": Params.GRNReturnId
+    }
+    this._GRNReturnService.getGRNReturnItemDetList(Param).subscribe(data => {
+      this.dsGRNReturnItemDetList.data = data as ItemNameList[];
+      this.dsGRNReturnItemDetList.sort = this.sort;
+      this.dsGRNReturnItemDetList.paginator = this.paginator1;
+      this.sIsLoading = '';
+      console.log(this.dsGRNReturnItemDetList.data)
+    },
       error => {
         this.sIsLoading = '';
-      }); 
+      });
   }
   onClear(){
 
@@ -155,8 +158,9 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getGRNReturnList();
     });
-    this.getGRNReturnList();
+    
   }
 }
 export class GRNReturnList {
@@ -206,6 +210,18 @@ export class ItemNameList {
   MRP:number;
   LandedRate: number;
   Totalamt:any;
+  ItemId:any;
+  ExpDate:any;
+  Qty:any;
+  PurRate:any;
+  VatPercentage:any;
+  VatAmount:any;
+  TotalAmount:any;
+  BalanceQty:any;
+  UnitMRP:any;
+  PurchaseRate:any;
+  ConversionFactor:any;
+  StockId:any;
 
   constructor(ItemNameList) {
     {
@@ -226,6 +242,11 @@ export class ItemNameList {
       this.MRP = ItemNameList.MRP || 0;
       this.LandedRate = ItemNameList.LandedRate || 0;
       this.Totalamt = ItemNameList.Totalamt || 0;
+      this.StockId = ItemNameList.StockId || 0;
+      this.ConversionFactor = ItemNameList.ConversionFactor || 0;
+      this.PurchaseRate = ItemNameList.PurchaseRate || 0;
+      this.UnitMRP = ItemNameList.UnitMRP || 0;
+      this.BalanceQty = ItemNameList.BalanceQty || 0;
     }
   }
 }

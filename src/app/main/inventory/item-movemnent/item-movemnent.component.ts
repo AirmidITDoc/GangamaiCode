@@ -43,6 +43,7 @@ export class ItemMovemnentComponent implements OnInit {
   sIsLoading: string = '';
   isLoading = true;
   isItemSelected:boolean=false;
+  isBatchNoSelected:boolean=false;
 
 
  
@@ -81,9 +82,7 @@ export class ItemMovemnentComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  getItemMovementList() {
-
-    debugger
+  getItemMovementList() {  
     this.sIsLoading = 'loading-data';
     var vdata = {
 
@@ -91,7 +90,8 @@ export class ItemMovemnentComponent implements OnInit {
       "FromDate": this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "FromStoreID": this._ItemMovemnentService.ItemSearchGroup.get('StoreId').value.storeid || 1,
-      'ItemId': this._ItemMovemnentService.ItemSearchGroup.get('ItemID').value.ItemID || 0
+      'ItemId': this._ItemMovemnentService.ItemSearchGroup.get('ItemID').value.ItemID || 0,
+      'BatchNo': this._ItemMovemnentService.ItemSearchGroup.get('BatchNo').value.BatchNo || 0
     }
     console.log(vdata);
     this._ItemMovemnentService.getItemMovementList(vdata).subscribe(data => {
@@ -122,28 +122,43 @@ noOptionFound:boolean=false;
     }
     if (this._ItemMovemnentService.ItemSearchGroup.get('ItemID').value.length >= 1) {
       this._ItemMovemnentService.getItemFormList(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(this.filteredOptions)
+      //  this.filteredOptions = resData;
+       // console.log(this.filteredOptions)
         this.ItemListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
+        if (this.ItemListfilteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
           this.noOptionFound = false;
         }
       });
     }
+    this.getBatchNoList();
   }
   getOptionTextItemList(option) {
     if (!option) return '';
     return option.ItemName;
     }
-  // getFormStoreList() {
-  //   this._ItemMovemnentService.getFormStoreFormList().subscribe(data => {
-  //     this.FormStore = data;
-  //     // console.log(this.FormStore);
-      
-  //   });
-  // }
+    
+    getBatchNoList(){
+      var m_data = {
+        "BatchNo":`${this._ItemMovemnentService.ItemSearchGroup.get('BatchNo').value}%` ,
+        "ItemId":this._ItemMovemnentService.ItemSearchGroup.get('ItemID').value.ItemID || 0
+      }
+      console.log(m_data)
+        this._ItemMovemnentService.getBatchNoList(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          console.log(this.filteredOptions)
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          }
+        });
+    }
+    getOptionTextBatchNoList(option) {
+      if (!option) return '';
+      return option.BatchNo;
+      }
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId

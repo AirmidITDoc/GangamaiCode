@@ -25,19 +25,24 @@ export class ItemMovemnentService {
       StoreId:'',
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      ItemID:''
+      ItemID:'',
+      BatchNo:''
     });
   }
   
  
  
   public getItemMovementList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=rptItemMovementReport",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptItemMovementReport",Param);
   }
 
 
   public getItemFormList(param){//RetrieveItemMasterForCombo
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",param);
+  }
+  
+  public getBatchNoList(param){ 
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_BatchNo",param);
   }
 
   public getToStoreFromList(){

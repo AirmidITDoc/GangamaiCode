@@ -148,7 +148,7 @@ console.log(vdata)
     const dialogRef = this._matDialog.open(NewCustomerComponent,
       {
         maxWidth: "85vw",
-        height: '85%',
+        height: '65%',
         width: '100%',
         
       });

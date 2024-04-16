@@ -35,7 +35,7 @@
                                     <mat-date-range-input [rangePicker]="grnPicker">
                                         <input matStartDate formControlName="start" placeholder="Start date">
                                         <input matEndDate formControlName="end" placeholder="End date"
-                                            (dateChnage)="getGRNReturnList()">
+                                            (dateChange)="getGRNReturnList()">
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="grnPicker"></mat-datepicker-toggle>
                                     <mat-date-range-picker #grnPicker></mat-date-range-picker>
@@ -52,20 +52,19 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="30%">
-                                    <mat-label>SupplierName</mat-label>
-                                    <input matAutocompletePosition="below" type="text" formControlName="SupplierName"
-                                        placeholder="SupplierName (enter 2 char) " matInput
-                                        [matAutocomplete]="Supplierauto" (input)="getSuppliernameList()"
-                                       required [(ngModel)]="vSupplierId">
+                                    <mat-label>Supplier Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text"
+                                        placeholder="Select Supplier" matInput formControlName="SupplierId"
+                                        [matAutocomplete]="autoSupllier" required (input)="getSupplierSearchCombo()">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
-                                            (click)="_GRNReturnService.GRNReturnSearchFrom.get('SupplierName').setValue(''); isSupplierIdSelected = false;">close</mat-icon>
+                                            (click)="_GRNReturnService.GRNReturnSearchFrom.get('SupplierId').setValue(''); isSupplierIdSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
-                                            (click)="_GRNReturnService.GRNReturnSearchFrom.get('SupplierName').setValue(''); isSupplierIdSelected = false;">search</mat-icon>
+                                            (click)="_GRNReturnService.GRNReturnSearchFrom.get('SupplierId').setValue(''); isSupplierIdSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #Supplierauto="matAutocomplete"
+                                    <mat-autocomplete #autoSupllier="matAutocomplete"
                                         [displayWith]="getOptionTextSupplier">
-                                        <mat-option *ngFor="let option of filteredOptionssupplier" [value]="option">
+                                        <mat-option *ngFor="let option of filteredOptionssupplier"  [value]="option">
                                             {{option.SupplierName}} || {{option.SupplierId}}
                                         </mat-option>
                                     </mat-autocomplete>
@@ -135,13 +134,13 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="StoreName">
+                                    <!-- <ng-container matColumnDef="StoreName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Store Name </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <span> {{contact.StoreName}}</span>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="SupplierName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -214,12 +213,11 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-1200"
+                                    <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
-                                    <mat-row class=" min-width-1200"
-                                        *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                    <mat-row  *matRowDef="let contact; columns: displayedColumns;" class="contact"
                                         [@animate]="{value:'*',params:{y:'100%'}}"
                                         (click)="getGRNReturnItemDetList(contact)"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"

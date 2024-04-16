@@ -23,7 +23,8 @@ export class NewBillRaiseComponent implements OnInit {
   vInvoiceNo:any;
   vCustomerId:any;
   vAmount:any;
-  vInvoiceRaisedId:any;
+  vDescription:any;
+  isCustomerIdSelected:boolean=false;
   
   constructor(
     public _CustomerBill: CustomerBillRaiseService,
@@ -50,6 +51,27 @@ export class NewBillRaiseComponent implements OnInit {
       nextElement.focus();
     }
   }
+  filteredOptionsCutomer:any;
+  noOptionFound:any;
+  vSupplierId:any;
+  getCustomerSearchCombo() {
+    var m_data = {
+      'CustomerName': `${this._CustomerBill.myform.get('CustomerId').value}%`
+    }
+    console.log(m_data)
+    this._CustomerBill.getCustomerSearchCombo(m_data).subscribe(data => {
+      this.filteredOptionsCutomer = data;
+      console.log(this.filteredOptionsCutomer)
+      if (this.filteredOptionsCutomer.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+  }
+  getOptionText(option) {
+    return option && option.CustomerName ? option.CustomerName : '';
+  }
   Savebtn:boolean=false;
   onSubmit(){
     if ((this.vInvoiceNo == '' || this.vInvoiceNo == null || this.vInvoiceNo == undefined)) {
@@ -70,19 +92,14 @@ if ((this.vAmount == '' || this.vAmount == null || this.vAmount == undefined)) {
   });
   return;
 }
-  if ((this.vInvoiceRaisedId == '' || this.vInvoiceRaisedId == null || this.vInvoiceRaisedId == undefined)) {
-    this.toastr.warning('Please enter a InvoiceRaisedId', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
+  
   this.Savebtn = true;
   let customerInvoiceRaiseInsert = {};
   customerInvoiceRaiseInsert['invNumber'] = this._CustomerBill.myform.get('InvoiceNo').value || 0;
   customerInvoiceRaiseInsert['invDate'] = this._CustomerBill.myform.get('InvoiceDate').value || '';
-  customerInvoiceRaiseInsert['customerId'] = this._CustomerBill.myform.get('CustomerId').value || '';
+  customerInvoiceRaiseInsert['customerId'] = this._CustomerBill.myform.get('CustomerId').value.CustomerId || '';
   customerInvoiceRaiseInsert['amount'] = this._CustomerBill.myform.get('Amount').value || 0;
-  customerInvoiceRaiseInsert['invoiceRaisedId'] = this._CustomerBill.myform.get('InvoiceRaisedId').value;
+  customerInvoiceRaiseInsert['invoiceRaisedId'] = this._CustomerBill.myform.get('Description').value || '';
   customerInvoiceRaiseInsert['createdBy'] = this._loggedService.currentUserValue.user.id || 0;
 
 
@@ -110,7 +127,8 @@ if ((this.vAmount == '' || this.vAmount == null || this.vAmount == undefined)) {
   });
   }
   onReset(){
-    this._CustomerBill.myform.reset(); 
+    this._CustomerBill.myform.reset();
+    this.onClose(); 
   }
   onClose(){
     this._matDialog.closeAll();
