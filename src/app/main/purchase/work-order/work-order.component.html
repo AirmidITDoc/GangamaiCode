@@ -118,7 +118,7 @@
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                            <button mat-icon-button matTooltip="Print" (click)="getPrint()">
+                                            <button mat-icon-button matTooltip="Print" (click)="viewgetWorkorderReportPdf(contact)">
                                                 <mat-icon>print</mat-icon>
                                             </button>
                                             <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
@@ -613,7 +613,7 @@
                     <td style="padding: 6px;">
                         <table style="width: 100%; border-collapse: collapse;">
                             <tr style="font-size: 18px">
-                                <td style="border-bottom: 1px solid #d4c3c3; padding: 2px; padding-bottom: 14px;"> <b>WORKORDER</b> </td>
+                                <td style="border-bottom: 1px solid #d4c3c3; padding: 2px; padding-bottom: 14px;"> <b>ssWORKORDER</b> </td>
                                 <td style="border-bottom: 1px solid #d4c3c3; padding: 2px; padding-bottom: 14px; text-align: right;"><b>Print Date : {{CurrentDate}}</b></td>
                             </tr>
                         </table>

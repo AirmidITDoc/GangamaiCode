@@ -459,7 +459,9 @@ export class IPAdvanceComponent implements OnInit {
     return converter.toWords(e);
   }
 
-
+  getPrint(contact){
+    this.viewgetAdvanceReceiptReportPdf(contact.AdvanceDetailID);
+  }
 
 
 

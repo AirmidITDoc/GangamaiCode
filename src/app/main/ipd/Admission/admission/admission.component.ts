@@ -462,28 +462,7 @@ export class AdmissionComponent implements OnInit {
     
   }
 
-  // getSearchList1() {
-
-  //   var m_data = {
-  //     "Keyword": `${this.searchFormGroup.get('RegId').value}%` || '%'
-  //   }
-  //   // if (this.searchFormGroup.get('RegId').value.length >= 1) {
-  //     this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-  //       this.filteredOptions = resData;
-
-  //       this.optionsSearch = this.filteredOptions.slice();
-  //       this.filteredOptionsRegSearch = this.searchFormGroup.get('RegId').valueChanges.pipe(
-  //         startWith(''),
-  //         map(value => value ? this._filterRegsearch(value) : this.filteredOptions.slice()),
-  //       );
-
-           
-  //   });
-  //   // }
-  // }
-
-
-  private filterDoctor() {
+   private filterDoctor() {
 
     if (!this.doctorNameCmbList) {
       return;
@@ -1848,107 +1827,7 @@ onClose(){
     });
   }
 
-  // getTemplate() {
-  //   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=32';//13
-  //   this._AdmissionService.getTemplate(query).subscribe((resData: any) => {
-  //     this.printTemplate = resData[0].TempDesign;
-
-  //     let keysArray = ['HospitalName', 'HospitalAddress', 'Phone', 'EmailId', 'FirstName', 'MiddleName', 'LastName', 'AdmissionId', 'RegNo', 'PatientName', 'Age', 'AgeDay', 'AgeMonth', 'GenderName', 'MaritalStatusName', 'Address', 'MobileNo', 'IsMLC', 'PhoneNo', 'AdmissionTime', 'IPDNo', 'CompanyName', 'DepartmentName', 'AdmittedDoctorName', 'AdmittedDoctor1', 'RoomName', 'BedName', 'AdmittedDoctor2',
-  //       'AdmittedDoctorName', 'RelationshipName', 'RefDoctorName', 'RelativePhoneNo', 'IsReimbursement', 'TariffName', 'RelativeName', 'Aadharcardno', 'RelativeAddress']; // resData[0].TempKeys;
-  //     for (let i = 0; i < keysArray.length; i++) {
-  //       let reString = "{{" + keysArray[i] + "}}";
-  //       let re = new RegExp(reString, "g");
-  //       this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-  //     }
-  //     /// this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(this.reportPrintObj.AdvanceAmount));
-  //     //  this.printTemplate = this.printTemplate.replace('StrAdvanceAmount','₹' + (this.reportPrintObj.AdvanceAmount.toFixed(2)));
-  //     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.reportPrintObj.AdmissionDate));
-  //     this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform1(this.reportPrintObj.AdmissionTime));
-
-  //     this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-
-  //     setTimeout(() => {
-  //       this.print();
-  //     }, 1000);
-  //   });
-
-  // }
-
-  // transform1(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform(value, 'dd/MM/yyyy hh:mm a');
-  //   return value;
-  // }
-
-  // transform2(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-  //   return value;
-  // }
-
-  // getPrint(el) {
-   
-  //   var D_data = {
-  //     "AdmissionId": el.AdmissionID
-  //   }
-    
-  //   let printContents; 
-  //   this.subscriptionArr.push(
-  //     this._AdmissionService.getAdmissionPrint(D_data).subscribe(res => {
-  //       this.reportPrintObj = res[0] as Admission;
-  //       this.getTemplate();
-        
-  //     })
-  //   );
-  // }
-
-
-  // getAddmissionPrint(el) {
-   
-  //   var D_data = {
-  //     "AdmissionId": el
-  //   }
-    
-  //   let printContents; 
-  //   this.subscriptionArr.push(
-  //     this._AdmissionService.getAdmissionPrint(D_data).subscribe(res => {
-  //       this.reportPrintObj = res[0] as Admission;
-  //       console.log(this.reportPrintObj )
-  //       this.getTemplate();
-        
-  //     })
-  //   );
-  // }
-
-  // // PRINT 
-  // print() {
-   
-  //   let popupWin, printContents;
   
-  //   popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    
-  //   popupWin.document.write(` <html>
-  //   <head><style type="text/css">`);
-  //   popupWin.document.write(`
-  //     </style>
-  //         <title></title>
-  //     </head>
-  //   `);
-  //   popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-  //   </html>`);
-
-  //   if (this.reportPrintObj.CompanyName === null) {
-  //     popupWin.document.getElementById('idcomapny').style.display = 'none';
-  //   }
-  //   if (this.reportPrintObj.RefDoctorName === null) {
-  //     popupWin.document.getElementById('idrefdr').style.display = 'none';
-  //   }
-  //   popupWin.document.close();
-  // }
-
-
-  
-
 
 @ViewChild('fname') fname: ElementRef;
 @ViewChild('mname') mname: ElementRef;
@@ -2016,25 +1895,17 @@ public onEnterlname(event): void {
   }
 }
 
-// public onEntergendere(event): void {
-//   if (event.which === 13) {
-//   // this.gender.nativeElement.focus();
-//   if(this.mstatus) this.mstatus.focus();
-//   }
-// }
-
-
 public onEntermstatus(event): void {
   if (event.which === 13) {
   this.religion.nativeElement.focus();
-  // if(this.religion) this.religion.focus();
+  
   }
 }
 
 public onEnterreligion(event): void {
   if (event.which === 13) {
   this.bday.nativeElement.focus();
-  // if(this.religion) this.religion.focus();
+  
   }
 }
 public onEnterbday(event): void {
@@ -2052,9 +1923,6 @@ public onEnteragey(event): void {
     // this.addbutton.focus();
   }
 
-  // if(event> 120){
-  //   Swal.fire("Enter Proper Age")
-  // }
 }
 public onEnteragem(event): void {
   if (event.which === 13) {

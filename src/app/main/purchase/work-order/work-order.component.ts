@@ -18,6 +18,7 @@ import { element } from 'protractor';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Printsal } from 'app/main/pharmacy/sales/sales.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-work-order',
@@ -196,6 +197,37 @@ export class WorkOrderComponent implements OnInit {
     }
   }
  
+
+  
+  viewgetWorkorderReportPdf(row) {
+    debugger
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      
+   this._WorkOrderService.getWorkorderreportview(
+    row.WOId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Work ORDER Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+       
+    });
+   
+    },100);
+  }
+
+
 
   getPrint(el) {
     

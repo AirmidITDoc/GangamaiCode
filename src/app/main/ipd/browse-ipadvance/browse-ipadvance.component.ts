@@ -80,8 +80,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
     var D_data= {
       "F_Name":this._advanceService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name":this._advanceService.myFilterform.get("LastName").value + '%' || "%",
-      "From_Dt" :"2022-01-26 00:00:00.000",// this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM/dd/yyyy") || "01/01/1900",
-      "To_Dt" :"2022-10-26 00:00:00.000",// this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM/dd/yyyy") || "01/01/1900",
+      "From_Dt" :this.datePipe.transform(this._advanceService.myFilterform.get("start").value,"MM/dd/yyyy") || "01/01/1900",
+      "To_Dt" : this.datePipe.transform(this._advanceService.myFilterform.get("end").value,"MM/dd/yyyy") || "01/01/1900",
       "Reg_No":this._advanceService.myFilterform.get("RegNo").value || 0,
       "PBillNo":this._advanceService.myFilterform.get("PBillNo").value || 0
     }
