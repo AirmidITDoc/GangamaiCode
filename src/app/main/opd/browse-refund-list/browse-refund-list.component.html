@@ -1,12 +1,10 @@
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
-                style="color: white;">
+            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" style="color: white;">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Browse OPD Refund
@@ -29,33 +27,33 @@
     <!-- CONTENT -->
     <div class="content">
         <!-- SIDEBAR -->
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="search-sidebar">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+            <div class="sidebar-content">
                 <!-- SIDEBAR HEADER -->
-                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
+                <div class="accent sidebar-header p-12" fxLayout="row" fxLayoutAlign="start center">
                     <span class="search-title">Search Facility</span>
                     <!-- / USER -->
                 </div>
                 <!-- / SIDEBAR HEADER -->
                 <!-- SIDEBAR CONTENT -->
+                <div class="sidebar-body">
                     <div class="nav material2">
-                        <form [formGroup]="_BrowseOPDReturnsService.myFilterform"
-                            fusePerfectScrollbar>
+                        <form [formGroup]="_BrowseOPDReturnsService.myFilterform" fusePerfectScrollbar>
                             <div fxLayout="column" fxLayoutAlign="start none">
                                 <mat-form-field appearance="outline">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
                                         <input matStartDate formControlName="start" placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date"
-                                            (dateChange)="getBrowseOPDReturnList()">
+                                        <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getBrowseOPDReturnList()">
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-date-range-picker #picker></mat-date-range-picker>
                                 </mat-form-field>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Bill No</mat-label>
-                                    <input name="PBillNo" formControlName="PBillNo" matInput>
-                                </mat-form-field> -->
+                                        <mat-label>Bill No</mat-label>
+                                        <input name="PBillNo" formControlName="PBillNo" matInput>
+                                    </mat-form-field> -->
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Reg No</mat-label>
@@ -74,23 +72,25 @@
 
                                 <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
                                     <button mat-raised-button (click)="getBrowseOPDReturnList()" class="searchButton" matTooltip="search">
-                                      <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
-                                      Search
+                                        <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
+                                        Search
                                     </button>
                                     <button mat-raised-button class="clearbutton" (click)="onClear()" matTooltip="close">
-                                      <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
-                                      Clear
+                                        <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
+                                        Clear
                                     </button>
-                                  </div>
-                                 
-                                  <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
-                                    Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
-                                </span> -->
+                                </div>
+
+                                <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
+                                        Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
+                                    </span> -->
                             </div>
-                           
+
 
                         </form>
                     </div>
+                </div>
+            </div>
         </fuse-sidebar>
         <!-- / SIDEBAR -->
         <!-- CENTER -->
@@ -106,13 +106,11 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur"  style="height: 100%;">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur" style="height: 100%;">
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <mat-table #table matSort table="table1" [dataSource]="dataSource"
-                                [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
+                                <mat-table #table matSort table="table1" [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
                                     <ng-container matColumnDef="RefundDate">
@@ -132,16 +130,14 @@
                                             {{element.RegId}} </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="PatientName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            style="margin-top: 8px;">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm style="margin-top: 8px;">
                                             PatientName </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                             {{element.PatientName}} </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="PaymentDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            style="margin-top: 8px;">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm style="margin-top: 8px;">
                                             PaymentDate </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                             {{element.PaymentDate | date:'shortDate'}} </mat-cell>
@@ -182,20 +178,17 @@
                                         <mat-header-cell *matHeaderCellDef style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                           
-                                            <button mat-icon-button (click)="getViewbill(contact)"
-                                                matTooltip="how_to_reg"><mat-icon>how_to_reg</mat-icon></button>
-                                            <button mat-icon-button class="material-icons" (click)="viewgetOPRefundofBillPdf(contact)"
-                                                matTooltip="print">
+
+                                            <button mat-icon-button (click)="getViewbill(contact)" matTooltip="how_to_reg"><mat-icon>how_to_reg</mat-icon></button>
+                                            <button mat-icon-button class="material-icons" (click)="viewgetOPRefundofBillPdf(contact)" matTooltip="print">
                                                 <mat-icon>print</mat-icon>
                                             </button>
                                             <!-- <button mat-icon-button class="material-icons"
                                                 (click)="getRecord(contact,'EMAIL')" matTooltip="email">
                                                 <mat-icon>email</mat-icon>
                                             </button> -->
-                                         
-                                            <button mat-icon-button class="material-icons"
-                                                (click)="getRecord(contact,'SMS')" matTooltip="message">
+
+                                            <button mat-icon-button class="material-icons" (click)="getRecord(contact,'SMS')" matTooltip="message">
                                                 <mat-icon> message </mat-icon>
                                             </button>
                                         </mat-cell>
@@ -214,16 +207,12 @@
 
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                                    showFirstLastButtons>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
                                 </mat-paginator>
                             </div>
                         </div>
@@ -235,4 +224,3 @@
     </div>
 
 </div>
-

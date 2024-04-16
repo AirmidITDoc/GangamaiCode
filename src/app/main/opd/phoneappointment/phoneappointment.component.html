@@ -12,8 +12,7 @@
         </div>
 
         <div fxLayout="row" fxLayoutGap="5px" style="margin-left:10% !important; ">
-            <button mat-raised-button (click)="newPhoneAppointment()"
-                style="background-color: aliceblue;color: brown;margin-left:10% !important">New Phone Appointment
+            <button mat-raised-button (click)="newPhoneAppointment()" style="background-color: aliceblue;color: brown;margin-left:10% !important">New Phone Appointment
 
             </button>
         </div>
@@ -27,79 +26,75 @@
     <!-- CONTENT -->
     <div class="content">
         <!-- SIDEBAR -->
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="search-sidebar">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
             <!-- SIDEBAR HEADER -->
-            <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
-                <span class="search-title">Search Facility</span>
-                <!-- / USER -->
-            </div>
-            <!-- / SIDEBAR HEADER -->
-            <!-- SIDEBAR CONTENT -->
-            <div class="nav material2">
-                <form [formGroup]="_phoneAppointService.mysearchform" fusePerfectScrollbar>
-                    <div fxLayout="column" fxLayoutAlign="start none">
-                        <!-- <br /> -->
-                        <mat-form-field appearance="outline" style="margin-left: 2%;">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="start" placeholder="Start date"
-                                    (dateChange)="getPhoneAppointList()">
-                                <input matEndDate formControlName="end" placeholder="End date">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
+            <div class="sidebar-content">
 
-                        <mat-form-field appearance="outline">
-                            <mat-label>Search First Name</mat-label>
-                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput
-                                (keyup)="getPhoneAppointList()">
-                            <span class="error" *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">First
-                                Name is
-                                required Enter only Alphabets</span>
-                        </mat-form-field>
+                <div class="accent sidebar-header" fxLayout="row" fxLayoutAlign="start center">
+                    <span class="search-title">Search Facility</span>
+                    <!-- / USER -->
+                </div>
+                <!-- / SIDEBAR HEADER -->
+                <!-- SIDEBAR CONTENT -->
+                <div class="nav material2">
+                    <form [formGroup]="_phoneAppointService.mysearchform" fusePerfectScrollbar>
+                        <div fxLayout="column" fxLayoutAlign="start none">
+                            <!-- <br /> -->
+                            <mat-form-field appearance="outline">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="getPhoneAppointList()">
+                                    <input matEndDate formControlName="end" placeholder="End date">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
 
-                        <mat-form-field appearance="outline">
-                            <mat-label>Search Last Name</mat-label>
-                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput
-                                (keyup)="getPhoneAppointList()">
-                            <span class="error" *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">Last Name
-                                is
-                                required Enter only Alphabets</span>
-                        </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Search First Name</mat-label>
+                                <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput (keyup)="getPhoneAppointList()">
+                                <span class="error" *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">First
+                                    Name is
+                                    required Enter only Alphabets</span>
+                            </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Doctor Name</mat-label>
-                            <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
-                                formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
-                            <span matSuffix style="display: flex;">
-                                <mat-icon class="mat-icon-close"
-                                    (click)="_phoneAppointService.mysearchform.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                <mat-icon class="mat-icon-close"
-                                    (click)="_phoneAppointService.mysearchform.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                            </span>
-                            <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoctor">
-                                <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option">
-                                    {{option.DoctorName}}
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Search Last Name</mat-label>
+                                <input name="LastNameSearch" formControlName="LastNameSearch" matInput (keyup)="getPhoneAppointList()">
+                                <span class="error" *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">Last Name
+                                    is
+                                    required Enter only Alphabets</span>
+                            </mat-form-field>
 
-                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-                            <button mat-raised-button (click)="getPhoneAppointList()" class="searchButton"
-                                matTooltip="search">
-                                <!-- <mat-icon class="cleariconbutton">close</mat-icon></button>&nbsp; -->
-                                Search
-                            </button>
-                            <button mat-raised-button class="clearbutton" (click)="onClear()" matTooltip="close">
-                                <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
-                                Close
-                            </button>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Doctor Name</mat-label>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close" (click)="_phoneAppointService.mysearchform.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close" (click)="_phoneAppointService.mysearchform.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoctor">
+                                    <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option">
+                                        {{option.DoctorName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
 
+                            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+                                <button mat-raised-button (click)="getPhoneAppointList()" class="searchButton" matTooltip="search">
+                                    <!-- <mat-icon class="cleariconbutton">close</mat-icon></button>&nbsp; -->
+                                    Search
+                                </button>
+                                <button mat-raised-button class="clearbutton" (click)="onClear()" matTooltip="close">
+                                    <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
+                                    Close
+                                </button>
+
+                            </div>
                         </div>
-                    </div>
 
-                </form>
+                    </form>
+                </div>
             </div>
         </fuse-sidebar>
         <!-- / SIDEBAR -->
@@ -116,13 +111,11 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <mat-table #table class="table1" matSort [dataSource]="dataSource"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                <mat-table #table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
 
                                     <ng-container matColumnDef="AppDate">
@@ -142,10 +135,10 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="Address">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md  class="w-180">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-180">
                                             Address
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md  class="w-180">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180">
                                             {{contact.Address}}
                                         </mat-cell>
                                     </ng-container>
@@ -159,8 +152,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="DepartmentName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                           >
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
                                             DepartmentName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
@@ -169,8 +161,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="DoctorName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                           >
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
                                             DoctorName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
@@ -221,18 +212,14 @@
 
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
 
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
-                                    showFirstLastButtons>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
                                 </mat-paginator>
                             </div>
                         </div>

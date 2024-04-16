@@ -98,26 +98,35 @@
             font-family: inherit;
             &.mat-checkbox-indeterminate.mat-accent {
                 .mat-checkbox-background {
-                    background-color: $primary-600;
+                    background-color: t($ngt-primary);
                 }
             }
             &.mat-checkbox-checked.mat-accent {
                 .mat-checkbox-background {
-                    background-color: $primary-600;
+                    background-color: t($ngt-primary);
                 }
             }
             &.mat-checkbox-checked {
                 &:not(.mat-checkbox-disabled).mat-accent {
                     .mat-ripple-element {
-                        background: $primary-600;
+                        background: t($ngt-primary);
                     }
                 }
             }
             &:active {
                 &:not(.mat-checkbox-disabled).mat-accent {
                     .mat-ripple-element {
-                        background: $primary-600;
+                        background: t($ngt-primary);
                     }
+                }
+            }
+            .mat-checkbox-frame {
+                border-color: t($ngt-inverse-dark);
+            }
+            &.mat-checkbox-disabled {
+                opacity: 0.3;
+                .mat-checkbox-label {
+                    color: inherit;
                 }
             }
         }

@@ -4,8 +4,7 @@
             <div fxFlex fxFill fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="toolbar-left-content">
                     <div class="left-content" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
-                        <button mat-icon-button class="navbar-toggle-button" *ngIf="!hiddenNavbar && !rightNavbar"
-                            (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
+                        <button mat-icon-button class="navbar-toggle-button" *ngIf="!hiddenNavbar && !rightNavbar" (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
                             <mat-icon class="secondary-text">menu</mat-icon>
                         </button>
 
@@ -33,11 +32,6 @@
                     <div class="nav-menu" *ngIf="!false">
                         <!--fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center"-->
                         <div fxLayout="row" fxLayoutGap="0px" fxLayoutAlign="center center">
-                            <!-- <div class="nav-item">
-                                <div class="current-date">
-                                    <span>  {{ user.user.storeId }}</span>
-                                </div>
-                            </div> -->
                             <div class="nav-item">
                                 <div class="current-date">
                                     <span>{{currentDate | date:'MM/dd/yy h:mm:ss a'}}</span>
@@ -52,17 +46,9 @@
                                     </div>
                                 </button>
                                 <mat-menu #dashboardMenu="matMenu" [overlapTrigger]="false">
-                                    <!-- <button mat-menu-item (click)="navigateToDash()" *ngIf="user.user.loginStatus">
-                            <span>Daily Dashboard</span>
-                        </button> 
-                       -->
                                     <button mat-menu-item (click)="navigateToDailyDashboard()">
                                         <span>Daily Dashboard</span>
                                     </button>
-                                    <!-- <button mat-menu-item (click)="navigateToDailyDashboard()">
-                            <span>Account Subhash Dashboard</span>
-                        </button> -->
-
                                     <button mat-menu-item class="" (click)="navigateToBedOccupancyDashboard()">
                                         <span>Bed Occupancy Dashboard</span>
                                     </button>
@@ -77,19 +63,16 @@
                                     </button>
                                 </mat-menu>
                             </div>
+                            <div class="toolbar-separator"></div>
                             <div class="nav-item seperator-right">
                                 <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
                                     <div fxLayout="row" fxLayoutAlign="center center">
-                                        <!-- <img
-                                class="avatar mr-0 mr-sm-16"
-                                src="assets/images/avatars/Velazquez.jpg"
-                            /> -->
                                         <mat-icon class="mr-12">account_circle</mat-icon>
                                         <span class="username mr-12" fxHide fxShow.gt-sm>{{ user && user.user && user.user.firstName}}
                                             {{ user && user.user && user.user.lastName }}</span>
                                         <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
                                     </div>
-                                  
+
                                 </button>
 
                                 <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
@@ -104,7 +87,7 @@
                         </button> -->
                                     <button mat-menu-item class="">
                                         <mat-icon>mail</mat-icon>
-                                        <span  (click) ="addchangePassword()">Change Password</span>
+                                        <span (click)="addchangePassword()">Change Password</span>
                                     </button>
 
                                     <!-- <button mat-menu-item class="" (click)="logout()">
@@ -124,19 +107,18 @@
                             </div>
                             <div class="toolbar-separator"></div>
                             <div class="nav-item seperator-right">
-                                <div>
-                                    <button mat-menu-item class="" (click)="logout()">
+                                <div class="exit-app px-20" (click)="logout()">
+                                    <button mat-icon-button>
                                         <mat-icon>exit_to_app</mat-icon>
-                                        <!-- <span>Logout</span> -->
                                     </button>
+                                    <!-- <span>Logout</span> -->
                                 </div>
                             </div>
 
                             <div class="toolbar-separator"></div>
                             <div class="nav-item seperator-right">
                                 <div class="nav-button">
-                                    <button mat-button fxHide fxShow.gt-xs class="language-button"
-                                        [matMenuTriggerFor]="languageMenu">
+                                    <button mat-button fxHide fxShow.gt-xs class="language-button" [matMenuTriggerFor]="languageMenu">
                                         <div fxLayout="row" fxLayoutAlign="center center">
                                             <img class="flag mr-8" [src]="
                                         'assets/icons/flags/' +
@@ -152,8 +134,7 @@
                                 <mat-menu #languageMenu="matMenu" [overlapTrigger]="false">
                                     <button mat-menu-item *ngFor="let lang of languages" (click)="setLanguage(lang)">
                                         <span fxLayout="row" fxLayoutAlign="start center">
-                                            <img class="flag mr-16"
-                                                [src]="'assets/icons/flags/' + lang.flag + '.png'" />
+                                            <img class="flag mr-16" [src]="'assets/icons/flags/' + lang.flag + '.png'" />
                                             <span class="iso">{{ lang.title }}</span>
                                         </span>
                                     </button>
@@ -168,25 +149,21 @@
 
                             <div class="toolbar-separator" fxHide fxShow.gt-xs></div>
                             <div class="nav-item seperator-right">
-                                <button mat-icon-button fxHide.gt-md class="chat-panel-toggle-button"
-                                    (click)="toggleSidebarOpen('chatPanel')" aria-label="Toggle chat panel">
+                                <button mat-icon-button fxHide.gt-md class="chat-panel-toggle-button" (click)="toggleSidebarOpen('chatPanel')" aria-label="Toggle chat panel">
                                     <mat-icon class="secondary-text">chat</mat-icon>
                                 </button>
                             </div>
 
                             <div class="toolbar-separator" fxHide.gt-md></div>
                             <div class="nav-item seperator-right">
-                                <button mat-icon-button class="quick-panel-toggle-button"
-                                    (click)="toggleSidebarOpen('quickPanel')" aria-label="Toggle quick panel">
+                                <button mat-icon-button class="quick-panel-toggle-button" (click)="toggleSidebarOpen('quickPanel')" aria-label="Toggle quick panel">
                                     <mat-icon class="secondary-text">format_list_bulleted</mat-icon>
                                 </button>
                             </div>
 
                             <!-- <div class="toolbar-separator" *ngIf="!hiddenNavbar && rightNavbar" fxHide fxShow.gt-xs></div> -->
                             <div class="nav-item">
-                                <button mat-icon-button class="navbar-toggle-button"
-                                    *ngIf="!hiddenNavbar && rightNavbar" (click)="toggleSidebarOpen('navbar')"
-                                    fxHide.gt-md>
+                                <button mat-icon-button class="navbar-toggle-button" *ngIf="!hiddenNavbar && rightNavbar" (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
                                     <mat-icon class="secondary-text">menu</mat-icon>
                                 </button>
                             </div>

@@ -1,5 +1,19 @@
-.mat-typography{
-    .mat-card{
+.mat-typography {
+    .mat-card {
         font-family: inherit;
+        @include themed() {
+            background-color: t($ngt-card);
+            color: t($text-color);
+        }
+    }
+    fuse-widget {
+        @include themed() {
+            .fuse-widget-front,
+            .fuse-widget-back {
+                border-color: rgba(0, 0, 0, 0.12);
+                background-color: t($ngt-card);
+                color: t($text-color);
+            }
+        }
     }
 }

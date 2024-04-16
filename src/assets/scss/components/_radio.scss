@@ -98,27 +98,30 @@ $radio-size: 1.2rem;
         .mat-radio-button {
             font-family: inherit;
             &.mat-accent {
+                .mat-radio-outer-circle {
+                    border-color: t($ngt-inverse-dark);
+                }
                 .mat-radio-inner-circle {
-                    background-color: $primary-600;
+                    background-color: t($ngt-primary);
                 }
                 .mat-radio-ripple {
                     .mat-ripple-element {
                         &:not(.mat-radio-persistent-ripple) {
-                            background-color: $primary-600;
+                            background-color: t($ngt-primary);
                         }
                     }
                 }
                 &:active {
                     .mat-radio-persistent-ripple {
-                        background-color: $primary-600;
+                        background-color: t($ngt-primary);
                     }
                 }
                 &.mat-radio-checked {
                     .mat-radio-persistent-ripple {
-                        background-color: $primary-600;
+                        background-color: t($ngt-primary);
                     }
                     .mat-radio-outer-circle {
-                        border-color: $primary-600;
+                        border-color: t($ngt-primary);
                     }
                 }
             }
@@ -128,7 +131,7 @@ $radio-size: 1.2rem;
             }
             .mat-radio-container {
                 height: $radio-size;
-                width: $radio-size; 
+                width: $radio-size;
                 .mat-radio-outer-circle {
                     height: $radio-size;
                     width: $radio-size;

@@ -1,0 +1,112 @@
+.backgroundBlur {
+    text-align: center;
+    // background-color: #818181;
+    position: absolute;
+    z-index: 1000;
+    // height: 470px;
+    // opacity: 0.5;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.spinner-border {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: -0.125em;
+    border: 0.25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: 0.75s linear infinite spinner-border;
+    animation: 0.75s linear infinite spinner-border;
+
+    //spinner width
+    border-width: 10px;
+    margin: auto;
+    width: 80px;
+    height: 80px;
+    // margin-top: 140px;
+    text-align: center;
+    @include themed() {
+        color: t($ngt-primary);
+    }
+    // margin-right: 280px;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.2em;
+}
+
+@-webkit-keyframes spinner-grow {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+
+    50% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+@keyframes spinner-grow {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+
+    50% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+.spinner-grow {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: -0.125em;
+    background-color: currentColor;
+    border-radius: 50%;
+    opacity: 0;
+    // -webkit-animation: .75s linear infinite spinner-grow;
+    //animation: .75s linear infinite spinner-grow
+    -webkit-animation: 0.5s linear infinite spinner-grow;
+    animation: loading 0.5s linear infinite;
+}
+
+.spinner-grow-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .spinner-border,
+    .spinner-grow {
+        -webkit-animation-duration: 0.2s;
+        //animation-duration: 1.5s
+        animation-duration: 0.2s;
+    }
+}
+
+@-webkit-keyframes spinner-border {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spinner-border {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}

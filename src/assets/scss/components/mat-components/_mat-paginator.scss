@@ -1,25 +1,46 @@
-.mat-paginator {
-    font-family: $font-primary;
-    @include font-size(12px);
-    .mat-paginator-outer-container{
-        .mat-paginator-container{
-            min-height: 40px;
-            .mat-select-trigger{
-                @include font-size(12px);
+.mat-typography {
+    .mat-paginator {
+        font-family: $font-primary;
+        @include font-size(12px);
+        .mat-paginator-outer-container {
+            .mat-paginator-container {
+                min-height: 40px;
+                .mat-select-trigger {
+                    @include font-size(12px);
+                }
             }
         }
-    }
-    .mat-icon-button {
-        height: 1.7rem;
-        width: 1.7rem;
-        line-height: 1.7rem;
-        .mat-paginator-icon {
+        .mat-icon-button {
+            height: 1.7rem;
             width: 1.7rem;
+            line-height: 1.7rem;
+            .mat-paginator-icon {
+                width: 1.7rem;
+            }
         }
-    }
-    .mat-paginator-page-size{
-        .mat-select-trigger{
-            font-family: $font-primary;
+        .mat-paginator-page-size {
+            .mat-select-trigger {
+                font-family: $font-primary;
+            }
+        }
+        @include themed() {
+            background-color: t($bg-color);
+            color: t($text-color);
+            border-top: 1px solid t(ngt-inverse);
+            .mat-paginator-outer-container {
+                .mat-paginator-container {
+                    .mat-select-trigger {
+                    }
+                }
+            }
+            .mat-icon-button {
+                .mat-paginator-icon {
+                }
+            }
+            .mat-paginator-page-size {
+                .mat-select-trigger {
+                }
+            }
         }
     }
 }
