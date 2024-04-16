@@ -44,25 +44,21 @@
                                 <mat-label>Item Name</mat-label>
                                 <input matAutocompletePosition="below" type="text" name="ItemID"
                                     formControlName="ItemID" placeholder="Search ItemName" matInput
-                                    [matAutocomplete]="auto" (input)="getSearchList()">
+                                    [matAutocomplete]="autoItem" (input)="getSearchList()">
                                 <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
                                         (click)="_StockAdjustment.userFormGroup.get('ItemID').setValue(''); isItemIdSelected = false;">close</mat-icon>
                                     <mat-icon class="mat-icon-close"
                                         (click)="_StockAdjustment.userFormGroup.get('ItemID').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                 </span>
-                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionTextItemName"
+                                <mat-autocomplete #autoItem="matAutocomplete" [displayWith]="getOptionTextItemName"
                                     (optionSelected)='getSelectedObj($event.option.value)'>
                                     <mat-option *ngFor="let option of filteredoptionsItemName | async" [value]="option">
                                         {{option.ItemID}} | {{option.ItemName}}
 
                                     </mat-option>
                                 </mat-autocomplete>
-                            </mat-form-field>&nbsp;&nbsp;
-
-                            <app-common-date [screenFrom]="screenFromString"
-                                (dateTimeEventEmitter)="getDateTime($event)">
-                            </app-common-date>
+                            </mat-form-field>
 
                         </div>
                     </form>

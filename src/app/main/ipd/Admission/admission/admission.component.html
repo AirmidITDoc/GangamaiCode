@@ -578,7 +578,7 @@
                                     <mat-label>Age (Y)</mat-label>
                                     <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput
                                         min="0" [ngModel]="registerObj.AgeYear"
-                                        (ngModelChange)="registerObj.AgeYear = $event" type="number" #agey
+                                        (ngModelChange)="registerObj.AgeYear = $event" type="number" #agey  (keyup)="ageyearcheck(registerObj.AgeYear)"
                                         (keydown)="onEnteragey($event)" minlength="1" maxlength="4"
                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
                                     <mat-error
@@ -589,7 +589,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Age (M)</mat-label>
                                     <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)" matInput
-                                        min="0" #agem (keydown)="onEnteragem($event)" [ngModel]="registerObj.AgeMonth"
+                                        min="0" #agem (keydown)="onEnteragem($event)" [ngModel]="registerObj.AgeMonth" (keyup)="agemonthcheck(registerObj.AgeMonth)"
                                         (ngModelChange)="registerObj.AgeMonth = $event" type="number" minlength="1"
                                         maxlength="2"
                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
@@ -600,7 +600,7 @@
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Age (D)</mat-label>
-                                    <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput min="0"
+                                    <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)" matInput min="0" (keyup)="agedaycheck(registerObj.AgeDay)"
                                         minlength="1" #aged (keydown)="onEnteraged($event)" maxlength="2"
                                         [ngModel]="registerObj.AgeDay" (ngModelChange)="registerObj.AgeDay = $event"
                                         type="number"
@@ -695,7 +695,7 @@
                                         <mat-icon class="mat-icon-close"
                                             (click)="personalFormGroup.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity">
+                                    <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity1">
                                         <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option"
                                             (onSelectionChange)="onChangeCityList(option)">
                                             {{option.CityName}}
@@ -842,7 +842,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Ref Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor "
-                                        matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="refDoctorId"
+                                        matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="refDoctorId" required
                                         [matAutocomplete]="autodoc2">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -861,8 +861,7 @@
                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-label>Company Name </mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select Company"
-                                            matInput formControlName="CompanyId" [matAutocomplete]="autoCompany"
-                                            required>
+                                            matInput formControlName="CompanyId" [matAutocomplete]="autoCompany">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
                                                 (click)="hospitalFormGroup.get('CompanyId').setValue(''); isCompanyselected = false;">close</mat-icon>
@@ -876,6 +875,10 @@
                                                 {{option.CompanyName}}
                                             </mat-option>
                                         </mat-autocomplete>
+                                        <mat-error
+                                        *ngIf="hospitalFormGroup.get('CompanyId').hasError('required')">
+                                        Required field cannot be left blank
+                                    </mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -896,6 +899,10 @@
                                                 {{option.CompanyName}}
                                             </mat-option>
                                         </mat-autocomplete>
+                                        <mat-error
+                                        *ngIf="hospitalFormGroup.get('SubCompanyId').hasError('required')">
+                                        Required field cannot be left blank
+                                    </mat-error>
                                     </mat-form-field>
                                 </ng-container>
                             </div>

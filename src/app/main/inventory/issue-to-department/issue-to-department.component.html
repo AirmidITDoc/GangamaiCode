@@ -652,7 +652,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Rate</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.LandedRate}}
+                                                        {{contact.LandedRate |
+                                                            currency:'INR':'symbol-narrow':'0.2'}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -660,7 +661,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         GSTPer</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.VatPer}}
+                                                        {{contact.VatPer |
+                                                            currency:'INR':'symbol-narrow':'0.2'}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -668,7 +670,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         GSTAmount</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.VatAmount}}
+                                                        {{contact.VatAmount |
+                                                            currency:'INR':'symbol-narrow':'0.2'}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -676,7 +679,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         TotalAmount</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.LandedRateandedTotal}}
+                                                        {{contact.LandedRateandedTotal |
+                                                            currency:'INR':'symbol-narrow':'0.2'}}
                                                     </mat-cell>
                                                 </ng-container>
 

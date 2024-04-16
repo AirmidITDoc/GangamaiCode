@@ -24,6 +24,7 @@ export class MRPAdjustmentComponent implements OnInit {
   vNewLandedRate:any;
   vNewPurchaseRate:any;
   registerObj:any;
+  itemname:any;
 
   constructor(
     public _StockAdjustment: StockAdjustmentService,
@@ -43,6 +44,7 @@ export class MRPAdjustmentComponent implements OnInit {
       this.vOldMRP = this.registerObj.UnitMRP;
       this.vLandedRate = this.registerObj.LandedRate;
       this.vPurchaseRate = this.registerObj.PurUnitRateWF;
+      this.itemname = this.registerObj.ItemName;
      // this.vConversionFactor = this.registerObj.LandedRate
     }
   }
@@ -62,19 +64,30 @@ export class MRPAdjustmentComponent implements OnInit {
   TotalAmount:any;
   PerUnitLandedRate:any;
   calculationAmt(){
-          // //LandedRate As New Double
-          // contact.LandedRate = parseFloat(contact.NetAmount) / parseFloat(contact.TotalQty);
-          // ///PurUnitRate
-          // contact.PurUnitRate = (parseFloat(contact.TotalAmount) / (parseInt(contact.ReceiveQty) * parseInt(contact.ConversionFactor)));
-          // //PurUnitRateWF
-          // contact.PurUnitRateWF = ((parseFloat(contact.TotalAmount) / parseFloat(contact.TotalQty)));
-          // contact.UnitMRP = (parseFloat(contact.MRP) / parseFloat(contact.ConversionFactor))
+    if (parseFloat(this.vNewLandedRate) > parseFloat(this.vNewMRP)) {
+      this.vNewLandedRate = 0;
+      this.toastr.warning('enter landed rate lessthan MRP', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    } else {
+      this.calculateMRP();
+    }
 
-          this.TotalQty = (parseFloat(this.Qty) * parseFloat(this.registerObj.ConversionFactor)).toFixed(2);
-          this.PerUnitLandedRate = parseFloat(this.vNewLandedRate) / parseFloat(this.TotalQty);
-          this.TotalAmount =(parseFloat(this.Qty) * parseFloat(this.PerUnitLandedRate)).toFixed(2);
-          this.PurUnitPurchase = ((parseFloat(this.TotalAmount) / parseFloat(this.TotalQty)));
-          this.PerUnitMRP = (parseFloat(this.vNewMRP) / parseFloat(this.registerObj.ConversionFactor)).toFixed(2);
+    if (parseFloat(this.vNewPurchaseRate) > parseFloat(this.vNewLandedRate)) {
+      this.vNewPurchaseRate = 0;
+      this.toastr.warning('enter purchase rate lessthan landed rate', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    } else {
+      this.calculateMRP();
+    }     
+  }
+  calculateMRP(){
+    this.TotalQty = (parseFloat(this.Qty) * parseFloat(this.registerObj.ConversionFactor)).toFixed(2);
+    this.PerUnitLandedRate = parseFloat(this.vNewLandedRate) / parseFloat(this.TotalQty);
+    this.TotalAmount =(parseFloat(this.Qty) * parseFloat(this.PerUnitLandedRate)).toFixed(2);
+    this.PurUnitPurchase = ((parseFloat(this.TotalAmount) / parseFloat(this.TotalQty)));
+    this.PerUnitMRP = (parseFloat(this.vNewMRP) / parseFloat(this.registerObj.ConversionFactor)).toFixed(2);
   }
   Savebtn:boolean=false;
   onSubmit(){
@@ -155,8 +168,9 @@ export class MRPAdjustmentComponent implements OnInit {
     });
   });
   }
-  onReset(){
+  OnReset(){
     this._StockAdjustment.MRPAdjform.reset(); 
+    this._matDialog.closeAll();
   }
   onClose(){
     this._matDialog.closeAll();

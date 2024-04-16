@@ -23,6 +23,10 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
 
                         <form [formGroup]="_StockAdjustment.MRPAdjform" >
+                            <div fxLayout="row">
+                                <label style="margin-bottom: 15px;">ItemName :</label>
+                                <span style="padding: 0px 15px 15px 15px;">{{itemname}}</span>
+                            </div>
 
                             <div fxLayout="row" fxLayoutGap="4px">
 
@@ -43,35 +47,21 @@
                                     <input name="PurchaseRate" formControlName="PurchaseRate" matInput required type="text" OnlyNUmber
                                     (keyup.enter)="focusNext('ConversionFactor')" id="PurchaseRate" [(ngModel)]="vPurchaseRate" readonly>
                                 </mat-form-field>
-
-                                <!-- <mat-form-field appearance="outline" fxFlex="20%">
-                                    <mat-label>Packing</mat-label>
-                                    <input name="ConversionFactor" formControlName="ConversionFactor" matInput required type="text" OnlyNUmber
-                                    (keyup.enter)="focusNext('AddedDate')" id="ConversionFactor" [(ngModel)]="vConversionFactor" readonly>
-                                </mat-form-field> -->
-
-                                <!-- <mat-form-field appearance="outline" fxFlex="25%" style="padding-right: 19px;">
-                                    <mat-label>AddedDate</mat-label>
-                                    <input name="AddedDate" matInput [matDatepicker]="picker"
-                                       formControlName="AddedDate" id="AddedDate">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field> -->
                             </div>
                             <div fxLayout="row" fxLayoutGap="4px">
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New MRP</mat-label>
                                     <input name="NewMRP" formControlName="NewMRP" type="text" OnlyNUmber
-                                      matInput required  (keyup.enter)="focusNext('newLandedRate')"
-                                        id="NewMRP" [(ngModel)]="vNewMRP" (keyup)="calculationAmt()">
+                                      matInput required (keyup.enter)="focusNext('newLandedRate')"
+                                        id="NewMRP" [(ngModel)]="vNewMRP"    >
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New LandedRate</mat-label>
                                     <input name="newLandedRate" formControlName="newLandedRate" matInput required type="text" OnlyNUmber
-                                    (keyup.enter)="focusNext('NewPurchaseRate')" id="newLandedRate" [(ngModel)]="vNewLandedRate" 
-                                    (keyup)="calculationAmt()" >
+                                     id="newLandedRate" [(ngModel)]="vNewLandedRate" 
+                                    (keyup)="calculationAmt()"   (keyup.enter)="focusNext('NewPurchaseRate')">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
@@ -80,22 +70,12 @@
                                      [(ngModel)]="vNewPurchaseRate"  id="NewPurchaseRate" (keyup)="calculationAmt()">
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex="20%">
-                                    <mat-label>Packing</mat-label>
-                                    <input name="ConversionFactor" formControlName="ConversionFactor" matInput required type="text" OnlyNUmber
-                                    (keyup.enter)="focusNext('AddedDate')" id="ConversionFactor" [(ngModel)]="vConversionFactor" readonly>
-                                </mat-form-field> -->
-
-                            </div>
-
-                            <div fxLayoutAlign="end" style="padding: 15px;margin-top: 50px;">
-                                <div class="sales-footer-buttons gap-8">
-                                    <button class="btn btn-primary" (click)="onSubmit()"
-                                        [disabled]="Savebtn">Save</button>&nbsp;
-                                    <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>
-                                </div>
                             </div>
                         </form>
+                        <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 20px;">
+                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                            <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn">Save</button>
+                        </div>
                     </div>
                 </div>
             </div>
