@@ -166,9 +166,9 @@
 
 
                                     <ng-container matColumnDef="FromStoreName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                             FromStoreName</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                             {{contact.FromStoreName}}
                                         </mat-cell>
                                     </ng-container>
@@ -182,9 +182,9 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="ItemName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                             ItemName </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                             {{contact.ItemName}}
                                         </mat-cell>
                                     </ng-container>
