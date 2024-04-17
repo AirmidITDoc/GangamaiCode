@@ -19,15 +19,17 @@ export class CustomerInformationService {
     return this._formbuilder.group({
       CustomerName:[''],
       Address:[''],
-      MobileNo:['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      MobileNo:['', [ Validators.required,Validators.pattern('^[0-9]{10}$')]],
       personName:[''],
-      PersonMobileNo:['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      PersonMobileNo:['', [Validators.required,Validators.pattern('^[0-9]{10}$')]],
       PinCode:[''],
       InstallationDate:[new Date()],
 
     })
    }
-
+   public getCustomerList( ) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtev_CustomerInformation_List",{});
+  }
    public SaveCustomer(Param){
     return this._httpClient.post("CustomerInformation/CustomerInformationSave", Param)
   }

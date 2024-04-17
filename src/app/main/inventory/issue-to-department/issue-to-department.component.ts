@@ -74,6 +74,8 @@ export class IssueToDepartmentComponent implements OnInit {
         'GSTPer',
         'GSTAmount',
         'TotalAmount',
+        'indDetID',
+        'indQty',
         'Action'
     ];
     displayedNewIssuesList1: string[] = [
@@ -837,8 +839,16 @@ export class IssueToDepartmentComponent implements OnInit {
         this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
         return this.vFinalTotalAmount;
     }
+
+    OnSave(){
+        if(this.vIndentId > 0){
+            this.OnNewSave();
+        }else{
+            this.OnSaveAgaintIndent();
+        }
+    }
     savebtn:boolean=false;
-    OnSave() {
+    OnNewSave() {
         this.vsaveflag = true;
         if ((!this.dsNewIssueList3.data.length)) {
             this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -927,6 +937,114 @@ export class IssueToDepartmentComponent implements OnInit {
             });
         });
     }
+    OnSaveAgaintIndent() {
+        this.vsaveflag = true;
+        if ((!this.dsNewIssueList3.data.length)) {
+            this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if ((this. vTostoreId == '' || this. vTostoreId == null || this. vTostoreId == undefined)) {
+            this.toastr.warning('Please select TostoreId', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+        
+        this.savebtn=true;
+        let insertheaderObj = {};
+        insertheaderObj['issueDate'] = this.dateTimeObj.date;
+        insertheaderObj['issueTime'] = this.dateTimeObj.time;
+        insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
+        insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
+        insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
+        insertheaderObj['totalVatAmount'] = this._IssueToDep.IssueFinalForm.get('GSTAmount').value || 0;
+        insertheaderObj['netAmount'] = this._IssueToDep.IssueFinalForm.get('FinalNetAmount').value || 0;
+        insertheaderObj['remark'] = this._IssueToDep.IssueFinalForm.get('Remark').value || '';
+        insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
+        insertheaderObj['isVerified'] = false;
+        insertheaderObj['isclosed'] = false;
+        insertheaderObj['indentId'] = 0;
+        insertheaderObj['issueId'] = 0;
+       
+        let isertItemdetailsObj = [];
+        this.dsNewIssueList3.data.forEach(element => {
+            console.log(element)
+
+            let insertitemdetail = {};
+            insertitemdetail['issueId'] = 0;
+            insertitemdetail['itemId'] = element.ItemId;
+            insertitemdetail['batchNo'] = element.BatchNo;
+            insertitemdetail['batchExpDate'] = element.BatchExpDate;
+            insertitemdetail['issueQty'] = element.Qty;
+            insertitemdetail['perUnitLandedRate'] = element.LandedRate;
+            insertitemdetail['LandedTotalAmount'] = element.LandedRateandedTotal;
+            insertitemdetail['unitMRP'] = element.UnitMRP;
+            insertitemdetail['mrpTotalAmount'] = element.TotalMRP;
+            insertitemdetail['unitPurRate'] = element.PurchaseRate;
+            insertitemdetail['purTotalAmount'] = element.PurTotAmt;
+            insertitemdetail['vatPercentage'] = element.VatPer || 0;
+            insertitemdetail['vatAmount'] = element.VatAmount || 0;
+            insertitemdetail['stkId'] = element.StockId;
+            isertItemdetailsObj.push(insertitemdetail);
+        });
+        
+        let updateissuetoDepartmentStock = [];
+        this.dsNewIssueList3.data.forEach(element => {
+            let updateitemdetail = {};
+            updateitemdetail['itemId'] = element.ItemId;
+            updateitemdetail['issueQty'] = element.Qty;
+            updateitemdetail['stkId'] = element.StockId;
+            updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
+            updateissuetoDepartmentStock.push(updateitemdetail);
+        });
+
+        let update_IndentHeader_StatusObj = {};
+            update_IndentHeader_StatusObj['indentId'] =   this.vIndentId;
+            update_IndentHeader_StatusObj['isClosed'] = true;
+        
+
+        let updateIndentStatusIndentDetails = [];
+        this.dsNewIssueList1.data.forEach(element => {
+            let updateIndentStatusIndentDetailsObj = {};
+            updateIndentStatusIndentDetailsObj['indentId'] = element.IndentId;
+            updateIndentStatusIndentDetailsObj['indDetID'] =element.IndentDetailsId;
+            updateIndentStatusIndentDetailsObj['isClosed'] = element.IsClosed;
+            updateIndentStatusIndentDetailsObj['indQty'] = element.Qty;
+            updateIndentStatusIndentDetails.push(updateIndentStatusIndentDetailsObj);
+        });
+
+        let submitData = {
+            "insertIssuetoDepartmentHeader1": insertheaderObj,
+            "insertIssuetoDepartmentDetail1": isertItemdetailsObj,
+            "updateissuetoDepartmentStock1": updateissuetoDepartmentStock,
+            "update_IndentHeader_Status" :update_IndentHeader_StatusObj,
+            "updateIndentStatusIndentDetails":updateIndentStatusIndentDetails
+        };
+
+        console.log(submitData);
+
+        this._IssueToDep.IssuetodepSave(submitData).subscribe(response => {
+            if (response) {
+                this.toastr.success('Record New Issue To Department Againt Indent Saved Successfully.', 'Saved !', {
+                    toastClass: 'tostr-tost custom-toast-success',
+                });
+                this.viewgetIssuetodeptReportPdf(response, this.vprintflag);
+                this.OnReset();
+                this.getIssueToDep();
+                this.savebtn=false;
+            } else {
+                this.toastr.error('New Issue To Department Againt Indent Data not saved !, Please check validation error..', 'Error !', {
+                    toastClass: 'tostr-tost custom-toast-error',
+                });
+            }
+        }, error => {
+            this.toastr.error('New Issue To Department Againt Indent Data not saved !, Please check API error..', 'Error !', {
+                toastClass: 'tostr-tost custom-toast-error',
+            });
+        });
+    }
     OnReset() {
         this._IssueToDep.NewIssueGroup.reset();
         this.dsNewIssueList1.data = [];
@@ -997,7 +1115,8 @@ export class IssueToDepartmentComponent implements OnInit {
             // }
         }
     }
-
+    vIndentId:any;
+    vIndtDetId:any;
     getBatch() {
         this.Quantity.nativeElement.focus();
         const dialogRef = this._matDialog.open(SalePopupComponent,
@@ -1036,6 +1155,7 @@ export class IssueToDepartmentComponent implements OnInit {
             this.vLandedRate = result.LandedRate;
             this.vPurchaseRate = result.PurchaseRate;
             this.vUnitMRP = result.UnitMRP;
+            this.vIndentId =result.IndentId;
         });
     }
 
@@ -1145,7 +1265,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.dsIssueToDep.data = [];
         this.sIsLoading = '';
     }
-
+    vIndDetId:any;
     OnIndent() {
         const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
             {
@@ -1159,6 +1279,7 @@ export class IssueToDepartmentComponent implements OnInit {
             console.log(result)
             const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
             this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
+           // this.vIndDetId = result.IndentDetailsId;
           
         });
     }
@@ -1282,6 +1403,9 @@ export class IssueItemList {
     VatPercentage: number;
     StoreId: any;
     StoreName: any;
+    IndentId:any;
+    IndentDetailsId:any;
+    IsClosed:any;
 
     constructor(IssueItemList) {
         {
@@ -1295,6 +1419,9 @@ export class IssueItemList {
             this.VatPercentage = IssueItemList.VatPercentage || 0;
             this.StoreId = IssueItemList.StoreId || 0;
             this.StoreName = IssueItemList.StoreName || "";
+            this.IndentId = IssueItemList.IndentId || 0;
+            this.IndentDetailsId = IssueItemList.IndentDetailsId || 0;
+            this.IsClosed = IssueItemList.IsClosed || 0;
         }
     }
 }

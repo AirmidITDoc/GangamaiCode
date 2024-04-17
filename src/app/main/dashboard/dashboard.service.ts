@@ -69,9 +69,9 @@ export class DashboardService {
     return this._httpClient.post("Generic/GetByProc?procName=m_pharCurStockValueSummaryDashboard", params)
   }
 
-  public getPharCollSummStoreWiseDashboard()
+  public getPharCollSummStoreWiseDashboard(Param)
   {
-    return this._httpClient.post("Generic/GetByProc?procName=m_rptPharCollSumStoreWiseDashboard",{})
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptPharCollSumStoreWiseDashboard",Param)
   }
 
   // Pharmacy Dashboard Summary
@@ -79,12 +79,17 @@ export class DashboardService {
     return this._httpClient.post("Generic/GetByProc?procName=m_PharCollectionSummaryDashboard", params)
   }
 
-  public getPharDashboardPeichart(spname, params) {
-    return this._httpClient.post("Dashboard/get-pie-chart-date?procName=" + spname, params)
-  }
+ 
    //logged Store
    public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+  }
+
+
+  ////////////////////////////////////////
+
+  public getPharDashboardPeichart(spname, params) {
+    return this._httpClient.post("Dashboard/get-pie-chart-date?procName=" + spname, params)
   }
 
   public getPharDashboardBarchart(spname, params) {

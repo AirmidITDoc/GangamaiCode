@@ -28,7 +28,13 @@ export class CustomerBillRaiseService {
    public SaveCustomerBill(Param){
     return this._httpClient.post("CustomerInformation/CustomerInvoiceRaiseSave", Param)
   }
+  public UpdateCustomerBill(Param){
+    return this._httpClient.post("CustomerInformation/CustomerInvoiceRaiseUpdate", Param)
+  }
   public getCustomerSearchCombo(param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CustomerNameCombo", param);
+  }
+  public getCustomerBillList( ) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtev_CustomerInvoiceRaise_List",{});
   }
 }
