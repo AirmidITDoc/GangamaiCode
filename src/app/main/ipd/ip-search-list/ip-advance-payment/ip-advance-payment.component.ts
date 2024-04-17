@@ -102,7 +102,8 @@ export class IPAdvancePaymentComponent implements OnInit {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
       this.cashAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
-      this.billNo = parseInt(this.advanceData.advanceObj.BillId);
+      this.billNo = parseInt(this.advanceData.advanceObj.OPD_IPD_Id);
+      this.PatientName = this.advanceData.advanceObj.PatientName;
 
     }
     if (this.advanceData.FromName == "OP-Bill") {

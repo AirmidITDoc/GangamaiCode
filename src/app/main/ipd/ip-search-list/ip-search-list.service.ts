@@ -610,15 +610,18 @@ public updateIPDDischargSummary(employee)
   {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_T_AdvanceList",employee)
   }
-
+  // Rtrv_IPRefundAdvanceDetails
   public getRefundofAdvanceList(employee)
   {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPRefundAdvanceDetails",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_RefundOfAdvance",employee)
   }
   public getReturndetails(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPRefundDetails",employee)
   }
 
+  public getAdvReturndetails(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_RefundOfAdvance",employee)
+  }
   public getrefundAdvanceReceiptPrint(RefundId){
     return this._httpClient.post("Generic/GetByProc?procName=rptIPRefundofAdvancePrint", RefundId)
 
@@ -718,6 +721,12 @@ public updateIPDDischargSummary(employee)
   public getIpdAdvanceSummaryPrint(employee){
     return this._httpClient.post("Generic/GetByProc?procName=RptIPDAdvanceBillsummary",employee)
   }
+
+  getPatientVisitedListSearch(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList",employee)
+  }
+
+
 
   fieldValidations() {
     return [

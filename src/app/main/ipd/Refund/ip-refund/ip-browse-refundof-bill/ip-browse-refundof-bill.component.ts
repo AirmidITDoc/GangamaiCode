@@ -87,6 +87,7 @@ ngOnChanges(changes: SimpleChanges) {
 
 
 getBrowseIPDRefundbillList(){
+  debugger
   this.sIsLoading = 'loading-data';
   var D_data= {
     "F_Name":this._IPBrowseRefundofBillService.myFilterform.get("FirstName").value + '%' || "%",
