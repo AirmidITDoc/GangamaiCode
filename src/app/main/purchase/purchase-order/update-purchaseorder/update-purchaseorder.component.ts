@@ -503,8 +503,9 @@ export class UpdatePurchaseorderComponent implements OnInit {
       });
       return;
     }
+    debugger
     let updatePurchaseOrderHeaderObj = {};
-    updatePurchaseOrderHeaderObj['purchaseDate'] =  this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
+    updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date /// this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
     updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId;
     updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;
@@ -605,7 +606,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     }
     debugger
     let purchaseHeaderInsertObj = {};
-    purchaseHeaderInsertObj['purchaseDate'] =  this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
+    purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date// this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
     purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
     purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;

@@ -684,6 +684,24 @@
                                                     </mat-cell>
                                                 </ng-container>
 
+                                                <ng-container matColumnDef="indDetID">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        IndDetID</mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                            {{contact.IndDetID}}
+                                                        </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="indQty">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        IndQty</mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                            {{contact.indQty}}
+                                                        </mat-cell>
+                                                </ng-container>
+
+
+
                                                 <ng-container matColumnDef="Action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef style="color: white;">
                                                         Action</mat-header-cell>
