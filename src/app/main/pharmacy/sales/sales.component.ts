@@ -1949,7 +1949,7 @@ export class SalesComponent implements OnInit {
     });
   }
 
-
+  Savebtn:boolean=false;
   onSave() {
     if (this.PatientName == "" || this.MobileNo == "" || this.DoctorName == "") {
       this.toastr.warning('Please select Customer Detail', 'Warning !', {
@@ -1985,7 +1985,7 @@ export class SalesComponent implements OnInit {
   }
 
   onCashOnlinePaySave() {
-
+    this.Savebtn=true;
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
@@ -2147,6 +2147,8 @@ export class SalesComponent implements OnInit {
           this.toastr.success('Record Saved Successfully.', 'Save !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
+          this.Savebtn=false;
+
           this.getPrint3(response);
           this.getWhatsappshareSales(response, vMobileNo);
           this.Itemchargeslist = [];
@@ -2159,7 +2161,7 @@ export class SalesComponent implements OnInit {
           // this.MobileNo = '';
           this.saleSelectedDatasource.data = [];
         }
-
+       
       } else {
         this.toastr.error('API Error!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',

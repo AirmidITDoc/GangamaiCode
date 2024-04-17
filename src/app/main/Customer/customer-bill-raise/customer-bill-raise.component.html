@@ -1,74 +1,72 @@
 <div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
     <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
-    <div fxLayout="row" fxLayoutAlign="start center">
-        <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-            style="color: white;">account_box
-        </mat-icon>
-        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-            style="color: white;">
-            Customer BIll Raise List
-        </span>
-    </div>
-    <!-- <button mat-raised-button (click)="NewCustomerBill()" fxLayoutAlign="center center" class="py-8">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Customer BIll Raise List
+            </span>
+        </div>
+        <!-- <button mat-raised-button (click)="NewCustomerBill()" fxLayoutAlign="center center" class="py-8">
         <mat-icon>add</mat-icon>New Bill Raise
     </button> -->
-    <button mat-icon-button (click)="onClose()" aria-label="Close dialog" style="margin-left: 1010px;color: white;">
-        <mat-icon>close</mat-icon>
-    </button>
+        <button mat-icon-button (click)="onClose()" aria-label="Close dialog" style="margin-left: 1010px;color: white;">
+            <mat-icon>close</mat-icon>
+        </button>
     </mat-toolbar>
 
     <div class="contact">
-    
+
         <div class="center p-12 pb-56" fxFlexAlign="start center">
-    
+
             <div class="content-card" style="border-radius:4px; ">
-    
+
                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
-    
+
                     <div fxFlex.gt-sm="100%" fxFlex>
-    
+
                         <div fxlayout="row">
                             <div style="width:100%;">
-                                <!-- <div matColumnDef="loading" style="height: 400px;"
+                                <div matColumnDef="loading" style="height: 400px;"
                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
-                                </div> -->
-    
-                                <mat-table #table matSort [dataSource]="dsBillRaiseList" [@animateStagger]="{value:'50'}"
-                                    style="overflow: auto;">
+                                </div>
+
+                                <mat-table #table matSort [dataSource]="dsBillRaiseList"
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                     <ng-container matColumnDef="Action">
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                            style="color: white;">Action
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                            <button mat-icon-button  matTooltip="Edit"> 
+                                            <button mat-icon-button matTooltip="Edit" (click)=" OnEdit(contact)">
                                                 <mat-icon>edit</mat-icon>
                                             </button>
-                                            
+
                                         </mat-cell>
                                     </ng-container>
-    
+
                                     <ng-container matColumnDef="InvoiceNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             InvoiceNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.InvoiceNo}}
+                                            {{contact.InvNumber}}
                                         </mat-cell>
                                     </ng-container>
-    
+
                                     <ng-container matColumnDef="InvoiceDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             InvoiceDate </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.InvoiceDate | date: 'dd/MM/yyyy'}}
+                                            {{contact.InvDate | date: 'dd/MM/yyyy'}}
                                         </mat-cell>
                                     </ng-container>
-    
+
                                     <ng-container matColumnDef="CustomerId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                             CustomerId</mat-header-cell>
@@ -76,7 +74,7 @@
                                             {{contact.CustomerId}}
                                         </mat-cell>
                                     </ng-container>
-    
+
                                     <ng-container matColumnDef="Amount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                             Amount</mat-header-cell>
@@ -84,30 +82,30 @@
                                             {{contact.Amount}}
                                         </mat-cell>
                                     </ng-container>
-    
+
                                     <ng-container matColumnDef="InvoiceRaisedId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             InvoiceRaisedId </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.InvoiceRaisedId}}
+                                            {{contact.InvoiceRaiseId}}
                                         </mat-cell>
                                     </ng-container>
-    
+
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                         </mat-header-cell>
                                     </ng-container>
-    
+
                                     <ng-container matColumnDef="noData">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
                                             no data found...
                                         </mat-footer-cell>
                                     </ng-container>
-    
+
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="getIndentItemDetList(contact)"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"
                                         appHighlight></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -116,7 +114,7 @@
                                         [ngClass]="{'hide':!(dsBillRaiseList!=null && dsBillRaiseList.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
-    
+
                                 <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
                                     showFirstLastButtons>
                                 </mat-paginator>

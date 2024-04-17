@@ -807,13 +807,14 @@
 
                                                         <div class="sales-footer-buttons gap-8" fxLayout="row">
                                                             <button class="btn btn-primary " (click)="onSave()"
-                                                                [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save(F9)</button>
+                                                                [disabled]="Savebtn">Save(F9)</button>
                                                             <button class="btn btn-primary-outline"
                                                                 *ngIf="IsOnlineRefNo"
                                                                 (click)="payOnline()">Online</button>
                                                             <button class="btn btn-danger-outline" (click)="onClose()"
                                                                 (keydown.enter)="onF6Reset($event)">Reset</button>
                                                         </div>
+                                                        <!-- [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0" -->
                                                     </div>
                                                 </div>
                                             </div>

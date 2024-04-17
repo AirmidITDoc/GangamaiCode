@@ -49,6 +49,7 @@ export class CustomerInformationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getCustomerList();
   }
   onClose(){
     this._matDialog.closeAll();
@@ -60,6 +61,19 @@ export class CustomerInformationComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
+  getCustomerList(){
+    this.sIsLoading = 'loading-data';
+    this._CustomerInfo.getCustomerList().subscribe(data =>{
+      this.dsCustomerInfo.data = data as CustomerInfoList[];
+      console.log(this.dsCustomerInfo.data)
+      this.dsCustomerInfo.sort = this.sort;
+      this.dsCustomerInfo.paginator = this.paginator
+      this.sIsLoading = '';
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
   NewCustomer(){
     const dialogRef = this._matDialog.open(NewCustomerComponent,
       {
@@ -70,6 +84,22 @@ export class CustomerInformationComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+    });
+  }
+  OnEdit(contact){
+    console.log(contact)
+    const dialogRef = this._matDialog.open(NewCustomerComponent,
+      {
+        maxWidth: "85vw",
+        height: '85%',
+        width: '100%',
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getCustomerList();
     });
   }
 }
