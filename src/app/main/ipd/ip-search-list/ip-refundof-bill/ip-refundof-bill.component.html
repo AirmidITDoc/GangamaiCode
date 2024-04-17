@@ -27,15 +27,55 @@
         <div class="center">
             <!-- CONTENT -->
             <div class="content-card">
+                <div class="patient-search-container">
+                    <form [formGroup]="searchFormGroup">
+                        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
 
+                            <mat-form-field class=searchRegId appearance="outline"
+                                style="width:600px !important;margin-left:20px;">
+                                <input type="text" name="RegId" formControlName="RegId"
+                                    placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput
+                                    [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1"
+                                    (optionSelected)='getSelectedObj1($event.option.value)'>
+                                    <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                        {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}}
+                                        {{option.LastName}} |
+                                        {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <!-- <mat-error *ngIf="searchFormGroup.get('ItemId').hasError('required')">
+                          Required field cannot be left blank
+                        </mat-error> -->
+                            </mat-form-field>
+
+                            <span style="margin-right: 40px;">
+                                <app-common-date [screenFrom]="screenFromString"
+                                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                            </span>
+                        </div>
+                      
+                    </form>
+                </div>
                 <div fxLayout="column" class="ip-refund-box gap-12">
                     <div fxlayout="row">
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                             <div class="modal-header-info pb-3 border-bottom">
                                 <div class="info gap-32 " fxLayout="row">
-                                    <span> <b>Reg No : </b> {{selectedAdvanceObj.RegId || '--'}}</span>
+                                    <!-- <span> <b>Reg No : </b> {{selectedAdvanceObj.RegId || '--'}}</span>
                                     <span> <b>Patient Name : </b> {{selectedAdvanceObj.PatientName}} </span>
-                                    <span> <b>Dr. : </b> {{selectedAdvanceObj.Doctorname}} </span>
+                                    <span> <b>Dr. : </b> {{selectedAdvanceObj.Doctorname}} </span> -->
+
+
+                                    <span> <b>Reg No : </b> {{vOPIPId || '--'}}</span>
+                                    <span> <b>Patient Name : </b> {{PatientName}} </span>
+                                    <span> <b>Dr. : </b> {{Doctorname}} </span>
                                 </div>
                             </div>
                         </div>

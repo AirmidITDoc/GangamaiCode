@@ -289,19 +289,18 @@ export class IPRefundofAdvanceComponent implements OnInit {
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,//this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
     PatientHeaderObj['NetPayAmount'] =  this.NewRefundAmount;
-
+debugger
 
     const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
       {
         maxWidth: "75vw",
         maxHeight: "93vh", width: '100%', height: "100%",
         data: {
-          patientName: this._IpSearchListService.myRefundAdvanceForm.get("PatientName").value,
-          advanceObj: PatientHeaderObj,
+         advanceObj: PatientHeaderObj,
           FromName: "Advance-Refund"
         }
       });
-      // debugger;
+    
     dialogRef.afterClosed().subscribe(result => {
       // console.log(result);
      
