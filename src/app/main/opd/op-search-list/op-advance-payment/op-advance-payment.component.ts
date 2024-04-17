@@ -631,7 +631,6 @@ export class OPAdvancePaymentComponent implements OnInit {
   }
 
   saveClicked() {
-    debugger
     if (this.balanceAmt == 0) {
       let Paymentobj = {};
       if (this.advanceData.FromName == "OP-Payment") {
@@ -692,7 +691,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['TransactionType'] = 0;
         Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
         Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-          Paymentobj['IsCancelled'] = 0;
+        Paymentobj['IsCancelled'] = 0;
         Paymentobj['IsCancelledBy'] = 0;
         Paymentobj['IsCancelledDate'] = this.dateTimeObj.date;
         Paymentobj['CashCounterId'] = 0;

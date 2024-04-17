@@ -539,9 +539,9 @@ export class NewOPBillingComponent implements OnInit {
     if (!this.BillingForm.get('cashpay').value) {
       const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
         {
-          maxWidth: "100vw",
+          maxWidth: "75%",
           height: '650px',
-          width: '100%',
+          width: '75%',
           data: {
             vPatientHeaderObj: PatientHeaderObj,
             FromName: "OP-Bill",
@@ -1106,7 +1106,6 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   public onEnternetAmount(event): void {
-    
     if (event.which === 13) {
     this.add = true;
       this.addbutton.nativeElement.focus();

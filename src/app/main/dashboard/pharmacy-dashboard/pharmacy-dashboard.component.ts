@@ -138,7 +138,7 @@ export class PharmacyDashboardComponent implements OnInit {
   ThreeMonSalesConfig: any = {
     data: [],
     multi: [],
-    view: [700, 400],
+    view: [500, 300],
     showXAxis: true,
     showYAxis: true,
     gradient: false,
