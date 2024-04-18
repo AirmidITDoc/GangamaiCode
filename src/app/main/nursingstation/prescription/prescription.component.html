@@ -60,13 +60,13 @@
 
                                 <div class="action-buttons mt-12">
                                     <button mat-raised-button class="clearbutton" matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon></button>
+                                        <mat-icon>close</mat-icon>
+                                    </button>
                                     <button mat-raised-button class="searchButton" (click)="getPrescriptionList()" matTooltip="search">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
+                                        <mat-icon>search</mat-icon>
                                     </button>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -197,22 +197,12 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="Qty">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm style=" margin-top: 8px; ">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Qty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             {{contact.Qty}}
                                         </mat-cell>
                                     </ng-container>
-
-                                    <!-- 
-                                    <ng-container matColumnDef="TQty">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            style=" margin-top: 8px; ">
-                                            Qty</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                            {{contact.Qty}}
-                                        </mat-cell>
-                                    </ng-container> -->
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">

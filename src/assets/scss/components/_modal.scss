@@ -68,6 +68,7 @@ $modalHeader: 45px;
             }
             .modal-body {
                 padding: $modal-gap;
+                overflow: auto;
             }
             .modal-footer {
                 padding: 0 $modal-gap $modal-gap $modal-gap;

@@ -80,6 +80,14 @@
 .patient-info-row {
     display: flex;
     align-items: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    @include media-breakpoint("md") {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @include media-breakpoint("sm") {
+        grid-template-columns: repeat(1, 1fr);
+    }
     .patient-col {
         display: flex;
         align-items: center;

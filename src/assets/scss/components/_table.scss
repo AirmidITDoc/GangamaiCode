@@ -68,6 +68,8 @@
         .mat-footer-row {
             .mat-footer-cell {
                 @include font-size(14px);
+                font-style: italic;
+                justify-content: center;
             }
         }
         .mat-form-field {
@@ -154,6 +156,21 @@
             }
             .mat-checkbox {
                 .mat-checkbox-ripple {
+                }
+            }
+        }
+        &.fix-first-col {
+            .mat-header-row,
+            .mat-row {
+                .mat-header-cell {
+                    &:first-of-type {
+                        padding-block: 10px;
+                    }
+                }
+                .mat-cell {
+                    &:first-of-type {
+                        padding-block: 3px;
+                    }
                 }
             }
         }

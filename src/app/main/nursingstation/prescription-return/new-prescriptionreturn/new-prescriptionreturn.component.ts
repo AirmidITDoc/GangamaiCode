@@ -322,7 +322,10 @@ debugger
 
     // this.getDraftorderList(obj);
   }
-  onClose() { }
+  onClose() { 
+    
+  }
+
 
   OnSavePrescriptionreturn() {
     // console.log(this.myForm.get('WardName').value.RoomId)

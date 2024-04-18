@@ -24,13 +24,13 @@
                 <div fxLayout="column" class="gap-12">
                     <div class="modal-card-container">
                         <mat-card>
-                            <div fxLayout="row" fxLayout.sm="column" class="gap-16">
+                            <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="center center">
                                 <div class="radio-container">
                                     <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
                                         <mat-radio-button value="1">IP</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
-                                <div class="input-container" fxFlex>
+                                <div class="input-container gap-8" fxFlex>
                                     <mat-form-field appearance="outline" disabled="isRegSearchDisabled" fxFlex>
                                         <input type="text" name="RegID" formControlName="RegID" placeholder="RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto1" (input)="getSearchList()">
                                         <span matSuffix style="display: flex;">
@@ -50,7 +50,6 @@
                                     </mat-form-field>
                                 </div>
                             </div>
-
                         </mat-card>
                     </div>
                     <div class="modal-card-container">
@@ -61,28 +60,28 @@
                                         <span class="h2">Patient Information</span>
                                     </div>
                                     <div class="patient-info-box my-8">
-                                        <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                            <div class="patient-col" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <div class="patient-info-row">
+                                            <div class="patient-col">
                                                 <span class="patient-col-key ">Patient Name</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{PatientName}}</span>
                                             </div>
-                                            <div class="patient-col" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <div class="patient-col">
                                                 <span class="patient-col-key">OPIPNo</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{vOPDNo}}</span>
                                             </div>
-                                            <div class="patient-col" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <div class="patient-col">
                                                 <span class="patient-col-key">DoctorName</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{DoctorName}}</span>
                                             </div>
-                                            <div class="patient-col" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <div class="patient-col">
                                                 <span class="patient-col-key">CompanyName</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{CompanyName}}</span>
                                             </div>
-                                            <div class="patient-col" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <div class="patient-col">
                                                 <span class="patient-col-key ">TarrifName</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{Tarrifname}}</span>
@@ -262,7 +261,6 @@
     </div>
     <div class="modal-footer">
         <div class="footer-navigation-container">
-
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button class="btn btn-primary" (click)="OnSavePrescription()" [disabled]="myForm.invalid || dsPresList.data.length == 0">Save</button>
