@@ -641,7 +641,7 @@ onEdit(row) {
   debugger;
   //Testing
   var m_data1 = {
-    "BillId": row.BillNo
+    "BillId":row.BillNo
   }
   this.isLoadingStr = 'loading';
   this._OpSearchListService.getRefundofBillDetailList(m_data1).subscribe(Visit => {

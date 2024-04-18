@@ -647,9 +647,9 @@ public updateIPDDischargSummary(employee)
      public getCashcounterList() {
       return this._httpClient.post("Generic/GetByProc?procName=RtrvOPCashCounterForCombo", {})
     }
-  public getRefundofBillOPDList(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList",employee)
-    }
+  // public getRefundofBillOPDList(employee){
+  //   return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList",employee)
+  //   }
 
   public InsertAdvanceHeader(employee)
   {
@@ -975,6 +975,8 @@ public getRefundofAdvanceview(RefundId){
 public getRefundofbillview(RefundId){
   return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
 }
+
+
 }
 
 // ultra viewer id 67229924 Password :- Airmid@123

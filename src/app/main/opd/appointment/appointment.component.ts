@@ -680,6 +680,7 @@ export class AppointmentComponent implements OnInit {
 
     return this.formBuilder.group({
       RegId: '',
+      
       PrefixId: '',
       PrefixID: '',
       FirstName: ['', [
@@ -774,7 +775,7 @@ export class AppointmentComponent implements OnInit {
       this.Regflag = false;
       this.IsPhoneAppflag = true;
 
-    } else {
+    } else if(event.value =='registrered'){
 
       this.personalFormGroup.get('RegId').enable();
       this.searchFormGroup.get('RegId').enable();
@@ -787,7 +788,7 @@ export class AppointmentComponent implements OnInit {
       this.VisitFormGroup = this.createVisitdetailForm();
       this.VisitFormGroup.markAllAsTouched();
       this.Regflag = true;
-      this.IsPhoneAppflag = true;
+      this.IsPhoneAppflag = false;
       this.isRegSearchDisabled = true;
 
     }
@@ -806,7 +807,8 @@ export class AppointmentComponent implements OnInit {
     return this.formBuilder.group({
       regRadio: ['registration'],
       regRadio1: ['registration1'],
-      RegId: ['']
+      RegId: [''],
+      PhoneRegId:['']
     });
   }
 
@@ -1492,7 +1494,7 @@ export class AppointmentComponent implements OnInit {
     this.RegOrPhoneflag = 'Entry From Phone Appointment'
     this.vPhoneFlage = 1;
     this.registerObj = obj;
-
+    this.registerObj.MobileNo=obj.MobileNo.trim();
     this.registerObj.DateofBirth = this.currentDate;
     this.PatientName = obj.PatientName;
     this.RegId = obj.RegId;
@@ -1774,28 +1776,17 @@ export class AppointmentComponent implements OnInit {
     console.log(submissionObj);
     this._opappointmentService.appointregupdate(submissionObj).subscribe(response => {
       if (response) {
-        if (this.vPhoneAppId != 0) {
-          Swal.fire('Congratulations !', 'Phone Registered Appoinment Saved Successfully  !', 'success').then((result) => {
-            if (result.isConfirmed) {
-
-              // need to chk return true
-              this.viewgetPatientAppointmentReportPdf(response, false);
-            }
-            this.getVisitList();
-
-          });
-
-        }
-        else {
+       
+       
           Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
 
-              this.viewgetPatientAppointmentReportPdf(response, false);
+              this.viewgetPatientAppointmentReportPdf(this.registerObj.RegId, false);
             }
             this.getVisitList();
 
           });
-        }
+        
 
       } else {
         Swal.fire('Error !', 'Appointment not Updated', 'error');

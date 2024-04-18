@@ -63,7 +63,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     'AdvanceAmount',
     'UsedAmount',
     'BalanceAmount',
-    'RefundAmount',
+    'RefundAmt',
     'AdvanceId'
     // 'action'
   ];
@@ -235,6 +235,32 @@ export class IPRefundofAdvanceComponent implements OnInit {
     });
   }
 
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  RefundAmt:any;
+  getCellCalculation(contact,RefundAmt) {
+   debugger
+    console.log(RefundAmt)
+    
+    if(RefundAmt > contact.BalanceAmount){
+      Swal.fire("Enter Refund Amount Less than Balance Amount ");
+    }else{
+      this.BalanceAmount=RefundAmt;
+      contact.BalanceAmount=contact.BalanceAmount-RefundAmt
+      this.NewRefundAmount=RefundAmt;
+      this.BalanceAdvance= contact.BalanceAmount;
+    }
+
+  }
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -306,7 +332,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     IPRefundofAdvanceObj['IsCancelled'] = false;
     IPRefundofAdvanceObj['IsCancelledBy'] = 0;
     IPRefundofAdvanceObj['IsCancelledDate'] = '01/01/1900';
-    IPRefundofAdvanceObj['RefundId'] = '0';
+    IPRefundofAdvanceObj['RefundId'] = 0;
 
 
     let UpdateAdvanceHeaderObj = {};

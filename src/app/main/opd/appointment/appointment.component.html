@@ -540,13 +540,13 @@
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxflex="30" *ngIf="IsPhoneAppflag">
                                         <mat-label>Phone Appointment : First Name / Last Name / Mobile No </mat-label>
-                                        <input type="text" name="RegId" formControlName="RegId" matInput
+                                        <input type="text" name="PhoneRegId" formControlName="PhoneRegId" matInput
                                             [matAutocomplete]="auto" (input)="getPhoneAppointmentList()">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
-                                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                (click)="searchFormGroup.get('PhoneRegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
                                             <mat-icon class="mat-icon-close"
-                                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                                (click)="searchFormGroup.get('PhoneRegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                             (optionSelected)='getSelectedObjPhone($event.option.value)'>

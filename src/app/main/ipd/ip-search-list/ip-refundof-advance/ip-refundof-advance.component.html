@@ -119,11 +119,24 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="RefundAmount">
+                                    <!-- <ng-container matColumnDef="RefundAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             Refund Amount </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <span> {{element.RefundAmount | currency:'INR'}}</span>
+                                        </mat-cell>
+                                    </ng-container> -->
+
+                                    <ng-container matColumnDef="RefundAmt">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="w-80">RefundAmt
+                                        </mat-header-cell>
+                                        <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
+                                            <mat-form-field appearance="legacy">
+                                                <input matInput [(ngModel)]="RefundAmt" type="number"
+                                                    (keyup)="getCellCalculation(element,RefundAmt)"
+                                                    (keypress)="keyPressAlphanumeric($event)">
+                                            </mat-form-field>
                                         </mat-cell>
                                     </ng-container>
 
@@ -248,7 +261,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Total Refund Amount</mat-label>
-                                                    <input matInput [(ngModel)]="BalanceAmount"
+                                                    <input matInput 
                                                         formControlName="BalanceAmount" name="BalanceAmount" readonly>
                                                     <mat-error class="error"
                                                         *ngIf="RefundOfAdvanceFormGroup.get('BalanceAmount').invalid && RefundOfAdvanceFormGroup.get('BalanceAmount').touched">
@@ -258,7 +271,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Already Refund Amount</mat-label>
-                                                    <input matInput [(ngModel)]="RefundAmount"
+                                                    <input matInput [(ngModel)]="TotRefundAmount"
                                                         formControlName="RefundAmount" name="RefundAmount" readonly
                                                         fxFlex="20%">
                                                     <mat-error class="error"
