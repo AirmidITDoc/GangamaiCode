@@ -103,6 +103,7 @@ export class GRNReturnComponent implements OnInit {
   vFinalNetAmount:any=0
   vFinalVatAmount:any=0
   vFinalDiscAmount:any=0;
+  vRoundingAmt:any;
 
   dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
   dsGRNReturnItemDetList = new MatTableDataSource<GRNReturnItemDetList>();
@@ -270,7 +271,10 @@ getTotalamt(element) {
 }
 
 getNetamt(element) {
-  this.vFinalNetAmount = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+ let finalAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+ this.vFinalNetAmount = Math.round(finalAmt).toFixed(2); 
+ this.vRoundingAmt = (parseFloat(this.vFinalNetAmount) - (finalAmt)).toFixed(2);
+
   return this.vFinalNetAmount;
 }
 RQty:any;

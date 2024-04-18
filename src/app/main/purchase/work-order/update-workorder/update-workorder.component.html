@@ -389,8 +389,8 @@
                     <div fxLayoutGap="6px">
                         <mat-form-field appearance="outline" fxFlex="32%">
                             <mat-label>Remark</mat-label>
-                            <input type="text" name="Remark" formControlName="Remark" matInput #Remark1
-                                (keydown)="onEnterRemark($event)">
+                            <textarea rows="1" type="text" name="Remark" formControlName="Remark" matInput #Remark1
+                                (keydown)="onEnterRemark($event)"></textarea>
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" fxFlex="12%">
@@ -417,12 +417,12 @@
                                 #FinalNetAmount1  required [(ngModel)]="FinalNetAmount" >
                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
-                        <div>
+                       
                             <div class="modal-footer-buttons gap-8" fxLayout="row">
                                 <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
                                 <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
                             </div>
-                        </div>
+                        
                     </div>
                 </form>
             </div>

@@ -681,7 +681,7 @@
                                         | currency:'INR' }}</span>
                                 </div>
                                 <div fxlayout="row" fxLayoutGap="5px">
-                                    <mat-form-field appearance="outline" fxFlex="40%">
+                                    <mat-form-field appearance="outline" fxFlex="30%">
                                         <mat-label>Remark</mat-label>
                                         <input matInput name="Remark" formControlName="Remark">
                                     </mat-form-field>
@@ -708,6 +708,12 @@
                                         <mat-label>Net Amount</mat-label>
                                         <input matInput name="NetAmount" formControlName="FinalNetAmount"
                                             placeholder="NetAmount" [(ngModel)]="vFinalNetAmount">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                        <mat-label>RoundingAmt</mat-label>
+                                        <input matInput name="RoundingAmt" formControlName="RoundingAmt"
+                                            placeholder="RoundingAmt" [(ngModel)]="vRoundingAmt">
                                     </mat-form-field>&nbsp;&nbsp;
 
 

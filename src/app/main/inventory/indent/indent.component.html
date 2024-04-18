@@ -1,6 +1,6 @@
-    <mat-tab-group style="width: 100%;" #tabGroup dynamicTableHeight>
+    <mat-tab-group style="width: 100%;" #tabGroup >
         <mat-tab label="Indent List">
-            <div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" style="height: 100%;" 
+            <div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" style="height: 100%;" dynamicTableHeight
                 fusePerfectScrollbar>
                 <div class="content">
                     <!-- SIDEBAR -->
@@ -45,7 +45,7 @@
 
 
 
-                                            <mat-form-field appearance="outline" fxFlex="30%"
+                                            <mat-form-field appearance="outline" fxFlex
                                                 style="margin-right: 10px;">
                                                 <mat-label>To Store</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
@@ -69,9 +69,9 @@
                                             <mat-radio-group name="Status" value="0" formControlName="Status">
                                                 <mat-label class="example-margin">&nbsp;&nbsp;&nbsp;
                                                     Status:</mat-label>&nbsp;&nbsp;
-                                                <mat-radio-button value="0" class="mr-sm-12"
-                                                    (keyup)=" getIndentID()">Close</mat-radio-button>
                                                 <mat-radio-button value="1" class="mr-sm-12"
+                                                    (keyup)=" getIndentID()">Close</mat-radio-button>
+                                                <mat-radio-button value="0" class="mr-sm-12"
                                                     (keyup)=" getIndentID()">Pending</mat-radio-button>
                                             </mat-radio-group>
 
@@ -119,16 +119,16 @@
                                                     <mat-cell *matCellDef="let contact">
                                                         <mat-icon
                                                             style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                                            *ngIf="contact.Isverify" matTooltip="Verified"
+                                                            *ngIf="!contact.Isverify" matTooltip="Verified"
                                                             class=" green-600 s-16">circle</mat-icon>
                                                         <mat-icon
                                                             style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                                            *ngIf="!contact.Isverify" matTooltip="Pending"
+                                                            *ngIf="contact.Isverify" matTooltip="Pending"
                                                             class=" red-600 s-16">circle</mat-icon>
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="Isclosed">
+                                                <!-- <ng-container matColumnDef="Isclosed">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                         style="color: white;">Close</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
@@ -136,12 +136,9 @@
                                                             style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                             *ngIf="!contact.Isclosed" matTooltip="Closed"
                                                             class="cyan">circle</mat-icon>
-                                                        <!-- <mat-icon
-                                                            style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
-                                                            *ngIf="!contact.Isclosed" matTooltip="Pending"
-                                                            class=" red-600 s-16">circle</mat-icon> -->
+                                                       
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container> -->
 
                                                 <ng-container matColumnDef="IndentNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -192,11 +189,11 @@
                                                         <mat-icon
                                                             style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                             *ngIf="contact.IsInchargeVerify" matTooltip="Verified"
-                                                            class=" green-600 s-16">circle</mat-icon>
+                                                            class="pill green-600 s-16">circle</mat-icon>
                                                         <mat-icon
                                                             style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
                                                             *ngIf="!contact.IsInchargeVerify" matTooltip="Pending"
-                                                            class=" red-600 s-16">circle</mat-icon>
+                                                            class="pill red-600 s-16">circle</mat-icon>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -354,7 +351,7 @@
             </div>
         </mat-tab>
         <mat-tab label="New Indent">
-            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" style="height: 100%;" >
+            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" style="height: 100%;"  >
                 <mat-toolbar
                     style="background-color:accent !important; height:50px; justify-content: space-between;width: 100%;">
                     <div fxLayout="row" fxLayoutAlign="start center">
@@ -366,7 +363,7 @@
                         </mat-icon>
                         <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                             style="color: white;">
-                            New Indent List
+                            New Indent
                         </span>
                     </div>
 
@@ -377,11 +374,9 @@
                         <div class="content-card" style="border-radius:4px; ">
                             <form [formGroup]="_IndentService.newIndentFrom" >
                                 <div class="nav material2" >
+                                    <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="10px">
 
-
-                                    <div fxLayout="column" fxLayoutAlign="start none">
-
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px">
+                                        <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                             <from [formGroup]="_IndentService.StoreFrom">
                                                 <mat-form-field appearance="outline" fxFlex="100%">
                                                     <mat-label>From Store</mat-label>
@@ -415,22 +410,15 @@
                                                 </mat-autocomplete>
                                             </mat-form-field>
 
-
-
-                                            <app-common-date style="margin-left:120px;margin-top: 0px;" [screenFrom]="screenFromString"
+                                            <app-common-date style="margin-left:120px;" [screenFrom]="screenFromString"
                                                 (dateTimeEventEmitter)="getDateTime($event)">
                                             </app-common-date>
 
                                         </div>
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px">
+                                        <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                             <input name="IndentId" type="hidden" formControlName="IndentId"
                                                 [(ngModel)]="vIndentId" matInput>
-
-                                            <!-- <mat-form-field appearance="outline" fxFlex="10%">
-                                            <mat-label>Item Code</mat-label>
-                                            <input name="ItemId" formControlName="ItemId" matInput [(ngModel)]="vItemId"
-                                                (keydown)="onEnteritemid($event)" required>
-                                        </mat-form-field> -->
+ 
 
                                             <mat-form-field appearance="outline" fxFlex="30%">
                                                 <mat-label>Item Name</mat-label>
@@ -469,7 +457,7 @@
 
                                 </div>
 
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                     <div fxFlex.gt-sm="100%" fxFlex>
 
                                         <div fxlayout="row">
@@ -530,7 +518,7 @@
                                                         *matHeaderRowDef="displayedColumns2; sticky: true">
                                                     </mat-header-row>
                                                     <mat-row *matRowDef="let contact; columns: displayedColumns2;"
-                                                        (click)="Action(contact)" class="contact"
+                                                         class="contact"
                                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                     <mat-footer-row *matFooterRowDef="['loading']"
                                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -548,30 +536,19 @@
                                     </div>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutGap="8px" style="padding: 10px;">
+                                <div fxLayoutAlign="end">
+                                  
 
-                                    <mat-form-field appearance="outline" fxFlex="30%" style="margin-right: 800px;">
+                                    <mat-form-field appearance="outline" fxFlex="50%" style="margin-right: 350px;">
                                         <mat-label>Remark</mat-label>
                                         <input name="Remark" formControlName="Remark" [(ngModel)]="vRemark" matInput>
                                     </mat-form-field>
 
-
-                                    <!-- <div class="footer-navigation-container" fxLayout.gt-xs="row"
-                                        style="margin-left: 500px;">
-                                        <div>
-                                            <button class="next-btn" (click)="OnSave()" 
-                                                style="margin-left: 750px;">Save</button>
-                                            <button class="footer-btn" (click)="OnReset()">Reset</button>&nbsp;&nbsp;
-                                        </div>
-                                    </div>
-                                     -->
-                                    <div class="sales-footer-buttons gap-8" fxLayout="row" >
+                                    <div class="sales-footer-buttons gap-8 " fxLayout="row" style="margin: 0px 40px 0px 260px;">
+                                        <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
                                         <button class="btn btn-primary " (click)="OnSave()">Save</button>
-                                        <button class="btn btn-danger-outline" (click)="OnReset()"
-                                            >Reset</button>
                                     </div>
-
-
+                                    
                                 </div>
                             </form>
 

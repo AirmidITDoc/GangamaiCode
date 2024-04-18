@@ -806,7 +806,7 @@
                                                         </mat-form-field>&nbsp;
 
                                                         <div class="sales-footer-buttons gap-8" fxLayout="row">
-                                                            <button class="btn btn-primary " (click)="onSave()"
+                                                            <button class="btn btn-primary " (click)="onSave()" [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0"
                                                                 [disabled]="Savebtn">Save(F9)</button>
                                                             <button class="btn btn-primary-outline"
                                                                 *ngIf="IsOnlineRefNo"

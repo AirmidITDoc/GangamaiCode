@@ -1951,6 +1951,7 @@ export class SalesComponent implements OnInit {
 
   Savebtn:boolean=false;
   onSave() {
+    this.Savebtn=false;
     if (this.PatientName == "" || this.MobileNo == "" || this.DoctorName == "") {
       this.toastr.warning('Please select Customer Detail', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1985,7 +1986,7 @@ export class SalesComponent implements OnInit {
   }
 
   onCashOnlinePaySave() {
-    this.Savebtn=true;
+    // this.Savebtn=true;
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
@@ -2023,7 +2024,7 @@ export class SalesComponent implements OnInit {
     SalesInsert['isFree'] = 0;
     SalesInsert['unitID'] = 1;
     SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-      SalesInsert['externalPatientName'] = this.PatientName || '';
+    SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
     SalesInsert['isPrescription'] = 0;
@@ -2095,35 +2096,35 @@ export class SalesComponent implements OnInit {
     let PaymentInsertobj = {};
 
     PaymentInsertobj['BillNo'] = 0,
-      PaymentInsertobj['ReceiptNo'] = '',
-      PaymentInsertobj['PaymentDate'] = this.newDateTimeObj.date; //  this.dateTimeObj.date;
+    PaymentInsertobj['ReceiptNo'] = '',
+    PaymentInsertobj['PaymentDate'] = this.newDateTimeObj.date; //  this.dateTimeObj.date;
     PaymentInsertobj['PaymentTime'] = this.newDateTimeObj.time; //  this.dateTimeObj.time;
     PaymentInsertobj['CashPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //NetAmt;
     PaymentInsertobj['ChequePayAmount'] = 0,
-      PaymentInsertobj['ChequeNo'] = 0,
-      PaymentInsertobj['BankName'] = '',
-      PaymentInsertobj['ChequeDate'] = '01/01/1900',
-      PaymentInsertobj['CardPayAmount'] = 0,
-      PaymentInsertobj['CardNo'] = '',
-      PaymentInsertobj['CardBankName'] = '',
-      PaymentInsertobj['CardDate'] = '01/01/1900',
-      PaymentInsertobj['AdvanceUsedAmount'] = 0;
+    PaymentInsertobj['ChequeNo'] = 0,
+    PaymentInsertobj['BankName'] = '',
+    PaymentInsertobj['ChequeDate'] = '01/01/1900',
+    PaymentInsertobj['CardPayAmount'] = 0,
+    PaymentInsertobj['CardNo'] = '',
+    PaymentInsertobj['CardBankName'] = '',
+    PaymentInsertobj['CardDate'] = '01/01/1900',
+    PaymentInsertobj['AdvanceUsedAmount'] = 0;
     PaymentInsertobj['AdvanceId'] = 0;
     PaymentInsertobj['RefundId'] = 0;
     PaymentInsertobj['TransactionType'] = 4;
     PaymentInsertobj['Remark'] = '',
-      PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-      PaymentInsertobj['IsCancelled'] = 0;
+    PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+    PaymentInsertobj['IsCancelled'] = 0;
     PaymentInsertobj['IsCancelledBy'] = 0;
     PaymentInsertobj['IsCancelledDate'] = '01/01/1900',
-      PaymentInsertobj['OPD_IPD_Type'] = 3;
+    PaymentInsertobj['OPD_IPD_Type'] = 3;
     PaymentInsertobj['NEFTPayAmount'] = 0,
-      PaymentInsertobj['NEFTNo'] = '',
-      PaymentInsertobj['NEFTBankMaster'] = '',
-      PaymentInsertobj['NEFTDate'] = '01/01/1900',
-      PaymentInsertobj['PayTMAmount'] = 0,
-      PaymentInsertobj['PayTMTranNo'] = '',
-      PaymentInsertobj['PayTMDate'] = '01/01/1900'
+    PaymentInsertobj['NEFTNo'] = '',
+    PaymentInsertobj['NEFTBankMaster'] = '',
+    PaymentInsertobj['NEFTDate'] = '01/01/1900',
+    PaymentInsertobj['PayTMAmount'] = 0,
+    PaymentInsertobj['PayTMTranNo'] = '',
+    PaymentInsertobj['PayTMDate'] = '01/01/1900'
 
     let submitData = {
       "salesInsert": SalesInsert,
@@ -2134,8 +2135,11 @@ export class SalesComponent implements OnInit {
       "salesDraftStatusUpdate": salesDraftStatusUpdate,
       "salesPayment": PaymentInsertobj
     };
+
     console.log(submitData)
+    this.Savebtn=false;
     let vMobileNo = this.MobileNo;
+
     this._salesService.InsertCashSales(submitData).subscribe(response => {
       if (response) {
         if (response == -1) {
@@ -2147,6 +2151,7 @@ export class SalesComponent implements OnInit {
           this.toastr.success('Record Saved Successfully.', 'Save !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
+
           this.Savebtn=false;
 
           this.getPrint3(response);
