@@ -28,8 +28,11 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     'Addedby',
   ];
   displayedColumns1: string[] = [
+   // 'Status',
     'ItemName',
-    'Qty',
+    'IndTotalQty',
+    'IssueQty',
+    'IndBalQty'
   ]
 
   dateTimeObj: any;
@@ -112,7 +115,7 @@ getOptionTextStores(option) {
     }
     this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
       this.dsIndentItemDetList.data = data as IndentItemDetList[];
-     // console.log(this.dsIndentItemDetList.data)
+      console.log(this.dsIndentItemDetList.data)
       this.Charglist = this.dsIndentItemDetList.data;
       this.dsIndentItemDetList.sort = this.sort;
       this.dsIndentItemDetList.paginator = this.paginator;

@@ -27,7 +27,8 @@ export class ItemMovementSummeryComponent implements OnInit {
     'BatchExpDate',
     'ReceiptQty',
     'IssueQty',
-    'BalQty'
+    'BalQty',
+    'R_Qty'
   ];
   displayedColumns1 = [
     'BatchNo',

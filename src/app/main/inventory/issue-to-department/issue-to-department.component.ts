@@ -74,8 +74,6 @@ export class IssueToDepartmentComponent implements OnInit {
         'GSTPer',
         'GSTAmount',
         'TotalAmount',
-        'indDetID',
-        'indQty',
         'Action'
     ];
     displayedNewIssuesList1: string[] = [
@@ -842,9 +840,9 @@ export class IssueToDepartmentComponent implements OnInit {
 
     OnSave(){
         if(this.vIndentId > 0){
-            this.OnNewSave();
-        }else{
             this.OnSaveAgaintIndent();
+        }else{
+            this.OnNewSave();
         }
     }
     savebtn:boolean=false;
@@ -1025,7 +1023,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
         console.log(submitData);
 
-        this._IssueToDep.IssuetodepSave(submitData).subscribe(response => {
+        this._IssueToDep.IssuetodepAgaintIndetSave(submitData).subscribe(response => {
             if (response) {
                 this.toastr.success('Record New Issue To Department Againt Indent Saved Successfully.', 'Saved !', {
                     toastClass: 'tostr-tost custom-toast-success',
@@ -1034,6 +1032,7 @@ export class IssueToDepartmentComponent implements OnInit {
                 this.OnReset();
                 this.getIssueToDep();
                 this.savebtn=false;
+                this.vIndentId = 0;
             } else {
                 this.toastr.error('New Issue To Department Againt Indent Data not saved !, Please check validation error..', 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
@@ -1155,7 +1154,6 @@ export class IssueToDepartmentComponent implements OnInit {
             this.vLandedRate = result.LandedRate;
             this.vPurchaseRate = result.PurchaseRate;
             this.vUnitMRP = result.UnitMRP;
-            this.vIndentId =result.IndentId;
         });
     }
 
@@ -1277,9 +1275,11 @@ export class IssueToDepartmentComponent implements OnInit {
             console.log('The dialog was closed - Insert Action', result);
             this.dsNewIssueList1.data = result;
             console.log(result)
+            
             const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
             this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
-           // this.vIndDetId = result.IndentDetailsId;
+            this.vIndentId =result[0].IndentId;
+            console.log(this.vIndentId)
           
         });
     }

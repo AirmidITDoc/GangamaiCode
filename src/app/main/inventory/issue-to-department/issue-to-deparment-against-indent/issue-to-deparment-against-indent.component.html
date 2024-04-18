@@ -236,6 +236,17 @@
 
                                 <mat-table #table class="table2" matSort [dataSource]="dsIndentItemDetList"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                    <!-- <ng-container matColumnDef="Status">
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                            style="color: white;">Status</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <mat-icon
+                                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                *ngIf="contact.IsClosed == true" matTooltip="Pending"
+                                                class="pill red-600 s-16">circle</mat-icon>
+                                        </mat-cell>
+                                    </ng-container> -->
+
                                     <ng-container matColumnDef="ItemName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             ItemName
@@ -245,12 +256,28 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Qty">
+                                    <ng-container matColumnDef="IndTotalQty">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Indent Qty</mat-header-cell>
+                                            IndTotalQty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.Qty }}
-                                        </mat-cell>
+                                        </mat-cell> 
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IssueQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            IssueQty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IssQty }}
+                                        </mat-cell> 
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IndBalQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            IndBalQty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.Bal }}
+                                        </mat-cell> 
                                     </ng-container>
 
                                     <ng-container matColumnDef="loading">
@@ -280,9 +307,9 @@
                                     showFirstLastButtons>
                                 </mat-paginator>
                             </div>
-                            <div fxLayoutAlign="end" style="padding-left: 20px;">
-                                <button class="btn btn-primary" (click)="OnIndentList()">Ok</button>&nbsp;
-                                <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
+                            <div fxLayoutAlign="end" class="sales-footer-buttons gap-8 " style="padding-left: 20px;">
+                                <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                                <button class="btn btn-primary" (click)="OnIndentList()">Ok</button>
                             </div>
                         </div>
                     </div>

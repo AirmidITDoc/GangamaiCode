@@ -108,6 +108,9 @@ export class IssueToDepartmentService {
   public IssuetodepSave(Param){
     return this._httpClient.post("InventoryTransaction/IssuetoDepartmentSave",Param);
   }
+  public IssuetodepAgaintIndetSave(Param){
+    return this._httpClient.post("InventoryTransaction/IssueToDepartmentIndentUpdate",Param);
+  }
 
   public updateStockToMainStock(Param){
     return this._httpClient.post("Pharmacy/UpdateStockToMainStock",Param);

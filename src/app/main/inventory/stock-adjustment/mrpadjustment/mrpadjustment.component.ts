@@ -83,11 +83,11 @@ export class MRPAdjustmentComponent implements OnInit {
     }     
   }
   calculateMRP(){
-    this.TotalQty = (parseFloat(this.Qty) * parseFloat(this.registerObj.ConversionFactor)).toFixed(2);
-    this.PerUnitLandedRate = parseFloat(this.vNewLandedRate) / parseFloat(this.TotalQty);
-    this.TotalAmount =(parseFloat(this.Qty) * parseFloat(this.PerUnitLandedRate)).toFixed(2);
-    this.PurUnitPurchase = ((parseFloat(this.TotalAmount) / parseFloat(this.TotalQty)));
-    this.PerUnitMRP = (parseFloat(this.vNewMRP) / parseFloat(this.registerObj.ConversionFactor)).toFixed(2);
+    // this.TotalQty = (parseFloat(this.Qty) * parseFloat(this.registerObj.ConversionFactor)).toFixed(2);
+    // this.PerUnitLandedRate = parseFloat(this.vNewLandedRate) / parseFloat(this.TotalQty);
+    // this.TotalAmount =(parseFloat(this.Qty) * parseFloat(this.PerUnitLandedRate)).toFixed(2);
+    // this.PurUnitPurchase = ((parseFloat(this.TotalAmount) / parseFloat(this.TotalQty)));
+    // this.PerUnitMRP = (parseFloat(this.vNewMRP) / parseFloat(this.registerObj.ConversionFactor)).toFixed(2);
   }
   Savebtn:boolean=false;
   onSubmit(){
@@ -136,9 +136,9 @@ export class MRPAdjustmentComponent implements OnInit {
   insertMRPAdjuNew['stockid'] = this. registerObj.StockId || 0;
   insertMRPAdjuNew['itemId'] = this. registerObj.ItemId || 0;
   insertMRPAdjuNew['batchNo'] =  this. registerObj.BatchNo || '';
-  insertMRPAdjuNew['perUnitMrp'] = this.PerUnitMRP ||  0;
-  insertMRPAdjuNew['perUnitPurrate'] = this.PurUnitPurchase ||  0;
-  insertMRPAdjuNew['perUnitLanedrate'] = this.PerUnitLandedRate || 0;
+  insertMRPAdjuNew['perUnitMrp'] =  this._StockAdjustment.MRPAdjform.get('NewMRP').value ||  0;
+  insertMRPAdjuNew['perUnitPurrate'] = this._StockAdjustment.MRPAdjform.get('newLandedRate').value ||  0;
+  insertMRPAdjuNew['perUnitLanedrate'] = this._StockAdjustment.MRPAdjform.get('NewPurchaseRate').value || 0;
   insertMRPAdjuNew['oldUnitMrp'] = this._StockAdjustment.MRPAdjform.get('OldMRP').value ||  0;
   insertMRPAdjuNew['oldUnitPur'] = this._StockAdjustment.MRPAdjform.get('PurchaseRate').value ||  0;
   insertMRPAdjuNew['oldUnitLanded'] = this._StockAdjustment.MRPAdjform.get('LandedRate').value || 0;

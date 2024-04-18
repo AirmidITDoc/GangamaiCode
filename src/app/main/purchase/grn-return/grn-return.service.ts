@@ -45,7 +45,8 @@ export class GrnReturnService {
       FinalTotalAmount:[''],
       FinalNetAmount:[''],
       FinalVatAmount:[''],
-      FinalDiscAmountt:['']
+      FinalDiscAmountt:[''],
+      RoundingAmt:['']
     });
   }
 
