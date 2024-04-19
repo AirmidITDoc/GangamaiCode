@@ -40,10 +40,12 @@ export class IndentService {
       IndentId:[''],
       ToStoreId: '',
       FromStoreId:'',
-      // ItemId:[''],
+      IsUrgent:['0'],
       ItemName:[''],
       Qty:[''],
       Remark:[''],
+      ItemNameKit:[''],
+      Qtykit:['']
     });
   }
   

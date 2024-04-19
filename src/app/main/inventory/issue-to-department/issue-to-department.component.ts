@@ -141,6 +141,7 @@ export class IssueToDepartmentComponent implements OnInit {
     vTostoreId:any;
     filteredOptionsStore: Observable<string[]>;
     filteredOptionsStoreList: Observable<string[]>;
+    vAgainstIndet:boolean=false;
 
     dsIssueToDep = new MatTableDataSource<IssueToDep>();
     dsIssueItemList = new MatTableDataSource<IssueItemList>();
@@ -327,6 +328,15 @@ export class IssueToDepartmentComponent implements OnInit {
             this.FromStoreList1 = data;
             this._IssueToDep.StoreFrom.get('FromStoreId').setValue(this.FromStoreList1[0])
         });
+    }
+    AgainstInd:boolean=true;
+    getAgainstIndet(event){
+        if(event.checked == true){
+            this.AgainstInd = false;
+        }else{
+            this.AgainstInd = true;
+        }
+
     }
     getCellCalculation(contact,Qty){
 
@@ -641,8 +651,17 @@ export class IssueToDepartmentComponent implements OnInit {
     //         // }
     //     });
     // }
+
+    Indentid:any;
+    indentdetid:any;
+    IsClosed:any;
+    TotalIndQty:any;
     AddIndentItem(contact) {
         console.log(contact)
+        this.Indentid=contact.IndentId;
+        this.indentdetid = contact.IndentDetailsId;
+        this.IsClosed = contact.IsClosed; 
+        this.TotalIndQty = contact.TotalIndQty;
         let DuplicateItem=0;
         
         if (this.dsNewIssueList3.data.length > 0) {
@@ -683,7 +702,7 @@ export class IssueToDepartmentComponent implements OnInit {
             });
         }
         //   else  {
-    debugger        
+    //debugger        
         if(!DuplicateItem){
         this.Itemchargeslist1 = [];
         this.QtyBalchk = 0;
@@ -695,7 +714,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
             console.log(draftdata)
             this.Itemchargeslist1 = draftdata as any;
-            console.log(this.Itemchargeslist1)
+           // console.log(this.Itemchargeslist1)
             if (this.Itemchargeslist1.length == 0) {
                 Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
             }
@@ -722,17 +741,14 @@ export class IssueToDepartmentComponent implements OnInit {
                     }
                 });
             }
-
         });
-
         }
-
     }
 
    RQty: any = 0;
     getFinalCalculation(contact, DraftQty) {
         
-        //console.log(contact)
+        console.log(contact)
 
         this.RQty = parseInt(DraftQty);
         if (this.RQty && contact.UnitMRP) {
@@ -771,7 +787,6 @@ export class IssueToDepartmentComponent implements OnInit {
                     Qty: this.RQty || 0,
                     UnitRate: contact.UnitRate,
                     UnitMRP: contact.UnitMRP,
-                    
                     TotalAmount: NetAmt || 0,
                     VatPer: contact.VatPercentage || 0,
                     VatAmount: GSTAmount || 0,
@@ -792,10 +807,13 @@ export class IssueToDepartmentComponent implements OnInit {
                     PurchaseRate: contact.PurchaseRate,
                     PurTotAmt: PurTotAmt,
                     MarginAmt: v_marginamt,
-                    SalesDraftId: 1
-
+                    SalesDraftId: 1,
+                    IndentId : this.Indentid,
+                    IndentDetailsId :  this.indentdetid,
+                    IsClosed :this.IsClosed,
+                    TotalIndQty :this.TotalIndQty
                 });
-            //console.log(this.chargeslist);
+            console.log(this.chargeslist);
             this.dsNewIssueList3.data = this.chargeslist
       }
     }
@@ -845,8 +863,13 @@ export class IssueToDepartmentComponent implements OnInit {
             this.OnNewSave();
         }
     }
+    Isclosedchk:any;
     savebtn:boolean=false;
     OnNewSave() {
+        const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
         this.vsaveflag = true;
         if ((!this.dsNewIssueList3.data.length)) {
             this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -862,8 +885,8 @@ export class IssueToDepartmentComponent implements OnInit {
           }
         this.savebtn=true;
         let insertheaderObj = {};
-        insertheaderObj['issueDate'] = this.dateTimeObj.date;
-        insertheaderObj['issueTime'] = this.dateTimeObj.time;
+        insertheaderObj['issueDate'] = formattedDate;
+        insertheaderObj['issueTime'] = formattedTime;
         insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
         insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
         insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
@@ -936,6 +959,10 @@ export class IssueToDepartmentComponent implements OnInit {
         });
     }
     OnSaveAgaintIndent() {
+        const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
         this.vsaveflag = true;
         if ((!this.dsNewIssueList3.data.length)) {
             this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -952,8 +979,8 @@ export class IssueToDepartmentComponent implements OnInit {
         
         this.savebtn=true;
         let insertheaderObj = {};
-        insertheaderObj['issueDate'] = this.dateTimeObj.date;
-        insertheaderObj['issueTime'] = this.dateTimeObj.time;
+        insertheaderObj['issueDate'] = formattedDate;
+        insertheaderObj['issueTime'] = formattedTime;
         insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
         insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
         insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
@@ -963,7 +990,7 @@ export class IssueToDepartmentComponent implements OnInit {
         insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
         insertheaderObj['isVerified'] = false;
         insertheaderObj['isclosed'] = false;
-        insertheaderObj['indentId'] = 0;
+        insertheaderObj['indentId'] =  this.vIndentId;
         insertheaderObj['issueId'] = 0;
        
         let isertItemdetailsObj = [];
@@ -990,6 +1017,7 @@ export class IssueToDepartmentComponent implements OnInit {
         
         let updateissuetoDepartmentStock = [];
         this.dsNewIssueList3.data.forEach(element => {
+           
             let updateitemdetail = {};
             updateitemdetail['itemId'] = element.ItemId;
             updateitemdetail['issueQty'] = element.Qty;
@@ -999,17 +1027,23 @@ export class IssueToDepartmentComponent implements OnInit {
         });
 
         let update_IndentHeader_StatusObj = {};
-            update_IndentHeader_StatusObj['indentId'] =   this.vIndentId;
-            update_IndentHeader_StatusObj['isClosed'] = true;
+            update_IndentHeader_StatusObj['indentId'] = this.vIndentId;
+            update_IndentHeader_StatusObj['isClosed'] =  this.Isclosedchk;
         
 
         let updateIndentStatusIndentDetails = [];
-        this.dsNewIssueList1.data.forEach(element => {
+        this.dsNewIssueList3.data.forEach(element => {
+            let balQty = (parseFloat(element.TotalIndQty) - parseFloat(element.Qty))
+            if(element.TotalIndQty == 0){
+                this.Isclosedchk = true;
+            }else{
+                this.Isclosedchk = false;
+            }
             let updateIndentStatusIndentDetailsObj = {};
             updateIndentStatusIndentDetailsObj['indentId'] = element.IndentId;
             updateIndentStatusIndentDetailsObj['indDetID'] =element.IndentDetailsId;
-            updateIndentStatusIndentDetailsObj['isClosed'] = element.IsClosed;
-            updateIndentStatusIndentDetailsObj['indQty'] = element.Qty;
+            updateIndentStatusIndentDetailsObj['isClosed'] =  this.Isclosedchk;
+            updateIndentStatusIndentDetailsObj['indQty'] = balQty;
             updateIndentStatusIndentDetails.push(updateIndentStatusIndentDetailsObj);
         });
 
@@ -1275,12 +1309,11 @@ export class IssueToDepartmentComponent implements OnInit {
             console.log('The dialog was closed - Insert Action', result);
             this.dsNewIssueList1.data = result;
             console.log(result)
-            
-            const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
-            this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
             this.vIndentId =result[0].IndentId;
-            console.log(this.vIndentId)
-          
+            
+            // const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
+            // this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
+            // console.log(this.vIndentId)
         });
     }
     IndentItemDetails(Param) {
@@ -1346,6 +1379,10 @@ export class NewIssueList3 {
     PurchaseRate: any;
     LandedRateandedTotal: any;
     PurTotAmt: any;
+    IndentId:any;
+    IndentDetailsId:any;
+    TotalIndQty:any;
+    IsClosed:any;
     constructor(NewIssueList3) {
         this.ItemId = NewIssueList3.ItemId || 0;
         this.ItemName = NewIssueList3.ItemName || '';
