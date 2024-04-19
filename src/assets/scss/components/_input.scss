@@ -258,7 +258,7 @@
         }
     }
 }
-.mat-form-field-100 {
+.mat-form-field-100{
     .mat-form-field {
         width: 100%;
         .mat-form-field-wrapper {
@@ -271,14 +271,16 @@
 .mat-error-fix,
 .modal-wrapper {
     .mat-form-field {
-        .mat-form-field-wrapper {
-            // padding-bottom: 14px;
-            padding-bottom: 0;
-            .mat-form-field-flex {
-            }
-            .mat-form-field-subscript-wrapper {
-                margin-top: 0;
-                top: calc(100% + 2px);
+        &.mat-form-field-appearance-outline {
+            .mat-form-field-wrapper {
+                // padding-bottom: 14px;
+                padding-bottom: 0;
+                .mat-form-field-flex {
+                }
+                .mat-form-field-subscript-wrapper {
+                    margin-top: 0;
+                    top: calc(100% + 2px);
+                }
             }
         }
     }

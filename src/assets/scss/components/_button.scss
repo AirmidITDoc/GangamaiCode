@@ -178,7 +178,7 @@
 .button-row-group {
     display: flex;
     gap: 8px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 @include media-breakpoint("xs") {
     .btn {
