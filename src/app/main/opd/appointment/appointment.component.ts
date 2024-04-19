@@ -1091,6 +1091,8 @@ export class AppointmentComponent implements OnInit {
   }
 
   onChangeDateofBirth(DateOfBirth) {
+    debugger
+    console.log(DateOfBirth)
     if (DateOfBirth) {
       const todayDate = new Date();
       const dob = new Date(DateOfBirth);
@@ -1380,6 +1382,8 @@ export class AppointmentComponent implements OnInit {
  
   } */
 
+  
+
   getSearchList() {
 
     var m_data = {
@@ -1614,7 +1618,7 @@ export class AppointmentComponent implements OnInit {
       registrationSave['middleName'] = this.registerObj.MiddleName || '';
       registrationSave['lastName'] = this.registerObj.LastName;
       registrationSave['address'] = this.registerObj.Address || '';
-      registrationSave['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
+      registrationSave['City'] = this.personalFormGroup.get('CityId').value.CityName || '';
       registrationSave['pinNo'] = '123';
       registrationSave['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
         registrationSave['age'] = this.registerObj.AgeYear;
@@ -1632,7 +1636,7 @@ export class AppointmentComponent implements OnInit {
       registrationSave['isCharity'] = false;
       registrationSave['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       registrationSave['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-      registrationSave['Aadharcardno'] = 0,//this.personalFormGroup.get('Aadharcardno').value || '';
+      registrationSave['Aadharcardno'] = this.personalFormGroup.get('AadharCardNo').value || '';
         registrationSave['Pancardno'] = this.registerObj.PanCardNo || '';// this.personalFormGroup.get('Pancardno').value || '';
       registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
       registrationSave['Photo'] = '';
@@ -1717,7 +1721,7 @@ export class AppointmentComponent implements OnInit {
     registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
     registrationUpdate['lastName'] = this.registerObj.LastName;
     registrationUpdate['address'] = this.registerObj.Address || '';
-    registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityId || '';
+    registrationUpdate['City'] = this.personalFormGroup.get('CityId').value.CityName || '';
     registrationUpdate['pinNo'] = '';
     registrationUpdate['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy") || this.personalFormGroup.get('DateofBirth').value.DateofBirth;
     registrationUpdate['age'] = this.registerObj.AgeYear;
@@ -1735,7 +1739,7 @@ export class AppointmentComponent implements OnInit {
     registrationUpdate['isCharity'] = false;
     registrationUpdate['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
     registrationUpdate['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-    registrationUpdate['Aadharcardno'] = 0,//this.personalFormGroup.get('Aadharcardno').value || '';
+    registrationUpdate['Aadharcardno'] = this.personalFormGroup.get('AadharCardNo').value || '';
       registrationUpdate['Pancardno'] = this.personalFormGroup.get('PanCardNo').value || '';
     registrationUpdate['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
     registrationUpdate['Photo'] = ''
@@ -2515,10 +2519,11 @@ export class AppointmentComponent implements OnInit {
       ClassId: contact.ClassId,
       ClassName: contact.ClassName,
       TariffName: contact.TariffName,
-      TariffId: contact.TariffId
+      TariffId: contact.TariffId,
+      Lbl:"AppointmentBill"
     };
     this.advanceDataStored.storage = new SearchInforObj(xx);
-    const dialogRef = this._matDialog.open(OPBillingComponent,
+    const dialogRef = this._matDialog.open(NewOPBillingComponent,
       {
         maxWidth: '90%',
         height: '95%',
@@ -2569,6 +2574,7 @@ export class AppointmentComponent implements OnInit {
   @ViewChild('address') address: ElementRef;
   @ViewChild('pan') pan: ElementRef;
   @ViewChild('area') area: ElementRef;
+  @ViewChild('AadharCardNo') AadharCardNo: ElementRef;
 
   @ViewChild('bday') bday: ElementRef;
   @ViewChild('gender') gender: MatSelect;
@@ -2582,6 +2588,8 @@ export class AppointmentComponent implements OnInit {
   @ViewChild('deptdoc') deptdoc: ElementRef;
   @ViewChild('refdoc') refdoc: ElementRef;
   @ViewChild('purpose') purpose: ElementRef;
+  
+
   // @ViewChild('dept') dept: MatSelect;
 
   add: boolean = false;
@@ -2654,10 +2662,16 @@ export class AppointmentComponent implements OnInit {
   }
   public onEnteraged(event): void {
     if (event.which === 13) {
-      this.pan.nativeElement.focus();
+      this.AadharCardNo.nativeElement.focus();
     }
   }
-  public onEnterpan(event): void {
+  // public onEnterpan(event): void {
+  //   if (event.which === 13) {
+  //     this.address.nativeElement.focus();
+  //   }
+  // }
+  
+  public onEnterAadharCardNo(event): void {
     if (event.which === 13) {
       this.address.nativeElement.focus();
     }

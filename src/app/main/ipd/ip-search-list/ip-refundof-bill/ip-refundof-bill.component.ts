@@ -128,7 +128,7 @@ export class IPRefundofBillComponent implements OnInit {
     'BillNo',
     'BillDate',
     'NetPayableAmt',
-    'RefundAmount'
+    'RefundAmt'
     // 'action'
   ];
 
@@ -297,7 +297,31 @@ createSearchForm() {
 
   }
 
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
+  RefundAmt:any;
+  getCellCalculation(contact,RefundAmt) {
+   debugger
+    console.log(RefundAmt)
+    
+    if(RefundAmt > contact.BalanceAmount){
+      Swal.fire("Enter Refund Amount Less than Balance Amount ");
+    }else{
+      this.TotalRefundAmount=RefundAmt;
+      contact.BalanceAmount=contact.BalanceAmount-RefundAmt
+      // this.NewRefundAmount=RefundAmt;
+      // this.BalanceAdvance= contact.BalanceAmount;
+    }
+
+  }
 
   
   getRefundofBillIPDList() {

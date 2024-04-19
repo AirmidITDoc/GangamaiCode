@@ -110,12 +110,30 @@
                                             {{element.NetPayableAmt | currency:'INR'}} </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="RefundAmount">
+                                    <!-- <ng-container matColumnDef="RefundAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             RefundAmount </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             {{element.RefundAmount | currency:'INR'}} </mat-cell>
+                                    </ng-container> -->
+
+                                    <ng-container matColumnDef="RefundAmt">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="w-80">RefundAmt
+                                        </mat-header-cell>
+                                        <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
+                                            <mat-form-field appearance="legacy">
+                                                <input matInput [(ngModel)]="RefundAmt" type="number"
+                                                    (keyup)="getCellCalculation(element,RefundAmt)"
+                                                    (keypress)="keyPressAlphanumeric($event)">
+                                            </mat-form-field>
+                                        </mat-cell>
                                     </ng-container>
+
+
+
+
+
                                     <ng-container matColumnDef="loading">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
                                             loading data...
