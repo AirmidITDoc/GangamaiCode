@@ -434,7 +434,7 @@
                     </span>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
-                    <button mat-raised-button (click)="OnIndent()" fxLayoutAlign="center center" class="py-8">
+                    <button mat-raised-button (click)="OnIndent()" fxLayoutAlign="center center" class="py-8" [disabled]="AgainstInd">
                         <span>Indent List</span>
                     </button>
                 </div>
@@ -487,11 +487,16 @@
                                         </mat-autocomplete>
                                     </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                    <span style="float: right;">
+                                   <div style="padding: 15px 0px 0px 30px;">
+                                    <mat-checkbox  fxFlex="15%" [(ngModel)]="vAgainstIndet"  [checked]
+                                    formControlName="AgainstIndent" (change)="getAgainstIndet($event)">Against Indent
+                                   </mat-checkbox>
+                                   </div>
+                                    <!-- <span style="float: right;">
                                         <app-common-date [screenFrom]="screenFromString"
                                             (dateTimeEventEmitter)="getDateTime($event)">
                                         </app-common-date>
-                                    </span>
+                                    </span> -->
 
 
                                     <!-- <div style="padding: 8px;">

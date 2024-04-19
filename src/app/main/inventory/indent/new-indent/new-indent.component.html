@@ -1,0 +1,241 @@
+<div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" style="height: 100%;"
+      fusePerfectScrollbar>
+    <mat-toolbar style="background-color:accent !important; height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                New Indent 
+            </span>
+        </div>
+        <span class="material-icons" style="cursor: pointer;color: #fff;" (click)="onClose()">close</span>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px; ">
+                <form [formGroup]="_IndentService.newIndentFrom" >
+                    <div class="nav material2" >
+                        <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="10px">
+
+                            <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
+                                <from [formGroup]="_IndentService.StoreFrom">
+                                    <mat-form-field appearance="outline" fxFlex="100%">
+                                        <mat-label>From Store</mat-label>
+                                        <mat-select formControlName="FromStoreId" name="FromStoreId">
+                                            <mat-option></mat-option>
+                                            <mat-option *ngFor="let m of FromStoreList" [value]="m">
+                                                {{m.StoreName}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </from>
+
+                                <mat-form-field appearance="outline" fxFlex="30%"
+                                    style="margin-right: 10px;">
+                                    <mat-label>To Store</mat-label>
+                                    <input matAutocompletePosition="below" type="text" required
+                                        placeholder="Select Store" matInput formControlName="ToStoreId"
+                                        [matAutocomplete]="auto2">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_IndentService.newIndentFrom.get('ToStoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_IndentService.newIndentFrom.get('ToStoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #auto2="matAutocomplete"
+                                        [displayWith]="getOptionTextStores">
+                                        <mat-option *ngFor="let option of filteredOptionsStore | async"
+                                            [value]="option">
+                                            {{option.StoreName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field> 
+
+                                <mat-radio-group name="IsUrgent" value="0" formControlName="IsUrgent" style="padding: 15px 0px 0px 30px;">
+                                    <mat-label class="example-margin"> Is Urgent:</mat-label>&nbsp;&nbsp;
+                                    <mat-radio-button value="1" class="mr-sm-12">Yes</mat-radio-button>
+                                    <mat-radio-button value="0" class="mr-sm-12" >No</mat-radio-button>
+                                </mat-radio-group>
+
+                            </div>
+                            <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
+                                <input name="IndentId" type="hidden" formControlName="IndentId"
+                                    [(ngModel)]="vIndentId" matInput>
+
+
+                                <mat-form-field appearance="outline" fxFlex="30%">
+                                    <mat-label>Item Name</mat-label>
+                                    <input type="text" name="ItemName" formControlName="ItemName"
+                                        placeholder="Item Name" matInput [matAutocomplete]="auto"
+                                        (input)="getIndentItemName()" #itemname [(ngModel)]="vItemName"
+                                        (keydown)="onEnteritemName($event)">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_IndentService.newIndentFrom.get('ItemName').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_IndentService.newIndentFrom.get('ItemName').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                        (optionSelected)='getSelectedObj($event.option.value)'>
+                                        <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                            {{option.ItemName}} | BalQty {{option.BalQty}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>Qty</mat-label>
+                                    <input name="Qty" formControlName="Qty" matInput [(ngModel)]="vQty"
+                                        (keydown)="onEnterqty($event)" required #qty type="text" OnlyNumber>
+                                </mat-form-field>&nbsp;&nbsp;
+
+                                <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
+                                    <button class="btn btn-primary" (click)="onAdd()" >
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </div>&nbsp;&nbsp;&nbsp;
+
+                                <mat-divider vertical></mat-divider>&nbsp;&nbsp;&nbsp;
+
+                                <mat-form-field appearance="outline" fxFlex="30%">
+                                    <mat-label>Search By Item Kit</mat-label>
+                                    <input type="text" name="ItemNameKit" formControlName="ItemNameKit"
+                                        placeholder="Item Name" matInput [matAutocomplete]="auto"
+                                         #ItemNameKit [(ngModel)]="vItemNamekit"
+                                        (keydown)="onEnteritemNamekit($event)">
+                                    <!-- <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_IndentService.newIndentFrom.get('ItemNameKit').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_IndentService.newIndentFrom.get('ItemNameKit').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                    </span> -->
+                                    <!-- <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                        (optionSelected)='getSelectedObj($event.option.value)'>
+                                        <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                            {{option.ItemName}} | BalQty {{option.BalQty}}
+                                        </mat-option>
+                                    </mat-autocomplete> -->
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>Qty</mat-label>
+                                    <input name="Qtykit" formControlName="Qtykit" matInput [(ngModel)]="vQtykit"
+                                        (keydown)="onEnterqtykit($event)"   #qtykit type="text" OnlyNumber>
+                                </mat-form-field>&nbsp;&nbsp;
+
+                                <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
+                                    <button class="btn btn-primary">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+
+                            <div fxlayout="row">
+                                <div style="width: 100%;">
+                                    <mat-table #table  matSort [dataSource]="dsIndentNameList"
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                        <ng-container matColumnDef="Action">
+                                            <mat-header-cell *matHeaderCellDef style="color: white;">
+                                                Action</mat-header-cell>
+                                            <mat-cell *matCellDef="let row">
+                                                <button mat-icon-button (click)="deleteTableRow(row)"
+                                                    color="warn">
+                                                    <mat-icon>delete_outline</mat-icon>
+                                                </button>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="ItemID">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                Item Code</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.ItemId}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="ItemName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-sm>
+                                                Item Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.ItemName}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IndentQuantity">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                Indent Quantity</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.Qty}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="loading">
+                                            <mat-header-cell *matFooterCellDef colspan="6"
+                                                style="display: none;">
+                                            </mat-header-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                no data found...
+                                            </mat-footer-cell>
+                                        </ng-container>
+
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedColumns2; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns2;"
+                                             class="contact"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                        </mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dsIndentNameList!=null && dsIndentNameList.data.length==0)}">
+                                        </mat-footer-row>
+                                    </mat-table>
+
+                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                        showFirstLastButtons>
+                                    </mat-paginator>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div fxLayoutAlign="end">
+                      
+
+                        <mat-form-field appearance="outline" fxFlex="50%" style="margin-right: 350px;">
+                            <mat-label>Remark</mat-label>
+                            <input name="Remark" formControlName="Remark" [(ngModel)]="vRemark" matInput>
+                        </mat-form-field>
+
+                        <div class="sales-footer-buttons gap-8 " fxLayout="row" style="margin: 0px 40px 0px 260px;">
+                            <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                            <button class="btn btn-primary " (click)="OnSave()">Save</button>
+                        </div>
+                        
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
