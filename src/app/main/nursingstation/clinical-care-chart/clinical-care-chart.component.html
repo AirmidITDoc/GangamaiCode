@@ -1,0 +1,99 @@
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+    <mat-toolbar style="width: 100%;justify-content: space-between;height: 50px;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Clinical Care Chart
+            </span>
+        </div>
+    </mat-toolbar>
+    <div class="contact">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <form [formGroup]="_ClinicalcareService.MyForm">
+            <div fxFlexFill fxLayout="column" fxLayout="row" >
+
+                <div fxLayout="row" fxLayoutGap="4px">
+                    <mat-form-field appearance="outline" fxFlex="25%">
+                        <mat-label>Floor</mat-label>
+                        <mat-select formControlName="Floor" name="Floor" Placeholder="select Floor">
+                            <mat-option></mat-option>
+                            <mat-option *ngFor="let m of FloorList" [value]="m">
+                                {{m.Floor}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="25%">
+                        <mat-label>Ward</mat-label>
+                        <mat-select formControlName="Ward" name="Ward" Placeholder="select Ward">
+                            <mat-option></mat-option>
+                            <mat-option *ngFor="let m of WardList" [value]="m">
+                                {{m.Ward}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>PatientName</mat-label>
+                        <input matInput  name="PatientName" formControlName="PatientName"
+                            id="PatientName" #PatientName  >
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="6%">
+                        <mat-label>MRNo</mat-label>
+                        <input matInput  name="MRNo" formControlName="MRNo"
+                            id="MRNo" #MRNo readonly  >
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>DoctorName</mat-label>
+                        <input matInput name="DoctorName" formControlName="DoctorName"
+                            id="DoctorName" #DoctorName readonly  >
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="6%">
+                        <mat-label>Age</mat-label>
+                        <input matInput name="Age" formControlName="Age" id="Age" #Age readonly  >
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutGap="4px">
+                    <mat-form-field appearance="outline" fxFlex="50%">
+                        <input type="text" name="RegID" formControlName="RegID"
+                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                            [matAutocomplete]="auto1">
+                        <span matSuffix style="display: flex;">
+                            <mat-icon class="mat-icon-close"
+                                (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                            <mat-icon class="mat-icon-close"
+                                (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                        </span>
+                        <!-- <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextReg"
+                            (optionSelected)='getSelectedObjReg($event.option.value)'>
+                            <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                {{option.FirstName}} {{option.MiddleName}}
+                                {{option.LastName}} | {{option.RegNo}} |
+                                {{option.MobileNo}}
+                            </mat-option>
+                        </mat-autocomplete> -->
+                    </mat-form-field>
+
+                    <!-- <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>PaymentDueDate</mat-label>
+                        <input name="PaymentDate" matInput [matDatepicker]="picker10"
+                            (keydown)="onEnterPaymentDueDate($event)" formControlName="PaymentDate"
+                            [(ngModel)]="registerObj.PaymentDate" #paymentdate>
+                        <mat-datepicker-toggle matSuffix [for]="picker10"></mat-datepicker-toggle>
+                        <mat-datepicker #picker10></mat-datepicker>
+                    </mat-form-field> -->
+                </div>
+            </div>
+          </form>
+
+        </div>
+    </div>
+</div>
