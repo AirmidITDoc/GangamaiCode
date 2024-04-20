@@ -1949,19 +1949,21 @@ export class SalesComponent implements OnInit {
     });
   }
 
-  Savebtn:boolean=false;
-  onSave() {
-    this.Savebtn=false;
+  onSave(event) {
+    event.srcElement.setAttribute('disabled', true);
+
     if (this.PatientName == "" || this.MobileNo == "" || this.DoctorName == "") {
       this.toastr.warning('Please select Customer Detail', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
+      event.srcElement.removeAttribute('disabled');
       return;
     }
     if (this.FinalTotalAmt == 0 || this.FinalNetAmount == 0) {
       this.toastr.warning('Please check Sales total Amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
+      event.srcElement.removeAttribute('disabled');
       return;
     }
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
@@ -1970,6 +1972,7 @@ export class SalesComponent implements OnInit {
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
+      event.srcElement.removeAttribute('disabled');
       return;
     }
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
@@ -1983,10 +1986,10 @@ export class SalesComponent implements OnInit {
     }
     this.getDraftorderList();
     this.mobileno.nativeElement.focus();
+    event.srcElement.removeAttribute('disabled');
   }
 
   onCashOnlinePaySave() {
-    // this.Savebtn=true;
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
@@ -2137,7 +2140,6 @@ export class SalesComponent implements OnInit {
     };
 
     console.log(submitData)
-    this.Savebtn=false;
     let vMobileNo = this.MobileNo;
 
     this._salesService.InsertCashSales(submitData).subscribe(response => {
@@ -2152,7 +2154,6 @@ export class SalesComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-success',
           });
 
-          this.Savebtn=false;
 
           this.getPrint3(response);
           this.getWhatsappshareSales(response, vMobileNo);
