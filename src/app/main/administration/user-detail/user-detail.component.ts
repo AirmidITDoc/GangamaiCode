@@ -64,6 +64,7 @@ export class UserDetailComponent implements OnInit {
 
     this.UserForm = this.createPesonalForm();
     if (this.data) {
+      console.log(this.data)
       this.registerObj = this.data.registerObj;
       this.vUserId = this.registerObj.UserId;
     }
@@ -373,7 +374,7 @@ export class UserDetailComponent implements OnInit {
           "userName": this.UserForm.get('LoginName').value || '',
           "Password": this.UserForm.get('Password').value || 0,
           "addedBy": this._loggedService.currentUserValue.user.id,
-          "isActive": true,
+          "isActive": this.UserForm.get('IsActive').value || 0,
           "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
           "isDoctorType": this.UserForm.get('IsDoctor').value || 0,
@@ -427,7 +428,7 @@ export class UserDetailComponent implements OnInit {
           "userName": this.UserForm.get('LoginName').value || '',
           // "Password": this.UserForm.get('Password').value || 0,
           "addedBy": this._loggedService.currentUserValue.user.id,
-          "isActive": true,
+          "isActive": this.UserForm.get('IsActive').value || 0,
           "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
           "isDoctorType":this.UserForm.get('IsDoctor').value || 0,

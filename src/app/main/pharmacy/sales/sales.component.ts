@@ -1187,7 +1187,7 @@ export class SalesComponent implements OnInit {
     // f9
     if (event.keyCode === 120) {
       // this.Functionflag = 1
-      this.onSave();
+      this.onSave(event);
     }
 
   }

@@ -762,7 +762,7 @@ export class OPAdvancePaymentComponent implements OnInit {
         Paymentobj['AdvanceUsedAmount'] = 0;
         Paymentobj['AdvanceId'] = 0;
         Paymentobj['RefundId'] = 0;
-        Paymentobj['TransactionType'] = 0;
+        Paymentobj['TransactionType'] = 2;
         Paymentobj['Remark'] = this.paymentForm.get('commentsController').value;
         Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
         Paymentobj['IsCancelled'] = 0;
