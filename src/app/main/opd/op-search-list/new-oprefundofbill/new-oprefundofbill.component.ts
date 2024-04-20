@@ -343,15 +343,16 @@ vBillBalanceAmt=0;
      }else{
       balchk = element.BalanceAmount
     }
-if (RefundAmt > element.BalanceAmount) {
+if (RefundAmt < element.NetAmount && RefundAmt < this.RefundBalAmount) {
   // if (RefundAmt >  this.vBillBalanceAmt) {
- Swal.fire("Enter Refund Amount Less than Balance Amount ");
-} else {
-  this.TotalRefundAmount = RefundAmt;
-  element.BalanceAmount = balchk - RefundAmt
+    this.TotalRefundAmount = RefundAmt;
+  element.BalanceAmount = this.RefundBalAmount - RefundAmt
   element.PrevRefAmount = element.RefundAmount;
   this.BalanceAmount = element.BalanceAmount;
   this.RefundBalAmount = element.BalanceAmount;
+ 
+} else {
+  Swal.fire("Enter Refund Amount Less than Balance Amount ");
 }
 
   }
@@ -454,7 +455,7 @@ onSave() {
       InsertRefundObj['OPD_IPD_ID'] = this.vOPIPId,
         InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
       InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
-      InsertRefundObj['TransactionId'] = 1;
+      InsertRefundObj['TransactionId'] = 2;
       InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.user.id,
         InsertRefundObj['IsCancelled'] = 0;
       InsertRefundObj['IsCancelledBy'] = 0;
