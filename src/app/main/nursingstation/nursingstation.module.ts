@@ -26,10 +26,10 @@ const approtes: Routes = [
 },
 
 
-// {
-//   path: "dialysis",
-//   loadChildren: () => import("./dialysis/dialysis.module").then((m)=>m.DialysisModule), 
-// },
+{
+  path: "dialysis",
+  loadChildren: () => import("./clinical-care-chart/clinical-care-chart.module").then((m)=>m.ClinicalCareChartModule), 
+},
 {
   path:"dialysissms",
   loadChildren: () => import("./consent/consent.module").then((m)=>m.ConsentModule), 

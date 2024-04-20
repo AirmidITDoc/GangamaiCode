@@ -35,21 +35,19 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { ConsentComponent } from './consent.component';
-import { AngularEditorModule } from '@kolkov/angular-editor';
-
+import { ClinicalCareChartComponent } from './clinical-care-chart.component';
 
 const routes: Routes = [
   {
       path: "**",
-      component: ConsentComponent,
+      component: ClinicalCareChartComponent,
   },
 ];
 
 
 @NgModule({
   declarations: [
-    ConsentComponent
+    ClinicalCareChartComponent
   ],
   imports: [    
         RouterModule.forChild(routes),
@@ -77,7 +75,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatChipsModule,
         MatProgressSpinnerModule,
-        AngularEditorModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
         MatSidenavModule,
@@ -97,7 +94,7 @@ const routes: Routes = [
     DatePipe,
 ],
 entryComponents: [
-  ConsentComponent,
+  ClinicalCareChartComponent,
 ]
 })
-export class ConsentModule { }
+export class ClinicalCareChartModule { }
