@@ -1176,9 +1176,9 @@ export class SalesComponent implements OnInit {
   // to handel functio keys
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     // f10
-    if (event.keyCode === 121) {
-      this.Formreset();
-    }
+    // if (event.keyCode === 121) {
+    //   this.Formreset();
+    // }
     // f8
     if (event.keyCode === 119) {
       // this.onSave();
@@ -1187,7 +1187,7 @@ export class SalesComponent implements OnInit {
     // f9
     if (event.keyCode === 120) {
       // this.Functionflag = 1
-      this.onSave();
+      this.onSave(event);
     }
 
   }
