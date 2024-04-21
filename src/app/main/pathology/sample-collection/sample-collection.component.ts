@@ -16,6 +16,7 @@ import { SampleList, SampledetailtwoComponent } from './sampledetailtwo/samplede
 import { fuseAnimations } from '@fuse/animations';
 import { NursingPathRadRequestList } from '../sample-request/sample-request.component';
 import Swal from 'sweetalert2';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-sample-collection',
@@ -92,7 +93,7 @@ export class SampleCollectionComponent implements OnInit {
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
     private _fuseSidebarService: FuseSidebarService,
-
+    private reportDownloadService: ExcelDownloadService
   ) { }
   ngOnInit(): void {
     this.getPatientsList();
@@ -377,7 +378,6 @@ export class SampleCollectionComponent implements OnInit {
 
 
 
-
   // onEditNew(row, m): void {
   //   ;
 
@@ -450,96 +450,35 @@ export class SampleCollectionComponent implements OnInit {
 
     });
   }
-  onExport(exprtType) {
+ 
+
+  exportSamplecollectionReportExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['Date', 'Time', 'RegNo', 'PatientName', 'DoctorName', 'PatientType', 'PBillNo','WardName'];
+    this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Sample Collection');
+    this.dataSource.data = [];
+    this.sIsLoading = '';
   }
 
-
-
-  onExport1(exprtType) {
-    debugger;
-    //   let columnList=[];
-    //   if(this.dataSource.data.length == 0){
-    //     // this.toastr.error("No Data Found");
-    //     Swal.fire('Error !', 'No Data Found', 'error');
-    //   }
-    //   else{
-    //     var excelData = [];
-    //     var a=1;
-    //     for(var i=0;i<this.dataSource.data.length;i++){
-    //       let singleEntry = {
-    //         // "Sr No":a+i,
-    //         "RegNo" :this.dataSource.data[i]["RegNo"] ? this.dataSource.data[i]["RegNo"] :"N/A",
-    //         "PBillNo" :this.dataSource.data[i]["PBillNo"],
-    //         "Admission Date" :this.dataSource.data[i]["DOA"] ? this.dataSource.data[i]["DOA"]:"N/A",
-    //         "Admission Time" :this.dataSource.data[i]["DOT"] ? this.dataSource.data[i]["DOT"]:"N/A",
-    //         "Patient Name" :this.dataSource.data[i]["PatientName"] ? this.dataSource.data[i]["PatientName"]:"N/A",
-    //         "PatientType" :this.dataSource.data[i]["PatientType"] ? this.dataSource.data[i]["PatientType"] :"N/A",
-    //         "WardName" :this.dataSource.data[i]["WardName"] ? this.dataSource.data[i]["WardName"] : "N/A",
-
-
-    //       };
-    //       excelData.push(singleEntry);
-    //     }
-    //     var fileName = "Sample-Collection-List " + new Date() +".xlsx";
-    //     if(exprtType =="Excel"){
-    //       const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(excelData);
-    //       var wscols = [];
-    //       if(excelData.length > 0){ 
-    //         var columnsIn = excelData[0]; 
-    //         for(var key in columnsIn){
-    //           let headerLength = {wch:(key.length+1)};
-    //           let columnLength = headerLength;
-    //           try{
-    //             columnLength = {wch: Math.max(...excelData.map(o => o[key].length), 0)+1}; 
-    //           }
-    //           catch{
-    //             columnLength = headerLength;
-    //           }
-    //           if(headerLength["wch"] <= columnLength["wch"]){
-    //             wscols.push(columnLength)
-    //           }
-    //           else{
-    //             wscols.push(headerLength)
-    //           }
-    //         } 
-    //       }
-    //       ws['!cols'] = wscols;
-    //       const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    //       XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    //       XLSX.writeFile(wb, fileName);
-    //     }else{
-    //       let doc = new jsPDF('p','pt', 'a4');
-    //       doc.page = 0;
-    //       var col=[];
-    //       for (var k in excelData[0]) col.push(k);
-    //         console.log(col.length)
-    //       var rows = [];
-    //       excelData.forEach(obj => {
-    //         console.log(obj)
-    //         let arr = [];
-    //         col.forEach(col => {
-    //           arr.push(obj[col]);
-    //         });
-    //         rows.push(arr);
-    //       });
-
-    //       doc.autoTable(col, rows,{
-    //         margin:{left:5,right:5,top:5},
-    //         theme:"grid",
-    //         styles: {
-    //           fontSize: 3
-    //         }});
-    //       doc.setFontSize(3);
-    //       // doc.save("Indoor-Patient-List.pdf");
-    //       window.open(URL.createObjectURL(doc.output("blob")))
-    //     }
-    //   }
-    // }
-
+  exportReportPdf() {
+    let actualData = [];
+    this.dataSource.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.DOA);
+      tempObj.push(e.DOT);
+      tempObj.push(e.RegNo);
+      tempObj.push(e.PatientName);
+      tempObj.push(e.DoctorName);
+      tempObj.push(e.PatientType);
+      tempObj.push(e.PBillNo);
+      tempObj.push(e.WardName);
+      
+      // tempObj.push(e.PathAmount);
+      actualData.push(tempObj);
+    });
+    let headers = [['Date', 'Time', 'RegNo','PatientName', 'DoctorName', 'PatientType', 'PBillNo', 'WardName']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'Sample Collection');
   }
-
-  // }
-
 
 }
 

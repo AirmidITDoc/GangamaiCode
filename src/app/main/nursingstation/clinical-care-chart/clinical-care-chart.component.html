@@ -72,7 +72,8 @@
                             <mat-icon class="mat-icon-close"
                                 (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
                         </span>
-                        <!-- <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextReg"
+                        <mat-autocomplete #auto1="matAutocomplete" ></mat-autocomplete>
+                        <!-- [displayWith]="getOptionTextReg"
                             (optionSelected)='getSelectedObjReg($event.option.value)'>
                             <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
                                 {{option.FirstName}} {{option.MiddleName}}
