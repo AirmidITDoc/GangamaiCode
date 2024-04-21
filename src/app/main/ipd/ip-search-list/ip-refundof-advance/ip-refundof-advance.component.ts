@@ -124,7 +124,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       UsedAmount: [''],
       TotalRefundAmount: [''],
       RefundAmount: [0,Validators.required],
-      BalanceAmount: ['',Validators.required],
+      BalanceAmount:[''],// ['',Validators.required],
       BalanceAdvance:[0,Validators.required],
       AdvanceDetailID:[''],
       NewRefundAmount:['0'],
@@ -135,10 +135,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
+      // this.vOPIPId=this.selectedAdvanceObj.AdmissionID
+      this.PatientName=this.selectedAdvanceObj.PatientName;
+      this.Doctorname=this.selectedAdvanceObj.Doctorname
     }
    
     this.getRefundofAdvanceList();
-    this.getReturndetails();
+    // this.getReturndetails();
   }
 
   createSearchForm() {
@@ -153,7 +156,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     netAmt1 = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
     return netAmt1;
     this.TotRefundAmount=netAmt1;
-    console.log(netAmt1);
+    console.log(this.TotRefundAmount);
   }
 
 
@@ -194,6 +197,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.vClassId = obj.classId
 
     this.PatientName='sk';
+    this.getReturndetails();
   }
 
   getOptionText1(option) {
@@ -222,7 +226,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   getRefundofAdvanceList() {
     var m_data = {
       // "RefundId": this._IpSearchListService.myRefundAdvanceForm.get("RefundId").value || "0",
-      "RegID":410
+      "RegID": this.vOPIPId//410
 
     }
     this.isLoadingStr = 'loading';
@@ -327,7 +331,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     IPRefundofAdvanceObj['UsedAmount'] = this.UsedAmount;
     IPRefundofAdvanceObj['RefundAmount'] = this.NewRefundAmount;
     IPRefundofAdvanceObj['Remark'] = this.RefundOfAdvanceFormGroup.get("Remark").value;
-    IPRefundofAdvanceObj['TransactionId'] = '0';
+    IPRefundofAdvanceObj['TransactionId'] = 2;
     IPRefundofAdvanceObj['AddedBy'] =  this.accountService.currentUserValue.user.id,
     IPRefundofAdvanceObj['IsCancelled'] = false;
     IPRefundofAdvanceObj['IsCancelledBy'] = 0;

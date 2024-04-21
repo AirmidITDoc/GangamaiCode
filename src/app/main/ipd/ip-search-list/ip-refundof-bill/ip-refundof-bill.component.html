@@ -123,14 +123,12 @@
                                         </mat-header-cell>
                                         <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
                                             <mat-form-field appearance="legacy">
-                                                <input matInput [(ngModel)]="RefundAmt" type="number"
-                                                    (keyup)="getCellCalculation(element,RefundAmt)"
+                                                <input matInput [(ngModel)]="element.RefundAmt" type="number"
+                                                    (keyup)="getCellCalculation(element,element.RefundAmt)"
                                                     (keypress)="keyPressAlphanumeric($event)">
                                             </mat-form-field>
                                         </mat-cell>
                                     </ng-container>
-
-
 
 
 
@@ -148,11 +146,11 @@
                                             <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                         </mat-footer-cell>
                                     </ng-container>
-
+                                    <!-- (click)="onEdit(row)" -->
                                     <mat-header-row class="accent min-width-600" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-600"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit(row)">
+                                        [@animate]="{value:'*',params:{y:'100%'}}" >
                                     </mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':dataSource3!=null}"></mat-footer-row>

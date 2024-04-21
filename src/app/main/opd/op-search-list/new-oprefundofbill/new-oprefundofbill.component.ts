@@ -332,29 +332,35 @@ vBillBalanceAmt=0;
  
   RefundAmt: any;
   getCellCalculation(element, RefundAmt) {
-    debugger
-    let balchk = 0;
+    
+    
     console.log(element)
     this.serviceId = element.ServiceId;
     this.ServiceAmount = element.TotalAmt;
-    if (this.BalanceAmount == 0){
-      
-    balchk = element.NetAmount
-     }else{
-      balchk = element.BalanceAmount
-    }
+   
 if (RefundAmt < element.NetAmount && RefundAmt < this.RefundBalAmount) {
   // if (RefundAmt >  this.vBillBalanceAmt) {
-    this.TotalRefundAmount = RefundAmt;
-  element.BalanceAmount = this.RefundBalAmount - RefundAmt
+
+  this.TotalRefundAmount = RefundAmt;
+  element.BalanceAmount = this.RefAmt1 - RefundAmt
   element.PrevRefAmount = element.RefundAmount;
-  this.BalanceAmount = element.BalanceAmount;
-  this.RefundBalAmount = element.BalanceAmount;
+  // this.BalanceAmount = element.BalanceAmount;
+  // this.RefundBalAmount = element.BalanceAmount;
+  debugger
+
+  if(RefundAmt==0 || RefundAmt==null){
+    {
+      element.BalanceAmount = this.RefAmt1;
+      this.BalanceAmount = element.BalanceAmount;
+      this.RefundBalAmount = this.RefAmt1;
+    
+    }
+  }
  
 } else {
   Swal.fire("Enter Refund Amount Less than Balance Amount ");
 }
-
+this.RefundBalAmount = element.BalanceAmount;
   }
 
 

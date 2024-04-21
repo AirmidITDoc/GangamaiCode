@@ -1034,10 +1034,10 @@ export class IssueToDepartmentComponent implements OnInit {
         let updateIndentStatusIndentDetails = [];
         this.dsNewIssueList3.data.forEach(element => {
             let balQty = (parseFloat(element.TotalIndQty) - parseFloat(element.Qty))
-            if(element.TotalIndQty == 0){
-                this.Isclosedchk = true;
-            }else{
+            if(this.dsNewIssueList1.data.length == 0){
                 this.Isclosedchk = false;
+            }else{
+                this.Isclosedchk = true;
             }
             let updateIndentStatusIndentDetailsObj = {};
             updateIndentStatusIndentDetailsObj['indentId'] = element.IndentId;
@@ -1311,8 +1311,8 @@ export class IssueToDepartmentComponent implements OnInit {
             console.log(result)
             this.vIndentId =result[0].IndentId;
             
-            // const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
-            // this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
+             const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
+             this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
             // console.log(this.vIndentId)
         });
     }

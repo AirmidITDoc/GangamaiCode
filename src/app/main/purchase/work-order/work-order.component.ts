@@ -392,34 +392,31 @@ toggleEdit(index){
 
 
   newWorkorder() {
-    //this.chkNewWorkorder=1;
     const dialogRef = this._matDialog.open(UpdateWorkorderComponent,
       {
         maxWidth: "100%",
         height: '95%',
         width: '95%',
-        data: {
-          //    chkNewWorkorder:this.chkNewWorkorder
-        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getWorkOrdersList();
     });
   }
   onEdit(contact) {
     console.log(contact)
-   // this.advanceDataStored.storage = new SearchInforObj(contact);
     const dialogRef = this._matDialog.open(UpdateWorkorderComponent,
       {
         maxWidth: "100%",
         height: '95%',
         width: '95%',
         data: {
-          Obj: contact,
+          Obj: contact
         }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getWorkOrdersList();
     });
   }
 }
