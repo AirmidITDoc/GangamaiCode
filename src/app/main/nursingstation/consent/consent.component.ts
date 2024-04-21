@@ -47,6 +47,16 @@ export class ConsentComponent implements OnInit {
   vTemplateDesc:any;
   DepartmentList:any=[];
   TemplateList:any=[];
+  PatientName:any;
+  vOPDNo:any;
+  Gender:any;
+  Age:any;
+  patientsource:any;
+  CompanyName:any;
+  TarrifName:any;
+  DoctorName:any;
+
+
 
   dsConsentList = new MatTableDataSource
   

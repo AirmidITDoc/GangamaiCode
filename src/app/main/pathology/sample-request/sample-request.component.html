@@ -164,20 +164,29 @@
                             <div fxlayout="row">
                                 <div style="width: 100%;background-color: white;">
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                        style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
+                                        style="background-color:white; margin-left:5px; width:100%;overflow:auto;"
                                         sticky>
-                                        <span style="font-weight: bold; font-size: 18px;">Lab Or Rad
-                                            Details
-                                        </span>
-                                        <div style="margin-left:900px;">
-                                            <button mat-raised-button color="accent" style="margin-right:10px;"
+                                        <span style="font-weight: bold; font-size: 18px;">Lab Or Rad Details</span>
+                                        <div style="margin-left:700px;">
+                                            <!-- <button mat-raised-button color="accent" style="margin-right:10px;"
                                                 (click)="onExport('Excel')" matTooltip="Export To Excel">
                                                 <mat-icon>save_alt</mat-icon>
                                             </button>
                                             <button style="float:right;" mat-raised-button color="accent"
                                                 (click)="onExport('Pdf')" matTooltip="Export To Pdf">
                                                 <mat-icon>picture_as_pdf</mat-icon>
+                                            </button> -->
+                                            <button mat-raised-button (click)="exportReportPdf()" style="background-color: #8e67e0;color: white;">
+                                                <mat-icon style="margin-right: 15px;">cloud_download</mat-icon>Export Table(PDF)
                                             </button>
+                            
+                                            <button (click)="exportSamplerequstReportExcel()"
+                                            [disabled]="! (dataSource.data.length > 0)"
+                                            style="background-color: white;color: white;width: 45px;">
+                                            <img width="32" height="10px" src="assets/images/logos/xls.png">
+                                           </button>
+    
+
                                         </div>
                                     </div>
                                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
@@ -334,14 +343,25 @@
                                             Pathology Rad Details
                                         </h3>
                                         <div style="margin-left:700px;">
-                                            <button mat-raised-button color="accent" style="margin-right:10px;"
+                                            <!-- <button mat-raised-button color="accent" style="margin-right:10px;"
                                                 (click)="onExport1('Excel')" matTooltip="Export To Excel">
                                                 <mat-icon>save_alt</mat-icon>
                                             </button>
                                             <button style="float:right;" mat-raised-button color="accent"
                                                 (click)="onExport1('Pdf')" matTooltip="Export To Pdf">
                                                 <mat-icon>picture_as_pdf</mat-icon>
+                                            </button> -->
+
+
+                                            <button mat-raised-button (click)="exportdetailReportPdf()" style="background-color: #8e67e0;color: white;">
+                                                <mat-icon style="margin-right: 15px;">cloud_download</mat-icon>Export Table(PDF)
                                             </button>
+                            
+                                            <button (click)="exportSamplerequstdetailReportExcel()"
+                                            [disabled]="! (dataSource1.data.length > 0)"
+                                            style="background-color: white;color: white;width: 45px;">
+                                            <img width="32" height="10px" src="assets/images/logos/xls.png">
+                                           </button>
                                         </div>
                                     </div>
 

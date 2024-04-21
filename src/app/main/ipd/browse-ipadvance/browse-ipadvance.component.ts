@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdvanceDataStored } from '../advance';
 import * as converter from 'number-to-words';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 @Component({
   selector: 'app-browse-ipadvance',
   templateUrl: './browse-ipadvance.component.html',
@@ -55,6 +56,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
  
   constructor(public _advanceService:BrowseIPAdvanceService,
     private _fuseSidebarService: FuseSidebarService,
+    private reportDownloadService: ExcelDownloadService,
     public datePipe: DatePipe,public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,) { }
 
@@ -180,7 +182,33 @@ viewgetIPAdvanceReportPdf(contact) {
      });
   }
 
+ 
+  exportIpadvanceReportExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['RegNo', 'Date', 'PatientName', 'AdvanceNo', 'AdvanceAmount', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'ConcessionAmt','UserName'];
+    this.reportDownloadService.getExportJsonData(this.dataArray.data, exportHeaders, 'Ip Advance Datewise');
+    this.dataArray.data = [];
+    this.sIsLoading = '';
+  }
 
+  exportReportPdf() {
+    let actualData = [];
+    this.dataArray.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.RegNo);
+      tempObj.push(e.Date);
+      tempObj.push(e.PatientName);
+      tempObj.push(e.AdvanceNo);
+      tempObj.push(e.AdvanceAmount);
+      tempObj.push(e.CashPayAmount);
+      tempObj.push(e.ChequePayAmount);
+      tempObj.push(e.CardPayAmount);
+      tempObj.push(e.UserName);
+      actualData.push(tempObj);
+    });
+    let headers = [['RegNo', 'Date', 'PatientName', 'AdvanceNo', 'AdvanceAmount', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount',, 'ConcessionAmt','UserName']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Advance');
+  }
 
   onClear(){}
 

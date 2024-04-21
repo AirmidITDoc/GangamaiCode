@@ -30,4 +30,7 @@ export class ClinicalCareChartComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getSelectedObjReg(){
+    
+  }
 }
