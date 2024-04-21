@@ -22,12 +22,10 @@
 
             <div class="content">
                 <!-- SIDEBAR -->
-                <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-                  margin-left:12px; background-color: white;height:99%;">
+                <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" >
                     <div>
                         <!-- SIDEBAR HEADER -->
-                        <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center"
-                            style="margin-top: 3%">
+                        <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
                             <span class="search-title">Search Facility</span>
                             <!-- / USER -->
                         </div>
@@ -36,13 +34,10 @@
                         <div>
                             <div class="nav material2">
 
-                                <form [formGroup]="_IssueToDep.IssueSearchGroup" style="padding: 6px 6px 5px 5px;"
+                                <form [formGroup]="_IssueToDep.IssueSearchGroup"
                                     fusePerfectScrollbar>
                                     <div fxLayout="column" fxLayoutAlign="start none">
-                                        <br />
-
-
-                                        <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                        <mat-form-field appearance="outline" >
                                             <mat-label>Enter a date range</mat-label>
                                             <mat-date-range-input [rangePicker]="picker">
                                                 <input matStartDate formControlName="start" placeholder="Start date"
@@ -74,7 +69,7 @@
                                             </mat-select>
                                         </mat-form-field> -->
 
-                                        <mat-form-field appearance="outline" fxFlex="30%" style="margin-right: 10px;">
+                                        <mat-form-field appearance="outline" fxFlex="30%">
                                             <mat-label>To Store</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Store" matInput formControlName="ToStoreId"
@@ -94,7 +89,7 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
 
-                                        <div style="margin-top: 10px;">
+                                        <div>
                                             <button mat-raised-button class="clearbutton" matTooltip="close">
                                                 <mat-icon class="cleariconbutton">close</mat-icon>
                                             </button>&nbsp;
@@ -105,25 +100,13 @@
                                             </button>
                                         </div>
 
-                                        <button (click)="viewgetIssuetodeptsummaryReportPdf()" matTooltip="Pdf"
-                                            style="width: 45px;border-color: white;">
+                                        <button (click)="viewgetIssuetodeptsummaryReportPdf()" matTooltip="Pdf">
                                             <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
                                         </button>&nbsp;
                                         <button (click)="exportIssuetodeptReportExcel()"
-                                            [disabled]="! (dsIssueToDep.data.length > 0)"
-                                            style="background-color: white;color: white;width: 45px;">
+                                            [disabled]="! (dsIssueToDep.data.length > 0)">
                                             <img width="32" height="10px" src="assets/images/logos/xls.png">
                                         </button>
-
-
-
-                                        <!-- <div class="sales-footer-buttons gap-8" fxLayout="row">
-                                            <button class="btn btn-primary " (click)="viewgetExpItemListReportPdf()" 
-                                                >ExpItemList</button>
-                                           
-                                          
-                                        </div> -->
-
                                     </div>
 
                                 </form>
@@ -207,7 +190,7 @@
 
                                                 <ng-container matColumnDef="TotalVatAmount">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        Vat Amount </mat-header-cell>
+                                                        GST Amount </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.TotalVatAmount |
                                                         currency:'INR':'symbol-narrow':'0.2'}}
@@ -417,10 +400,8 @@
     </mat-tab>
     <mat-tab label="New Issue To Department List">
 
-        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;"
-            fusePerfectScrollbar>
-            <mat-toolbar
-                style="background-color:accent !important; height:50px; justify-content: space-between;width: 100%;">
+        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar>
+            <mat-toolbar>
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                         <mat-icon>menu</mat-icon>
@@ -445,19 +426,13 @@
             <div class="content">
 
                 <div class="center p-12 pb-56" fxFlexAlign="start center">
-
                     <div class="content-card" style="border-radius:4px; ">
-
-
                         <div fxLayout="column" fxLayoutAlign="start none">
                             <form [formGroup]="_IssueToDep.NewIssueGroup">
-                                <!-- <mat-card 
-                                                style="background-color: white; padding: 5px,5px,5px,5px; margin-bottom:10px;">-->
-
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                     <from [formGroup]="_IssueToDep.StoreFrom">
 
-                                        <mat-form-field appearance="outline" fxFlex="500px;">
+                                        <mat-form-field appearance="outline" fxFlex="200px">
                                             <mat-label>From Store</mat-label>
                                             <mat-select formControlName="FromStoreId" name="FromStoreId">
                                                 <mat-option></mat-option>
@@ -468,7 +443,7 @@
                                         </mat-form-field>
                                     </from>
 
-                                    <mat-form-field appearance="outline" fxFlex="30%" style="margin-right: 10px;">
+                                    <mat-form-field appearance="outline" fxFlex="15%">
                                         <mat-label>To Store</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select Store"
                                             matInput formControlName="ToStoreId" [matAutocomplete]="auto2" required
@@ -487,7 +462,7 @@
                                         </mat-autocomplete>
                                     </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                   <div style="padding: 15px 0px 0px 30px;">
+                                   <div>
                                     <mat-checkbox  fxFlex="15%" [(ngModel)]="vAgainstIndet"  [checked]
                                     formControlName="AgainstIndent" (change)="getAgainstIndet($event)">Against Indent
                                    </mat-checkbox>
@@ -513,7 +488,7 @@
                                     </mat-form-field>
 
 
-                                    <mat-form-field appearance="outline" fxFlex="30%">
+                                    <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>ItemName</mat-label>
                                         <input type="text" name="ItemID" formControlName="ItemID" #itemid
                                             [(ngModel)]="vItemID" placeholder="Item Name (enter 2 char)  " matInput
@@ -610,9 +585,9 @@
 
                                                 <ng-container matColumnDef="ItemName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                        class="w-180">
+                                                        class="w-200">
                                                         ItemName </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                         {{contact.ItemName}}
                                                     </mat-cell>
                                                 </ng-container>
@@ -756,9 +731,9 @@
 
                                                 <ng-container matColumnDef="ItemName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-sm>
+                                                        fxShow.gt-sm class="w-200">
                                                         ItemName </mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
                                                         {{element.ItemName}} </mat-cell>
                                                 </ng-container>
 
@@ -769,8 +744,6 @@
                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                         {{element.Qty}} </mat-cell>
                                                 </ng-container>
-
-
 
                                                 <ng-container matColumnDef="Action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef style="color: white;">

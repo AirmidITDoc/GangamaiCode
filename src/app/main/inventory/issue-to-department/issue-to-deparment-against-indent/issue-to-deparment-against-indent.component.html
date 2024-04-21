@@ -1,5 +1,4 @@
-<div id="content" class="simple page-layout inner-scroll inner-sidebar right-sidebar" style="height: 100%;"
-    fusePerfectScrollbar>
+<div id="content" class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
     <mat-toolbar style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxFlext="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -88,8 +87,7 @@
 
                     <form [formGroup]="_IssueToDep.IndentFrom">
                         <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
-                            <br />
-                            <mat-form-field appearance="outline" fxFlex="20%" >
+                            <mat-form-field appearance="outline" fxFlex="10%" >
                                 <mat-label>Enter a date range</mat-label>
                                 <mat-date-range-input [rangePicker]="picker">
                                     <input matStartDate formControlName="start" placeholder="Start date">
@@ -110,7 +108,7 @@
                                 </mat-select>
                             </mat-form-field> -->
 
-                            <mat-form-field appearance="outline" fxFlex="30%">
+                            <mat-form-field appearance="outline" fxFlex="15%">
                                 <mat-label>To Store</mat-label>
                                 <input matAutocompletePosition="below" type="text" placeholder="Select Store"
                                     matInput formControlName="ToStoreId" [matAutocomplete]="auto2" required >
@@ -153,12 +151,12 @@
                         <div fxlayout="row">
                             <div style="width:100%;">
                                 <div>
-                                    <div matColumnDef="loading" style="height: 400px;"
+                                    <div matColumnDef="loading" 
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border text-danger"></div>
                                     </div>
 
-                                    <mat-table #table matSort [dataSource]="dsIndentList"
+                                    <mat-table matSort [dataSource]="dsIndentList"
                                         [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                         <ng-container matColumnDef="IndentNo">

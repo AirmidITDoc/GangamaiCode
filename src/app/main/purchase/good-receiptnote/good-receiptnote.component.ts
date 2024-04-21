@@ -270,7 +270,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
   selection = new SelectionModel<GrnItemList>(true, []);
   printBulkQrCode(){
-    // debugger
+     debugger
     setTimeout(() => {
       this.SpinLoading = true;
       let data=[];
