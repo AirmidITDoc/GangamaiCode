@@ -1,11 +1,11 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;">
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar">
 
     <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll right-sidebar" style="height: 100%;"></div> -->
 
     <!-- HEADER -->
 
     <!-- Start Sider  -->
-    <mat-toolbar style="height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar>
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
                 style="color: white;">
@@ -39,8 +39,7 @@
     <div class="content">
 
         <!-- SIDEBAR -->
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width: 100%; border-radius:4px; 
-        margin-left: 12px; margin-top:7px; background-color: white;height:95% !important;">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm">
             <div class="content">
                 <div class="sidebar-content">
 
@@ -61,63 +60,69 @@
                                 <form [formGroup]="_PathologyService.myformSearch">
                                     <div fxLayout="column" fxLayoutAlign="start none">
 
-                                        <mat-form-field appearance="outline" style="margin-top: 5px;">
+                                        <mat-form-field appearance="outline">
                                             <mat-label>Enter a date range</mat-label>
                                             <mat-date-range-input [rangePicker]="picker">
                                                 <input matStartDate formControlName="start" placeholder="Start date">
-                                                <input matEndDate formControlName="end" placeholder="End date" (dateChange)="onShow($event)">
+                                                <input matEndDate formControlName="end" placeholder="End date"
+                                                    (dateChange)="onShow($event)">
                                             </mat-date-range-input>
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-date-range-picker #picker></mat-date-range-picker>
                                         </mat-form-field>
                                         <mat-form-field appearance="outline">
                                             <mat-label>RegNo</mat-label>
-                                            <input name="Reg_No" formControlName="Reg_No" matInput placeholder="RegNo" (keyup)="onShow($event)">
+                                            <input name="Reg_No" formControlName="Reg_No" matInput placeholder="RegNo"
+                                                (keyup)="onShow($event)">
                                         </mat-form-field>
 
 
-                                        <div fxLayoutAlign="center center" appearance="outline"
-                                            style="margin-bottom: 8px;margin-top: 8px;" fxFlex>
+                                        <div fxLayoutAlign="center center" appearance="outline" fxFlex>
                                             <mat-label style="padding:1px" fxFlex>Type :</mat-label>
-                                            <mat-radio-group name="Istype" formControlName="Istype" value='1' (change)="onShow($event)">
+                                            <mat-radio-group name="Istype" formControlName="Istype" value='1'
+                                                (change)="onShow($event)">
                                                 <mat-radio-button value='1'>IP</mat-radio-button>
                                                 <mat-radio-button value='0'>OP</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
 
-                                        <div fxLayoutAlign="center center" appearance="outline" style="margin-bottom: 8px;">
-                                            <mat-label> Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <mat-radio-group name="StatusSearch" formControlName="StatusSearch" value='2'
-                                                fxLayoutAlign="center center"
-                                                style="float:left;margin-left:0px;margin-right:20px" (change)="onShow($event)">
+                                        <div fxLayoutAlign="center center" appearance="outline"
+                                            style="margin-bottom: 8px;">
+                                            <mat-label> Status:</mat-label>
+                                            <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
+                                                value='2' fxLayoutAlign="center center" (change)="onShow($event)">
                                                 <mat-radio-button value='0'>Pending</mat-radio-button>
                                                 <mat-radio-button value='1'>Completed</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
-        
-        
+
+
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search First Name</mat-label>
-                                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput (keyup)="onShow($event)">
+                                            <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput
+                                                (keyup)="onShow($event)">
                                             <span class="error"
-                                                *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">FirstName is
+                                                *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">FirstName
+                                                is
                                                 required Enter only Alphabets</span>
                                         </mat-form-field>
-        
+
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search Last Name</mat-label>
-                                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput (keyup)="onShow($event)">
+                                            <input name="LastNameSearch" formControlName="LastNameSearch" matInput
+                                                (keyup)="onShow($event)">
                                             <span class="error"
                                                 *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">LastName is
                                                 required Enter only Alphabets</span>
                                         </mat-form-field>
-        
+
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search RegNo</mat-label>
-                                            <input name="RegNoSearch" formControlName="Reg_No" matInput (keyup)="onShow($event)">
+                                            <input name="RegNoSearch" formControlName="Reg_No" matInput
+                                                (keyup)="onShow($event)">
                                         </mat-form-field>
 
-                                        <div style="margin-top: 20px;">
+                                        <div>
                                             <!-- <button mat-raised-button (click)="onClear()" class="clearbutton">
                                                 <mat-icon class="cleariconbutton" matTooltip="close">close
                                                 </mat-icon>
@@ -133,12 +138,10 @@
                                     </div>
                                 </form>
 
-                                <div   fxLayout="row"  style="text-align: right;width: 100%;margin-top: 180px;margin-left: 100px; padding-bottom: 10px;">
-          
-                                    <button class="footer-btn" mat-raised-button fxLayoutAlign="center center" (click)="onLABSave()" style="border-radius: 16px;width: fit-content;" >Send Data To LAB</button>
-                                  
+                                <!-- <div   fxLayout="row"  >
+                                    <button class="footer-btn" mat-raised-button fxLayoutAlign="center center" (click)="onLABSave()">Send Data To LAB</button>
                            
-                              </div>
+                              </div> -->
                             </div>
                         </div>
                     </div>
@@ -176,16 +179,18 @@
                                                 (click)="onExport('Pdf')" matTooltip="Export To Pdf">
                                                 <mat-icon>picture_as_pdf</mat-icon>
                                             </button> -->
-                                            <button mat-raised-button (click)="exportReportPdf()" style="background-color: #8e67e0;color: white;">
-                                                <mat-icon style="margin-right: 15px;">cloud_download</mat-icon>Export Table(PDF)
+                                            <button mat-raised-button (click)="exportReportPdf()"
+                                                style="background-color: #8e67e0;color: white;">
+                                                <mat-icon style="margin-right: 15px;">cloud_download</mat-icon>Export
+                                                Table(PDF)
                                             </button>
-                            
+
                                             <button (click)="exportSamplerequstReportExcel()"
-                                            [disabled]="! (dataSource.data.length > 0)"
-                                            style="background-color: white;color: white;width: 45px;">
-                                            <img width="32" height="10px" src="assets/images/logos/xls.png">
-                                           </button>
-    
+                                                [disabled]="! (dataSource.data.length > 0)"
+                                                style="background-color: white;color: white;width: 45px;">
+                                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                                            </button>
+
 
                                         </div>
                                     </div>
@@ -353,15 +358,17 @@
                                             </button> -->
 
 
-                                            <button mat-raised-button (click)="exportdetailReportPdf()" style="background-color: #8e67e0;color: white;">
-                                                <mat-icon style="margin-right: 15px;">cloud_download</mat-icon>Export Table(PDF)
+                                            <button mat-raised-button (click)="exportdetailReportPdf()"
+                                                style="background-color: #8e67e0;color: white;">
+                                                <mat-icon style="margin-right: 15px;">cloud_download</mat-icon>Export
+                                                Table(PDF)
                                             </button>
-                            
+
                                             <button (click)="exportSamplerequstdetailReportExcel()"
-                                            [disabled]="! (dataSource1.data.length > 0)"
-                                            style="background-color: white;color: white;width: 45px;">
-                                            <img width="32" height="10px" src="assets/images/logos/xls.png">
-                                           </button>
+                                                [disabled]="! (dataSource1.data.length > 0)"
+                                                style="background-color: white;color: white;width: 45px;">
+                                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                                            </button>
                                         </div>
                                     </div>
 
@@ -372,7 +379,7 @@
 
                                         <ng-container matColumnDef="ReqDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                               ReqDate
+                                                ReqDate
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                 {{contact.ReqDate}}
@@ -564,7 +571,7 @@
     <!-- / CENTER -->
     <!-- / CONTENT-->
 
-    
-    
-    
+
+
+
 </div>
