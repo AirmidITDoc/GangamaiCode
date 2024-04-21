@@ -24,7 +24,7 @@
 
                             <div fxLayout="row" fxLayoutGap="10px">
                                 <mat-form-field appearance="outline" fxFlex="50%">
-                                    <input type="text" name="RegID" formControlName="RegID"
+                                    <!-- <input type="text" name="RegID" formControlName="RegID"
                                         placeholder="RegNo / First Name / Last Name / Mobile No" matInput
                                         [matAutocomplete]="auto1">
                                     <span matSuffix style="display: flex;">
@@ -32,7 +32,7 @@
                                             (click)="_ConsentService.myform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
                                             (click)="_ConsentService.myform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                    </span>
+                                    </span> -->
                                     <!-- <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextReg"
                                         (optionSelected)='getSelectedObjReg($event.option.value)'>
                                         <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
@@ -64,7 +64,7 @@
                                                     </h3>
                                                 </div>
                                                 <div class="flex-item">
-                                                    <h6 class="labels-h6">{{PatientName}}</h6>
+                                                    <!-- <h6 class="labels-h6">{{PatientName}}</h6> -->
                                                 </div>
                                 
                                                 <div class="flex-item item-header" style="margin-left: 10px;">
@@ -73,7 +73,7 @@
                                                     </h3>
                                                 </div>
                                                 <div class="flex-item">
-                                                    <h6 class="labels-h6">{{vOPDNo}}</h6>
+                                                    <!-- <h6 class="labels-h6">{{vOPDNo}}</h6> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -87,7 +87,7 @@
                                                     </h3>
                                                 </div>
                                                 <div class="flex-item">
-                                                    <h6 class="labels-h6">{{Gender}}</h6>
+                                                    <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
                                                 </div>
                                 
                                                 <div class="flex-item item-header">
@@ -96,7 +96,7 @@
                                                     </h3>
                                                 </div>
                                                 <div class="flex-item">
-                                                    <h6 class="labels-h6">{{Age}}</h6>
+                                                    <!-- <h6 class="labels-h6">{{Age}}</h6> -->
                                                 </div>
                                 
                                             </div>
@@ -113,7 +113,7 @@
                                                     </h3>
                                                 </div>
                                                 <div class="flex-item">
-                                                    <h6 class="labels-h6">{{patientsource}}</h6>
+                                                    <!-- <h6 class="labels-h6">{{patientsource}}</h6> -->
                                                 </div>
                                 
                                                 <div class="flex-item item-header" style="margin-left: 10px;">
@@ -122,7 +122,7 @@
                                                     </h3>
                                                 </div>
                                                 <div class="flex-item">
-                                                    <h6 class="labels-h6">{{CompanyName}}</h6>
+                                                    <!-- <h6 class="labels-h6">{{CompanyName}}</h6> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -136,7 +136,7 @@
                                                     </h3>
                                                 </div>
                                                 <div class="flex-item">
-                                                    <h6 class="labels-h6">{{TarrifName}}</h6>
+                                                    <!-- <h6 class="labels-h6">{{TarrifName}}</h6> -->
                                                 </div>
                                 
                                                 <div class="flex-item item-header">
@@ -145,7 +145,7 @@
                                                     </h3>
                                                 </div>
                                                 <div class="flex-item">
-                                                    <h6 class="labels-h6">{{DoctorName}}</h6>
+                                                    <!-- <h6 class="labels-h6">{{DoctorName}}</h6> -->
                                                 </div>
                                 
                                             </div>
@@ -243,9 +243,9 @@
                                     <mat-label>Department</mat-label>
                                     <mat-select formControlName="Department" name="Department" Placeholder="select Department">
                                         <mat-option></mat-option>
-                                        <mat-option *ngFor="let m of DepartmentList" [value]="m">
+                                        <!-- <mat-option *ngFor="let m of DepartmentList" [value]="m">
                                             {{m.Department}}
-                                        </mat-option>
+                                        </mat-option> -->
                                     </mat-select>
                                 </mat-form-field>
 
@@ -253,9 +253,9 @@
                                     <mat-label>Template</mat-label>
                                     <mat-select formControlName="Template" name="Template" Placeholder="select Template">
                                         <mat-option></mat-option>
-                                        <mat-option *ngFor="let m of TemplateList" [value]="m">
+                                        <!-- <mat-option *ngFor="let m of TemplateList" [value]="m">
                                             {{m.Template}}
-                                        </mat-option>
+                                        </mat-option> -->
                                     </mat-select>
                                 </mat-form-field>
 
@@ -269,9 +269,6 @@
                                 <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:40px;" [(ngModel)]="vTemplateDesc" required
                                 formControlName="TemplateDesc"></angular-editor>   
                             </div>
-
-
-
                         </form>
                     </div>
                 </div>

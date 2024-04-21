@@ -1,6 +1,5 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar">
-    <mat-toolbar
-        style="height: 50px;justify-content: space-between; width: 100%;">
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar"dynamicTableHeight>
+    <mat-toolbar>
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
@@ -18,17 +17,15 @@
 
 
     <div class="content">
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="background-color: white;
-         margin-left: 12px;width: 30%; border-radius: 4px; height: 100%; ">
-            <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%;">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm">
+            <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
                 <span class="search-title">Search Facility</span>
             </div>
             <div class="nav material2">
-                <form [formGroup]="_PaymentmodechangesService.UseFormGroup" style="padding: 6px 6px 5px 5px;"
-                    fusePerfectScrollbar>
+                <form [formGroup]="_PaymentmodechangesService.UseFormGroup" fusePerfectScrollbar>
                     <div fxLayout="column" fxLayoutAlign="start none">
 
-                        <mat-form-field appearance="outline" style="margin-left: 2%;">
+                        <mat-form-field appearance="outline">
                             <mat-label>Enter a date range</mat-label>
                             <mat-date-range-input [rangePicker]="picker">
                                 <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -93,7 +90,7 @@
 
 
         <div class="center p-12 pb-56" fxFlexAlign="start center">
-            <div class="content-card" style="border-radius:4px; ">
+            <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"

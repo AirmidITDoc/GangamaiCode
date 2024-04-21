@@ -22,9 +22,9 @@
                         <mat-label>Floor</mat-label>
                         <mat-select formControlName="Floor" name="Floor" Placeholder="select Floor">
                             <mat-option></mat-option>
-                            <mat-option *ngFor="let m of FloorList" [value]="m">
+                            <!-- <mat-option *ngFor="let m of FloorList" [value]="m">
                                 {{m.Floor}}
-                            </mat-option>
+                            </mat-option> -->
                         </mat-select>
                     </mat-form-field>
 
@@ -32,9 +32,9 @@
                         <mat-label>Ward</mat-label>
                         <mat-select formControlName="Ward" name="Ward" Placeholder="select Ward">
                             <mat-option></mat-option>
-                            <mat-option *ngFor="let m of WardList" [value]="m">
+                            <!-- <mat-option *ngFor="let m of WardList" [value]="m">
                                 {{m.Ward}}
-                            </mat-option>
+                            </mat-option> -->
                         </mat-select>
                     </mat-form-field>
 
@@ -63,7 +63,7 @@
                 </div>
                 <div fxLayout="row" fxLayoutGap="4px">
                     <mat-form-field appearance="outline" fxFlex="50%">
-                        <input type="text" name="RegID" formControlName="RegID"
+                        <!-- <input type="text" name="RegID" formControlName="RegID"
                             placeholder="RegNo / First Name / Last Name / Mobile No" matInput
                             [matAutocomplete]="auto1">
                         <span matSuffix style="display: flex;">
@@ -71,7 +71,7 @@
                                 (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
                             <mat-icon class="mat-icon-close"
                                 (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                        </span>
+                        </span> -->
                         <!-- <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextReg"
                             (optionSelected)='getSelectedObjReg($event.option.value)'>
                             <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">

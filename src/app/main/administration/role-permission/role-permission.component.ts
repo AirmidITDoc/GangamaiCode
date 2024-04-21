@@ -65,7 +65,6 @@ export class RolePermissionComponent implements OnInit {
     if (this.data) {
       this.getPermissionList(this.data.RoleId);
       setTimeout(() => {
-
         this.nestedTreeControl.expandAll();
       }, 2000);
     }

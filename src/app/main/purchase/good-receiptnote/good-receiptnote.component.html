@@ -147,6 +147,15 @@
                                                             class="pill green-600 s-16">circle</mat-icon>
                                                         <mat-icon *ngIf="!contact.IsVerified" matTooltip="Pending"
                                                             class="pill red-600 s-16">circle</mat-icon>
+
+
+                                                        <mat-icon *ngIf="!contact.Cash_CreditType" matTooltip="Credit">
+                                                            <span class="material-icons">credit_card</span>
+                                                        </mat-icon>
+
+                                                        <mat-icon *ngIf="contact.Cash_CreditType" matTooltip="Cash"> 
+                                                            <span class="material-icons">currency_rupee</span>
+                                                        </mat-icon>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -290,15 +299,11 @@
                                                         </button>
                                                         <button mat-icon-button (click)="onVerify(row)"
                                                             matTooltip="Verify">
-                                                            <mat-icon *ngIf="row.IsVerified==1"
-                                                                title="verify Menu">verified_user</mat-icon>
-                                                            <mat-icon title="verify Menu" *ngIf="row.IsVerified==0">
-                                                                verified_user</mat-icon>
+                                                            <mat-icon *ngIf="row.IsVerified==1"title="verify Menu">verified_user</mat-icon>
+                                                            <mat-icon title="verify Menu" *ngIf="row.IsVerified==0">verified_user</mat-icon>
                                                         </button>
                                                         <button mat-icon-button (click)="GRNEmail(row)">
-                                                            <mat-icon *ngIf="row.IsVerified==0"
-                                                                [disabled]="row.disabled" class="disabled-icon"
-                                                                title="Email Menu">mail</mat-icon>
+                                                            <mat-icon *ngIf="row.IsVerified==0" [disabled]="row.disabled" class="disabled-icon" title="Email Menu">mail</mat-icon>
                                                             <mat-icon *ngIf="row.IsVerified==1"
                                                                 title="Email Menu">mail</mat-icon>
                                                         </button>
@@ -348,7 +353,11 @@
                                         </div>
                                     </div>
                                     <div class="gap-8" fxLayout="row" fxLayout.xs="column">
-                                        <div fxFlex.gt-xs="60%" fxFlex.xs="100%">
+                                        <div fxFlex.gt-xs="100%" fxFlex.xs="100%">
+                                            <button mat-raised-button *ngIf="selection.selected.length>0"
+                                                (click)="printBulkQrCode()">
+                                                Print QrCode
+                                            </button>
                                             <mat-table #table matSort class="table2" [dataSource]="dsGrnItemList"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
@@ -556,7 +565,7 @@
 
 
                                         </div>
-                                        <div fxFlex.gt-xs="40%" fxFlex.xs="100%">
+                                        <!-- <div fxFlex.gt-xs="40%" fxFlex.xs="100%">
                                             <mat-table #table class="table4" matSort [dataSource]="dsLastThreeItemList"
                                                 style="overflow:auto;">
                                                 <ng-container matColumnDef="SupplierName">
@@ -632,11 +641,7 @@
                                                     [ngClass]="{'hide':!(dsLastThreeItemList!=null && dsLastThreeItemList.data.length==0)}">
                                                 </mat-footer-row>
                                             </mat-table>
-
-                                            <!-- <mat-paginator #paginator [pageSizeOptions]="[12, 24, 35, 100]"
-                                                [pageSize]="12" showFirstLastButtons>
-                                            </mat-paginator> -->
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
