@@ -164,6 +164,7 @@ getOptionTextStores(option) {
   }
   OnReset(){
     this._matDialog.closeAll();
+    this._IssueToDep.IndentFrom.reset();
   }
 }
 export class IndentList {

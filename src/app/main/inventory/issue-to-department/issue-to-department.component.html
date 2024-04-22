@@ -97,16 +97,19 @@
                                             <button mat-raised-button class="searchButton" (click)="getIssueToDep()"
                                                 matTooltip="search">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
+                                            </button>&nbsp;
+
+                                            <button (click)="viewgetIssuetodeptsummaryReportPdf()" matTooltip="Pdf" style="width: 40px;">
+                                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                                            </button> 
+
+                                            <button (click)="exportIssuetodeptReportExcel()"
+                                                [disabled]="! (dsIssueToDep.data.length > 0)" style="width: 40px;">
+                                                <img width="32" height="10px" src="assets/images/logos/xls.png">
                                             </button>
                                         </div>
 
-                                        <button (click)="viewgetIssuetodeptsummaryReportPdf()" matTooltip="Pdf">
-                                            <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
-                                        </button>&nbsp;
-                                        <button (click)="exportIssuetodeptReportExcel()"
-                                            [disabled]="! (dsIssueToDep.data.length > 0)">
-                                            <img width="32" height="10px" src="assets/images/logos/xls.png">
-                                        </button>
+                                      
                                     </div>
 
                                 </form>
@@ -398,9 +401,9 @@
             </div>
         </div>
     </mat-tab>
-    <mat-tab label="New Issue To Department List">
+    <mat-tab label="New Issue To Department List" >
 
-        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar>
+        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar  >
             <mat-toolbar>
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -443,7 +446,7 @@
                                         </mat-form-field>
                                     </from>
 
-                                    <mat-form-field appearance="outline" fxFlex="15%">
+                                    <mat-form-field appearance="outline" fxFlex="25%">
                                         <mat-label>To Store</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select Store"
                                             matInput formControlName="ToStoreId" [matAutocomplete]="auto2" required
@@ -462,7 +465,7 @@
                                         </mat-autocomplete>
                                     </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                   <div>
+                                   <div style="padding-top: 15px;">
                                     <mat-checkbox  fxFlex="15%" [(ngModel)]="vAgainstIndet"  [checked]
                                     formControlName="AgainstIndent" (change)="getAgainstIndet($event)">Against Indent
                                    </mat-checkbox>
@@ -778,10 +781,14 @@
                                                 <mat-footer-row *matFooterRowDef="['loading']"
                                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                                 </mat-footer-row>
-                                                <!-- <mat-footer-row *matFooterRowDef="['noData']"
-                                                                        [ngClass]="{'hide':!(dsNewIssueList1!=null && dsNewIssueList1.data.length==0)}">
-                                                                    </mat-footer-row> -->
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{'hide':!(dsNewIssueList1!=null)}">
+                                                </mat-footer-row>
                                             </mat-table>
+                                            <mat-paginator #SecondPaginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
+                                            showFirstLastButtons>
+                                           </mat-paginator>
+
                                         </div>
                                     </div>
                                 </div>
@@ -792,13 +799,13 @@
 
                             <div fxLayout="row" fxLayoutGap="10px" style="margin-top: 10px;">
 
-                                <mat-form-field appearance="outline" fxFlex="22%">
+                                <mat-form-field appearance="outline" fxFlex="30%">
                                     <mat-label>Remark</mat-label>
                                     <input type="text" name="Remark" formControlName="Remark" matInput #remark
                                         [(ngModel)]="vremark" required>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="8%">
+                                <mat-form-field appearance="outline" fxFlex="10%">
                                     <mat-label>GST Amount</mat-label>
                                     <input type="text" name="GST Amount" formControlName="GSTAmount" matInput #GSTAmount
                                         [(ngModel)]="vFinalGSTAmount">
@@ -819,35 +826,13 @@
 
 
                                 <div style="padding: 15px;">
-                                    <!-- <span class="net-amt-label" style="width: 150px;font-weight: bold;color:blue;">No of
-                                        Items:</span>&nbsp;<span class="net-amt-value"
-                                        style="margin-right: 100px;font-weight: bold">{{dsNewIssueList3.data.length}}</span> -->
+                                  
                                     <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;">
                                         Total Amount :</span>&nbsp;<span class="net-amt-value"
-                                        style="margin-right: 10px;font-weight: bold">{{getTotalamt(dsNewIssueList3.data)
+                                        style="margin-right: 10px;font-weight: bold;width: 150px;">{{getTotalamt(dsNewIssueList3.data)
                                         | currency:'INR' }}</span>
-                                    <!-- <span
-                                                    style="width:150px;font-weight: bold;color: red;margin-left:100px;">
-                                                    Total GST:</span>&nbsp;<span class="gst-amt-value"
-                                                    style="margin-left:10px;">{{getGSTAmtSum(saleSelectedDatasource.data)
-                                                    | currency:'INR' }}</span>
-                                                <span class="net-amt-label"
-                                                    style="width: 200px;font-weight: bold;margin-left:240px;">
-                                                    NetAmount:</span>&nbsp;<span class="net-amt-value"
-                                                    style="margin-right: 20px;">{{getNetAmtSum(saleSelectedDatasource.data)
-                                                    | currency:'INR' }}</span> -->
+                                 
                                 </div>
-
-                                <!-- <div matTooltip="Select All Value to enable this button!!">
-                                                    <button class="next-btn"
-                                                        style="width: 80px;border-radius: 16px;margin-left: 120px;"
-                                                        (click)="OnSave()" >Save</button>
-                                                    <button class="footer-btn" style="width: 80px;border-radius: 16px;"
-                                                        (click)="OnReset()">Reset</button>&nbsp;&nbsp;
-                                                </div> -->
-
-
-                                <!-- [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0" -->
 
                                 <div class="sales-footer-buttons gap-8" fxLayout="row">
                                     <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>

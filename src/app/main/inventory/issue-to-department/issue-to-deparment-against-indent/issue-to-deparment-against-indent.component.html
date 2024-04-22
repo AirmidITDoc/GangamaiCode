@@ -87,7 +87,7 @@
 
                     <form [formGroup]="_IssueToDep.IndentFrom">
                         <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
-                            <mat-form-field appearance="outline" fxFlex="10%" >
+                            <mat-form-field appearance="outline" fxFlex="15%" >
                                 <mat-label>Enter a date range</mat-label>
                                 <mat-date-range-input [rangePicker]="picker">
                                     <input matStartDate formControlName="start" placeholder="Start date">
@@ -108,7 +108,7 @@
                                 </mat-select>
                             </mat-form-field> -->
 
-                            <mat-form-field appearance="outline" fxFlex="15%">
+                            <mat-form-field appearance="outline" fxFlex="25%">
                                 <mat-label>To Store</mat-label>
                                 <input matAutocompletePosition="below" type="text" placeholder="Select Store"
                                     matInput formControlName="ToStoreId" [matAutocomplete]="auto2" required >
