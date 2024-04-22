@@ -1,6 +1,5 @@
-<div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" style="height: 100%;"
-      fusePerfectScrollbar>
-    <mat-toolbar style="background-color:accent !important; height:50px; justify-content: space-between;width: 100%;">
+<div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" fusePerfectScrollbar dynamicTableHeight>
+    <mat-toolbar>
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
@@ -24,7 +23,7 @@
 
                             <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                 <from [formGroup]="_IndentService.StoreFrom">
-                                    <mat-form-field appearance="outline" fxFlex="100%">
+                                    <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>From Store</mat-label>
                                         <mat-select formControlName="FromStoreId" name="FromStoreId">
                                             <mat-option></mat-option>
@@ -35,8 +34,7 @@
                                     </mat-form-field>
                                 </from>
 
-                                <mat-form-field appearance="outline" fxFlex="30%"
-                                    style="margin-right: 10px;">
+                                <mat-form-field appearance="outline" fxFlex="20%">
                                     <mat-label>To Store</mat-label>
                                     <input matAutocompletePosition="below" type="text" required
                                         placeholder="Select Store" matInput formControlName="ToStoreId"
@@ -220,8 +218,7 @@
 
                     <div fxLayoutAlign="end">
                       
-
-                        <mat-form-field appearance="outline" fxFlex="50%" style="margin-right: 350px;">
+                        <mat-form-field appearance="outline" fxFlex="50%">
                             <mat-label>Remark</mat-label>
                             <input name="Remark" formControlName="Remark" [(ngModel)]="vRemark" matInput>
                         </mat-form-field>

@@ -1,6 +1,5 @@
-<div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" style="height: 100%;"
-    dynamicTableHeight fusePerfectScrollbar>
-    <mat-toolbar style="background-color:accent !important; height:50px; justify-content: space-between;width: 100%;">
+<div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" dynamicTableHeight fusePerfectScrollbar>
+    <mat-toolbar >
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
@@ -36,10 +35,9 @@
 
                     <div class="nav material2">
 
-                        <form [formGroup]="_IndentService.IndentSearchGroup" style="padding: 6px 6px 5px 5px;"
-                            fusePerfectScrollbar>
+                        <form [formGroup]="_IndentService.IndentSearchGroup" fusePerfectScrollbar>
                             <div fxLayout="column" fxLayoutAlign="start none">
-                                <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                <mat-form-field appearance="outline" >
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
                                         <input matStartDate formControlName="start" placeholder="Start date"
@@ -62,7 +60,7 @@
 
 
 
-                                <mat-form-field appearance="outline" fxFlex style="margin-right: 10px;">
+                                <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>To Store</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Store"
                                         matInput formControlName="ToStoreId" [matAutocomplete]="auto1">
