@@ -1,6 +1,5 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar dynamicTableHeight>
+    <mat-toolbar>
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
                 style="color: white;">
@@ -21,11 +20,10 @@
     <!-- CONTENT -->
     <div class="content">
         <!-- SIDEBAR -->
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-        margin-left:12px; background-color: white;height:99%;">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" >
             <div>
                 <!-- SIDEBAR HEADER -->
-                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
+                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
                     <span class="search-title">Search Facility</span>
                     <!-- / USER -->
                 </div>
@@ -33,11 +31,9 @@
                 <!-- SIDEBAR CONTENT -->
                 <div>
                     <div class="nav material2">
-                        <form [formGroup]="_advanceService.myFilterform" style="padding: 6px 6px 5px 5px;"
-                            fusePerfectScrollbar>
+                        <form [formGroup]="_advanceService.myFilterform" fusePerfectScrollbar>
                             <div fxLayout="column" fxLayoutAlign="start none">
-                                <br />
-                                <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                <mat-form-field appearance="outline">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
                                         <input matStartDate formControlName="start" placeholder="Start date"
@@ -126,8 +122,7 @@
                                     </div>
                                 </div>
                                 <mat-table #table matSort table="table1" [dataSource]="dataArray"
-                                    [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
-
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                     <ng-container matColumnDef="RegNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>RegNo
@@ -136,6 +131,7 @@
                                             {{contact.RegNo}}
                                         </mat-cell>
                                     </ng-container>
+
                                     <ng-container matColumnDef="Date">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header
                                             fxShow.gt-md>Date</mat-header-cell>
@@ -151,8 +147,6 @@
                                             {{contact.PatientName}}
                                         </mat-cell>
                                     </ng-container>
-
-
 
                                     <ng-container matColumnDef="AdvanceNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Advance
