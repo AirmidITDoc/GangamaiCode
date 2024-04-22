@@ -231,6 +231,7 @@ export class IssueToDepartmentComponent implements OnInit {
             this.dsIssueToDep.sort = this.sort;
             this.dsIssueToDep.paginator = this.paginator;
             this.sIsLoading = '';
+            console.log(this.dsIssueToDep.data)
         },
             error => {
                 this.sIsLoading = '';
