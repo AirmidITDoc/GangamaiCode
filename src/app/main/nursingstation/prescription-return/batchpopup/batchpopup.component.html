@@ -1,87 +1,82 @@
-<div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Item Stock Pop Up</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<!-- APP TITLE -->
-<div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
-    
-    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-        style="font-size:18px; font-weight: 500;width:99%;font-family: sans-serif;">
-      Item Stock Pop Up : 
-        <!-- <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}} (IPD
-            No:{{selectedAdvanceObj.IPDNo}}) - AdmissionDate:{{selectedAdvanceObj.AdmDateTime}} -
-            Ward:{{selectedAdvanceObj.WardName}} - Tariff :{{selectedAdvanceObj.TariffName}}</span> -->
-    </span>
-    <!-- <span style="float: right;background: white;color: black;">
-        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">ri
-        </app-common-date>
-    </span> -->
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+                <div class="modal-card-container">
+                    <mat-card>
+                        <mat-table #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}"  (click)="onTableClick()">
+                            <ng-container matColumnDef="BatchNo">
+                                <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.BatchNo}} </span></mat-cell>
+                            </ng-container>
 
-    <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
-        <mat-icon>close</mat-icon>
-    </button>
+                            <ng-container matColumnDef="BatchExpDate">
+                                <mat-header-cell *matHeaderCellDef> Exp Date </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.BatchExpDate | date: 'MM/yyyy'}} </span></mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="BalanceQty">
+                                <mat-header-cell *matHeaderCellDef> Bal Qty </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.BalanceQty}} </span></mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="MRP">
+                                <mat-header-cell *matHeaderCellDef> MRP </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.UnitMRP}} </span></mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="PurPrice">
+                                <mat-header-cell *matHeaderCellDef> Pur Price </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.PurchaseRate}} </span></mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ConversionFactor">
+                                <mat-header-cell *matHeaderCellDef> Packing </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.ConversionFactor}} </span></mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="LandedRate">
+                                <mat-header-cell *matHeaderCellDef> LandedRate </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.LandedRate}} </span></mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    <mat-spinner style="float:left;" [diameter]='30'></mat-spinner>
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    <mat-spinner style="float:left;" [diameter]='30' *ngIf="isLoadingStr=='loading'"></mat-spinner>
+                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}" [ngClass]="{'highlight': selectedRowIndex == row.position}" (click)="selectedRow('', row)" tabindex="999" (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)" (keydown.arrowup)="arrowUpEvent(row, selectedRowIndex)" (keyup.enter)="selectedRow(selectedRowIndex, '')" id="ele-{{row.position}}"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-</div>
-
-<mat-table #table [dataSource]="dataSource" class="mat-elevation-z8 sale-table" matSort [@animateStagger]="{value:'50'}"
-    style="overflow:auto;margin-top: 10px;" (click)="onTableClick()">
-    <ng-container matColumnDef="BatchNo">
-        <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.BatchNo}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="BatchExpDate">
-        <mat-header-cell *matHeaderCellDef> Exp Date </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.BatchExpDate | date: 'MM/yyyy'}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="BalanceQty">
-        <mat-header-cell *matHeaderCellDef> Bal Qty </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.BalanceQty}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="MRP">
-        <mat-header-cell *matHeaderCellDef> MRP </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.UnitMRP}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="PurPrice">
-        <mat-header-cell *matHeaderCellDef> Pur Price </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.PurchaseRate}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="ConversionFactor">
-        <mat-header-cell *matHeaderCellDef> Packing </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.ConversionFactor}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="LandedRate">
-        <mat-header-cell *matHeaderCellDef> LandedRate </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.LandedRate}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="loading">
-        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-            <mat-spinner style="float:left;" [diameter]='30'></mat-spinner>
-        </mat-header-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="noData">
-        <mat-footer-cell *matFooterCellDef colspan="6">
-            <mat-spinner style="float:left;" [diameter]='30' *ngIf="isLoadingStr=='loading'"></mat-spinner>
-            <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-        </mat-footer-cell>
-    </ng-container>
-
-    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
-        [ngClass]="{'highlight': selectedRowIndex == row.position}"
-        (click)="selectedRow('', row)"
-        tabindex="999"
-        (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)"
-        (keydown.arrowup)="arrowUpEvent(row, selectedRowIndex)"
-        (keyup.enter)="selectedRow(selectedRowIndex, '')" id="ele-{{row.position}}"></mat-row>
-    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-    <mat-footer-row *matFooterRowDef="['noData']"
-        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-</mat-table>
-

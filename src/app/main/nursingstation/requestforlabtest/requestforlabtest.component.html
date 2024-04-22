@@ -1,56 +1,41 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar dynamicTableHeight>
     <!-- HEADER -->
-
-    <!-- Start Sider  -->
-    <mat-toolbar style="height:50px; justify-content: space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+    <div class="top-header">
+        <div class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
                 <mat-icon>menu</mat-icon>
             </button>
-
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-            style="color: white;">account_box
-        </mat-icon>
-        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-            Lab Request List
-        </span>
-
-        <div fxLayout="row" fxLayoutGap="5px" style="margin-left:300% !important; ">
-            <button mat-raised-button (click)="Openpopup()" matTooltip="close"
-                style="background-color: aliceblue;color: brown;"> Request New Test
-
-            </button>
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>Lab Request List </span>
+            </div>
         </div>
-
-          <!-- <button mat-raised-button  class="clearbutton"(click)="Openpopup()"  matTooltip="close" style= "left: 300%; width:100%; height: 40px;">
-            Request New Test</button> -->
+        <div class="top-header-right">
+            <div class="header-add-button">
+                <button mat-raised-button (click)="Openpopup()">Request New Test</button>
+            </div>
         </div>
-         
-
-
-    </mat-toolbar>
+    </div>
 
     <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
 
     <div class="content">
 
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-             margin-left:12px; background-color: white;height:99%;">
-            <div>
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+            <div class="sidebar-content">
                 <!-- SIDEBAR HEADER -->
-                <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
+                <div class="accent sidebar-header" fxLayout="row" fxLayoutAlign="start center">
                     <span class="search-title">Search Facility</span>
                     <!-- / USER -->
                 </div>
                 <!-- / SIDEBAR HEADER -->
                 <!-- SIDEBAR CONTENT -->
-                <div>
-                    <div class="nav material2">
-                        <form [formGroup]="_RequestforlabtestService.mySearchForm" style="padding: 6px 6px 5px 5px;"
-                            fusePerfectScrollbar>
+                <div class="sidebar-body">
+                    <div class="sidebar-form">
+                        <form [formGroup]="_RequestforlabtestService.mySearchForm" fusePerfectScrollbar>
                             <div fxLayout="column" fxLayoutAlign="start none">
-                                <br />
-                                <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                <mat-form-field appearance="outline">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
                                         <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -64,18 +49,15 @@
                                     <mat-label>Search RegNo</mat-label>
                                     <input name="RegNo" formControlName="RegNo" matInput (keyup)="getRequesttList()">
                                 </mat-form-field>
-
-                                <div style="margin-top: 10px;">
+                                <div class="action-buttons">
                                     <button mat-raised-button class="clearbutton" matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon></button>&nbsp;
-                                    <button mat-raised-button class="searchButton" (click)="getRequesttList()"
-                                        matTooltip="search">
+                                        <mat-icon class="cleariconbutton">close</mat-icon>
+                                    </button>
+                                    <button mat-raised-button class="searchButton" (click)="getRequesttList()" matTooltip="search">
                                         <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
-
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -96,95 +78,78 @@
                             <div style="width: 100%;">
 
 
-                                <mat-table class="Tab1" matSort [dataSource]="dsrequestList"
-                                    [@animateStagger]="{value:'50'}" style="overflow: auto;" >
-
-                                    <ng-container matColumnDef="action"  >
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button matTooltip="print" (click)="viewgetLabrequestReportPdf(row)">
-                                                <mat-icon>print</mat-icon>
-                                            </button>
-                                            <button mat-icon-button (click)="deleteTableRow(row)"
-                                            color="warn">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
-                                        </mat-cell>
-                                    </ng-container>
-                                    RequestId
+                                <mat-table class="Tab1" matSort [dataSource]="dsrequestList" [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                     <ng-container matColumnDef="RequestId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RequestId
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm >
-                                            {{contact.RequestId}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.RequestId}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="RegNo"   >
+                                    <ng-container matColumnDef="RegNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm >
-                                            {{contact.RegNo}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.RegNo}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="PatientName" >
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    <ng-container matColumnDef="PatientName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                             PatientName
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.PatientName}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                            <span> {{contact.PatientName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Vst_Adm_Date" >
+                                    <ng-container matColumnDef="Vst_Adm_Date">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Adm Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.AdmDate}}
+                                            <span> {{contact.AdmDate}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Age" >
+                                    <ng-container matColumnDef="Age">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Age
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.Age}}
+                                            <span> {{contact.Age}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="WardName" >
+                                    <ng-container matColumnDef="WardName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Ward Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.WardName}}
+                                            <span> {{contact.WardName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="RequestType" >
+                                    <ng-container matColumnDef="RequestType">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> RequestType
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.RequestType}}
+                                            <span> {{contact.RequestType}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="TariffName"  >
+                                    <ng-container matColumnDef="TariffName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> TariffName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.TariffName}}
+                                            <span> {{contact.TariffName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="CompanyName"  >
+                                    <ng-container matColumnDef="CompanyName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> CompanyName
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                        [style.background-color]="CompanyName !== ' ' ? 'white' : 'pink'">
-                                            {{contact.CompanyName}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm [style.background-color]="CompanyName !== ' ' ? 'white' : 'pink'">
+                                            <span> {{contact.CompanyName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -192,7 +157,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Presc Time
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ReqTime | date:'mm/dd/yyyy hh:mm:ss'}}
+                                            <span> {{contact.ReqTime | date:'mm/dd/yyyy hh:mm:ss'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -200,7 +165,20 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> AddedBy
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.AddedBy}}
+                                            <span> {{contact.AddedBy}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm >Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button matTooltip="print" (click)="viewgetLabrequestReportPdf(row)">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+                                            <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
                                         </mat-cell>
                                     </ng-container>
 
@@ -215,75 +193,66 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent"
-                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                    [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="getRequestdetList(contact)">
+                                    <mat-header-row class="accent min-width-1600" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1600" [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''" [@animate]="{value:'*',params:{y:'100%'}}" (click)="getRequestdetList(contact)">
                                     </mat-row>
-                                    <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                          [ngClass]="contact.Isclosed == 'true' ? 'self-row' : ''"
-                          [@animate]="{value:'*',params:{y:'100%'}}">
-                        </mat-row> -->
-                                   
+
                                     <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                     </mat-footer-row>
-                                          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsrequestList!=null && dsrequestList.data.length==0)}">
-                                             </mat-footer-row>
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsrequestList!=null && dsrequestList.data.length==0)}">
+                                    </mat-footer-row>
 
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
-                                    showFirstLastButtons>
+                                <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15" showFirstLastButtons>
                                 </mat-paginator>
 
-                                <mat-table class="Tab2" matSort [dataSource]="dsrequestdetList"
-                                    [@animateStagger]="{value:'50'}" style="overflow: auto;" >
+                                <mat-table class="Tab2" matSort [dataSource]="dsrequestdetList" [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
-                                    <ng-container matColumnDef="ReqDate"  >
+                                    <ng-container matColumnDef="ReqDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReqDate
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ReqDate}}
+                                            <span> {{contact.ReqDate}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="ReqTime"  >
+                                    <ng-container matColumnDef="ReqTime">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReqTime
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ReqTime}}
+                                            <span> {{contact.ReqTime}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="ServiceName"  >
+                                    <ng-container matColumnDef="ServiceName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ServiceName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ServiceName}}
+                                            <span> {{contact.ServiceName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByName"  >
+                                    <ng-container matColumnDef="AddedByName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedBy
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.AddedByName}}
+                                            <span> {{contact.AddedByName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="BillingUser"  >
+                                    <ng-container matColumnDef="BillingUser">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Add Biling User
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.BillingUser}}
+                                            <span> {{contact.BillingUser}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedByDate"  >
+                                    <ng-container matColumnDef="AddedByDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BillDateTime
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.AddedByDate}}
+                                            <span> {{contact.AddedByDate}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -291,52 +260,47 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsStatus
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IsStatus}}
+                                            <span> {{contact.IsStatus}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="PBillNo"  >
+                                    <ng-container matColumnDef="PBillNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PBillNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.PBillNo}}
+                                            <span> {{contact.PBillNo}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsComplted"  >
+                                    <ng-container matColumnDef="IsComplted">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsComplted
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IsTestCompted  }}
+                                            <span> {{contact.IsTestCompted }}</span>
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                         </mat-header-cell>
                                     </ng-container>
-    
+
                                     <ng-container matColumnDef="noData">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
                                             no data found...
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent"
-                                        *matHeaderRowDef="displayColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}">
+                                    <mat-header-row class="accent min-width-1000" *matHeaderRowDef="displayColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayColumns;" class="contact min-width-1000" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
                                     <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                        </mat-footer-row>
-                                     <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsrequestdetList!=null && dsrequestdetList.data.length==0)}">
-                                         </mat-footer-row>
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsrequestdetList!=null && dsrequestdetList.data.length==0)}">
+                                    </mat-footer-row>
                                 </mat-table>
                                 <mat-paginator [pageSizeOptions]="[5, 25, 35, 100]" [pageSize]="5" showFirstLastButtons>
                                 </mat-paginator>
-                               
-                            
-
                             </div>
                         </div>
                     </div>
@@ -369,51 +333,45 @@
     </div>
     <table>
         <tr>
-            <td > <span style="font-weight: 500;margin-right: 100px;">Reg No </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.RegNo}} </span> </td>
+            <td> <span style="font-weight: 500;margin-right: 100px;">Reg No </span><span style="font-size:11px; ">{{reportPrintObjList[0]?.RegNo}} </span> </td>
             <td><span style="font-weight: 500;margin-right:42px;margin-left: 200px;">Req. Date</span><span style="font-size:11px;"> {{reportPrintObjList[0]?.ReqDate}} </span> </td>
         </tr>
 
         <tr>
-            <td ><span style="font-weight: 500;margin-right: 60px;">Patient Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.PatientName}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 60px;">Patient Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.PatientName}}</span> </td>
             <td><span style="font-weight: 500;margin-right: 11px;margin-left: 200px;">Ward Name</span> <span style="font-size:11px;margin-right: 20px;margin-left: 20px;">{{reportPrintObjList[0]?.RoomName}}</span> </td>
         </tr>
 
         <tr>
-            <td ><span style="font-weight: 500;margin-right: 60px;">Doctor Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.AdmittedDocName}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 60px;">Doctor Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.AdmittedDocName}}</span> </td>
             <td><span style="font-weight: 500;margin-right: 90px;margin-left: 200px;">Age</span><span style="font-size:11px;">{{reportPrintObjList[0]?.AgeYear}}</span> </td>
         </tr>
 
         <tr>
-            <td ><span style="font-weight: 500;margin-right: 55px;">Ref.Doc Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.RefDocName}}</span> </td>
+            <td><span style="font-weight: 500;margin-right: 55px;">Ref.Doc Name</span><span style="font-size:11px;">{{reportPrintObjList[0]?.RefDocName}}</span> </td>
             <td><span style="font-weight: 500;margin-right: 65px;margin-left: 200px;">Gender</span> <span style="font-size:11px;">{{reportPrintObjList[0]?.GenderName}} </span></td>
         </tr>
     </table>
 
-    
+
     <hr>
 
     <table class="table" style="width: 100%;border-collapse: collapse; text-align: center;">
         <tr style="font-size:12px;">
 
-            <td
-                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:5px 5px;">
+            <td style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:5px 5px;">
                 Sr.No</td>
-            <td
-                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:5px 5px;">
+            <td style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:5px 5px;">
                 Test Name</td>
-            <td
-                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
+            <td style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
                 PBill No</td>
-            <td
-                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
+            <td style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
                 Bill Date</td>
-            <td
-                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
+            <td style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
                 Bill Time</td>
-            <td
-                style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
+            <td style="border: 1px solid black;font-weight:bold; vertical-align: middle;padding:10px 5px;">
                 Price</td>
-           
+
         </tr>
         <tr *ngFor="let item of reportPrintObjList; let indx = index;" style="font-size:10px;">
             <td style="border: 1px solid black;vertical-align: top;
@@ -429,7 +387,7 @@
             <td style="border: 1px solid black;vertical-align: top;
             padding: 0;height: 20px;">{{item?.Price}}</td>
         </tr>
-         
+
     </table><br>
 
     <div style="font-style: italic; opacity:.6;text-align: center;font-size: 12px; margin-top: 15px;">

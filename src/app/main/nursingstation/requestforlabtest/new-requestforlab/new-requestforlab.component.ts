@@ -174,7 +174,7 @@ export class NewRequestforlabComponent implements OnInit {
     this.getSelectedObj(row);
   }
   getSelectedObj(obj) {
-    debugger
+    // debugger
     this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' +obj.PatientName;
     this.RegId = obj.RegId;
@@ -237,7 +237,7 @@ export class NewRequestforlabComponent implements OnInit {
   }
   
   getServiceListdata() {
-    debugger
+    // debugger
     var Param = {
       "ServiceName":`${this.myFormGroup.get('ServiceId').value}%` ||'%',
       "IsPathRad":parseInt(this.myFormGroup.get('IsPathRad').value) || 0,

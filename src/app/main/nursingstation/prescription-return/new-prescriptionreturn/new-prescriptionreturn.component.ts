@@ -106,7 +106,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
 
   getPharItemList() {
-    debugger
+    // debugger
     var m_data = {
 
       "ItemName": `${this.ItemSubform.get('ItemId').value}%` || '%',
@@ -223,7 +223,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   public onEnterqty(event): void {
-    debugger
+    // debugger
     if (event.which === 13) {
       this.add = true;
       this.addbutton.focus();
@@ -298,7 +298,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
   getSelectedObj(obj) {
-    debugger
+    // debugger
     // this.registerObj = obj;
 
     this.ItemName = obj.ItemName;
@@ -312,7 +312,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
 
   getSelectedObjReg(obj) {
-debugger
+// debugger
     this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
     this.RegId = obj.RegID;
@@ -322,7 +322,10 @@ debugger
 
     // this.getDraftorderList(obj);
   }
-  onClose() { }
+  onClose() { 
+    
+  }
+
 
   OnSavePrescriptionreturn() {
     // console.log(this.myForm.get('WardName').value.RoomId)
@@ -332,7 +335,7 @@ debugger
     let ipPrescriptionReturnD = {};
     let ipPrescriptionReturnH = {};
 
-    debugger
+    // debugger
     ipPrescriptionReturnH['presDate'] = this.datePipe.transform((new Date), 'dd/MM/yyyy');//this.dateTimeObj.date;
     ipPrescriptionReturnH['presTime'] = this.datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
     ipPrescriptionReturnH['toStoreId'] = this._loggedService.currentUserValue.user.storeId;
@@ -357,7 +360,7 @@ debugger
       ipPrescriptionReturnDArray.push(ipPrescriptionReturnD);
     });
     submissionObj['ipPrescriptionReturnD'] = ipPrescriptionReturnDArray;
-    debugger
+    // debugger
     console.log(submissionObj);
 
     this._PrescriptionReturnService.presciptionreturnSave(submissionObj).subscribe(response => {
@@ -394,7 +397,7 @@ debugger
 
   
   viewgetIpprescriptionreturnReportPdf(row) {
-    debugger
+    // debugger
     setTimeout(() => {
       this.SpinLoading =true;
     //  this.AdList=true;

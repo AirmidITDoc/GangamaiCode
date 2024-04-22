@@ -11,7 +11,7 @@ body.mat-typography {
     @include font-size($font-size-base);
     @include themed {
         color: t($text-color);
-        background-color: t($bg-color);
+        background-color: t($bg-color-light);
     }
 }
 div,

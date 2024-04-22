@@ -1,448 +1,235 @@
-<div class="dialog-content-wrapper" style="overflow: auto;">
-    <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center " style="height: 40px;">
-
-        <!-- APP TITLE -->
-        <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
-
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="font-size: 20px;width: 83%; font-weight: 400;">
-                Request New Test
-            </span>
-            <span style="float: right;"><app-common-date style="float: right;"
-                    (dateTimeEventEmitter)="getDateTime($event)">
-                </app-common-date></span>
-
-
-            <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Request New Test</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
-    <form [formGroup]="searchFormGroup" style="width: 100%;height: auto;">
-        <div class="content-card" style="margin-bottom: 10px;">
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-copnt">
+            <div fxLayout="column" class="gap-12">
+                <div class="modal-card-container">
+                    <mat-card>
+                        <form [formGroup]="searchFormGroup">
+                            <div fxLayout="row wrap" class="gap-16" fxLayoutAlign="center center">
+                                <div class="radio-container">
+                                    <mat-radio-group formControlName="radioIp">
+                                        <mat-radio-button value="1">IP</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <div class="input-container gap-8" fxFlex>
+                                    <mat-form-field appearance="outline" disabled="isRegSearchDisabled" fxFlex>
+                                        <input type="text" name="RegID" formControlName="RegID" placeholder="RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto1" (input)="getSearchList()">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText" (optionSelected)='getSelectedObj($event.option.value)'>
+                                            <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                                                {{option.MobileNo}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <mat-error *ngIf="searchFormGroup.get('RegID').hasError('required')  && searchFormGroup.get('RegID').touched">
+                                            Required field cannot be left blank
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-card>
+                </div>
+                <div class="modal-card-container">
+                    <mat-card>
+                        <div class="patient-info-container">
+                            <div class="patient-info-box">
+                                <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h2">Patient Information</span>
+                                </div>
+                                <div class="patient-info-box my-8">
+                                    <div class="patient-info-row row-gap-4">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key ">Patient Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{PatientName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">OPIPNo</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{vOPDNo}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">DoctorName</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{DoctorName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">CompanyName</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{CompanyName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key ">TarrifName</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{Tarrifname}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+                <div class="modal-card-container">
+                    <mat-card>
+                        <form [formGroup]="myFormGroup">
+                            <div fxLayout="column">
+                                <div class="radio-container gap-8" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                    <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad" (change)="getServiceListdata()">
+                                        <mat-radio-button value="1">Pathology
+                                        </mat-radio-button>
+                                        <mat-radio-button value="2">Radiology</mat-radio-button>
+                                        <mat-radio-button value="3">Other Services</mat-radio-button>
+                                    </mat-radio-group>
 
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                                    <mat-form-field appearance="outline">
+                                        <input matInput type="datetime-local" placeholder="Request Date / Time" formControlName="Requestdate" [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
+                                    </mat-form-field>
+                                </div>
+                                <div class="input-container gap-8" fxLayout="row">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <input type="text" name="ServiceName2" formControlName="ServiceId" placeholder="Service Name" (keyup)="getServiceListdata()" matInput>
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close" (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close" (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-error class="error" *ngIf="myFormGroup.get('ServiceId').invalid && myFormGroup.get('ServiceId').touched">
+                                            ServiceName is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-card>
+                </div>
+                <div class="modal-card-container table-container">
+                    <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
+                        <!-- Table 1 -->
+                        <div class="table-left" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="40%">
+                            <mat-card>
+                                <mat-table #table matSort [dataSource]="dsLabRequest2" class="h-280 fix-first-col" [@animateStagger]="{value:'50'}">
+                                    <ng-container matColumnDef="ServiceName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Service Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.ServiceName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
 
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="background-color: white;
-                         padding: 5px 10px 5px 5px;" fxLayoutGap="4px">
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
 
-                    <mat-radio-group formControlName="radioIp" style="padding: 10px 0px 0px 30px;" fxFlex="5%">
-                        <mat-radio-button value="1">IP</mat-radio-button>
-                    </mat-radio-group>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div class="redio-container">
-                        <mat-form-field appearance="outline" style="width:300%;margin-left:15px;"
-                            disabled="isRegSearchDisabled">
-                            <input type="text" name="RegID" formControlName="RegID"
-                                placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                                [matAutocomplete]="auto1" (input)="getSearchList()">
-                            <span matSuffix style="display: flex;">
-                                <mat-icon class="mat-icon-close"
-                                    (click)="searchFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                <mat-icon class="mat-icon-close"
-                                    (click)="searchFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                            </span>
-                            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
-                                (optionSelected)='getSelectedObj($event.option.value)'>
-                                <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                    {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
-                                    {{option.MobileNo}}
-                                </mat-option>
-                            </mat-autocomplete>
-                            <mat-error
-                                *ngIf="searchFormGroup.get('RegID').hasError('required')  && searchFormGroup.get('RegID').touched">
-                                Required field cannot be left blank
-                            </mat-error>
-                        </mat-form-field>
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            <!-- <mat-spinner class="spinner" [diameter]="35" [color]="blue"></mat-spinner> -->
+                                            <span>No Data Found</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
+                                    <!-- [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" -->
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedServiceColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedServiceColumns;" (click)="onSaveEntry(contact)" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsLabRequest2!=null}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsLabRequest2!=null && dsLabRequest2.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                            </mat-card>
+
+                        </div>
+                        <!-- Table 2 -->
+                        <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="60%">
+                            <mat-card>
+                                <mat-table #table matSort [dataSource]="dstable1" class="h-280" [@animateStagger]="{value:'50'}">
+                                    <ng-container matColumnDef="ServiceName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Service Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.ServiceName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Price">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Price
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.Price | currency:'INR' }}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="buttons">
+                                        <mat-header-cell *matHeaderCellDef> Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
+                                            <!-- <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button>       -->
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            <!-- <mat-spinner class="spinner" [diameter]="35" [color]="blue"></mat-spinner> -->
+                                            <span>No Data Found</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
+                                    <!-- [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" -->
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedServiceselected; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedServiceselected;" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dstable1!=null}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dstable1!=null && dstable1.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                            </mat-card>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
-
-    <form [formGroup]="myFormGroup">
-
-        <div class="content-card" style="margin-bottom: 10px;">
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="2px">
-
-                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 2px; height: fit-content;">
-
-                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                        <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
-                        </h3>
-                    </div> -->
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-
-                        <!-- <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
-                        formControlName="RegId" required>
-                            <div class="flex-item" style="width: 200px;">
-                                <h3 class="labels-h3">RegNo</h3>
-                            </div>
-                            <div class="flex-item-middle">
-                                <h3 class="labels-h6">:</h3>
-                            </div>
-                            <div class="flex-item">
-                                <h3 class="labels-h6">{{RegId}}</h3>
-                            </div>
-                           
-                        </div>
-
-                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
-                            formControlName="AdmissionID" required>
-                            <div class="flex-item" style="width: 200px;">
-                                <h3 class="labels-h3">AdmissionID
-                                </h3>
-                            </div>
-                            <div class="flex-item-middle">
-                                <h3 class="labels-h6">:</h3>
-                            </div>
-                            <div class="flex-item">
-                                <h3 class="labels-h6">{{vAdmissionID}}</h3>
-                            </div>
-                           
-                        </div>
-
-                        <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center"
-                            formControlName="PatientName" required>
-                            <div class="flex-item" style="width: 300px;">
-                                <h3 class="labels-h3">Patient Name
-                                </h3>
-                            </div>
-                            <div class="flex-item-middle">
-                                <h3 class="labels-h6">:</h3>
-                            </div>
-                            <div class="flex-item">
-                                <h3 class="labels-h6">{{PatientName}}</h3>
-                            </div>
-                           
-                        </div> -->
-
-                        <!-- <div class="patient-sub">
-                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                <div class="flex-item" style="width:40px;">
-                                    <h3 class="labels-h3">Doctor Name</h3>
-                                </div>
-                                <div class="flex-item-middle">
-                                    <h6 class="labels-h6">:</h6>
-                                </div>
-                                <div class="flex-item">
-                                    <h6 class="labels-h6">{{DoctorName}}</h6>
-                                </div>
-                            </div>
-                        </div> -->
-
-                        <!-- <mat-form-field appearance="outline" fxFlex="20%">
-                            <mat-label>Date</mat-label>
-                            <input name="Date" matInput [matDatepicker]="picker">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field> -->
-                        <!-- <span
-                            style="margin-left: 30px;font-size: medium;color: rgb(3, 83, 83);font-weight: bold;">Patient
-                            Name :{{PatientName}} <span style="margin-left: 20px;">IPNO :{{RegId}}</span><span
-                                style="margin-left: 20px;">Adm No:{{vAdmissionID}}</span>
-                                <span style="margin-left: 20px;">Company Name :{{RegId}}</span>
-                                <span style="margin-left: 20px;">Tariif :{{RegId}}</span></span> -->
-
-                    </div>
-
-                </mat-card>
-
-                <div>
-                    <fieldset class="fieldset-div">
-                        <legend>Patient Information</legend>
-
-                        <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
-                            <div class="patient-sub">
-                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                    <div class="flex-item">
-                                        <h3 class="labels-h3">Patient Name</h3>
-                                    </div>
-                                    <div class="flex-item-middle">
-                                        <h6 class="labels-h6">:</h6>
-                                    </div>
-                                    <div class="flex-item" style="width: 275px;">
-                                        <h4 class="labels-h6">{{PatientName}}</h4>
-                                    </div>
-                                    <div class="flex-item item-header" style="margin-left: 10px;">
-                                        <h3 class="labels-h3">OPIPNo</h3>
-                                    </div>
-                                    <div class="flex-item-middle">
-                                        <h4 class="labels-h6">:</h4>
-                                    </div>
-                                    <div class="flex-item">
-                                        <h4 class="labels-h6">{{vOPDNo}}</h4>
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-
-                            <div class="patient-sub">
-                                <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                    <div class="flex-item item-header">
-                                        <h3 class="labels-h3">DoctorName</h3>
-                                    </div>
-                                    <div class="flex-item-middle">
-                                        <h6 class="labels-h6">:</h6>
-                                    </div>
-                                    <div class="flex-item">
-                                        <h4 class="labels-h6">{{Doctorname}}</h4>
-                                    </div>
-                                    <div class="flex-item item-header">
-                                        <h3 class="labels-h3">CompanyName</h3>
-                                    </div>
-                                    <div class="flex-item-middle">
-                                        <h6 class="labels-h6">:</h6>
-                                    </div>
-                                    <div class="flex-item">
-                                        <h4 class="labels-h6">{{CompanyName}}</h4>
-                                    </div>
-
-                                    <div class="flex-item item-header">
-                                        <h3 class="labels-h3">TarrifName</h3>
-                                    </div>
-                                    <div class="flex-item-middle">
-                                        <h4 class="labels-h6">:</h4>
-                                    </div>
-                                    <div class="flex-item">
-                                        <h6 class="labels-h6">{{Tarrifname}}</h6>
-                                    </div>
-                                </div>
-                                <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                    <!-- <div class="flex-item item-header">
-                                        <h3 class="labels-h3">DoctorName</h3>
-                                    </div>
-                                    <div class="flex-item-middle">
-                                        <h6 class="labels-h6">:</h6>
-                                    </div>
-                                    <div class="flex-item">
-                                        <h6 class="labels-h6">{{Doctorname}}</h6>
-                                    </div> -->
-
-
-                                    <!-- <div class="flex-item item-header">
-                                        <h3 class="labels-h3">Doctor</h3>
-                                    </div>
-                                    <div class="flex-item-middle">
-                                        <h6 class="labels-h6">:</h6>
-                                    </div>
-                                    <div class="flex-item">
-                                        <h6 class="labels-h6">XYZ XYZ Xyz</h6>
-                                    </div> -->
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" (click)="OnSaveLabRequest()">Save</button>
             </div>
         </div>
-
-
-        <!-- 
-        <mat-card class="content-card" style="background-color: white;">
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="padding-top: 10px;">
-
-                <mat-radio-group formControlName="IsPathRad" name="IsPathRad" style="padding: 10px 0px 30px 30px;"
-                    (change)="getServiceList()">
-                    <mat-radio-button style="margin-right: 25px;" value="1">Pathology</mat-radio-button>
-                    <mat-radio-button style="margin-right: 25px;" value="2">Radiology</mat-radio-button>
-                    <mat-radio-button style="margin-right: 200px;" value="3">Other Services</mat-radio-button>
-                </mat-radio-group>
-
-            </div>
-        </mat-card> -->
-
-
-        <!-- style="padding: 0px 5px 5px 5px;" -->
-
-        <mat-card fxFlexFill>
-            <div fxFlexFill fxLayout="column">
-                <div fxLayoutGap="5px">
-                    <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
-                        (change)="getServiceListdata()" style="width:80%;margin-left:15px;">
-                        <mat-radio-button value="1" style="margin-top: 10px;">Pathology
-                        </mat-radio-button>
-                        <mat-radio-button value="2">Radiology</mat-radio-button>
-                        <mat-radio-button value="3">Other Services</mat-radio-button>
-                    </mat-radio-group>
-
-
-                    <mat-form-field appearance="outline" style="margin-left: 400px;">
-                        <input matInput type="datetime-local" placeholder="Request Date / Time"
-                            formControlName="Requestdate" [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
-                    </mat-form-field>
-                </div>
-                <div fxLayoutGap="5px">
-                    <mat-form-field appearance="outline" style="width:50%;margin-left:15px;margin-top: 10px;">
-                        <input type="text" name="ServiceName2" formControlName="ServiceId" placeholder="Service Name"
-                            (keyup)="getServiceListdata()" matInput>
-                        <span matSuffix style="display: flex;">
-                            <mat-icon class="mat-icon-close"
-                                (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">close</mat-icon>
-                            <mat-icon class="mat-icon-close"
-                                (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">search</mat-icon>
-                        </span>
-                        <mat-error class="error"
-                            *ngIf="myFormGroup.get('ServiceId').invalid && myFormGroup.get('ServiceId').touched">
-                            ServiceName is required
-                        </mat-error>
-
-                    </mat-form-field>
-
-                   
-                </div>
-            </div>
-        </mat-card>
-
-        <!-- Table 2 -->
-
-
-        <div class="content-card" style="padding: 20px 20px 0 20px;" fxLayout="row" fxLayoutGap="5px">
-            <div style="width:40%;">
-                <mat-card>
-                    <mat-table #table matSort [dataSource]="dsLabRequest2" class="table1"
-                        [@animateStagger]="{value:'50'}">
-
-
-
-                        <ng-container matColumnDef="ServiceName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                Service Name
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                {{contact.ServiceName}}
-                            </mat-cell>
-                        </ng-container>
-
-                        <!-- <ng-container matColumnDef="Price">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                Price
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                {{contact.Price | currency:'INR' }}
-
-                            </mat-cell>
-                        </ng-container> -->
-
-
-
-
-                        <ng-container matColumnDef="loading">
-                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                loading data...
-                            </mat-footer-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="noData">
-                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                <!-- <mat-spinner  class="spinner" [diameter]="35"
-                [color]="blue"></mat-spinner> -->
-                                <span>No Data Found</span>
-                            </mat-footer-cell>
-                        </ng-container>
-                        <!-- [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" -->
-                        <mat-header-row class="accent" *matHeaderRowDef="displayedServiceColumns; sticky: true">
-                        </mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: displayedServiceColumns;"
-                            (click)="onSaveEntry(contact)" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsLabRequest2!=null}">
-                        </mat-footer-row>
-                        <mat-footer-row *matFooterRowDef="['noData']"
-                            [ngClass]="{'hide':!(dsLabRequest2!=null && dsLabRequest2.data.length==0)}">
-                        </mat-footer-row>
-                    </mat-table>
-                </mat-card>
-            </div>
-            <!-- Table 1 -->
-            <div style="width: 60%;">
-
-                <mat-card>
-
-                    <mat-table #table matSort [dataSource]="dstable1" class="table2" [@animateStagger]="{value:'50'}"
-                        style="overflow: auto;">
-
-
-                        <ng-container matColumnDef="ServiceName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                Service Name
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                {{contact.ServiceName}}
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Price">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                Price
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                {{contact.Price | currency:'INR' }}
-
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="buttons">
-                            <mat-header-cell *matHeaderCellDef style="color: white;"> Action
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let row">
-                                <!-- <button mat-icon-button (click)="onEdit(row)">
-                                <mat-icon title="Edit Menu">launch</mat-icon>
-                            </button> -->
-                                <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
-                                    <mat-icon>delete_outline</mat-icon>
-                                </button>
-                                <!-- <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button>       -->
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="loading">
-                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                loading data...
-                            </mat-footer-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="noData">
-                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                <!-- <mat-spinner  class="spinner" [diameter]="35"
-                [color]="blue"></mat-spinner> -->
-                                <span>No Data Found</span>
-                            </mat-footer-cell>
-                        </ng-container>
-                        <!-- [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" -->
-                        <mat-header-row class="accent" *matHeaderRowDef="displayedServiceselected; sticky: true">
-                        </mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: displayedServiceselected;"
-                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dstable1!=null}">
-                        </mat-footer-row>
-                        <mat-footer-row *matFooterRowDef="['noData']"
-                            [ngClass]="{'hide':!(dstable1!=null && dstable1.data.length==0)}">
-                        </mat-footer-row>
-                    </mat-table>
-                </mat-card>
-            </div>
-        </div>
-
-
-
-        <div class="footer-navigation-container" fxLayout.gt-xs="row">
-
-            <div style="margin-top: 20px; margin-right: 10px; ">
-                <button class="next-btn" color="accent" style="border-radius: 16px; width: 80px;"
-                    (click)="OnSaveLabRequest()">Save</button>
-                <button class="footer-btn" id="btncancel" (click)="onClose()">Close</button>
-            </div>
-        </div>
-
-    </form>
-
-    <!-- <div style=" margin-top: 10px;" class="clearbutton">
-        <button mat-raised-button class="footer-btn" style="width: 100px;margin-right: 5px;" (click)="onClose()">Close</button>
-        <button mat-raised-button class="clearbutton" style=" width:100px; margin-right: 15px;"
-        (click)="OnSaveLabRequest()">Save</button>
-    </div> -->
-
+    </div>
 </div>
