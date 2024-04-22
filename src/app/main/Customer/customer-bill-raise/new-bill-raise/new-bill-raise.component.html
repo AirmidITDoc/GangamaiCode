@@ -21,7 +21,7 @@
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
 
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
 
                         <form [formGroup]="_CustomerBill.myform">
@@ -42,11 +42,49 @@
                                 </mat-form-field>
                             </div>
                             <div>
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>CustomerId</mat-label>
                                     <input name="CustomerId" formControlName="CustomerId" matInput required type="text" OnlyNUmber
                                     (keyup.enter)="focusNext('Amount')" id="CustomerId" [(ngModel)]="vCustomerId">
-                                </mat-form-field>
+                                </mat-form-field> -->
+
+                                <!-- <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Customer Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" [(ngModel)]="vCustomerId"
+                                        placeholder="Select Customer" matInput formControlName="CustomerId"
+                                        [matAutocomplete]="auto" required (input)="getCustomerSearchCombo()">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_CustomerBill.myform.get('CustomerId').setValue(''); isCustomerIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_CustomerBill.myform.get('CustomerId').setValue(''); isCustomerIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #auto="matAutocomplete"
+                                        [displayWith]="getOptionText">
+                                        <mat-option *ngFor="let option of filteredOptionsCutomer"  [value]="option">
+                                            {{option.CustomerName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>&nbsp; -->
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>CustomerId</mat-label>
+                                    <input matAutocompletePosition="below" type="text"  placeholder="Select Customer"
+                                        matInput formControlName="CustomerId" [matAutocomplete]="auto" required
+                                         [(ngModel)]="vCustomerId" >
+                                   <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_CustomerBill.myform.get('CustomerId').setValue(''); isCustomerIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_CustomerBill.myform.get('CustomerId').setValue(''); isCustomerIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
+                                        <mat-option *ngFor="let option of filteredOptions | async"
+                                            [value]="option">
+                                            {{option.CustomerName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>&nbsp;
                             </div>
 
 
@@ -55,26 +93,25 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Amount</mat-label>
                                     <input name="Amount" formControlName="Amount" type="text" OnlyNUmber
-                                      matInput required text-length="10" (keyup.enter)="focusNext('InvoiceRaisedId')"
+                                      matInput required text-length="10" (keyup.enter)="focusNext('Description')"
                                         id="Amount" [(ngModel)]="vAmount">
                                 </mat-form-field>
+                            </div>
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
                                 <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>InvoiceRaisedId</mat-label>
-                                    <input name="InvoiceRaisedId" formControlName="InvoiceRaisedId" matInput required  type="text" OnlyNumber
-                                    OnlyNumber  id="InvoiceRaisedId" [(ngModel)]="vInvoiceRaisedId">
+                                    <mat-label>Description</mat-label>
+                                    <textarea row="5" name="Description" formControlName="Description" matInput required  type="text" OnlyNumber
+                                    OnlyNumber  id="Description" [(ngModel)]="vDescription"></textarea>
                                 </mat-form-field>
-                            </div>
-
-                            <div fxLayoutAlign="end" style="padding: 15px;">
-                                <div class="sales-footer-buttons gap-8">
-                                    <button class="btn btn-primary" (click)="onSubmit()"
-                                        [disabled]="Savebtn">Save</button>&nbsp;
-                                    <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>
-                                </div>
-                            </div>
+                            </div>  
                         </form>
                     </div>
+                     
+                        <div class="modal-footer-buttons gap-8 p-24" fxLayout="row"  fxLayoutAlign="end">
+                            <button class="btn btn-danger-outline" (click)="onReset()">Close</button>
+                            <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn">Save</button>
+                        </div>
                 </div>
             </div>
         </div>

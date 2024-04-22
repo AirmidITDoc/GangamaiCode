@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterialConsumptionPatientwiseComponent } from './Patientwisematerialconsumption/material-consumption-patientwise/material-consumption-patientwise.component';
 import { PatientRefVisitComponent } from './patient-ref-visit/patient-ref-visit.component';
+
   
 
 const approtes: Routes = [
@@ -25,14 +26,14 @@ const approtes: Routes = [
 },
 
 
-// {
-//   path: "dialysis",
-//   loadChildren: () => import("./dialysis/dialysis.module").then((m)=>m.DialysisModule), 
-// },
-// // {
-// //   path:"dialysissms",
-// //   loadChildren: () => import("./dialysis-sms/dialysis-sms.module").then((m)=>m.DialysisSmsModule), 
-// // },
+{
+  path: "dialysis",
+  loadChildren: () => import("./clinical-care-chart/clinical-care-chart.module").then((m)=>m.ClinicalCareChartModule), 
+},
+{
+  path:"dialysissms",
+  loadChildren: () => import("./consent/consent.module").then((m)=>m.ConsentModule), 
+},
 {
   path:"patientrefvisit",
   loadChildren: () => import("./patient-ref-visit/patientrefvisit.module").then((m)=>m.PatientrefvisitModule), 
@@ -69,7 +70,7 @@ const approtes: Routes = [
 
 ];
 @NgModule({
-  declarations: [  ],
+  declarations: [ ],
   imports: [
     RouterModule.forChild(approtes),
   ]

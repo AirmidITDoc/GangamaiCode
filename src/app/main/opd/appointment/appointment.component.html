@@ -114,10 +114,14 @@
                                     </span>
 
 
-                                    <div style="color: blue;"><mat-icon  class="blue-600 s-16">circle</mat-icon>Total Count :{{Vtotalcount}}</div>
-                                    <div style="color: green"><mat-icon  class="green-600 s-16">circle</mat-icon> New Patient :{{VNewcount}}</div>
-                                        <div style="color: orange"> <mat-icon  class="orange s-16">circle</mat-icon>  FollowUp :{{VFollowupcount}}</div>
-                                            <div style="color: red"><mat-icon  class="red-600 s-16">circle</mat-icon>Bill Count : {{VBillcount}}</div>
+                                    <div style="color: blue;"><mat-icon class="blue-600 s-16">circle</mat-icon>Total
+                                        Count :{{Vtotalcount}}</div>
+                                    <div style="color: green"><mat-icon class="green-600 s-16">circle</mat-icon> New
+                                        Patient :{{VNewcount}}</div>
+                                    <div style="color: orange"> <mat-icon class="orange s-16">circle</mat-icon> FollowUp
+                                        :{{VFollowupcount}}</div>
+                                    <div style="color: red"><mat-icon class="red-600 s-16">circle</mat-icon>Bill Count :
+                                        {{VBillcount}}</div>
                                 </div>
                             </form>
                         </div>
@@ -443,7 +447,7 @@
                                             <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
                                                 showFirstLastButtons [length]="resultsLength" (page)="getVisitList1()">
                                             </mat-paginator>
-                                          
+
 
 
                                             <div style="display: none;">
@@ -540,13 +544,13 @@
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxflex="30" *ngIf="IsPhoneAppflag">
                                         <mat-label>Phone Appointment : First Name / Last Name / Mobile No </mat-label>
-                                        <input type="text" name="RegId" formControlName="RegId" matInput
+                                        <input type="text" name="PhoneRegId" formControlName="PhoneRegId" matInput
                                             [matAutocomplete]="auto" (input)="getPhoneAppointmentList()">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
-                                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                (click)="searchFormGroup.get('PhoneRegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
                                             <mat-icon class="mat-icon-close"
-                                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                                (click)="searchFormGroup.get('PhoneRegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                             (optionSelected)='getSelectedObjPhone($event.option.value)'>
@@ -687,7 +691,7 @@
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline">
+                                                    <!-- <mat-form-field appearance="outline">
                                                         <mat-label>Birth date</mat-label>
                                                         <input name="DateOfBirth" matInput [matDatepicker]="picker1"
                                                             formControllName="DateOfBirth" #bday
@@ -697,6 +701,14 @@
                                                         <mat-datepicker-toggle matSuffix
                                                             [for]="picker1"></mat-datepicker-toggle>
                                                         <mat-datepicker #picker1></mat-datepicker>
+                                                    </mat-form-field> -->
+
+                                                    <mat-form-field appearance="outline">
+                                                        <input matInput
+                                                               [matDatepicker]="validFromPicker"  formControllName="DateOfBirth"  #bday  [value]="registerObj.DateofBirth"
+                                                               (keydown)="onEnterbday($event)" (dateChange)="onChangeDateofBirth($event.value)" placeholder="mm/dd/yyyy">
+                                                        <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+                                                        <mat-datepicker #validFromPicker></mat-datepicker>
                                                     </mat-form-field>
                                                 </div>
                                                 <!-- age, month, dat -->
@@ -745,7 +757,7 @@
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline">
+                                                    <!-- <mat-form-field appearance="outline">
                                                         <mat-label>Pan Card No</mat-label>
                                                         <input name="PanCardNo" formControlName="PanCardNo"
                                                             placeholder="PanCardNo Number" matInput
@@ -754,6 +766,21 @@
                                                         <mat-error class="error"
                                                             *ngIf="personalFormGroup.get('PanCardNo').invalid && personalFormGroup.get('PanCardNo').touched">12
                                                             digits Pan Card No is required</mat-error>
+                                                    </mat-form-field> -->
+
+
+
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>AadharCard Number</mat-label>
+                                                        <input name="AadharCardNo" formControlName="AadharCardNo"
+                                                            placeholder="AadharCard Number" matInput
+                                                            [(ngModel)]="registerObj.AadharCardNo" type="number"
+                                                            #AadharCardNo (keydown)="onEnterAadharCardNo($event)" type="number"
+                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
+                                                        <mat-error class="error"
+                                                            *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">Aadhar
+                                                            number is required
+                                                        </mat-error>
                                                     </mat-form-field>
                                                 </div>
 

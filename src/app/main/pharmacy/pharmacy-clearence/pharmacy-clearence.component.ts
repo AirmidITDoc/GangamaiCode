@@ -148,7 +148,7 @@ console.log(vdata)
     const dialogRef = this._matDialog.open(NewCustomerComponent,
       {
         maxWidth: "85vw",
-        height: '85%',
+        height: '60%',
         width: '100%',
         
       });
@@ -160,7 +160,7 @@ console.log(vdata)
     const dialogRef = this._matDialog.open(NewBillRaiseComponent,
       {
         maxWidth: "85vw",
-        height: '85%',
+        height: '60%',
         width: '100%',
         
       });

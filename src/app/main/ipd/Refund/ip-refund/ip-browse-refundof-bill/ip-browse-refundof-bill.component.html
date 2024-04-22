@@ -82,6 +82,17 @@
                                         <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
                                 </div>
+
+                                 
+                                <button (click)="exportIprefundofbillReportExcel()"
+                                [disabled]="! (dataSource.data.length > 0)"
+                                style="background-color: white;color: white;width: 45px;">
+                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                               </button>
+                               <button mat-raised-button (click)="exportReportPdf()"
+                               style="background-color: #8e67e0;color: white;">
+                               <mat-icon style="margin-right: 15px;">cloud_download</mat-icon>Export Table(PDF)
+                                </button>
                             </div>
 
                         </form>

@@ -141,6 +141,7 @@ export class IssueToDepartmentComponent implements OnInit {
     vTostoreId:any;
     filteredOptionsStore: Observable<string[]>;
     filteredOptionsStoreList: Observable<string[]>;
+    vAgainstIndet:boolean=false;
 
     dsIssueToDep = new MatTableDataSource<IssueToDep>();
     dsIssueItemList = new MatTableDataSource<IssueItemList>();
@@ -327,6 +328,15 @@ export class IssueToDepartmentComponent implements OnInit {
             this.FromStoreList1 = data;
             this._IssueToDep.StoreFrom.get('FromStoreId').setValue(this.FromStoreList1[0])
         });
+    }
+    AgainstInd:boolean=true;
+    getAgainstIndet(event){
+        if(event.checked == true){
+            this.AgainstInd = false;
+        }else{
+            this.AgainstInd = true;
+        }
+
     }
     getCellCalculation(contact,Qty){
 
@@ -641,8 +651,17 @@ export class IssueToDepartmentComponent implements OnInit {
     //         // }
     //     });
     // }
+
+    Indentid:any;
+    indentdetid:any;
+    IsClosed:any;
+    TotalIndQty:any;
     AddIndentItem(contact) {
         console.log(contact)
+        this.Indentid=contact.IndentId;
+        this.indentdetid = contact.IndentDetailsId;
+        this.IsClosed = contact.IsClosed; 
+        this.TotalIndQty = contact.TotalIndQty;
         let DuplicateItem=0;
         
         if (this.dsNewIssueList3.data.length > 0) {
@@ -683,7 +702,7 @@ export class IssueToDepartmentComponent implements OnInit {
             });
         }
         //   else  {
-    debugger        
+    //debugger        
         if(!DuplicateItem){
         this.Itemchargeslist1 = [];
         this.QtyBalchk = 0;
@@ -695,7 +714,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this._IssueToDep.getIndentItemBatch(m_data).subscribe(draftdata => {
             console.log(draftdata)
             this.Itemchargeslist1 = draftdata as any;
-            console.log(this.Itemchargeslist1)
+           // console.log(this.Itemchargeslist1)
             if (this.Itemchargeslist1.length == 0) {
                 Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
             }
@@ -722,17 +741,14 @@ export class IssueToDepartmentComponent implements OnInit {
                     }
                 });
             }
-
         });
-
         }
-
     }
 
    RQty: any = 0;
     getFinalCalculation(contact, DraftQty) {
         
-        //console.log(contact)
+        console.log(contact)
 
         this.RQty = parseInt(DraftQty);
         if (this.RQty && contact.UnitMRP) {
@@ -771,7 +787,6 @@ export class IssueToDepartmentComponent implements OnInit {
                     Qty: this.RQty || 0,
                     UnitRate: contact.UnitRate,
                     UnitMRP: contact.UnitMRP,
-                    
                     TotalAmount: NetAmt || 0,
                     VatPer: contact.VatPercentage || 0,
                     VatAmount: GSTAmount || 0,
@@ -792,10 +807,13 @@ export class IssueToDepartmentComponent implements OnInit {
                     PurchaseRate: contact.PurchaseRate,
                     PurTotAmt: PurTotAmt,
                     MarginAmt: v_marginamt,
-                    SalesDraftId: 1
-
+                    SalesDraftId: 1,
+                    IndentId : this.Indentid,
+                    IndentDetailsId :  this.indentdetid,
+                    IsClosed :this.IsClosed,
+                    TotalIndQty :this.TotalIndQty
                 });
-            //console.log(this.chargeslist);
+            console.log(this.chargeslist);
             this.dsNewIssueList3.data = this.chargeslist
       }
     }
@@ -837,8 +855,21 @@ export class IssueToDepartmentComponent implements OnInit {
         this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
         return this.vFinalTotalAmount;
     }
+
+    OnSave(){
+        if(this.vIndentId > 0){
+            this.OnSaveAgaintIndent();
+        }else{
+            this.OnNewSave();
+        }
+    }
+    Isclosedchk:any;
     savebtn:boolean=false;
-    OnSave() {
+    OnNewSave() {
+        const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
         this.vsaveflag = true;
         if ((!this.dsNewIssueList3.data.length)) {
             this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -854,8 +885,8 @@ export class IssueToDepartmentComponent implements OnInit {
           }
         this.savebtn=true;
         let insertheaderObj = {};
-        insertheaderObj['issueDate'] = this.dateTimeObj.date;
-        insertheaderObj['issueTime'] = this.dateTimeObj.time;
+        insertheaderObj['issueDate'] = formattedDate;
+        insertheaderObj['issueTime'] = formattedTime;
         insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
         insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
         insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
@@ -923,6 +954,126 @@ export class IssueToDepartmentComponent implements OnInit {
             }
         }, error => {
             this.toastr.error('New Issue To Department Data not saved !, Please check API error..', 'Error !', {
+                toastClass: 'tostr-tost custom-toast-error',
+            });
+        });
+    }
+    OnSaveAgaintIndent() {
+        const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+        this.vsaveflag = true;
+        if ((!this.dsNewIssueList3.data.length)) {
+            this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if ((this. vTostoreId == '' || this. vTostoreId == null || this. vTostoreId == undefined)) {
+            this.toastr.warning('Please select TostoreId', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+        
+        this.savebtn=true;
+        let insertheaderObj = {};
+        insertheaderObj['issueDate'] = formattedDate;
+        insertheaderObj['issueTime'] = formattedTime;
+        insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
+        insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
+        insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
+        insertheaderObj['totalVatAmount'] = this._IssueToDep.IssueFinalForm.get('GSTAmount').value || 0;
+        insertheaderObj['netAmount'] = this._IssueToDep.IssueFinalForm.get('FinalNetAmount').value || 0;
+        insertheaderObj['remark'] = this._IssueToDep.IssueFinalForm.get('Remark').value || '';
+        insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
+        insertheaderObj['isVerified'] = false;
+        insertheaderObj['isclosed'] = false;
+        insertheaderObj['indentId'] =  this.vIndentId;
+        insertheaderObj['issueId'] = 0;
+       
+        let isertItemdetailsObj = [];
+        this.dsNewIssueList3.data.forEach(element => {
+            console.log(element)
+
+            let insertitemdetail = {};
+            insertitemdetail['issueId'] = 0;
+            insertitemdetail['itemId'] = element.ItemId;
+            insertitemdetail['batchNo'] = element.BatchNo;
+            insertitemdetail['batchExpDate'] = element.BatchExpDate;
+            insertitemdetail['issueQty'] = element.Qty;
+            insertitemdetail['perUnitLandedRate'] = element.LandedRate;
+            insertitemdetail['LandedTotalAmount'] = element.LandedRateandedTotal;
+            insertitemdetail['unitMRP'] = element.UnitMRP;
+            insertitemdetail['mrpTotalAmount'] = element.TotalMRP;
+            insertitemdetail['unitPurRate'] = element.PurchaseRate;
+            insertitemdetail['purTotalAmount'] = element.PurTotAmt;
+            insertitemdetail['vatPercentage'] = element.VatPer || 0;
+            insertitemdetail['vatAmount'] = element.VatAmount || 0;
+            insertitemdetail['stkId'] = element.StockId;
+            isertItemdetailsObj.push(insertitemdetail);
+        });
+        
+        let updateissuetoDepartmentStock = [];
+        this.dsNewIssueList3.data.forEach(element => {
+           
+            let updateitemdetail = {};
+            updateitemdetail['itemId'] = element.ItemId;
+            updateitemdetail['issueQty'] = element.Qty;
+            updateitemdetail['stkId'] = element.StockId;
+            updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
+            updateissuetoDepartmentStock.push(updateitemdetail);
+        });
+
+        let update_IndentHeader_StatusObj = {};
+            update_IndentHeader_StatusObj['indentId'] = this.vIndentId;
+            update_IndentHeader_StatusObj['isClosed'] =  this.Isclosedchk;
+        
+
+        let updateIndentStatusIndentDetails = [];
+        this.dsNewIssueList3.data.forEach(element => {
+            let balQty = (parseFloat(element.TotalIndQty) - parseFloat(element.Qty))
+            if(this.dsNewIssueList1.data.length == 0){
+                this.Isclosedchk = false;
+            }else{
+                this.Isclosedchk = true;
+            }
+            let updateIndentStatusIndentDetailsObj = {};
+            updateIndentStatusIndentDetailsObj['indentId'] = element.IndentId;
+            updateIndentStatusIndentDetailsObj['indDetID'] =element.IndentDetailsId;
+            updateIndentStatusIndentDetailsObj['isClosed'] =  this.Isclosedchk;
+            updateIndentStatusIndentDetailsObj['indQty'] = balQty;
+            updateIndentStatusIndentDetails.push(updateIndentStatusIndentDetailsObj);
+        });
+
+        let submitData = {
+            "insertIssuetoDepartmentHeader1": insertheaderObj,
+            "insertIssuetoDepartmentDetail1": isertItemdetailsObj,
+            "updateissuetoDepartmentStock1": updateissuetoDepartmentStock,
+            "update_IndentHeader_Status" :update_IndentHeader_StatusObj,
+            "updateIndentStatusIndentDetails":updateIndentStatusIndentDetails
+        };
+
+        console.log(submitData);
+
+        this._IssueToDep.IssuetodepAgaintIndetSave(submitData).subscribe(response => {
+            if (response) {
+                this.toastr.success('Record New Issue To Department Againt Indent Saved Successfully.', 'Saved !', {
+                    toastClass: 'tostr-tost custom-toast-success',
+                });
+                this.viewgetIssuetodeptReportPdf(response, this.vprintflag);
+                this.OnReset();
+                this.getIssueToDep();
+                this.savebtn=false;
+                this.vIndentId = 0;
+            } else {
+                this.toastr.error('New Issue To Department Againt Indent Data not saved !, Please check validation error..', 'Error !', {
+                    toastClass: 'tostr-tost custom-toast-error',
+                });
+            }
+        }, error => {
+            this.toastr.error('New Issue To Department Againt Indent Data not saved !, Please check API error..', 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
             });
         });
@@ -997,7 +1148,8 @@ export class IssueToDepartmentComponent implements OnInit {
             // }
         }
     }
-
+    vIndentId:any;
+    vIndtDetId:any;
     getBatch() {
         this.Quantity.nativeElement.focus();
         const dialogRef = this._matDialog.open(SalePopupComponent,
@@ -1145,7 +1297,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.dsIssueToDep.data = [];
         this.sIsLoading = '';
     }
-
+    vIndDetId:any;
     OnIndent() {
         const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
             {
@@ -1157,9 +1309,11 @@ export class IssueToDepartmentComponent implements OnInit {
             console.log('The dialog was closed - Insert Action', result);
             this.dsNewIssueList1.data = result;
             console.log(result)
-            const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
-            this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
-          
+            this.vIndentId =result[0].IndentId;
+            
+             const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
+             this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
+            // console.log(this.vIndentId)
         });
     }
     IndentItemDetails(Param) {
@@ -1225,6 +1379,10 @@ export class NewIssueList3 {
     PurchaseRate: any;
     LandedRateandedTotal: any;
     PurTotAmt: any;
+    IndentId:any;
+    IndentDetailsId:any;
+    TotalIndQty:any;
+    IsClosed:any;
     constructor(NewIssueList3) {
         this.ItemId = NewIssueList3.ItemId || 0;
         this.ItemName = NewIssueList3.ItemName || '';
@@ -1282,6 +1440,9 @@ export class IssueItemList {
     VatPercentage: number;
     StoreId: any;
     StoreName: any;
+    IndentId:any;
+    IndentDetailsId:any;
+    IsClosed:any;
 
     constructor(IssueItemList) {
         {
@@ -1295,6 +1456,9 @@ export class IssueItemList {
             this.VatPercentage = IssueItemList.VatPercentage || 0;
             this.StoreId = IssueItemList.StoreId || 0;
             this.StoreName = IssueItemList.StoreName || "";
+            this.IndentId = IssueItemList.IndentId || 0;
+            this.IndentDetailsId = IssueItemList.IndentDetailsId || 0;
+            this.IsClosed = IssueItemList.IsClosed || 0;
         }
     }
 }

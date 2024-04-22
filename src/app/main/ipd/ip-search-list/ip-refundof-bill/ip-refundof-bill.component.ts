@@ -16,6 +16,7 @@ import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-paym
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { RegInsert } from '../../Admission/admission/admission.component';
 
 type NewType = Observable<any[]>;
 @Component({
@@ -27,7 +28,7 @@ type NewType = Observable<any[]>;
 })
 export class IPRefundofBillComponent implements OnInit {
 
- 
+  searchFormGroup: FormGroup;
   screenFromString = 'app-op-refund-bill';
   RefundOfBillFormGroup: FormGroup;
   myRefundBillForm: FormGroup;
@@ -80,6 +81,25 @@ export class IPRefundofBillComponent implements OnInit {
   RefAmt:any=0;
   RefAmt1:any=0;
   sIsLoading: string = '';
+
+  City: any;
+  CompanyName: any;
+  Tarrifname: any;
+  Doctorname: any;
+  Paymentdata: any;
+  vOPIPId: any = 0;
+  vOPDNo: any = 0;
+  vTariffId: any = 0;
+  vClassId: any = 0;
+
+  PatientName: any = "";
+  RegId: any = 0;
+  noOptionFound: boolean = false;
+  PatientListfilteredOptions: any;
+  isRegIdSelected: boolean = false;
+  registerObj = new RegInsert({});
+
+
   things=[
         {"label":"Bill No" , "id":1, "name":"BillNo"},
         {"label":"Bill Date" , "id":2, "name":"BillDate"},
@@ -108,7 +128,7 @@ export class IPRefundofBillComponent implements OnInit {
     'BillNo',
     'BillDate',
     'NetPayableAmt',
-    'RefundAmount'
+    'RefundAmt'
     // 'action'
   ];
 
@@ -123,7 +143,6 @@ export class IPRefundofBillComponent implements OnInit {
   dataSource = new MatTableDataSource<InsertRefundDetail>();
   dataSource3 = new MatTableDataSource<RegRefundBillMaster>();
   dataSource1 = new MatTableDataSource<BillRefundMaster>();
-  // menuActions: Array<string> = [];
   
   dataSource2 = new MatTableDataSource<InsertRefundDetail>();
 
@@ -132,8 +151,7 @@ export class IPRefundofBillComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
   constructor(public _IpSearchListService: IPSearchListService,
-    // public renderer: Renderer,private el:ElementRef,
-    private _ActRoute: Router,
+      private _ActRoute: Router,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
@@ -144,8 +162,6 @@ export class IPRefundofBillComponent implements OnInit {
     private dialogRef: MatDialogRef<IPRefundofBillComponent>,
     private _formBuilder: FormBuilder
     ) {
-      // this.RefundOfBillFormGroup=this.refundForm();
-      // dialogRef.disableClose = true;
     }
     
    
@@ -153,10 +169,13 @@ export class IPRefundofBillComponent implements OnInit {
   ngOnInit(): void {
 
     this.RefundOfBillFormGroup = this.refundForm();
-
+    this.searchFormGroup = this.createSearchForm();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj.RegNo);
+      this.vOPIPId=this.selectedAdvanceObj.AdmissionID
+      this.PatientName=this.selectedAdvanceObj.PatientName;
+      this.Doctorname=this.selectedAdvanceObj.Doctorname
     }
     // this.myControl = new FormControl();
     // this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -188,6 +207,14 @@ export class IPRefundofBillComponent implements OnInit {
 
         
 // }
+
+createSearchForm() {
+  return this.formBuilder.group({
+  RegId: ['']
+  });
+}
+
+
 
   filterStates(name: string) {
     let tempArr = [];
@@ -228,12 +255,105 @@ export class IPRefundofBillComponent implements OnInit {
   }
 
 
-  //Give BillNumber For List
+  // Patient Search;
+  getSearchList() {
+    
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+    }
+    
+    this._IpSearchListService.getPatientVisitedListSearch(m_data).subscribe(data => {
+      this.PatientListfilteredOptions = data;
+      console.log(this.PatientListfilteredOptions )
+      if (this.PatientListfilteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+
+  }
+
+  getSelectedObj1(obj) {
+    console.log(obj)
+    this.dataSource.data = [];
+    
+    this.registerObj = obj;
+    this.PatientName = obj.FirstName + " " + obj.LastName;
+    this.RegId = obj.RegId;
+    this.City = obj.City;
+    // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    this.CompanyName = obj.CompanyName;
+    this.Tarrifname = obj.TariffName;
+    this.Doctorname = obj.DoctorName;
+    this.vOPIPId = obj.RegId;
+    this.vOPDNo = obj.RegId;//obj.OPDNo;
+    this.vTariffId = obj.TariffId;
+    this.vClassId = obj.classId
+    this. getRefundofBillIPDList();
+  }
+
+  getOptionText1(option) {
+    if (!option)
+      return '';
+      return option.FirstName + ' ' + option.MiddleName  + ' ' + option.LastName ;
+
+  }
+
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  RefundAmt:any;
+  getCellCalculation(contact,RefundAmt) {
+   debugger
+    console.log(RefundAmt)
+    console.log(contact);
+    var datePipe = new DatePipe("en-US");
+    this.BillNo=contact.BillNo;
+    this.BillDate =  datePipe.transform(contact.BillDate, 'dd/MM/yyyy hh:mm a'); 
+    this.NetBillAmount=contact.NetPayableAmt;
+    this.RefundAmount=RefundAmt;
+    this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
+  
+    this.getserviceetailList();
+  
+    var m_data1 = {
+      "BillId": contact.BillNo
+    }
+    this.isLoadingStr = 'loading';
+    this._IpSearchListService.getRefundofBillDetailList(m_data1).subscribe(Visit => {
+      this.dataSource1.data = Visit as BillRefundMaster[];
+      
+      this.dataSource1.sort = this.sort;
+      this.dataSource1.paginator = this.paginator;
+      this.isLoadingStr = this.dataSource1.data.length == 0 ? 'no-data' : '';
+    });
+  
+    this.RefAmt1=this.RefundBalAmount;
+    
+    if(RefundAmt > contact.BalanceAmount){
+      Swal.fire("Enter Refund Amount Less than Balance Amount ");
+    }else{
+      this.TotalRefundAmount=RefundAmt;
+      contact.BalanceAmount=contact.BalanceAmount-RefundAmt
+      // this.NewRefundAmount=RefundAmt;
+      // this.BalanceAdvance= contact.BalanceAmount;
+    }
+
+  }
+
+  
   getRefundofBillIPDList() {
     debugger
-    console.log(this.selectedAdvanceObj.RegNo);
-    var m_data = {
-      "RegId ":39// this.selectedAdvanceObj.RegNo
+        var m_data = {
+      "RegId ": this.vOPIPId
       
     }
     // this.isLoadingStr = 'loading';
@@ -241,7 +361,8 @@ export class IPRefundofBillComponent implements OnInit {
       this.dataSource3.data = Visit as RegRefundBillMaster[];
       this.dataSource3.sort = this.sort;
       this.dataSource3.paginator = this.paginator;
-      // this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+      console.log( this.dataSource3.data)
+      
     });
   }
 
@@ -416,7 +537,7 @@ export class IPRefundofBillComponent implements OnInit {
   }
 
   onSave() {
-    // debugger;
+ 
     this.isLoading = 'submit';
 
     if(this.TotalRefundAmount <= this.RefundBalAmount){
@@ -424,11 +545,11 @@ export class IPRefundofBillComponent implements OnInit {
 
     InsertRefundObj['RefundId'] = 0;
     InsertRefundObj['RefundDate'] =this.dateTimeObj.date;
-    InsertRefundObj['RefundTime'] = this.dateTimeObj.date;
+    InsertRefundObj['RefundTime'] = this.dateTimeObj.time;
     InsertRefundObj['BillId'] = parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
     InsertRefundObj['AdvanceId'] = 0;
     InsertRefundObj['OPD_IPD_Type'] = 1;
-    InsertRefundObj['OPD_IPD_ID'] = this.selectedAdvanceObj.RegNo,
+    InsertRefundObj['OPD_IPD_ID'] = this.vOPIPId,
     InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
     InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
     InsertRefundObj['TransactionId'] = 1;
@@ -470,29 +591,25 @@ export class IPRefundofBillComponent implements OnInit {
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['OPD_IPD_Id'] = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
+    PatientHeaderObj['OPD_IPD_Id'] =this.vOPIPId;
     PatientHeaderObj['NetPayAmount'] =   this.TotalRefundAmount;
-
-    // let DocShareGroupwiseObj = {};
-    // DocShareGroupwiseObj['RefundId'] = 0;
-
+    PatientHeaderObj['PatientName'] =   this.PatientName
+      debugger;
     const insertRefund = new InsertRefund(InsertRefundObj);
-    // const  update_AddCharges_RefundAmount = new AddchargesRefundAmount(AddchargesRefundAmountObj);
-    // const oP_DoctorShare_GroupWise_RefundOfBill = new DocShareGroupwise(DocShareGroupwiseObj);
-    // const insertOPPayment = new PaymentInsert(PaymentInsertObj);
-
+   
     const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
         height: '540px',
         width: '100%',
         data: {
-          // patientName: this._IpSearchListService.myShowAdvanceForm.get("PatientName").value,
-          advanceObj: PatientHeaderObj, //this.advanceAmount
+         
+          advanceObj: PatientHeaderObj, 
           FromName: "Advance-Refund",
         }
       });
     dialogRef.afterClosed().subscribe(result => {
+      if(result.IsSubmitFlag){
       // console.log('============================== Return Adv ===========');
       let submitData = {
         "insertIPRefundofNew": insertRefund,
@@ -520,7 +637,7 @@ export class IPRefundofBillComponent implements OnInit {
         }
         this.isLoading = '';
       });
-      
+    }
     });
     }
     else{
@@ -716,6 +833,7 @@ export class InsertRefundDetail {
   TotalAmt:number;
   NetAmount:number;
   ChargesDocName:any;
+  RefundAmt:any;
   
   constructor(InsertRefundDetailObj) {
     {
@@ -735,6 +853,7 @@ export class InsertRefundDetail {
       this.NetAmount = InsertRefundDetailObj.NetAmount || '';
       this.ChargesDocName = InsertRefundDetailObj.ChargesDocName || 0;
       this.Qty = InsertRefundDetailObj.Qty || 0;
+      this.RefundAmt = InsertRefundDetailObj.RefundAmt || 0;
     }
   }
 }

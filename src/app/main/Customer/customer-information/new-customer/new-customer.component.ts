@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { CustomerInformationService } from '../customer-information.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -28,6 +28,7 @@ export class NewCustomerComponent implements OnInit {
   vPinCode:any;
   vMobileNo:any;
   vaddress:any;
+  vCustomerId:any;
 
 
   constructor(
@@ -35,6 +36,7 @@ export class NewCustomerComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private elementRef: ElementRef,
     public dialogRef: MatDialogRef<NewCustomerComponent>,
@@ -42,6 +44,17 @@ export class NewCustomerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if(this.data.Obj){
+      this.registerObj = this.data.Obj;
+      console.log(this.registerObj)
+      this.vCustomerName = this.registerObj.CustomerName
+      this.vMobileNo = this.registerObj.CustomerMobileNo
+      this.vaddress = this.registerObj.CustomerAddress
+      this.vPinCode = this.registerObj.CustomerPinCode
+      this.vpersonName = this.registerObj.ContactPersonName
+      this.vPersonMobileNo = this.registerObj.ContactPersonMobileNo
+      this.vCustomerId =this.registerObj.CustomerId;
+    }
   }
 
   toggleSidebar(name): void {
@@ -95,7 +108,7 @@ if ((this.vMobileNo == '' || this.vMobileNo == null || this.vMobileNo == undefin
     });
     return;
 }
-    // if (!this.registerObj.customerId) {
+    if (!this.vCustomerId) {
       this.Savebtn = true;
       this.sIsLoading = 'loading-data';
       let customerInformationInsertObj = {};
@@ -133,51 +146,54 @@ if ((this.vMobileNo == '' || this.vMobileNo == null || this.vMobileNo == undefin
           toastClass: 'tostr-tost custom-toast-error',
         });
       });
-
-    // }
-    // else {
-    //   this.sIsLoading = 'loading-data';
-    //   let customerInformationUpdate = {};
-    //   customerInformationUpdate['customerId'] = this.registerObj.customerId;
-    //   customerInformationUpdate['customerName'] = this._CustomerInfo.myform.get('CustomerName').value || '';
-    //   customerInformationUpdate['customerAddress'] = this._CustomerInfo.myform.get('Address').value || '';
-    //   customerInformationUpdate['customerMobileNO'] = this._CustomerInfo.myform.get('MobileNo').value || 0;
-    //   customerInformationUpdate['customerPinCode'] = this._CustomerInfo.myform.get('PinCode').value ||  0;
-    //   customerInformationUpdate['contactPersonName'] = this._CustomerInfo.myform.get('personName').value || '';
-    //   customerInformationUpdate['contactPersonMobileNo'] = this._CustomerInfo.myform.get('PersonMobileNo').value || 0;
-    //   customerInformationUpdate['amcDate'] = this.dateTimeObj.date;
-    //   customerInformationUpdate['createdDatetime'] = this._CustomerInfo.myform.get('InstallationDate').value;
-    //   customerInformationUpdate['modifiedBy'] = this._loggedService.currentUserValue.user.id || 0;
-    //   customerInformationUpdate['modifieddatetime'] =this._CustomerInfo.myform.get('InstallationDate').value;
-
+    }
+      else{
+ 
+        this.Savebtn = true;
+        this.sIsLoading = 'loading-data';
+        let customerInformationUpdate = {};
+        customerInformationUpdate['customerId'] = this.registerObj.CustomerId;
+        customerInformationUpdate['customerName'] = this._CustomerInfo.myform.get('CustomerName').value || '';
+        customerInformationUpdate['customerAddress'] = this._CustomerInfo.myform.get('Address').value || '';
+        customerInformationUpdate['customerMobileNO'] = this._CustomerInfo.myform.get('MobileNo').value || 0;
+        customerInformationUpdate['customerPinCode'] = this._CustomerInfo.myform.get('PinCode').value || 0;
+        customerInformationUpdate['contactPersonName'] = this._CustomerInfo.myform.get('personName').value || '';
+        customerInformationUpdate['contactPersonMobileNo'] = this._CustomerInfo.myform.get('PersonMobileNo').value || 0;
+        customerInformationUpdate['installationDate'] = this._CustomerInfo.myform.get('InstallationDate').value;
+        customerInformationUpdate['amcDate'] = this._CustomerInfo.myform.get('InstallationDate').value;
+        customerInformationUpdate['createdBy'] = this._loggedService.currentUserValue.user.id || 0;
+        customerInformationUpdate['createdDatetime'] = this._CustomerInfo.myform.get('InstallationDate').value;
+        customerInformationUpdate['modifiedBy'] = this._loggedService.currentUserValue.user.id || 0;
+        customerInformationUpdate['modifieddatetime'] = this._CustomerInfo.myform.get('InstallationDate').value;
   
-    //   let submitData = {
-    //     "customerInformationUpdate": customerInformationUpdate
-    //   };
   
-    //   console.log(submitData);
-    //   this._CustomerInfo.UpdateCustomer(submitData).subscribe(response => {
-    //     if (response) {
-    //       this.toastr.success('Record Updated Successfully.', 'Updated !', {
-    //         toastClass: 'tostr-tost custom-toast-success',
-    //       }); this._matDialog.closeAll();
-    //       this.Savebtn = true;
-    //     }
-    //     else {
-    //       this.toastr.error('New Custome Data not Updated !, Please check API error..', 'Error !', {
-    //         toastClass: 'tostr-tost custom-toast-error',
-    //       });
-    //     }
+        let submitData = {
+          "customerInformationUpdate": customerInformationUpdate,
+        };
+        console.log(submitData);
+        this._CustomerInfo.UpdateCustomer(submitData).subscribe(response => {
+          if (response) {
+            this.toastr.success('Record Updated Successfully.', 'Updated !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            }); this._matDialog.closeAll();
+            this.Savebtn = false;
+          }
+          else {
+            this.toastr.error('New Custome Data not Updated !, Please check API error..', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
   
-    //   }, error => {
-    //     this.toastr.error('New Custome Data not Updated !, Please check API error..', 'Error !', {
-    //       toastClass: 'tostr-tost custom-toast-error',
-    //     });
-    //   });
-    // }
+        }, error => {
+          this.toastr.error('New Custome Data not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        });
+      }
   }
   onReset(){
 this._CustomerInfo.myform.reset();
+this.onClose();
   }
   onClose(){
     this._matDialog.closeAll();

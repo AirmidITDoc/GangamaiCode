@@ -40,9 +40,7 @@ export class IPRefundService {
      }
 
      
-public getRefundofBillDetailList(employee){
-  return this._httpClient.post("Generic/GetByProc?procName=RtrvIPDRefundAgainstBill_List", employee)
-}
+
 
 public getClassList(employee){
   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName_Conditional",employee)
@@ -64,4 +62,8 @@ public getRefundofBillIPDList(employee){
   public getRefundofbillview(RefundId){
     return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
   }
+  public getRefundofBillDetailList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_OPDRefundAgainstBillList", employee)
+  }
+  
 }

@@ -64,6 +64,9 @@
                                 <mat-radio-button value="1" >Without GST</mat-radio-button>
                             </mat-radio-group>
 
+                            <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+
                         </div>
                         <div fxLayout="row" fxLayoutGap="4px">
                             <mat-form-field appearance="outline" fxFlex="30%">
@@ -114,15 +117,15 @@
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="6%">
-                                <mat-label>Pur Rate</mat-label>
-                                <input matInput [(ngModel)]="vPurRate" name="PurRate" type="text" OnlyNumber
-                                    formControlName="PurRate" id="PurRate" #PurRate required readonly>
+                                <mat-label>Rate</mat-label>
+                                <input matInput [(ngModel)]="vLandedRate" name="Rate" type="text" OnlyNumber
+                                    formControlName="Rate" id="Rate" #PurRate required readonly>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="8%">
-                                <mat-label>PurTotal</mat-label>
-                                <input matInput [(ngModel)]="vPurTotal" name="PurTotal" type="text" OnlyNumber
-                                    formControlName="PurTotal" id="PurTotal" #PurTotal required readonly>
+                                <mat-label>Total</mat-label>
+                                <input matInput [(ngModel)]="vTotalAmount" name="TotalAmount" type="text" OnlyNumber
+                                    formControlName="TotalAmount" id="TotalAmount" #PurTotal required readonly>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="5%">
@@ -187,6 +190,14 @@
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="ConversionFactor">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Packing
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.ConversionFactor}}
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="ExpDate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ExpDate
                                 </mat-header-cell>
@@ -211,11 +222,11 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="PurRate">
+                            <ng-container matColumnDef="LandedRate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    PurRate</mat-header-cell>
+                                    LandedRate</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.PurRate | number:'1.2-2' }}
+                                    {{contact.LandedRate | number:'1.2-2' }}
                                 </mat-cell>
                             </ng-container>
 
@@ -227,21 +238,29 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="Disc">
+                            <ng-container matColumnDef="UnitMRP">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Disc%</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.Disc}}
-                                    </mat-cell>
-                            </ng-container> -->
-
-                            <!-- <ng-container matColumnDef="DisAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    DisAmt</mat-header-cell>
+                                    UnitMRP</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.DiscAmount | number:'1.2-2' }}
+                                    {{contact.UnitMRP | number:'1.2-2' }}
                                 </mat-cell>
-                            </ng-container> -->
+                            </ng-container>
+
+                            <ng-container matColumnDef="PurchaseRate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    PurRate</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.PurchaseRate | number:'1.2-2' }}
+                                    </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="StockId">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    StockId</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.StockId}}
+                                </mat-cell>
+                            </ng-container>
 
                             <ng-container matColumnDef="GST">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -423,8 +442,9 @@
                                         </mat-form-field>
 
                                             <div class="modal-footer-buttons gap-8" fxLayout="row" style="margin-left: 190px;">
+                                                <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
                                                 <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
-                                                <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                                                
                                             </div>
                                        
                                     </div>

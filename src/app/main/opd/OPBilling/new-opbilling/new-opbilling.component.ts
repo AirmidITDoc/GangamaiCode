@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
 import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { ChargesList, SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPSearhlistService } from '../../op-search-list/op-searhlist.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -32,6 +32,7 @@ import { MatSelect } from '@angular/material/select';
 })
 export class NewOPBillingComponent implements OnInit {
 
+ 
   saveclick: boolean = false;
   hasSelectedContacts: boolean;
 
@@ -194,8 +195,16 @@ export class NewOPBillingComponent implements OnInit {
     this.createForm();
     this.searchFormGroup = this.createSearchForm();
     this.BillingFooterForm();
+    
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj);
+        // this.vOPDNo = this.selectedAdvanceObj.AdmissionID;
+        this.vOPIPId = this.selectedAdvanceObj.AdmissionID;
+        this.PatientName = this.selectedAdvanceObj.PatientName;
+         this.Doctorname= this.selectedAdvanceObj.Doctorname;
+        this.CompanyName= this.selectedAdvanceObj.CompanyId;
+        this.Tarrifname= this.selectedAdvanceObj.TariffName;
     }
 
     this.getServiceListCombobox();
@@ -451,7 +460,7 @@ export class NewOPBillingComponent implements OnInit {
     let ConcessionId = 0;
     if (this.BillingForm.get('ConcessionId').value)
       ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
-
+debugger
     let InsertBillUpdateBillNoObj = {};
     InsertBillUpdateBillNoObj['BillNo'] = 0;
     InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
@@ -1164,7 +1173,6 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   getSelectedObj1(obj) {
-    console.log(obj)
     this.dataSource.data = [];
     
     this.registerObj = obj;
@@ -1175,8 +1183,8 @@ export class NewOPBillingComponent implements OnInit {
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
     this.Doctorname = obj.DoctorName;
-    this.vOPIPId = obj.RegId;
-    this.vOPDNo = obj.RegId;//obj.OPDNo;
+    this.vOPIPId = obj.VisitId;
+    this.vOPDNo = obj.OPDNo;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
   }

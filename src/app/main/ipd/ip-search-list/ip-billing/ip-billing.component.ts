@@ -1229,131 +1229,6 @@ export class IPBillingComponent implements OnInit {
   }
 
 
-  ///// REPORT  TEMPOATE
-  getTemplate() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=3';
-    this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
-
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['GroupName', 'BillNo', 'IPDNo', 'RegNo', 'BillDate', 'PatientName', 'Age', 'AgeDay', 'AgeMonth', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName', 'RoomName', 'BedName',
-        'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'TotalAmt', 'AdvanceUsedAmount', 'PaidAmount', 'PayTMPayAmount', 'CashPayAmount', 'ChequePayAmount', 'NEFTPayAmount', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'AdvanceBalAmount', 'AdvanceRefundAmount', 'UserName']; // resData[0].TempKeys;
-
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        // var strabc = ` <hr >
-
-        let docname;
-        if (objreportPrint.ChargesDoctorName)
-          docname = objreportPrint.ChargesDoctorName;
-        else
-          docname = '';
-        var strabc = ` 
- <div style="display:flex;margin:8px 0">
-     <div style="display:flex;width:80px;margin-left:20px;">
-         <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-     </div>
-     <div style="display:flex;width:300px;">
-         <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-     </div>
-     <div style="display:flex;width:300px;">
-     <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-     </div>
-     <div style="display:flex;width:70px;margin-left:10px;text-align:right;">
-     <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-     </div>
-     <div style="display:flex;width:70px;margin-left:10px;text-align:right;">
-         <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-     </div>
-     <div style="display:flex;width:150px;text-align:right;">
-         <div>`+ '₹' + objreportPrint.ChargesTotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
-     </div>
- </div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.TotalAmt));
-      //  this.printTemplate = this.printTemplate.replace('StrBillDates', this.transform2(objPrintWordInfo.BillDate));
-      //  this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(objPrintWordInfo.BillDate));
-      //  this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform1(objPrintWordInfo.AdmissionDate));
-      //  this.printTemplate = this.printTemplate.replace('StrDischargeDate', this.transform1(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      //  this.printTemplate = this.printTemplate.replace('StrTotalAmt', '₹' + (objPrintWordInfo.TotalAmt.toFixed(2)));
-      //  this.printTemplate = this.printTemplate.replace('StrAdvanceUsedAmount', '₹' + (objPrintWordInfo.AdvanceUsedAmount.toFixed(2)));
-      //  this.printTemplate = this.printTemplate.replace('StrPaiAmdount', '₹' + (objPrintWordInfo.PaidAmount.toFixed(2)));
-      //  this.printTemplate = this.printTemplate.replace('StrPayTMPayAmount', '₹' + (objPrintWordInfo.PayTMPayAmount.toFixed(2)));
-      //  this.printTemplate = this.printTemplate.replace('StrCashPayAmount', '₹' + (objPrintWordInfo.CashPayAmount.toFixed(2)));
-      //  this.printTemplate = this.printTemplate.replace('StrChequePayAmount', '₹' + (objPrintWordInfo.ChequePayAmount.toFixed(2)));
-      //  this.printTemplate = this.printTemplate.replace('StrNEFTPayAmount', '₹' + (objPrintWordInfo.NEFTPayAmount.toFixed(2)));
-      //  this.printTemplate = this.printTemplate.replace('StrTotalAdvanceAmount', '₹' + (objPrintWordInfo.TotalAdvanceAmount.toFixed(2)));
-      //  this.printTemplate = this.printTemplate.replace('StrAdvanceUsedAmount', '₹' + (objPrintWordInfo.AdvanceUsedAmount.toFixed(2)));
-      //  this.printTemplate = this.printTemplate.replace('StrAdvanceBalAmount', '₹' + (objPrintWordInfo.AdvanceBalAmount.toFixed(2)));
-      //  this.printTemplate = this.printTemplate.replace('StrAdvanceRefundAmount', '₹' + (objPrintWordInfo.AdvanceRefundAmount.toFixed(2)));
-      //console.log(this.printTemplate);
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      //console.log(this.printTemplate);
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      setTimeout(() => {
-        this._printPreview.PrintPreview(this.printTemplate);
-      }, 1000);
-    });
-  }
-
-  // transform(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform(value, 'dd/MM/yyyy ');
-  //   return value;
-  // }
-
-
-
-  // transform1(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform(value, 'dd/MM/yyyy');
-  //   return value;
-  // }
-
-  transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-    return value;
-  }
-
-
-
-  convertToWord(e) {
-    // this.numberInWords= converter.toWords(this.mynumber);
-    return converter.toWords(e);
-  }
-
-  // GET DATA FROM DATABASE 
-  getPrint(el) {
-
-    var D_data = {
-      "BillNo": el,
-    }
-
-    let printContents; //`<div style="padding:20px;height:550px"><div><div style="display:flex"><img src="http://localhost:4200/assets/images/logos/Airmid_NewLogo.jpeg" width="90"><div><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="color:#464343">6158, Siddheshwar peth, near zilla parishad, solapur-3 phone no.: (0217) 2323001 / 02</div><div style="color:#464343">www.yashodharahospital.org</div></div></div><div style="border:1px solid grey;border-radius:16px;text-align:center;padding:8px;margin-top:5px"><span style="font-weight:700">IP ADVANCE RECEIPT</span></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex;justify-content:space-between"><div style="display:flex"><div style="width:100px;font-weight:700">Advance No</div><div style="width:10px;font-weight:700">:</div><div>6817</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Reg. No</div><div style="width:10px;font-weight:700">:</div><div>117399</div></div><div style="display:flex"><div style="width:60px;font-weight:700">Date</div><div style="width:10px;font-weight:700">:</div><div>26/06/2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:15:49PM</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex;width:477px"><div style="width:100px;font-weight:700">Patient Name</div><div style="width:10px;font-weight:700">:</div><div>Mrs. Suglabai Dhulappa Waghmare</div></div><div style="display:flex"><div style="width:60px;font-weight:700">IPD No</div><div style="width:10px;font-weight:700">:</div><div>IP/53757/2019</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:100px;font-weight:700">DOA</div><div style="width:10px;font-weight:700">:</div><div>30/10/2019</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:100px;font-weight:700">Patient Type</div><div style="width:10px;font-weight:700">:</div><div>Self</div></div></div></div><hr style="border-color:#a0a0a0"><div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Advacne Amount</div><div style="width:10px;font-weight:700">:</div><div>4,000.00</div></div></div><div style="display:flex;margin:8px 0"><div style="display:flex"><div style="width:150px;font-weight:700">Amount in Words</div><div style="width:10px;font-weight:700">:</div><div>FOUR THOUSANDS RUPPEE ONLY</div></div></div><div style="display:flex"><div style="display:flex"><div style="width:150px;font-weight:700">Reason of Advance</div><div style="width:10px;font-weight:700">:</div><div></div></div></div></div><div style="position:relative;top:100px;text-align:right"><div style="font-weight:700;font-size:16px">YASHODHARA SUPER SPECIALITY HOSPITAL PVT. LTD.</div><div style="font-weight:700;font-size:16px">Cashier</div><div>Paresh Manlor</div></div></div>`;
-    this.subscriptionArr.push(
-      this._IpSearchListService.getIPBILLBrowsePrint(D_data).subscribe(res => {
-        console.log(res);
-        this.reportPrintObjList = res as ReportPrintObj[];
-        this.reportPrintObj = res[0] as ReportPrintObj;
-
-        console.log(this.reportPrintObj);
-        this.getTemplate();
-        // console.log(res);
-
-      })
-    );
-
-  }
-
   viewgetBillReportPdf(BillNo) {
 
     this._IpSearchListService.getIpFinalBillReceipt(
@@ -1394,20 +1269,20 @@ export class IPBillingComponent implements OnInit {
 
 
 
-  getPrintDraft(el) {
-    var D_data = {
-      "AdmissionID": 10528// el
-    }
-    let printContents;
-    this.subscriptionArr.push(
-      this._IpSearchListService.getIPDraftBILLBrowsePrint(D_data).subscribe(res => {
-        console.log(res);
-        this.reportPrintObjList = res as ReportPrintObj[];
-        this.reportPrintObj = res[0] as ReportPrintObj;
-        this.getTemplateDraft();
-      })
-    );
-  }
+  // getPrintDraft(el) {
+  //   var D_data = {
+  //     "AdmissionID": 10528// el
+  //   }
+  //   let printContents;
+  //   this.subscriptionArr.push(
+  //     this._IpSearchListService.getIPDraftBILLBrowsePrint(D_data).subscribe(res => {
+  //       console.log(res);
+  //       this.reportPrintObjList = res as ReportPrintObj[];
+  //       this.reportPrintObj = res[0] as ReportPrintObj;
+  //       this.getTemplateDraft();
+  //     })
+  //   );
+  // }
 
 
   calBalanceAmt() {
@@ -1450,119 +1325,119 @@ export class IPBillingComponent implements OnInit {
     });
   }
 
-  //for Draft bill
-  ///// REPORT  TEMPOATE
-  getTemplateDraft() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=17';
-    this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
+  // //for Draft bill
+  // ///// REPORT  TEMPOATE
+  // getTemplateDraft() {
+  //   let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=17';
+  //   this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
 
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName', 'HospitalAddress', 'EmailId', 'Phone', 'RegNo', 'IPDNo', 'PatientName', 'AgeYear', 'AgeDay', 'AgeMonth', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'RefDoctorName', 'AdmittedDoctorName', 'ChargesDoctorName', 'RoomName', 'BedName',
-        'PatientType', 'ServiceName', 'Price', 'Qty', 'NetAmount', 'TotalAmt', 'TotalBillAmt', 'AdvanceAmount', 'NetPayableAmt', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'BalanceAmt', 'AddedByName', 'RoomName', 'BedName', 'BillDate', 'PBillNo']; // resData[0].TempKeys;
+  //     this.printTemplate = resData[0].TempDesign;
+  //     let keysArray = ['HospitalName', 'HospitalAddress', 'EmailId', 'Phone', 'RegNo', 'IPDNo', 'PatientName', 'AgeYear', 'AgeDay', 'AgeMonth', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'RefDoctorName', 'AdmittedDoctorName', 'ChargesDoctorName', 'RoomName', 'BedName',
+  //       'PatientType', 'ServiceName', 'Price', 'Qty', 'NetAmount', 'TotalAmt', 'TotalBillAmt', 'AdvanceAmount', 'NetPayableAmt', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'BalanceAmt', 'AddedByName', 'RoomName', 'BedName', 'BillDate', 'PBillNo']; // resData[0].TempKeys;
 
-      for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
-        this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-      }
-      var strrowslist = "";
-      for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        console.log(objreportPrint);
-        // var strabc = ` <hr >
+  //     for (let i = 0; i < keysArray.length; i++) {
+  //       let reString = "{{" + keysArray[i] + "}}";
+  //       let re = new RegExp(reString, "g");
+  //       this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
+  //     }
+  //     var strrowslist = "";
+  //     for (let i = 1; i <= this.reportPrintObjList.length; i++) {
+  //       var objreportPrint = this.reportPrintObjList[i - 1];
+  //       console.log(objreportPrint);
+  //       // var strabc = ` <hr >
 
-        let docname;
-        if (objreportPrint.ChargesDoctorName)
-          docname = objreportPrint.ChargesDoctorName;
-        else
-          docname = '';
-        var strabc = ` 
-           <div style="display:flex;margin:8px 0">
-               <div style="display:flex;width:60px;margin-left:20px;">
-                   <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-               </div>
-               <div style="display:flex;width:300px;">
-                   <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-               </div>
-               <div style="display:flex;width:300px;">
-               <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-               </div>
-               <div style="display:flex;width:90px;margin-left:20px;justify-content: right;">
-               <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-               </div>
-               <div style="display:flex;width:70px;margin-left:10px;justify-content: right;;">
-                   <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-               </div>
-               <div style="display:flex;width:130px;text-align:right;justify-content: right;">
-                   <div>`+ '₹' + objreportPrint.TotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
-               </div>
-           </div>`;
-        strrowslist += strabc;
-      }
-      var objPrintWordInfo = this.reportPrintObjList[0];
-      this.BalanceAmt = parseInt(objPrintWordInfo.NetPayableAmt) - parseInt(objPrintWordInfo.AdvanceAmount);
-      console.log("Balance Amount IS:", this.BalanceAmt);
+  //       let docname;
+  //       if (objreportPrint.ChargesDoctorName)
+  //         docname = objreportPrint.ChargesDoctorName;
+  //       else
+  //         docname = '';
+  //       var strabc = ` 
+  //          <div style="display:flex;margin:8px 0">
+  //              <div style="display:flex;width:60px;margin-left:20px;">
+  //                  <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
+  //              </div>
+  //              <div style="display:flex;width:300px;">
+  //                  <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
+  //              </div>
+  //              <div style="display:flex;width:300px;">
+  //              <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
+  //              </div>
+  //              <div style="display:flex;width:90px;margin-left:20px;justify-content: right;">
+  //              <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
+  //              </div>
+  //              <div style="display:flex;width:70px;margin-left:10px;justify-content: right;;">
+  //                  <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
+  //              </div>
+  //              <div style="display:flex;width:130px;text-align:right;justify-content: right;">
+  //                  <div>`+ '₹' + objreportPrint.TotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
+  //              </div>
+  //          </div>`;
+  //       strrowslist += strabc;
+  //     }
+  //     var objPrintWordInfo = this.reportPrintObjList[0];
+  //     this.BalanceAmt = parseInt(objPrintWordInfo.NetPayableAmt) - parseInt(objPrintWordInfo.AdvanceAmount);
+  //     console.log("Balance Amount IS:", this.BalanceAmt);
 
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord1(objPrintWordInfo.NetPayableAmt));
-      this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-      this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-      this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
-      this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
-      this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrGroup', (objPrintWordInfo.GroupName));
+  //     this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord1(objPrintWordInfo.NetPayableAmt));
+  //     this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
+  //     this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
+  //     this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
+  //     this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
+  //     this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
+  //     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
+  //     this.printTemplate = this.printTemplate.replace('StrGroup', (objPrintWordInfo.GroupName));
 
-      this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-      this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-      setTimeout(() => {
-        this._printPreview.PrintPreview(this.printTemplate);
-      }, 1000);
-    });
-  }
+  //     this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
+  //     this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
+  //     setTimeout(() => {
+  //       this._printPreview.PrintPreview(this.printTemplate);
+  //     }, 1000);
+  //   });
+  // }
 
-  transformdraft(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform(value, 'dd/MM/yyyy ');
-    return value;
-  }
-
-
-  transformdraft1(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform(value, 'dd/MM/yyyy h:mm a');
-    return value;
-  }
-
-  transformdraft2(value: string) {
-    var datePipe = new DatePipe("en-US");
-    value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-    return value;
-  }
+  // transformdraft(value: string) {
+  //   var datePipe = new DatePipe("en-US");
+  //   value = datePipe.transform(value, 'dd/MM/yyyy ');
+  //   return value;
+  // }
 
 
-  convertToWord1(e) {
+  // transformdraft1(value: string) {
+  //   var datePipe = new DatePipe("en-US");
+  //   value = datePipe.transform(value, 'dd/MM/yyyy h:mm a');
+  //   return value;
+  // }
 
-    return converter.toWords(e);
-  }
+  // transformdraft2(value: string) {
+  //   var datePipe = new DatePipe("en-US");
+  //   value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
+  //   return value;
+  // }
 
-  // GET DATA FROM DATABASE  DraftBill
-  getIPIntreimBillPrint(el) {
-    var D_data = {
-      "BillNo": el
-    }
-    let printContents;
-    this.subscriptionArr.push(
-      this._IpSearchListService.getIPIntriemBILLBrowsePrint(D_data).subscribe(res => {
-        console.log(res);
-        this.reportPrintObjList = res as ReportPrintObj[];
-        this.reportPrintObj = res[0] as ReportPrintObj;
 
-        console.log(this.reportPrintObj);
-        this.getTemplateDraft();
+  // convertToWord1(e) {
 
-      })
-    );
-  }
+  //   return converter.toWords(e);
+  // }
+
+  // // GET DATA FROM DATABASE  DraftBill
+  // getIPIntreimBillPrint(el) {
+  //   var D_data = {
+  //     "BillNo": el
+  //   }
+  //   let printContents;
+  //   this.subscriptionArr.push(
+  //     this._IpSearchListService.getIPIntriemBILLBrowsePrint(D_data).subscribe(res => {
+  //       console.log(res);
+  //       this.reportPrintObjList = res as ReportPrintObj[];
+  //       this.reportPrintObj = res[0] as ReportPrintObj;
+
+  //       console.log(this.reportPrintObj);
+  //       this.getTemplateDraft();
+
+  //     })
+  //   );
+  // }
   onSave() {
     if (this.dataSource.data.length > 0) {
       if (this.Ipbillform.get('GenerateBill').value) {

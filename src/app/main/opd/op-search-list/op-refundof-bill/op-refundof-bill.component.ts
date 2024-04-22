@@ -350,7 +350,7 @@ export class OPRefundofBillComponent implements OnInit {
     let RefundDetailarr = [];
     let InsertRefundDetailObj = {};
     
-    debugger;
+    
     this.dataSource.data.forEach((element) => {
       InsertRefundDetailObj['RefundID'] = 0;
       InsertRefundDetailObj['ServiceId'] = this.serviceId || 0;
@@ -393,6 +393,7 @@ export class OPRefundofBillComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
+      if(result.IsSubmitFlag){
       // console.log('============================== Return Adv ===========');
       let submitData = {
         "insertRefund": insertRefund,
@@ -417,8 +418,9 @@ export class OPRefundofBillComponent implements OnInit {
         }
         this.isLoading = '';
       });
-      
+    }
     });
+  
     }
     else{
 Swal.fire("Refund Amount is More than RefundBalance")

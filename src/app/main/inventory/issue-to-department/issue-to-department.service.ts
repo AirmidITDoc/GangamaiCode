@@ -84,7 +84,7 @@ export class IssueToDepartmentService {
     return this._httpClient.post("Generic/GetByProc?procName=retrieve_IndentItemList",Param);
   }
   public getAgainstIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IndentItemList_aginstIssue",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IndentItemList_aginstIssue",Param);
   }
   public getIssueToDepList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueToDep_list_by_Name",Param);
@@ -107,6 +107,9 @@ export class IssueToDepartmentService {
   }
   public IssuetodepSave(Param){
     return this._httpClient.post("InventoryTransaction/IssuetoDepartmentSave",Param);
+  }
+  public IssuetodepAgaintIndetSave(Param){
+    return this._httpClient.post("InventoryTransaction/IssueToDepartmentIndentUpdate",Param);
   }
 
   public updateStockToMainStock(Param){

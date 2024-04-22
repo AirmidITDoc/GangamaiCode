@@ -270,7 +270,6 @@ export class GoodReceiptnoteComponent implements OnInit {
 
   selection = new SelectionModel<GrnItemList>(true, []);
   printBulkQrCode(){
-    // debugger
     setTimeout(() => {
       this.SpinLoading = true;
       let data=[];
@@ -324,8 +323,8 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
     this._GRNService.getGrnItemList(Param).subscribe(data => {
       this.dsGrnItemList.data = data as GrnItemList[];
-      this.dsGrnItemList.sort = this.sort;
-      this.dsGrnItemList.paginator = this.paginator;
+      // this.dsGrnItemList.sort = this.sort;
+      // this.dsGrnItemList.paginator = this.paginator;
       this.sIsLoading = '';
     },
       error => {

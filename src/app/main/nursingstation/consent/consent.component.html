@@ -1,0 +1,279 @@
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Consent
+            </span>
+        </div>
+
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+
+                <div fxFlexFill fxLayout="column">
+                    <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="10px">
+
+                        <form [formGroup]="_ConsentService.myform">
+
+                            <div fxLayout="row" fxLayoutGap="10px">
+                                <mat-form-field appearance="outline" fxFlex="50%">
+                                    <!-- <input type="text" name="RegID" formControlName="RegID"
+                                        placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                                        [matAutocomplete]="auto1">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_ConsentService.myform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_ConsentService.myform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                    </span> -->
+                                    <!-- <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextReg"
+                                        (optionSelected)='getSelectedObjReg($event.option.value)'>
+                                        <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                            {{option.FirstName}} {{option.MiddleName}}
+                                            {{option.LastName}} | {{option.RegNo}} |
+                                            {{option.MobileNo}}
+                                        </mat-option>
+                                    </mat-autocomplete> -->
+                                </mat-form-field>
+
+                                <mat-radio-group aria-label="Select an option" formControlName="PatientType"
+                                    name="PatientType" style="padding:15px 0px 0px 30px;">
+                                    <mat-radio-button value="OP">OP</mat-radio-button>
+                                    <mat-radio-button value="IP">IP</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div  fxLayout="row" style="background-color: white;padding-bottom:4px;">
+                                <fieldset class="fieldset-div" style="width: 100%;padding: 0px 5px 0px 5px;" fxFlex>
+                                    <legend>Patient Information</legend>
+                                
+                                    <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
+                                        <div class="patient-sub">
+                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                
+                                                <div class="flex-item">
+                                                    <h3 class="labels-h3">Patient Name
+                                                        <span style="margin-left: 30px;">:</span>
+                                                    </h3>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <!-- <h6 class="labels-h6">{{PatientName}}</h6> -->
+                                                </div>
+                                
+                                                <div class="flex-item item-header" style="margin-left: 10px;">
+                                                    <h3 class="labels-h3">OPIPNo
+                                                        <span style="margin-left: 60px;">:</span>
+                                                    </h3>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <!-- <h6 class="labels-h6">{{vOPDNo}}</h6> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                
+                                        <div class="patient-sub">
+                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                
+                                                <div class="flex-item item-header">
+                                                    <h3 class="labels-h3">Gender
+                                                        <span style="margin-left: 45px;">:</span>
+                                                    </h3>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                                </div>
+                                
+                                                <div class="flex-item item-header">
+                                                    <h3 class="labels-h3">Age
+                                                        <span style="margin-left: 68px;">:</span>
+                                                    </h3>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <!-- <h6 class="labels-h6">{{Age}}</h6> -->
+                                                </div>
+                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
+                                        <div class="patient-sub">
+                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                
+                                                <div class="flex-item">
+                                                    <h3 class="labels-h3">Patient source
+                                                        <span style="margin-left: 25px;">:</span>
+                                                    </h3>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <!-- <h6 class="labels-h6">{{patientsource}}</h6> -->
+                                                </div>
+                                
+                                                <div class="flex-item item-header" style="margin-left: 10px;">
+                                                    <h3 class="labels-h3">CompanyName
+                                                        <span style="margin-left: 15px;">:</span>
+                                                    </h3>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <!-- <h6 class="labels-h6">{{CompanyName}}</h6> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                
+                                        <div class="patient-sub">
+                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
+                                
+                                                <div class="flex-item item-header">
+                                                    <h3 class="labels-h3">TarrifName
+                                                        <span style="margin-left: 25px;">:</span>
+                                                    </h3>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <!-- <h6 class="labels-h6">{{TarrifName}}</h6> -->
+                                                </div>
+                                
+                                                <div class="flex-item item-header">
+                                                    <h3 class="labels-h3">DoctorName
+                                                        <span style="margin-left: 15px;">:</span>
+                                                    </h3>
+                                                </div>
+                                                <div class="flex-item">
+                                                    <!-- <h6 class="labels-h6">{{DoctorName}}</h6> -->
+                                                </div>
+                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div>
+                                <mat-table class="table2" matSort [dataSource]="dsConsentList"
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;height:60px;">
+
+                                    <ng-container matColumnDef="patientId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            patientId </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.patientId}} </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PatientName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            PatientName </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.PatientName}} </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Age">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Age </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.Age}} </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="MobileNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            MobileNo </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.MobileNo}} </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="DoctorName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            DoctorName </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.DoctorName}} </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PatienSource">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            PatienSource </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.PatienSource}} </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            date </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.date}} </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Action">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Action </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.Action}}</mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsConsentList!=null && dsConsentList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                                    showFirstLastButtons>
+                                </mat-paginator>
+                            </div>
+                            
+                            <div fxLayoutGap="5px">
+                                <mat-form-field appearance="outline" fxFlex="35%">
+                                    <mat-label>Department</mat-label>
+                                    <mat-select formControlName="Department" name="Department" Placeholder="select Department">
+                                        <mat-option></mat-option>
+                                        <!-- <mat-option *ngFor="let m of DepartmentList" [value]="m">
+                                            {{m.Department}}
+                                        </mat-option> -->
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="35%">
+                                    <mat-label>Template</mat-label>
+                                    <mat-select formControlName="Template" name="Template" Placeholder="select Template">
+                                        <mat-option></mat-option>
+                                        <!-- <mat-option *ngFor="let m of TemplateList" [value]="m">
+                                            {{m.Template}}
+                                        </mat-option> -->
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-radio-group name="Language" value="0" formControlName="Language" style="padding: 15px 0px 0px 100px;">
+                                    <mat-radio-button value="1" class="mr-sm-12">English</mat-radio-button>
+                                    <mat-radio-button value="0" class="mr-sm-12" >Marathi</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div>
+                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:40px;" [(ngModel)]="vTemplateDesc" required
+                                formControlName="TemplateDesc"></angular-editor>   
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

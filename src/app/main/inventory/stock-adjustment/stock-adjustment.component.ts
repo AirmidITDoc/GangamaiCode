@@ -193,7 +193,7 @@ export class StockAdjustmentComponent implements OnInit {
   }
   onsaveStockAdj() {
     let isCheckQty: any;
-    if (isCheckQty = this.dsStockAdjList.data.some(item => item.AddQty > this.vBalQty || item.DeduQty == '')) {
+    if (isCheckQty = this.dsStockAdjList.data.some(item => item.AddQty != '')) {
       this.OnSaveStockAdjustment();
     }
     else if (isCheckQty = this.dsStockAdjList.data.some(item => item.DeduQty < this.vBalQty || item.AddQty == '')) {

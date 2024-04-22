@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } f
 import { MatTableDataSource } from '@angular/material/table';
 import { WorkOrderService } from '../work-order.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -81,11 +81,15 @@ export class UpdateWorkorderComponent implements OnInit {
     private _formBuilder: FormBuilder,
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<UpdateWorkorderComponent>,
     private accountService: AuthenticationService,
     private snackBarService: SnackBarService,
     private advanceDataStored: AdvanceDataStored) { }
 
   ngOnInit(): void {
+    this.gePharStoreList();
+    this.getGSTtypeList();
+    
     if (this.data.Obj) {
       this.registerObj=this.data.Obj;
       console.log(this.registerObj)
@@ -98,9 +102,6 @@ export class UpdateWorkorderComponent implements OnInit {
       console.log(this.FinalNetAmount, this.FinalTotalAmount);
       this.getWorkOrderItemDetailList(this.registerObj);
     }
-    
-    this.gePharStoreList();
-    this.getGSTtypeList();
   }
 
   getDateTime(dateTimeObj) {
@@ -162,7 +163,7 @@ export class UpdateWorkorderComponent implements OnInit {
       } else {
         this.noOptionFoundsupplier = false;
       }
-      if (this.registerObj.SupplierId > 0) { 
+      if (this.data) { 
         const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == this.registerObj.SupplierId);
         this._WorkOrderService.WorkorderItemForm.get('SupplierName').setValue(toSelectSUpplierId);
         console.log(toSelectSUpplierId)
@@ -237,7 +238,7 @@ export class UpdateWorkorderComponent implements OnInit {
         VATPer: this.vGST || 0,
         VATAmount: this.vGSTAmt || 0,
         NetAmount: this.vNetAmount || 0,
-        Remark: this.vSpecification || '',
+        Remark: this.vSpecification.toString() ,
       });
       this.dsItemNameList.data = this.chargeslist;
 
@@ -426,7 +427,7 @@ getTotalAmt(element) {
     workorderHeaderInsertObj['woId'] = 0;
   
     let InsertWorkDetailarrayObj = [];
-    this.dsItemNameList.data.forEach((element) => {
+    this.dsItemNameList.data.forEach((element) => { 
       let insertWorkDetailaObj = {};
       insertWorkDetailaObj['woId'] = 0;
       insertWorkDetailaObj['itemName'] = element.ItemName;
@@ -438,7 +439,7 @@ getTotalAmt(element) {
       insertWorkDetailaObj['vatAmount'] = element.VATAmount;
       insertWorkDetailaObj['vatPer'] = element.VATPer;;
       insertWorkDetailaObj['netAmount'] = element.NetAmount;
-      insertWorkDetailaObj['remark'] = element.Remark;
+      insertWorkDetailaObj['remark'] =0;
      
       InsertWorkDetailarrayObj.push(insertWorkDetailaObj);
     });
@@ -491,9 +492,9 @@ getTotalAmt(element) {
       insertWorkDetailaObj['discAmount'] = element.DiscAmount;
       insertWorkDetailaObj['discPer'] = element.DiscPer;
       insertWorkDetailaObj['vatAmount'] = element.VATAmount;
-      insertWorkDetailaObj['vatPer'] = element.VATPer;;
+      insertWorkDetailaObj['vatPer'] = element.VATPer;
       insertWorkDetailaObj['netAmount'] = element.NetAmount;
-      insertWorkDetailaObj['remark'] = element.Remark;
+      insertWorkDetailaObj['remark'] = element.Remark || 0;
      
       InsertWorkDetailarrayObj.push(insertWorkDetailaObj);
     });

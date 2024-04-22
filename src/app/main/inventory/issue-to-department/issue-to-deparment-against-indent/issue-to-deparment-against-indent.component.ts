@@ -28,8 +28,11 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     'Addedby',
   ];
   displayedColumns1: string[] = [
+   // 'Status',
     'ItemName',
-    'Qty',
+    'IndTotalQty',
+    'IssueQty',
+    'IndBalQty'
   ]
 
   dateTimeObj: any;
@@ -45,6 +48,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
 
   dsIndentList = new MatTableDataSource<IndentList>();
   dsIndentItemDetList = new MatTableDataSource<IndentItemDetList>();
+  dstempdata = new MatTableDataSource<IndentItemDetList>();
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -94,7 +98,7 @@ getOptionTextStores(option) {
       "To_Dt": this.datePipe.transform(this._IssueToDep.IndentFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "Status": this._IssueToDep.IndentFrom.get('Status').value
     }
-    console.log(vdata);
+   // console.log(vdata);
     this._IssueToDep.getIndentList(vdata).subscribe(data => {
       this.dsIndentList.data = data as IndentList[];
       this.dsIndentList.sort = this.sort;
@@ -113,14 +117,16 @@ getOptionTextStores(option) {
     this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
       this.dsIndentItemDetList.data = data as IndentItemDetList[];
      // console.log(this.dsIndentItemDetList.data)
-      this.Charglist = this.dsIndentItemDetList.data;
+     // this.Charglist = this.dsIndentItemDetList.data;
       this.dsIndentItemDetList.sort = this.sort;
       this.dsIndentItemDetList.paginator = this.paginator;
+     // console.log(this.vIndentId)
       this.sIsLoading = '';
     },
       error => {
         this.sIsLoading = '';
       });
+      this.GetIndentGainstlist(Param);  
   }
   gePharStoreList() {
     var vdata = {
@@ -131,13 +137,25 @@ getOptionTextStores(option) {
       this._IssueToDep.IndentFrom.get('FromStoreId').setValue(this.FromStoreList[0])
     });
   }
+  GetIndentGainstlist(param){
+    var vdata = {
+      'IndentId':  param.IndentId 
+  }
+      console.log(vdata);
+     this._IssueToDep.getAgainstIndentList(vdata).subscribe(data => {
+      this.dstempdata.data = data as IndentItemDetList[];
+      this.Charglist = this.dstempdata.data;
+      console.log(this.Charglist);
+      console.log( this.dstempdata.data);
+  });
+  }
   OnIndentList(){
     if ((!this.dsIndentItemDetList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
+    }    
     console.log(this.Charglist)
     this._dialogRef.close(this.Charglist);
   }
@@ -154,6 +172,7 @@ export class IndentList {
   FromStoreName: string;
   ToStoreName: string;
   Addedby: any;
+  IndentId:any;
   constructor(IndentList) {
     {
       this.IndentNo = IndentList.IndentNo || 0;
@@ -161,6 +180,7 @@ export class IndentList {
       this.FromStoreName = IndentList.FromStoreName || '';
       this.ToStoreName = IndentList.ToStoreName || '';
       this.Addedby = IndentList.Addedby || 0;
+      this.IndentId = IndentList.IndentId || 0;
     }
   }
 }
@@ -170,6 +190,7 @@ export class IndentItemDetList {
   FromStoreName: string;
   ToStoreName: string;
   Addedby: any;
+  IndentId:any;
   constructor(IndentItemDetList) {
     {
       this.IndentNo = IndentItemDetList.IndentNo || 0;
@@ -177,6 +198,7 @@ export class IndentItemDetList {
       this.FromStoreName = IndentItemDetList.FromStoreName || '';
       this.ToStoreName = IndentItemDetList.ToStoreName || '';
       this.Addedby = IndentItemDetList.Addedby || 0;
+      this.IndentId = IndentItemDetList.IndentId || 0;
     }
   }
 }

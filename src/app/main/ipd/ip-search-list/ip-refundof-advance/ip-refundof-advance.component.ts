@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
 import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-payment.component';
 import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { RegInsert } from '../../Admission/admission/admission.component';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -50,6 +52,9 @@ export class IPRefundofAdvanceComponent implements OnInit {
   advDetailId:any;
   AdvanceDetailID: any;
   
+  vOPIPId=410;
+  
+  
   printTemplate: any;
   reportPrintObj: BrowseIpdreturnadvanceReceipt;
   subscriptionArr: Subscription[] = [];
@@ -58,7 +63,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     'AdvanceAmount',
     'UsedAmount',
     'BalanceAmount',
-    'RefundAmount',
+    'RefundAmt',
     'AdvanceId'
     // 'action'
   ];
@@ -79,15 +84,32 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
- // @Input() BalanceData : number;
   @Input() dataArray: any;
   currentDate = new Date();
   selectedAdvanceObj: AdvanceDetailObj;
+  searchFormGroup: FormGroup;
+  City: any;
+  CompanyName: any;
+  Tarrifname: any;
+  Doctorname: any;
+  Paymentdata: any;
+  // vOPIPId: any = 0;
+  vOPDNo: any = 0;
+  vTariffId: any = 0;
+  vClassId: any = 0;
+
+  PatientName: any = "";
+  RegId: any = 0;
+  noOptionFound: boolean = false;
+  PatientListfilteredOptions: any;
+  isRegIdSelected: boolean = false;
+  registerObj = new RegInsert({});
 
   constructor(public _IpSearchListService: IPSearchListService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     public datePipe: DatePipe,
+    private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,
     private dialogRef: MatDialogRef<IPRefundofAdvanceComponent>,
     private formBuilder: FormBuilder) { 
@@ -96,12 +118,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.searchFormGroup = this.createSearchForm();
     this.RefundOfAdvanceFormGroup = this.formBuilder.group({
       advanceAmt: ['', [Validators.pattern('^[0-9]{2,8}$')]],
       UsedAmount: [''],
       TotalRefundAmount: [''],
       RefundAmount: [0,Validators.required],
-      BalanceAmount: ['',Validators.required],
+      BalanceAmount:[''],// ['',Validators.required],
       BalanceAdvance:[0,Validators.required],
       AdvanceDetailID:[''],
       NewRefundAmount:['0'],
@@ -112,31 +135,88 @@ export class IPRefundofAdvanceComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
+      // this.vOPIPId=this.selectedAdvanceObj.AdmissionID
+      this.PatientName=this.selectedAdvanceObj.PatientName;
+      this.Doctorname=this.selectedAdvanceObj.Doctorname
     }
    
     this.getRefundofAdvanceList();
-    this.getReturndetails();
+    // this.getReturndetails();
   }
 
-
+  createSearchForm() {
+    return this.formBuilder.group({
+    RegId: ['']
+    });
+  }
+  
+  
   getRefundtotSum1(element){
     let netAmt1;
     netAmt1 = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
     return netAmt1;
     this.TotRefundAmount=netAmt1;
-    console.log(netAmt1);
+    console.log(this.TotRefundAmount);
+  }
+
+
+  // Patient Search;
+  getSearchList() {
+    
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+    }
+    
+    this._IpSearchListService.getPatientVisitedListSearch(m_data).subscribe(data => {
+      this.PatientListfilteredOptions = data;
+      console.log(this.PatientListfilteredOptions )
+      if (this.PatientListfilteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+
+  }
+
+  getSelectedObj1(obj) {
+    console.log(obj)
+    this.dataSource.data = [];
+    
+    this.registerObj = obj;
+    this.PatientName = obj.FirstName + " " + obj.LastName;
+    this.RegId = obj.RegId;
+    this.City = obj.City;
+    // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    this.CompanyName = obj.CompanyName;
+    this.Tarrifname = obj.TariffName;
+    this.Doctorname = obj.DoctorName;
+    this.vOPIPId = obj.RegId;
+    this.vOPDNo = obj.RegId;//obj.OPDNo;
+    this.vTariffId = obj.TariffId;
+    this.vClassId = obj.classId
+
+    this.PatientName='sk';
+    this.getReturndetails();
+  }
+
+  getOptionText1(option) {
+    if (!option)
+      return '';
+      return option.FirstName + ' ' + option.MiddleName  + ' ' + option.LastName ;
+
   }
 
 
   getReturndetails() {
     
     var m_data = {
-    "OPIPID": 15//this.selectedAdvanceObj.AdmissionID
+    "RegID":this.vOPIPId 
     }
  
     this.isLoading = 'list-loading';
     // let Query = "Select AdvanceId from T_AdvanceHeader where  OPD_IPD_Id=" + this.AdmissionId + " ";
-    this._IpSearchListService.getReturndetails(m_data).subscribe(data => {
+    this._IpSearchListService.getAdvReturndetails(m_data).subscribe(data => {
     this.dataSource1.data = data as IPRefundofAdvance[];
 
       console.log(this.dataSource1.data);
@@ -145,7 +225,9 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   getRefundofAdvanceList() {
     var m_data = {
-      "RefundId": this._IpSearchListService.myRefundAdvanceForm.get("RefundId").value || "0",
+      // "RefundId": this._IpSearchListService.myRefundAdvanceForm.get("RefundId").value || "0",
+      "RegID": this.vOPIPId//410
+
     }
     this.isLoadingStr = 'loading';
     this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(Visit => {
@@ -155,6 +237,32 @@ export class IPRefundofAdvanceComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
     });
+  }
+
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  RefundAmt:any;
+  getCellCalculation(contact,RefundAmt) {
+   debugger
+    console.log(RefundAmt)
+    
+    if(RefundAmt > contact.BalanceAmount){
+      Swal.fire("Enter Refund Amount Less than Balance Amount ");
+    }else{
+      this.BalanceAmount=RefundAmt;
+      contact.BalanceAmount=contact.BalanceAmount-RefundAmt
+      this.NewRefundAmount=RefundAmt;
+      this.BalanceAdvance= contact.BalanceAmount;
+    }
+
   }
 
   getDateTime(dateTimeObj) {
@@ -169,7 +277,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   calculateBal()
   {
    
-    this.BalanceAdvance=  this.RefundAmount - this.NewRefundAmount;
+    this.BalanceAdvance=  this.BalanceAmount - this.NewRefundAmount;
 
   }
 
@@ -179,6 +287,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     
     this.BalanceAdvance=0;
     this.RefundAmount=0;
+    this.UsedAmount=row.UsedAmount;
     this.NewRefundAmount=0;
      console.log(row);
 
@@ -192,8 +301,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
  
    
    console.log(m_data);
-   this.advId = m_data.AdvanceId;
-   this.advDetailId = m_data.AdvanceDetailID;
+   this.advId = row.AdvanceId;
+   this.advDetailId = row.AdvanceDetailID;
     }
 
     this.BalanceAmount=row.BalanceAmount;
@@ -217,20 +326,22 @@ export class IPRefundofAdvanceComponent implements OnInit {
     IPRefundofAdvanceObj['BillId'] = 1;
     IPRefundofAdvanceObj['AdvanceId'] = this.advId;
     IPRefundofAdvanceObj['OPD_IPD_Type'] = 1;
-    IPRefundofAdvanceObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,//this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
+    IPRefundofAdvanceObj['OPD_IPD_ID'] =  this.vOPIPId,
+    IPRefundofAdvanceObj['BalanceAmount'] = this.BalanceAdvance;
+    IPRefundofAdvanceObj['UsedAmount'] = this.UsedAmount;
     IPRefundofAdvanceObj['RefundAmount'] = this.NewRefundAmount;
     IPRefundofAdvanceObj['Remark'] = this.RefundOfAdvanceFormGroup.get("Remark").value;
-    IPRefundofAdvanceObj['TransactionId'] = '0';
-    IPRefundofAdvanceObj['AddedBy'] = 0;
+    IPRefundofAdvanceObj['TransactionId'] = 2;
+    IPRefundofAdvanceObj['AddedBy'] =  this.accountService.currentUserValue.user.id,
     IPRefundofAdvanceObj['IsCancelled'] = false;
     IPRefundofAdvanceObj['IsCancelledBy'] = 0;
     IPRefundofAdvanceObj['IsCancelledDate'] = '01/01/1900';
-    IPRefundofAdvanceObj['RefundId'] = '0';
+    IPRefundofAdvanceObj['RefundId'] = 0;
 
 
     let UpdateAdvanceHeaderObj = {};
     UpdateAdvanceHeaderObj['AdvanceId'] =this.advId;
-    UpdateAdvanceHeaderObj['advanceUsedAmount'] = this.BalanceAdvance;
+    UpdateAdvanceHeaderObj['advanceUsedAmount'] = this.UsedAmount;
     UpdateAdvanceHeaderObj['BalanceAmount'] = this.BalanceAdvance;
 
     let InsertIPRefundofAdvanceDetailObj = {};
@@ -253,23 +364,23 @@ export class IPRefundofAdvanceComponent implements OnInit {
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,//this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
+    PatientHeaderObj['OPD_IPD_Id'] =this.vOPIPId,
     PatientHeaderObj['NetPayAmount'] =  this.NewRefundAmount;
-
+    PatientHeaderObj['PatientName'] =   this.PatientName
 
     const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
       {
         maxWidth: "75vw",
         maxHeight: "93vh", width: '100%', height: "100%",
         data: {
-          patientName: this._IpSearchListService.myRefundAdvanceForm.get("PatientName").value,
+         
           advanceObj: PatientHeaderObj,
           FromName: "Advance-Refund"
         }
       });
       // // debugger;
     dialogRef.afterClosed().subscribe(result => {
-      
+      if(result.IsSubmitFlag){
       console.log('============================== Return RefAdv ===========');
       let submitData = {
         "insertIPRefundofAdvance": IPRefundofAdvanceInsert,
@@ -297,7 +408,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
         }
         this.isLoading = '';
       });
-    
+      }
     });
 
   }
@@ -331,69 +442,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
    
     },100);
   }
-  convertToWord(e){
-    
-    //  return converter.toWords(e);
-       }
 
-  getTemplate() {
-    let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=4';
-    this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
-      this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['HospitalName','HospitalAddress','RefundId','PaymentDate','RegNo','IPDNo','GenderName','PatientName','RefundAmount','Remark','AddedBy'];
-        for (let i = 0; i < keysArray.length; i++) {
-          let reString = "{{" + keysArray[i] + "}}";
-          let re = new RegExp(reString, "g");
-          this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-        }
-        this.printTemplate = this.printTemplate.replace('StrRefundAmountInWords', this.convertToWord(this.reportPrintObj.RefundAmount));
-        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-        setTimeout(() => {
-          this.print();
-        }, 500);
-    });
-  }
-
-getPrint(el) {
- console.log(el);
-  var D_data = {
-    "RefundId": el,
-  }
-
-  let printContents; 
-  this.subscriptionArr.push(
-    this._IpSearchListService.getrefundAdvanceReceiptPrint(D_data).subscribe(res => {
-      if(res){
-      this.reportPrintObj = res[0] as BrowseIpdreturnadvanceReceipt;
-      
-     }
-    
-     
-      this.getTemplate();
-          
-    })
-  );
-}
-
-
-print() {
-  
-  let popupWin, printContents;
-  
-
-  popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-  
-  popupWin.document.write(` <html>
-  <head><style type="text/css">`);
-  popupWin.document.write(`
-    </style>
-        <title></title>
-    </head>
-  `);
-  popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-  </html>`);
-  popupWin.document.close();
-}
   onClose() {
     this._IpSearchListService.myRefundAdvanceForm.reset();
    
@@ -418,7 +467,7 @@ export class IPRefundofAdvance {
   IsCancelledBy: number;
   IsCancelledDate: Date;
   RefundId: number;
-
+Date:any;
 
   constructor(IPRefundofAdvanceObj) {
 
@@ -438,6 +487,7 @@ export class IPRefundofAdvance {
     this.IsCancelledBy = IPRefundofAdvanceObj.IsCancelledBy || 0;
     this.IsCancelledDate = IPRefundofAdvanceObj.IsCancelledDate || '';
     this.RefundId = IPRefundofAdvanceObj.RefundId || '0';
+    this.Date = IPRefundofAdvanceObj.Date || '';
   }
 
 }

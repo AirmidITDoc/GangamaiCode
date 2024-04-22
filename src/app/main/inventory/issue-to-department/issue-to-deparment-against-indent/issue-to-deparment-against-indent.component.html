@@ -1,5 +1,4 @@
-<div id="content" class="simple page-layout inner-scroll inner-sidebar right-sidebar" style="height: 100%;"
-    fusePerfectScrollbar>
+<div id="content" class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
     <mat-toolbar style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxFlext="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -88,8 +87,7 @@
 
                     <form [formGroup]="_IssueToDep.IndentFrom">
                         <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
-                            <br />
-                            <mat-form-field appearance="outline" fxFlex="20%" >
+                            <mat-form-field appearance="outline" fxFlex="10%" >
                                 <mat-label>Enter a date range</mat-label>
                                 <mat-date-range-input [rangePicker]="picker">
                                     <input matStartDate formControlName="start" placeholder="Start date">
@@ -110,7 +108,7 @@
                                 </mat-select>
                             </mat-form-field> -->
 
-                            <mat-form-field appearance="outline" fxFlex="30%">
+                            <mat-form-field appearance="outline" fxFlex="15%">
                                 <mat-label>To Store</mat-label>
                                 <input matAutocompletePosition="below" type="text" placeholder="Select Store"
                                     matInput formControlName="ToStoreId" [matAutocomplete]="auto2" required >
@@ -131,9 +129,9 @@
                             <mat-radio-group name="Status" formControlName="Status" fxFlex="20%" value="0"
                                 style="padding: 12px;" fxLayout="row">
                                 <mat-label>Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <mat-radio-button value="0" class="mr-sm-12" (keyup)="getIndentList()">Close
+                                <mat-radio-button value="1" class="mr-sm-12" (keyup)="getIndentList()">Close
                                 </mat-radio-button>
-                                <mat-radio-button value="1" class="mr-sm-12" (keyup)="getIndentList()">Pending
+                                <mat-radio-button value="0" class="mr-sm-12" (keyup)="getIndentList()">Pending
                                 </mat-radio-button>
                             </mat-radio-group>
 
@@ -153,12 +151,12 @@
                         <div fxlayout="row">
                             <div style="width:100%;">
                                 <div>
-                                    <div matColumnDef="loading" style="height: 400px;"
+                                    <div matColumnDef="loading" 
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                         <div class="spinner-border text-danger"></div>
                                     </div>
 
-                                    <mat-table #table matSort [dataSource]="dsIndentList"
+                                    <mat-table matSort [dataSource]="dsIndentList"
                                         [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                         <ng-container matColumnDef="IndentNo">
@@ -236,6 +234,17 @@
 
                                 <mat-table #table class="table2" matSort [dataSource]="dsIndentItemDetList"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                    <!-- <ng-container matColumnDef="Status">
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                            style="color: white;">Status</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <mat-icon
+                                                style="font-size: 70px;width: 25px !important; height:25px !important;border-radius:100% ;"
+                                                *ngIf="contact.IsClosed == true" matTooltip="Pending"
+                                                class="pill red-600 s-16">circle</mat-icon>
+                                        </mat-cell>
+                                    </ng-container> -->
+
                                     <ng-container matColumnDef="ItemName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             ItemName
@@ -245,12 +254,28 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Qty">
+                                    <ng-container matColumnDef="IndTotalQty">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Indent Qty</mat-header-cell>
+                                            IndTotalQty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.Qty }}
-                                        </mat-cell>
+                                        </mat-cell> 
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IssueQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            IssueQty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IssQty }}
+                                        </mat-cell> 
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IndBalQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            IndBalQty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.Bal }}
+                                        </mat-cell> 
                                     </ng-container>
 
                                     <ng-container matColumnDef="loading">
@@ -280,9 +305,9 @@
                                     showFirstLastButtons>
                                 </mat-paginator>
                             </div>
-                            <div fxLayoutAlign="end" style="padding-left: 20px;">
-                                <button class="btn btn-primary" (click)="OnIndentList()">Ok</button>&nbsp;
-                                <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
+                            <div fxLayoutAlign="end" class="sales-footer-buttons gap-8 " style="padding-left: 20px;">
+                                <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                                <button class="btn btn-primary" (click)="OnIndentList()">Ok</button>
                             </div>
                         </div>
                     </div>

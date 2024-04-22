@@ -17,6 +17,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { PathTemplateViewComponent } from './path-template-view/path-template-view.component';
 import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-result-entry',
@@ -111,6 +112,7 @@ export class ResultEntryComponent implements OnInit {
     private _ActRoute: Router,
     // public dialogRef: MatDialogRef<PathologresultEntryComponent>,
     public datePipe: DatePipe,
+    private reportDownloadService: ExcelDownloadService,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     private accountService: AuthenticationService,
@@ -314,7 +316,7 @@ export class ResultEntryComponent implements OnInit {
   }
 
   SearchTest($event) {
-
+debugger
     var m_data = {
       "BillNo": this.SBillNo,
       "OP_IP_Type": this.SOPIPtype,
@@ -883,6 +885,34 @@ export class ResultEntryComponent implements OnInit {
     //     window.open(URL.createObjectURL(doc.output("blob")))
     //   }
     // }
+  }
+ 
+  exportResultentryReportExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['Date', 'Time', 'RegNo', 'PatientName', 'DoctorName', 'PatientType', 'PBillNo','GenderName','AgeYear','PathDues'];
+    this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Result Entry');
+    this.dataSource.data = [];
+    this.sIsLoading = '';
+  }
+
+  exportReportPdf() {
+    let actualData = [];
+    this.dataSource.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.DOA);
+      tempObj.push(e.DOT);
+      // tempObj.push(e.DVisitDate);
+      tempObj.push(e.RegNo);
+      tempObj.push(e.DoctorName);
+      tempObj.push(e.PatientType);
+      tempObj.push(e.PBillNo);
+      tempObj.push(e.GenderName);
+      tempObj.push(e.AgeYear);
+      // tempObj.push(e.PathAmount);
+      actualData.push(tempObj);
+    });
+    let headers = [['Date', 'Time', 'RegNo', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName','AgeYear','PathAmount']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'Result Entry');
   }
 }
 

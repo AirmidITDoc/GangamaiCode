@@ -38,4 +38,7 @@ export class LoginUser {
     IsRefDocEditOpt :boolean;
     IsInchIndVfy :boolean;
     IsPharBalClearnace :boolean;
+    PharExtOpt :number;
+    PharOPOpt :number;
+    PharIPOpt :number;
 }

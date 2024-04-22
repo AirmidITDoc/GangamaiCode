@@ -1,6 +1,6 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar ">
-    <mat-toolbar style="background-color: #039be5!important;height: 50px;justify-content: space-between; width: 100%;">
-        <div fxLayout="row"    fxLayoutAlign="start center">
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" dynamicTableHeight>
+    <mat-toolbar>
+        <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
@@ -9,27 +9,22 @@
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Bill Cancellation
-             </span>
+            </span>
         </div>
- 
+
     </mat-toolbar>
-    
-   
 
 
     <div class="content">
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-              margin-left:12px; background-color: white;height:100%;">
-
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm">
             <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
                 <span class="search-title">Search Facility</span>
             </div>
             <div class="nav material2">
-                <form [formGroup]="_CancellationService.UserFormGroup" style="padding: 6px 6px 5px 5px;"
-                    fusePerfectScrollbar>
+                <form [formGroup]="_CancellationService.UserFormGroup" fusePerfectScrollbar>
                     <div fxLayout="column" fxLayoutAlign="start none">
 
-                        <mat-form-field appearance="outline" style="margin-left: 2%;">
+                        <mat-form-field appearance="outline">
                             <mat-label>Enter a date range</mat-label>
                             <mat-date-range-input [rangePicker]="picker">
                                 <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -83,7 +78,7 @@
         </fuse-sidebar>
 
 
-         <div class="center p-12 pb-56" fxFlexAlign="start center">
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
             <div class="content-card" style="border-radius:4px; ">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                     <div fxFlex.gt-sm="100%" fxFlex>
@@ -92,7 +87,7 @@
                             <div class="spinner-border text-danger"></div>
                         </div>
 
-                        <mat-table  class="table1" matSort [dataSource]="dsCancellation" [@animateStagger]="{value:'50'}"
+                        <mat-table class="table1" matSort [dataSource]="dsCancellation" [@animateStagger]="{value:'50'}"
                             style="overflow: auto;">
 
                             <ng-container matColumnDef="RegNo">
@@ -164,7 +159,7 @@
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button matTooltip="Print"  >
+                                    <button mat-icon-button matTooltip="Print">
                                         <mat-icon>print</mat-icon>
                                     </button>
                                 </mat-cell>
@@ -198,13 +193,6 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
-
-
-
-
-
-
 </div>
- 

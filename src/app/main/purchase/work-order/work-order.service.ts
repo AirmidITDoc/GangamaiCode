@@ -100,6 +100,14 @@ createStoreFrom() {
 public getWorkOrderPrint(Param){
   return this._httpClient.post("Generic/GetByProc?procName=rptWorkOrderPrint", Param);
 }
+
+
+public getWorkorderreportview(WOID){
+  return this._httpClient.get("Pharmacy/view-Workeorder?WOID=" + WOID);
+ }
+  
+
+
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }

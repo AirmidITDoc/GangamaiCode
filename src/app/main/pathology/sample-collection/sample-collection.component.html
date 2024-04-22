@@ -132,12 +132,20 @@
                                 </form>
 
                                 <div fxLayout="row"
-                                    style="text-align: right;width: 100%;margin-top:170px;margin-left: 100px; padding-bottom: 10px;">
+                                    style="text-align: right;width: 100%;margin-top:20px;padding-bottom: 10px;">
 
-                                    <button class="footer-btn" mat-raised-button fxLayoutAlign="center center"
+                                    <!-- <button class="footer-btn" mat-raised-button fxLayoutAlign="center center"
                                         (click)="onLABSave()" style="border-radius: 16px;width: fit-content;">Send Data
-                                        To LAB</button>
-
+                                        To LAB</button> -->
+                                        <button mat-raised-button (click)="exportReportPdf()" style="background-color: #8e67e0;color: white;">
+                                            <mat-icon style="margin-right: 15px;">cloud_download</mat-icon>Export Table(PDF)
+                                        </button>
+                        
+                                        <button (click)="exportSamplecollectionReportExcel()"
+                                        [disabled]="! (dataSource.data.length > 0)"
+                                        style="background-color: white;color: white;width: 45px;">
+                                        <img width="32" height="10px" src="assets/images/logos/xls.png">
+                                       </button>
 
                                 </div>
                             </div>

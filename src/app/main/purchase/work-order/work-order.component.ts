@@ -18,6 +18,7 @@ import { element } from 'protractor';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Printsal } from 'app/main/pharmacy/sales/sales.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-work-order',
@@ -197,6 +198,37 @@ export class WorkOrderComponent implements OnInit {
   }
  
 
+  
+  viewgetWorkorderReportPdf(row) {
+    debugger
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      
+   this._WorkOrderService.getWorkorderreportview(
+    row.WOId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Work ORDER Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+       
+    });
+   
+    },100);
+  }
+
+
+
   getPrint(el) {
     
     var m_data = {
@@ -360,34 +392,31 @@ toggleEdit(index){
 
 
   newWorkorder() {
-    //this.chkNewWorkorder=1;
     const dialogRef = this._matDialog.open(UpdateWorkorderComponent,
       {
         maxWidth: "100%",
         height: '95%',
         width: '95%',
-        data: {
-          //    chkNewWorkorder:this.chkNewWorkorder
-        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getWorkOrdersList();
     });
   }
   onEdit(contact) {
     console.log(contact)
-   // this.advanceDataStored.storage = new SearchInforObj(contact);
     const dialogRef = this._matDialog.open(UpdateWorkorderComponent,
       {
         maxWidth: "100%",
         height: '95%',
         width: '95%',
         data: {
-          Obj: contact,
+          Obj: contact
         }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getWorkOrdersList();
     });
   }
 }

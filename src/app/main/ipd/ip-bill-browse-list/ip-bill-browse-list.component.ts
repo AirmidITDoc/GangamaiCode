@@ -371,7 +371,7 @@ export class IPBillBrowseListComponent implements OnInit {
       "Reg_No": this._IpBillBrowseListService.myFilterform.get("RegNo").value || 0,
       "PBillNo": this._IpBillBrowseListService.myFilterform.get("PBillNo").value || 0,
       "IsInterimOrFinal": 2,//this._ipbillBrowseService.myFilterform.get("IsInterimOrFinal").value || "0",
-      "CompanyId": this._IpBillBrowseListService.myFilterform.get("CompanyId").value || 0,
+      "CompanyId": this._IpBillBrowseListService.myFilterform.get("CompanyId").value.CompanyId || 0,
     }
     console.log(D_data);
     this._IpBillBrowseListService.getIpBillBrowseList(D_data).subscribe(data => {
