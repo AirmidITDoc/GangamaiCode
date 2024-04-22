@@ -500,12 +500,12 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
       materialconsumptionInsert['mrpTotal'] = 0;
       materialconsumptionInsert['remark'] = 0;
       materialconsumptionInsert['isAddBy'] = this.accountService.currentUserValue.user.id;
-     debugger
+     // debugger
      
     //  materialconsumptionInsertarray.push(materialconsumptionInsert);
     // });
     submissionObj['materialconsumptionInsert'] = materialconsumptionInsert;
-    debugger
+    // debugger
     console.log(submissionObj);
 
       this._NursingStationService.MaterialConsumptionSave(submissionObj).subscribe(response => {
@@ -555,7 +555,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   }
   
   onSaveEntry() {
-    debugger  
+    // debugger  
     this.isLoading = 'save';
     this.dataSource.data = [];
     this.chargeslist.push(

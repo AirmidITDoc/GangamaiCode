@@ -24,7 +24,6 @@ export class RequestforlabtestComponent implements OnInit {
   hasSelectedContacts: boolean;
   SpinLoading:boolean=false;
   displayedColumns: string[] = [
-    'action',
     'RequestId',
     'RegNo',
     'PatientName',
@@ -35,7 +34,8 @@ export class RequestforlabtestComponent implements OnInit {
     'TariffName',
     'CompanyName',
     'ReqTime',
-    'AddedBy'
+    'AddedBy',
+    'action',
   ]
 
   displayColumns: string[] =[
@@ -77,8 +77,8 @@ export class RequestforlabtestComponent implements OnInit {
 
   Openpopup(){
     this.dialog.open(NewRequestforlabComponent,{
-      width:'90%',
-      height:'800px',
+      width:'70vw',
+      height:'90vh',
       panelClass: 'new-request-dialog'
     })
   }

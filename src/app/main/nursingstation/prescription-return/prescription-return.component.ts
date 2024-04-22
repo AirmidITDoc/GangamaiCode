@@ -76,7 +76,7 @@ export class PrescriptionReturnComponent implements OnInit {
   }
 
   getPriscriptionretList(){
-    debugger
+    // debugger
     var vdata={
       FromDate:this.datePipe.transform(this._PrescriptionReturnService.mySearchForm.get('startdate').value,"yyyy-dd-MM 00:00:00.000") || '01/2/2023',
       ToDate:this.datePipe.transform(this._PrescriptionReturnService.mySearchForm.get('enddate').value,"yyyy-dd-MM 00:00:00.000") || '01/2/2023',
@@ -112,16 +112,15 @@ export class PrescriptionReturnComponent implements OnInit {
   //window
   OpenNewPrescriptionret(){
     this.dialog.open(NewPrescriptionreturnComponent,{
-      width:'90%',
-      height:'750px'
-      
+        height: '85vh',
+        width: '70vw'
     })
   }
  
 
 
   viewgetIpprescriptionreturnReportPdf(row) {
-    debugger
+    // debugger
     setTimeout(() => {
       this.SpinLoading =true;
     this._PrescriptionReturnService.getIpPrescriptionreturnview(

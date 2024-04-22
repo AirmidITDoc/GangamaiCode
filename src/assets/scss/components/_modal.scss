@@ -29,7 +29,7 @@ $modalHeader: 45px;
                         .title-icon {
                         }
                     }
-                    .modal-header-icon {
+                    .modal-header-icon,.c {
                         .modal-icon {
                             display: flex;
                             justify-content: center;
@@ -68,6 +68,7 @@ $modalHeader: 45px;
             }
             .modal-body {
                 padding: $modal-gap;
+                overflow: auto;
             }
             .modal-footer {
                 padding: 0 $modal-gap $modal-gap $modal-gap;
@@ -79,7 +80,7 @@ $modalHeader: 45px;
             }
         }
         @include themed() {
-            background-color: t($bg-color);
+            background-color: t($bg-color-light);
             color: t($text-color);
             .modal-wrapper {
                 &.grid-container {

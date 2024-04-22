@@ -11,57 +11,6 @@
 // @import '~font-awesome/css/font-awesome.min.css';
 @import "./assets/scss/airmid"; // Airmid layout css
 
-//added by prasad
-// .mat-cell, .mat-footer-cell, .mat-label{
-//     font-size: 15px !important;
-// }
-.mat-label {
-    font-size: 15px !important;
-}
-//added by prasad
-
-// .mat-table {
-
-//     .mat-row {
-//         &:hover {
-//             background: #d7d7d7;
-//         }
-//         &:active {
-//             background:#d7d7d7;
-//         }
-//     }
-
-//     .mat-header-row {
-//         min-height: 40px;
-//         height: 20px;
-//     }
-//     .mat-sort-header-content {
-//         color: white;
-//     }
-//     .mat-header-cell {
-//         .mat-sort-header-button {
-//             color: white;
-//         }
-
-//         .mat-sort-header-arrow {
-//             color:white;
-//         }
-//     }
-// }
-
-.mat-saletable {
-    height: 50% !important;
-    .mat-row {
-        &:hover {
-            background: #46a8d6;
-        }
-    }
-}
-
-// .mat-header-cell {
-//     color: white;
-//     font-size: 16px !important;
-// }
 .mat-card {
     width: 100%;
     padding: 2px;
@@ -73,16 +22,6 @@
 
 .mat-form-field-wrapper {
     padding-bottom: 0.34375em;
-}
-
-// Table Footer Label CSS
-.hide {
-    display: none;
-}
-
-mat-footer-row mat-footer-cell {
-    justify-content: center;
-    font-style: italic;
 }
 
 //notification stlyes
@@ -113,32 +52,10 @@ mat-footer-row mat-footer-cell {
     overflow: visible;
 }
 
-.mat-focused .mat-icon {
-    color: red;
-}
-
 // Highlight company ro self patient color code
 .self-row {
     // background-color: lightgreen !important;
 }
-
-// .example-action-buttons {
-//     padding-bottom: 20px;
-//   }
-
-//   .example-headers-align .mat-expansion-panel-header-title,
-//   .example-headers-align .mat-expansion-panel-header-description {
-//     flex-basis: 0;
-//   }
-
-//   .example-headers-align .mat-expansion-panel-header-description {
-//     justify-content: space-between;
-//     align-items: center;
-//   }
-
-//   .example-headers-align .mat-form-field + .mat-form-field {
-
-//     margin-left: 8px;
 
 .hide {
     display: none !important;
@@ -173,10 +90,6 @@ html {
     max-width: 360px;
     text-align: center;
 }
-
-//   .mat-label{
-//     font-size: 20px;
-//   }
 
 //  ===================== Save and Close Button CSS
 .save-button {
@@ -239,7 +152,6 @@ html {
 //spinner start
 // spinner styles are moved into /assets/scss/components/_spinner.scss
 
-
 .footer-btn {
     width: 70px;
     font-size: 16px;
@@ -299,14 +211,14 @@ body .accent {
                     }
                     .mat-form-field-infix {
                         // padding: 0.9em 0 0.9em 0;
-                        .mat-select{
-                            .mat-select-value{
-                                .mat-select-value-text{
+                        .mat-select {
+                            .mat-select-value {
+                                .mat-select-value-text {
                                     color: t($ngt-primary-light);
                                 }
                             }
-                            .mat-select-arrow-wrapper{
-                                .mat-select-arrow{
+                            .mat-select-arrow-wrapper {
+                                .mat-select-arrow {
                                     color: inherit;
                                 }
                             }
@@ -317,10 +229,10 @@ body .accent {
                             }
                         }
                     }
-                    .mat-form-field-suffix{
-                        .mat-datepicker-toggle{
-                            svg{
-                                fill:t($ngt-primary-light);
+                    .mat-form-field-suffix {
+                        .mat-datepicker-toggle {
+                            svg {
+                                fill: t($ngt-primary-light);
                             }
                         }
                     }
@@ -480,40 +392,4 @@ legend {
     font-size: 14px;
     letter-spacing: 1.3px;
     color: white;
-}
-
-// .mat-tab-label .mat-tab-label-content {
-//     font-size: 13px;
-//     font-weight: bold;
-// }
-
-// .mat-expansion-panel-header-title {
-//     font-size: 14px;
-// }
-
-.mat-form-field-appearance-outline .mat-form-field-outline {
-    // color: #a69e9e !important;
-}
-
-/* To change mat form field border color on focus */
-.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline {
-    // color: #a69e9e !important;
-}
-
-.mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid
-    .mat-form-field-outline-thick {
-    // color: $red-600 !important;
-}
-
-.mat-header-text {
-    color: #2b2a2a !important;
-}
-
-.search-sidebar {
-    width: 30%;
-    border-radius: 4px;
-    margin-left: 12px;
-    background-color: white;
-    height: 99%;
-    margin-top: 12px;
 }

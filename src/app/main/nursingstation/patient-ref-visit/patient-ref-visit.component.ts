@@ -74,7 +74,7 @@ export class PatientRefVisitComponent implements OnInit {
   ngOnInit(): void {
     // this.myFilterform=this.filterForm();
 
-    debugger;
+    // debugger;
     this.sIsLoading = 'loading-data';
    
     var m_data = {
@@ -121,7 +121,7 @@ export class PatientRefVisitComponent implements OnInit {
 
   getOPIPPatientList()
    {
-   debugger;
+   // debugger;
     this.sIsLoading = 'loading-data';
    
     var m_data={
@@ -181,7 +181,7 @@ export class PatientRefVisitComponent implements OnInit {
 
   
    onEdit(row){
-    debugger;
+    // debugger;
   //  console.log(row);
    var m_data = {
     "Adm_Vit_ID":row.Adm_Vit_ID,

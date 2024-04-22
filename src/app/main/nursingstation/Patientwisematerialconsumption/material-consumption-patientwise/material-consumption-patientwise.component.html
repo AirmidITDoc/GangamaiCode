@@ -1,186 +1,152 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight >
     <!-- HEADER -->
-
-    <div class="header">
-        <div>
-            <span>Material Consumption </span>
+    <div class="top-header">
+        <div class="top-header-info">
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>Material Consumption </span>
+            </div>
         </div>
-        <div class="close">
-
-            <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-            </app-common-date>  -->
-            <button mat-raised-button (click)="NewMaterial()" fxLayoutAlign="center center">
-              New Material Consumption
-            </button>
-            <!-- <span class="material-icons" style="cursor: pointer;margin-left: 10px;" (click)="onClose()">
-                close
-            </span> -->
+        <div class="top-header-right">
+            <div class="header-add-button">
+                <button mat-raised-button (click)="NewMaterial()">New Material Consumption</button>
+            </div>
         </div>
     </div>
+    <div class="layout-body p-12" >
+        <div class="layout-body-container center">
+            <form [formGroup]="Fileterform" class="mat-error-fix">
+                <div fxLayout="column" class="gap-12">
+                    <div class="layout-card-container">
+                        <mat-card>
+                            <div fxLayout="row wrap" fxLayoutAlign="space-between start" class="gap-8">
+                                <div class="input-container gap-8" fxLayout="row">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>From Store Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Store" matInput formControlName="StoreId" [matAutocomplete]="autoStore" required>
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close" (click)="Fileterform.get('StoreId').setValue(''); isStoreselected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close" (click)="Fileterform.get('StoreId').setValue(''); isStoreselected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoStore="matAutocomplete" [displayWith]="getOptionTextStore">
+                                            <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option">
+                                                {{option.StoreName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
 
-    <div class="search-body">
-        <div fxlayout="row" style="background-color: white; padding: 15px;">
-            <form [formGroup]="Fileterform">
-                <div class="dialog-content-wrapper" fxFlex>
-                    <mat-card>
-                    <!-- <mat-form-field appearance="outline"  style="width:300px !important;">
-                        <mat-label>Store Name</mat-label>
-                        <mat-select formControlName="StoreId" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="storeFilterCtrl" [placeholderLabel]="'Search'"
-                                    [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredstore | async" [value]="element">
-                                {{element.StoreName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field> -->
-
-                    <mat-form-field appearance="outline" fxFlex="20%" style="float: right;">
-                        <mat-label>From Store Name</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select Store" matInput
-                            formControlName="StoreId" [matAutocomplete]="autoStore" required>
-                        <span matSuffix style="display: flex;">
-                            <mat-icon class="mat-icon-close"
-                                (click)="Fileterform.get('StoreId').setValue(''); isStoreselected = false;">close</mat-icon>
-                            <mat-icon class="mat-icon-close"
-                                (click)="Fileterform.get('StoreId').setValue(''); isStoreselected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autoStore="matAutocomplete" [displayWith]="getOptionTextStore">
-                            <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option">
-                                {{option.StoreName}}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
-                        &nbsp;&nbsp;  &nbsp;&nbsp;
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="start" placeholder="Start date">
-                                <input matEndDate formControlName="end" placeholder="End date">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
-                        &nbsp;&nbsp;
-
-             
-                        <button Class="search-btn accent" mat-raised-button
-                            style="border-radius: 16px;float:right;margin-left: 10px;"
-                            (click)="getRegistrationList()">Search
-                            <mat-icon>search</mat-icon>
-                        </button>
-                         
-                        <button class="footer-btn" (click)="onClear()"
-                        style="margin-top: 4px;float: right;margin-right: 10px;">clear</button>
-         
-
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Enter a date range</mat-label>
+                                        <mat-date-range-input [rangePicker]="picker">
+                                            <input matStartDate formControlName="start" placeholder="Start date">
+                                            <input matEndDate formControlName="end" placeholder="End date">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="action-button-container">
+                                    <div class="button-row-group">
+                                        <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
+                                        <button class="btn btn-primary btn-with-icon btn-xs" (click)="getRegistrationList()">
+                                            <span>Search</span>
+                                            <span class="btn-icon">
+                                                <mat-icon>search</mat-icon>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </mat-card>
+                    </div>
+                    <div class="layout-card-containr">
+                        <mat-card>
+                            <div class="table-wrapper">
+                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                                    <ng-container matColumnDef="ConsumptionDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ConsumptionDate}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="MaterialConsumptionId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> MaterialConsumptionId </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <span> {{element.MaterialConsumptionId }}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="StoreName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> StoreName </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <span> {{element.StoreName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="RegNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> RegNo </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <span> {{element.RegNo}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PatientName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> PatientName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <span> {{element.PatientName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="AddedBy">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> AddedBy </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <span> {{element.AddedBy}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Remark">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Remark </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <span> {{element.Remark}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef class="table-actions"> Select
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row" fxShow.gt-sm>
+                                            <button mat-icon-button (click)="onEdit(row)">
+                                                <mat-icon title="Edit Menu">launch</mat-icon>
+                                            </button>
+                                            <!-- <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button>       -->
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent min-width-1200" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1200" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                                </mat-table>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+                            </div>
+                        </mat-card>
+                    </div>
                 </div>
             </form>
         </div>
-
-        <!-- <div class="no-content" *ngIf="isLoading=='no-data'" style="width: fit-content; margin: auto;">
-            <mat-spinner [diameter]='30'></mat-spinner>
-        </div> -->
     </div>
-
-    <div fxlayout="row" fusePerfectScrollbar>
-        <!-- style="width: 100%;" -->
-        <div fxFlex.gt-sm="100%" fxFlex>
-            <!-- <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
-                <div class="spinner-border text-danger"></div>
-
-            </div> -->
-
-            <mat-card>
-            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow:auto;height: 330px !important;">
-                <ng-container matColumnDef="ConsumptionDate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ConsumptionDate}}
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="MaterialConsumptionId">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> MaterialConsumptionId </mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MaterialConsumptionId }}
-                    </mat-cell>
-                </ng-container>
-
-                <!-- <ng-container matColumnDef="FromStoreId">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> StoreId </mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.FromStoreId }}
-                    </mat-cell>
-                </ng-container> -->
-
-                <ng-container matColumnDef="StoreName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> StoreName </mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.StoreName}}
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="RegNo">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> RegNo </mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.RegNo}}
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="PatientName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> PatientName
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.PatientName}}
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="AddedBy">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> AddedBy </mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="Remark">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Remark </mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Remark}}
-                    </mat-cell>
-                </ng-container>
-
-
-                <ng-container matColumnDef="action" stickyEnd>
-                    <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;"> Select
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row" fxShow.gt-sm>
-                        <button mat-icon-button (click)="onEdit(row)">
-                            <mat-icon title="Edit Menu">launch</mat-icon>
-                        </button>
-                        <!-- <button mat-icon-button (click)="onDeactive(row.RegId)" color="warn"><mat-icon>delete_outline</mat-icon></button>       -->
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="noData">
-                    <mat-footer-cell *matFooterCellDef colspan="6">
-                        no data found...
-                    </mat-footer-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="loading">
-                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                    </mat-header-cell>
-                </ng-container>
-                
-                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                </mat-footer-row>
-                <mat-footer-row *matFooterRowDef="['noData']"
-                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-            </mat-table>
-            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
-        </mat-card>
-           
-        </div>
-    </div>
-
 </div>

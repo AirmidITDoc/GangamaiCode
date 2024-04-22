@@ -235,7 +235,7 @@ export class NewPrescriptionComponent implements OnInit {
 
   // onChangeItemList(ItemObj) {
 
-  //   debugger
+  //   // debugger
   //   if (ItemObj) {
   //     this._PrescriptionService.getItemlist(ItemObj.ItemName).subscribe((data: any) => {
   //          this.Itemlist = data;
@@ -247,7 +247,7 @@ export class NewPrescriptionComponent implements OnInit {
 
 
   getSearchItemList() {
-    debugger
+    // debugger
     var m_data = {
       "ItemName": `${this.ItemForm.get('ItemId').value}%`
       // "StoreId": this._loggedService.currentUserValue.user.storeId || 0
@@ -274,7 +274,7 @@ export class NewPrescriptionComponent implements OnInit {
 
 
   getSelectedObjItem(obj) {
-debugger
+// debugger
     if (this.dsPresList.data.length > 0) {
       this.dsPresList.data.forEach((element) => {
         if (obj.ItemID == element.ItemID) {
@@ -423,7 +423,7 @@ debugger
 
   WardId: any;
   getOptionTextWard(option) {
-    debugger
+    // debugger
     return option && option.RoomName ? option.RoomName : '';
   }
   getOptionTextStore(option) {
@@ -466,7 +466,7 @@ debugger
       this.addbutton.focus();
   }
   // public onEnteradd(event): void {
-  //   debugger
+  //   // debugger
   //   if (event.which === 13) {
   //     this.add = true;
   //     this.addbutton.focus();
@@ -523,12 +523,12 @@ debugger
       insertIP_Prescription['isClosed'] = false;
       insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
       insertIP_Prescription['storeId'] = this._loggedService.currentUserValue.user.storeId;
-      debugger
+      // debugger
       insertIP_Prescription['wardID'] = this.WardId// this.myForm.get('WardName').value.RoomId || 0;
       insertIP_Prescriptionarray.push(insertIP_Prescription);
     });
     submissionObj['insertIP_Prescription'] = insertIP_Prescriptionarray;
-    debugger
+    // debugger
     console.log(submissionObj);
 
     this._PrescriptionService.presciptionSave(submissionObj).subscribe(response => {

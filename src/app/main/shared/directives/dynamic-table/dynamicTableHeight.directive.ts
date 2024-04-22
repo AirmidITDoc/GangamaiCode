@@ -36,7 +36,7 @@ export class DyanmicTableHeightDirective implements OnInit, AfterViewInit, OnDes
 
             this.tableTopHeight = this.tableElements[0].getBoundingClientRect().top;
             this.paginatorElements = Array.from(this.rootElement.getElementsByTagName('mat-paginator')) as HTMLElement[];
-            this.totalPaginatorHeight = this.paginatorElements.reduce((acc, paginator) => acc + paginator.clientHeight, 0);
+            this.totalPaginatorHeight = this.paginatorElements.reduce((acc, paginator) => acc + paginator.getBoundingClientRect().height, 0);
             // if (this.paginatorElements && this.paginatorElements.length) {
             //     this.totalPaginatorHeight = this.paginatorElements[0].clientHeight * this.paginatorElements.length;
             // }

@@ -207,10 +207,8 @@ private _filterStore(value: any): string[] {
 NewMaterial() {
   const dialogRef = this._matDialog.open(NewPatientwiseMaterialconsumptionComponent,
     {
-     
-      maxWidth: "85vw", 
-          maxHeight: "600px !important ", width: '100%' 
-    
+        height: '70vh',
+        width: '70vw'
     });
   dialogRef.afterClosed().subscribe(result => {
     // console.log('The dialog was closed - Insert Action', result);
