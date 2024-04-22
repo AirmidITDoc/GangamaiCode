@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class ClinicalCareChartService {
 
   MyForm:FormGroup;
+  PainAssessForm:FormGroup;
 
   constructor(
     public _formbuilder:FormBuilder,
@@ -19,11 +20,8 @@ export class ClinicalCareChartService {
       return this._formbuilder.group({
         Floor:[''],
         Ward:[''],
-        PatientName:[''],
-        MRNo:[''],
-        DoctorName:[''],
-        Age:[''],
-        RegID:['']
+       // FromDate:[new Date()],
+       // ToDate:[new Date()],
       })
     }
 }

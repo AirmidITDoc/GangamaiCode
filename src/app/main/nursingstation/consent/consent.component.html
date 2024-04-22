@@ -24,15 +24,15 @@
 
                             <div fxLayout="row" fxLayoutGap="10px">
                                 <mat-form-field appearance="outline" fxFlex="50%">
-                                    <!-- <input type="text" name="RegID" formControlName="RegID"
+                                    <input type="text" name="RegID" formControlName="RegID"
                                         placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                                        [matAutocomplete]="auto1">
+                                        >
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="_ConsentService.myform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
                                             (click)="_ConsentService.myform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                    </span> -->
+                                    </span>
                                     <!-- <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextReg"
                                         (optionSelected)='getSelectedObjReg($event.option.value)'>
                                         <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
@@ -50,109 +50,65 @@
                                 </mat-radio-group>
                             </div>
 
-                            <div  fxLayout="row" style="background-color: white;padding-bottom:4px;">
-                                <fieldset class="fieldset-div" style="width: 100%;padding: 0px 5px 0px 5px;" fxFlex>
-                                    <legend>Patient Information</legend>
-                                
-                                    <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                
-                                                <div class="flex-item">
-                                                    <h3 class="labels-h3">Patient Name
-                                                        <span style="margin-left: 30px;">:</span>
-                                                    </h3>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <!-- <h6 class="labels-h6">{{PatientName}}</h6> -->
-                                                </div>
-                                
-                                                <div class="flex-item item-header" style="margin-left: 10px;">
-                                                    <h3 class="labels-h3">OPIPNo
-                                                        <span style="margin-left: 60px;">:</span>
-                                                    </h3>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <!-- <h6 class="labels-h6">{{vOPDNo}}</h6> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Gender
-                                                        <span style="margin-left: 45px;">:</span>
-                                                    </h3>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
-                                                </div>
-                                
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Age
-                                                        <span style="margin-left: 68px;">:</span>
-                                                    </h3>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <!-- <h6 class="labels-h6">{{Age}}</h6> -->
-                                                </div>
-                                
-                                            </div>
-                                        </div>
+                            <div fxLayout="column" style="padding: 4px 0px 4px 0px;background-color:whitesmoke;margin-bottom: 10px;">
+                                <div fxLayout="row">
+                                    <div class="flex-item">
+                                        <h3 class="labels-h3">Patient Name
+                                            <span style="margin-left:5px;">:</span>
+                                        </h3>
+                                    </div>
+                                    <div class="flex-item">
+                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
                                     </div>
                                 
-                                    <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                
-                                                <div class="flex-item">
-                                                    <h3 class="labels-h3">Patient source
-                                                        <span style="margin-left: 25px;">:</span>
-                                                    </h3>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <!-- <h6 class="labels-h6">{{patientsource}}</h6> -->
-                                                </div>
-                                
-                                                <div class="flex-item item-header" style="margin-left: 10px;">
-                                                    <h3 class="labels-h3">CompanyName
-                                                        <span style="margin-left: 15px;">:</span>
-                                                    </h3>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <!-- <h6 class="labels-h6">{{CompanyName}}</h6> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">TarrifName
-                                                        <span style="margin-left: 25px;">:</span>
-                                                    </h3>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <!-- <h6 class="labels-h6">{{TarrifName}}</h6> -->
-                                                </div>
-                                
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">DoctorName
-                                                        <span style="margin-left: 15px;">:</span>
-                                                    </h3>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <!-- <h6 class="labels-h6">{{DoctorName}}</h6> -->
-                                                </div>
-                                
-                                            </div>
-                                        </div>
+                                    <div class="flex-item" style="margin-left: 10px;">
+                                        <h3 class="labels-h3">OPIPNo
+                                            <span style="margin-left: 5px;">:</span>
+                                        </h3>
                                     </div>
-                                </fieldset>
-                            </div>
+                                    <div class="flex-item">
+                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                    </div>
+                                
+                                    <div class="flex-item" style="margin-left: 10px;">
+                                        <h3 class="labels-h3">Gender
+                                            <span style="margin-left: 5px;">:</span>
+                                        </h3>
+                                    </div>
+                                    <div class="flex-item">
+                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                    </div>
+                                
+                                    <div class="flex-item" style="margin-left: 5px;">
+                                        <h3 class="labels-h3">Age
+                                            <span style="margin-left: 5px;">:</span>
+                                        </h3>
+                                    </div>
+                                    <div class="flex-item">
+                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                    </div>
+                                
+                                    <div class="flex-item" style="margin-left: 5px;">
+                                        <h3 class="labels-h3">DoctorName
+                                            <span style="margin-left:5px;">:</span>
+                                        </h3>
+                                    </div>
+                                    <div class="flex-item">
+                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                    </div>
+                                
+                                    <div class="flex-item" style="margin-left: 10px;">
+                                        <h3 class="labels-h3">CompanyName
+                                            <span style="margin-left: 5px;">:</span>
+                                        </h3>
+                                    </div>
+                                    <div class="flex-item">
+                                        <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                    </div>
+
+                                </div> 
+                            
+                            </div> 
 
                             <div>
                                 <mat-table class="table2" matSort [dataSource]="dsConsentList"
@@ -266,7 +222,7 @@
                             </div>
 
                             <div>
-                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:40px;" [(ngModel)]="vTemplateDesc" required
+                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:20pxpx;" [(ngModel)]="vTemplateDesc" required
                                 formControlName="TemplateDesc"></angular-editor>   
                             </div>
                         </form>

@@ -232,7 +232,9 @@
                                                         <mat-icon *ngIf="contact.IsAccepted" matTooltip="Accepted"
                                                             class="pill green-600 s-16">circle</mat-icon>
                                                         <mat-icon *ngIf="!contact.IsAccepted" matTooltip="Pending"
-                                                            class="pill red-600 s-16">circle</mat-icon>
+                                                            class="pill red-600 s-16">circle</mat-icon>&nbsp;
+                                                            <mat-icon *ngIf="contact.IndentId>0" matTooltip="Against Ind"
+                                                            class="pill orange-600 s-16">circle</mat-icon>
                                                     </mat-cell>
                                                 </ng-container>
 
