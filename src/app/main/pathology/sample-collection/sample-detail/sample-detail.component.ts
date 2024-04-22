@@ -117,7 +117,7 @@ export class SampleDetailComponent implements OnInit {
   // this.datePipe.transform(row.DOA,'yyyy-MM-dd')
 
   getSampledetailList() {
-     debugger;
+    //  debugger;
     let OPIP
     if (this.advanceData.OP_IP_Type == "IP") {
       OPIP = 1;
