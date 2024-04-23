@@ -30,6 +30,11 @@
         <!-- CENTER -->
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <!-- CONTENT -->
+            <div *ngIf="isLoading123">
+                <div id="pause" class="d-flex align-items-center justify-content-center">
+                    <div id="spinner"></div>
+                </div>
+            </div>
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
                     <div fxFlex="80%" fxFlex.sm="70%" fxFlex.xs="100%" class="table-left">
