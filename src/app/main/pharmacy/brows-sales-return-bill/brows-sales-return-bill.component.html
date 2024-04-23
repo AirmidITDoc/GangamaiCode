@@ -280,7 +280,7 @@
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         <mat-icon matTooltip="Pending" *ngIf="contact.Status == 0"
                                       class="pill red-600 s-16">circle</mat-icon>
-                                        <mat-icon matTooltip="Accepted" *ngIf="contact.Status == 1"
+                                        <mat-icon matTooltip="Accepted" *ngIf="contact.Status == 'A' "
                                         class="pill green-600 s-16">circle</mat-icon>
                                         <mat-icon matTooltip="Rejected" *ngIf="contact.Status == 2"
                                         class="pill orange-600 s-16">circle</mat-icon>

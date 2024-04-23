@@ -433,7 +433,7 @@
                                                 <mat-label>PaidAmount </mat-label>
                                               
                                                 <input name="PaidAmount" formControlName="PaidAmount" matInput required
-                                                    [(ngModel)]="vnetPayAmt" #PaidAmount>
+                                                    [(ngModel)]="vnetPayAmt" #PaidAmount readonly>
                                                 <mat-error class="error"
                                                     *ngIf="_Paymentmodesevice.paymentform.get('PaidAmount').invalid && _Paymentmodesevice.paymentform.get('PaidAmount').touched">
                                                     PaidAmount is required
@@ -444,7 +444,7 @@
                                                 <mat-label>BalAmount </mat-label>
                                                
                                                 <input name="BalAmount" formControlName="BalAmount" matInput required
-                                                    [(ngModel)]="vbalanceAmt" #BalAmount>
+                                                    [(ngModel)]="vbalanceAmt" #BalAmount readonly>
                                                 <mat-error class="error"
                                                     *ngIf="_Paymentmodesevice.paymentform.get('BalAmount').invalid && _Paymentmodesevice.paymentform.get('BalAmount').touched">
                                                     BalAmount is required

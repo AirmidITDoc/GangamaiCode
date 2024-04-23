@@ -1,4 +1,4 @@
-<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar" >
     <mat-toolbar style="width: 100%;justify-content: space-between;height: 50px;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -12,7 +12,7 @@
             </span>
         </div>
     </mat-toolbar>
-    <div class="contact">
+    <div class="contact"  fusePerfectScrollbar>
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <form [formGroup]="_ClinicalcareService.MyForm">
             <div fxFlexFill fxLayout="column">
@@ -178,13 +178,13 @@
                         showFirstLastButtons>
                      </mat-paginator>
 
-                    </div>
+                    </div> 
 
-                    <div fxFlex.gt-sm="74%" fxFlex>
-                        <mat-tab-group>
-                            <mat-tab label="Pain Assessment">
-                                <div class="center p-12 pb-56" style="border-radius: 4px;">
-                                    <form [formGroup]="_ClinicalcareService.PainAssessForm">
+                    <div fxFlex.gt-sm="74%" fxFlex  >
+                        <mat-tab-group >
+                            <mat-tab label="Pain Assessment" >
+                                <div class="center p-12 pb-56" style="border-radius: 4px;overflow: auto;" >
+                                    <form [formGroup]="_ClinicalcareService.PainAssessForm" fusePerfectScrollbar>
                                         <div fxFlexFill fxLayout="column">
                                             <div fxFlex="row" >
                                                 <h4>Assessment List</h4>
@@ -262,7 +262,7 @@
                                             
                                             </div>
                                             <div fxFlex.gt-sm="60%">
-                                                <mat-card style="width: 100%;height: 300px;">
+                                                <mat-card style="width: 100%;height: 200px;">
                                                     
                                                 </mat-card>
 
@@ -272,13 +272,518 @@
                                 </div>
 
                             </mat-tab>
+
+                            <!-- //seconds tab -->
                             <mat-tab label="Vitals">
+                                <div class="center p-12 pb-56" style="border-radius: 4px;">
+                                    <form [formGroup]="_ClinicalcareService.VitalsForm" >
+                                        <div fxFlexFill fxLayout="column" fxLayoutGap="8px">
 
+                                            <div fxFlex.gt-sm="100%" fxFlex>
+                                                <mat-table class="table2" matSort [dataSource]="dsvitalsList" [@animateStagger]="{value:'50'}"
+                                                    style="overflow: auto;margin-bottom: 10px;">
+                                        
+                                                    <ng-container matColumnDef="date">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Date </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.PatientName}} </mat-cell>
+                                                    </ng-container>
+                                        
+                                                    <ng-container matColumnDef="time">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Time </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.PatientName}} </mat-cell>
+                                                    </ng-container>
+                                        
+                                                    <ng-container matColumnDef="Temperature">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Temperature </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.PatientName}} </mat-cell>
+                                                    </ng-container>
+                                        
+                                                    <ng-container matColumnDef="Pulse">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Pulse </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.PatientName}} </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="Respiration">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Respiration </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.Respiration}} </mat-cell>
+                                                    </ng-container>
+                                        
+                                                    <ng-container matColumnDef="BP">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            BP </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.PatientName}} </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="MewaScore">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            MewaScore </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.Respiration}} </mat-cell>
+                                                    </ng-container>
+                                        
+                                                    <ng-container matColumnDef="AVPU">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            AVPU </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.PatientName}} </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="TakenBy">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            TakenBy </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.Respiration}} </mat-cell>
+                                                    </ng-container>
+                                        
+                                                    <ng-container matColumnDef="CVP">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            cvp </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.PatientName}} </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="Action">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Action </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            {{element.Action}} </mat-cell>
+                                                    </ng-container>
+                                        
+                                                    <ng-container matColumnDef="loading">
+                                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                        </mat-header-cell>
+                                                    </ng-container>
+                                        
+                                                    <ng-container matColumnDef="noData">
+                                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                                            no data found...
+                                                        </mat-footer-cell>
+                                                    </ng-container>
+                                        
+                                                    <mat-header-row class="accent" *matHeaderRowDef="displayedVitals; sticky: true">
+                                                    </mat-header-row>
+                                                    <mat-row *matRowDef="let row; columns: displayedVitals;" class="element"
+                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                                        [ngClass]="{'hide':!(dsvitalsList!=null && dsvitalsList.data.length==0)}">
+                                                    </mat-footer-row>
+                                                </mat-table> 
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="4px">
+                                                <div fxLayout="row" fxLayoutGap="4px">
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="17%">
+                                                        <mat-label>Temperature</mat-label>
+                                                        <input matInput   name="Temperature" required formControlName="Temperature" type="text"
+                                                            OnlyNumber id="Temperature" autocomplete="off"  #Temperature>
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="17%">
+                                                        <mat-label>Pulse</mat-label>
+                                                        <input matInput  name="Pulse" required formControlName="Pulse" type="text"
+                                                            OnlyNumber id="Pulse" autocomplete="off"  #Pulse>
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="16%">
+                                                        <mat-label>Respiraiton</mat-label>
+                                                        <input matInput   name="Respiraiton" required formControlName="Respiraiton" type="text"
+                                                            OnlyNumber id="Respiraiton" autocomplete="off"  #Respiraiton>
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="16%">
+                                                        <mat-label>Blood Pressure</mat-label>
+                                                        <input matInput   name="BloodPressure" required formControlName="BloodPressure" type="text"
+                                                            OnlyNumber id="BloodPressure" autocomplete="off"  #BloodPressure>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="16%">
+                                                        <mat-label>CVP</mat-label>
+                                                        <input matInput   name="CVP" required formControlName="CVP" type="text"
+                                                            OnlyNumber id="CVP" autocomplete="off"  #CVP>
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="16%">
+                                                        <mat-label>Peep</mat-label>
+                                                        <input matInput   name="Peep" required formControlName="Peep" type="text"
+                                                            OnlyNumber id="Peep" autocomplete="off"  #Peep>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div fxLayout="row" fxLayoutGap="4px">
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="17%">
+                                                        <mat-label>ArterialBloodPressure</mat-label>
+                                                        <input matInput   name="ArterialBloodPressure" required formControlName="ArterialBloodPressure" type="text"
+                                                            OnlyNumber id="ArterialBloodPressure" autocomplete="off"  #ArterialBloodPressure>
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="17%">
+                                                        <mat-label>PA Pressure Reading</mat-label>
+                                                        <input matInput  name="PressureReading" required formControlName="PressureReading" type="text"
+                                                            OnlyNumber id="PressureReading" autocomplete="off"  #PressureReading>
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="16%">
+                                                        <mat-label>Brady</mat-label>
+                                                        <input matInput   name="Brady" required formControlName="Brady" type="text"
+                                                            OnlyNumber id="Brady" autocomplete="off"  #Brady>
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="16%">
+                                                        <mat-label>Apnea</mat-label>
+                                                        <input matInput   name="Apnea" required formControlName="Apnea" type="text"
+                                                            OnlyNumber id="Apnea" autocomplete="off"  #Apnea>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="16%">
+                                                        <mat-label>Abdominal Grith</mat-label>
+                                                        <input matInput   name="AbdominalGrith" required formControlName="AbdominalGrith" type="text"
+                                                            OnlyNumber id="AbdominalGrith" autocomplete="off"  #AbdominalGrith>
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="16%">
+                                                        <mat-label>Desaturation</mat-label>
+                                                        <input matInput   name="Desaturation" required formControlName="Desaturation" type="text"
+                                                            OnlyNumber id="Desaturation" autocomplete="off"  #Desaturation>
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div fxLayout="row" fxLayoutGap="4px">
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="17%">
+                                                        <mat-label>PO2</mat-label>
+                                                        <input matInput   name="PO2" required formControlName="PO2" type="text"
+                                                            OnlyNumber id="PO2" autocomplete="off"  #PO2>
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="16%">
+                                                        <mat-label>Fio2</mat-label>
+                                                        <input matInput  name="Fio2" required formControlName="Fio2" type="text"
+                                                            OnlyNumber id="Fio2" autocomplete="off"  #Fio2>
+                                                    </mat-form-field>
+
+                                                    <mat-radio-group name="TypeRadio" formControlName="TypeRadio"
+                                                     >
+                                                        <mat-radio-button value="0" class="p-12" style="margin-left: 60px;">Alter</mat-radio-button>
+                                                        <mat-radio-button value="1" class="p-12 ml-20" > Responsive to Voice</mat-radio-button>
+                                                        <mat-radio-button value="2" class="p-12 ml-20">Pain</mat-radio-button>
+                                                        <mat-radio-button value="3" class="p-12 ml-20"> UnResponsive</mat-radio-button>
+                                                    </mat-radio-group>
+                                                </div>
+
+                                                <div fxLayout="row" fxLayoutGap="4px">
+
+                                                    <mat-radio-group name="SuctionType" formControlName="SuctionType">
+                                                        <mat-label style="margin-right: 40px;">SuctionType :</mat-label>
+                                                        <mat-radio-button value="0" class="p-12">Oral</mat-radio-button>
+                                                        <mat-radio-button value="1" class="p-12"> ETT</mat-radio-button>
+                                                        <mat-radio-button value="2" class="p-12">Tracheostomy</mat-radio-button>
+                                                        <mat-radio-button value="3" class="p-12"> Nasal</mat-radio-button>
+                                                    </mat-radio-group> 
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="17%">
+                                                        <mat-label>Saturation With o2</mat-label>
+                                                        <input matInput   name="SaturationWitho2" required formControlName="SaturationWitho2" type="text"
+                                                            OnlyNumber id="SaturationWitho2" autocomplete="off"  #SaturationWitho2>
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field appearance="outline" fxFlex="17%">
+                                                        <mat-label>Saturation without o2</mat-label>
+                                                        <input matInput  name="SaturationWithOuto2" required formControlName="SaturationWithOuto2" type="text"
+                                                            OnlyNumber id="SaturationWithOuto2" autocomplete="off"  #SaturationWithOuto2>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" fxFlex="17%">
+                                                        <mat-label>P.F Ratio</mat-label>
+                                                        <input matInput  name="PFRation" required formControlName="PFRation" type="text"
+                                                            OnlyNumber id="PFRation" autocomplete="off"  #PFRation>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end center">
+                                            
+                                                    <button class="btn btn-primary-outline">Care And Position</button>
+                                                    <button class="btn btn-warning-outline">Print P.F Ration</button>
+                                                    <button class="btn btn-danger-outline">Reset</button>
+                                                    <button class="btn btn-primary">Save</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </mat-tab>
+
+                            <!-- Third Tab -->
                             <mat-tab label="Sugar Level">
+                                <div class="center p-12 pb-56" style="border-radius: 4px;">
+                                    <form [formGroup]="_ClinicalcareService.SugarForm">
+                                        <div fxFlexFill fxLayout="column" fxLayoutGap="5px">
+                                            <div fxLayout="row" fxLayoutGap="4px" >
+                                            
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>BSL</mat-label>
+                                                    <input matInput   name="BSL" required formControlName="BSL" type="text"
+                                                        OnlyNumber id="BSL" autocomplete="off"  #BSL>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Urine SUgar</mat-label>
+                                                    <input matInput  name="UnirSugar" required formControlName="UnirSugar" type="text"
+                                                        OnlyNumber id="UnirSugar" autocomplete="off"  #UnirSugar>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>ETT Pressure</mat-label>
+                                                    <input matInput   name="ETTPressure" required formControlName="ETTPressure" type="text"
+                                                        OnlyNumber id="ETTPressure" autocomplete="off"  #ETTPressure>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutGap="4px">
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Urine Ketone</mat-label>
+                                                    <input matInput   name="UrineKeotne" required formControlName="UrineKeotne" type="text"
+                                                        OnlyNumber id="UrineKeotne" autocomplete="off"  #UrineKeotne>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Bodies</mat-label>
+                                                    <input matInput  name="Bodies" required formControlName="Bodies" type="text"
+                                                        OnlyNumber id="Bodies" autocomplete="off"  #Bodies>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Intake Mode</mat-label>
+                                                    <mat-select formControlName="Intakemode" name="Intakemode"  >
+                                                        <mat-option></mat-option>
+                                                        <!-- <mat-option *ngFor="let m of IntakemodeList" [value]="m">
+                                                                            {{m.Intakemode}}
+                                                                        </mat-option> -->
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutGap="4px">
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Reported To RMO</mat-label>
+                                                    <input matInput   name="RepotetoRMO" required formControlName="RepotetoRMO" type="text"
+                                                        OnlyNumber id="RepotetoRMO" autocomplete="off"  #RepotetoRMO>
+                                                </mat-form-field> 
+
+                                                <app-common-date [screenFrom]="screenFromString" style="margin-left: 300px;"
+                                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>                            
+
+                                            </div>
+
+                                            <h3>To Be Filled By RMO :</h3>
+                                            <mat-divider></mat-divider>
+
+                                            <div fxLayout="row" fxLayoutGap="4px">
+
+                                                <h3 fxFlex="30%">Doctor/Consultant Info :</h3>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%" >
+                                                    <mat-label>InformedTo</mat-label>
+                                                    <input matInput   name="InformedTo" required formControlName="InformedTo" type="text"
+                                                        OnlyNumber id="InformedTo" autocomplete="off"  #InformedTo>
+                                                </mat-form-field> 
+
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>InformedBy</mat-label>
+                                                    <input matInput   name="InformedBy" required formControlName="InformedBy" type="text"
+                                                        OnlyNumber id="InformedBy" autocomplete="off"  #InformedBy>
+                                                </mat-form-field>                            
+
+                                            </div>
+                                            <mat-divider></mat-divider>
+
+                                            <div fxLayout="row" fxLayoutGap="4px">
+                                            
+                                                <div style="width: 30%;">
+                                                    <h3 style="margin-right: 100px;">Injection/Tablet :</h3>
+                                                </div>
+                                               
+                                            
+                                            
+                                                <div fxLayout="column" fxLayoutGap="6px" style="width: 60%;">
+                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                            
+                                                        <mat-form-field appearance="outline" fxFlex="100%">
+                                                            <mat-label>Injection</mat-label>
+                                                            <input matInput name="Injection" required formControlName="Injection" type="text" OnlyNumber
+                                                                id="Injection" autocomplete="off"  #Injection>
+                                                        </mat-form-field>
+                                            
+                                                        <mat-form-field appearance="outline" fxFlex="100%">
+                                                            <mat-label>InjectionDose</mat-label>
+                                                            <input matInput name="InjectionDose" required formControlName="InjectionDose" type="text" OnlyNumber
+                                                                id="InjectionDose" autocomplete="off"  #InjectionDose>
+                                                        </mat-form-field>
+                                            
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                            
+                                                        <mat-form-field appearance="outline" fxFlex="100%">
+                                                            <mat-label>Tablet</mat-label>
+                                                            <input matInput name="Tablet" required formControlName="Tablet" type="text" OnlyNumber id="Tablet"
+                                                                autocomplete="off"  #Tablet>
+                                                        </mat-form-field>
+                                            
+                                                        <mat-form-field appearance="outline" fxFlex="100%">
+                                                            <mat-label>TabletDose</mat-label>
+                                                            <input matInput name="TabletDose" required formControlName="TabletDose" type="text" OnlyNumber
+                                                                id="TabletDose" autocomplete="off"  #TabletDose>
+                                                        </mat-form-field>
+                                            
+                                                    </div>
+                                                </div>
+                                            
+                                            </div>
+                                            <mat-divider></mat-divider>
+
+                                            <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end center"> 
+                                                <button class="btn btn-danger-outline">Reset</button>
+                                                <button class="btn btn-primary">Save</button>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
 
                             </mat-tab>
-                            <mat-tab label="Qxygen/ventilation">
+                            <mat-tab label="Oxygen/ventilation">
+                                <div class="center p-12 pb-56" style="border-radius: 4px;">
+                                    <form [formGroup]="_ClinicalcareService.OxygenForm">
+                                        <div fxFlexFill fxLayout="column" fxLayoutGap="5px">
+                                            <div fxLayout="row">
+                                            <mat-form-field appearance="outline" fxFlex="60%">
+                                                <mat-label>Mode</mat-label>
+                                                <mat-select formControlName="Mode" name="Mode" Placeholder="select Mode">
+                                                    <mat-option></mat-option>
+                                                    <!-- <mat-option *ngFor="let m of FloorList" [value]="m">
+                                                                        {{m.Mode}}
+                                                                    </mat-option> -->
+                                                </mat-select>
+                                            </mat-form-field>
+                                         </div>
+                                            <div fxLayout="row" fxLayoutGap="4px" >
+                                            
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Tidol V (ml)</mat-label>
+                                                    <input matInput   name="Tidol" required formControlName="Tidol" type="text"
+                                                        OnlyNumber id="Tidol" autocomplete="off"  #Tidol>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>SetRange(Per Min)</mat-label>
+                                                    <input matInput  name="SetRange" required formControlName="SetRange" type="text"
+                                                        OnlyNumber id="SetRange" autocomplete="off"  #SetRange>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>IPAP</mat-label>
+                                                    <input matInput   name="IPAP" required formControlName="IPAP" type="text"
+                                                        OnlyNumber id="IPAP" autocomplete="off"  #IPAP>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutGap="4px" >
+                                            
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Minute V (lit./min)</mat-label>
+                                                    <input matInput   name="minuteV" required formControlName="minuteV" type="text"
+                                                        OnlyNumber id="minuteV" autocomplete="off"  #minuteV>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Rate Total</mat-label>
+                                                    <input matInput  name="RateTotal" required formControlName="RateTotal" type="text"
+                                                        OnlyNumber id="RateTotal" autocomplete="off"  #RateTotal>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>EPAP</mat-label>
+                                                    <input matInput   name="EPAP" required formControlName="EPAP" type="text"
+                                                        OnlyNumber id="EPAP" autocomplete="off"  #EPAP>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutGap="4px" >
+                                            
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Peep(cm)</mat-label>
+                                                    <input matInput   name="Peep" required formControlName="Peep" type="text"
+                                                        OnlyNumber id="Peep" autocomplete="off"   #Peep>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>PC</mat-label>
+                                                    <input matInput  name="PC" required formControlName="PC" type="text"
+                                                        OnlyNumber id="PC" autocomplete="off"  #PC>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>% MV</mat-label>
+                                                    <input matInput   name="MV" required formControlName="MV" type="text"
+                                                        OnlyNumber id="MV" autocomplete="off"   #MV>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutGap="4px" >
+                                            
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Pr.Sup (cm)</mat-label>
+                                                    <input matInput   name="Sup" required formControlName="Sup" type="text"
+                                                        OnlyNumber id="Sup" autocomplete="off"   #Sup>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>FiO2</mat-label>
+                                                    <input matInput  name="FiO2" required formControlName="FiO2" type="text"
+                                                        OnlyNumber id="FiO2" autocomplete="off"   #FiO2>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>I:E</mat-label>
+                                                    <input matInput   name="IE" required formControlName="IE" type="text"
+                                                        OnlyNumber id="IE" autocomplete="off"   #IE>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutGap="4px" >
+                                            
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Oxygen Rate Per Min</mat-label>
+                                                    <input matInput   name="OxygenRate" required formControlName="OxygenRate" type="text"
+                                                        OnlyNumber id="OxygenRate" autocomplete="off"   #OxygenRate>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>Saturation With o2</mat-label>
+                                                    <input matInput  name="SaturationWitho2" required formControlName="SaturationWitho2" type="text"
+                                                        OnlyNumber id="SaturationWitho2" autocomplete="off"   #SaturationWitho2>
+                                                </mat-form-field>
+                                        
+                                                <mat-form-field appearance="outline" fxFlex="30%">
+                                                    <mat-label>FLow Trigger</mat-label>
+                                                    <input matInput   name="FlowTrigger" required formControlName="FlowTrigger" type="text"
+                                                        OnlyNumber id="FlowTrigger" autocomplete="off"   #FlowTrigger>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end center"> 
+                                                <button class="btn btn-danger-outline">Reset</button>
+                                                <button class="btn btn-primary">Save</button>
+                                            </div>
+
+                                            
+                                        </div>
+                                    </form>
+                                </div>
 
                             </mat-tab>
                             <mat-tab label="Suction/Saturation">
@@ -298,7 +803,7 @@
                             </mat-tab>
                         </mat-tab-group>
 
-                    </div>
+                    </div> 
 
                 </div>
             </div>

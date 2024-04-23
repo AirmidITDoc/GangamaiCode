@@ -28,17 +28,31 @@ export class ClinicalCareChartComponent implements OnInit {
     'Employeename',
     'Action'
   ]
+  displayedVitals: string[] = [
+    'date',
+    'time',
+    'Temperature',
+    'Pulse',
+    'Respiration',
+    'BP',
+    'MewaScore',
+    'AVPU',
+    'TakenBy',
+    'CVP',
+    'Action'
+  ]
 
   FloorList:any=[];
   WardList:any=[];
   isRegIdSelected:boolean=false;
   //screenFromString:'fromdate-form';
-  screenFromString1:'todate-form';
-  screenFromString = 'fromdate-form';
+  screenFromString1 = 'admission-form';
+  screenFromString = 'admission-form';
   dateTimeObj:any;
 
   dsClinicalcarePatient = new MatTableDataSource<PatientList>();
-  dsPainsAssessment =new MatTableDataSource;
+  dsPainsAssessment =new MatTableDataSource<PainAssesList>();
+  dsvitalsList =new MatTableDataSource<VitalsList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -59,6 +73,9 @@ export class ClinicalCareChartComponent implements OnInit {
   getSelectedObjReg(){
     
   }
+  public setFocus(nextElementId): void {
+    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+  }
 }
 export class PatientList {
   patientId: any;
@@ -72,3 +89,49 @@ export class PatientList {
     }
   }
 }
+export class PainAssesList {
+  givendate: any;
+  giventime: any;
+  PainAssess: any;
+  Employeename: string; 
+
+  constructor(PainAssesList) {
+    {
+
+      this.givendate = PainAssesList.givendate || 0;
+      this.giventime = PainAssesList.giventime || 0;
+      this.PainAssess = PainAssesList.PainAssess || 0;
+      this.Employeename = PainAssesList.Employeename || ""; 
+    }
+  }
+}
+export class VitalsList {
+  date: any;
+  time: any;
+  Temperature: any;
+  Pulse: any;
+  Respiration: any;
+  PainAssess: any;
+  BP: any;
+  MewaScore: any;
+  AVPU: any;
+  TakenBy: any; 
+  CVP:any;
+  constructor(VitalsList) {
+    {
+
+      this.date = VitalsList.date || 0;
+      this.time = VitalsList.time || 0;
+      this.Temperature = VitalsList.Temperature || 0;
+      this.Pulse = VitalsList.Pulse || 0;
+      this.Respiration = VitalsList.Respiration || 0;
+      this.Temperature = VitalsList.Temperature || 0;
+      this.BP = VitalsList.BP || 0;
+      this.MewaScore = VitalsList.MewaScore || 0;
+      this.AVPU = VitalsList.AVPU || 0;
+      this.TakenBy = VitalsList.TakenBy || 0;  
+      this.CVP = VitalsList.CVP || 0; 
+    }
+  }
+}
+
