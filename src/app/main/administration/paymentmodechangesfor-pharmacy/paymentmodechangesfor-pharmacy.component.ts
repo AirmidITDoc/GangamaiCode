@@ -31,7 +31,6 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
     'CardAmt',
     'NeftPay',
      'PayAtm'
-    
   ];
 
   sIsLoading: string = '';
@@ -77,6 +76,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       this.dsPaymentPharmacyList.data= data as PaymentPharmayList [];
       this.dsPaymentPharmacyList.sort = this.sort;
       this.dsPaymentPharmacyList.paginator = this.paginator;
+     
       this.sIsLoading = '';
     } ,
     error => {
@@ -98,6 +98,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       this.dsPaymentPharmacyList.data= data as PaymentPharmayList [];
       this.dsPaymentPharmacyList.sort = this.sort;
       this.dsPaymentPharmacyList.paginator = this.paginator;
+      //console.log(this.dsPaymentPharmacyList.data)
       this.sIsLoading = '';
     } ,
     error => {

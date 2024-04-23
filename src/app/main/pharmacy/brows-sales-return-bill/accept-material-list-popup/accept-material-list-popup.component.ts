@@ -34,6 +34,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
   ];
 
   sIsLoading: string = '';
+  registerObj:any;
   dsItemList = new MatTableDataSource<ItemList>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -50,7 +51,9 @@ export class AcceptMaterialListPopupComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.data.Obj.IssueId);
     if (this.data) {
-      this.getItemList(this.data.Obj.IssueId);
+      this.registerObj =this.data.Obj
+      console.log(this.registerObj)
+      this.getItemList(this.registerObj.IssueId);
     }
    
   }
@@ -88,7 +91,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
   // }
 
   SelectedRowData:any=[];
-  Acceptedchk:any;
+  Acceptedchk:any; 
   tableElementChecked(event ,contact){
     if(contact.selected){
       this.tempItemlist.push(contact);
@@ -110,13 +113,13 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     }
    
     let materialAcceptIssueHeader = {};
-    materialAcceptIssueHeader['issueId'] = this.data.Obj.IssueId;
+    materialAcceptIssueHeader['issueId'] = parseInt(this.registerObj.IssueId);
     materialAcceptIssueHeader['acceptedBy'] =this._loggedService.currentUserValue.user.id;
     materialAcceptIssueHeader['IsAccepted'] = this.Acceptedchk;
 
     
     let materialAcceptIssueDetails = [];
-    this.tempItemlist.forEach((element) => {
+    this.tempItemlist.forEach((element) => { 
       let materialAcceptIssueDetailsObj = {};
       materialAcceptIssueDetailsObj['issueId'] = element.IssueId;
       materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId;
@@ -128,20 +131,21 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       }
 
       debugger
-      materialAcceptIssueDetailsObj['Status'] = selectedchk.toString();
+      materialAcceptIssueDetailsObj['Status'] = selectedchk;
       materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
     });
 
     let materialAcceptStockUpdate = {};
-    materialAcceptStockUpdate['issueId'] = this.data.Obj.IssueId;
+    materialAcceptStockUpdate['issueId'] = parseInt(this.registerObj.IssueId); 
 
     let submitData = {
       "materialAcceptIssueHeader": materialAcceptIssueHeader,
       "materialAcceptIssueDetails": materialAcceptIssueDetails,
-      "materialAcceptStockUpdate":materialAcceptStockUpdate,
+      "materialAcceptStockUpdate":materialAcceptStockUpdate 
     };
     console.log(submitData);
     this._SalesReturn.AcceptmaterialSave(submitData).subscribe(response => {
+      console.log(response)
       if (response) {
         this.toastr.success('Record Accept material Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
