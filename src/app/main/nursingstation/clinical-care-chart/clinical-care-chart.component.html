@@ -15,63 +15,94 @@
     <div class="contact">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <form [formGroup]="_ClinicalcareService.MyForm">
-            <div fxFlexFill fxLayout="column" fxLayout="row" >
+            <div fxFlexFill fxLayout="column">
 
-                <div fxLayout="row" fxLayoutGap="4px">
-                    <mat-form-field appearance="outline" fxFlex="25%">
+                <div fxLayout="row" fxLayoutGap="4px"> 
+                    <div fxFlex.gt-sm="24%" fxFlex>
+                    <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Floor</mat-label>
                         <mat-select formControlName="Floor" name="Floor" Placeholder="select Floor">
                             <mat-option></mat-option>
                             <!-- <mat-option *ngFor="let m of FloorList" [value]="m">
-                                {{m.Floor}}
-                            </mat-option> -->
+                                                {{m.Floor}}
+                                            </mat-option> -->
                         </mat-select>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" fxFlex="25%">
+                    </mat-form-field>&nbsp;
+                
+                    <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Ward</mat-label>
                         <mat-select formControlName="Ward" name="Ward" Placeholder="select Ward">
                             <mat-option></mat-option>
                             <!-- <mat-option *ngFor="let m of WardList" [value]="m">
-                                {{m.Ward}}
-                            </mat-option> -->
+                                                {{m.Ward}}
+                                            </mat-option> -->
                         </mat-select>
                     </mat-form-field>
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>PatientName</mat-label>
-                        <input matInput  name="PatientName" formControlName="PatientName"
-                            id="PatientName" #PatientName  >
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" fxFlex="6%">
-                        <mat-label>MRNo</mat-label>
-                        <input matInput  name="MRNo" formControlName="MRNo"
-                            id="MRNo" #MRNo readonly  >
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>DoctorName</mat-label>
-                        <input matInput name="DoctorName" formControlName="DoctorName"
-                            id="DoctorName" #DoctorName readonly  >
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" fxFlex="6%">
-                        <mat-label>Age</mat-label>
-                        <input matInput name="Age" formControlName="Age" id="Age" #Age readonly  >
-                    </mat-form-field>
+                 </div>&nbsp;
+                
+                    <div fxFlex="row" fxFlex.gt-sm="76%" fxFlex style="height: 55px;background-color:whitesmoke;
+                    border-radius: 10px;padding:10px 0px 0px 10px">
+                    
+                        <div fxFlex="row">
+                            <div>
+                                <h3 class="labels-h4">PatientName
+                                    <span style="margin-left:5px;margin-right: 5px;">:</span>
+                                </h3>
+                            </div>
+                            <div style="width: 150px;">
+                                <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                            </div>
+                    
+                        </div>
+                    
+                        <div fxFlex="row">
+                            <div style="margin-left: 5px;">
+                                <h3 class="labels-h4">DoctorName
+                                    <span style="margin-left:5px;">:</span>
+                                </h3>
+                            </div>
+                            <div style="width: 150px;">
+                                <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                            </div>
+                    
+                        </div>
+                        <div fxFlex="row">
+                            <div style="margin-left: 10px;">
+                                <h3 class="labels-h4">Deppatment
+                                    <span style="margin-left: 5px;">:</span>
+                                </h3>
+                            </div>
+                            <div style="width: 150px;">
+                                <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                            </div>
+                    
+                        </div>
+                        <div fxFlex="row">
+                    
+                            <div style="margin-left: 5px;">
+                                <h3 class="labels-h4">Age
+                                    <span style="margin-left: 5px;">:</span>
+                                </h3>
+                            </div>
+                            <div style="width: 100px;">
+                                <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                            </div>
+                        </div> 
+                    </div>
+                
                 </div>
+
                 <div fxLayout="row" fxLayoutGap="4px">
-                    <mat-form-field appearance="outline" fxFlex="50%">
-                        <!-- <input type="text" name="RegID" formControlName="RegID"
+                    <mat-form-field appearance="outline" fxFlex="24%">
+                        <input type="text" name="RegID" formControlName="RegID"
                             placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                            [matAutocomplete]="auto1">
+                            >
                         <span matSuffix style="display: flex;">
                             <mat-icon class="mat-icon-close"
                                 (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
                             <mat-icon class="mat-icon-close"
                                 (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                        </span> -->
+                        </span>
                         <!-- <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextReg"
                             (optionSelected)='getSelectedObjReg($event.option.value)'>
                             <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
@@ -80,16 +111,195 @@
                                 {{option.MobileNo}}
                             </mat-option>
                         </mat-autocomplete> -->
+                    </mat-form-field>&nbsp;
+
+                    <!-- <mat-form-field appearance="outline" fxFlex="10%">
+                        <mat-label>From Date</mat-label>
+                        <input name="FromDate" matInput [matDatepicker]="picker" formControlName="FromDate"
+                             #FromDate>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
 
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>PaymentDueDate</mat-label>
-                        <input name="PaymentDate" matInput [matDatepicker]="picker10"
-                            (keydown)="onEnterPaymentDueDate($event)" formControlName="PaymentDate"
-                            [(ngModel)]="registerObj.PaymentDate" #paymentdate>
-                        <mat-datepicker-toggle matSuffix [for]="picker10"></mat-datepicker-toggle>
-                        <mat-datepicker #picker10></mat-datepicker>
-                    </mat-form-field> -->
+                    <mat-form-field appearance="outline" fxFlex="10%">
+                        <mat-label>To Date</mat-label>
+                        <input name="ToDate" matInput [matDatepicker]="picker1" formControlName="ToDate"
+                             #TODate>
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field> --> 
+
+                    <app-common-date [screenFrom]="screenFromString" style="margin-left: 300px;"
+                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+
+                    <app-common-date [screenFrom]="screenFromString1"
+                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                </div>
+
+                <div fxLayout="row" fxLayoutGap="8px">
+                    <div fxFlex.gt-sm="24%" fxFlex>
+                      <mat-table class="table2" matSort [dataSource]="dsClinicalcarePatient"
+                        [@animateStagger]="{value:'50'}" style="overflow: auto;height:450px;">
+
+                        <ng-container matColumnDef="patientId">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                patientId </mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                {{element.patientId}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="PatientName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                PatientName </mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                {{element.PatientName}} </mat-cell>
+                        </ng-container> 
+
+                        <ng-container matColumnDef="loading">
+                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                            </mat-header-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                no data found...
+                            </mat-footer-cell>
+                        </ng-container>
+
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{'hide':!(dsClinicalcarePatient!=null && dsClinicalcarePatient.data.length==0)}">
+                        </mat-footer-row>
+                      </mat-table>
+                      <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                        showFirstLastButtons>
+                     </mat-paginator>
+
+                    </div>
+
+                    <div fxFlex.gt-sm="74%" fxFlex>
+                        <mat-tab-group>
+                            <mat-tab label="Pain Assessment">
+                                <div class="center p-12 pb-56" style="border-radius: 4px;">
+                                    <form [formGroup]="_ClinicalcareService.PainAssessForm">
+                                        <div fxFlexFill fxLayout="column">
+                                            <div fxFlex="row" >
+                                                <h4>Assessment List</h4>
+                                                <mat-form-field appearance="outline" fxFlex="13%" style="margin-left: 700px;">
+                                                    <mat-label>Daily Weight</mat-label>
+                                                    <input matInput placeholder="Weight in KG" name="Mobile"  
+                                                        formControlName="DailyWeight">
+                                                </mat-form-field> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <button class="btn btn-primary">Save</button>
+                                            </div>
+
+                                            <div fxLayout="row" fxLayoutGap="8px">
+                                                <div fxFlex.gt-sm="60%" fxFlex>
+                                                    <mat-table class="table2" matSort [dataSource]="dsPainsAssessment" [@animateStagger]="{value:'50'}"
+                                                        style="overflow: auto;height:100px;margin-bottom: 10px;">
+                                            
+                                                        <ng-container matColumnDef="givendate">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                Given Date </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.PatientName}} </mat-cell>
+                                                        </ng-container>
+                                            
+                                                        <ng-container matColumnDef="giventime">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                Given TIme </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.PatientName}} </mat-cell>
+                                                        </ng-container>
+                                            
+                                                        <ng-container matColumnDef="PainAssess">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                Pain Assessment </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.PatientName}} </mat-cell>
+                                                        </ng-container>
+                                            
+                                                        <ng-container matColumnDef="Employeename">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                Employee name </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.PatientName}} </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="Action">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                Action </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.Action}} </mat-cell>
+                                                        </ng-container>
+                                            
+                                                        <ng-container matColumnDef="loading">
+                                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                            </mat-header-cell>
+                                                        </ng-container>
+                                            
+                                                        <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                no data found...
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+                                            
+                                                        <mat-header-row class="accent" *matHeaderRowDef="displayedPainAsse; sticky: true">
+                                                        </mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                                            [ngClass]="{'hide':!(dsPainsAssessment!=null && dsPainsAssessment.data.length==0)}">
+                                                        </mat-footer-row>
+                                                    </mat-table> 
+                                            
+                                                </div>
+                                                <div fxFlex.gt-sm="40%" fxFlex>
+                                            
+                                                </div>
+                                            
+                                            </div>
+                                            <div fxFlex.gt-sm="60%">
+                                                <mat-card style="width: 100%;height: 300px;">
+                                                    
+                                                </mat-card>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </mat-tab>
+                            <mat-tab label="Vitals">
+
+                            </mat-tab>
+                            <mat-tab label="Sugar Level">
+
+                            </mat-tab>
+                            <mat-tab label="Qxygen/ventilation">
+
+                            </mat-tab>
+                            <mat-tab label="Suction/Saturation">
+
+                            </mat-tab>
+                            <mat-tab label="Input/Output">
+
+                            </mat-tab>
+                            <mat-tab label="Human Body">
+
+                            </mat-tab>
+                            <mat-tab label="Nursing Note">
+
+                            </mat-tab>
+                            <mat-tab label="Charges">
+
+                            </mat-tab>
+                        </mat-tab-group>
+
+                    </div>
+
                 </div>
             </div>
           </form>

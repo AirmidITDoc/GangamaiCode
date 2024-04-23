@@ -152,6 +152,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
 
     public ToStoreFilterCtrl: FormControl = new FormControl();
     public filteredToStore: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -230,6 +231,7 @@ export class IssueToDepartmentComponent implements OnInit {
             this.dsIssueToDep.sort = this.sort;
             this.dsIssueToDep.paginator = this.paginator;
             this.sIsLoading = '';
+            console.log(this.dsIssueToDep.data)
         },
             error => {
                 this.sIsLoading = '';
@@ -338,7 +340,10 @@ export class IssueToDepartmentComponent implements OnInit {
         }
 
     }
+    Indbalqty:any;
     getCellCalculation(contact,Qty){
+
+    /// this.Indbalqty = parseInt(contact.TotalIndQty) - parseInt(contact.Qty);
 
         if(contact.Qty > contact.BalanceQty){
             this.toastr.warning('Issue Qty cannot be greater than BalanceQty.', 'Warning !', {
@@ -655,13 +660,13 @@ export class IssueToDepartmentComponent implements OnInit {
     Indentid:any;
     indentdetid:any;
     IsClosed:any;
-    TotalIndQty:any;
+    IndQty:any;
     AddIndentItem(contact) {
         console.log(contact)
         this.Indentid=contact.IndentId;
         this.indentdetid = contact.IndentDetailsId;
         this.IsClosed = contact.IsClosed; 
-        this.TotalIndQty = contact.TotalIndQty;
+        this.IndQty = contact.Qty;
         let DuplicateItem=0;
         
         if (this.dsNewIssueList3.data.length > 0) {
@@ -811,7 +816,8 @@ export class IssueToDepartmentComponent implements OnInit {
                     IndentId : this.Indentid,
                     IndentDetailsId :  this.indentdetid,
                     IsClosed :this.IsClosed,
-                    TotalIndQty :this.TotalIndQty
+                    IndQty :this.IndQty
+                    
                 });
             console.log(this.chargeslist);
             this.dsNewIssueList3.data = this.chargeslist
@@ -1033,8 +1039,9 @@ export class IssueToDepartmentComponent implements OnInit {
 
         let updateIndentStatusIndentDetails = [];
         this.dsNewIssueList3.data.forEach(element => {
-            let balQty = (parseFloat(element.TotalIndQty) - parseFloat(element.Qty))
-            if(this.dsNewIssueList1.data.length == 0){
+            debugger
+            let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
+            if(balQty == 0){
                 this.Isclosedchk = false;
             }else{
                 this.Isclosedchk = true;
@@ -1086,6 +1093,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.BarcodetempDatasource = [];
         this.chargeslist.data = [];
         this.dsTempItemNameList.data = [];
+        this._IssueToDep.IssueFinalForm.reset();
     }
 
     @ViewChild('itemid') itemid: ElementRef;
@@ -1299,6 +1307,7 @@ export class IssueToDepartmentComponent implements OnInit {
     }
     vIndDetId:any;
     OnIndent() {
+        this.OnReset();
         const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
             {
                 maxWidth: "100%",
@@ -1381,7 +1390,7 @@ export class NewIssueList3 {
     PurTotAmt: any;
     IndentId:any;
     IndentDetailsId:any;
-    TotalIndQty:any;
+    IndQty:any;
     IsClosed:any;
     constructor(NewIssueList3) {
         this.ItemId = NewIssueList3.ItemId || 0;

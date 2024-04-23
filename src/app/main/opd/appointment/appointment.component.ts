@@ -205,13 +205,19 @@ export class AppointmentComponent implements OnInit {
   optionsArea: any[] = [];
   optionsMstatus: any[] = [];
   optionsReligion: any[] = [];
+  optionsPatientType: any[] = [];
+  optionsTariff: any[] = [];
 
 
   filteredOptionsDoctor: Observable<string[]>;
   filteredOptionsReligion: Observable<string[]>;
   filteredOptionsMstatus: Observable<string[]>;
+  filteredOptionsPatientType: Observable<string[]>;
+  filteredOptionsTarrif: Observable<string[]>;
   isDoctorSelected: boolean = false;
   isCompanySelected: boolean = false;
+  ispatienttypeSelected: boolean = false;
+  isTariffIdSelected: boolean = false;
   filteredOptionsCompany: Observable<string[]>;
   filteredOptionsSubCompany: Observable<string[]>;
   filteredOptionsArea: Observable<string[]>;
@@ -219,6 +225,7 @@ export class AppointmentComponent implements OnInit {
   isAreaSelected: boolean = false;
   isMstatusSelected: boolean = false;
   isreligionSelected: boolean = false;
+
   CompanyId: any = 0;
   VisitId: any;
   FimeName: any;
@@ -550,6 +557,14 @@ export class AppointmentComponent implements OnInit {
     return option && option.PrefixName ? option.PrefixName : '';
   }
 
+  getOptionTextpatienttype(option) {
+    return option && option.PatientType ? option.PatientType : '';
+  }
+
+  getOptionTextTariff(option) {
+    return option && option.TariffName ? option.TariffName : '';
+  }
+
 
   getOptionTextDep(option) {
 
@@ -650,6 +665,23 @@ export class AppointmentComponent implements OnInit {
 
   }
 
+  private _filterPatientType(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
+
+      return this.optionsPatientType.filter(option => option.PatientType.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  private _filterTariff(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();
+
+      return this.optionsTariff.filter(option => option.TariffName.toLowerCase().includes(filterValue));
+    }
+
+  }
   private _filterArea(value: any): string[] {
     if (value) {
       const filterValue = value && value.AreaName ? value.AreaName.toLowerCase() : value.toLowerCase();
@@ -859,12 +891,25 @@ export class AppointmentComponent implements OnInit {
     });
   }
 
+  // getPatientTypeList() {
+  //   this._opappointmentService.getPatientTypeCombo().subscribe(data => {
+  //     this.PatientTypeList = data;
+  //     this.VisitFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
+  //   })
+  // }
+
   getPatientTypeList() {
     this._opappointmentService.getPatientTypeCombo().subscribe(data => {
       this.PatientTypeList = data;
-      this.VisitFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
-    })
+      this.optionsPatientType = this.PatientTypeList.slice();
+      this.filteredOptionsPatientType = this.VisitFormGroup.get('PatientTypeID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterPatientType(value) : this.PatientTypeList.slice()),
+      );
+
+    });
   }
+
 
   onChangePatient(value) {
 
@@ -941,14 +986,25 @@ export class AppointmentComponent implements OnInit {
     this._opappointmentService.getClassMasterCombo().subscribe(data => { this.ClassList = data; })
   }
 
+  // getTariffList() {
+  //   this._opappointmentService.getTariffCombo().subscribe(data => {
+  //     this.TariffList = data;
+  //     this.VisitFormGroup.get('TariffId').setValue(this.TariffList[0]);
+  //   })
+  // }
+
+
   getTariffList() {
     this._opappointmentService.getTariffCombo().subscribe(data => {
       this.TariffList = data;
-      this.VisitFormGroup.get('TariffId').setValue(this.TariffList[0]);
-    })
+      this.optionsTariff = this.TariffList.slice();
+      this.filteredOptionsTarrif = this.VisitFormGroup.get('TariffId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterTariff(value) : this.TariffList.slice()),
+      );
+
+    });
   }
-
-
 
   getAreaList() {
     this._opappointmentService.getAreaCombo().subscribe(data => {
@@ -2582,8 +2638,9 @@ export class AppointmentComponent implements OnInit {
   @ViewChild('religion') religion: ElementRef;
   @ViewChild('city') city: ElementRef;
   @ViewChild('hname') hname: MatSelect;
-  @ViewChild('ptype') ptype: MatSelect;
-  @ViewChild('tariff') tariff: MatSelect;
+
+  @ViewChild('ptype') ptype: ElementRef;
+  @ViewChild('tariff') tariff: ElementRef;
   @ViewChild('dept') dept: ElementRef;
   @ViewChild('deptdoc') deptdoc: ElementRef;
   @ViewChild('refdoc') refdoc: ElementRef;
@@ -2638,7 +2695,7 @@ export class AppointmentComponent implements OnInit {
   public onEnterreligion(event): void {
     if (event.which === 13) {
 
-      if (this.ptype) this.ptype.focus();
+      this.ptype.nativeElement.focus();
     }
   }
   public onEnterbday(event): void {
@@ -2712,7 +2769,7 @@ export class AppointmentComponent implements OnInit {
 
   public onEnterhname(event): void {
     if (event.which === 13) {
-      if (this.ptype) this.ptype.focus();
+      // if (this.ptype) this.ptype.focus();
 
     }
   }
@@ -2720,7 +2777,7 @@ export class AppointmentComponent implements OnInit {
 
   public onEnterptype(event): void {
     if (event.which === 13) {
-      if (this.tariff) this.tariff.focus();
+     this.tariff.nativeElement.focus()
 
     }
   }
@@ -2759,24 +2816,24 @@ export class AppointmentComponent implements OnInit {
 
 
 
-  getVistDetailsList() {
-    ;
-    this.sIsLoading = 'loading';
-    var D_data = {
+  // getVistDetailsList() {
+  //   ;
+  //   this.sIsLoading = 'loading';
+  //   var D_data = {
 
-      "VisitId": 159641// this.selectedAdvanceObj.VisitId,
-    }
+  //     "VisitId": 159641// this.selectedAdvanceObj.VisitId,
+  //   }
 
-    this.sIsLoading = 'loading-data';
-    this._opappointmentService.getVisitedList(D_data).subscribe(Visit => {
-      this.dataSource1.data = Visit as CasepaperVisitDetails[];
+  //   this.sIsLoading = 'loading-data';
+  //   this._opappointmentService.getVisitedList(D_data).subscribe(Visit => {
+  //     this.dataSource1.data = Visit as CasepaperVisitDetails[];
 
-      this.sIsLoading = '';
+  //     this.sIsLoading = '';
 
 
-    })
+  //   })
 
-  }
+  // }
   departmentId: any;
   DosctorId: any;
   getVisitRecord(row) {

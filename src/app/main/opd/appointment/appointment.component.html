@@ -1016,7 +1016,7 @@
                                             </div> -->
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <mat-form-field appearance="outline">
+                                                <!-- <mat-form-field appearance="outline">
                                                     <mat-label>Patient Type</mat-label>
                                                     <mat-select formControlName="PatientTypeID"
                                                         (selectionChange)="onChangePatient($event.value)" #ptype
@@ -1025,11 +1025,35 @@
                                                             {{Doc.PatientType}}
                                                         </mat-option>
                                                     </mat-select>
+                                                </mat-form-field> -->
+
+
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Patient Type</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Select Patient Type" matInput #ptype
+                                                        (keydown)="onEnterptype($event)"
+                                                        formControlName="PatientTypeID"
+                                                        [matAutocomplete]="autoPatientTypeID">
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('PatientTypeID').setValue(''); ispatienttypeSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('PatientTypeID').setValue(''); ispatienttypeSelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoPatientTypeID="matAutocomplete"
+                                                        [displayWith]="getOptionTextpatienttype">
+                                                        <mat-option
+                                                            *ngFor="let option of filteredOptionsPatientType | async"
+                                                            [value]="option">
+                                                            {{option.PatientType}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
                                                 </mat-form-field>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <mat-form-field appearance="outline">
+                                                <!-- <mat-form-field appearance="outline">
                                                     <mat-label>Tariff Name</mat-label>
                                                     <mat-select formControlName="TariffId" required #tariff
                                                         (keydown)="onEnterptariff($event)">
@@ -1037,6 +1061,30 @@
                                                             {{Doc.TariffName}}
                                                         </mat-option>
                                                     </mat-select>
+                                                </mat-form-field> -->
+
+                                                
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Tariff Name</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Select Patient Type" matInput  #tariff
+                                                        (keydown)="onEnterptariff($event)"
+                                                        formControlName="TariffId"
+                                                        [matAutocomplete]="autoTariffId">
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('TariffId').setValue(''); isTariffIdSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="VisitFormGroup.get('TariffId').setValue(''); isTariffIdSelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoTariffId="matAutocomplete"
+                                                        [displayWith]="getOptionTextTariff">
+                                                        <mat-option
+                                                            *ngFor="let option of filteredOptionsTarrif | async"
+                                                            [value]="option">
+                                                            {{option.TariffName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
                                                 </mat-form-field>
                                             </div>
 

@@ -60,8 +60,9 @@ export class ConsentComponent implements OnInit {
 
   dsConsentList = new MatTableDataSource
   
+
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   
   constructor(
     public _ConsentService : ConsentService,
