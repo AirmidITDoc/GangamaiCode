@@ -6,7 +6,7 @@ $modalHeader: 45px;
             overflow: auto;
             &.grid-container {
                 display: grid;
-                grid-template-rows: $modalHeader 1fr;
+                grid-template-rows: auto 1fr;
                 height: 100%;
             }
             .modal-header {
@@ -29,7 +29,8 @@ $modalHeader: 45px;
                         .title-icon {
                         }
                     }
-                    .modal-header-icon,.c {
+                    .modal-header-icon,
+                    .c {
                         .modal-icon {
                             display: flex;
                             justify-content: center;
