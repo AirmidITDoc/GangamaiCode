@@ -107,7 +107,7 @@ export class SampleRequestComponent implements OnInit {
   }
 
   getSampleLabOrRadRequestLists() {
-    debugger
+    // debugger
     this.sIsLoading = 'loading-data';
     var m_data = {
 
