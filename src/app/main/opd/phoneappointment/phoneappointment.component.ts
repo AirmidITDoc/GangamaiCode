@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
 import { GeturlService } from './geturl.service';
 import { map, startWith } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-phoneappointment',
@@ -25,7 +26,7 @@ export class PhoneappointmentComponent implements OnInit {
   sIsLoading: string = '';
   isLoading = true;
   isRateLimitReached = false;
-
+  isLoading1: String = '';
   hasSelectedContacts: boolean;
   doctorNameCmbList: any = [];
   isDoctorSelected:boolean=false;
@@ -39,6 +40,7 @@ export class PhoneappointmentComponent implements OnInit {
 
   displayedColumns = [
     // 'PhoneAppId',
+    'IsCancelled',
     'AppDate',
     'PatientName',
     'Address',
@@ -46,7 +48,6 @@ export class PhoneappointmentComponent implements OnInit {
     'DepartmentName',
     'DoctorName',
     'PhAppDate',
-    'IsCancelled',
     'action'
   ];
 
@@ -144,6 +145,40 @@ newPhoneAppointment(){
   });
 }
 
+CanclePhoneApp(contact){
+  
+    Swal.fire({
+      title: 'Do you want to Cancle Appointment',
+      // showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+
+    }).then((flag) => {
+
+
+      if (flag.isConfirmed) {
+        let appointmentcancle={};
+        appointmentcancle['phoneAppId'] =  contact.PhoneAppId;
+       
+        let submitData = {
+          "phoneAppointmentCancle": appointmentcancle
+        
+        };
+        console.log(submitData);
+        this._phoneAppointService.PhoneAppointCancle(submitData).subscribe(response => {
+          if (response) {
+            Swal.fire('Appointment cancelled !', 'Phone Appointment cancelled Successfully!', 'success').then((result) => {
+              
+            });
+          } else {
+            Swal.fire('Error !', 'Appointment cancelled data not saved', 'error');
+          }
+          this.isLoading1 = '';
+        });
+      }
+    });
+    this.getPhoneAppointList();
+  }
 
 }
 

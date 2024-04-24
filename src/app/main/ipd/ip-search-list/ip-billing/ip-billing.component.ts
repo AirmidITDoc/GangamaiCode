@@ -176,6 +176,8 @@ export class IPBillingComponent implements OnInit {
   vBalanceAmt: any = 0;
 
   isClasselected: boolean = false;
+  isSrvcNameSelected: boolean = false;
+  isDoctorSelected: boolean = false;
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
   @ViewChild('drawer') public drawer: MatDrawer;
@@ -248,6 +250,7 @@ export class IPBillingComponent implements OnInit {
       map((value) => (value && value.length >= 1 ? this.filterStates(value) : this.billingServiceList.slice()))
     );
 
+    this.getBillingClasslist();
     this.getServiceListCombobox();
     this.getAdmittedDoctorCombo();
     this.getChargesList();
@@ -255,11 +258,10 @@ export class IPBillingComponent implements OnInit {
     this.getBillingClassCombo();
     this.getCashCounterComboList();
     this.getConcessionReasonList();
-    // this.drawer.toggle();
     this.getPrevBillList();
     this.getAdvanceDetList();
     this.calBalanceAmt();
-    this.getSelclasslist();
+    
 
     this.doctorFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -277,7 +279,9 @@ export class IPBillingComponent implements OnInit {
     }
   }
 
-
+  public setFocus(nextElementId): void {
+    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+  }
 
   // doctorone filter code  
   private filterDoctor() {
@@ -391,16 +395,26 @@ export class IPBillingComponent implements OnInit {
 
     }
   }
-
-  getSelclasslist() {
-    this._IpSearchListService.getseletclassMasterCombo().subscribe(data => {
-      this.ClassList = data;
-      this.optionsclass = this.ClassList.slice();
-      this.filteredOptionsselclass = this.Ipbillform.get('ChargeClass').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterclass(value) : this.ClassList.slice()),
-      );
-
+  filteredOptionsBillingClassName: any;
+  noOptionFoundsupplier: any;
+  vClassId: any;
+  vClassName: any;
+  getBillingClasslist() {
+    var m_data = {
+      'ClassName': `${this.vClassName}%`
+    }
+    this._IpSearchListService.getseletclassMasterCombo(m_data).subscribe(data => {
+      this.filteredOptionsBillingClassName = data;
+       if (this.filteredOptionsBillingClassName.length == 0) {
+        this.noOptionFoundsupplier = true;
+      } else {
+        this.noOptionFoundsupplier = false;
+      }
+      // this.optionsclass = this.ClassList.slice();
+      // this.filteredOptionsselclass = this.Ipbillform.get('ChargeClass').valueChanges.pipe(
+      //   startWith(''),
+      //   map(value => value ? this._filterclass(value) : this.ClassList.slice()),
+      // );
     });
   }
 
@@ -425,7 +439,15 @@ export class IPBillingComponent implements OnInit {
     return option.ServiceName;
   }
 
-
+  getOptionDoctor(option) {
+    if (!option)
+      return '';
+    return option.ServiceName;
+  }
+  getSelectedObjDoctorName(obj) {
+    // this.doct = obj.doctorId;
+    // this.b_price = obj.doctorName;
+  }
   getSelectedObj(obj) {
 
     this.SrvcName = obj.ServiceName;
@@ -441,15 +463,14 @@ export class IPBillingComponent implements OnInit {
       this.Serviceform.get('DoctorID').reset();
       this.Serviceform.get('DoctorID').setValidators([Validators.required]);
       this.Serviceform.get('DoctorID').enable();
-      // this.isDoctor = true;
+      this.isDoctor = true;
 
     } else {
       this.Serviceform.get('DoctorID').reset();
       this.Serviceform.get('DoctorID').clearValidators();
       this.Serviceform.get('DoctorID').updateValueAndValidity();
       this.Serviceform.get('DoctorID').disable();
-      // this.isDoctor = false;
-
+      this.isDoctor = false;
     }
   }
 
@@ -457,7 +478,7 @@ export class IPBillingComponent implements OnInit {
     this.chargeslist1 = [];
     this.dataSource1.data = [];
     var m = {
-      OP_IP_ID: 67362,// this.selectedAdvanceObj.AdmissionID,
+      OP_IP_ID: this.selectedAdvanceObj.AdmissionID,
     }
     this._IpSearchListService.getchargesList1(m).subscribe(data => {
       this.chargeslist1 = data as ChargesList[];
@@ -490,9 +511,7 @@ export class IPBillingComponent implements OnInit {
   getPrevBillList() {
     var D_data = {
       "IP_Id": this.selectedAdvanceObj.AdmissionID
-
     }
-
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._IpSearchListService.getpreviousbilldetail(D_data).subscribe(Visit => {
@@ -508,14 +527,11 @@ export class IPBillingComponent implements OnInit {
   getAdvanceDetList() {
     var D_data = {
       "AdmissionID": this.selectedAdvanceObj.AdmissionID
-
     }
-
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._IpSearchListService.getAdvancedetail(D_data).subscribe(Visit => {
-        this.advancedatasource.data = Visit as IpdAdvanceBrowseModel[];
-
+      this.advancedatasource.data = Visit as IpdAdvanceBrowseModel[];
       },
         error => {
           this.sIsLoading = '';

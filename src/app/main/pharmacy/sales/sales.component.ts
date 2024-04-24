@@ -2155,7 +2155,6 @@ export class SalesComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-success',
           });
 
-
           this.getPrint3(response);
           this.getWhatsappshareSales(response, vMobileNo);
           this.Itemchargeslist = [];
@@ -2187,10 +2186,7 @@ export class SalesComponent implements OnInit {
     // }
   }
   onSavePayOption() {
-
-
     this.vPatientType = this.ItemSubform.get('PatientType').value;
-
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.PatientName;
@@ -2199,7 +2195,6 @@ export class SalesComponent implements OnInit {
     this.isLoading123=false;
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
-
         data: {
           vPatientHeaderObj: PatientHeaderObj,
           FromName: "Phar-SalesPay"
@@ -2258,7 +2253,7 @@ export class SalesComponent implements OnInit {
           SalesInsert['isFree'] = 0;
           SalesInsert['unitID'] = 1;
           SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-            SalesInsert['externalPatientName'] = this.PatientName || '';
+          SalesInsert['externalPatientName'] = this.PatientName || '';
           SalesInsert['doctorName'] = this.DoctorName || '';
           SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
           SalesInsert['isPrescription'] = 0;
@@ -2311,7 +2306,7 @@ export class SalesComponent implements OnInit {
             updateCurStkSales['itemId'] = element.ItemId;
             updateCurStkSales['issueQty'] = element.Qty;
             updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
-              updateCurStkSales['stkID'] = element.StockId;
+            updateCurStkSales['stkID'] = element.StockId;
             updateCurStkSalestarr.push(updateCurStkSales);
           });
 

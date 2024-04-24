@@ -82,6 +82,16 @@
                                     <mat-icon class="searchiconbutton">book</mat-icon>
                                 </button>
                             </div>
+
+                            <button (click)="exportOPBillReportExcel()"
+                            [disabled]="! (dataSource.data.length > 0)"
+                            style="background-color: white;color: white;width: 45px;">
+                            <img width="32" height="10px" src="assets/images/logos/xls.png">
+                           </button>
+                           <button mat-raised-button (click)="exportReportPdf()"
+                           style="background-color: #8e67e0;color: white;">
+                           <mat-icon style="margin-right: 15px;">cloud_download</mat-icon>Export Table(PDF)
+                            </button>
                             <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;">
                             Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
                         </span> -->
@@ -109,6 +119,34 @@
                                 <mat-table #table table="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
+                                    <ng-container matColumnDef="Self">
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-110">
+                                            <span class="mat-header-text">Self/Comp</span>
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-110">
+                                            <div class="patient-column gap-12" fxLayout="row">
+                                                <div class="patient-old-new" fxLayout="row"
+                                                    fxLayoutAlign="center">
+                                                    <div class="pill-icon">
+                                                        <mat-icon style=" border-radius:100% ;"
+                                                        *ngIf="contact.IsCancelled=='0' "
+                                                        matTooltip="Appointment Self"
+                                                        class=" red-600 s-16">self</mat-icon>
+                                                   
+        
+                                                        <mat-icon style=" border-radius:100% ;margin-left: 20px;"
+                                                        *ngIf="contact.IsCancelled=='0' "
+                                                        matTooltip="Payment Mode" >PaymentMode</mat-icon>
+                                                   
+                                                    </div>
+                                                </div>
+                                              
+
+                                            </div>
+
+                                         
+                                        </mat-cell>
+                                    </ng-container>
                                     <ng-container matColumnDef="chkBalanceAmt">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Credit
 
@@ -151,7 +189,13 @@
                                         </mat-cell>
                                     </ng-container>
 
-
+                                    <ng-container matColumnDef="CompanyName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Company Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.PatientName}}
+                                        </mat-cell>
+                                    </ng-container>
                                     <ng-container matColumnDef="TotalAmt">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Total
                                             Amount

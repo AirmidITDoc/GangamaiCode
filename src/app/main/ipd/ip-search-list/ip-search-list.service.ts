@@ -769,8 +769,8 @@ public updateIPDDischargSummary(employee)
     return this._httpClient.post("Generic/GetByProc?procName=rptIPRefundofBillPrint", RefundId)
   }    
 
- public getseletclassMasterCombo(){
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName", {})
+ public getseletclassMasterCombo(Params){
+  return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_BillingClassName", Params)
   }
   
   populateForm(employee) {

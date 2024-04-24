@@ -216,6 +216,7 @@ export class AppointmentComponent implements OnInit {
   filteredOptionsTarrif: Observable<string[]>;
   isDoctorSelected: boolean = false;
   isCompanySelected: boolean = false;
+  isCompanySelected1: boolean = false;
   ispatienttypeSelected: boolean = false;
   isTariffIdSelected: boolean = false;
   filteredOptionsCompany: Observable<string[]>;
@@ -259,10 +260,9 @@ export class AppointmentComponent implements OnInit {
     // "CrossConsultation",
     // "Edit",
     // "Bill",
-    // "PhoneAppId",
-    // 'CrossConsultation',
     "RegNoWithPrefix",
     "PatientName",
+     "DepartmentName",
     "DVisitDate",
     "VisitTime",
     "OPDNo",
@@ -325,6 +325,7 @@ export class AppointmentComponent implements OnInit {
     // this.getVisitList();
     this.getVisitList1();
     this.configService.configParams.DepartmentId;
+    // console.log(  this.configService.configParams.DepartmentId)
 
   }
 
@@ -343,13 +344,13 @@ export class AppointmentComponent implements OnInit {
       // this.menuActions.push("Update Registration");
       this.menuActions.push("Update Consultant Doctor");
       this.menuActions.push("Update Referred Doctor");
-      this.menuActions.push("Cancle Appointment");
+      // this.menuActions.push("Cancle Appointment");
       // this.menuActions.push("Capture Photo");
       // this.menuActions.push("Generate Patient Barcode");
 
     }
 
-    this.getVisitList();
+    // this.getVisitList();
     this.getDoctorNameCombobox();
 
     this.getHospitalList1();
@@ -369,7 +370,10 @@ export class AppointmentComponent implements OnInit {
     this.getDoctor1List();
     this.getDoctor2List();
     this.getPurposeList();
-    this.OnChangeDoctorList1(this.configService.configParams.DepartmentId);
+    
+    // console.log(  this.configService.configParams.DepartmentId)
+
+    // this.OnChangeDoctorList1(this.configService.configParams.DepartmentId);
 
     this.hospitalFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -404,56 +408,10 @@ export class AppointmentComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
 
-      // this.getAdmittedPatientList();
+      
     });
   }
 
-  // AddList(m) {
-  //   // var m_data = {
-  //   //   "chargeID": 0,
-  //   //   "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-  //   //   "opD_IPD_Type": 1,
-  //   //   "opD_IPD_Id": this.selectedAdvanceObj.AdmissionID,
-  //   //   "serviceId": m.ServiceId,
-  //   //   "price": m.price,// this.b_price,
-  //   //   "qty": m.qty || 1,// this.b_qty,
-  //   //   "totalAmt": 0,// this.b_totalAmount,
-  //   //   "concessionPercentage": 0,// this.formDiscPersc || 0,
-  //   //   "concessionAmount": 0,// this.b_disAmount || 0,
-  //   //   "netAmount": 0,// this.b_netAmount,
-  //   //   "doctorId": 0,// this.DoctornewId,// this.Ipbillform.get("doctorId").value || 0,
-  //   //   "docPercentage": 0,
-  //   //   "docAmt": 0,
-  //   //   "hospitalAmt": 0,//this.b_netAmount,
-  //   //   "isGenerated": 0,
-  //   //   "addedBy": this.accountService.currentUserValue.user.id,
-  //   //   "isCancelled": 0,
-  //   //   "isCancelledBy": 0,
-  //   //   "isCancelledDate": "01/01/1900",
-  //   //   "isPathology": 0,//this.b_isPath,
-  //   //   "isRadiology": 1,//this.b_isRad,
-  //   //   "isPackage": 0,
-  //   //   "packageMainChargeID": 0,
-  //   //   "isSelfOrCompanyService": false,
-  //   //   "packageId": 0,
-  //   //   "chargeTime": this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-  //   //   "classId": this.Serviceform.get("ClassId").value.ClassId
-  //   // }
-  //   // this._IpSearchListService.InsertIPAddChargesNew(m_data).subscribe(data => {
-  //   //   if (data) {
-  //   //     Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success');
-  //   //     this.getChargesList();
-  //   //   }
-  //   // });
-  //   // this.onClearServiceAddList()
-
-
-  //   // const toSelectDoc = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-  //   // this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-  //   // this.OnChangeDoctorList(m.DepartmentId);
-  //   this.isLoading = '';
-  // }
 
 
   onImageChange(event) {
@@ -908,35 +866,38 @@ export class AppointmentComponent implements OnInit {
       );
 
     });
+    this.VisitFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
   }
 
 
   onChangePatient(value) {
 
-    if (value.PatientTypeId !== 1) {
+    if (value.PatientTypeId == 2) {
       this._opappointmentService.getCompanyCombo();
       this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
       this.isCompanySelected = true;
-    } else {
+      this.patienttype = 2;
+    } else if(value.PatientTypeId !== 2){
       this.isCompanySelected = false;
       this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
       this.VisitFormGroup.get('CompanyId').clearValidators();
       this.VisitFormGroup.get('SubCompanyId').clearValidators();
       this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
       this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
-    }
-
-    if (value.PatientTypeId == 2) {
-      this.patienttype = 2;
-    } else if (value.PatientTypeId !== 2) {
       this.patienttype = 1;
     }
+
+    // if (value.PatientTypeId == 2) {
+    //   this.patienttype = 2;
+    // } else if (value.PatientTypeId !== 2) {
+    //   this.patienttype = 1;
+    // }
 
   }
   onEdit(row) {
     this.registerObj = row;
 
-    const dialogRef = this._matDialog.open(EditRegistrationComponent,
+    const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "85vw",
         height: "550px",
@@ -1004,6 +965,7 @@ export class AppointmentComponent implements OnInit {
       );
 
     });
+    this.VisitFormGroup.get('TariffId').setValue(this.TariffList[0]);
   }
 
   getAreaList() {
@@ -1081,24 +1043,6 @@ export class AppointmentComponent implements OnInit {
   }
 
 
-
-  //   getDepartmentList() {
-  //     this._opappointmentService.getDepartmentCombo().subscribe(data => {
-  //       this.DepartmentList = data;
-  //       this.optionsDep = this.DepartmentList.slice();
-  //       this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
-  //         startWith(''),
-  //         map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-  //       );
-
-  //     });
-  // 
-  //     if( this.configService.configParams.DepartmentId){
-  //       this.VisitFormGroup.get('Departmentid').setValue(this.configService.configParams.DepartmentId)
-  //       this.OnChangeDoctorList(this.configService.configParams)
-  //     }
-  //   }
-
   getDepartmentList() {
 
     this._opappointmentService.getDepartmentCombo().subscribe(data => {
@@ -1148,7 +1092,7 @@ export class AppointmentComponent implements OnInit {
 
   onChangeDateofBirth(DateOfBirth) {
     debugger
-    console.log(DateOfBirth)
+    // console.log(DateOfBirth)
     if (DateOfBirth) {
       const todayDate = new Date();
       const dob = new Date(DateOfBirth);
@@ -1182,9 +1126,7 @@ export class AppointmentComponent implements OnInit {
         (Visit) => {
 
           this.dataSource.data = Visit as VisitMaster[];
-          // this.dataSource.sort = this.sort;
-          // this.dataSource.paginator = this.paginator;
-          // this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+         
         },
         (error) => {
           this.isLoading = 'list-loaded';
@@ -1208,6 +1150,7 @@ export class AppointmentComponent implements OnInit {
       Sort: this.sort?.active ?? 'VisitId',
       Order: this.sort?.direction ?? 'desc'
     };
+    console.log(D_data)
     setTimeout(() => {
 
       this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
@@ -1242,9 +1185,9 @@ export class AppointmentComponent implements OnInit {
     this.VFollowupcount = 0;
     this.VBillcount = 0;
 
-    console.log(data)
+    // console.log(data)
     this.Vtotalcount;
-    debugger
+    
     for (var i=0;i< data.length;i++){
       if(data[i].PatientOldNew==1){
           this.VNewcount=this.VNewcount+1;
@@ -1566,15 +1509,17 @@ export class AppointmentComponent implements OnInit {
   }
 
   getSelectedObj(obj) {
-
+debugger
     this.RegOrPhoneflag = 'Entry from Registration';
     obj.AgeDay = obj.AgeDay.trim();
-    obj.AgeMonth = obj.AgeDay.trim();
+    obj.AgeMonth = obj.AgeMonth.trim();
     obj.AgeYear = obj.AgeYear.trim();
     this.registerObj = obj;
     this.PatientName = obj.PatientName;
     this.RegId = obj.RegId;
-
+    console.log(obj.AgeDay )
+    console.log(obj.AgeMonth )
+    this.onChangeDateofBirth(this.registerObj.DateofBirth)
     this.setDropdownObjs();
 
     this.VisitFlagDisp = true;
@@ -1619,13 +1564,7 @@ export class AppointmentComponent implements OnInit {
       if (this.searchFormGroup.get('regRadio').value == "registration") {
         //if (this.vPhoneAppId == 0 && this.Regflag == false) {
         this.OnsaveNewRegister();
-        //}
-        // if (this.RegNo !== "" && this.vPhoneAppId != 0) {
-        //   this.OnsaveNewRegister();
-        // }
-        // else if (this.RegNo == "" && this.vPhoneAppId != 0) {
-        //   this.onSaveRegistered();
-        // }
+      
       }
       else if (this.searchFormGroup.get('regRadio').value == "registrered") {
         this.onSaveRegistered();
@@ -1634,14 +1573,6 @@ export class AppointmentComponent implements OnInit {
 
     }
 
-
-    // 
-    // if (this.RegNo !== "" && this.PhoneAppId != 0) {
-    //   this.OnsaveNewRegister();
-    // }
-    // else if (this.RegNo == "" && this.PhoneAppId != 0) {
-    //   this.onSaveRegistered();
-    // }
 
   }
 
@@ -1841,7 +1772,7 @@ export class AppointmentComponent implements OnInit {
           Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
             if (result.isConfirmed) {
 
-              this.viewgetPatientAppointmentReportPdf(this.registerObj.RegId, false);
+              this.viewgetPatientAppointmentReportPdf(response, false);
             }
             this.getVisitList();
 
@@ -2032,8 +1963,8 @@ export class AppointmentComponent implements OnInit {
         console.log("The dialog was closed - Insert Action", result);
       });
     }else if (m == "Cancle Appointment") {
-      console.log(contact)
-    this.AppointmentCancle(contact.VisitId,);
+      // console.log(contact)
+    this.AppointmentCancle(contact.VisitId);
     }
     
   }
@@ -2349,6 +2280,9 @@ export class AppointmentComponent implements OnInit {
     this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
     this.registerObj.DateofBirth = this.currentDate;
     this.personalFormGroup.get('DateOfBirth').setValue(this.currentDate);
+
+    this.personalFormGroup.get('PhoneNo').clearValidators();
+    this.VisitFormGroup.get('PhoneNo').updateValueAndValidity();
   }
 
 
@@ -2412,12 +2346,6 @@ export class AppointmentComponent implements OnInit {
 
     if (this.configService.configParams.DoctorId) {
 
-
-      // this._opappointmentService.getDoctorMasterCombo(this.configService.configParams.DepartmentId).subscribe(
-      //   data => {
-      //     this.DoctorList = data;
-      //   }) 
-      this.configService.configParams.DoctorId = 269;
       const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
       this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
     }
@@ -2439,7 +2367,7 @@ export class AppointmentComponent implements OnInit {
 
     if (this.configService.configParams.DoctorId) {
 
-      this.configService.configParams.DoctorId = 269;
+      // this.configService.configParams.DoctorId = 269;
       // const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
       // this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
       this.doctorset();
@@ -2877,7 +2805,7 @@ export class AppointmentComponent implements OnInit {
     // this.b_TotalChargesAmount = netAmt;
     // this.TotalnetPaybleAmt = this.b_TotalChargesAmount;
     this.dataSource.data.forEach((element) => {
-      console.log(element)
+      // console.log(element)
       if (element.patientOldNew) {
         Newcount + 1;
       }
@@ -3097,6 +3025,7 @@ export class AdvanceDetailObj {
   PatientTypeId: any;
   CompanyId: any;
   HospitalId: any;
+  VistDateTime: any;
   /**
    * Constructor
    *
@@ -3129,6 +3058,7 @@ export class AdvanceDetailObj {
       this.PatientTypeId = AdvanceDetailObj.PatientTypeId || 0;
       this.CompanyId = AdvanceDetailObj.CompanyId || 0;
       this.HospitalId = AdvanceDetailObj.HospitalId || 0;
+      this.VistDateTime=AdvanceDetailObj.VistDateTime || ''
     }
   }
 }

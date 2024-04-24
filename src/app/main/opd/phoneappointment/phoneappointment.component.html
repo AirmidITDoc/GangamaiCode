@@ -12,7 +12,8 @@
         </div>
 
         <div fxLayout="row" fxLayoutGap="5px" style="margin-left:10% !important; ">
-            <button mat-raised-button (click)="newPhoneAppointment()" style="background-color: aliceblue;color: brown;margin-left:10% !important">New Phone Appointment
+            <button mat-raised-button (click)="newPhoneAppointment()"
+                style="background-color: aliceblue;color: brown;margin-left:10% !important">New Phone Appointment
 
             </button>
         </div>
@@ -43,7 +44,8 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>Enter a date range</mat-label>
                                 <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="getPhoneAppointList()">
+                                    <input matStartDate formControlName="start" placeholder="Start date"
+                                        (dateChange)="getPhoneAppointList()">
                                     <input matEndDate formControlName="end" placeholder="End date">
                                 </mat-date-range-input>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -52,7 +54,8 @@
 
                             <mat-form-field appearance="outline">
                                 <mat-label>Search First Name</mat-label>
-                                <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput (keyup)="getPhoneAppointList()">
+                                <input name="FirstNameSearch" formControlName="FirstNameSearch" matInput
+                                    (keyup)="getPhoneAppointList()">
                                 <span class="error" *ngIf="f.FirstNameSearch.invalid && f.FirstNameSearch.touched">First
                                     Name is
                                     required Enter only Alphabets</span>
@@ -60,18 +63,23 @@
 
                             <mat-form-field appearance="outline">
                                 <mat-label>Search Last Name</mat-label>
-                                <input name="LastNameSearch" formControlName="LastNameSearch" matInput (keyup)="getPhoneAppointList()">
-                                <span class="error" *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">Last Name
+                                <input name="LastNameSearch" formControlName="LastNameSearch" matInput
+                                    (keyup)="getPhoneAppointList()">
+                                <span class="error" *ngIf="f.LastNameSearch.invalid && f.LastNameSearch.touched">Last
+                                    Name
                                     is
                                     required Enter only Alphabets</span>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Doctor Name</mat-label>
-                                <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
+                                    formControlName="DoctorId" [matAutocomplete]="autoDoctor" required>
                                 <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close" (click)="_phoneAppointService.mysearchform.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                    <mat-icon class="mat-icon-close" (click)="_phoneAppointService.mysearchform.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_phoneAppointService.mysearchform.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_phoneAppointService.mysearchform.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
                                 </span>
                                 <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoctor">
                                     <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option">
@@ -81,7 +89,8 @@
                             </mat-form-field>
 
                             <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-                                <button mat-raised-button (click)="getPhoneAppointList()" class="searchButton" matTooltip="search">
+                                <button mat-raised-button (click)="getPhoneAppointList()" class="searchButton"
+                                    matTooltip="search">
                                     <!-- <mat-icon class="cleariconbutton">close</mat-icon></button>&nbsp; -->
                                     Search
                                 </button>
@@ -111,19 +120,33 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                    class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <mat-table #table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                <mat-table #table class="table1" matSort [dataSource]="dataSource"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
+                                    <ng-container matColumnDef="IsCancelled">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                                            IsCancelled
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            <div class="pill-icon">
+                                                <mat-icon style="border-radius:100% ;"*ngIf="!contact.IsCancelled=='0'"
+                                                    matTooltip="Appointment cancelled"
+                                                    class="red-600 s-16">circle</mat-icon>
+                                            </div>
+                                        </mat-cell>
+                                    </ng-container>
 
                                     <ng-container matColumnDef="AppDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AppointDate
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.AppDate}}
-                                        </mat-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.AppDate}}
+                                            </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="PatientName" fxLayoutAlign="start center">
@@ -177,24 +200,20 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsCancelled">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                            IsCancelled
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                            {{contact.IsCancelled}}
-                                        </mat-cell>
-                                    </ng-container>
+                                   
 
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button matTooltip="how_to_reg">
-                                                <mat-icon>how_to_reg</mat-icon>
-                                            </button>
+                                        <mat-cell *matCellDef="let contact">
+                                            
                                             <button mat-icon-button matTooltip="print">
                                                 <mat-icon>print</mat-icon>
+                                            </button>
+
+                                            <button mat-icon-button matTooltip="Appointment Cancle" *ngIf="contact.IsCancelled=='0' "
+                                                (click)="CanclePhoneApp(contact)">
+                                                <mat-icon style="color: brown;">close</mat-icon>
                                             </button>
                                         </mat-cell>
                                     </ng-container>
@@ -212,14 +231,25 @@
 
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    -->
+                                    <mat-row class="table1-row" #table1Row
+                                        *matRowDef="let contact; columns: displayedColumns;"
+                                        [ngClass]="contact.IsCancelled == '1' ? 'self-row' : ''"
+                                        [@animate]="{value:'*',params:{y:'100%'}}">
+                                    </mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+
+
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
 
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                    showFirstLastButtons>
                                 </mat-paginator>
                             </div>
                         </div>

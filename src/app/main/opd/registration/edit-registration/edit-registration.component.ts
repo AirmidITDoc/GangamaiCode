@@ -382,7 +382,7 @@ export class EditRegistrationComponent implements OnInit {
   }
 
   getCityList() {
-    this._registerService.getCityList().subscribe(data => {
+    this._registerService.getCityListCombo().subscribe(data => {
       this.cityList = data;
       this.filteredCity.next(this.cityList.slice());
     });
@@ -441,7 +441,7 @@ export class EditRegistrationComponent implements OnInit {
   }
 
   getcityList() {
-    this._registerService.getCityList().subscribe(data => {
+    this._registerService.getCityListCombo().subscribe(data => {
       this.cityList = data;
       this.filteredCity.next(this.cityList.slice());
       if (this.data) {

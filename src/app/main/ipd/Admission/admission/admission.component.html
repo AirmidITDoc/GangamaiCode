@@ -633,8 +633,7 @@
                                     <input name="AadharCardNo" formControlName="AadharCardNo"
                                         placeholder="AadharCard Number" matInput [(ngModel)]="registerObj.AadharCardNo"
                                         type="number" #AadharCardNo (keydown)="onEnterAadharCardNo($event)"
-                                        required="required" type="number"
-                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
+                                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
                                     <mat-error class="error"
                                         *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">Aadhar
                                         number is required
@@ -842,7 +841,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Ref Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor "
-                                        matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="refDoctorId" required
+                                        matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="refDoctorId"
                                         [matAutocomplete]="autodoc2">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -1014,11 +1013,11 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Relatvie MobileNo </mat-label>
                                     <input name="RelatvieMobileNo" formControlName="RelatvieMobileNo"
-                                        placeholder="Mobile Number" matInput required #mobile
+                                        placeholder="Mobile Number" matInput  #mobile
                                         (keydown)="onEnterrelativemobile($event)"
                                         [(ngModel)]="registerObj.RelatvieMobileNo"
                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                        required="required" type="number" value="9876658688" #relativemobile>
+                                        type="number" value="9876658688" #relativemobile>
                                     <mat-error class="error"
                                         *ngIf="otherFormGroup.get('RelatvieMobileNo').invalid && otherFormGroup.get('RelatvieMobileNo').touched">10
                                         digits Mobile number is
@@ -1028,7 +1027,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Relationship Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Relationship"
-                                        matInput #relation formControlName="RelationshipId" required
+                                        matInput #relation formControlName="RelationshipId" 
                                         [matAutocomplete]="autoRelation">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
