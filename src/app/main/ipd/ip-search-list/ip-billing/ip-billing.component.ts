@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
@@ -24,6 +24,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { debug } from 'console';
 
 
 @Component({
@@ -137,7 +138,7 @@ export class IPBillingComponent implements OnInit {
   SrvcName: any;
   totalAmtOfNetAmt: any = 0;
   interimArray: any = [];
-  formDiscPersc: any;
+  formDiscPersc: any=0;
   serviceId: number;
   serviceName: String;
   totalAmt: number;
@@ -200,15 +201,11 @@ export class IPBillingComponent implements OnInit {
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   ConcessionId: any;
-  vIpCash: any = 11022;
-  vPharcash: any = 21320;
+  vIpCash: any = 0;
+  vPharcash: any = 0;
   ClassList: any = [];
   optionsclass: any[] = [];
 
-
-  //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
   isDoctor: boolean = true;
@@ -241,6 +238,10 @@ export class IPBillingComponent implements OnInit {
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      console.log( this.selectedAdvanceObj )
+      this.vClassId= this.selectedAdvanceObj.ClassId
+      this.ClassName=this.selectedAdvanceObj.ClassName
+
     }
 
     this.myControl = new FormControl();
@@ -263,11 +264,18 @@ export class IPBillingComponent implements OnInit {
     this.calBalanceAmt();
     
 
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
+      this.filteredOptionsBillingClassName = this.Serviceform.get('ChargeClass').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterclass(value)),
+  
+      );
+
+      this.filteredDoctor = this.Serviceform.get('DoctorID').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterDoctor(value)),
+  
+      );
+
 
     if (this.selectedAdvanceObj.IsDischarged) {
       this.Ipbillform.get('GenerateBill').enable();
@@ -277,32 +285,22 @@ export class IPBillingComponent implements OnInit {
       this.Ipbillform.get('GenerateBill').disable();
       this.Ipbillform.get('GenerateBill').setValue(false);
     }
+
+    this.setClassdata();
+    
+  }
+
+  setClassdata(){
+    const toSelectClass = this.ClassList.find(c => c.ClassId == this.vClassId);
+    this.Serviceform.get('ChargeClass').setValue(toSelectClass);
+    this.Serviceform.updateValueAndValidity();
+
   }
 
   public setFocus(nextElementId): void {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
   }
 
-  // doctorone filter code  
-  private filterDoctor() {
-
-    if (!this.doctorNameCmbList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.doctorNameCmbList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.doctorNameCmbList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
   // Create registered form group
   createserviceForm() {
     this.Serviceform = this.formBuilder.group({
@@ -322,7 +320,7 @@ export class IPBillingComponent implements OnInit {
       paidAmt: [''],
       ChargeDate: [new Date()],
       balanceAmt: [''],
-
+      ChargeClass: ['']
     });
   }
 
@@ -374,57 +372,117 @@ export class IPBillingComponent implements OnInit {
     // this.calculateTotalAmt();
   }
 
+  // getServiceListCombobox() {
+  //   let tempObj;
+  //   var m_data = {
+  //     SrvcName: `${this.Serviceform.get('SrvcName').value}%`,
+  //     TariffId: 1,//this.selectedAdvanceObj.TariffId || 1,
+  //     ClassId: 1// this.selectedAdvanceObj.ClassId ||1
+  //   };
+  //   if (this.Serviceform.get('SrvcName').value.length >= 1) {
+  //     this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
+  //       // console.log(data);
+  //       this.filteredOptions = data;
+  //       // console.log(this.filteredOptions);
+  //       if (this.filteredOptions.length == 0) {
+  //         this.noOptionFound = true;
+  //       } else {
+  //         this.noOptionFound = false;
+  //       }
+  //     });
+
+  //   }
+  // }
+
+
+
+
   getServiceListCombobox() {
     let tempObj;
     var m_data = {
       SrvcName: `${this.Serviceform.get('SrvcName').value}%`,
-      TariffId: 1,//this.selectedAdvanceObj.TariffId || 1,
-      ClassId: 1// this.selectedAdvanceObj.ClassId ||1
+      TariffId: 1,//this.selectedAdvanceObj.TariffId,
+      ClassId: 1,// this.selectedAdvanceObj.ClassId || 1
     };
     if (this.Serviceform.get('SrvcName').value.length >= 1) {
       this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
-        // console.log(data);
         this.filteredOptions = data;
-        // console.log(this.filteredOptions);
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
           this.noOptionFound = false;
         }
       });
-
+      // });
     }
   }
   filteredOptionsBillingClassName: any;
+  filteredDoctor: any;
   noOptionFoundsupplier: any;
-  vClassId: any;
+  vClassId: any=0;
   vClassName: any;
+  // getBillingClasslist() {
+  //   var m_data = {
+  //     'ClassName': `${this.vClassName}%`
+  //   }
+  //   this._IpSearchListService.getseletclassMasterCombo(m_data).subscribe(data => {
+  //     this.filteredOptionsBillingClassName = data;
+  //      if (this.filteredOptionsBillingClassName.length == 0) {
+  //       this.noOptionFoundsupplier = true;
+  //     } else {
+  //       this.noOptionFoundsupplier = false;
+  //     }
+  //     // this.optionsclass = this.ClassList.slice();
+  //     // this.filteredOptionsselclass = this.Ipbillform.get('ChargeClass').valueChanges.pipe(
+  //     //   startWith(''),
+  //     //   map(value => value ? this._filterclass(value) : this.ClassList.slice()),
+  //     // );
+  //   });
+  // }
+
   getBillingClasslist() {
+    
     var m_data = {
-      'ClassName': `${this.vClassName}%`
-    }
+          'ClassName': '%' //`${this.vClassName}%`
+        }
     this._IpSearchListService.getseletclassMasterCombo(m_data).subscribe(data => {
-      this.filteredOptionsBillingClassName = data;
-       if (this.filteredOptionsBillingClassName.length == 0) {
-        this.noOptionFoundsupplier = true;
-      } else {
-        this.noOptionFoundsupplier = false;
+      this.ClassList = data;
+      console.log(this.ClassList )
+      if (this.vClassId != 0) {
+        const ddValue = this.ClassList.filter(c => c.ClassId == this.vClassId);
+        debugger
+        this.Serviceform.get('ChargeClass').setValue(ddValue[0]);
+        this.Serviceform.updateValueAndValidity();
+        return;
       }
-      // this.optionsclass = this.ClassList.slice();
-      // this.filteredOptionsselclass = this.Ipbillform.get('ChargeClass').valueChanges.pipe(
-      //   startWith(''),
-      //   map(value => value ? this._filterclass(value) : this.ClassList.slice()),
-      // );
     });
+       
   }
 
+  
   private _filterclass(value: any): string[] {
     if (value) {
       const filterValue = value && value.ClassName ? value.ClassName.toLowerCase() : value.toLowerCase();
-      return this.optionsclass.filter(option => option.ClassName.toLowerCase().includes(filterValue));
+      return this.ClassList.filter(option => option.ClassName.toLowerCase().includes(filterValue));
     }
-
   }
+
+  private _filterDoctor(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.doctorNameCmbList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+  }
+
+  
+
+  // private _filterclass(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.ClassName ? value.ClassName.toLowerCase() : value.toLowerCase();
+  //     return this.optionsclass.filter(option => option.ClassName.toLowerCase().includes(filterValue));
+  //   }
+
+  // }
   getOptionTextclass(option) {
     return option && option.ClassName ? option.ClassName : '';
   }
@@ -436,18 +494,48 @@ export class IPBillingComponent implements OnInit {
   getOptionText(option) {
     if (!option)
       return '';
-    return option.ServiceName;
+  
+    return option && option.ServiceName ? option.ServiceName : '';
   }
 
   getOptionDoctor(option) {
     if (!option)
       return '';
-    return option.ServiceName;
+  return option && option.DoctorName ? option.DoctorName : '';
   }
+
+
   getSelectedObjDoctorName(obj) {
+    console.log(obj)
     // this.doct = obj.doctorId;
     // this.b_price = obj.doctorName;
   }
+
+
+  @ViewChild('doctorname') doctorname: ElementRef;
+  @ViewChild('disc') disc: ElementRef;
+
+  public onEnterqty(event): void {
+
+    if(event.which === 13) {
+    if (this.isDoctor) {
+      this.doctorname.nativeElement.focus();
+    }
+    else {
+      this.disc.nativeElement.focus();
+      // this.calculateTotalAmt()
+    }
+  }
+    }
+    
+    public onEnterdoctor(event): void {
+
+      if(event.which === 13) {
+        this.disc.nativeElement.focus();
+      }
+    }
+
+
   getSelectedObj(obj) {
 
     this.SrvcName = obj.ServiceName;
@@ -1106,7 +1194,7 @@ export class IPBillingComponent implements OnInit {
           Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              // this.viewgetDraftBillReportPdf(response);
+              this.viewgetDraftBillReportPdf(this.selectedAdvanceObj.AdmissionID);
               // this.getPrintDraft(response);
             }
           });
@@ -1193,6 +1281,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   calculatePersc() {
+    debugger
     let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
     if (this.formDiscPersc) {
       let discAmt = Math.round((netAmt * parseInt(this.formDiscPersc)) / 100);
@@ -1264,10 +1353,10 @@ export class IPBillingComponent implements OnInit {
   }
 
 
-  viewgetDraftBillReportPdf(BillNo) {
+  viewgetDraftBillReportPdf(AdmissionID) {
 
     this._IpSearchListService.getIpDraftBillReceipt(
-      BillNo
+      AdmissionID
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
@@ -1319,13 +1408,30 @@ export class IPBillingComponent implements OnInit {
     // this._location.back();
   }
 
-  getAdmittedDoctorCombo() {
-    this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
-      this.doctorNameCmbList = data;
-      this.filteredDoctor.next(this.doctorNameCmbList.slice());
-    })
+  // getAdmittedDoctorCombo() {
+  //   this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
+  //     this.doctorNameCmbList = data;
+  //     this.filteredDoctor.next(this.doctorNameCmbList.slice());
+  //   })
 
-  }
+  // }
+
+  
+
+  getAdmittedDoctorCombo() {
+   
+    
+      this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
+        this.filteredDoctor = data;
+        if (this.filteredDoctor.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+      
+    }
+  
 
   getBillingClassCombo() {
     this._IpSearchListService.getClassList({ "Id": this.selectedAdvanceObj.ClassId }).subscribe(data => {

@@ -124,8 +124,6 @@ export class NewRegistrationComponent implements OnInit {
     this.personalFormGroup = this.createPesonalForm();
     this.searchFormGroup = this.createSearchForm();
 
-
-
     this.getPrefixList();
     this.getMaritalStatusList();
     this.getReligionList();
@@ -139,12 +137,23 @@ export class NewRegistrationComponent implements OnInit {
 
     if (this.data) {
       debugger
-      this.registerObj = this.data.registerObj;
-      this.RegId = this.registerObj.RegId;
-      this.isDisabled = true
-      console.log(this.registerObj)
-      this.setDropdownObjs();
+
+        this.registerObj = this.data.registerObj;
+
+        this.RegId = this.registerObj.RegId;
+        this.isDisabled = true
+        if(this.registerObj.AgeYear)
+          this.registerObj.Age=this.registerObj.AgeYear.trim();
+        if(this.registerObj.AgeMonth)
+          this.registerObj.AgeMonth=this.registerObj.AgeMonth.trim();
+        if(this.registerObj.AgeDay)
+          this.registerObj.AgeDay=this.registerObj.AgeDay.trim();
+
+        this.onChangeCityList(this.registerObj.CityId);
+        this.setDropdownObjs();
+    
     }
+
 
     this.filteredOptionsPrefix = this.personalFormGroup.get('PrefixID').valueChanges.pipe(
       startWith(''),
@@ -215,7 +224,7 @@ export class NewRegistrationComponent implements OnInit {
       AgeMonth: ['', [
         Validators.pattern("^[0-9]*$")]],
       AgeDay: ['', [
-      Validators.pattern("^[0-9]*$")]],
+        Validators.pattern("^[0-9]*$")]],
       PhoneNo: ['', [Validators.minLength(10),
       Validators.maxLength(15),
       Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
@@ -257,7 +266,7 @@ export class NewRegistrationComponent implements OnInit {
     //this._registerService.getHospitalCombo().subscribe(data => { this.HospitalList = data; })
   }
 
-  
+
 
   private _filterPrex(value: any): string[] {
     if (value) {
@@ -409,7 +418,7 @@ export class NewRegistrationComponent implements OnInit {
     }
   }
 
- 
+
   onChangeCountryList(StateId) {
     if (StateId > 0) {
 
@@ -492,11 +501,11 @@ export class NewRegistrationComponent implements OnInit {
     this.personalFormGroup.updateValueAndValidity();
 
 
-    if(this.registerObj.AgeMonth)
-      this.registerObj.AgeMonth =this.registerObj.AgeMonth.trim();
-    if(this.registerObj.AgeDay)
-      this.registerObj.AgeDay =this.registerObj.AgeDay.trim();
-    
+    if (this.registerObj.AgeMonth)
+      this.registerObj.AgeMonth = this.registerObj.AgeMonth.trim();
+    if (this.registerObj.AgeDay)
+      this.registerObj.AgeDay = this.registerObj.AgeDay.trim();
+
   }
 
   onChangeGenderList(prefixObj) {
@@ -556,7 +565,7 @@ export class NewRegistrationComponent implements OnInit {
           "isSeniorCitizen": 0,
           "Aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
           "pancardno": this.personalFormGroup.get('PanCardNo').value ? this.personalFormGroup.get('PanCardNo').value : 0,
-          "Photo":''//
+          "Photo": ''//
         }
       }
       console.log(m_data);
@@ -632,7 +641,7 @@ export class NewRegistrationComponent implements OnInit {
 
   }
 
-  onClose(){
+  onClose() {
     this.dialogRef.close();
   }
   onClear() {
@@ -641,7 +650,7 @@ export class NewRegistrationComponent implements OnInit {
     this.personalFormGroup = this.createPesonalForm();
     this.personalFormGroup.markAllAsTouched();
 
-    
+
     this.getPrefixList();
     this.getMaritalStatusList();
     this.getReligionList();

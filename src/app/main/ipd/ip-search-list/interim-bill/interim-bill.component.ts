@@ -218,7 +218,7 @@ export class InterimBillComponent implements OnInit {
     });  
 
     let PatientHeaderObj = {};
-    PatientHeaderObj['patientName'] = this.selectedAdvanceObj.PatientName;
+    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID || 0; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
     PatientHeaderObj['NetPayAmount'] = this.netAmount;

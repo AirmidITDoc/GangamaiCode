@@ -895,8 +895,10 @@ export class AppointmentComponent implements OnInit {
 
   }
   onEdit(row) {
-    this.registerObj = row;
+    // this.registerObj = row;
 
+    console.log(row)
+    debugger
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "85vw",
@@ -904,10 +906,11 @@ export class AppointmentComponent implements OnInit {
         width: "100%",
         data: {
           registerObj: row,
+          Submitflag:true
         },
       }
     );
-    this.getSelectedObj(row);
+    // this.getSelectedObj(row);
   }
 
   AppointmentCancle(visitId){
@@ -1156,6 +1159,7 @@ export class AppointmentComponent implements OnInit {
       this._AppointmentSreviceService.getAppointmentList(D_data).subscribe(
         (Visit) => {
           this.dataSource.data = Visit["Table1"] ?? [] as VisitMaster[];
+          console.log(this.dataSource.data)
           if (this.dataSource.data.length > 0) {
             this.Appointdetail( this.dataSource.data);
           }
@@ -1171,7 +1175,7 @@ export class AppointmentComponent implements OnInit {
       );
     }, 1000);
 
-   
+    console.log(this.dataSource.data)
   }
 
   Vtotalcount = 0;
@@ -1509,7 +1513,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   getSelectedObj(obj) {
-debugger
+
     this.RegOrPhoneflag = 'Entry from Registration';
     obj.AgeDay = obj.AgeDay.trim();
     obj.AgeMonth = obj.AgeMonth.trim();

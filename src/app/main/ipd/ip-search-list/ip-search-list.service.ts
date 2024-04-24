@@ -952,8 +952,8 @@ public getIpFinalBillReceipt(BillNo){
   return this._httpClient.get("InPatient/view-IP-BillReceipt?BillNo=" + BillNo);
 }
 
-public getIpDraftBillReceipt(BillNo){
-  return this._httpClient.get("InPatient/view-IP-DraftBillReceipt?BillNo=" + BillNo);
+public getIpDraftBillReceipt(AdmissionID){
+  return this._httpClient.get("InPatient/view-IP-DraftBillReceipt?AdmissionID=" + AdmissionID);
 }
 
 public getIpInterimBillReceipt(BillNo){
