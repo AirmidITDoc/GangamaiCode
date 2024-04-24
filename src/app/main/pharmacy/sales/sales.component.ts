@@ -1975,6 +1975,7 @@ export class SalesComponent implements OnInit {
       event.srcElement.removeAttribute('disabled');
       return;
     }
+    this.isLoading123 = true;
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashOnlinePaySave()
     }
@@ -1988,7 +1989,7 @@ export class SalesComponent implements OnInit {
     this.mobileno.nativeElement.focus();
     event.srcElement.removeAttribute('disabled');
   }
-
+  isLoading123 = false;
   onCashOnlinePaySave() {
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
@@ -2173,6 +2174,7 @@ export class SalesComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
+      this.isLoading123=false;
       this.sIsLoading = '';
     }, error => {
       this.toastr.error('API Error!', 'Error !', {
@@ -2194,6 +2196,7 @@ export class SalesComponent implements OnInit {
     PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
     PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //this.ItemSubform.get('FinalNetAmount').value;
+    this.isLoading123=false;
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
 
