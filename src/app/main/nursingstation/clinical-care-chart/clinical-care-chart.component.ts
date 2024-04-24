@@ -41,6 +41,20 @@ export class ClinicalCareChartComponent implements OnInit {
     'CVP',
     'Action'
   ]
+  displayedInOutput: string[] = [
+    'Date',
+    'Time',
+    'IV',
+    'Infusions',
+    'Boluses',
+    'Peroral',
+    'Perrt',
+    'Perjt',
+    'IntakeOther',
+    'Urine',
+    'Drange',
+    'Action'
+  ]
 
   FloorList:any=[];
   WardList:any=[];
@@ -53,9 +67,12 @@ export class ClinicalCareChartComponent implements OnInit {
   dsClinicalcarePatient = new MatTableDataSource<PatientList>();
   dsPainsAssessment =new MatTableDataSource<PainAssesList>();
   dsvitalsList =new MatTableDataSource<VitalsList>();
+  dsInputOutTable = new MatTableDataSource<INputOutputList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+  @ViewChild('Outputpaginator', { static: true }) public Outputpaginator: MatPaginator;
+
   
   constructor(
     public _ClinicalcareService:ClinicalCareChartService,
@@ -131,6 +148,35 @@ export class VitalsList {
       this.AVPU = VitalsList.AVPU || 0;
       this.TakenBy = VitalsList.TakenBy || 0;  
       this.CVP = VitalsList.CVP || 0; 
+    }
+  }
+}
+export class INputOutputList {
+  date: any;
+  time: any;
+  Temperature: any;
+  Pulse: any;
+  Respiration: any;
+  PainAssess: any;
+  BP: any;
+  MewaScore: any;
+  AVPU: any;
+  TakenBy: any; 
+  CVP:any;
+  constructor(INputOutputList) {
+    {
+
+      this.date = INputOutputList.date || 0;
+      this.time = INputOutputList.time || 0;
+      this.Temperature = INputOutputList.Temperature || 0;
+      this.Pulse = INputOutputList.Pulse || 0;
+      this.Respiration = INputOutputList.Respiration || 0;
+      this.Temperature = INputOutputList.Temperature || 0;
+      this.BP = INputOutputList.BP || 0;
+      this.MewaScore = INputOutputList.MewaScore || 0;
+      this.AVPU = INputOutputList.AVPU || 0;
+      this.TakenBy = INputOutputList.TakenBy || 0;  
+      this.CVP = INputOutputList.CVP || 0; 
     }
   }
 }

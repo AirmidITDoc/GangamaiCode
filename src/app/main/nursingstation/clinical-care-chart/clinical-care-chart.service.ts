@@ -12,6 +12,8 @@ export class ClinicalCareChartService {
   VitalsForm : FormGroup;
   SugarForm:FormGroup;
   OxygenForm:FormGroup;
+  ApacheScoreForm:FormGroup;
+  InPutOutputForm:FormGroup;
 
   constructor(
     public _formbuilder:FormBuilder,
@@ -20,7 +22,9 @@ export class ClinicalCareChartService {
    { this.MyForm = this.createMyForm(),
      this.VitalsForm = this.createVitalsForm(),
      this.SugarForm = this.createSugarForm(),
-     this.OxygenForm = this.CreateOxygenForm()
+     this.OxygenForm = this.CreateOxygenForm(),
+     this.ApacheScoreForm = this.CreateApachescoreForm(),
+     this.InPutOutputForm = this.CreateInputoutForm()
    }
 
    createMyForm(){
@@ -88,6 +92,65 @@ export class ClinicalCareChartService {
         OxygenRate:[''] ,
         SaturationWitho2:[''],
         FlowTrigger:['']
+      })
+    }
+    CreateApachescoreForm(){
+      return this._formbuilder.group({
+        Pulse:[''],
+        Respiraiton:[''],
+        TempRectal:[''],
+        MeanArterialPressure:[''],
+        ArterialPH:[''],
+        Oxygenation:[''],
+        SerumHCO3:[''],
+        WBC:[''],
+        Hematocrit:[''],
+        SerumCretinine:[''],
+        SerumPotassium:[''],
+        SerumSodium:[''],
+        EYEOpening:['0'] ,
+        VerbalResponse:['0'],
+        Motarresponse:['0'],
+        ChroniPoints:['0'],
+        TotalCGS:[''],
+        DeathRate:[''],
+        TotalApachescore:[''],
+        valueA:[''],
+        valueB:[''],
+        valueC:['']
+      })
+    }
+    CreateInputoutForm(){
+      return this._formbuilder.group({
+        IV:[''],
+        IVQty:[''],
+        PreOral:[''],
+        PreOralQty:[''],
+        PreJT:[''],
+        PreJTQty:[''],
+        PreRT:[''],
+        PreRTQty:[''],
+        Otiner:[''],
+        OtinerQty:[''],
+        PDHD:[''],
+        PDHDQty:[''],
+        Influsions:[''] ,
+        InflusionsQty:[''],
+        Boluses:[''],
+        BolusesQty:[''],
+        Urine:[''],
+        UrineQty:[''],
+        NGAspiratic:[''],
+        NGAspiraticQty:[''],
+        Drange:[''],
+        DrangeQty:[''],
+        Other:[''],
+        OtherQty:[''],
+        Stool:[''],
+        StoolQty:[''],
+        PDHDOutput:[''],
+        PDHDOutputQty:[''] 
+
       })
     }
 }
