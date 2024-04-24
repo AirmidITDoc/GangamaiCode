@@ -206,7 +206,7 @@ viewgetIPAdvanceReportPdf(contact) {
       tempObj.push(e.UserName);
       actualData.push(tempObj);
     });
-    let headers = [['RegNo', 'Date', 'PatientName', 'AdvanceNo', 'AdvanceAmount', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount',, 'ConcessionAmt','UserName']];
+    let headers = [['RegNo', 'Date', 'PatientName', 'AdvanceNo', 'AdvanceAmount', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount','ConcessionAmt','UserName']];
     this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Advance');
   }
 

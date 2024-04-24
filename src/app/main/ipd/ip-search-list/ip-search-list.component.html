@@ -131,7 +131,7 @@ dynamicTableHeight fusePerfectScrollbar>
                                 <mat-table #table matSort table="table1" [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
-                                    <ng-container matColumnDef="IsMLC" sticky>
+                                    <!-- <ng-container matColumnDef="IsMLC" sticky>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-100">IsMLC
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="w-100">
@@ -154,6 +154,22 @@ dynamicTableHeight fusePerfectScrollbar>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </mat-cell>
+                                    </ng-container> -->
+
+                                    <ng-container matColumnDef="IsMLC" sticky>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80"
+                                            style="color: white;">IsMLC
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-80">
+                                            <mat-icon *ngIf="contact.IsMLC=='1'; else noMLC "
+                                                matTooltip="IsNotMLC" class="pill green-600 s-16"
+                                                (click)="NewMLc(contact)">Yes
+                                            </mat-icon>
+                                            <ng-template #noMLC>
+                                                <span>--</span>
+                                            </ng-template>
+
                                         </mat-cell>
                                     </ng-container>
 
