@@ -76,6 +76,15 @@
             @include font-size(17px);
         }
     }
+    &.grid-container {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        height: 100%;
+        .layout-body {
+            display: grid;
+            grid-template-columns: auto 1fr;
+        }
+    }
 }
 .patient-info-row {
     display: flex;

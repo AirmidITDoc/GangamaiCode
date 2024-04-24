@@ -128,13 +128,25 @@
                                 <mat-table #table class="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
+                                    <ng-container matColumnDef="IsCancelled">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                                            IsCancelled
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            <div class="pill-icon">
+                                                <mat-icon style="border-radius:100% ;"*ngIf="!contact.IsCancelled=='0'"
+                                                    matTooltip="Appointment cancelled"
+                                                    class="red-600 s-16">circle</mat-icon>
+                                            </div>
+                                        </mat-cell>
+                                    </ng-container>
 
                                     <ng-container matColumnDef="AppDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AppointDate
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.AppDate}}
-                                        </mat-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.AppDate}}
+                                            </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="PatientName" fxLayoutAlign="start center">
@@ -188,27 +200,20 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsCancelled">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                            IsCancelled
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                            {{contact.IsCancelled}}
-                                        </mat-cell>
-                                    </ng-container>
+                                   
 
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-
-                                            <button mat-icon-button matTooltip="Appointment Cancle"   *ngIf="contact.IsCancelled=='0' "
-                                                (click)="CanclePhoneApp(contact)">
-                                                <mat-icon style="color: brown;">Cancle</mat-icon>
-                                            </button>
-
+                                            
                                             <button mat-icon-button matTooltip="print">
                                                 <mat-icon>print</mat-icon>
+                                            </button>
+
+                                            <button mat-icon-button matTooltip="Appointment Cancle" *ngIf="contact.IsCancelled=='0' "
+                                                (click)="CanclePhoneApp(contact)">
+                                                <mat-icon style="color: brown;">close</mat-icon>
                                             </button>
                                         </mat-cell>
                                     </ng-container>

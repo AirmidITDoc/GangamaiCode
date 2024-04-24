@@ -2,28 +2,11 @@
     height: 300px!important;
 }
 
-.highlight{
-    background: #e1f5fe;
-}
-
-.mat-table {
-    .mat-row {
-        cursor: pointer;
-        // &:hover {
-        //     background: white !important;
-        // }
-    }
-    .mat-header-cell {
-        color: white !important;
-    }
-}
-
 app-sale-popup{
     .mat-header-row {
     width:200;
     min-width: 700px;
     min-height: 30px;
-    background-color: blue;
   }
 
   .mat-row {

@@ -225,7 +225,7 @@ export class UpdateGRNComponent implements OnInit {
       this.GateEntryNo = this.registerObj.GateEntryNo;
       this.SupplierId = this.registerObj.SupplierId;
       this.StoreId = this.registerObj.StoreId;
-      // this.vPurchaseId = this.registerObj.PurchaseId;
+      // this._GRNList.GRNFinalForm.get('NetPayamt').setValue(this.registerObj.RoundingAmt);
       this.getSupplierSearchCombo();
       if (this.registerObj.Cash_CreditType)
         this.vCahchecked = 1;
@@ -900,8 +900,10 @@ export class UpdateGRNComponent implements OnInit {
     this.IGSTFinalAmount = IGSTAmt;
     return IGSTAmt;
   }
+  NetAmount:any;
   getTotalAmt(element) {
     let FinalRoundAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+    this.NetAmount = FinalRoundAmt ;
 
     this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
     this.vFinalDisAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
@@ -921,6 +923,19 @@ export class UpdateGRNComponent implements OnInit {
     this.vDiffNetRoundAmt = (parseFloat(this.vFinalNetAmount) - (FinalnetAmt)).toFixed(2);
 
     return this.vTotalFinalAmount;
+  }
+
+  AutoRoundingAmt(){
+    let roundingamt = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
+    if(roundingamt > 0){
+      let FinalnetAmt = (parseFloat(this.NetAmount) + parseFloat(roundingamt)).toFixed(2);
+      this._GRNList.GRNFinalForm.get('NetPayamt').setValue(FinalnetAmt);
+      
+    }else{
+      let FinalnetAmt = (parseFloat(this.NetAmount) + parseFloat(roundingamt)).toFixed(2);
+      this._GRNList.GRNFinalForm.get('NetPayamt').setValue(FinalnetAmt);
+    }
+ 
   }
   isDisc2Selected: boolean = false;
   onChangeDisc2(event) {
