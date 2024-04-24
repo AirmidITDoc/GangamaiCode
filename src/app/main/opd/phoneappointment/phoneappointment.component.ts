@@ -40,6 +40,7 @@ export class PhoneappointmentComponent implements OnInit {
 
   displayedColumns = [
     // 'PhoneAppId',
+    'IsCancelled',
     'AppDate',
     'PatientName',
     'Address',
@@ -47,7 +48,6 @@ export class PhoneappointmentComponent implements OnInit {
     'DepartmentName',
     'DoctorName',
     'PhAppDate',
-    'IsCancelled',
     'action'
   ];
 

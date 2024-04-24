@@ -149,10 +149,10 @@
                                                 style="overflow: auto;width:100%;">
 
                                                 <ng-container matColumnDef="PatientOldNew">
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-110">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-160">
                                                         <span class="mat-header-text">Patient</span>
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" class="w-110">
+                                                    <mat-cell *matCellDef="let contact" class="w-160">
                                                         <div class="patient-column gap-12" fxLayout="row">
                                                             <div class="patient-old-new" fxLayout="row"
                                                                 fxLayoutAlign="center">
@@ -183,38 +183,27 @@
 
                                                         <div class="phone-app" fxLayout="row" fxLayoutAlign="center">
                                                             <div class="pill-icon">
-                                                                <!-- <mat-icon style="border-radius:100% ;"
-                                                                        *ngIf="contact.PhoneAppId !==null"
-                                                                        matTooltip="Phone Appointment"
-                                                                        class=" cyan-600 s-16">circle
-                                                                    </mat-icon> -->
-
                                                                 <mat-icon *ngIf="contact.PhoneAppId == 0"
                                                                     matTooltip="Phone Appointment"
                                                                     class=" cyan-600 s-16">
                                                                     settings_phone</mat-icon>
-
-
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            
-                                                            <mat-icon style=" border-radius:100% ;"
-                                                            *ngIf="contact.IsCancelled=='0' "
-                                                            matTooltip="Edit"
-                                                            (click)="onEdit()">edit</mat-icon>
-
-                                                            <mat-icon style=" border-radius:100% ;"
-                                                                *ngIf="contact.IsCancelled=='0' "
-                                                                matTooltip="Appointment Cancle"
-                                                                (click)="AppointmentCancle()"
-                                                                class=" red-600 s-16">cancel_presentation</mat-icon>
-
+                                                        <div class="phone-app" fxLayout="row" fxLayoutAlign="center">
+                                                            <button mat-icon-button matTooltip="Edit" (click)="onEdit()">
+                                                                <mat-icon>edit</mat-icon>
+                                                            </button>
+                                                        
+                                                            <button mat-icon-button *ngIf="contact.IsCancelled=='0' " matTooltip="Appointment Cancle"
+                                                                (click)="AppointmentCancle()">
+                                                                <mat-icon>close</mat-icon>
+                                                            </button>
+                                                        
                                                         </div>
 
                                                     </mat-cell>
                                                 </ng-container>
-                                              
+
 
                                                 <ng-container matColumnDef="RegNoWithPrefix">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
@@ -232,7 +221,7 @@
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         <button mat-icon-button matTooltip="CrossConsultation"
                                                             (click)="NewCrossConsultation(contact)">
-                                                            <mat-icon>contacts</mat-icon>
+                                                            <mat-icon>cached icon</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
@@ -379,7 +368,7 @@
                                                         </button>
                                                         <button mat-icon-button matTooltip="CrossConsultation"
                                                             (click)="NewCrossConsultation(contact)">
-                                                            <mat-icon>contacts</mat-icon>
+                                                            <mat-icon>cached icon</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="print i card"
                                                             (click)="printIcard(contact)">
@@ -435,7 +424,7 @@
                                         <span><span class="net-amt-value text-primary">{{getNewPatient(dataSource.data)}}
                                         </span></span> -->
 
-                                            <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
+                                            <mat-paginator [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="25"
                                                 showFirstLastButtons [length]="resultsLength" (page)="getVisitList1()">
                                             </mat-paginator>
 
@@ -928,7 +917,7 @@
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>Phone Number</mat-label>
                                                             <input name="PhoneNo" formControlName="PhoneNo" #phone
-                                                                placeholder="Phone Number" matInput 
+                                                                placeholder="Phone Number" matInput
                                                                 [(ngModel)]="registerObj.PhoneNo" max="9999999999"
                                                                 min="1000000000" autocomplete="off" maxlength="10"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
