@@ -194,47 +194,27 @@
                                                                     class=" cyan-600 s-16">
                                                                     settings_phone</mat-icon>
 
+
                                                             </div>
+                                                        </div>
+                                                        <div>
+                                                            
+                                                            <mat-icon style=" border-radius:100% ;"
+                                                            *ngIf="contact.IsCancelled=='0' "
+                                                            matTooltip="Edit"
+                                                            (click)="onEdit()">edit</mat-icon>
+
+                                                            <mat-icon style=" border-radius:100% ;"
+                                                                *ngIf="contact.IsCancelled=='0' "
+                                                                matTooltip="Appointment Cancle"
+                                                                (click)="AppointmentCancle()"
+                                                                class=" red-600 s-16">cancel_presentation</mat-icon>
+
                                                         </div>
 
                                                     </mat-cell>
                                                 </ng-container>
-                                                <!-- <ng-container matColumnDef="MPbillNo" *ngIf="false">
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-40">
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" class="w-40">
-                                                        <mat-icon style=" border-radius:100% ;"
-                                                            *ngIf="contact.MPbillNo=='1'|| contact.MPbillNo=='2' "
-                                                            matTooltip="Bill Generated"
-                                                            class=" red-600 s-16">circle</mat-icon>
-                                                        <mat-icon style=" border: black 1px solid; border-radius:100% ;"
-                                                            *ngIf="contact.MPbillNo=='0' "
-                                                            matTooltip="Did not Generated Bill" class=" white-600 s-16">
-                                                            circle</mat-icon>
-                                                    </mat-cell>
-                                                </ng-container>
-                                                <ng-container matColumnDef="Edit" *ngIf="false">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                        class="w-40">
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-40">
-                                                        <button mat-icon-button matTooltip="Edit"
-                                                            (click)="Billpayment(contact)">
-                                                            <mat-icon>edit</mat-icon>
-                                                        </button>
-                                                    </mat-cell>
-                                                </ng-container>
-                                                <ng-container matColumnDef="Bill" *ngIf="false">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                        class="w-50">
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-50">
-                                                        <button mat-icon-button matTooltip="Bill"
-                                                            (click)="Billpayment(contact)">
-                                                            <mat-icon>payment</mat-icon>
-                                                        </button>
-                                                    </mat-cell>
-                                                </ng-container> -->
+                                              
 
                                                 <ng-container matColumnDef="RegNoWithPrefix">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
@@ -273,6 +253,17 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                         class="w-200">
                                                         <span class="mat-header-text">Patient Name</span>
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                                        <span> {{contact.PatientName}} </span>
+                                                    </mat-cell>
+                                                </ng-container>
+
+
+                                                <ng-container matColumnDef="DepartmentName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-200">
+                                                        <span class="mat-header-text">Department Name</span>
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                         <span> {{contact.PatientName}} </span>
@@ -423,7 +414,7 @@
                                                         <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                                     </mat-footer-cell>
                                                 </ng-container>
-
+                                                <!-- [ngClass]="contact.IsCancelled == '1' ? readonly" -->
                                                 <mat-header-row #table1HeaderRow
                                                     class="table-header-offwhite table1-header-row"
                                                     *matHeaderRowDef="displayedColumns; sticky: true">
@@ -704,10 +695,14 @@
                                                     </mat-form-field> -->
 
                                                     <mat-form-field appearance="outline">
-                                                        <input matInput
-                                                               [matDatepicker]="validFromPicker"  formControllName="DateOfBirth"  #bday  [value]="registerObj.DateofBirth"
-                                                               (keydown)="onEnterbday($event)" (dateChange)="onChangeDateofBirth($event.value)" placeholder="mm/dd/yyyy">
-                                                        <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+                                                        <input matInput [matDatepicker]="validFromPicker"
+                                                            formControllName="DateOfBirth" #bday
+                                                            [value]="registerObj.DateofBirth"
+                                                            (keydown)="onEnterbday($event)"
+                                                            (dateChange)="onChangeDateofBirth($event.value)"
+                                                            placeholder="mm/dd/yyyy">
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="validFromPicker"></mat-datepicker-toggle>
                                                         <mat-datepicker #validFromPicker></mat-datepicker>
                                                     </mat-form-field>
                                                 </div>
@@ -775,7 +770,8 @@
                                                         <input name="AadharCardNo" formControlName="AadharCardNo"
                                                             placeholder="AadharCard Number" matInput
                                                             [(ngModel)]="registerObj.AadharCardNo" type="number"
-                                                            #AadharCardNo (keydown)="onEnterAadharCardNo($event)" type="number"
+                                                            #AadharCardNo (keydown)="onEnterAadharCardNo($event)"
+                                                            type="number"
                                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
                                                         <mat-error class="error"
                                                             *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">Aadhar
@@ -929,16 +925,31 @@
                                                                 required</mat-error>
                                                         </mat-form-field>
 
-
-
                                                         <mat-form-field appearance="outline">
+                                                            <mat-label>Phone Number</mat-label>
+                                                            <input name="PhoneNo" formControlName="PhoneNo" #phone
+                                                                placeholder="Phone Number" matInput 
+                                                                [(ngModel)]="registerObj.PhoneNo" max="9999999999"
+                                                                min="1000000000" autocomplete="off" maxlength="10"
+                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                                                value="9876658688"
+                                                                (keydown.enter)="onEnterphone($event)"
+                                                                (blur)="onEnterphone($event)">
+                                                            <!-- <mat-error class="error"
+                                                                *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                                                                digits Mobile number is
+                                                                required</mat-error> -->
+                                                        </mat-form-field>
+
+
+                                                        <!-- <mat-form-field appearance="outline">
                                                             <mat-label>Phone Number</mat-label>
                                                             <input name="PhoneNo" formControlName="PhoneNo"
                                                                 placeholder="Phone Number" matInput #phone
                                                                 (keydown)="onEnterphone($event)"
                                                                 [(ngModel)]="registerObj.PhoneNo" minlength="10"
                                                                 maxlength="10" type="number" value="9876658688">
-                                                        </mat-form-field>
+                                                        </mat-form-field> -->
                                                     </div>
                                                 </div>
 
@@ -1032,8 +1043,7 @@
                                                     <mat-label>Patient Type</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
                                                         placeholder="Select Patient Type" matInput #ptype
-                                                        (keydown)="onEnterptype($event)"
-                                                        formControlName="PatientTypeID"
+                                                        (keydown)="onEnterptype($event)" formControlName="PatientTypeID"
                                                         [matAutocomplete]="autoPatientTypeID">
                                                     <span matSuffix style="display: flex;">
                                                         <mat-icon class="mat-icon-close"
@@ -1045,7 +1055,8 @@
                                                         [displayWith]="getOptionTextpatienttype">
                                                         <mat-option
                                                             *ngFor="let option of filteredOptionsPatientType | async"
-                                                            [value]="option">
+                                                            [value]="option"
+                                                            (onSelectionChange)="onChangePatient(option)">
                                                             {{option.PatientType}}
                                                         </mat-option>
                                                     </mat-autocomplete>
@@ -1063,13 +1074,12 @@
                                                     </mat-select>
                                                 </mat-form-field> -->
 
-                                                
+
                                                 <mat-form-field appearance="outline">
                                                     <mat-label>Tariff Name</mat-label>
                                                     <input matAutocompletePosition="below" type="text"
-                                                        placeholder="Select Patient Type" matInput  #tariff
-                                                        (keydown)="onEnterptariff($event)"
-                                                        formControlName="TariffId"
+                                                        placeholder="Select Patient Type" matInput #tariff
+                                                        (keydown)="onEnterptariff($event)" formControlName="TariffId"
                                                         [matAutocomplete]="autoTariffId">
                                                     <span matSuffix style="display: flex;">
                                                         <mat-icon class="mat-icon-close"
@@ -1079,8 +1089,7 @@
                                                     </span>
                                                     <mat-autocomplete #autoTariffId="matAutocomplete"
                                                         [displayWith]="getOptionTextTariff">
-                                                        <mat-option
-                                                            *ngFor="let option of filteredOptionsTarrif | async"
+                                                        <mat-option *ngFor="let option of filteredOptionsTarrif | async"
                                                             [value]="option">
                                                             {{option.TariffName}}
                                                         </mat-option>
@@ -1097,9 +1106,9 @@
                                                         formControlName="CompanyId" [matAutocomplete]="autoCompany">
                                                     <span matSuffix style="display: flex;">
                                                         <mat-icon class="mat-icon-close"
-                                                            (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
+                                                            (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected1 = false;">close</mat-icon>
                                                         <mat-icon class="mat-icon-close"
-                                                            (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
+                                                            (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected1 = false;">search</mat-icon>
                                                     </span>
                                                     <mat-autocomplete #autoCompany="matAutocomplete"
                                                         [displayWith]="getOptionTextCompany">

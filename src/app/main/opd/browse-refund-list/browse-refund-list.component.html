@@ -121,7 +121,15 @@
                                             {{element.RefundDate | date:'shortDate'}}
                                         </mat-cell>
                                     </ng-container>
-                                    
+                                    RefundNo
+
+                                    <ng-container matColumnDef="RefundNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            style="margin-top: 8px;">
+                                            RefundNo </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            {{element.RefundNo}} </mat-cell>
+                                    </ng-container>
                                     <ng-container matColumnDef="RegId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                             style="margin-top: 8px;">

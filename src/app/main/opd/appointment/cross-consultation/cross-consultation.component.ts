@@ -45,8 +45,8 @@ export class CrossConsultationComponent implements OnInit {
   PatientName: any;
   vUnitId: any;
   vPatienttypeId: any;
-
-
+  vOPIPNo: any;
+  VisitDate: any;
   date: Date;
 
 
@@ -80,7 +80,9 @@ export class CrossConsultationComponent implements OnInit {
       this.PatientHeaderObj = this.data;
       this.VisitId = this.PatientHeaderObj.VisitId;
       this.PatientName = this.PatientHeaderObj.PatientName;
-
+      this.vOPIPNo=this.PatientHeaderObj.RegId;
+      this.VisitDate=this.PatientHeaderObj.VistDateTime;
+      
       console.log(this.PatientHeaderObj);
     }
 

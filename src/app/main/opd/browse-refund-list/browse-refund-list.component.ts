@@ -39,6 +39,7 @@ export class BrowseRefundListComponent implements OnInit {
   MouseEvent = true;
   displayedColumns = [
     'RefundDate',
+    'RefundNo',
     'RegId',
     'PatientName',
     'PaymentDate',
