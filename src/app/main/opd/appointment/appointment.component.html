@@ -140,10 +140,10 @@
                                             </div>
                                             <mat-table #table matSort table="table1" [dataSource]="dataSource" class="appointment-table" id="app-table" (matSortChange)="getVisitList()" [@animateStagger]="{value:'50'}">
                                                 <ng-container matColumnDef="PatientOldNew">
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-110">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-160">
                                                         <span class="mat-header-text">Patient</span>
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" class="w-110">
+                                                    <mat-cell *matCellDef="let contact" class="w-160">
                                                         <div class="patient-column gap-12" fxLayout="row">
                                                             <div class="patient-old-new" fxLayout="row" fxLayoutAlign="center">
                                                                 <div class="pill-icon" fxLayout="row" fxLayoutAlign="center">
@@ -152,65 +152,29 @@
                                                                     </mat-icon>
                                                                 </div>
                                                             </div>
-                                                            <mat-icon *ngIf="contact.MPbillNo=='1'|| contact.MPbillNo=='2' " matTooltip="Bill Generated" class="pill red-600 s-16">circle</mat-icon>
-                                                            <mat-icon style=" border: black 1px solid;" *ngIf="contact.MPbillNo=='0' " matTooltip="Did not Generated Bill" class="pill white-600 s-16">
-                                                                circle
-                                                            </mat-icon>
+                                                            <div class="bill-generated" fxLayout="row" fxLayoutAlign="center">
+                                                                <mat-icon *ngIf="contact.MPbillNo=='1'|| contact.MPbillNo=='2' " matTooltip="Bill Generated" class="pill red-600 s-16">circle</mat-icon>
+                                                                <mat-icon style=" border: black 1px solid;" *ngIf="contact.MPbillNo=='0' " matTooltip="Did not Generated Bill" class="pill white-600 s-16">
+                                                                    circle
+                                                                </mat-icon>
+                                                            </div>
+                                                            <div class="phone-app" fxLayout="row" fxLayoutAlign="center">
+                                                                <div class="pill-icon">
+                                                                    <!-- <mat-icon style="border-radius:100% ;"
+                                                                            *ngIf="contact.PhoneAppId !==null"
+                                                                            matTooltip="Phone Appointment"
+                                                                            class=" cyan-600 s-16">circle
+                                                                        </mat-icon> -->
 
-                                                        </div>
-
-                                                        <div class="phone-app" fxLayout="row" fxLayoutAlign="center">
-                                                            <div class="pill-icon">
-                                                                <!-- <mat-icon style="border-radius:100% ;"
-                                                                        *ngIf="contact.PhoneAppId !==null"
-                                                                        matTooltip="Phone Appointment"
-                                                                        class=" cyan-600 s-16">circle
-                                                                    </mat-icon> -->
-
-                                                                <mat-icon *ngIf="contact.PhoneAppId == 0" matTooltip="Phone Appointment" class=" cyan-600 s-16">
-                                                                    settings_phone</mat-icon>
-
+                                                                    <mat-icon *ngIf="contact.PhoneAppId == 0" matTooltip="Phone Appointment" class=" cyan-600 s-16">
+                                                                        settings_phone
+                                                                    </mat-icon>
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                                    </mat-cell>
-                                                </ng-container>
-                                                <!-- <ng-container matColumnDef="MPbillNo" *ngIf="false">
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-40">
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" class="w-40">
-                                                        <mat-icon style=" border-radius:100% ;"
-                                                            *ngIf="contact.MPbillNo=='1'|| contact.MPbillNo=='2' "
-                                                            matTooltip="Bill Generated"
-                                                            class=" red-600 s-16">circle</mat-icon>
-                                                        <mat-icon style=" border: black 1px solid; border-radius:100% ;"
-                                                            *ngIf="contact.MPbillNo=='0' "
-                                                            matTooltip="Did not Generated Bill" class=" white-600 s-16">
-                                                            circle</mat-icon>
-                                                    </mat-cell>
-                                                </ng-container>
-                                                <ng-container matColumnDef="Edit" *ngIf="false">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                        class="w-40">
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-40">
-                                                        <button mat-icon-button matTooltip="Edit"
-                                                            (click)="Billpayment(contact)">
-                                                            <mat-icon>edit</mat-icon>
-                                                        </button>
-                                                    </mat-cell>
-                                                </ng-container>
-                                                <ng-container matColumnDef="Bill" *ngIf="false">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                        class="w-50">
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-50">
-                                                        <button mat-icon-button matTooltip="Bill"
-                                                            (click)="Billpayment(contact)">
-                                                            <mat-icon>payment</mat-icon>
-                                                        </button>
-                                                    </mat-cell>
-                                                </ng-container> -->
 
                                                 <ng-container matColumnDef="RegNoWithPrefix">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
@@ -226,7 +190,7 @@
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         <button mat-icon-button matTooltip="CrossConsultation" (click)="NewCrossConsultation(contact)">
-                                                            <mat-icon>contacts</mat-icon>
+                                                            <mat-icon>cached icon</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
@@ -246,6 +210,16 @@
                                                 <ng-container matColumnDef="PatientName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                                         <span class="mat-header-text">Patient Name</span>
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                                        <span> {{contact.PatientName}} </span>
+                                                    </mat-cell>
+                                                </ng-container>
+
+
+                                                <ng-container matColumnDef="DepartmentName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                                        <span class="mat-header-text">Department Name</span>
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                         <span> {{contact.PatientName}} </span>
@@ -325,10 +299,16 @@
                                                 </ng-container>
                                                 <!-- stickyEnd -->
                                                 <ng-container matColumnDef="action" stickyEnd>
-                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-180">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-220">
                                                         <span class="mat-header-text">Action</span>
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" class="w-180 gap-4">
+                                                    <mat-cell *matCellDef="let contact" class="w-220 gap-4">
+                                                        <button mat-icon-button matTooltip="Edit" (click)="onEdit()">
+                                                            <mat-icon>edit</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button *ngIf="contact.IsCancelled=='0' " matTooltip="Appointment Cancle" (click)="AppointmentCancle()">
+                                                            <mat-icon>close</mat-icon>
+                                                        </button>
                                                         <button *ngIf="false" mat-icon-button matTooltip="how_to_reg" (click)="getRecord(contact,m)">
                                                             <mat-icon>how_to_reg</mat-icon>
                                                         </button>
@@ -343,7 +323,7 @@
                                                             <mat-icon>payment</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="CrossConsultation" (click)="NewCrossConsultation(contact)">
-                                                            <mat-icon>contacts</mat-icon>
+                                                            <mat-icon>cached icon</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="print i card" (click)="printIcard(contact)">
                                                             <mat-icon>print</mat-icon>
@@ -373,9 +353,9 @@
                                                     </mat-footer-cell>
                                                 </ng-container>
 
-                                                <mat-header-row #table1HeaderRow class="table-header-offwhite table1-header-row min-width-1500" *matHeaderRowDef="displayedColumns; sticky: true">
+                                                <mat-header-row #table1HeaderRow class="table-header-offwhite  min-width-2000" *matHeaderRowDef="displayedColumns; sticky: true">
                                                 </mat-header-row>
-                                                <mat-row class="table1-row min-width-1500" #table1Row *matRowDef="let contact; columns: displayedColumns;" [ngClass]="contact.IsCancelled == '1' ? 'self-row' : ''" [@animate]="{value:'*',params:{y:'100%'}}">
+                                                <mat-row class=" min-width-2000" #table1Row *matRowDef="let contact; columns: displayedColumns;" [ngClass]="contact.IsCancelled == '1' ? 'self-row' : ''" [@animate]="{value:'*',params:{y:'100%'}}">
                                                 </mat-row>
                                                 <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" [ngClass]="{'make-gold': contact.IsCancelled }"></mat-row> -->
                                                 <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
@@ -386,7 +366,7 @@
                                         <span><span class="net-amt-value text-primary">{{getNewPatient(dataSource.data)}}
                                         </span></span> -->
 
-                                            <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12" showFirstLastButtons [length]="resultsLength" (page)="getVisitList1()">
+                                            <mat-paginator [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="25" showFirstLastButtons [length]="resultsLength" (page)="getVisitList1()">
                                             </mat-paginator>
 
 
@@ -751,12 +731,24 @@
                                                                 required</mat-error>
                                                         </mat-form-field>
 
-
-
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>Phone Number</mat-label>
-                                                            <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput #phone (keydown)="onEnterphone($event)" [(ngModel)]="registerObj.PhoneNo" minlength="10" maxlength="10" type="number" value="9876658688">
+                                                            <input name="PhoneNo" formControlName="PhoneNo" #phone placeholder="Phone Number" matInput [(ngModel)]="registerObj.PhoneNo" max="9999999999" min="1000000000" autocomplete="off" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" value="9876658688" (keydown.enter)="onEnterphone($event)" (blur)="onEnterphone($event)">
+                                                            <!-- <mat-error class="error"
+                                                                *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                                                                digits Mobile number is
+                                                                required</mat-error> -->
                                                         </mat-form-field>
+
+
+                                                        <!-- <mat-form-field appearance="outline">
+                                                            <mat-label>Phone Number</mat-label>
+                                                            <input name="PhoneNo" formControlName="PhoneNo"
+                                                                placeholder="Phone Number" matInput #phone
+                                                                (keydown)="onEnterphone($event)"
+                                                                [(ngModel)]="registerObj.PhoneNo" minlength="10"
+                                                                maxlength="10" type="number" value="9876658688">
+                                                        </mat-form-field> -->
                                                     </div>
                                                 </div>
 
@@ -841,7 +833,7 @@
                                                         <mat-icon class="mat-icon-close" (click)="VisitFormGroup.get('PatientTypeID').setValue(''); ispatienttypeSelected = false;">search</mat-icon>
                                                     </span>
                                                     <mat-autocomplete #autoPatientTypeID="matAutocomplete" [displayWith]="getOptionTextpatienttype">
-                                                        <mat-option *ngFor="let option of filteredOptionsPatientType | async" [value]="option">
+                                                        <mat-option *ngFor="let option of filteredOptionsPatientType | async" [value]="option" (onSelectionChange)="onChangePatient(option)">
                                                             {{option.PatientType}}
                                                         </mat-option>
                                                     </mat-autocomplete>
@@ -880,8 +872,8 @@
                                                     <mat-label>Company Name </mat-label>
                                                     <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput formControlName="CompanyId" [matAutocomplete]="autoCompany">
                                                     <span matSuffix style="display: flex;">
-                                                        <mat-icon class="mat-icon-close" (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
-                                                        <mat-icon class="mat-icon-close" (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
+                                                        <mat-icon class="mat-icon-close" (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected1 = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close" (click)="VisitFormGroup.get('CompanyId').setValue(''); isCompanySelected1 = false;">search</mat-icon>
                                                     </span>
                                                     <mat-autocomplete #autoCompany="matAutocomplete" [displayWith]="getOptionTextCompany">
                                                         <mat-option *ngFor="let option of filteredOptionsCompany | async" [value]="option">

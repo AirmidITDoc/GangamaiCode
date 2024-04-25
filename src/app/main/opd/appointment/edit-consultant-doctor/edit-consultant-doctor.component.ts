@@ -30,6 +30,7 @@ export class EditConsultantDoctorComponent implements OnInit {
     PatientName: any;
     searchFormGroup: FormGroup;
     VisitId:any;
+    VisitDate:any;
 
 //department filter
 public departmentFilterCtrl: FormControl = new FormControl();
@@ -45,6 +46,7 @@ public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     public _OpAppointmentService: AppointmentSreviceService,
     private formBuilder: FormBuilder,
+    private dialogRef :MatDialogRef<EditConsultantDoctorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
@@ -60,6 +62,7 @@ public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
     this.VisitId = this.PatientHeaderObj.VisitId;
     this.PatientName = this.PatientHeaderObj.PatientName;
     this.DoctorId = this.PatientHeaderObj.DoctorId;
+    this.VisitDate=this.PatientHeaderObj.VistDateTime;
     console.log(this.PatientHeaderObj);
     }
    
@@ -170,7 +173,7 @@ OnChangeDoctorList(departmentObj) {
 
   
   onClose() {
-    // this.dialogRef.close();
+    this.dialogRef.close();
   }
 
   onSubmit() {

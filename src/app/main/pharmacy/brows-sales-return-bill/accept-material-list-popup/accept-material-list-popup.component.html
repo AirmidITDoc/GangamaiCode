@@ -1,50 +1,66 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout simple right-sidebar" fusePerfectScrollbar dynamicTableHeight>
-    <div class="center" fusePerfectScrollbar style="overflow: auto;">
+<div class="page-layout simple right-sidebar inner-scroll inner-sidebar" fusePerfectScrollbar>
 
-        <mat-toolbar matDialogTitle class="mat-accent m-0">
+    <mat-toolbar class="accent" style="height:40px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutALign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Material List
+            </span>
+        </div>
+        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar>
+
+         <!-- <mat-toolbar matDialogTitle class="accent m-0">
             <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
                 <h3>Material List</h3>
                 <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-toolbar-row>
-        </mat-toolbar>
-
-        <div style="padding:10px; height: 100%;" fxLayoutGap="2px">
+        </mat-toolbar> -->
+    <div class="contact">
+        <div style="padding:10px;" fxLayoutGap="2px">
             <div class="dialog-content-wrapper" style="align-items: flex-end;margin-right:10px;">
                 <div fxlayout="row">
-                    <div style="width: 100%">
+                    <div style="width: 100%;">
                         <mat-table #table matSort [dataSource]="dsItemList" style="overflow: auto">
 
                             <ng-container matColumnDef="Action">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                    <span class="material-icons" >
-                 
+                                    <span class="material-icons">
+
                                         cached
                                     </span>
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"
-                                    [(ngModel)]="contact.selected" [disabled]="contact.Status==1">
+                                        [(ngModel)]="contact.selected" [disabled]="contact.Status==1">
                                     </mat-checkbox>
                                 </mat-cell>
                             </ng-container>
 
-                            
+
 
                             <ng-container matColumnDef="Status">
                                 <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-                            
+
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <mat-icon *ngIf="contact.Status==1" matTooltip="Verified"
-                                    class="pill green-600 s-16">circle</mat-icon>
+                                        class="pill green-600 s-16">circle</mat-icon>
                                     <mat-icon *ngIf="contact.Status==0" matTooltip="Pending"
-                                    class="pill red-600 s-16">circle</mat-icon>
+                                        class="pill red-600 s-16">circle</mat-icon>
                                     <!-- <mat-icon *ngIf="contact.Status==2" matTooltip="Returned"
                                     class="pill orenge-600 s-16">circle</mat-icon> -->
                                 </mat-cell>
-                              </ng-container>
-                              
+                            </ng-container>
+
                             <ng-container matColumnDef="ItemName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                     ItemName
@@ -111,12 +127,10 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-navigation-container" fxLayout.gt-xs="row">
-                <div style="float: right;margin-top: 20px;">
-                    <button class="next-btn" color="accent" style="border-radius: 16px;"
-                        (click)="onSubmit()">Save</button>
-                    <button class="footer-btn" id="btncancel" (click)="onClose()">Cancel</button>
-                </div>
+            <div class="modal-footer-buttons gap-8 p-16" fxLayout="row" fxLayoutAlign="end center">
+                <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+                <button class="btn btn-primary " (click)="onSubmit()">Save</button>
+
             </div>
         </div>
     </div>

@@ -322,6 +322,7 @@ export class SearchInforObj
      storage: any;
      IsMLC:any;
      NetPayableAmt:any;
+     CompanyName:any;
      /**
      * Constructor
      *
@@ -359,6 +360,7 @@ export class SearchInforObj
             this.SubCompanyId =SearchInforObj.SubCompanyId || 0;
             this.PatientTypeID =SearchInforObj.PatientTypeID || 0;
            this.NetPayableAmt =SearchInforObj.NetPayableAmt || 0;
+           this.CompanyName=SearchInforObj.CompanyName || ''
         }
     }
 }

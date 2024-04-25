@@ -311,8 +311,8 @@ export class IPSearchListComponent implements OnInit {
       const dialogRef = this._matDialog.open(DischargeSummaryComponent,
         {
 
-          maxWidth: "105vw",
-          height: '110vh',
+          maxWidth: "80vw",
+          height: '90vh',
           width: '100%',
 
         });
