@@ -245,13 +245,11 @@
                                         <mat-header-cell *matHeaderCellDef style="color: white;">Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-
-                                            <button mat-icon-button (click)="getViewbill(contact)" matTooltip="how_to_reg">
+                                            <!-- <button mat-icon-button (click)="getViewbill(contact)" matTooltip="how_to_reg">
                                                 <mat-icon>how_to_reg</mat-icon>
-                                            </button>
+                                            </button> -->
                                             <button mat-icon-button (click)="viewgetOPBillReportPdf(contact)" matTooltip="print">
                                                 <mat-icon>print</mat-icon>
-
                                             </button>
                                             <button mat-icon-button class="material-icons" (click)="getRecord(contact,'EMAIL')" matTooltip="email">
                                                 <mat-icon>email</mat-icon>
@@ -259,6 +257,12 @@
                                             <button mat-icon-button class="material-icons" (click)="getRecord(contact,'SMS')" matTooltip="message">
                                                 <mat-icon> message </mat-icon>
                                             </button>
+
+                                            <button mat-icon-button matTooltip="Send Bill On WhatsApp">
+                                                <img width="100" height="20px"
+                                                    src="assets/images/logos/WhatsApp.png">
+                                            </button>
+
                                         </mat-cell>
                                     </ng-container>
 
