@@ -358,8 +358,8 @@ export class SampleCollectionComponent implements OnInit {
 
     const dialogRef = this._matDialog.open(SampleDetailComponent,
       {
-        maxWidth: "90vw",
-        maxHeight: "90vh", width: '100%', height: "100%",
+        maxWidth: "70vw",
+        maxHeight: "80vh", width: '100%', height: "100%",
         data: {
           BillNo: contact.BillNo,
           OP_IP_Type: contact.PatientType,
@@ -433,8 +433,8 @@ export class SampleCollectionComponent implements OnInit {
 
     const dialogRef1 = this._matDialog1.open(SampledetailtwoComponent,
       {
-        maxWidth: "85vw",
-        height: '520px',
+        maxWidth: "70vw",
+        height: '80vh',
         width: '100%',
         data: {
           BillNo: contact.BillNo,

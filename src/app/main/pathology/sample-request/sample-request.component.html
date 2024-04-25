@@ -144,11 +144,11 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="PatientName" sticky>
+                                        <ng-container matColumnDef="PatientName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 PatientName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm [matTooltip]="contact.PatientName">
                                                 <span> {{contact.PatientName}}</span>
                                             </mat-cell>
                                         </ng-container>
@@ -175,7 +175,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 WardName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md [matTooltip]="contact.WardName">
                                                 <span> {{contact.WardName}}</span>
                                             </mat-cell>
                                         </ng-container>

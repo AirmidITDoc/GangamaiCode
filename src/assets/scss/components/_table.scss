@@ -131,7 +131,7 @@
                     background: t($ngt-inverse);
                 }
                 &.self-row,
-                .highlight {
+                &.highlight {
                     background-color: t($ngt-primary-50);
                     color: t($text-color);
                     border-bottom: 1px solid t($input-border);
