@@ -545,7 +545,7 @@ export class IPBillingComponent implements OnInit {
     this.serviceId = obj.ServiceId;
     this.b_isPath = obj.IsPathology;
     this.b_isRad = obj.IsRadiology;
-
+debugger
 
     if (obj.IsDocEditable) {
       this.Serviceform.get('DoctorID').reset();

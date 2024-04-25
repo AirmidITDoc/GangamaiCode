@@ -115,7 +115,7 @@ export class NewRegistrationComponent implements OnInit {
     public datePipe: DatePipe,
     private router: Router,
 
-  ) { }
+  ) { console.log(this.data) }
 
 
   ngOnInit(): void {
@@ -139,7 +139,7 @@ export class NewRegistrationComponent implements OnInit {
       debugger
 
         this.registerObj = this.data.registerObj;
-
+     
         this.RegId = this.registerObj.RegId;
         this.isDisabled = true
         if(this.registerObj.AgeYear)
