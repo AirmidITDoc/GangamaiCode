@@ -292,7 +292,7 @@ export class ResultEntryComponent implements OnInit {
     this.SOPIPtype = m.OPD_IPD_Type;
     this.SFromDate = this.datePipe.transform(m.PathDate, "yyyy-MM-dd ");
 
-    debugger
+    // debugger
     var m_data = {
       "BillNo": m.BillNo,
       "OP_IP_Type": m.OPD_IPD_Type,
@@ -316,7 +316,7 @@ export class ResultEntryComponent implements OnInit {
   }
 
   SearchTest($event) {
-debugger
+// debugger
     var m_data = {
       "BillNo": this.SBillNo,
       "OP_IP_Type": this.SOPIPtype,
@@ -372,7 +372,7 @@ debugger
     this.advanceDataStored.storage = new SampleDetailObj(xx);
     // this.ServiceIdList.push(m.ServiceId);
     console.log(m);
-    debugger
+    // debugger
     if (m.IsTemplateTest == 1) {
       this.advanceDataStored.storage = new SampleDetailObj(xx);
       const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
@@ -449,7 +449,7 @@ debugger
   }
 
   getPrint(el) {
-    debugger
+    // debugger
     console.log(el);
     if (el.IsTemplateTest == 1) {
 
@@ -529,7 +529,7 @@ debugger
         this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
         this.printTemplate = this.printTemplate.replace('StrPathDate', this.transform(objreportPrint.PathDate));
         this.printTemplate = this.printTemplate.replace('StrReportDate', this.transformReportDate(objreportPrint.ReportDate));
-        debugger;
+        // debugger;
         // if( objreportPrint.ResultValue > objreportPrint.NormalRange){
         //   var strabc = `
 
@@ -725,7 +725,7 @@ debugger
 
 
   onExport(exprtType) {
-    // debugger;
+    // // debugger;
     // let columnList=[];
     // if(this.dataSource.data.length == 0){
     //   // this.toastr.error("No Data Found");
@@ -809,7 +809,7 @@ debugger
 
 
   onExport1(exprtType) {
-    // debugger;
+    // // debugger;
     // let columnList=[];
     // if(this.dataSource1.data.length == 0){
     //   // this.toastr.error("No Data Found");

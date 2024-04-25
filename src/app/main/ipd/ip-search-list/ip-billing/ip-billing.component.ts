@@ -516,24 +516,22 @@ export class IPBillingComponent implements OnInit {
   @ViewChild('disc') disc: ElementRef;
 
   public onEnterqty(event): void {
-
-    if(event.which === 13) {
-    if (this.isDoctor) {
-      this.doctorname.nativeElement.focus();
-    }
-    else {
-      this.disc.nativeElement.focus();
-      // this.calculateTotalAmt()
-    }
-  }
-    }
-    
-    public onEnterdoctor(event): void {
-
-      if(event.which === 13) {
+    if (event.which === 13) {
+      if (this.isDoctor) {
+        this.doctorname.nativeElement.focus();
+      }
+      else {
         this.disc.nativeElement.focus();
+        // this.calculateTotalAmt()
       }
     }
+  }
+
+  public onEnterdoctor(event): void {
+    if (event.which === 13) {
+      this.disc.nativeElement.focus();
+    }
+  }
 
 
   getSelectedObj(obj) {
@@ -545,7 +543,7 @@ export class IPBillingComponent implements OnInit {
     this.serviceId = obj.ServiceId;
     this.b_isPath = obj.IsPathology;
     this.b_isRad = obj.IsRadiology;
-
+debugger
 
     if (obj.IsDocEditable) {
       this.Serviceform.get('DoctorID').reset();

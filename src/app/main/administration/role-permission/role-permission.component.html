@@ -1,4 +1,4 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout simple right-sidebar role-permission h-100-p">
+<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex class="page-layout simple right-sidebar role-permission h-100-p" *ngIf="false">
     <div class="center" fusePerfectScrollbar>
         <div class="modal-wrapper">
             <div class="modal-header">
@@ -8,7 +8,7 @@
                     </div>
                     <div class="modal-header-icon">
                         <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                            <span class="modal-icon" >
+                            <span class="modal-icon">
                                 <mat-icon>close</mat-icon>
                             </span>
                         </button>
@@ -42,9 +42,7 @@
                                             View?
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                            <mat-checkbox [checked]="element.isView" [value]="element.isView"
-                                                (change)="valueChange(element,'view',$event)"
-                                                style="margin-right: 2px;font-size: 12px;">View
+                                            <mat-checkbox [checked]="element.isView" [value]="element.isView" (change)="valueChange(element,'view',$event)" style="margin-right: 2px;font-size: 12px;">View
                                             </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
@@ -53,9 +51,7 @@
                                             Add?
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                            <mat-checkbox [checked]="element.isAdd"
-                                                style="margin-right: 2px;font-size: 12px;"
-                                                (change)="valueChange(element,'add',$event)">Add
+                                            <mat-checkbox [checked]="element.isAdd" style="margin-right: 2px;font-size: 12px;" (change)="valueChange(element,'add',$event)">Add
                                             </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
@@ -64,9 +60,7 @@
                                             Edit?
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                            <mat-checkbox [checked]="element.isEdit"
-                                                style="margin-right: 2px;font-size: 12px;"
-                                                (change)="valueChange(element,'edit',$event)">Edit
+                                            <mat-checkbox [checked]="element.isEdit" style="margin-right: 2px;font-size: 12px;" (change)="valueChange(element,'edit',$event)">Edit
                                             </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
@@ -75,140 +69,102 @@
                                             Delete?
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                            <mat-checkbox [checked]="element.isDelete"
-                                                style="margin-right: 2px;font-size: 12px;"
-                                                (change)="valueChange(element,'delete',$event)">Delete
+                                            <mat-checkbox [checked]="element.isDelete" style="margin-right: 2px;font-size: 12px;" (change)="valueChange(element,'delete',$event)">Delete
                                             </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns;sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let row;columns: displayedColumns" class="element"
-                                        [@animate]="{value: '*',params: { y: '100%' }}"></mat-row>
+                                    <mat-row *matRowDef="let row;columns: displayedColumns" class="element" [@animate]="{value: '*',params: { y: '100%' }}"></mat-row>
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
-                                    showFirstLastButtons>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
                                 </mat-paginator>
                             </div>
-                            <cdk-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl">
-                                <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node">
-                                    <div class="tree-container">
-                                        <div class="label-section">
-                                            <button mat-icon-button disabled></button>
-                                            <mat-label>{{node.title}}</mat-label>
+                            <div class="cdk-tree-section" *ngIf="false">
+                                <cdk-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl">
+                                    <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node">
+                                        <div class="tree-container">
+                                            <div class="label-section">
+                                                <button mat-icon-button disabled></button>
+                                                <mat-label>{{node.title}}</mat-label>
+                                            </div>
+                                            <div class="checkbox-section">
+                                                <table style="width: 70%;display: inline-block;vertical-align: middle;">
+                                                    <tr>
+                                                        <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'view',$event)" [checked]="node.isView">View</mat-checkbox></th>
+                                                        <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'add',$event)" [checked]="node.isAdd">Add</mat-checkbox></th>
+                                                        <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'edit',$event)" [checked]="node.isEdit">Edit</mat-checkbox></th>
+                                                        <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'delete',$event)" [checked]="node.isDelete">Delete</mat-checkbox></th>
+                                                    </tr>
+                                                </table>
+                                            </div>
                                         </div>
+                                    </cdk-nested-tree-node>
+                                    <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasNestedChild" class="example-tree-node">
+                                        <div class="tree-container">
+                                            <div class="label-section">
+                                                <button mat-icon-button [attr.aria-label]="'toggle ' + node.title" cdkTreeNodeToggle>
+                                                    <mat-icon class="mat-icon-rtl-mirror">
+                                                        {{nestedTreeControl.isExpanded(node) ? 'expand_more' :
+                                                        'chevron_right'}}
+                                                    </mat-icon>
+                                                </button>
+                                                <mat-label>{{node.title}}</mat-label>
+                                            </div>
+                                            <div class="checkbox-section">
+                                                <table style="width: 70%;display: inline-block;vertical-align: middle;">
+                                                    <tr>
+                                                        <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'view',$event)" [checked]="node.isView">View</mat-checkbox></th>
+                                                        <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'add',$event)" [checked]="node.isAdd">Add</mat-checkbox></th>
+                                                        <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'edit',$event)" [checked]="node.isEdit">Edit</mat-checkbox></th>
+                                                        <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'delete',$event)" [checked]="node.isDelete">Delete</mat-checkbox></th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">
+                                            <ng-container cdkTreeNodeOutlet></ng-container>
+                                        </div>
+                                    </cdk-nested-tree-node>
+                                </cdk-tree>
+                            </div>
+                        </div>
+                        <div fxLayout="column">
+                            <table mat-table [dataSource]="dataSource" class="w-100-p">
+                                <ng-container matColumnDef="name">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <span [style.paddingLeft.px]="40"> Title </span>
+                                    </th>
+                                    <td mat-cell *matCellDef="let data">
+                                        <button mat-icon-button [style.visibility]="!data.expandable ? 'hidden' : ''" [style.marginLeft.px]="data.level * 32" (click)="treeControl.toggle(data)">
+                                            <mat-icon class="mat-icon-rtl-mirror">
+                                                {{treeControl.isExpanded(data) ? 'expand_more' : 'chevron_right'}}
+                                            </mat-icon>
+                                        </button>
+
+                                        {{data.title}}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="count">
+                                    <th mat-header-cell *matHeaderCellDef> Permissions </th>
+                                    <td mat-cell *matCellDef="let data">
                                         <div class="checkbox-section">
                                             <table style="width: 70%;display: inline-block;vertical-align: middle;">
                                                 <tr>
-                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                            (change)="updatePermission(node,'view',$event)"
-                                                            [checked]="node.isView">View</mat-checkbox></th>
-                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                            (change)="updatePermission(node,'add',$event)"
-                                                            [checked]="node.isAdd">Add</mat-checkbox></th>
-                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                            (change)="updatePermission(node,'edit',$event)"
-                                                            [checked]="node.isEdit">Edit</mat-checkbox></th>
-                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                            (change)="updatePermission(node,'delete',$event)"
-                                                            [checked]="node.isDelete">Delete</mat-checkbox></th>
+                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'view',$event)" [checked]="data.isView">View</mat-checkbox></th>
+                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'add',$event)" [checked]="data.isAdd">Add</mat-checkbox></th>
+                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'edit',$event)" [checked]="data.isEdit">Edit</mat-checkbox></th>
+                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'delete',$event)" [checked]="data.isDelete">Delete</mat-checkbox></th>
                                                 </tr>
                                             </table>
                                         </div>
-                                    </div>
-                                </cdk-nested-tree-node>
-                                <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasNestedChild"
-                                    class="example-tree-node">
-                                    <div class="tree-container">
-                                        <div class="label-section">
-                                            <button mat-icon-button [attr.aria-label]="'toggle ' + node.title"
-                                                cdkTreeNodeToggle>
-                                                <mat-icon class="mat-icon-rtl-mirror">
-                                                    {{nestedTreeControl.isExpanded(node) ? 'expand_more' :
-                                                    'chevron_right'}}
-                                                </mat-icon>
-                                            </button>
-                                            <mat-label>{{node.title}}</mat-label>
-                                        </div>
-                                        <div class="checkbox-section">
-                                            <table style="width: 70%;display: inline-block;vertical-align: middle;">
-                                                <tr>
-                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                            (change)="updatePermission(node,'view',$event)"
-                                                            [checked]="node.isView">View</mat-checkbox></th>
-                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                            (change)="updatePermission(node,'add',$event)"
-                                                            [checked]="node.isAdd">Add</mat-checkbox></th>
-                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                            (change)="updatePermission(node,'edit',$event)"
-                                                            [checked]="node.isEdit">Edit</mat-checkbox></th>
-                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                            (change)="updatePermission(node,'delete',$event)"
-                                                            [checked]="node.isDelete">Delete</mat-checkbox></th>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">
-                                        <ng-container cdkTreeNodeOutlet></ng-container>
-                                    </div>
-                                </cdk-nested-tree-node>
-                            </cdk-tree>
-                            
+                                    </td>
+                                </ng-container>
 
-
-                            
-                            <cdk-tree *ngIf="false" [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl">
-                                <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node">
-                                    <button mat-icon-button disabled></button>
-                                    <mat-label>{{node.title}}</mat-label>
-                                    <table style="width: 70%;display: inline-block;vertical-align: middle;">
-                                        <tr>
-                                            <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                    (change)="updatePermission(node,'view',$event)"
-                                                    [checked]="node.isView">View</mat-checkbox></th>
-                                            <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                    (change)="updatePermission(node,'add',$event)"
-                                                    [checked]="node.isAdd">Add</mat-checkbox></th>
-                                            <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                    (change)="updatePermission(node,'edit',$event)"
-                                                    [checked]="node.isEdit">Edit</mat-checkbox></th>
-                                            <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                    (change)="updatePermission(node,'delete',$event)"
-                                                    [checked]="node.isDelete">Delete</mat-checkbox></th>
-                                        </tr>
-                                    </table>
-                                </cdk-nested-tree-node>
-                                <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasNestedChild"
-                                    class="example-tree-node">
-                                    <button mat-icon-button [attr.aria-label]="'toggle ' + node.title"
-                                        cdkTreeNodeToggle>
-                                        <mat-icon class="mat-icon-rtl-mirror">
-                                            {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-                                        </mat-icon>
-                                    </button>
-                                    <mat-label>{{node.title}}</mat-label>
-                                    <table style="width: 70%;display: inline-block;vertical-align: middle;">
-                                        <tr>
-                                            <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                    (change)="updatePermission(node,'view',$event)"
-                                                    [checked]="node.isView">View</mat-checkbox></th>
-                                            <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                    (change)="updatePermission(node,'add',$event)"
-                                                    [checked]="node.isAdd">Add</mat-checkbox></th>
-                                            <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                    (change)="updatePermission(node,'edit',$event)"
-                                                    [checked]="node.isEdit">Edit</mat-checkbox></th>
-                                            <th style="width:25%"><mat-checkbox class="checklist-leaf-node"
-                                                    (change)="updatePermission(node,'delete',$event)"
-                                                    [checked]="node.isDelete">Delete</mat-checkbox></th>
-                                        </tr>
-                                    </table>
-                                    <div [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">
-                                        <ng-container cdkTreeNodeOutlet></ng-container>
-                                    </div>
-                                </cdk-nested-tree-node>
-                            </cdk-tree>
+                                <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns" class="accent"></tr> -->
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -228,5 +184,103 @@
 
             </mat-toolbar-row>
         </mat-toolbar>
+    </div>
+</div>
+
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Role Permission</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+                <div class="modal-card-container">
+                    <mat-card>
+                        <div class="table-wrapper border-radius-4">
+                            <mat-table mat-table [dataSource]="dataSource" class="w-100-p">
+                                <ng-container matColumnDef="name">
+                                    <mat-header-cell mat-header-cell *matHeaderCellDef>
+                                        <span [style.paddingLeft.px]="40"> Title </span>
+                                    </mat-header-cell>
+                                    <mat-cell mat-cell *matCellDef="let data">
+                                        <div (click)="treeControl.toggle(data)">
+                                            <button mat-icon-button [style.visibility]="!data.expandable ? 'hidden' : ''" [style.marginLeft.px]="data.level * 32">
+                                                <mat-icon class="mat-icon-rtl-mirror">
+                                                    {{treeControl.isExpanded(data) ? 'expand_more' : 'chevron_right'}}
+                                                </mat-icon>
+                                            </button>
+                                            {{data.title}}
+                                        </div>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="count">
+                                    <mat-header-cell mat-header-cell *matHeaderCellDef> Permissions </mat-header-cell>
+                                    <mat-cell mat-cell *matCellDef="let data">
+                                        <div class="checkbox-section">
+                                            <!-- <table style="display: inline-block;vertical-align: middle;">
+                                                <tr>
+                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'view',$event)" [checked]="data.isView">View</mat-checkbox></th>
+                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'add',$event)" [checked]="data.isAdd">Add</mat-checkbox></th>
+                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'edit',$event)" [checked]="data.isEdit">Edit</mat-checkbox></th>
+                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'delete',$event)" [checked]="data.isDelete">Delete</mat-checkbox></th>
+                                                </tr>
+                                            </table> -->
+                                            <div class="checkbox-list gap-16" fxLayout="row">
+                                                <div class="checkbox-item">
+                                                    <mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'view',$event)" [checked]="data.isView">View</mat-checkbox>
+                                                </div>
+                                                <div class="checkbox-item">
+                                                    <mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'add',$event)" [checked]="data.isAdd">Add</mat-checkbox>
+                                                </div>
+                                                <div class="checkbox-item">
+                                                    <mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'edit',$event)" [checked]="data.isEdit">Edit</mat-checkbox>
+                                                </div>
+                                                <div class="checkbox-item">
+                                                    <mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'delete',$event)" [checked]="data.isDelete">Delete</mat-checkbox>
+                                                </div>
+                                            </div>
+                                            <!-- <ul fxLayout="row" class="gap-8">
+                                                <li><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'view',$event)" [checked]="data.isView">View</mat-checkbox></li>
+                                                <li><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'add',$event)" [checked]="data.isAdd">Add</mat-checkbox></li>
+                                                <li><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'edit',$event)" [checked]="data.isEdit">Edit</mat-checkbox></li>
+                                                <li><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'delete',$event)" [checked]="data.isDelete">Delete</mat-checkbox></li>
+                                            </ul> -->
+                                        </div>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns" class="accent"></tr> -->
+                                <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+                                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                            </mat-table>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                <button class="btn btn-danger-outline" id="btncancel" (click)="onClose()">Cancel</button>
+            </div>
+        </div>
     </div>
 </div>

@@ -3,9 +3,9 @@
 app-appointment {
     body {
         background-color: transparent;
-        font-family:'verdana';
+        font-family: "verdana";
     }
-.id-card-holder {
+    .id-card-holder {
         width: 225px;
         padding: 4px;
         margin: 0 auto;
@@ -13,8 +13,8 @@ app-appointment {
         border-radius: 5px;
         position: relative;
     }
-.id-card-holder:after {
-        content: '';
+    .id-card-holder:after {
+        content: "";
         width: 7px;
         display: block;
         background-color: #0a0a0a;
@@ -23,8 +23,8 @@ app-appointment {
         top: 105px;
         border-radius: 0 5px 5px 0;
     }
-.id-card-holder:before {
-        content: '';
+    .id-card-holder:before {
+        content: "";
         width: 7px;
         display: block;
         background-color: #0a0a0a;
@@ -34,50 +34,49 @@ app-appointment {
         left: 222px;
         border-radius: 5px 0 0 5px;
     }
-.id-card {
-        
+    .id-card {
         background-color: #fff;
         padding: 10px;
         border-radius: 10px;
         text-align: center;
         box-shadow: 0 0 1.5px 0px #b9b9b9;
     }
-.id-card img {
+    .id-card img {
         margin: 0 auto;
     }
-.header img {
+    .header img {
         width: 100px;
         margin-top: 15px;
     }
-.photo img {
+    .photo img {
         width: 80px;
         margin-top: 15px;
     }
-h2 {
+    h2 {
         font-size: 15px;
         margin: 5px 0;
     }
-h3 {
+    h3 {
         font-size: 12px;
         margin: 2.5px 0;
         font-weight: 300;
     }
-.qr-code img {
+    .qr-code img {
         width: 50px;
     }
-p {
+    p {
         font-size: 5px;
         margin: 2px;
     }
-.id-card-hook {
+    .id-card-hook {
         background-color: black;
         width: 70px;
         margin: 0 auto;
         height: 15px;
         border-radius: 5px 5px 0 0;
     }
-.id-card-hook:after {
-        content: '';
+    .id-card-hook:after {
+        content: "";
         background-color: white;
         width: 47px;
         height: 6px;
@@ -87,7 +86,7 @@ p {
         top: 6px;
         border-radius: 4px;
     }
-.id-card-tag-strip {
+    .id-card-tag-strip {
         width: 45px;
         height: 40px;
         background-color: #d9300f;
@@ -98,8 +97,8 @@ p {
         z-index: 1;
         border: 1px solid #a11a00;
     }
-.id-card-tag-strip:after {
-        content: '';
+    .id-card-tag-strip:after {
+        content: "";
         display: block;
         width: 100%;
         height: 1px;
@@ -107,17 +106,16 @@ p {
         position: relative;
         top: 10px;
     }
-.id-card-tag {
+    .id-card-tag {
         width: 0;
         height: 0;
         border-left: 100px solid transparent;
         border-right: 100px solid transparent;
         border-top: 100px solid #d9300f;
         margin: -10px auto -30px auto;
-  
     }
-.id-card-tag:after {
-        content: '';
+    .id-card-tag:after {
+        content: "";
         display: block;
         width: 0;
         height: 0;
@@ -130,11 +128,6 @@ p {
         left: -50px;
     }
 
-
-
-
-
-    
     .example-container {
         position: absolute;
         top: 0;
@@ -142,14 +135,9 @@ p {
         left: 0;
         right: 0;
     }
- .auto-height-table mat-row {
+    .auto-height-table mat-row {
         height: auto !important;
     }
-
-}
-
-.mat-form-field-wrapper {
-    padding-bottom: 15px;
 }
 
 //Document upload
@@ -211,27 +199,7 @@ p {
     justify-content: space-between;
     // width:150px;
 }
-// By nikunj
-.appointment-table {
-    .table1-header-row,
-    .table1-row {
-        min-width: 1500px;
-        @include media-breakpoint("lt-lg") {
-            min-width: 500px;
-        }
-    }
-    .patient-column {
-        .pill-icon {
-            height: 16px;
-            width: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-    }
-}
 .table2 {
-    height: 380px !important;
 
     .mat-header-row {
         width: 100%;
@@ -277,9 +245,6 @@ p {
         min-width: 90px;
         text-align: left;
         justify-content: left;
-    }
-    .mat-header-cell {
-        color: black !important;
     }
 }
 // Image
@@ -419,7 +384,6 @@ p {
     padding: 0 24px;
 }
 
-
 .coms-m-t-5 {
     margin-top: 5px !important;
 }
@@ -436,4 +400,4 @@ p {
 }
 .make-gold {
     background-color: gold;
-  }
+}

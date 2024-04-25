@@ -262,7 +262,7 @@ export class AppointmentComponent implements OnInit {
     // "Bill",
     "RegNoWithPrefix",
     "PatientName",
-     "DepartmentName",
+    //  "DepartmentName",
     "DVisitDate",
     "VisitTime",
     "OPDNo",
