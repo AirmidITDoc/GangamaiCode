@@ -93,6 +93,7 @@ export class ClinicalCareChartComponent implements OnInit {
   public setFocus(nextElementId): void {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
   }
+ 
 }
 export class PatientList {
   patientId: any;

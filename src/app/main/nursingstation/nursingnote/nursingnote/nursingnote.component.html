@@ -1,139 +1,213 @@
-<div class="dialog-content-wrapper">
-
-    <div class="dialog-content-wrapper">
-        <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-            fxLayoutAlign.gt-xs="space-between center " style="height: 40px;width: 100%;">
-
-            <!-- APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
-                <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon> -->
-
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                    style="font-size: 20px;width: 70%; font-weight: 400;">
-                    Nurse Template Note
-                </span>
-
-                <div fxLayout="column" fxLayout.gt-xs="row">
-                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                        style="border-color: red;"></app-common-date>
-                    <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
-                        (click)="onClose()">
-                        close
-                    </span>
-                </div>
-            </div>
-
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+    <mat-toolbar style="width: 100%;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Nursing Note
+            </span>
         </div>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
 
+            <div class="content-card">
 
-<div class="content-card">
-    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-        <form style="width: 100%;">
-            <div fxFlex.gt-sm="100%" fxFlex>
-                <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                    <!-- ================================ LABEL HEADER  -->
-                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                            <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
-                            </h3>
+                <form [formGroup]="_NursingStationService.myform">
+                    <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+
+                        <div fxFlex="row">
+                            <fieldset fxFlex style="background-color:rgba(225, 226, 223, 0.981); border-radius: 10px; ">
+                                <legend>Patient Details</legend>
+
+                                <div fxLayout="row">
+                                    <div fxFlex="row">
+                                        <div>
+                                            <h3 class="labels-h4">Reg No
+                                                <span style="margin-left:5px;margin-right: 5px;">:</span>
+                                            </h3>
+                                        </div>
+                                        <div style="width: 100px;">
+                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        </div>
+
+                                    </div>
+
+                                    <div fxFlex="row">
+                                        <div>
+                                            <h3 class="labels-h4">Ward Name
+                                                <span style="margin-left:5px;margin-right: 5px;">:</span>
+                                            </h3>
+                                        </div>
+                                        <div style="width: 180px;">
+                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        </div>
+
+                                    </div>
+
+                                    <div fxFlex="row">
+                                        <div style="margin-left: 5px;">
+                                            <h3 class="labels-h4">Bed No
+                                                <span style="margin-left:5px;">:</span>
+                                            </h3>
+                                        </div>
+                                        <div style="width: 100px;">
+                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        </div>
+
+                                    </div>
+
+                                    <div fxFlex="row">
+                                        <div>
+                                            <h3 class="labels-h4">Patient Name
+                                                <span style="margin-left:5px;margin-right: 5px;">:</span>
+                                            </h3>
+                                        </div>
+                                        <div style="width: 180px;">
+                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        </div>
+
+                                    </div>
+
+                                    <div fxFlex="row">
+                                        <div>
+                                            <h3 class="labels-h4">Gender
+                                                <span style="margin-left:5px;margin-right: 5px;">:</span>
+                                            </h3>
+                                        </div>
+                                        <div style="width: 120px;">
+                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        </div>
+
+                                    </div>
+
+                                    <div fxFlex="row">
+                                        <div style="margin-left: 5px;">
+                                            <h3 class="labels-h4">Age
+                                                <span style="margin-left:5px;">:</span>
+                                            </h3>
+                                        </div>
+                                        <div style="width: 100px;">
+                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </fieldset>
                         </div>
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
-                            style="align-items: baseline;">
 
-                            <!-- <span class="label">Reg No :</span>
-                            <span class="data_input">{{selectedAdvanceObj.RegNo}}</span>
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <div fxFlex.gt-sm="40%" fxFlex>
+                                <mat-table class="table2" matSort [dataSource]="dsNursingNoteList"
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;height:450px;">
 
-                            <span class="label"> Patient Name : </span>
-                            <span class="data_input">{{selectedAdvanceObj.PatientName}}</span>
+                                    <ng-container matColumnDef="VDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            VDate </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.VDate}} </mat-cell>
+                                    </ng-container>
 
-                            <span class="label">Doctor Name : </span>
-                            <span class="data_input">{{selectedAdvanceObj.Doctorname}}</span> -->
+                                    <ng-container matColumnDef="Time">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Time </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.Time}} </mat-cell>
+                                    </ng-container>
 
-                            <!-- <span class="label">Age(Y) :</span>
-                        <span class="data_input">{{selectedAdvanceObj.AgeYear}}
-                        </span> -->
+                                    <ng-container matColumnDef="Note">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Note </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.Note}} </mat-cell>
+                                    </ng-container>
 
-                            <!-- <span class="label">Room Name : </span>
-                        <span class="data_input">{{selectedAdvanceObj.WardName}} 
-                         
-                        </span>-->
+                                    <ng-container matColumnDef="Action">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Action </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            {{element.Action}} </mat-cell>
+                                    </ng-container>
 
-                            <app-common-date [screenFrom]="screenFromString"
-                                (dateTimeEventEmitter)="getDateTime($event)">
-                            </app-common-date>
-                        </div>
-                    </mat-card>
-                    <!-- ================================ LABEL HEADER  -->
-                </div>
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
 
-            </div>
-        </form>
-    </div>
-</div>
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
 
-<mat-card style="width:100%;height: 100%;">
-    <form [formGroup]="_NursingStationService.myform">
-        <input type="hidden" name="TemplateId" formControlName="TemplateId">
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsNursingNoteList!=null && dsNursingNoteList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                                    showFirstLastButtons>
+                                </mat-paginator>
+                            </div>
+                            <div fxFlex.gt-sm="60%" fxFlex>
+                                <div fxLayout="column" fxLayoutGap="5px">
+                                    <div fxLayout="row" fxLayoutGap="4px">
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-            <div class="editor" style="overflow: auto;height:500px !important;">
+                                        <mat-form-field appearance="outline" fxFlex="50%">
+                                            <mat-label>Notes</mat-label>
+                                            <mat-select formControlName="Note" placeholder="Bank" #singleSelect>
+                                                <mat-option>
+                                                    <ngx-mat-select-search [formControl]="pathodoctorFilterCtrl"
+                                                        [placeholderLabel]="'Search'"
+                                                        [noEntriesFoundLabel]="'No matching found'">
+                                                    </ngx-mat-select-search>
+                                                </mat-option>
+                                                <mat-option *ngFor="let element of filteredPathDoctor | async"
+                                                    [value]="element">
+                                                    {{element.DoctorName}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>&nbsp;&nbsp;&nbsp; 
 
-                <mat-form-field appearance="outline" style="margin-left:20px;margin-right:20px ;width:50%;">
-                    <mat-label>NurseTempName</mat-label>
-                    <input name="nursTempName" formControlName="nursTempName" placeholder="NursTempName" matInput>
-                  </mat-form-field>
+                                        <button type="button" class="btn btn-primary btn-with-icon py-8" #addbutton
+                                            id="btnAdd">
+                                            <mat-icon>add</mat-icon>
+                                        </button>&nbsp;&nbsp;&nbsp;
 
-<!-- 
-                <ejs-richtexteditor id='iframeRTE' [toolbarSettings]='tools'
-                    style="height:90% !important ;overflow:auto;" [(ngModel)]="TemplateDesc"
-                    formControlName="TemplateDesc">
-                    <ng-template #valueTemplate>
-                        <p></p>
+                                        <app-common-date [screenFrom]="screenFromString" style="padding-left: 100px;"
+                                            (dateTimeEventEmitter)="getDateTime($event)">
+                                        </app-common-date> 
 
-                    </ng-template>
-                </ejs-richtexteditor>` -->
-            </div>
+                                    </div>
 
-           
+                                    <div> 
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Description</mat-label>
+                                            <textarea matInput name="Description" formControlName="DoctorID"
+                                                placeholder="Add Note....." type="text" id="Description" #description
+                                                required style="height: 360px;"></textarea>
+                                        </mat-form-field> 
+                                    </div>
+                                    <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end">
+                                        <button mat-raised-button class="py-8"><mat-icon>add</mat-icon>New
+                                            Template</button> &nbsp;&nbsp;
+                                        <button class="btn btn-danger-outline">Reset</button>&nbsp;&nbsp;
+                                        <button class="btn btn-primary ">Save</button>&nbsp;&nbsp;
+ 
+                                    </div>
+                                </div> 
+                            </div> 
+                        </div>  
+                    </div>
+                </form>
+            </div> 
         </div>
-
-       <div fxLayout.gt-xs="row" fxLayoutGap="5px">
-
-        <!-- NursTempName -->
-        <mat-form-field appearance="outline" fxFlex style="width:40%;">
-            <mat-label>Doctor Name</mat-label>
-            <mat-select formControlName="DoctorID" placeholder="Bank" #singleSelect>
-                <mat-option>
-                    <ngx-mat-select-search [formControl]="pathodoctorFilterCtrl"
-                        [placeholderLabel]="'Search'"
-                        [noEntriesFoundLabel]="'No matching found'">
-                    </ngx-mat-select-search>
-                </mat-option>
-                <mat-option *ngFor="let element of filteredPathDoctor | async"
-                    [value]="element">
-                    {{element.DoctorName}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-
     </div>
-        <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
-          
-            <div class="button-row" fxLayout="row" style="float: right;margin-left:85%;">
-
-                <button class="next-btn" (click)="onSubmit()" mat-raised-button fxLayoutAlign="center center"
-                     style="border-radius: 16px;">
-                    Save
-                    <!-- [disabled]="otherForm.invalid" -->
-                </button>
-
-                <button class="footer-btn" (click)="onClose()" mat-raised-button fxLayoutAlign="center center"
-                    style="border-radius: 16px;">Cancel</button>
-
-            </div>
-        </div>
-    </form>
-</mat-card>
-
 </div>

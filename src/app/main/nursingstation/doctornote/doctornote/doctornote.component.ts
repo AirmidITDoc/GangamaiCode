@@ -12,6 +12,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-doctornote',
@@ -21,7 +22,10 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations,
 })
 export class DoctornoteComponent implements OnInit {
-
+  displayedColumns: string[] = [
+    'RegNo',
+    'PatienName' 
+  ]
  
   currentDate = new Date();
   public tools: object = {
@@ -60,7 +64,7 @@ DoctorsNotes:any;
 //   selectedAdvanceObj: SampleDetailObj;
   screenFromString = 'opd-casepaper';
   sIsLoading: string = '';
-  // dataSource = new MatTableDataSource<PthologyTemplateresult>();
+  dsDoctorNoteList = new MatTableDataSource;
   Pthologyresult:any=[];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;

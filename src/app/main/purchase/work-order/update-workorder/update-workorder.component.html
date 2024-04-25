@@ -135,14 +135,14 @@
 
                             <mat-form-field appearance="outline" fxFlex="5%">
                                 <mat-label>Disc %</mat-label>
-                                <input name="Disc" formControlName="Disc" matInput [(ngModel)]="vDis" name="Dis" #disc  
+                                <input name="Disc" formControlName="Disc" matInput [(ngModel)]="vDis" name="Dis" #disc required 
                                     (keydown)="onEnterDis($event)" type="text" OnlyNumber (keyup)="calculateDiscperAmount()">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="6%">
                                 <mat-label>Disc Amount</mat-label>
                                 <input name="DiscAmt" formControlName="DiscAmt" matInput [(ngModel)]="vDiscAmt"
-                                    name="DiscAmount" readonly type="text" OnlyNumber>
+                                    name="DiscAmount" readonly type="text" OnlyNumber >
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="5%">
@@ -163,11 +163,11 @@
                                 required>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex="12%">
+                            <!-- <mat-form-field appearance="outline" fxFlex="12%">
                                 <mat-label>Specification</mat-label>
                                 <input name="Specification" formControlName="Specification" matInput #specification
                                     [(ngModel)]="vSpecification" (keydown)="onEnterSpecification($event)" type="text">
-                            </mat-form-field>&nbsp;
+                            </mat-form-field>&nbsp; -->
 
                             <!-- <button mat-raised-button fxLayoutAlign="center center" #addbutton class="add-btn"
                                 [disabled]="!add" (click)="onAdd($event)">
@@ -176,7 +176,8 @@
                             </button> -->
 
                             <div matTooltip="Select All Value to enable this button!!">
-                                <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()" [disabled]="addbtn">
+                                <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()" 
+                                [disabled]="_WorkOrderService.WorkorderItemForm.invalid" >
                                     <mat-icon>add</mat-icon>
                                 </button>
                             </div>
@@ -319,12 +320,12 @@
                                     {{element.NetAmount | number:'1.2-2'}} </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="Specification">
+                            <!-- <ng-container matColumnDef="Specification">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                     Remark </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element" 5fxHide fxShow.gt-sm>
                                     {{element.Remark}} </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
 
                             <ng-container matColumnDef="loading">
                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
