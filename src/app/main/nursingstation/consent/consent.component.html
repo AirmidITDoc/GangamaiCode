@@ -221,9 +221,14 @@
                                 </mat-radio-group>
                             </div>
 
-                            <div>
-                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:20pxpx;" [(ngModel)]="vTemplateDesc" required
+                            <div >
+                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"  [(ngModel)]="vTemplateDesc" required
                                 formControlName="TemplateDesc"></angular-editor>   
+                            </div>
+
+                            <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end center" style="padding: 10px;">  
+                                <button class="btn btn-danger-outline">Reset</button>
+                                <button class="btn btn-primary">Save</button>
                             </div>
                         </form>
                     </div>

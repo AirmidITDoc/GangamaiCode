@@ -32,7 +32,7 @@ export class UpdateWorkorderComponent implements OnInit {
     'Vat',
     'VatAmt',
     'NetAmt',
-    'Specification' ,
+    //'Specification' ,
     'action'
   ];
 
@@ -238,7 +238,7 @@ export class UpdateWorkorderComponent implements OnInit {
         VATPer: this.vGST || 0,
         VATAmount: this.vGSTAmt || 0,
         NetAmount: this.vNetAmount || 0,
-        Remark: this.vSpecification.toString() ,
+       //Remark: this.vSpecification || " "
       });
       this.dsItemNameList.data = this.chargeslist;
 
@@ -494,7 +494,7 @@ getTotalAmt(element) {
       insertWorkDetailaObj['vatAmount'] = element.VATAmount;
       insertWorkDetailaObj['vatPer'] = element.VATPer;
       insertWorkDetailaObj['netAmount'] = element.NetAmount;
-      insertWorkDetailaObj['remark'] = element.Remark || 0;
+      insertWorkDetailaObj['remark'] =  0;
      
       InsertWorkDetailarrayObj.push(insertWorkDetailaObj);
     });
@@ -553,12 +553,11 @@ getTotalAmt(element) {
   @ViewChild('rate') rate: ElementRef;
   @ViewChild('disc') disc: ElementRef;
   @ViewChild('gst') gst: ElementRef;
-  @ViewChild('specification') specification: ElementRef;
-
+  @ViewChild('specification') specification: ElementRef; 
   add: boolean = false;
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
   @ViewChild('Remark1') Remark1: ElementRef;
-  
+  @ViewChild('addbutton') addbutton: ElementRef;
   public onEnterSupplier(event): void {
     if (event.which === 13) {
       this.itemid.nativeElement.focus();
@@ -583,8 +582,7 @@ getTotalAmt(element) {
   }
   public onEnterDis(event): void {
     if (event.which === 13) {
-      this.gst.nativeElement.focus();
-    
+      this.gst.nativeElement.focus(); 
     }
   }
   public onEnterGST(event): void {
@@ -594,7 +592,9 @@ getTotalAmt(element) {
   } 
   public onEnterSpecification(event): void {
     if (event.which === 13) {
-      this.addbtn=false;
+     
+      //this.addbutton.nativeElement.focus();
+      //this.addBtn.nativeElement.focus();
     }
   }
   public onEnterRemark(event): void {
