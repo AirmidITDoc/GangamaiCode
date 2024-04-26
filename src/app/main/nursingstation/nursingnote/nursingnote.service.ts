@@ -15,19 +15,8 @@ export class NursingnoteService {
      
   createtemplateForm(): FormGroup {
     return this._formBuilder.group({
-      TemplateId: [''],
-      TemplateName: [''],
-      TemplateDesc: [''],
-      IsDeleted: ['false'],
-      AddedBy: ['0'],
-      UpdatedBy: ['0'],
-      AddedByName: [''],
-
-      DoctorsNotes: ['', Validators.required],
-      DoctNoteId: [0],
-      DoctorID: [0],
-
-      NursTempName: '',
+      Note: [''], 
+      Description:['']
     });
   }
 

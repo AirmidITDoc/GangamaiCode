@@ -145,6 +145,30 @@ vToStoreId:any=0;
         this.sIsLoading = '';
       });
   }
+  SpinLoading: boolean = false;
+  viewgetIndentVerifyReportPdf(contact) {
+    console.log(contact)
+    this.sIsLoading == 'loading-data'
+    setTimeout(() => {
+    this.SpinLoading =true;
+    this._IndentService.getIndentVerifyview(contact.IndentId).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Indent Verify Report Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.sIsLoading = '';
+        });
+    });
+    },1000);
+  }
+
   vStoreId2: any = 0
   getToStoreSearchList() {
     this._IndentService.getToStoreNameSearch().subscribe(data => {

@@ -12,6 +12,7 @@ import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-nursingnote',
@@ -21,7 +22,12 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations,
 })
 export class NursingnoteComponent implements OnInit {
-
+  displayedColumns: string[] = [
+    'VDate',
+    'Time',
+    'Note',
+    'Action'
+  ]
  
   currentDate = new Date();
   public tools: object = {
@@ -50,17 +56,11 @@ SuggestionNotes:any;
 isLoading:any;
 subscriptionArr: Subscription[] = [];
 TemplateDesc:any;
-// reportPrintObj: Templateprintdetail;
-// reportPrintObjList: SampleDetailObj[] = [];
-//   reportPrintObjs: SampleDetailObj ;
-//   regobj : PthologyTemplateresult ;
 
-//   isLoading: string = '';
-//   msg: any;
-//   selectedAdvanceObj: SampleDetailObj;
+
   screenFromString = 'opd-casepaper';
   sIsLoading: string = '';
-  // dataSource = new MatTableDataSource<PthologyTemplateresult>();
+  dsNursingNoteList = new MatTableDataSource ;
   Pthologyresult:any=[];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
