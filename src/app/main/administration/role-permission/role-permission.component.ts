@@ -2351,12 +2351,13 @@ export class RolePermissionComponent implements OnInit {
             isAdd: node.isAdd,
             isEdit: node.isEdit,
             isDelete: node.isDelete,
-            menuId: node.menuId,
+            menuId: node.id,
             id: node.id,
             translate: node.translate,
             type: node.type,
             icon: node.icon,
             level: level,
+            children: node.children
         };
     };
 
@@ -2394,13 +2395,13 @@ export class RolePermissionComponent implements OnInit {
         public dialogRef: MatDialogRef<RolePermissionComponent>,
     ) {
         // Added by nikunj
-        this.dataSource.data = FILE_DATA;
+        //this.dataSource.data = FILE_DATA;
         // ---------------------------------------------------------------------------
         // this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
         //this.nestedDataSource = TREE_DATA;
-        // this._RoleService.getmenus(1).subscribe((Menu) => {
-        //     this.nestedDataSource = Menu as FileNode[];
-        // });
+        this._RoleService.getmenus(this.data.RoleId).subscribe((Menu) => {
+            this.dataSource.data = Menu as FileNode[];
+        });
     }
 
     hasNestedChild = (_: number, nodeData: FileNode) => nodeData.children;
@@ -2422,91 +2423,22 @@ export class RolePermissionComponent implements OnInit {
             this.dsPermissionList.paginator = this.paginator;
         });
     }
-    valueChange(obj, type, $event) {
-        let lstItem = this.dsPermissionList.data.find(x => x.menuId == obj.menuId);
-        if (type == 'view') {
-            lstItem.isView = $event.checked;
-        }
-        else if (type == 'add') {
-            lstItem.isAdd = $event.checked;
-        }
-        else if (type == 'edit') {
-            lstItem.isEdit = $event.checked;
-        }
-        else if (type == 'delete') {
-            lstItem.isDelete = $event.checked;
-        }
-    }
-    chkunchk(lstItem, type, proptype, $event) {
-        if ((lstItem?.children?.length ?? 0) > 0) {
-            for (let i = 0; i < lstItem.children.length; i++) {
-                lstItem.children[i][proptype] = $event.checked;
-                let item = this.dsPermissionList.data.find(x => x.menuId == lstItem.children[i].id);
-                this.valueChange(item, type, $event);
-            }
-        }
-        lstItem[proptype] = $event.checked;
-        let item = this.dsPermissionList.data.find(x => x.menuId == lstItem.id);
-        this.valueChange(item, type, $event);
-    }
     updatePermission(obj, type, $event) {
         let proptype = "";
         if (type == 'view') proptype = "isView";
         else if (type == 'add') proptype = "isAdd";
         else if (type == 'edit') proptype = "isEdit";
         else if (type == 'delete') proptype = "isDelete";
-        obj.isView = $event.checked;
-        if ((obj?.children?.length ?? 0) > 0) {
-            for (let i = 0; i < obj.children.length; i++) {
-                this.chkunchk(obj.children[i], type, proptype, $event);
+        const descendants = this.treeControl.getDescendants(obj);
+        for (let i = 0; i < descendants.length; i++) {
+            //this.chkunchk(obj.children[i], type, proptype, $event);
+            descendants[i][proptype] = $event.checked;
+            if ((descendants[i].children ?? []).length > 0) {
+                for (let j = 0; j < descendants[i].children.length; j++) {
+                    descendants[i].children[j][proptype] = $event.checked;
+                }
             }
         }
-        //let lstItem = obj;// this.nestedDataSource.find(x => x.id == obj.id);
-        // if (type == 'view') {
-        //   lstItem.isView = $event.checked;
-        //   if ((lstItem?.children?.length ?? 0) > 0) {
-        //     for (let i = 0; i < lstItem.children.length; i++) {
-        //       if ((lstItem.children[i]?.children?.length ?? 0) > 0) {
-        //         lstItem.children[i].isView = $event.checked;
-        //         let item = this.dsPermissionList.data.find(x => x.menuId == lstItem.children[i].id);
-        //         this.valueChange(item, type, $event);
-        //       }
-        //       lstItem.children[i].isView = $event.checked;
-        //       let item = this.dsPermissionList.data.find(x => x.menuId == lstItem.children[i].id);
-        //       this.valueChange(item, type, $event);
-        //     }
-        //   }
-        // }
-        // else if (type == 'add') {
-        //   lstItem.isAdd = $event.checked;
-        //   if ((lstItem?.children?.length ?? 0) > 0) {
-        //     for (let i = 0; i < lstItem.children.length; i++) {
-        //       lstItem.children[i].isAdd = $event.checked;
-        //       let item = this.dsPermissionList.data.find(x => x.menuId == lstItem.children[i].id);
-        //       this.valueChange(item, type, $event);
-        //     }
-        //   }
-        // }
-        // else if (type == 'edit') {
-        //   lstItem.isEdit = $event.checked;
-        //   if ((lstItem?.children?.length ?? 0) > 0) {
-        //     for (let i = 0; i < lstItem.children.length; i++) {
-        //       lstItem.children[i].isEdit = $event.checked;
-        //       let item = this.dsPermissionList.data.find(x => x.menuId == lstItem.children[i].id);
-        //       this.valueChange(item, type, $event);
-        //     }
-        //   }
-        // }
-        // else if (type == 'delete') {
-        //   lstItem.isDelete = $event.checked;
-        //   if ((lstItem?.children?.length ?? 0) > 0) {
-        //     for (let i = 0; i < lstItem.children.length; i++) {
-        //       lstItem.children[i].isDelete = $event.checked;
-        //       let item = this.dsPermissionList.data.find(x => x.menuId == lstItem.children[i].id);
-        //       this.valueChange(item, type, $event);
-        //     }
-        //   }
-        // }
     }
 
 
