@@ -152,10 +152,10 @@
                                         <div class="checkbox-section">
                                             <table style="width: 70%;display: inline-block;vertical-align: middle;">
                                                 <tr>
-                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'view',$event)" [checked]="data.isView">View</mat-checkbox></th>
+                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'view',$event)" [checked]="data.isView">View</mat-checkbox></th>
                                                     <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'add',$event)" [checked]="data.isAdd">Add</mat-checkbox></th>
-                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'edit',$event)" [checked]="data.isEdit">Edit</mat-checkbox></th>
-                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(data,'delete',$event)" [checked]="data.isDelete">Delete</mat-checkbox></th>
+                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'edit',$event)" [checked]="data.isEdit">Edit</mat-checkbox></th>
+                                                    <th style="width:25%"><mat-checkbox class="checklist-leaf-node" (change)="updatePermission(node,'delete',$event)" [checked]="data.isDelete">Delete</mat-checkbox></th>
                                                 </tr>
                                             </table>
                                         </div>
