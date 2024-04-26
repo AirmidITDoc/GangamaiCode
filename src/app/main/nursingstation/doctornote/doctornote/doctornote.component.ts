@@ -26,6 +26,23 @@ export class DoctornoteComponent implements OnInit {
     'RegNo',
     'PatienName' 
   ]
+  displayedDoctorNote: string[] = [
+    'VDate',
+    'Time',
+    'Note',
+    'Action'
+  ]
+  displayedHandOverNote: string[] = [
+    'VDate',
+    'Time',
+    'Shift',
+    'I',
+    'S',
+    'B',
+    'A',
+    'R',
+    'Action'
+  ]
  
   currentDate = new Date();
   public tools: object = {
@@ -64,7 +81,11 @@ DoctorsNotes:any;
 //   selectedAdvanceObj: SampleDetailObj;
   screenFromString = 'opd-casepaper';
   sIsLoading: string = '';
+
+  dsPatientList = new MatTableDataSource;
   dsDoctorNoteList = new MatTableDataSource;
+  dsHandOverNoteList = new MatTableDataSource;
+
   Pthologyresult:any=[];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
