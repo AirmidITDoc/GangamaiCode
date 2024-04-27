@@ -257,13 +257,16 @@
                 </div>
 
                 <br/>
-                <div fxLayout="row" style=" float: right;">
-                    <button class="next-btn" color="accent" style="border-radius: 16px;" (click)="onSubmit()" [disabled]="personalFormGroup.invalid">Save</button>
-                    <button class="footer-btn" id="btncancel" (click)="closeDialog()" >Cancel</button>
-                    <button class="next-btn" color="accent" style="border-radius: 16px;width: auto;" (click)="Otnote()" [disabled]="personalFormGroup.invalid">OTNote</button>
-                    <button class="footer-btn" id="btncancel" (click)="OPreOPrativenote()" style="width: auto;">Pre & Post OPrative Note</button>
-     
-
+               
+                <div class="footer-navigation-container">
+           
+                    <div class="modal-footer-buttons">
+                        
+                        <button class="btn btn-danger-outline" (click)="closeDialog()">Cancel</button>
+                        <button class="btn btn-primary" (click)="onSubmit()" [disabled]="personalFormGroup.invalid">Save</button>
+                        <button class="btn btn-primary" (click)="Otnote()" [disabled]="personalFormGroup.invalid">OTNote</button>
+                        <button class="btn btn-primary" (click)="OPreOPrativenote()" >Pre & Post OPrative Note</button>
+                    </div>
                 </div>
             </form>
         </div>

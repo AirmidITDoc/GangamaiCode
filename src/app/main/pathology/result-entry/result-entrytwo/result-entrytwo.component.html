@@ -94,13 +94,14 @@
 
             <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 10px;margin-left: 1000px;">
 
-                <div class="button-row" fxLayout="row">
-                    <button mat-raised-button color="primary" style="margin: 5px;border-radius: 16px;"
-                        (click)="onPrint()">Print</button>
-                    <button type="submit" class="next-btn" (click)="onSubmit()"
-                        style="border-radius: 16px;">Save</button>
-                    <!--     [disabled]="_SampleService.myform.invalid" -->
-                    <button class="footer-btn" (click)="onClear()" style="border-radius: 16px;">Clear</button>
+               
+                <div class="footer-navigation-container">
+           
+                    <div class="modal-footer-buttons">
+                        <button class="btn btn-primary" (click)="onPrint()" >Print</button>
+                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                        <button class="btn btn-primary" (click)="onSubmit()" \>Save</button>
+                    </div>
                 </div>
 
             </div>
@@ -109,4 +110,3 @@
     </div>
 </div>
 
-//

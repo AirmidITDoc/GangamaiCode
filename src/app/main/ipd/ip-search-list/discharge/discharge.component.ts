@@ -13,6 +13,7 @@ import { AdvanceDataStored } from '../../advance';
 import { DatePipe } from '@angular/common';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-discharge',
@@ -212,14 +213,23 @@ export class DischargeComponent implements OnInit {
 
 }
 
-  // getDoctor1List() {
-  //   this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
-  //     this.Doctor1List = data;
-  //     this.filteredDoctorone.next(this.Doctor1List.slice());
-  //     this._IpSearchListService.mySaveForm.get('DoctorID').setValue(this.Doctor1List[0]);
-  //   });
+viewgetCheckoutslipPdf(AdmId) {
 
-  // }
+  this._IpSearchListService.getIpDischargeReceipt(
+    AdmId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "CHECK OUT SLIP Viewer"
+        }
+      });
+  });
+}
 
   getDoctor1List() {
     this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
@@ -272,6 +282,8 @@ debugger;
           if (result.isConfirmed) {
             let m = response;
             this._matDialog.closeAll();
+            console.log(response)
+            this.viewgetCheckoutslipPdf(response)
           }
         });
       } else {
@@ -312,6 +324,7 @@ debugger;
           if (result.isConfirmed) {
             let m = response;
             this._matDialog.closeAll();
+            this.viewgetCheckoutslipPdf(response)
           }
         });
       } else {

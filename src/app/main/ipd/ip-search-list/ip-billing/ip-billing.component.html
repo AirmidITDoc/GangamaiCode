@@ -372,12 +372,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-
-                                    <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.Price" (keyup)="getTotalAmount(contact)">
-                                        <span matPrefix>₹</span>
-
-                                    </mat-form-field>
+                                    <span> {{contact.Price}}</span>
                                 </mat-cell>
                             </ng-container>
 
@@ -385,12 +380,9 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.Qty" (keyup)="getTotalAmount(contact)">
-                                    </mat-form-field>
+                                    <span> {{contact.Qty}}</span>
                                 </mat-cell>
                             </ng-container>
-
                             <ng-container matColumnDef="TotalAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
                                 </mat-header-cell>
@@ -461,9 +453,7 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
                                     <ng-container class="actions">
-                                        <!-- <span class="material-icons" style="cursor: pointer;color: #5b5858;">
-                                            edit
-                                        </span> -->
+                                       
                                         <span class="material-icons" style="cursor: pointer;color: #5b5858;"
                                             (click)="deleteTableRow(contact)">
                                             delete
@@ -712,7 +702,7 @@
                     <div class="footer-container" fxLayoutAlign="start center">
 
                         <div class="row row-container" style="width: 100%;">
-                            <!-- <div class="som"> -->
+                          
                             <div class="amount-section" fxLayout="column" class="gap-12">
                                 <div class="net-amt-section mb-2 mt-16">
                                     <div class="net-amt gap-24">
@@ -726,17 +716,22 @@
                                                 currency:'INR' }}</span>
                                         </div>
                                         <div class="net-amt-box">
+                                            <span class="net-amt-label">Disc Amt : </span>
+                                            <span class="net-amt-value">{{getDiscountSum(dataSource.data) | currency:'INR'}}</span>
+                                        </div>
+
+                                        <div class="net-amt-box">
                                             <span class="net-amt-label">Net Amt : </span>
-                                            <span class="net-amt-value">{{getNetAmtSum(dataSource.data) | currency:'INR'
-                                                }}</span>
+                                           
+                                            <span class="net-amt-value">{{getNetAmtSum(dataSource.data) | currency:'INR'}}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div fxLayout="row" class="gap-8">
 
-                                    <mat-checkbox (change)="Adminchange($event)" (checked)=true>
+                                    <!-- <mat-checkbox (change)="Adminchange($event)" (checked)=true>
                                         Admin Charges
-                                    </mat-checkbox>
+                                    </mat-checkbox> -->
 
                                     <mat-form-field appearance="outline" fxFlex="5%" *ngIf="admin">
                                         <mat-label>%</mat-label>
@@ -746,7 +741,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex="10%" *ngIf="admin">
                                         <mat-label>Concession Amount</mat-label>
-                                        <input matInput [(ngModel)]="vDiscountAmount" name="vDiscountAmount"
+                                        <input matInput [(ngModel)]="vDiscountAmount" name="vDiscountAmount" readonly
                                             formControlName="concessionAmt" (keyup)="getNetAmount()">
                                     </mat-form-field>
 

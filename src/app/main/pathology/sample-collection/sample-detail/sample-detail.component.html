@@ -221,19 +221,14 @@
                  </ejs-datetimepicker>  -->
             </div>
 
-            <div style="margin-left: 1000px;;">
-               <!-- <button mat-raised-button color="primary" type="submit">Save</button>
-
-                <button mat-raised-button color="warn" (click)="onClose()">Close</button> -->
-
-
-                <button class="next-btn" color="accent" style="border-radius: 16px; width: 80px;"
-                    (click)="OnSave()">Save</button>
-                <button class="footer-btn" id="btncancel" (click)="onClose()">Close</button>
+            <div class="footer-navigation-container">
+           
+                <div class="modal-footer-buttons">
+                    
+                    <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
+                    <button class="btn btn-primary" (click)="OnSave()">Save</button>
+                </div>
             </div>
-
-
-
         </form>
     </div>
     <!-- / CONTENT-->

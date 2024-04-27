@@ -10,7 +10,6 @@ import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AppointmentSreviceService } from "./appointment-srevice.service";
-// import * as XLSX from 'xlsx';
 import Swal from "sweetalert2";
 import { NewAppointmentComponent } from "./new-appointment/new-appointment.component";
 import { fuseAnimations } from "@fuse/animations";
@@ -324,7 +323,7 @@ export class AppointmentComponent implements OnInit {
   ) {
     // this.getVisitList();
     this.getVisitList1();
-    this.configService.configParams.DepartmentId;
+    //this.configService.configParams.DepartmentId;
     // console.log(  this.configService.configParams.DepartmentId)
 
   }
@@ -895,7 +894,13 @@ export class AppointmentComponent implements OnInit {
 
   }
   onEdit(row) {
-    // this.registerObj = row;
+    debugger
+    console.log(row)
+    let Query = "Select * from Registration where  RegId=" + row.RegId + " ";
+    this._AppointmentSreviceService.getRegIdDetail(Query).subscribe(data => {
+      this.registerObj = data[0];
+      console.log(this.registerObj);
+    });
 
     console.log(row)
     debugger
@@ -905,7 +910,7 @@ export class AppointmentComponent implements OnInit {
         height: "550px",
         width: "100%",
         data: {
-          registerObj: row,
+          registerObj: this.registerObj,
           Submitflag:true
         },
       }
@@ -913,7 +918,7 @@ export class AppointmentComponent implements OnInit {
     // this.getSelectedObj(row);
   }
 
-  AppointmentCancle(visitId){
+  AppointmentCancle(contact){
     Swal.fire({
       title: 'Do you want to Cancle Appointment',
       // showDenyButton: true,
@@ -925,7 +930,7 @@ export class AppointmentComponent implements OnInit {
 
       if (flag.isConfirmed) {
         let appointmentcancle={};
-        appointmentcancle['visitId'] =  visitId;
+        appointmentcancle['visitId'] =  contact.VisitId;
        
         let submitData = {
           "appointmentcancle": appointmentcancle
@@ -1365,27 +1370,6 @@ export class AppointmentComponent implements OnInit {
   }
 
 
-  /** getSearchList() {
-    
-    var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
-    }
-    if (this.searchFormGroup.get('RegId').value.length >= 1) {
-      this._opappointmentService.getRegistrationList(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        this.PatientListfilteredOptions=resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
- 
-      });
-    }
- 
-  } */
-
-  
 
   getSearchList() {
 
@@ -1585,7 +1569,7 @@ export class AppointmentComponent implements OnInit {
 
   OnsaveNewRegister() {
 
-
+debugger
     if (this.patienttype != 2) {
       this.CompanyId = 0;
     } else if (this.patienttype == 2) {
@@ -2508,6 +2492,7 @@ export class AppointmentComponent implements OnInit {
       ClassName: contact.ClassName,
       TariffName: contact.TariffName,
       TariffId: contact.TariffId,
+      CompanyId:contact.CompanyId,
       Lbl:"AppointmentBill"
     };
     this.advanceDataStored.storage = new SearchInforObj(xx);

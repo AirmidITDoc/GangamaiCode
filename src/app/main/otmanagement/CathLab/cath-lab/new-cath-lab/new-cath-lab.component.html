@@ -347,11 +347,15 @@
                 </div>
 
                 <br/>
-                <div fxLayout="row" style=" float: right;margin-top:10px;">
-                        <button class="next-btn" color="accent" style="border-radius: 16px;" (click)="onSubmit()" 
-                        [disabled]="_OtManagementService.otreservationFormGroup.invalid">Save</button>
-                      <button class="footer-btn" id="btncancel" (click)="closeDialog()" >Cancel</button>
-       
+              
+
+                <div class="footer-navigation-container">
+           
+                    <div class="modal-footer-buttons">
+                        
+                        <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
+                        <button class="btn btn-primary" (click)="onSubmit()" [disabled]="_OtManagementService.otreservationFormGroup.invalid">Save</button>
+                    </div>
                 </div>
             </form>
         </div>

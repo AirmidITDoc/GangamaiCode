@@ -216,9 +216,14 @@
                                                     src="assets/images/logos/WhatsApp.png">
                                             </button>
 
-                                            <button mat-icon-button matTooltip="Appointment Cancle" *ngIf="contact.IsCancelled=='0' "
-                                                (click)="CanclePhoneApp(contact)">
-                                                <mat-icon style="color: brown;">close</mat-icon>
+                                          
+
+                                            <button mat-icon-button (click)="onEdit(contact)" matTooltip="Appointment Cancle">
+                                                <mat-icon title="Edit Menu" *ngIf="contact.IsCancelled==1"
+                                                    [disabled]="contact.disabled" class="disabled-icon">
+                                                    edit</mat-icon>
+                                                <mat-icon title="Edit Menu" *ngIf="contact.IsCancelled==0" (click)="CanclePhoneApp(contact)">
+                                                    edit</mat-icon>
                                             </button>
                                         </mat-cell>
                                     </ng-container>

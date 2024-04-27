@@ -320,13 +320,14 @@
                                     </mat-card>
                                     <br />
 
-                                    <div class="buttons" fxLayout="row" style="text-align: right;margin-left:100px;">
-                                        <button type="submit" class="next-btn" (click)=" onSave()"
-                                            [disabled]="otherForm.invalid"
-                                            style="border-radius: 16px;cursor: pointer;">Save</button>
-                                        <button class="footer-btn" (click)="onClose()"
-                                            style="border-radius: 16px;">Close</button>
+                                    
 
+                                    <div class="footer-navigation-container">
+           
+                                        <div class="modal-footer-buttons">
+                                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                            <button class="btn btn-primary" (click)="onSave()" [disabled]="otherForm.invalid">Save</button>
+                                        </div>
                                     </div>
                                 </form>
 
