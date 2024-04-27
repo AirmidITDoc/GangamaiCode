@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from '../../advance';
-import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-payment.component';
+import { IPAdvancePaymentComponent, IpPaymentInsert } from '../ip-advance-payment/ip-advance-payment.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import * as converter from 'number-to-words';
@@ -56,8 +56,21 @@ export class InterimBillComponent implements OnInit {
   vDiscountAmt: any = 0;
   vNetAmount:any = 0 ;
 
-  CashCounterList: any = [];
+  disamt: any;
+  b_price = '0';
+  b_qty = '1';
+  b_totalAmount = '0';
+  b_netAmount = '0';
+  FinalAmountpay = 0;
+  b_disAmount = '0';
+  formDiscPersc: any=0;
 
+  Consession: boolean = true;
+  percentag: boolean = true;
+  ConShow: boolean = false;
+  
+  CashCounterList: any = [];
+  ConcessionReasonList: any = [];
   displayedColumns = [
   
     'ChargesDate',
@@ -119,6 +132,7 @@ export class InterimBillComponent implements OnInit {
     } 
 
     this.getCashCounterComboList();
+    this.getConcessionReasonList();
   }
 
   InterimForm(): FormGroup {
@@ -143,15 +157,16 @@ export class InterimBillComponent implements OnInit {
       BillRemark: [''],
       SrvcName: [''],
       TotalAmt: [0],
-      concessionAmt: [0],
+      concessionId: [0],
       FinalAmount: [0],
       ClassId: [],
       Percentage:[Validators.pattern("^[0-9]*$")],
       AdminCharges:[0],
       Amount:[Validators.pattern("^[0-9]*$")],
-      ConcessionAmt: [''],
+      concessionAmt: [''],
       GenerateBill: ['0'],
-      CashCounterId:0
+      CashCounterId:0,
+      cashpay: ['1'],
     });
   }
 
@@ -174,7 +189,20 @@ export class InterimBillComponent implements OnInit {
     this.InterimFormGroup.get('NetpayAmount').setValue(this.vNetAmount);
   }
 
+  getConcessionReasonList() {
+    this._IpSearchListService.getConcessionCombo().subscribe(data => {
+      this.ConcessionReasonList = data;
+      // this.Ipbillform.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
+    })
+  }
+
+  public setFocus(nextElementId): void {
+    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+  }
+
   onSave() {
+debugger
+  
     this.isLoading = 'submit';
     let interimBillChargesobj ={};
     interimBillChargesobj['chargesID']= 0// this.ChargesId;
@@ -182,7 +210,7 @@ export class InterimBillComponent implements OnInit {
     insertBillUpdateBillNo1obj['billNo'] =0;
     insertBillUpdateBillNo1obj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID; 
     insertBillUpdateBillNo1obj['totalAmt'] = this.InterimFormGroup.get('TotalAmt').value //this.netAmount;
-    insertBillUpdateBillNo1obj['concessionAmt'] = this.InterimFormGroup.get('concessionAmt').value,
+    insertBillUpdateBillNo1obj['concessionAmt'] = this.InterimFormGroup.get('concessionAmt').value || this.b_disAmount,
     insertBillUpdateBillNo1obj['netPayableAmt'] =  this.InterimFormGroup.get('NetpayAmount').value, // this.netAmount;
     insertBillUpdateBillNo1obj['paidAmt'] = 0,//this.advanceAmount;
     insertBillUpdateBillNo1obj['balanceAmt'] = 0;
@@ -191,7 +219,7 @@ export class InterimBillComponent implements OnInit {
     insertBillUpdateBillNo1obj['AddedBy'] =  this.accountService.currentUserValue.user.id ;
     insertBillUpdateBillNo1obj['totalAdvanceAmount'] = 0;
     insertBillUpdateBillNo1obj['billTime'] = this.dateTimeObj.date;
-    insertBillUpdateBillNo1obj['concessionReasonId'] = this.selectedAdvanceObj.concessionReasonId || 0,
+    insertBillUpdateBillNo1obj['concessionReasonId'] = this.InterimFormGroup.get('ConcessionId').value.concessionReasonId || 0,
     insertBillUpdateBillNo1obj['isSettled']=0,
     insertBillUpdateBillNo1obj['isPrinted'] = 1,
     insertBillUpdateBillNo1obj['isFree'] = 0,//this.advanceAmount;
@@ -225,7 +253,7 @@ export class InterimBillComponent implements OnInit {
    
      const interimBillCharge = new interimBill(interimBillChargesobj);
      const insertBillUpdateBillNo1 = new Bill(insertBillUpdateBillNo1obj);
-    //  const billDetailsInsert1 = new billDetails(billDetailsInsert1Obj);
+     if (!this.InterimFormGroup.get('cashpay').value) {
     const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
@@ -263,12 +291,118 @@ export class InterimBillComponent implements OnInit {
           });
         
     });
- 
+  }else{
+   
+    insertBillUpdateBillNo1obj['PaidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
+
+
+
+    let Paymentobj = {};
+    Paymentobj['BillNo'] = 0;
+    Paymentobj['ReceiptNo'] = "";
+    Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
+      Paymentobj['CashPayAmount'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
+    Paymentobj['ChequePayAmount'] = 0;
+    Paymentobj['ChequeNo'] = 0;
+    Paymentobj['BankName'] = "";
+    Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      Paymentobj['CardPayAmount'] = 0;
+    Paymentobj['CardNo'] = 0;
+    Paymentobj['CardBankName'] = "";
+    Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      Paymentobj['AdvanceUsedAmount'] = 0;
+    Paymentobj['AdvanceId'] = 0;
+    Paymentobj['RefundId'] = 0;
+    Paymentobj['TransactionType'] = 0;
+    Paymentobj['Remark'] = "Cashpayment";
+    Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      Paymentobj['IsCancelled'] = 0;
+    Paymentobj['IsCancelledBy'] = 0;
+    Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      Paymentobj['CashCounterId'] = 0;
+    Paymentobj['NEFTPayAmount'] = 0;
+    Paymentobj['NEFTNo'] = 0;
+    Paymentobj['NEFTBankMaster'] = "";
+    Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      Paymentobj['PayTMAmount'] = 0;
+    Paymentobj['PayTMTranNo'] = 0;
+    Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      Paymentobj['PaidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
+    Paymentobj['BalanceAmt'] = 0;
+
+    const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
+
+
+      let submitData = {
+        "interimBillChargesUpdate": interimBillCharge,
+        "insertBillUpdateBillNo1": insertBillUpdateBillNo1,
+        "billDetailsInsert1" :billDetailsInsert,
+        "ipIntremPaymentInsert": ipPaymentInsert,
+        // "billIPInterimBillingUpdate":billIPInterimBillingUpdate
+      };
+    console.log(submitData);
+      this._IpSearchListService.InsertInterim(submitData).subscribe(response => {
+        if (response) {
+          Swal.fire('Congratulations !', 'Interim data CashPay saved Successfully !', 'success').then((result) => {
+            if (result.isConfirmed) {
+           
+           this.viewgetInterimBillReportPdf(response);
+              
+              this._matDialog.closeAll();
+            }
+          });
+        } else {
+          Swal.fire('Error !', 'Interim data not saved', 'error');
+        }
+        this.isLoading = '';
+      });
+    
+  }
   }
 
 
-  
-  
+  calculateTotalAmt() {
+    if (this.b_price && this.b_qty) {
+      this.b_totalAmount = Math.round(parseInt(this.b_price) * parseInt(this.b_qty)).toString();
+      this.b_netAmount = this.b_totalAmount;
+      this.calculatePersc();
+    }
+  }
+
+  calculatePersc() {
+    debugger
+ 
+    if (this.formDiscPersc) {
+      let discAmt = Math.round((this.vTotalBillAmt * parseInt(this.formDiscPersc)) / 100);
+      this.b_disAmount = discAmt.toString();
+      this.vNetAmount = (this.vTotalBillAmt - discAmt).toString();
+      this.InterimFormGroup.get('NetpayAmount').setValue(this.vNetAmount);
+      this.ConShow=true;
+    }
+  }
+
+  calculatechargesDiscamt() {
+    // let d = this.Ipbillform.get('discAmount').value;
+    this.disamt = this.InterimFormGroup.get('concessionAmt').value;
+    let Netamt = parseInt(this.vNetAmount);
+
+    if (parseInt(this.disamt) > 0 && this.disamt < this.b_totalAmount) {
+      this.ConShow=true;
+      let tot = 0;
+      if (Netamt > 0) {
+        tot = Netamt - parseInt(this.disamt);
+        this.vNetAmount = tot.toString();
+        this.InterimFormGroup.get('NetpayAmount').setValue(tot);
+      }
+    } else if (this.InterimFormGroup.get('NetpayAmount').value == null) {
+      this.InterimFormGroup.get('NetpayAmount').setValue(this.b_totalAmount);
+      this.Consession = true;
+      this.ConShow=false;
+    }
+
+  }
+
   viewgetInterimBillReportPdf(BillNo) {
     
     this._IpSearchListService.getIpInterimBillReceipt(
@@ -296,143 +430,6 @@ export class InterimBillComponent implements OnInit {
 
 
   
-  ///// REPORT  TEMPOATE
-  getTemplate() {
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=16';
-    this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
-     
-        this.printTemplate = resData[0].TempDesign;
-     
-      let keysArray = ['GroupName','RegNo','','IPDNo',  'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'DischargeDate', 'DischargeTime', 'RefDocName','ChargesDoctorName', 'RoomName', 'BedName',
-      'PatientType', 'ServiceName', 'Price', 'Qty', 'ChargesTotalAmt', 'TotalAmt', 'AdvanceUsedAmount', 'PaidAmount', 'TotalAdvanceAmount', 'AdvanceBalAmount','UserName']; // resData[0].TempKeys;
-
-        for (let i = 0; i < keysArray.length; i++) {
-          let reString = "{{" + keysArray[i] + "}}";
-          let re = new RegExp(reString, "g");
-          this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-        }
-        var strrowslist = "";
-        for(let i=1; i<=this.reportPrintObjList.length; i++){
-          var objreportPrint = this.reportPrintObjList[i-1];
-// var strabc = ` <hr >
-
-let docname;
-if(objreportPrint.ChargesDoctorName)
-docname=objreportPrint.ChargesDoctorName;
-else
-docname='';
-var strabc = ` 
-<div style="display:flex;margin:8px 0">
-    <div style="display:flex;width:80px;margin-left:10px;">
-        <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:400px;margin-right:10px;">
-        <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-    </div>
-    <div style="display:flex;width:300px;margin-left:10px;align-text:center;">
-    <div>`+  docname + `</div> <!-- <div>450</div> -->
-    </div>
-    <div style="display:flex;width:70px;margin-left:110px;align-text:center;">
-    <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-    <div style="display:flex;width:50px;margin-left:40px;align-text:center;">
-        <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-    </div>
-    <div style="display:flex;width:150px;margin-left:50px;align-text:center;">
-        <div>`+ '₹' + objreportPrint.NetAmount.toFixed(2) + `</div> <!-- <div>450</div> -->
-    </div>
-</div>`;
-        strrowslist += strabc;
-      }
-
-
-        var objPrintWordInfo = this.reportPrintObjList[0];  
-        // console.log(objPrintWordInfo);
-        var objPrintWordInfo = this.reportPrintObjList[0];
-        this.BalanceAmt = parseInt(objPrintWordInfo.NetPayableAmt) - parseInt(objPrintWordInfo.AdvanceUsedAmount);
-        console.log( this.BalanceAmt);
-
-        this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.TotalAmt));  
-        this.printTemplate = this.printTemplate.replace('StrBillDates', this.transform2(objPrintWordInfo.BillDate));  
-        this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform(objPrintWordInfo.BillDate));
-        this.printTemplate = this.printTemplate.replace('StrAdmissionDate', this.transform2(objPrintWordInfo.AdmissionDate));
-        this.printTemplate = this.printTemplate.replace('StrDischargeDate', this.transform1(objPrintWordInfo.DischargeDate));
-        this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-        this.printTemplate = this.printTemplate.replace('StrTotalAmt','₹' + (objPrintWordInfo.TotalAmt.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('StrNetPayableAmt','₹' + (objPrintWordInfo.NetPayableAmt.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('StrConcessionAmount','₹' + (objPrintWordInfo.ConcessionAmt.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('StrAdvanceAmount', '₹' + (objPrintWordInfo.TotalAdvanceAmount.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (this.BalanceAmt.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('StrBalanceAmount', '₹' + (objPrintWordInfo.BalanceAmt.toFixed(2)));
-        this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-        this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-        setTimeout(() => {
-          // this.print();
-          this._printpreview.PrintPreview(this.printTemplate);
-        }, 1000);
-    });
-  }
-
-transform(value: string) {
-    var datePipe = new DatePipe("en-US");
-     value = datePipe.transform(value, 'dd/MM/yyyy ');
-     return value;
- }
-
- 
-transform1(value: string) {
-  var datePipe = new DatePipe("en-US");
-   value = datePipe.transform(value, 'dd/MM/yyyy');
-   return value;
-}
-
-transform2(value: string) {
-  var datePipe = new DatePipe("en-US");
-  value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-  return value;
-}
-
-
-convertToWord(e){
-  
-   return converter.toWords(e);
-     }
-
-// GET DATA FROM DATABASE 
-getIPIntreimBillPrint(el) {
-  var D_data = {
-    "BillNo":el,
-  }
- 
-  let printContents;
-  this.subscriptionArr.push(
-    this._IpSearchListService.getIPIntriemBILLBrowsePrint(D_data).subscribe(res => {
-      console.log(res);
-      this.reportPrintObjList = res as ReportPrintObj[];
-      this.reportPrintObj = res[0] as ReportPrintObj;
-      
-      this.getTemplate();
-    })
-  );
-}
-
-// PRINT 
-print() {
-  
-  let popupWin, printContents;
-  
-  popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    popupWin.document.write(` <html>
-  <head><style type="text/css">`);
-  popupWin.document.write(`
-    </style>
-        <title></title>
-    </head>
-  `);
-  popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-  </html>`);
-  popupWin.document.close();
-}
   onClose() {
     this.dialogRef.close();
   }

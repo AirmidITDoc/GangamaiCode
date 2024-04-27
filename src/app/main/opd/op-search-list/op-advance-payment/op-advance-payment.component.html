@@ -73,7 +73,7 @@
                             <h6 class="labels-h6">:</h6>
                         </div>
                         <div class="flex-item">
-                            <h6 class="labels-h6">Staff</h6>
+                            <h6 class="labels-h6">{{vCategory}}</h6>
                         </div>
                     </div>
                 </div>
@@ -81,13 +81,13 @@
                 <div class="patient-sub">
                     <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
                         <div class="flex-item item-header">
-                            <h3 class="labels-h3">Gender</h3>
+                            <h3 class="labels-h3">Age</h3>
                         </div>
                         <div class="flex-item-middle">
                             <h6 class="labels-h6">:</h6>
                         </div>
                         <div class="flex-item">
-                            <h6 class="labels-h6">Male</h6>
+                            <h6 class="labels-h6">{{vage}}</h6>
                         </div>
                     </div>
                     <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
@@ -98,7 +98,7 @@
                             <h6 class="labels-h6">:</h6>
                         </div>
                         <div class="flex-item">
-                            <h6 class="labels-h6">Hospital</h6>
+                            <h6 class="labels-h6">{{vtariff}}</h6>
                         </div>
                     </div>
                 </div>
@@ -396,13 +396,29 @@
                             </mat-form-field>
                         </div>
                         <div style="margin-right: 10px;">
+                            <!-- <mat-form-field appearance="outline">
+                                <mat-label>Trans ID</mat-label>
+                                <input matInput [(ngModel)]="paytmTransNo" formControlName="paytmMobileNoController">
+                                <mat-error class="error" *ngIf="paymentForm.get('paytmMobileNoController').invalid && paymentForm.get('paytmMobileNoController').touched">
+                                Please enter valid 12 Digit</mat-error>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Trans ID</mat-label>
+                                    <input name="paytmTransNo" formControlName="paytmMobileNoController" placeholder="paytmTrans Number" matInput required [(ngModel)]="paytmTransNo"
+                                     max="999999999999" min="100000000000" autocomplete="off" maxlength="12" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);" required="required" value="987665868822" >
+                                    <mat-error class="error" *ngIf="paymentForm.get('paytmMobileNoController').invalid && paymentForm.get('paytmMobileNoController').touched">10
+                                        digits Trans number is required</mat-error>
+                                </mat-form-field>
+                        </div>
+                        <!-- <div style="margin-right: 10px;">
                             <mat-form-field appearance="outline">
-                                <mat-label>Trans ID/Mobile No</mat-label>
+                                <mat-label>UPI Trans No</mat-label>
                                 <input matInput [(ngModel)]="paytmTransNo" formControlName="paytmMobileNoController">
                                 <mat-error class="error" *ngIf="paymentForm.get('paytmMobileNoController').invalid && paymentForm.get('paytmMobileNoController').touched">
                                 Please enter valid 10 Digit</mat-error>
                                 </mat-form-field>
-                        </div>
+                        </div> -->
                         <div style="margin-right: 10px;">
                             <mat-form-field appearance="outline">
                                 <mat-label>Enter Date</mat-label>
@@ -460,9 +476,8 @@
                         </mat-form-field> &nbsp;
                     </div>
                  
-                    <div class="save-payment">
-                        <!-- <button type="submit" class="next-btn" (click)="saveClicked()" [disabled]="isLoading=='submit' || paymentForm.invalid || !balanceAmt|| checkAmt(netPayAmt,cashAmt,cardAmt,neftAmt,paytmAmt,wrfAmt)" -->
-                         
+                    <!-- <div class="save-payment">
+                       
                         <button type="submit" class="next-btn" (click)="saveClicked()" [disabled]="isLoading=='submit' || paymentForm.invalid || checkAmt(netPayAmt,cashAmt,cardAmt,neftAmt,paytmAmt,wrfAmt)"
                         style="border-radius: 16px;">
                             <span style="display: flex;justify-content: center;">
@@ -475,6 +490,17 @@
                         <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Close</button>
 
 
+                    </div> -->
+
+
+                    <div class="action-btns gap-8" fxLayout="row">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary" (click)="saveClicked()" [disabled]="isLoading=='submit' || paymentForm.invalid || checkAmt(netPayAmt,cashAmt,cardAmt,neftAmt,paytmAmt,wrfAmt)"
+                            > <span style="display: flex;justify-content: center;">
+                                <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20">
+                                </mat-spinner>
+                                <span style="margin-left: 5px;">Save</span>
+                            </span></button>
                     </div>
                 </div>
             </div>

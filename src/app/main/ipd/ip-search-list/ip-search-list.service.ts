@@ -977,6 +977,13 @@ public getRefundofbillview(RefundId){
 }
 
 
+getIpDischargeReceipt(AdmId){
+  return this._httpClient.get("InPatient/view-DischargeCheckOutReceipt?AdmId=" + AdmId)
+ }
+
+ getIpDischargesummaryReceipt(AdmissionID){
+  return this._httpClient.get("InPatient/view-DischargSummary?AdmissionID=" + AdmissionID)
+ }
 }
 
 // ultra viewer id 67229924 Password :- Airmid@123

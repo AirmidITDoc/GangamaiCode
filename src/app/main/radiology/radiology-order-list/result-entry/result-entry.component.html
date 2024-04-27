@@ -183,23 +183,17 @@
                     <mat-radio-button value='true'fxFlex>IsDeactive</mat-radio-button>
                 </mat-radio-group>
             </div> -->
-            <div class="button-row" fxLayout="row" style="float: right;margin-left:85%;">
+           
 
-
-                <button class="next-btn" (click)="onSubmit()" mat-raised-button fxLayoutAlign="center center"
-                    [disabled]="_radiologytemplateService.myform.invalid" style="border-radius: 16px;">
-                    Save
-
-                </button>
-
-                <button class="footer-btn" (click)="onClose()" mat-raised-button fxLayoutAlign="center center"
-                    style="border-radius: 16px;">Cancel</button>
-
-
-                <!-- <button mat-raised-button color="primary" style="margin: 5px;" (click)="onPrint()">Print</button> -->
-
+            <div class="footer-navigation-container">
+           
+                <div class="modal-footer-buttons">
+                    
+                    <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
+                    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="_radiologytemplateService.myform.invalid">Save</button>
+                </div>
             </div>
         </div>
     </form>
 </mat-card>
-//
+
