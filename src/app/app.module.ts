@@ -36,7 +36,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { PdfviewerComponent } from './main/pdfviewer/pdfviewer.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { SharedModule } from './main/shared/shared.module';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BandwidthService } from './core/services/bandwidth.service';
 
 const appRoutes: Routes = [
     {
@@ -180,6 +181,7 @@ class PickDateAdapter extends NativeDateAdapter {
         // Material
         MatButtonModule,
         MatIconModule,
+        MatSnackBarModule,
 
         // Fuse modules
         FuseModule.forRoot(fuseConfig),
@@ -200,6 +202,8 @@ class PickDateAdapter extends NativeDateAdapter {
 
     ],
     providers: [
+
+        BandwidthService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true },
         { provide: DateAdapter, useClass: PickDateAdapter },

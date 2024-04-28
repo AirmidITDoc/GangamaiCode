@@ -1,182 +1,314 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { DashboardService } from '../dashboard.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { fuseAnimations } from '@fuse/animations';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { MatTableDataSource } from '@angular/material/table';
-import { DatePipe } from '@angular/common';
-import { Label } from 'ng2-charts';
-import Chart from 'chart.js';
-import { element } from 'protractor';
-import { filter, map } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
-import { SalesSummaryComponent } from './sales-summary/sales-summary.component';
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { DashboardService } from "../dashboard.service";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { fuseAnimations } from "@fuse/animations";
+import { ChartDataSets, ChartOptions, ChartType } from "chart.js";
+import { MatTableDataSource } from "@angular/material/table";
+import { DatePipe } from "@angular/common";
+import { Label } from "ng2-charts";
+import Chart from "chart.js";
+import { element } from "protractor";
+import { filter, map } from "rxjs/operators";
+import { MatDialog } from "@angular/material/dialog";
+import { SalesSummaryComponent } from "./sales-summary/sales-summary.component";
 
 @Component({
-  selector: 'app-pharmacy-dashboard',
-  templateUrl: './pharmacy-dashboard.component.html',
-  styleUrls: ['./pharmacy-dashboard.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
-
+    selector: "app-pharmacy-dashboard",
+    templateUrl: "./pharmacy-dashboard.component.html",
+    styleUrls: ["./pharmacy-dashboard.component.scss"],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class PharmacyDashboardComponent implements OnInit {
+    sIsLoading: any;
+    PharmStoreList: any = [];
+    dashCardsData: any = [];
 
-  sIsLoading:any;
-  PharmStoreList: any = [];
-  dashCardsData: any = [];
+    constructor(
+        public _DashboardService: DashboardService,
+        public datePipe: DatePipe,
+        private formBuilder: FormBuilder,
+        public _matDialog: MatDialog
+    ) {}
+    ngOnInit(): void {
+        this.getPharmStoreList();
 
-  constructor(
-    public _DashboardService: DashboardService,
-    public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
-    public _matDialog: MatDialog,
-  ) { }
-  ngOnInit(): void {
-    this.getPharmStoreList();
-
-    this.fetchStaticData();
-    this.getPharCollSummStoreWiseDashboard()
-    this.fetchThreeMonSalesSumData();
-    this.getPieChart_CurrentValueData()
-  }
-
-  getPharmStoreList() {
-    this._DashboardService.getPharmStoreList().subscribe(data => {
-      this.PharmStoreList = data;
-      this._DashboardService.UseFrom.get('StoreId').setValue(this.PharmStoreList[0]);
-    });
-  }
-  public getPharCollSummStoreWiseDashboard() {
-    var m_data = {
-      "FromDate": this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/2020',
-      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '03/01/2024',
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0,
+        this.fetchStaticData();
+        this.getPharCollSummStoreWiseDashboard();
+        this.fetchThreeMonSalesSumData();
+        this.getPieChart_CurrentValueData();
     }
-    this._DashboardService.getPharCollSummStoreWiseDashboard(m_data).subscribe(data => {
-      this.dashCardsData = data;
-    });
-  }
 
-  onChangeStore() {
-    this.fetchStaticData();
-    this.fetchThreeMonSalesSumData();
-    this.getPharCollSummStoreWiseDashboard()
-    this.getPieChart_CurrentValueData()
-  }
-  onDateRangeChanged() {
-    this.fetchStaticData();
-    this.fetchThreeMonSalesSumData();
-    this.getPharCollSummStoreWiseDashboard()
-    this.getPieChart_CurrentValueData()
-  }
-
-  onChangeStatic(event) {
-    this.selectedStatic = event.value;
-    this.fetchStaticData();
-  }
-
-  staticOptions: any[] = [
-    { value: 'CollectionAmount', viewValue: 'Collection Amount' },
-    { value: 'BillCount', viewValue: 'Bill Count' }
-  ];
-
-  selectedStatic = this.staticOptions[0].value;
-
-  StaticChartConfig: any = {
-    gradient: true,
-    showLegend: true,
-    showLabels: true,
-    isDoughnut: true,
-    legendPosition: 'below',
-    colorScheme: { domain: [] },
-    view: [400, 300],
-    data: []
-  };
-  
-  fetchStaticData() {
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      "FromDate": this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/2020',
-      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '03/01/2024',
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0,
-      "Mode": this.selectedStatic || 'CollectionAmount'
+    getPharmStoreList() {
+        this._DashboardService.getPharmStoreList().subscribe((data) => {
+            this.PharmStoreList = data;
+            this._DashboardService.UseFrom.get("StoreId").setValue(
+                this.PharmStoreList[0]
+            );
+        });
     }
-    console.log(m_data);
-    this._DashboardService.getPharDashboardPeichart("m_pharPayModeColSummaryDashboard", m_data).subscribe(data => {
-      this.StaticChartConfig.data = data["data"] as any[];
-      console.log(this.StaticChartConfig.data);
-      this.StaticChartConfig.colorScheme.domain = data["colors"] as any[];
-      this.sIsLoading = '';
-    }, error => {
-      this.sIsLoading = 'noPharSumData';
-    });
-  }
-
-  CurrentValChartConfig: any = {
-    gradient: true,
-    showLegend: false,
-    showLabels: true,
-    isDoughnut: true,
-    legendPosition: 'below',
-    colorScheme: { domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']},
-    view: [300, 250],
-    data: []
-  };
-
-  public getPieChart_CurrentValueData() {
-    var m_data = {
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0, // this.pieChartCurStkData.currentRange,
+    public getPharCollSummStoreWiseDashboard() {
+        var m_data = {
+            FromDate:
+                this.datePipe.transform(
+                    this._DashboardService.UseFrom.get("start").value,
+                    "yyyy-MM-dd 00:00:00.000"
+                ) || "01/01/2020",
+            ToDate:
+                this.datePipe.transform(
+                    this._DashboardService.UseFrom.get("end").value,
+                    "yyyy-MM-dd 00:00:00.000"
+                ) || "03/01/2024",
+            StoreId:
+                this._DashboardService.UseFrom.get("StoreId").value?.storeid ??
+                0,
+        };
+        this._DashboardService
+            .getPharCollSummStoreWiseDashboard(m_data)
+            .subscribe((data) => {
+                this.dashCardsData = data;
+            });
     }
-    this._DashboardService.getPharDashboardPeichart("m_pharCurStockValueSummaryDashboard",m_data).subscribe(data => {
-      this.CurrentValChartConfig.data = data["data"] as any[];
-      console.log(this.CurrentValChartConfig.data);
-      // this.CurrentValChartConfig.colorScheme.domain = data["colors"] as any[];
-    });
-  }
 
-  ThreeMonSalesConfig: any = {
-    data: [],
-    multi: [],
-    view: [500, 300],
-    showXAxis: true,
-    showYAxis: true,
-    gradient: false,
-    showLegend: true,
-    showXAxisLabel: true,
-    xAxisLabel: 'Store',
-    showYAxisLabel: true,
-    yAxisLabel: 'Amount',
-    legendTitle: 'Month',
-    showGridLines: true,
-    showDataLabel: true,
-    colorScheme: {
-      domain:  ['#5AA454', '#C7B42C', '#AAAAAA'],
-      //['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
-    },
-    onSelect: null,
-  }
-
-  fetchThreeMonSalesSumData() {
-    this.ThreeMonSalesConfig.data = [];
-    this.ThreeMonSalesConfig.multi = [];
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0,
+    onChangeStore() {
+        this.fetchStaticData();
+        this.fetchThreeMonSalesSumData();
+        this.getPharCollSummStoreWiseDashboard();
+        this.getPieChart_CurrentValueData();
     }
-    this._DashboardService.getPharDashboardBarchart("m_pharlast3MonthSalesSummaryDashboard", m_data).subscribe(data => {
-      if ((this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0) > 0) {
-        this.ThreeMonSalesConfig.data = data["data"] as any[];
-      }
-      else {
-        this.ThreeMonSalesConfig.multi = data["data"] as any[];
-      }
-      // this.ThreeMonSalesConfig.colorScheme.domain = data["color"] as any[];
-      this.sIsLoading = '';
-    }, error => {
-      this.sIsLoading = 'noPharSumData';
-    });
-  }
+    onDateRangeChanged() {
+        this.fetchStaticData();
+        this.fetchThreeMonSalesSumData();
+        this.getPharCollSummStoreWiseDashboard();
+        this.getPieChart_CurrentValueData();
+    }
+
+    onChangeStatic(event) {
+        this.selectedStatic = event.value;
+        this.fetchStaticData();
+    }
+
+    staticOptions: any[] = [
+        { value: "CollectionAmount", viewValue: "Collection Amount" },
+        { value: "BillCount", viewValue: "Bill Count" },
+    ];
+
+    selectedStatic = this.staticOptions[0].value;
+
+    StaticChartConfig: any = {
+        gradient: true,
+        showLegend: true,
+        showLabels: true,
+        isDoughnut: true,
+        legendPosition: "below",
+        colorScheme: { domain: [] },
+        view: [400, 300],
+        data: [],
+    };
+
+    fetchStaticData() {
+        this.sIsLoading = "loading-data";
+        var m_data = {
+            FromDate:
+                this.datePipe.transform(
+                    this._DashboardService.UseFrom.get("start").value,
+                    "yyyy-MM-dd 00:00:00.000"
+                ) || "01/01/2020",
+            ToDate:
+                this.datePipe.transform(
+                    this._DashboardService.UseFrom.get("end").value,
+                    "yyyy-MM-dd 00:00:00.000"
+                ) || "03/01/2024",
+            StoreId:
+                this._DashboardService.UseFrom.get("StoreId").value?.storeid ??
+                0,
+            Mode: this.selectedStatic || "CollectionAmount",
+        };
+        console.log(m_data);
+        this._DashboardService
+            .getPharDashboardPeichart(
+                "m_pharPayModeColSummaryDashboard",
+                m_data
+            )
+            .subscribe(
+                (data) => {
+                    this.StaticChartConfig.data = data["data"] as any[];
+                    console.log(this.StaticChartConfig.data);
+                    this.StaticChartConfig.colorScheme.domain = data[
+                        "colors"
+                    ] as any[];
+                    this.sIsLoading = "";
+                },
+                (error) => {
+                    this.sIsLoading = "noPharSumData";
+                }
+            );
+    }
+
+    CurrentValChartConfig: any = {
+        gradient: true,
+        showLegend: false,
+        showLabels: true,
+        isDoughnut: true,
+        legendPosition: "below",
+        colorScheme: { domain: ["#f44336", "#9c27b0", "#03a9f4", "#e91e63"] },
+        view: [300, 250],
+        data: [],
+    };
+
+    public getPieChart_CurrentValueData() {
+        var m_data = {
+            StoreId:
+                this._DashboardService.UseFrom.get("StoreId").value?.storeid ??
+                0, // this.pieChartCurStkData.currentRange,
+        };
+        this._DashboardService
+            .getPharDashboardPeichart(
+                "m_pharCurStockValueSummaryDashboard",
+                m_data
+            )
+            .subscribe((data) => {
+                this.CurrentValChartConfig.data = data["data"] as any[];
+                console.log(this.CurrentValChartConfig.data);
+                // this.CurrentValChartConfig.colorScheme.domain = data["colors"] as any[];
+            });
+    }
+
+    ThreeMonSalesConfig: any = {
+        data: [],
+        multi: [],
+        view: [500, 300],
+        showXAxis: true,
+        showYAxis: true,
+        gradient: false,
+        showLegend: true,
+        showXAxisLabel: true,
+        xAxisLabel: "Store",
+        showYAxisLabel: true,
+        yAxisLabel: "Amount",
+        legendTitle: "Month",
+        showGridLines: true,
+        showDataLabel: true,
+        colorScheme: {
+            domain: ["#5AA454", "#C7B42C", "#AAAAAA"],
+            //['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
+        },
+        onSelect: null,
+    };
+
+    fetchThreeMonSalesSumData() {
+        this.ThreeMonSalesConfig.data = [];
+        this.ThreeMonSalesConfig.multi = [];
+        this.sIsLoading = "loading-data";
+        var m_data = {
+            StoreId:
+                this._DashboardService.UseFrom.get("StoreId").value?.storeid ??
+                0,
+        };
+        this._DashboardService
+            .getPharDashboardBarchart(
+                "m_pharlast3MonthSalesSummaryDashboard",
+                m_data
+            )
+            .subscribe(
+                (data) => {
+                    if (
+                        (this._DashboardService.UseFrom.get("StoreId").value
+                            ?.storeid ?? 0) > 0
+                    ) {
+                        this.ThreeMonSalesConfig.data = data["data"] as any[];
+                    } else {
+                        this.ThreeMonSalesConfig.multi = data["data"] as any[];
+                    }
+                    // this.ThreeMonSalesConfig.colorScheme.domain = data["color"] as any[];
+                    this.sIsLoading = "";
+                },
+                (error) => {
+                    this.sIsLoading = "noPharSumData";
+                }
+            );
+    }
+
+    // Line chart details
+
+    lineChartConfig: any = {
+        view: [500, 300],
+        showXAxis: true,
+        showYAxis: true,
+        gradient: false,
+        showLegend: true,
+        showXAxisLabel: true,
+        xAxisLabel: "Years",
+        showYAxisLabel: true,
+        yAxisLabel: "Salary",
+        colorScheme: {
+            domain: ["#5AA454", "#A10A28", "#C7B42C", "#AAAAAA"],
+        },
+        data: [
+            {
+                name: "Karthikeyan",
+                series: [
+                    { name: "2016", value: 15000 },
+                    { name: "2017", value: 20000 },
+                    { name: "2018", value: 25000 },
+                    { name: "2019", value: 30000 },
+                ],
+            },
+            {
+                name: "Gnana Prakasam",
+                series: [
+                    { name: "2016", value: 4000 },
+                    { name: "2017", value: 4500 },
+                    { name: "2018", value: 10000 },
+                    { name: "2019", value: 15000 },
+                ],
+            },
+            {
+                name: "Kumaresan",
+                series: [
+                    { name: "2016", value: 5000 },
+                    { name: "2017", value: 8000 },
+                    { name: "2018", value: 15000 },
+                    { name: "2019", value: 35000 },
+                ],
+            },
+        ],
+    };
+
+    //Bar Chart Details
+
+    BarChartConfig: any = {
+        view: [500, 300],
+        showXAxis: true,
+        showYAxis: true,
+        gradient: true,
+        showLegend: true,
+        animations:true,
+        showGridLines:false,
+        showXAxisLabel: true,
+        xAxisLabel: "Country",
+        showYAxisLabel: true,
+        yAxisLabel: "Population",
+
+        colorScheme: {
+            domain: ["#5AA454", "#A10A28", "#C7B42C", "#AAAAAA"],
+        },
+        schemeType:"ordinal"  ,
+        data: [
+            {
+                name: "Germany",
+                value: 8940000,
+            },
+            {
+                name: "USA",
+                value: 5000000,
+            },
+            {
+                name: "France",
+                value: 7200000,
+            },
+        ],
+    };
 }
 
 // export class PharDashSummary {
@@ -247,14 +379,14 @@ export class PharmacyDashboardComponent implements OnInit {
 //   ChequePay: number;
 //   OnlinePay :number;
 //   NetColAmt: number;
-  
+
 //   constructor(PaymentSummary) {
 //     this.StoreName = PaymentSummary.StoreName || '';
 //     this.CashPay = PaymentSummary.CashPay || 0;
 //     this.ChequePay = PaymentSummary.ChequePay || 0;
 //     this.OnlinePay = PaymentSummary.OnlinePay || 0;
 //     this.NetColAmt = PaymentSummary.NetColAmt || 0;
-    
+
 //     }
 // }
 
@@ -272,11 +404,11 @@ export class PharmacyDashboardComponent implements OnInit {
 //   PathDate: Date;
 //   CategoryName:string;
 //   TCount: number;
-  
+
 //   constructor(PathCateSummary) {
 //     this.PathDate = PathCateSummary.PathDate || '';
 //     this.CategoryName = PathCateSummary.CategoryName || 0;
 //     this.TCount = PathCateSummary.TCount || 0 ;
-    
+
 //     }
 // }
