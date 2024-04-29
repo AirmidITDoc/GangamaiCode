@@ -67,8 +67,9 @@ export class IPSearchListComponent implements OnInit {
   sIsLoading: string = '';
 
   displayedColumns = [
+     'IsBillGenerated',
     'IsMLC',
-    // 'IsBillGenerated',
+   
     'RegNo',
     'PatientName',
     'DOA',

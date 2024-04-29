@@ -201,7 +201,7 @@ export class InterimBillComponent implements OnInit {
   }
 
   onSave() {
-debugger
+
   
     this.isLoading = 'submit';
     let interimBillChargesobj ={};
@@ -212,7 +212,7 @@ debugger
     insertBillUpdateBillNo1obj['totalAmt'] = this.InterimFormGroup.get('TotalAmt').value //this.netAmount;
     insertBillUpdateBillNo1obj['concessionAmt'] = this.InterimFormGroup.get('concessionAmt').value || this.b_disAmount,
     insertBillUpdateBillNo1obj['netPayableAmt'] =  this.InterimFormGroup.get('NetpayAmount').value, // this.netAmount;
-    insertBillUpdateBillNo1obj['paidAmt'] = 0,//this.advanceAmount;
+    insertBillUpdateBillNo1obj['paidAmt'] =this.InterimFormGroup.get('NetpayAmount').value || 0,//this.advanceAmount;
     insertBillUpdateBillNo1obj['balanceAmt'] = 0;
     insertBillUpdateBillNo1obj['billDate'] = this.dateTimeObj.date;
     insertBillUpdateBillNo1obj['opD_IPD_Type'] = 1,
@@ -273,6 +273,7 @@ debugger
             "ipIntremPaymentInsert": result.submitDataPay.ipPaymentInsert,
             // "billIPInterimBillingUpdate":billIPInterimBillingUpdate
           };
+          debugger
         console.log(submitData);
           this._IpSearchListService.InsertInterim(submitData).subscribe(response => {
             if (response) {

@@ -294,10 +294,10 @@
                                                             <mat-cell *matCellDef="let contact" class="w-150">
                                                                 <div fxLayout="row">
                                                                     <button mat-icon-button
-                                                                        (click)="getViewbAdmission(contact)"
-                                                                        matTooltip="View">
+                                                                        (click)="NewIPBill(contact)"
+                                                                        matTooltip="Bill">
                                                                         <mat-icon
-                                                                            style="color: black;">camera_alt</mat-icon>
+                                                                            style="color: black;">payment</mat-icon>
                                                                     </button>
 
                                                                     <button mat-icon-button
@@ -305,7 +305,7 @@
                                                                         matTooltip="Print">
                                                                         <mat-icon style="color: black;">print</mat-icon>
                                                                     </button>
-
+                                                                    
                                                                     <button mat-icon-button
                                                                         [matMenuTriggerFor]="moreMenu" aria-label="More"
                                                                         (click)="$event.stopPropagation();">
@@ -1051,6 +1051,9 @@
                             <div class="checkbox-container">
                                 <mat-checkbox aria-label="Remember Me" formControlName="IsMLC">
                                     ISMLC
+                                </mat-checkbox>
+                                <mat-checkbox aria-label="Op TO Ip Change" formControlName="OPIPChange" style="margin-left:30px;">
+                                    OP TO IP Convert
                                 </mat-checkbox>
                             </div>
                             <div class="next-div button-row-group">

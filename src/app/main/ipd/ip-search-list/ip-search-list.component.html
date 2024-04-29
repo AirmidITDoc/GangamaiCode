@@ -156,6 +156,22 @@ dynamicTableHeight fusePerfectScrollbar>
                                             </div>
                                         </mat-cell>
                                     </ng-container> -->
+                                    
+
+<ng-container matColumnDef="IsBillGenerated" sticky>
+    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80"
+        style="color: white;">Bill
+    </mat-header-cell>
+    <mat-cell *matCellDef="let contact" class="w-80">
+        <mat-icon *ngIf="contact.IsBillGenerated=='1'; else noMLC "
+            matTooltip="Bill Generated" class="pill green-600 s-16">
+        </mat-icon>
+        <ng-template #noMLC>
+            <span>--</span>
+        </ng-template>
+
+    </mat-cell>
+</ng-container>
 
                                     <ng-container matColumnDef="IsMLC" sticky>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80"
@@ -249,7 +265,21 @@ dynamicTableHeight fusePerfectScrollbar>
                                             <span> {{contact.CompanyName || '--'}}</span>
                                         </mat-cell>
                                     </ng-container>
+                                    <!-- <ng-container matColumnDef="IsDischarge" sticky>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80"
+                                            style="color: white;">IsMLC
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-80">
+                                            <mat-icon *ngIf="contact.IsDischarge=='1'; else noMLC "
+                                                matTooltip="IsDischarge" class="pill green-600 s-16"
+                                                (click)="NewMLc(contact)">Yes
+                                            </mat-icon>
+                                            <ng-template #noMLC>
+                                                <span>--</span>
+                                            </ng-template>
 
+                                        </mat-cell>
+                                    </ng-container> -->
                                     <ng-container matColumnDef="buttons" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef
                                             class="table-actions w-100">Action</mat-header-cell>
