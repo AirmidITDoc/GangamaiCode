@@ -1,4 +1,6 @@
+$layout-gap: 12px;
 .page-layout {
+    width: 100%;
     .center {
         .header {
             .welcome-message {
@@ -76,27 +78,26 @@
             @include font-size(17px);
         }
     }
-}
-.patient-info-row {
-    display: flex;
-    align-items: center;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    @include media-breakpoint("md") {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    @include media-breakpoint("sm") {
-        grid-template-columns: repeat(1, 1fr);
-    }
-    .patient-col {
-        display: flex;
-        align-items: center;
-        gap: 3px;
-        @include font-size(14px);
-        .patient-col-key {
-            font-weight: 700;
+    .layout-body {
+        &.with-sidebar {
+            display: grid;
+            grid-template-columns: auto 1fr;
         }
-        .patient-col-value {
+        .layout-body-container {
+            padding: $layout-gap;
         }
+    }
+    .layout-footer {
+        padding: 0 $layout-gap $layout-gap $layout-gap;
+        .layout-footer-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+    }
+    &.grid-container {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        height: 100%;
     }
 }

@@ -197,6 +197,7 @@ export class IPBillBrowseListComponent implements OnInit {
         height: '740px',
         width: '100%',
         data: {
+          
           registerObj: contact,
           FromName: "IP-Bill"
         }

@@ -11,6 +11,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkTableModule } from '@angular/cdk/table';
+import { MatTreeModule } from '@angular/material/tree';
+import { SharedModule } from '../shared/shared.module';
 
 
 const appRoutes: Routes = [
@@ -65,7 +67,8 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forChild(appRoutes),
     MatToolbarModule,
-    MatIconModule,MatTableModule,MatPaginatorModule,MatSortModule,MatCheckboxModule,MatButtonModule,CdkTreeModule,CdkTableModule
+    MatIconModule,MatTableModule,MatPaginatorModule,MatSortModule,MatCheckboxModule,MatButtonModule,CdkTreeModule,CdkTableModule,MatTreeModule,
+    SharedModule
   ]
 })
 export class AdministrationModule { }

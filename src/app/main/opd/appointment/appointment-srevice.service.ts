@@ -194,6 +194,9 @@ public documentdownloadInsert(employee){
   }
 
 
+  public getRegIdDetail(data){
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
   // Doctor Master Combobox List
   public getAdmittedDoctorCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})

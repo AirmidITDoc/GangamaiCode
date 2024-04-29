@@ -100,7 +100,7 @@ export class RegistrationService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrievePrefixMasterForCombo", {})
   }
 
-  public getCityList() {
+  public getCityListCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo",{})
   }
 

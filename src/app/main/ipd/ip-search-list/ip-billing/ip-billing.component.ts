@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
@@ -24,6 +24,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { debug } from 'console';
 
 
 @Component({
@@ -137,7 +138,7 @@ export class IPBillingComponent implements OnInit {
   SrvcName: any;
   totalAmtOfNetAmt: any = 0;
   interimArray: any = [];
-  formDiscPersc: any;
+  formDiscPersc: any=0;
   serviceId: number;
   serviceName: String;
   totalAmt: number;
@@ -176,6 +177,8 @@ export class IPBillingComponent implements OnInit {
   vBalanceAmt: any = 0;
 
   isClasselected: boolean = false;
+  isSrvcNameSelected: boolean = false;
+  isDoctorSelected: boolean = false;
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
   @ViewChild('drawer') public drawer: MatDrawer;
@@ -198,15 +201,11 @@ export class IPBillingComponent implements OnInit {
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   ConcessionId: any;
-  vIpCash: any = 11022;
-  vPharcash: any = 21320;
+  vIpCash: any = 0;
+  vPharcash: any = 0;
   ClassList: any = [];
   optionsclass: any[] = [];
 
-
-  //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
   isDoctor: boolean = true;
@@ -239,6 +238,10 @@ export class IPBillingComponent implements OnInit {
 
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      console.log( this.selectedAdvanceObj )
+      this.vClassId= this.selectedAdvanceObj.ClassId
+      this.ClassName=this.selectedAdvanceObj.ClassName
+
     }
 
     this.myControl = new FormControl();
@@ -248,6 +251,7 @@ export class IPBillingComponent implements OnInit {
       map((value) => (value && value.length >= 1 ? this.filterStates(value) : this.billingServiceList.slice()))
     );
 
+    this.getBillingClasslist();
     this.getServiceListCombobox();
     this.getAdmittedDoctorCombo();
     this.getChargesList();
@@ -255,17 +259,23 @@ export class IPBillingComponent implements OnInit {
     this.getBillingClassCombo();
     this.getCashCounterComboList();
     this.getConcessionReasonList();
-    // this.drawer.toggle();
     this.getPrevBillList();
     this.getAdvanceDetList();
     this.calBalanceAmt();
-    this.getSelclasslist();
+    
 
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
+      this.filteredOptionsBillingClassName = this.Serviceform.get('ChargeClass').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterclass(value)),
+  
+      );
+
+      this.filteredDoctor = this.Serviceform.get('DoctorID').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterDoctor(value)),
+  
+      );
+
 
     if (this.selectedAdvanceObj.IsDischarged) {
       this.Ipbillform.get('GenerateBill').enable();
@@ -275,30 +285,22 @@ export class IPBillingComponent implements OnInit {
       this.Ipbillform.get('GenerateBill').disable();
       this.Ipbillform.get('GenerateBill').setValue(false);
     }
+
+    this.setClassdata();
+    
   }
 
+  setClassdata(){
+    const toSelectClass = this.ClassList.find(c => c.ClassId == this.vClassId);
+    this.Serviceform.get('ChargeClass').setValue(toSelectClass);
+    this.Serviceform.updateValueAndValidity();
 
-
-  // doctorone filter code  
-  private filterDoctor() {
-
-    if (!this.doctorNameCmbList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.doctorNameCmbList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.doctorNameCmbList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
   }
+
+  public setFocus(nextElementId): void {
+    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+  }
+
   // Create registered form group
   createserviceForm() {
     this.Serviceform = this.formBuilder.group({
@@ -318,7 +320,7 @@ export class IPBillingComponent implements OnInit {
       paidAmt: [''],
       ChargeDate: [new Date()],
       balanceAmt: [''],
-
+      ChargeClass: ['']
     });
   }
 
@@ -331,7 +333,7 @@ export class IPBillingComponent implements OnInit {
       Remark: [''],
       GenerateBill: [1],
       FinalAmount: 0,
-      CashCounterId: [''],// ['', Validators.required]
+      CashCounterId: [''],
       IpCash: [''],
       Pharcash: [''],
       ChargeClass: ['']
@@ -352,13 +354,12 @@ export class IPBillingComponent implements OnInit {
   }
 
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==',dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
+        this.dateTimeObj = dateTimeObj;
   }
 
   onOptionSelected(selectedItem) {
     this.b_price = selectedItem.Price
-    this.b_totalAmount = selectedItem.Price  //* parseInt(this.b_qty)
+    this.b_totalAmount = selectedItem.Price 
     this.b_disAmount = '0';
     this.b_netAmount = selectedItem.Price
     this.b_IsEditable = selectedItem.IsEditable
@@ -370,47 +371,68 @@ export class IPBillingComponent implements OnInit {
     // this.calculateTotalAmt();
   }
 
+ 
+
   getServiceListCombobox() {
     let tempObj;
     var m_data = {
       SrvcName: `${this.Serviceform.get('SrvcName').value}%`,
-      TariffId: 1,//this.selectedAdvanceObj.TariffId || 1,
-      ClassId: 1// this.selectedAdvanceObj.ClassId ||1
+      TariffId: 1,//this.selectedAdvanceObj.TariffId,
+      ClassId: 1,// this.selectedAdvanceObj.ClassId || 1
     };
     if (this.Serviceform.get('SrvcName').value.length >= 1) {
       this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
-        // console.log(data);
         this.filteredOptions = data;
-        // console.log(this.filteredOptions);
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
           this.noOptionFound = false;
         }
       });
-
+      // });
     }
   }
+  filteredOptionsBillingClassName: any;
+  filteredDoctor: any;
+  noOptionFoundsupplier: any;
+  vClassId: any=0;
+  vClassName: any;
+ 
 
-  getSelclasslist() {
-    this._IpSearchListService.getseletclassMasterCombo().subscribe(data => {
+  getBillingClasslist() {
+    
+    var m_data = {
+          'ClassName': '%' //`${this.vClassName}%`
+        }
+    this._IpSearchListService.getseletclassMasterCombo(m_data).subscribe(data => {
       this.ClassList = data;
-      this.optionsclass = this.ClassList.slice();
-      this.filteredOptionsselclass = this.Ipbillform.get('ChargeClass').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterclass(value) : this.ClassList.slice()),
-      );
-
+      console.log(this.ClassList )
+      if (this.vClassId != 0) {
+        const ddValue = this.ClassList.filter(c => c.ClassId == this.vClassId);
+        debugger
+        this.Serviceform.get('ChargeClass').setValue(ddValue[0]);
+        this.Serviceform.updateValueAndValidity();
+        return;
+      }
     });
+       
   }
 
+  
   private _filterclass(value: any): string[] {
     if (value) {
       const filterValue = value && value.ClassName ? value.ClassName.toLowerCase() : value.toLowerCase();
-      return this.optionsclass.filter(option => option.ClassName.toLowerCase().includes(filterValue));
+      return this.ClassList.filter(option => option.ClassName.toLowerCase().includes(filterValue));
     }
-
   }
+
+  private _filterDoctor(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.doctorNameCmbList.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+  }
+
   getOptionTextclass(option) {
     return option && option.ClassName ? option.ClassName : '';
   }
@@ -422,7 +444,43 @@ export class IPBillingComponent implements OnInit {
   getOptionText(option) {
     if (!option)
       return '';
-    return option.ServiceName;
+  
+    return option && option.ServiceName ? option.ServiceName : '';
+  }
+
+  getOptionDoctor(option) {
+    if (!option)
+      return '';
+  return option && option.DoctorName ? option.DoctorName : '';
+  }
+
+
+  getSelectedObjDoctorName(obj) {
+    console.log(obj)
+    // this.doct = obj.doctorId;
+    // this.b_price = obj.doctorName;
+  }
+
+
+  @ViewChild('doctorname') doctorname: ElementRef;
+  @ViewChild('disc') disc: ElementRef;
+
+  public onEnterqty(event): void {
+    if (event.which === 13) {
+      if (this.isDoctor) {
+        this.doctorname.nativeElement.focus();
+      }
+      else {
+        this.disc.nativeElement.focus();
+        // this.calculateTotalAmt()
+      }
+    }
+  }
+
+  public onEnterdoctor(event): void {
+    if (event.which === 13) {
+      this.disc.nativeElement.focus();
+    }
   }
 
 
@@ -435,21 +493,20 @@ export class IPBillingComponent implements OnInit {
     this.serviceId = obj.ServiceId;
     this.b_isPath = obj.IsPathology;
     this.b_isRad = obj.IsRadiology;
-
+debugger
 
     if (obj.IsDocEditable) {
       this.Serviceform.get('DoctorID').reset();
       this.Serviceform.get('DoctorID').setValidators([Validators.required]);
       this.Serviceform.get('DoctorID').enable();
-      // this.isDoctor = true;
+      this.isDoctor = true;
 
     } else {
       this.Serviceform.get('DoctorID').reset();
       this.Serviceform.get('DoctorID').clearValidators();
       this.Serviceform.get('DoctorID').updateValueAndValidity();
       this.Serviceform.get('DoctorID').disable();
-      // this.isDoctor = false;
-
+      this.isDoctor = false;
     }
   }
 
@@ -457,7 +514,7 @@ export class IPBillingComponent implements OnInit {
     this.chargeslist1 = [];
     this.dataSource1.data = [];
     var m = {
-      OP_IP_ID: 67362,// this.selectedAdvanceObj.AdmissionID,
+      OP_IP_ID: this.selectedAdvanceObj.AdmissionID,
     }
     this._IpSearchListService.getchargesList1(m).subscribe(data => {
       this.chargeslist1 = data as ChargesList[];
@@ -490,9 +547,7 @@ export class IPBillingComponent implements OnInit {
   getPrevBillList() {
     var D_data = {
       "IP_Id": this.selectedAdvanceObj.AdmissionID
-
     }
-
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._IpSearchListService.getpreviousbilldetail(D_data).subscribe(Visit => {
@@ -508,14 +563,11 @@ export class IPBillingComponent implements OnInit {
   getAdvanceDetList() {
     var D_data = {
       "AdmissionID": this.selectedAdvanceObj.AdmissionID
-
     }
-
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this._IpSearchListService.getAdvancedetail(D_data).subscribe(Visit => {
-        this.advancedatasource.data = Visit as IpdAdvanceBrowseModel[];
-
+      this.advancedatasource.data = Visit as IpdAdvanceBrowseModel[];
       },
         error => {
           this.sIsLoading = '';
@@ -632,6 +684,16 @@ export class IPBillingComponent implements OnInit {
 
   }
 
+  getDiscountSum(element){
+    let netAmt;
+  netAmt = element.reduce((sum, { ConcessionAmount}) => sum += +( ConcessionAmount|| 0), 0);
+  this.vDiscountAmount = netAmt;
+  if(this.vDiscountAmount >0)
+   
+  return netAmt;
+  }
+
+
   getTotalAmtSum(element) {
     let netAmt, netAmt1;
     netAmt = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0);
@@ -695,7 +757,7 @@ export class IPBillingComponent implements OnInit {
     
     let Percentage = this.Ipbillform.get('Percentage').value;
     if (this.Ipbillform.get('Percentage').value) {
-      this.vDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100);
+      // this.vDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100);
       this.vNetBillAmount = Math.round(this.vTotalBillAmount - this.vDiscountAmount);
       this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
       this.ConShow = true
@@ -1090,8 +1152,8 @@ export class IPBillingComponent implements OnInit {
           Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              // this.viewgetDraftBillReportPdf(response);
-              // this.getPrintDraft(response);
+              this.viewgetDraftBillReportPdf(response);
+              
             }
           });
         } else {
@@ -1126,7 +1188,7 @@ export class IPBillingComponent implements OnInit {
         "qty": this.b_qty,
         "totalAmt": this.b_totalAmount,
         "concessionPercentage": this.formDiscPersc || 0,
-        "concessionAmount": this.AdminDiscamt || 0,
+        "concessionAmount": this.b_disAmount,
         "netAmount": this.b_netAmount,
         "doctorId": this.DoctornewId,// this.Ipbillform.get("doctorId").value || 0,
         "doctorName": this.ChargesDoctorname || '',
@@ -1154,7 +1216,7 @@ export class IPBillingComponent implements OnInit {
       });
       this.onClearServiceAddList()
       this.isLoading = '';
-      //this.notification.success('Record updated successfully')
+      
     }
   }
   onClearServiceAddList() {
@@ -1177,6 +1239,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   calculatePersc() {
+    debugger
     let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
     if (this.formDiscPersc) {
       let discAmt = Math.round((netAmt * parseInt(this.formDiscPersc)) / 100);
@@ -1207,18 +1270,7 @@ export class IPBillingComponent implements OnInit {
 
 
   deleteTableRow(element) {
-    // console.log(element.ChargesId);
-    // var m_data= {
-    //   "G_ChargesId":element.ChargesId,
-    //   "G_UserId": this.accountService.currentUserValue.user.id
-    // }
-    // console.log(m_data);
-    // this._IpSearchListService.deleteCharges(m_data).subscribe(data =>{ 
-    //   this.msg=data;
-    //   this.getChargesList();
-    // });
-
-    // Delete row in datatable level
+   
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
@@ -1248,10 +1300,10 @@ export class IPBillingComponent implements OnInit {
   }
 
 
-  viewgetDraftBillReportPdf(BillNo) {
+  viewgetDraftBillReportPdf(AdmissionID) {
 
     this._IpSearchListService.getIpDraftBillReceipt(
-      BillNo
+      AdmissionID
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {
@@ -1269,22 +1321,6 @@ export class IPBillingComponent implements OnInit {
 
 
 
-  // getPrintDraft(el) {
-  //   var D_data = {
-  //     "AdmissionID": 10528// el
-  //   }
-  //   let printContents;
-  //   this.subscriptionArr.push(
-  //     this._IpSearchListService.getIPDraftBILLBrowsePrint(D_data).subscribe(res => {
-  //       console.log(res);
-  //       this.reportPrintObjList = res as ReportPrintObj[];
-  //       this.reportPrintObj = res[0] as ReportPrintObj;
-  //       this.getTemplateDraft();
-  //     })
-  //   );
-  // }
-
-
   calBalanceAmt() {
     // select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=
   }
@@ -1295,21 +1331,31 @@ export class IPBillingComponent implements OnInit {
     if (event.checked == true)
       // this.isFilteredDateDisabled = event.value;
       this.isFilteredDateDisabled = true;
-    if (event.checked == false)
+    if (event.checked == false){
       this.getChargesList();
+      this.isFilteredDateDisabled = false;
+    }
   }
 
   backNavigate() {
     // this._location.back();
   }
 
-  getAdmittedDoctorCombo() {
-    this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
-      this.doctorNameCmbList = data;
-      this.filteredDoctor.next(this.doctorNameCmbList.slice());
-    })
 
-  }
+  getAdmittedDoctorCombo() {
+   
+    
+      this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
+        this.filteredDoctor = data;
+        if (this.filteredDoctor.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+      
+    }
+  
 
   getBillingClassCombo() {
     this._IpSearchListService.getClassList({ "Id": this.selectedAdvanceObj.ClassId }).subscribe(data => {
@@ -1325,125 +1371,12 @@ export class IPBillingComponent implements OnInit {
     });
   }
 
-  // //for Draft bill
-  // ///// REPORT  TEMPOATE
-  // getTemplateDraft() {
-  //   let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=17';
-  //   this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
-
-  //     this.printTemplate = resData[0].TempDesign;
-  //     let keysArray = ['HospitalName', 'HospitalAddress', 'EmailId', 'Phone', 'RegNo', 'IPDNo', 'PatientName', 'AgeYear', 'AgeDay', 'AgeMonth', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'RefDoctorName', 'AdmittedDoctorName', 'ChargesDoctorName', 'RoomName', 'BedName',
-  //       'PatientType', 'ServiceName', 'Price', 'Qty', 'NetAmount', 'TotalAmt', 'TotalBillAmt', 'AdvanceAmount', 'NetPayableAmt', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'BalanceAmt', 'AddedByName', 'RoomName', 'BedName', 'BillDate', 'PBillNo']; // resData[0].TempKeys;
-
-  //     for (let i = 0; i < keysArray.length; i++) {
-  //       let reString = "{{" + keysArray[i] + "}}";
-  //       let re = new RegExp(reString, "g");
-  //       this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-  //     }
-  //     var strrowslist = "";
-  //     for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-  //       var objreportPrint = this.reportPrintObjList[i - 1];
-  //       console.log(objreportPrint);
-  //       // var strabc = ` <hr >
-
-  //       let docname;
-  //       if (objreportPrint.ChargesDoctorName)
-  //         docname = objreportPrint.ChargesDoctorName;
-  //       else
-  //         docname = '';
-  //       var strabc = ` 
-  //          <div style="display:flex;margin:8px 0">
-  //              <div style="display:flex;width:60px;margin-left:20px;">
-  //                  <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-  //              </div>
-  //              <div style="display:flex;width:300px;">
-  //                  <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-  //              </div>
-  //              <div style="display:flex;width:300px;">
-  //              <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-  //              </div>
-  //              <div style="display:flex;width:90px;margin-left:20px;justify-content: right;">
-  //              <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-  //              </div>
-  //              <div style="display:flex;width:70px;margin-left:10px;justify-content: right;;">
-  //                  <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-  //              </div>
-  //              <div style="display:flex;width:130px;text-align:right;justify-content: right;">
-  //                  <div>`+ '₹' + objreportPrint.TotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
-  //              </div>
-  //          </div>`;
-  //       strrowslist += strabc;
-  //     }
-  //     var objPrintWordInfo = this.reportPrintObjList[0];
-  //     this.BalanceAmt = parseInt(objPrintWordInfo.NetPayableAmt) - parseInt(objPrintWordInfo.AdvanceAmount);
-  //     console.log("Balance Amount IS:", this.BalanceAmt);
-
-  //     this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord1(objPrintWordInfo.NetPayableAmt));
-  //     this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-  //     this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
-  //     this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-  //     this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
-  //     this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
-  //     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-  //     this.printTemplate = this.printTemplate.replace('StrGroup', (objPrintWordInfo.GroupName));
-
-  //     this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-  //     this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-  //     setTimeout(() => {
-  //       this._printPreview.PrintPreview(this.printTemplate);
-  //     }, 1000);
-  //   });
-  // }
-
-  // transformdraft(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform(value, 'dd/MM/yyyy ');
-  //   return value;
-  // }
-
-
-  // transformdraft1(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform(value, 'dd/MM/yyyy h:mm a');
-  //   return value;
-  // }
-
-  // transformdraft2(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-  //   return value;
-  // }
-
-
-  // convertToWord1(e) {
-
-  //   return converter.toWords(e);
-  // }
-
-  // // GET DATA FROM DATABASE  DraftBill
-  // getIPIntreimBillPrint(el) {
-  //   var D_data = {
-  //     "BillNo": el
-  //   }
-  //   let printContents;
-  //   this.subscriptionArr.push(
-  //     this._IpSearchListService.getIPIntriemBILLBrowsePrint(D_data).subscribe(res => {
-  //       console.log(res);
-  //       this.reportPrintObjList = res as ReportPrintObj[];
-  //       this.reportPrintObj = res[0] as ReportPrintObj;
-
-  //       console.log(this.reportPrintObj);
-  //       this.getTemplateDraft();
-
-  //     })
-  //   );
-  // }
   onSave() {
     if (this.dataSource.data.length > 0) {
       if (this.Ipbillform.get('GenerateBill').value) {
         Swal.fire({
           title: 'Do you want to save the Final Bill ',
-          // showDenyButton: true,
+          
           showCancelButton: true,
           confirmButtonText: 'OK',
         }).then((result) => {
@@ -1459,7 +1392,7 @@ export class IPBillingComponent implements OnInit {
 
         Swal.fire({
           title: 'Do you want to save the Draft Bill ',
-          // showDenyButton: true,
+          
           showCancelButton: true,
           confirmButtonText: 'OK',
 

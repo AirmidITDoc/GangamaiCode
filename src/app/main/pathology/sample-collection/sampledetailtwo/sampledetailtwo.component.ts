@@ -92,7 +92,7 @@ export class SampledetailtwoComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   onSave() {
-    debugger;
+    // debugger;
     this.isLoading = 'save';
     // this.dataSource.data.push(this.samplelist);
     let updatesamcollection = [];
@@ -180,7 +180,8 @@ export class SampledetailtwoComponent implements OnInit {
   getSampledetailList() {
     //  debugger;
     let OPIP
-    if (this.advanceData.OP_IP_Type == "IP") {
+    if (this.advanceData.OP_IP_Type == "IP") {  console.log(m_data);
+        // debugger
       OPIP = 1;
     }
     else {

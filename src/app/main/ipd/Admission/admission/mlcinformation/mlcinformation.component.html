@@ -108,18 +108,20 @@
        
           <div class="footer-navigation-container" style=" float: right;">
   
-            <div class="next-div">
-             
-              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;"
+          
+
+            <div class="next-div button-row-group">
+              <button class="btn btn-primary" color="accent" (click)="onSubmit()"
               [disabled]="MlcInfoFormGroup.invalid">
-                <span style="display: flex;justify-content: center;">
-                  <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20"></mat-spinner>
-                  <span style="margin-right: 10px;">Save</span>
-                </span>
+              <span style="display: flex;justify-content: center;">
+                <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20"></mat-spinner>
+                <span style="margin-right: 10px;">Save</span>
+              </span>
               </button>
-              <!-- <button class="footer-btn" (click)="getPrint(5)" style="border-radius: 16px;">Print</button> -->
-              <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Cancel</button>
-            </div>
+              <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
+          </div>
+
+
           </div>
         </form>
       </div>

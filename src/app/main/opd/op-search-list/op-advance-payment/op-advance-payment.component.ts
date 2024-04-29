@@ -69,7 +69,19 @@ export class OPAdvancePaymentComponent implements OnInit {
   PatientName: any;
   BillDate: any;
   PatientHeaderObj:any;
-  
+  PatientHeaderObj1:any;
+
+
+  vage:any=0
+  vtariff:any=''
+  vcompany:any=''
+  vdoctorname:any=''
+  vCategory:any=''
+
+
+
+
+
   //bANK filter
   public bankFilterCtrl: FormControl = new FormControl();
   public filteredBank: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -96,10 +108,18 @@ export class OPAdvancePaymentComponent implements OnInit {
 
   ) {
     dialogRef.disableClose = true;
-    // debugger;
+    
     this.advanceData = data;
     this.PatientHeaderObj = this.data.advanceObj;
-    // console.log(this.advanceData.advanceObj);
+    this.PatientHeaderObj1=this.data.vPatientHeaderObj;
+    console.log(this.data.selectedAdvanceObj)
+    // this.vage=this.data.selectedAdvanceObj.
+    // this.vtariff=this.data.selectedAdvanceObj.TariffName
+    // this.vcompany=this.data.selectedAdvanceObj.CompanyName
+    // this.vdoctorname=this.data.selectedAdvanceObj.Doctorname
+    // this.vCategory=this.data.selectedAdvanceObj.PatientType
+
+    console.log(this.PatientHeaderObj1);
 
     if (this.advanceData.FromName == "Advance-Refund") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
@@ -113,7 +133,7 @@ export class OPAdvancePaymentComponent implements OnInit {
       this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.billNo = parseInt(this.advanceData.advanceObj.BillId);
-
+      this.PatientName = this.advanceData.advanceObj.PatientName;
     }
     if (this.advanceData.FromName == "IP-Bill") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
@@ -216,8 +236,8 @@ export class OPAdvancePaymentComponent implements OnInit {
       neftDateController: [(new Date()).toISOString()],
       paytmAmountController: ['', []],
       paytmMobileNoController: ['', [Validators.required,Validators.pattern("^[0-9]*$"),
-      Validators.minLength(10),
-      Validators.maxLength(10),]], 
+      Validators.minLength(12),
+      Validators.maxLength(12),]], 
       paytmDateController: [(new Date()).toISOString()],
       wrfAmountController: ['', []],
 
@@ -425,12 +445,12 @@ export class OPAdvancePaymentComponent implements OnInit {
               // Validators.pattern("^[0-9]*$")
             ]);
             this.paymentForm.controls['paytmAmountController'].updateValueAndValidity();
-            // this.paymentForm.get('paytmMobileNoController').setValidators([
-            //   Validators.required,
-            //   Validators.pattern("^[0-9]*$"),
-            //   Validators.minLength(10),
-            //   Validators.maxLength(10)
-            // ]);
+            this.paymentForm.get('paytmMobileNoController').setValidators([
+              Validators.required,
+              Validators.pattern("^[0-9]*$"),
+              Validators.minLength(12),
+              Validators.maxLength(12)
+            ]);
             this.paymentForm.controls['paytmMobileNoController'].updateValueAndValidity();
             this.paymentForm.patchValue({ paytmDateController: new Date() });
             break;

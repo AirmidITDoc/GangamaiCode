@@ -107,7 +107,7 @@ export class SampleRequestComponent implements OnInit {
   }
 
   getSampleLabOrRadRequestLists() {
-    debugger
+    // debugger
     this.sIsLoading = 'loading-data';
     var m_data = {
 
@@ -242,91 +242,91 @@ export class SampleRequestComponent implements OnInit {
 
   private route: ActivatedRoute
   private router: Router
-  onLABSave() {
+  // onLABSave() {
 
-    // console.log(this.dataSource.data);
-    // console.log(this.dataSource1.data);
+  //   // console.log(this.dataSource.data);
+  //   // console.log(this.dataSource1.data);
 
-    this.sIsLoading = 'submit';
-
-
-
-    let BillDetail = {};
-    BillDetail['emergencyFlag'] = "0",
-      BillDetail['billTotalAmount'] = " ";
-    BillDetail['advance'] = " ";
-    BillDetail['billDate'] = " ";
-    BillDetail['paymentType'] = " ";
-    BillDetail['referralName'] = " ";
-    BillDetail['otherReferral'] = " ";
-    BillDetail['sampleId'] = " ";
-    BillDetail['orderNumber'] = " ";
-    BillDetail['referralIdLH'] = " ";
-    BillDetail['organisationName'] = " ";
-    BillDetail['billConcession'] = "0",
-      BillDetail['additionalAmount'] = "0",
-      BillDetail['organizationIdLH'] = "440132",
-      BillDetail['comments'] = " ";
-
-    let testList = [];
-    this.dataSource1.data.forEach((element) => {
-      let testListInsertObj = {};
-      testListInsertObj['testCode'] = element.ServiceName;
-      testList.push(testListInsertObj);
-    });
-    BillDetail["testCode"] = testList;
+  //   this.sIsLoading = 'submit';
 
 
 
-    let paymentListarr = [];
-    let paymentList = {};
-    paymentList['paymentType'] = "CREDIT",
-    paymentList['paymentAmount'] = " ";
-    paymentList['chequeNo'] = " ";
-    paymentList['issueBank'] = " ";
-    paymentListarr.push(paymentList);
+  //   let BillDetail = {};
+  //   BillDetail['emergencyFlag'] = "0",
+  //     BillDetail['billTotalAmount'] = " ";
+  //   BillDetail['advance'] = " ";
+  //   BillDetail['billDate'] = " ";
+  //   BillDetail['paymentType'] = " ";
+  //   BillDetail['referralName'] = " ";
+  //   BillDetail['otherReferral'] = " ";
+  //   BillDetail['sampleId'] = " ";
+  //   BillDetail['orderNumber'] = " ";
+  //   BillDetail['referralIdLH'] = " ";
+  //   BillDetail['organisationName'] = " ";
+  //   BillDetail['billConcession'] = "0",
+  //     BillDetail['additionalAmount'] = "0",
+  //     BillDetail['organizationIdLH'] = "440132",
+  //     BillDetail['comments'] = " ";
+
+  //   let testList = [];
+  //   this.dataSource1.data.forEach((element) => {
+  //     let testListInsertObj = {};
+  //     testListInsertObj['testCode'] = element.ServiceName;
+  //     testList.push(testListInsertObj);
+  //   });
+  //   BillDetail["testCode"] = testList;
 
 
-    BillDetail["paymentList"] = paymentListarr;
 
-    let submitData = {
-      "mobile": "",
-      "email": "",
-      "designation": "",
-      "fullName": this.dataSource.data[0].PatientName,
-      "age": "",
-      "gender": "",
-      "area": "",
-      "city": "",
-      "patientType": "IPD",
-      "labPatientId": "HISPATIENTID",
-      "pincode": " ",
-      "patientId": "",
-      "dob": "",
-      "passportNo": "",
-      "panNumber": "",
-      "aadharNumber": "",
-      "insuranceNo": "",
-      "nationalityethnicity": "",
-      "ethnicity": "",
-      "nationalIdentityNumber": "",
-      "workerCode": "w12",
-      "doctorCode": "",
-      "BillDetailarr": BillDetail
-      // "paymentListarr": paymentListarr,
+  //   let paymentListarr = [];
+  //   let paymentList = {};
+  //   paymentList['paymentType'] = "CREDIT",
+  //   paymentList['paymentAmount'] = " ";
+  //   paymentList['chequeNo'] = " ";
+  //   paymentList['issueBank'] = " ";
+  //   paymentListarr.push(paymentList);
 
-    };
-    console.log(submitData);
-    this._PathologyService.InsertLabDetail(submitData).subscribe(response => {
-      if (response) {
-        Swal.fire('Lab Detail Send Successfully !', 'success').then((result) => {
-        });
-      } else {
-        Swal.fire('Error !', 'Lab Detail  not Send', 'error');
-      }
-      this.sIsLoading = '';
-    });
-  }
+
+  //   BillDetail["paymentList"] = paymentListarr;
+
+  //   let submitData = {
+  //     "mobile": "",
+  //     "email": "",
+  //     "designation": "",
+  //     "fullName": this.dataSource.data[0].PatientName,
+  //     "age": "",
+  //     "gender": "",
+  //     "area": "",
+  //     "city": "",
+  //     "patientType": "IPD",
+  //     "labPatientId": "HISPATIENTID",
+  //     "pincode": " ",
+  //     "patientId": "",
+  //     "dob": "",
+  //     "passportNo": "",
+  //     "panNumber": "",
+  //     "aadharNumber": "",
+  //     "insuranceNo": "",
+  //     "nationalityethnicity": "",
+  //     "ethnicity": "",
+  //     "nationalIdentityNumber": "",
+  //     "workerCode": "w12",
+  //     "doctorCode": "",
+  //     "BillDetailarr": BillDetail
+  //     // "paymentListarr": paymentListarr,
+
+  //   };
+  //   console.log(submitData);
+  //   this._PathologyService.InsertLabDetail(submitData).subscribe(response => {
+  //     if (response) {
+  //       Swal.fire('Lab Detail Send Successfully !', 'success').then((result) => {
+  //       });
+  //     } else {
+  //       Swal.fire('Error !', 'Lab Detail  not Send', 'error');
+  //     }
+  //     this.sIsLoading = '';
+  //   });
+  // }
 
 
  

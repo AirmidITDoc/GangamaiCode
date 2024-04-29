@@ -1127,9 +1127,10 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Rounding Amt</mat-label>
                                                 <input matInput placeholder="Placeholder" formControlName="RoundingAmt"
-                                                    #RoundingAmt [(ngModel)]="vDiffNetRoundAmt"  
-                                                    [(ngModel)]="registerObj.RoundingAmt">
+                                                    #RoundingAmt [(ngModel)]="vDiffNetRoundAmt" (keyup)="AutoRoundingAmt()"
+                                                  >
                                             </mat-form-field>
+                                          
                                         </div>
                                         <!-- <div>
                                             <span class="h2">

@@ -6,8 +6,9 @@ $modalHeader: 45px;
             overflow: auto;
             &.grid-container {
                 display: grid;
-                grid-template-rows: $modalHeader 1fr;
+                grid-template-rows: auto 1fr;
                 height: 100%;
+                width: 100%;
             }
             .modal-header {
                 background-color: $primary-600;
@@ -29,7 +30,8 @@ $modalHeader: 45px;
                         .title-icon {
                         }
                     }
-                    .modal-header-icon,.c {
+                    .modal-header-icon,
+                    .c {
                         .modal-icon {
                             display: flex;
                             justify-content: center;

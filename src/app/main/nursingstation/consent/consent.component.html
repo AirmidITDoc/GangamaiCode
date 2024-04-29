@@ -1,4 +1,4 @@
-<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar" fusePerfectScrollbar>
     <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -14,7 +14,7 @@
 
     </mat-toolbar>
     <div class="content">
-        <div class="center p-12 pb-56" fusePerfectScrollbar>
+        <div class="center p-12 pb-56"  >
             <div class="content-card">
 
                 <div fxFlexFill fxLayout="column">
@@ -221,9 +221,14 @@
                                 </mat-radio-group>
                             </div>
 
-                            <div>
-                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:20pxpx;" [(ngModel)]="vTemplateDesc" required
+                            <div >
+                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"  [(ngModel)]="vTemplateDesc" required
                                 formControlName="TemplateDesc"></angular-editor>   
+                            </div>
+
+                            <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end center" style="padding: 10px;">  
+                                <button class="btn btn-danger-outline">Reset</button>
+                                <button class="btn btn-primary">Save</button>
                             </div>
                         </form>
                     </div>

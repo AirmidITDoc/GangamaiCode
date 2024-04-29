@@ -210,7 +210,7 @@ export class IPAdvanceComponent implements OnInit {
 
       // console.log(this.AdvFormGroup.get('cashpay').value)
       // if (this.AdvFormGroup.get('cashpay').value != 1) {
-        const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+        const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
           {
             maxWidth: "100vw",
             height: '740px',

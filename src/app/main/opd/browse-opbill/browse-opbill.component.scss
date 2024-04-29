@@ -36,6 +36,19 @@ app-browse-opbill{
     display: flex;      
 }
 
+.mat-column-Self {
+    width:200px;
+    max-width: 200px;
+    min-width: 200px;
+    text-align: left;
+}
+
+.mat-column-BillDate {
+    width:100px;
+    max-width: 100px;
+    min-width: 100px;
+    text-align: left;
+}
 .mat-column-BillDate {
     width:100px;
     max-width: 100px;
@@ -79,6 +92,24 @@ app-browse-opbill{
     margin-right: 20px;
     margin-top: 20px;
 }
+.mat-column-CompanyName {
+   
+    width: 200px;
+    max-width:200px;
+    min-width:200px;
+    text-align: left;
+    justify-content: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow: hidden !important;
+    display: inline-flex;
+    display: inline;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+
 
 .mat-column-TotalAmt {
     width: 130px;

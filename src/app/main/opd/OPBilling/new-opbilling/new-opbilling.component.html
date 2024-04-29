@@ -68,41 +68,50 @@
                             </div> -->
                         </form>
                     </div>
-                    <div class="patient-info-container">
-                        <fieldset class="fieldset-div">
-                            <legend class="h2">Patient Information</legend>
-                            <div class="sales-patient-info mb-3" fxLayout="row" fxLayoutAlign="space-between center">
-                                <div class="patient-sub">
-                                    <div class="patient-info-row" fxLayout="row" fxLayoutAlign="space-between center">
-                                        <div class="patient-col">
-                                            <span class="patient-col-key ">Patient Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{PatientName}}</span>
+                 
+                    <div fxlayout="row">
+                       
+                            <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                <div class="patient-info-container">
+                                    <div class="patient-info-box">
+                                        <div class="patient-info-title border-bottom pb-2">
+                                            <span class="h1">Patient Information</span>
                                         </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">OPIPNo</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{vOPDNo}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">DoctorName</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{Doctorname}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">CompanyName</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{CompanyName}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">TarrifName</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{Tarrifname}}</span>
+                                        <div class="patient-info-box my-8">
+                                            <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key ">Patient Name</span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{PatientName}}</span>
+                                                </div>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">OPIPNo</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{vOPDNo}}</span>
+                                                </div>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">DoctorName</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{Doctorname}}</span>
+                                                </div>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">CompanyName</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{CompanyName}}</span>
+                                                </div>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key ">{{Tarrifname}}</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value"></span>
+                                                </div>
+                                               
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </fieldset>
+                       
                     </div>
                 </div>
                 <div fxLayout="column">
@@ -147,7 +156,7 @@
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="b_price" name="bPrice" #price
                                                     (keyup)="calculateTotalAmtbyprice()" formControlName="price"
-                                                    required type="number" id="Price" #price
+                                                    required type="number" id="Price" #price readonly
                                                     (keydown)="onEnterorice($event)"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
                                                 <mat-error

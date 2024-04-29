@@ -142,7 +142,9 @@ export class OPAdvanceComponent implements OnInit {
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['OPD_IPD_Id'] = this._opappointmentService.myShowAdvanceForm.get("AdmissionID").value;
-    PatientHeaderObj['NetPayAmount'] =  this.advanceAmount;;
+    PatientHeaderObj['NetPayAmount'] =  this.advanceAmount;
+    PatientHeaderObj['NetPayAmount'] =  this._opappointmentService.myShowAdvanceForm.get("PatientName").value;
+    // this.selectedAdvanceObj
 
     const advanceHeaderInsert = new AdvanceHeader(advanceHeaderObj);
     const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
@@ -150,9 +152,9 @@ export class OPAdvanceComponent implements OnInit {
     const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "75vw",
-        maxHeight: "100vh", //width: '100%', height: "100%",
+        maxHeight: "100vh",
         data: {
-          patientName: this._opappointmentService.myShowAdvanceForm.get("PatientName").value,
+          selectedAdvanceObj:this.selectedAdvanceObj,
           advanceObj: PatientHeaderObj,
           FromName: "Advance"
         }

@@ -134,7 +134,7 @@
                                     <mat-label>ItemName</mat-label>
                                     <input type="text" name="ItemId" formControlName="ItemId" #itemid (keydown)="onEnterItem($event)" placeholder="Item Name " matInput [matAutocomplete]="auto" (input)="getSearchItemList()">
                                     <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close" (click)="ItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close" (click)="ItemForm.get('ItemId').setValue(''); isItemIdSelected = false;"> close </mat-icon>
                                         <mat-icon class="mat-icon-close" (click)="ItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                     </span>
                                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText" (optionSelected)='getSelectedObjItem($event.option.value)'>
@@ -151,16 +151,16 @@
                                     <mat-label>Qty</mat-label>
                                     <input type="text" [(ngModel)]="vQty" name="Qty" (keydown)="onEnterqty($event)" formControlName="Qty" matInput required #qty>
                                     <!-- <mat-error class="error" *ngIf="myForm.get('Qty').invalid && myForm.get('Qty').touched">
-                                Qty is required and Numbers Only
-                            </mat-error> -->
+                                        Qty is required and Numbers Only
+                                    </mat-error> -->
                                 </mat-form-field>
                                 <!-- (keydown)="onEnterremark($event)" -->
                                 <mat-form-field appearance="outline" fxFlex="10 1 auto">
                                     <mat-label>Remark</mat-label>
                                     <input type="text" name="Remark" [(ngModel)]="vRemark" formControlName="Remark" matInput #remark (keydown)="addData()">
                                     <!-- <mat-error *ngIf="myForm.get('Remark').touched">
-                                Remark is required Alphabets
-                            </mat-error> -->
+                                        Remark is required Alphabets
+                                    </mat-error> -->
                                 </mat-form-field>
 
                                 <div class="input-add-button">
@@ -233,8 +233,7 @@
                                     <mat-table class="mat-table-2 h-280" matSort [dataSource]="dsPrePresList" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="Date">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                Date </mat-header-cell>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> Date </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span> {{element.Date}}</span>
                                             </mat-cell>

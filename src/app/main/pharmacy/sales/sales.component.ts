@@ -379,11 +379,15 @@ export class SalesComponent implements OnInit {
     this.getBankNameList3();
     this.getBankNameList4();
     this.getDraftorderList();
-
+debugger
     console.log(this._loggedService.currentUserValue.user);
-    this.vPharExtOpt = this._loggedService.currentUserValue.user.PharExtOpt;
-    this.vPharOPOpt=this._loggedService.currentUserValue.user.PharOPOpt;
-    this.vPharIPOpt=this._loggedService.currentUserValue.user.PharIPOpt;
+    this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    this.vPharOPOpt=this._loggedService.currentUserValue.user.pharOPOpt;
+    this.vPharIPOpt=this._loggedService.currentUserValue.user.pharIPOpt;
+    console.log(this.vPharExtOpt);
+    console.log( this.vPharOPOpt);
+    console.log(this.vPharIPOpt);
+
   }
 
 
@@ -1975,6 +1979,7 @@ export class SalesComponent implements OnInit {
       event.srcElement.removeAttribute('disabled');
       return;
     }
+    this.isLoading123 = true;
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashOnlinePaySave()
     }
@@ -1988,7 +1993,7 @@ export class SalesComponent implements OnInit {
     this.mobileno.nativeElement.focus();
     event.srcElement.removeAttribute('disabled');
   }
-
+  isLoading123 = false;
   onCashOnlinePaySave() {
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
@@ -2154,7 +2159,6 @@ export class SalesComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-success',
           });
 
-
           this.getPrint3(response);
           this.getWhatsappshareSales(response, vMobileNo);
           this.Itemchargeslist = [];
@@ -2173,6 +2177,7 @@ export class SalesComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
+      this.isLoading123=false;
       this.sIsLoading = '';
     }, error => {
       this.toastr.error('API Error!', 'Error !', {
@@ -2185,18 +2190,15 @@ export class SalesComponent implements OnInit {
     // }
   }
   onSavePayOption() {
-
-
     this.vPatientType = this.ItemSubform.get('PatientType').value;
-
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
     PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //this.ItemSubform.get('FinalNetAmount').value;
+    this.isLoading123=false;
     const dialogRef = this._matDialog.open(OpPaymentNewComponent,
       {
-
         data: {
           vPatientHeaderObj: PatientHeaderObj,
           FromName: "Phar-SalesPay"
@@ -2255,7 +2257,7 @@ export class SalesComponent implements OnInit {
           SalesInsert['isFree'] = 0;
           SalesInsert['unitID'] = 1;
           SalesInsert['addedBy'] = this._loggedService.currentUserValue.user.id,
-            SalesInsert['externalPatientName'] = this.PatientName || '';
+          SalesInsert['externalPatientName'] = this.PatientName || '';
           SalesInsert['doctorName'] = this.DoctorName || '';
           SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
           SalesInsert['isPrescription'] = 0;
@@ -2308,7 +2310,7 @@ export class SalesComponent implements OnInit {
             updateCurStkSales['itemId'] = element.ItemId;
             updateCurStkSales['issueQty'] = element.Qty;
             updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
-              updateCurStkSales['stkID'] = element.StockId;
+            updateCurStkSales['stkID'] = element.StockId;
             updateCurStkSalestarr.push(updateCurStkSales);
           });
 

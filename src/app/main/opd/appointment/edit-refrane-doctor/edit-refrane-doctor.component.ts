@@ -31,7 +31,7 @@ export class EditRefraneDoctorComponent implements OnInit {
   searchFormGroup: FormGroup;
   AdmittedDoc1: any;
   PatientName: any;
-  
+  VisitDate:any;
   //doctorone filter
   public doctoroneFilterCtrl: FormControl = new FormControl();
   public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -59,7 +59,7 @@ export class EditRefraneDoctorComponent implements OnInit {
       this.VisitId = this.PatientHeaderObj.VisitId;
       this.PatientName = this.PatientHeaderObj.PatientName;
       this.RefDoctorId = this.PatientHeaderObj.RefDoctorId;
-     
+      this.VisitDate=this.PatientHeaderObj.VistDateTime;
       // console.log(this.PatientHeaderObj);
     }
 

@@ -13,6 +13,7 @@ import { AdvanceDataStored } from '../../advance';
 import { AdvanceDetailObj } from '../ip-search-list.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { fuseAnimations } from '@fuse/animations';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -353,6 +354,7 @@ export class DischargeSummaryComponent implements OnInit {
             Swal.fire('Congratulations !', 'Discharge Summary updated Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 this._matDialog.closeAll();
+                this.viewgetDischargesummaryPdf(response);
               }
             });
           } else {
@@ -397,6 +399,7 @@ export class DischargeSummaryComponent implements OnInit {
             Swal.fire('Congratulations !', 'Discharge Summary Save Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 this._matDialog.closeAll();
+                this.viewgetDischargesummaryPdf(response);
               }
             });
           }
@@ -412,6 +415,24 @@ export class DischargeSummaryComponent implements OnInit {
 
   }
 
+  
+viewgetDischargesummaryPdf(AdmId) {
+
+  this._IpSearchListService.getIpDischargesummaryReceipt(
+    AdmId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Discharge SummaryViewer"
+        }
+      });
+  });
+}
  
 
   dateTimeObj: any;

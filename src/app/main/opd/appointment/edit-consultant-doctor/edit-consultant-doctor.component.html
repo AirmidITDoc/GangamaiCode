@@ -1,55 +1,80 @@
-<div fxlayout="row" fxFlex.gt-sm="100%" fxFlex fxLayoutGap="5px">
-    <div class="header-container" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
-        fxLayoutAlign="space-between">
-        <span style="font-size: 22px; font-weight: 500; color: #fff;">Consultant Doctor Update</span>
-        <span class="material-icons" style="cursor: pointer; margin-left: 24px; color: #fff;" (click)="onClose()">
-            close
-        </span>
-    </div>
-
-    <div style="padding:5px;">
-        <div class="content-card">
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                            <!-- ================================ LABEL HEADER  -->
-                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                                    <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
-                                    </h3>
-                                </div>
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
-                                    style="align-items: baseline;">
-
-                                    <span class="label">VisitId  :</span>
-                                    <span class="data_input">{{PatientHeaderObj.VisitId}}</span>
-
-                                    <span class="label"> Patient Name : </span>
-                                    <span class="data_input">{{PatientHeaderObj.PatientName}}</span>
-
-                                    <!-- <span class="label">Admission ON : </span>
-                                    <span class="data_input">{{AdmissionDate}} 
-
-                                    </span>-->
-
-                                    <app-common-date [screenFrom]="screenFromString"
-                                        (dateTimeEventEmitter)="getDateTime($event)">
-                                    </app-common-date>
-                                    <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs()"
-                                        style="border-radius: 16px;display: none;">
-                                        Show
-                                    </button>
-                                </div>
-                            </mat-card>
-                            <!-- ================================ LABEL HEADER  -->
-                        </div>
-
+<div class="page-layout modal-wrapper grid-container">
+    <!-- HEADER -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Consultant Doctor Update </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <!-- <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div> -->
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
                     </div>
-                
+                </div>
             </div>
         </div>
+    </div>
 
+
+    <div style="padding:3px;">
+        <div fxlayout="row">
+         
+                <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                    <div class="patient-info-container">
+                        <div class="patient-info-box">
+                            <div class="patient-info-title border-bottom pb-2">
+                                <span class="h1">Patient Information</span>
+                            </div>
+                            <div class="patient-info-box my-8">
+                                <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key ">Visist Id</span>
+                                        <span>:</span>
+                                        <span
+                                            class="patient-col-value">{{PatientHeaderObj.VisitId}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key ">Patient Name</span>
+                                        <span>:</span>
+                                        <span
+                                            class="patient-col-value">{{PatientName}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key">OPIPNo</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{VisitId}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key">Visit Date</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{VisitDate}}</span>
+                                    </div>
+                                    <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key">CompanyName</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{CompanyName}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key ">{{Tarrifname}}</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value"></span>
+                                    </div> -->
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            <!-- ================================ LABEL HEADER  -->
+        </div>
         <mat-card class="example-card" name="m1">
             <div fxFlexFill fxLayout="column">
                 <form [formGroup]="searchFormGroup" style="border: blue;" aria-disabled="true">
@@ -91,20 +116,20 @@
 
                         </div>
 
-                        <div class="footer-navigation-container" style=" float: right;">
+                       
 
-                            <div class="next-div">
-
-                                <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;"> Edit
-                                </button>
-
-                                <button class="footer-btn" (click)="onClose()"
-                                    style="border-radius: 16px;">Cancel</button>
-                            </div>
-                        </div>
+                        
+                    <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
+                         
+                        <button class="btn btn-danger-outline" (click)="onClose()">Cancle</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()"  [disabled]="searchFormGroup.invalid">
+                            <span>Save</span>
+                        </button>
+                    </div>
                     </div>
                 </form>
             </div>
         </mat-card>
+
     </div>
 </div>
