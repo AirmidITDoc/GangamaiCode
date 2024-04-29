@@ -117,6 +117,7 @@ ul.list-basic {
     align-items: center;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
     @include media-breakpoint("sm") {
         grid-template-columns: repeat(2, 1fr);
     }

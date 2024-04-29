@@ -1,262 +1,140 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
-
-        <!-- APP TITLE -->
-        <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
-          
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="width:80% ;font-size: 20px; font-weight: 400;">
-                Discharge
-                <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}} (IPD
-                    No:{{selectedAdvanceObj.IPDNo}}) - AdmissionDate:{{selectedAdvanceObj.AdmDateTime}} -
-                    Ward:{{selectedAdvanceObj.WardName}} - Tariff :{{selectedAdvanceObj.TariffName}}</span>
-            </span>
-            <!-- </span> -->
-            <div fxLayout="row" fxLayoutAlign="space-between center">
-                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-                </app-common-date>
-                <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog"
-                    (click)="onClose()">
-                    <mat-icon>close</mat-icon>
-                </button>
+<div class=" modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Discharge </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
-
-
-    <!-- / HEADER -->
-
-    <div class="content-card">
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-            <form [formGroup]="_IpSearchListService.myShowDischargeSummaryForm" style="width: 100%;">
-                <div fxFlex.gt-sm="100%" fxFlex>
-                    <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                        <!-- ================================ LABEL HEADER  -->
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                           
-                            <div>
-                                <fieldset class="fieldset-div">
-                                    <legend>Patient Information</legend>
-                                    <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item" style="width: 250px;">
-                                                    <h3 class="labels-h3">Patient Name</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h5 class="labels-h6">:</h5>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h5 class="labels-h6">{{PatientHeaderObj.PatientName}}</h5>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item" style="width: 250px;">
-                                                    <h3 class="labels-h3">Patient Category</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h4 class="labels-h6">:</h4>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h4 class="labels-h6">Staff</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                    
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Gender</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Male</h6>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Tariff</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Hospital</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                    
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Age</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">30</h6>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Company</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Airmid</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                    
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Patient Source</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Hospital</h6>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Doctor</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">XYZ XYZ Xyz</h6>
-                                                </div>
-                                            </div>
-                                        </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+                <div class="modal-card-container">
+                    <mat-card>
+                        <form [formGroup]="_IpSearchListService.myShowDischargeSummaryForm">
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h2">Patient Information</span>
                                     </div>
-                                </fieldset>
-                            </div>
-                        </mat-card>
-                        <!-- ================================ LABEL HEADER  -->
-                    </div>
+                                    <div class="patient-info-box my-8">
+                                        <div class="patient-info-row">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">RegNo</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">Patient Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{PatientHeaderObj.PatientName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">IPD No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">AdmissionDate</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">Ward</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.WardName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">Tariff</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                            </div>
 
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- CONTENT -->
-    <div class="content-card">
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="1px">
-            <div fxFlex.gt-sm="100%" fxFlex fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px;">
-                <form [formGroup]="_IpSearchListService.mySaveForm">
-                    <div class="dialog-content-wrapper">
-                        <mat-card style="padding: 0 9px; height: fit-content;width: 99%;">
-                            <div class="discharge">
-                                <div fxlayout="row" fxFlex="80%">
-                                    <h3 style="font-weight: bolder; font-size: 18px; margin: 0 0 5px;">Discharge Details
-
-                                    </h3>
-
-                                    <div style="width:55%;margin-left: 50px;margin-bottom: 30px;font-weight: bolder;">
-                                        <!-- <ejs-datetimepicker #ejDateTimePicker formControlName="DischargeDate"
-                                        placeholder="Select Discharge Date" name="datetimepicker" floatLabelType='Auto'
-                                         [(ngModel)]="Today" >
-                                         </ejs-datetimepicker> -->
-
-                                        <ejs-datetimepicker #ejDateTimePicker [(ngModel)]="Today"
-                                            formControlName="DischargeDate" placeholder="Select DischargeDate Date/Time"
-                                            name="datetimepicker" floatLabelType='Auto' style="width:85%;height:60px;">
-                                        </ejs-datetimepicker>
-                                    </div>
-
-                                    <div>
-                                  
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Doctor Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Doctor Name" matInput formControlName="DoctorID"
-                                                [matAutocomplete]="autoDoctor" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_IpSearchListService.mySaveForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_IpSearchListService.mySaveForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoDoctor="matAutocomplete"
-                                                [displayWith]="getOptionTextDoctor">
-                                                <mat-option *ngFor="let option of filteredOptionsDoctor | async"
-                                                    [value]="option">
-                                                    {{option.DoctorName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Discharge Type Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select DischargeTypeName" matInput
-                                                formControlName="DischargeTypeId" [matAutocomplete]="autoDisctype"
-                                                required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(''); isDistypeSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(''); isDistypeSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoDisctype="matAutocomplete"
-                                                [displayWith]="getOptionTextDisctype">
-                                                <mat-option *ngFor="let option of filteredOptionsDisctype | async"
-                                                    [value]="option">
-                                                    {{option.DischargeTypeName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-
-                                    </div>
-                                    <div>
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Comments</mat-label>
-                                            <input name="Comments" formControlName="Modeofdischarge"
-                                                placeholder="Comments" matInput>
-                                        </mat-form-field>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Company</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">Airmid</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </mat-card>
-                        <!-- <div fxLayout="row" fxLayoutAlign="end center" style="margin-top: 20px;">
-                            <button class="next-btn" color="accent" (click)="onDischarge()"
-                                [disabled]="isLoading=='submit'" style="border-radius: 16px;">
-                                <span>
-                                    <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20">
-                                    </mat-spinner>
-                                    <span style="margin-left: 5px;">Save</span>
-                                </span>
-                            </button>
-                            <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;">Cancel</button>
+                        </form>
+                    </mat-card>
+                </div>
+                <div class="modal-card-container">
+                    <mat-card>
+                        <div [formGroup]="_IpSearchListService.mySaveForm">
+                            <div class="form-title border-bottom pb-2 mb-3">
+                                <span>Discharge Details</span>
+                            </div>
+                            <div fxFlexFill fxLayout="row wrap" fxLayoutGap="8px grid">
+                                <div class="date-picker-container" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <ejs-datetimepicker #ejDateTimePicker [(ngModel)]="Today" formControlName="DischargeDate" placeholder="Select DischargeDate Date/Time" name="datetimepicker" floatLabelType='Auto'>
+                                    </ejs-datetimepicker>
+                                </div>
+                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Doctor Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name" matInput formControlName="DoctorID" [matAutocomplete]="autoDoctor" required>
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close" (click)="_IpSearchListService.mySaveForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close" (click)="_IpSearchListService.mySaveForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoctor">
+                                            <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option">
+                                                {{option.DoctorName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Discharge Type Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select DischargeTypeName" matInput formControlName="DischargeTypeId" [matAutocomplete]="autoDisctype" required>
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close" (click)="_IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(''); isDistypeSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close" (click)="_IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(''); isDistypeSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoDisctype="matAutocomplete" [displayWith]="getOptionTextDisctype">
+                                            <mat-option *ngFor="let option of filteredOptionsDisctype | async" [value]="option">
+                                                {{option.DischargeTypeName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
 
-
-
-                        </div> -->  
-                        <div class="footer-navigation-container mb-4" fxLayout="row wrap"
-                        fxLayoutAlign="space-between center">
-                        <div class="next-div button-row-group">
-                            <button class="btn btn-primary" color="accent" (click)="onDischarge()"  [disabled]="_IpSearchListService.mySaveForm.invalid">
-                                <span>Save</span>
-                            </button>
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                </div>
+                                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Comments</mat-label>
+                                        <input name="Comments" formControlName="Modeofdischarge" placeholder="Comments" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                    </div>
-                </form>
+                    </mat-card>
+                </div>
             </div>
         </div>
     </div>
-    <!-- / CONTENT -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" color="accent" (click)="onDischarge()" [disabled]="_IpSearchListService.mySaveForm.invalid"> Save </button>
+            </div>
+        </div>
+    </div>
 </div>

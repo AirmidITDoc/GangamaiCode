@@ -486,9 +486,10 @@ export class IPSearchListComponent implements OnInit {
         this._IpSearchListService.populateForm(m_data);
         const dialogRef = this._matDialog.open(DischargeComponent,
           {
-            maxWidth: "85vw",
+            maxWidth: "90vw",
+            maxHeight: "90vh",
             height: '600px',
-            width: '100%',
+            width: '1300px',
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
@@ -525,9 +526,10 @@ export class IPSearchListComponent implements OnInit {
             const dialogRef = this._matDialog.open(DischargeComponent,
               {
 
-                maxWidth: "85vw",
+                maxWidth: "90vw",
+                maxHeight: "90vh",
                 height: '600px',
-                width: '100%',
+                width: '1300px',
               });
             dialogRef.afterClosed().subscribe(result => {
               console.log('The dialog was closed - Insert Action', result);
