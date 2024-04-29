@@ -26,111 +26,58 @@ export class DoctornoteComponent implements OnInit {
     'RegNo',
     'PatienName' 
   ]
+  displayedDoctorNote: string[] = [
+    'VDate',
+    'Time',
+    'Note',
+    'Action'
+  ]
+  displayedHandOverNote: string[] = [
+    'VDate',
+    'Time',
+    'Shift',
+    'I',
+    'S',
+    'B',
+    'A',
+    'R',
+    'Action'
+  ]
  
   currentDate = new Date();
-  public tools: object = {
-    type: 'MultiRow',
-    items: ['Undo', 'Redo', '|',
-      'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
-      'FontName', 'FontSize', 'FontColor', 'BackgroundColor', '|',
-      'SubScript', 'SuperScript', '|',
-      'LowerCase', 'UpperCase', '|',
-      'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
-      'CreateTable', '|',
-      'CreateLink', 'Image', '|',
-      'Indent', 'Outdent', '|',
-      'ClearFormat', '|', 'FullScreen',
-      // 'SourceCode',
-    ]
-  };
-public iframe: object = { enable: true };
-public height: number = 410;
-printTemplate:any;
-isSampleCollection: boolean = true;
-ServiceIdList: any = [];
-PathReportID: any;
-PathTestId: any
-SuggestionNotes:any;
-isLoading:any;
-subscriptionArr: Subscription[] = [];
-DoctorsNotes:any;
-// reportPrintObj: Templateprintdetail;
-// reportPrintObjList: SampleDetailObj[] = [];
-//   reportPrintObjs: SampleDetailObj ;
-//   regobj : PthologyTemplateresult ;
-
-//   isLoading: string = '';
-//   msg: any;
-//   selectedAdvanceObj: SampleDetailObj;
   screenFromString = 'opd-casepaper';
   sIsLoading: string = '';
+  isLoading:string ='';
+  PathologyDoctorList:any=[];
+
+  dsPatientList = new MatTableDataSource;
   dsDoctorNoteList = new MatTableDataSource;
-  Pthologyresult:any=[];
+  dsHandOverNoteList = new MatTableDataSource;
+ 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  otherForm: FormGroup;
-  advanceData: any;
-  TemplateDesc:any;
-  UserName:any;
-  PatientType:any;
-  BedName:any;
-  RoomName:any;
-  RefDocName:any;
-  GenderName:any;
-  Age:any;
-  PatientName:any;
-  IPDNo:any;
-  BillNo:any;
-  PathologyDoctorList: any = [];
+  @ViewChild(MatPaginator) paginator: MatPaginator; 
 
   constructor(
     public _NursingStationService: DoctornoteService,
-    private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
+    private accountService: AuthenticationService, 
     private advanceDataStored: AdvanceDataStored,
-    private formBuilder: FormBuilder,
-    // public _matDialog: MatDialog,
-    public datePipe: DatePipe,
-    // @Inject(MAT_DIALOG_DATA) public data: any,
-    //  public dialogRef: MatDialogRef<DoctorNoteComponent>,
-  ) {
-    // dialogRef.disableClose = true;
-    // this.advanceData = data;
-    console.log(this.advanceData);
-   }
+    private formBuilder: FormBuilder, 
+    public datePipe: DatePipe, 
+  ) { }
 
   //doctorone filter
   public pathodoctorFilterCtrl: FormControl = new FormControl();
   public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
-  ngOnInit(): void {
-    // this.otherForm = this.formBuilder.group({
-      
-    //   DoctorsNotes:['',Validators.required],
-    //   DoctNoteId:[0],
-    //   DoctorID:[0]
-    
-    
-    // });
-   
-    if (this.advanceDataStored.storage) {
-      // this.selectedAdvanceObj = this.advanceDataStored.storage;
-      // console.log(this.selectedAdvanceObj);
-      // if(this.advanceData.IsCompleted){
-      //   this.getResultList(this.advanceData.PathReportID);
-      // }
-      // this.PathTemplateDetailsResult = this.selectedAdvanceObj.TemplateDesc;
-    }
-
+  ngOnInit(): void { 
+ 
     this.pathodoctorFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterDoctor();
-      });
-
-    this.getDoctorList();
-   
+      }); 
+    this.getDoctorList(); 
   }
 
  
@@ -166,39 +113,9 @@ DoctorsNotes:any;
     // //  this.otherForm.get('DoctorId').setValue(ddValue); 
     
     //  }
-    });
-   
-    
-  }
-
-  // getResultList(el) {
-  //   this.sIsLoading = 'loading-data';
-
-  //  var m_data = {
-  //    "PathReportId" : el
-  //  }
-  
-  //   this._SampleService.getResultList(m_data).subscribe(Visit => {
-  //     console.log(Visit);
-  //     this.regobj = Visit as PthologyTemplateresult;
-     
-  //     this.TemplateDesc = this.regobj[0].PathTemplateDetailsResult;
-  //   this.SuggestionNotes = this.regobj[0].SuggestionNotes;
-
-  //     const ddValue = this.PathologyDoctorList.find(c => c.DoctorId == this.advanceData.DoctorId);
-  //     this.otherForm.get('DoctorId').setValue(ddValue); 
-     
-  //     console.log(this.TemplateDesc);
-  //     this.sIsLoading = '';
-  //   },
-  //   error => {
-  //     this.sIsLoading = '';
-  //   });
-  // }
-
-  
-  onSubmit() {
-    debugger;
+    }); 
+  } 
+  onSubmit() { 
  
     this.isLoading = 'submit';
        
@@ -265,14 +182,8 @@ DoctorsNotes:any;
   onClose() {
     this._NursingStationService.myform.reset();
     // this.dialogRef.close();
-  }
-
-
-  
-}
-
-
-
+  } 
+}  
 export class DocNote {
 
   AdmID : number;

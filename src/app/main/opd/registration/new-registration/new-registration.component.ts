@@ -139,7 +139,7 @@ export class NewRegistrationComponent implements OnInit {
       debugger
 
         this.registerObj = this.data.registerObj;
-     
+        this.registerObj.PrefixID=this.registerObj.PrefixId;
         this.RegId = this.registerObj.RegId;
         this.isDisabled = true
         if(this.registerObj.AgeYear)

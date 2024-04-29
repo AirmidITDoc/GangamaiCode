@@ -121,7 +121,6 @@ export class OPRefundofBillComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
   constructor(public _OpSearchListService: OPSearhlistService,
-    // public _IpSearchListService: IpSearchListService,
     private _ActRoute: Router,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
@@ -176,7 +175,6 @@ export class OPRefundofBillComponent implements OnInit {
   }
 
 
-  //Give BillNumber For List
   getRefundofBillIPDList() {
     debugger;
     
@@ -254,7 +252,7 @@ export class OPRefundofBillComponent implements OnInit {
 
   onOptionSelected(selectedItem) {
     this.b_price = selectedItem.Price
-    this.b_totalAmount = selectedItem.Price  //* parseInt(this.b_qty)
+    this.b_totalAmount = selectedItem.Price 
     this.b_disAmount = '0';
     this.b_netAmount = selectedItem.Price
     this.b_IsEditable = selectedItem.IsEditable

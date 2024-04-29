@@ -333,7 +333,7 @@ export class IPBillingComponent implements OnInit {
       Remark: [''],
       GenerateBill: [1],
       FinalAmount: 0,
-      CashCounterId: [''],// ['', Validators.required]
+      CashCounterId: [''],
       IpCash: [''],
       Pharcash: [''],
       ChargeClass: ['']
@@ -354,13 +354,12 @@ export class IPBillingComponent implements OnInit {
   }
 
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==',dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
+        this.dateTimeObj = dateTimeObj;
   }
 
   onOptionSelected(selectedItem) {
     this.b_price = selectedItem.Price
-    this.b_totalAmount = selectedItem.Price  //* parseInt(this.b_qty)
+    this.b_totalAmount = selectedItem.Price 
     this.b_disAmount = '0';
     this.b_netAmount = selectedItem.Price
     this.b_IsEditable = selectedItem.IsEditable
@@ -372,30 +371,7 @@ export class IPBillingComponent implements OnInit {
     // this.calculateTotalAmt();
   }
 
-  // getServiceListCombobox() {
-  //   let tempObj;
-  //   var m_data = {
-  //     SrvcName: `${this.Serviceform.get('SrvcName').value}%`,
-  //     TariffId: 1,//this.selectedAdvanceObj.TariffId || 1,
-  //     ClassId: 1// this.selectedAdvanceObj.ClassId ||1
-  //   };
-  //   if (this.Serviceform.get('SrvcName').value.length >= 1) {
-  //     this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
-  //       // console.log(data);
-  //       this.filteredOptions = data;
-  //       // console.log(this.filteredOptions);
-  //       if (this.filteredOptions.length == 0) {
-  //         this.noOptionFound = true;
-  //       } else {
-  //         this.noOptionFound = false;
-  //       }
-  //     });
-
-  //   }
-  // }
-
-
-
+ 
 
   getServiceListCombobox() {
     let tempObj;
@@ -421,24 +397,7 @@ export class IPBillingComponent implements OnInit {
   noOptionFoundsupplier: any;
   vClassId: any=0;
   vClassName: any;
-  // getBillingClasslist() {
-  //   var m_data = {
-  //     'ClassName': `${this.vClassName}%`
-  //   }
-  //   this._IpSearchListService.getseletclassMasterCombo(m_data).subscribe(data => {
-  //     this.filteredOptionsBillingClassName = data;
-  //      if (this.filteredOptionsBillingClassName.length == 0) {
-  //       this.noOptionFoundsupplier = true;
-  //     } else {
-  //       this.noOptionFoundsupplier = false;
-  //     }
-  //     // this.optionsclass = this.ClassList.slice();
-  //     // this.filteredOptionsselclass = this.Ipbillform.get('ChargeClass').valueChanges.pipe(
-  //     //   startWith(''),
-  //     //   map(value => value ? this._filterclass(value) : this.ClassList.slice()),
-  //     // );
-  //   });
-  // }
+ 
 
   getBillingClasslist() {
     
@@ -474,15 +433,6 @@ export class IPBillingComponent implements OnInit {
     }
   }
 
-  
-
-  // private _filterclass(value: any): string[] {
-  //   if (value) {
-  //     const filterValue = value && value.ClassName ? value.ClassName.toLowerCase() : value.toLowerCase();
-  //     return this.optionsclass.filter(option => option.ClassName.toLowerCase().includes(filterValue));
-  //   }
-
-  // }
   getOptionTextclass(option) {
     return option && option.ClassName ? option.ClassName : '';
   }
@@ -734,6 +684,16 @@ debugger
 
   }
 
+  getDiscountSum(element){
+    let netAmt;
+  netAmt = element.reduce((sum, { ConcessionAmount}) => sum += +( ConcessionAmount|| 0), 0);
+  this.vDiscountAmount = netAmt;
+  if(this.vDiscountAmount >0)
+   
+  return netAmt;
+  }
+
+
   getTotalAmtSum(element) {
     let netAmt, netAmt1;
     netAmt = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0);
@@ -797,7 +757,7 @@ debugger
     
     let Percentage = this.Ipbillform.get('Percentage').value;
     if (this.Ipbillform.get('Percentage').value) {
-      this.vDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100);
+      // this.vDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100);
       this.vNetBillAmount = Math.round(this.vTotalBillAmount - this.vDiscountAmount);
       this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
       this.ConShow = true
@@ -1192,8 +1152,8 @@ debugger
           Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              this.viewgetDraftBillReportPdf(this.selectedAdvanceObj.AdmissionID);
-              // this.getPrintDraft(response);
+              this.viewgetDraftBillReportPdf(response);
+              
             }
           });
         } else {
@@ -1228,7 +1188,7 @@ debugger
         "qty": this.b_qty,
         "totalAmt": this.b_totalAmount,
         "concessionPercentage": this.formDiscPersc || 0,
-        "concessionAmount": this.AdminDiscamt || 0,
+        "concessionAmount": this.b_disAmount,
         "netAmount": this.b_netAmount,
         "doctorId": this.DoctornewId,// this.Ipbillform.get("doctorId").value || 0,
         "doctorName": this.ChargesDoctorname || '',
@@ -1256,7 +1216,7 @@ debugger
       });
       this.onClearServiceAddList()
       this.isLoading = '';
-      //this.notification.success('Record updated successfully')
+      
     }
   }
   onClearServiceAddList() {
@@ -1310,18 +1270,7 @@ debugger
 
 
   deleteTableRow(element) {
-    // console.log(element.ChargesId);
-    // var m_data= {
-    //   "G_ChargesId":element.ChargesId,
-    //   "G_UserId": this.accountService.currentUserValue.user.id
-    // }
-    // console.log(m_data);
-    // this._IpSearchListService.deleteCharges(m_data).subscribe(data =>{ 
-    //   this.msg=data;
-    //   this.getChargesList();
-    // });
-
-    // Delete row in datatable level
+   
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
@@ -1372,22 +1321,6 @@ debugger
 
 
 
-  // getPrintDraft(el) {
-  //   var D_data = {
-  //     "AdmissionID": 10528// el
-  //   }
-  //   let printContents;
-  //   this.subscriptionArr.push(
-  //     this._IpSearchListService.getIPDraftBILLBrowsePrint(D_data).subscribe(res => {
-  //       console.log(res);
-  //       this.reportPrintObjList = res as ReportPrintObj[];
-  //       this.reportPrintObj = res[0] as ReportPrintObj;
-  //       this.getTemplateDraft();
-  //     })
-  //   );
-  // }
-
-
   calBalanceAmt() {
     // select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=
   }
@@ -1398,23 +1331,16 @@ debugger
     if (event.checked == true)
       // this.isFilteredDateDisabled = event.value;
       this.isFilteredDateDisabled = true;
-    if (event.checked == false)
+    if (event.checked == false){
       this.getChargesList();
+      this.isFilteredDateDisabled = false;
+    }
   }
 
   backNavigate() {
     // this._location.back();
   }
 
-  // getAdmittedDoctorCombo() {
-  //   this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
-  //     this.doctorNameCmbList = data;
-  //     this.filteredDoctor.next(this.doctorNameCmbList.slice());
-  //   })
-
-  // }
-
-  
 
   getAdmittedDoctorCombo() {
    
@@ -1445,125 +1371,12 @@ debugger
     });
   }
 
-  // //for Draft bill
-  // ///// REPORT  TEMPOATE
-  // getTemplateDraft() {
-  //   let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=17';
-  //   this._IpSearchListService.getTemplate(query).subscribe((resData: any) => {
-
-  //     this.printTemplate = resData[0].TempDesign;
-  //     let keysArray = ['HospitalName', 'HospitalAddress', 'EmailId', 'Phone', 'RegNo', 'IPDNo', 'PatientName', 'AgeYear', 'AgeDay', 'AgeMonth', 'GenderName', 'AdmissionDate', 'AdmissionTime', 'RefDoctorName', 'AdmittedDoctorName', 'ChargesDoctorName', 'RoomName', 'BedName',
-  //       'PatientType', 'ServiceName', 'Price', 'Qty', 'NetAmount', 'TotalAmt', 'TotalBillAmt', 'AdvanceAmount', 'NetPayableAmt', 'TotalAdvanceAmount', 'AdvanceUsedAmount', 'BalanceAmt', 'AddedByName', 'RoomName', 'BedName', 'BillDate', 'PBillNo']; // resData[0].TempKeys;
-
-  //     for (let i = 0; i < keysArray.length; i++) {
-  //       let reString = "{{" + keysArray[i] + "}}";
-  //       let re = new RegExp(reString, "g");
-  //       this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
-  //     }
-  //     var strrowslist = "";
-  //     for (let i = 1; i <= this.reportPrintObjList.length; i++) {
-  //       var objreportPrint = this.reportPrintObjList[i - 1];
-  //       console.log(objreportPrint);
-  //       // var strabc = ` <hr >
-
-  //       let docname;
-  //       if (objreportPrint.ChargesDoctorName)
-  //         docname = objreportPrint.ChargesDoctorName;
-  //       else
-  //         docname = '';
-  //       var strabc = ` 
-  //          <div style="display:flex;margin:8px 0">
-  //              <div style="display:flex;width:60px;margin-left:20px;">
-  //                  <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
-  //              </div>
-  //              <div style="display:flex;width:300px;">
-  //                  <div>`+ objreportPrint.ServiceName + `</div> <!-- <div>BLOOD UREA</div> -->
-  //              </div>
-  //              <div style="display:flex;width:300px;">
-  //              <div>`+ docname + `</div> <!-- <div>BLOOD UREA</div> -->
-  //              </div>
-  //              <div style="display:flex;width:90px;margin-left:20px;justify-content: right;">
-  //              <div>`+ '₹' + objreportPrint.Price.toFixed(2) + `</div> <!-- <div>450</div> -->
-  //              </div>
-  //              <div style="display:flex;width:70px;margin-left:10px;justify-content: right;;">
-  //                  <div>`+ objreportPrint.Qty + `</div> <!-- <div>1</div> -->
-  //              </div>
-  //              <div style="display:flex;width:130px;text-align:right;justify-content: right;">
-  //                  <div>`+ '₹' + objreportPrint.TotalAmt.toFixed(2) + `</div> <!-- <div>450</div> -->
-  //              </div>
-  //          </div>`;
-  //       strrowslist += strabc;
-  //     }
-  //     var objPrintWordInfo = this.reportPrintObjList[0];
-  //     this.BalanceAmt = parseInt(objPrintWordInfo.NetPayableAmt) - parseInt(objPrintWordInfo.AdvanceAmount);
-  //     console.log("Balance Amount IS:", this.BalanceAmt);
-
-  //     this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord1(objPrintWordInfo.NetPayableAmt));
-  //     this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.PaidAmount));
-  //     this.printTemplate = this.printTemplate.replace('StrAdmissionDates', this.transform2(objPrintWordInfo.AdmissionDate));
-  //     this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.BillDate));
-  //     this.printTemplate = this.printTemplate.replace('StrDichargeDate', this.transform2(objPrintWordInfo.DischargeDate));
-  //     this.printTemplate = this.printTemplate.replace('StrServiceDate', this.transform2(objPrintWordInfo.AdmissionTime));
-  //     this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-  //     this.printTemplate = this.printTemplate.replace('StrGroup', (objPrintWordInfo.GroupName));
-
-  //     this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
-  //     this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
-  //     setTimeout(() => {
-  //       this._printPreview.PrintPreview(this.printTemplate);
-  //     }, 1000);
-  //   });
-  // }
-
-  // transformdraft(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform(value, 'dd/MM/yyyy ');
-  //   return value;
-  // }
-
-
-  // transformdraft1(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform(value, 'dd/MM/yyyy h:mm a');
-  //   return value;
-  // }
-
-  // transformdraft2(value: string) {
-  //   var datePipe = new DatePipe("en-US");
-  //   value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
-  //   return value;
-  // }
-
-
-  // convertToWord1(e) {
-
-  //   return converter.toWords(e);
-  // }
-
-  // // GET DATA FROM DATABASE  DraftBill
-  // getIPIntreimBillPrint(el) {
-  //   var D_data = {
-  //     "BillNo": el
-  //   }
-  //   let printContents;
-  //   this.subscriptionArr.push(
-  //     this._IpSearchListService.getIPIntriemBILLBrowsePrint(D_data).subscribe(res => {
-  //       console.log(res);
-  //       this.reportPrintObjList = res as ReportPrintObj[];
-  //       this.reportPrintObj = res[0] as ReportPrintObj;
-
-  //       console.log(this.reportPrintObj);
-  //       this.getTemplateDraft();
-
-  //     })
-  //   );
-  // }
   onSave() {
     if (this.dataSource.data.length > 0) {
       if (this.Ipbillform.get('GenerateBill').value) {
         Swal.fire({
           title: 'Do you want to save the Final Bill ',
-          // showDenyButton: true,
+          
           showCancelButton: true,
           confirmButtonText: 'OK',
         }).then((result) => {
@@ -1579,7 +1392,7 @@ debugger
 
         Swal.fire({
           title: 'Do you want to save the Draft Bill ',
-          // showDenyButton: true,
+          
           showCancelButton: true,
           confirmButtonText: 'OK',
 

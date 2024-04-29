@@ -124,7 +124,7 @@ export class BrowseOPBillComponent implements OnInit {
         height: '600px',
         width: '75%',
         data: {
-          vPatientHeaderObj: PatientHeaderObj,
+          vPatientHeaderObj: contact,
           // FromName: "OP_SETTLEMENT",
           FromName: "OP-Bill",
           advanceObj: PatientHeaderObj,

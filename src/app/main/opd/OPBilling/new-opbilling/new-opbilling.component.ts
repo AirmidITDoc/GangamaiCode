@@ -437,17 +437,17 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   onSaveOPBill2() {
-
+debugger
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (this.CompanyId !== 0) {
+    if (this.CompanyId !== 0 && this.CompanyId !== "") {
       this.saveCreditbill();
     }
-else{
+else if(this.CompanyId =='' || this.CompanyId ==0){
     this.saveclick = true;
     let disamt = this.BillingForm.get('concessionAmt').value;
 

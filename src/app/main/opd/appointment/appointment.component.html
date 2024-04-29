@@ -304,12 +304,21 @@
                                                         <span class="mat-header-text">Action</span>
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" class="w-220 gap-4">
-                                                        <button mat-icon-button matTooltip="Edit" (click)="onEdit()">
+                                                        <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
                                                             <mat-icon>edit</mat-icon>
                                                         </button>
-                                                        <button mat-icon-button *ngIf="contact.IsCancelled=='0' " matTooltip="Appointment Cancle" (click)="AppointmentCancle()">
+                                                        <!-- <button mat-icon-button *ngIf="contact.IsCancelled=='0' " matTooltip="Appointment Cancle" (click)="AppointmentCancle()">
                                                             <mat-icon>close</mat-icon>
+                                                        </button> -->
+
+                                                        <button mat-icon-button  matTooltip="Appointment Cancle">
+                                                            <mat-icon title="Clse Menu" *ngIf="contact.IsCancelled==1"
+                                                                [disabled]="contact.disabled" class="disabled-icon">
+                                                                close</mat-icon>
+                                                            <mat-icon title="Close Menu" *ngIf="contact.IsCancelled==0" (click)="AppointmentCancle(contact)">
+                                                                close</mat-icon>
                                                         </button>
+
                                                         <button *ngIf="false" mat-icon-button matTooltip="how_to_reg" (click)="getRecord(contact,m)">
                                                             <mat-icon>how_to_reg</mat-icon>
                                                         </button>
