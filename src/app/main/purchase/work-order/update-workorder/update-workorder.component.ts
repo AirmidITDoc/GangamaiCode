@@ -71,8 +71,8 @@ export class UpdateWorkorderComponent implements OnInit {
  vSupplierId:any;
  vWorkId:any;
 
-  dsItemNameList = new MatTableDataSource<ItemNameList>();
- 
+  dsItemNameList = new MatTableDataSource<ItemNameList>(); 
+  dsTempItemNameList = new MatTableDataSource<ItemNameList>();
 
   constructor(  public _WorkOrderService:WorkOrderService,
     private _fuseSidebarService: FuseSidebarService,
@@ -114,7 +114,7 @@ export class UpdateWorkorderComponent implements OnInit {
     this._WorkOrderService.getItemListUpdates(Param).subscribe(data => {
       this.dsItemNameList.data = data as ItemNameList[];
       this.chargeslist = data as ItemNameList[];
-      this.chargeslist.data = data as ItemNameList[];
+      this.dsTempItemNameList.data = data as ItemNameList[];
       this.sIsLoading = '';
       console.log(this.dsItemNameList);
     },
@@ -223,9 +223,24 @@ export class UpdateWorkorderComponent implements OnInit {
       });
       return;
     }
+    if ((this.vSupplierId == '' || this.vSupplierId == null || this.vSupplierId == undefined)) {
+      this.toastr.warning('Please select supplierName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this._WorkOrderService.WorkorderItemForm.get('GSTType').value == '' ||
+     this._WorkOrderService.WorkorderItemForm.get('GSTType').value == null ||
+      this._WorkOrderService.WorkorderItemForm.get('GSTType').value == undefined)) {
+      this.toastr.warning('Please select GST type', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId ===  this._WorkOrderService.WorkorderItemForm.get('ItemName').value);
     if (!isDuplicate) { 
     this.dsItemNameList.data = [];
+    this.chargeslist = this.dsTempItemNameList.data;
     this.chargeslist.push(
       {
         ItemID: this.ItemID,
@@ -543,6 +558,7 @@ getTotalAmt(element) {
     this._WorkOrderService.WorkorderItemForm.reset();
     this.dsItemNameList.data = [];
     this.chargeslist.data = [];
+    this.dsTempItemNameList.data =[];
   }
  
   addbtn:boolean=true;

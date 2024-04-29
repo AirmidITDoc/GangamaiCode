@@ -35,7 +35,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { GRNReturnComponent } from '../grn-return/grn-return.component';
-import { GrnListComponent } from './grn-list/grn-list.component';
+import { GrnListComponent } from './new-grnreturn/grn-list/grn-list.component';
+import { NewGRNReturnComponent } from './new-grnreturn/new-grnreturn.component';
 
 
 const routes: Routes = [
@@ -49,6 +50,7 @@ const routes: Routes = [
   declarations: [
     GRNReturnComponent,
     GrnListComponent,
+    NewGRNReturnComponent,
     
     
   ],

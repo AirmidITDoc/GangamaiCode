@@ -36,7 +36,7 @@
                                     <mat-date-range-input [rangePicker]="grnPicker">
                                         <input matStartDate formControlName="start" placeholder="Start date">
                                         <input matEndDate formControlName="end" placeholder="End date"
-                                            (dateChnage)="getGRNList()">
+                                            (dateChange)="getGRNList()">
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="grnPicker"></mat-datepicker-toggle>
                                     <mat-date-range-picker #grnPicker></mat-date-range-picker>
@@ -172,9 +172,9 @@
                             </div>
                         </div>
 
-                        <div fxLayoutAlign="end" style="padding-left: 20px;">
-                            <button class="btn btn-primary" (click)="OnselectGRNList()" [disabled]="Onsave">Ok</button>&nbsp;
-                            <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>&nbsp;
+                        <div fxLayoutAlign="end" style="padding-left: 20px;"> 
+                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp; 
+                             <button class="btn btn-primary" (click)="OnselectGRNList()" [disabled]="Onsave">Ok</button>&nbsp;
                         </div>
                     </div>
              
@@ -278,13 +278,6 @@
                 </div> -->
                
             </div>
-        </div>
-
-
-
-
-
-
-
+        </div> 
     </div>
 </div>
