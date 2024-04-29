@@ -90,7 +90,7 @@
                   
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                             <input name="WorkId" formControlName="WorkId" [(ngModel)]="vWorkId" type="hidden">
-                            <mat-form-field appearance="outline" fxFlex="35%">
+                            <!-- <mat-form-field appearance="outline" fxFlex="35%">
                                 <mat-label>ItemName</mat-label>
                                 <input type="text" name="ItemName" formControlName="ItemName" #itemid
                                     placeholder="Item Name (enter 2 char) " matInput [matAutocomplete]="auto"
@@ -112,7 +112,14 @@
                                     *ngIf="_WorkOrderService.WorkorderItemForm.get('ItemName').hasError('required')">
                                     Required field cannot be left blank
                                 </mat-error>
+                            </mat-form-field> -->
+
+                            <mat-form-field appearance="outline" fxFlex="35%">
+                                <mat-label>ItemName</mat-label>
+                                <input type="text" name="ItemName" formControlName="ItemName" #itemid
+                                placeholder="Item Name" matInput  (keydown)="onEnterItemName($event)" required>
                             </mat-form-field>
+
 
                             <mat-form-field appearance="outline" fxFlex="5%">
                                 <mat-label>Qty</mat-label>
@@ -419,9 +426,9 @@
                         </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
 
                        
-                            <div class="modal-footer-buttons gap-8" fxLayout="row">
-                                <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
+                            <div class="modal-footer-buttons gap-8" fxLayout="row"> 
                                 <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                                <button class="btn btn-primary " (click)="OnSave()" [disabled]="Savebtn">Save</button>
                             </div>
                         
                     </div>

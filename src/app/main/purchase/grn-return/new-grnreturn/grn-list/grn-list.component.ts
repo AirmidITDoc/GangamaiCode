@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { GrnReturnService } from '../grn-return.service';
+import { GrnReturnService } from '../../grn-return.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -55,7 +55,10 @@ export class GrnListComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   getSupplierSearchCombo() {
-    this._GRNReturnHeaderList.getSupplierSearchList().subscribe(data => {
+    var vdata={
+      'SupplierName':`${this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value}%`,
+    }
+    this._GRNReturnHeaderList.getSupplierSearchList(vdata).subscribe(data => {
       this.SupplierList = data;
       // console.log(data);
        this.optionsSupplier = this.SupplierList.slice();
@@ -82,10 +85,10 @@ export class GrnListComponent implements OnInit {
       "To_Dt": this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "StoreId":this._loggedService.currentUserValue.user.storeId || 0,
     }
-    console.log(Param);
+   // console.log(Param);
     this._GRNReturnHeaderList.getGRNList(Param).subscribe(data => {
       this.dsGRNList.data = data as GRNList[];
-      console.log(this.dsGRNList);
+    //  console.log(this.dsGRNList);
       this.dsGRNList.sort = this.sort;
       this.dsGRNList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -111,6 +114,7 @@ export class GrnListComponent implements OnInit {
   OnReset(){
    // this._GRNReturnHeaderList.GRNListFrom.reset();
     this.dsGRNList.data = []; 
+    this.onClose();
   }
   OnselectGRNList(){
     if ((!this.dsGRNList.data.length)) {
@@ -121,6 +125,8 @@ export class GrnListComponent implements OnInit {
     }
     
     this._dialogRef.close(this.SelectedArray);
+    this._GRNReturnHeaderList.GRNListFrom.get("start").setValue((new Date()).toISOString())
+    this._GRNReturnHeaderList.GRNListFrom.get("start").setValue((new Date()).toISOString())
   }
 }
 export class GRNList{
