@@ -29,6 +29,8 @@ import { MatSelect } from '@angular/material/select';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { IPBillingComponent } from '../../ip-search-list/ip-billing/ip-billing.component';
+import { NewRegistrationComponent } from 'app/main/opd/registration/new-registration/new-registration.component';
+import { RegistrationService } from 'app/main/opd/registration/registration.service';
 
 @Component({
   selector: 'app-admission',
@@ -236,6 +238,7 @@ export class AdmissionComponent implements OnInit {
   isLoading: string;
   Regflag: boolean = false;
   constructor(public _AdmissionService: AdmissionService,
+    public _registrationService: RegistrationService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     private _fuseSidebarService: FuseSidebarService,
@@ -1304,10 +1307,11 @@ export class AdmissionComponent implements OnInit {
             if (result.isConfirmed) {
               
               this.getAdmittedPatientCasepaperview(response,true);
-              this.personalFormGroup.reset();
-              this.hospitalFormGroup.reset();
-              this.wardFormGroup.reset();
-              this.otherFormGroup.reset();
+              // this.personalFormGroup.reset();
+              // this.hospitalFormGroup.reset();
+              // this.wardFormGroup.reset();
+              // this.otherFormGroup.reset();
+              this.onReset();
             }
           });
         } else {
@@ -1383,12 +1387,13 @@ export class AdmissionComponent implements OnInit {
             Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              this.personalFormGroup.reset();
-              this.hospitalFormGroup.reset();
-              this.wardFormGroup.reset();
-              this.otherFormGroup.reset();
+              // this.personalFormGroup.reset();
+              // this.hospitalFormGroup.reset();
+              // this.wardFormGroup.reset();
+              // this.otherFormGroup.reset();
               
               this.getAdmittedPatientCasepaperview(response,true);
+              this.onReset();
             }
           });
         } else {
@@ -2102,18 +2107,18 @@ agedaycheck(event){
 
 
 
-NewIPBill(row){
+EditRegistration(row){
   this.advanceDataStored.storage = new AdvanceDetailObj(row);
-      
-  const dialogRef = this._matDialog.open(IPBillingComponent,
-    {
-      maxWidth: "90%",
-      width:'98%',
-      height: '90%',   
-    });
-  dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed - Insert Action', result);
-
+  console.log(row)
+  this._registrationService.populateFormpersonal(row);
+    
+  const dialogRef = this._matDialog.open(NewRegistrationComponent, 
+    {   maxWidth: "90vw",
+        height: '450px',
+        width: '100%',
+         data : {
+        registerObj : row,
+      }
   });
 }
 

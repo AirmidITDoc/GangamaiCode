@@ -2495,6 +2495,7 @@ debugger
       CompanyId:contact.CompanyId,
       Lbl:"AppointmentBill"
     };
+    console.log(xx)
     this.advanceDataStored.storage = new SearchInforObj(xx);
     const dialogRef = this._matDialog.open(NewOPBillingComponent,
       {
@@ -3015,6 +3016,7 @@ export class AdvanceDetailObj {
   CompanyId: any;
   HospitalId: any;
   VistDateTime: any;
+  AadharCardNo: any;
   /**
    * Constructor
    *
@@ -3048,6 +3050,7 @@ export class AdvanceDetailObj {
       this.CompanyId = AdvanceDetailObj.CompanyId || 0;
       this.HospitalId = AdvanceDetailObj.HospitalId || 0;
       this.VistDateTime=AdvanceDetailObj.VistDateTime || ''
+      this.AadharCardNo=AdvanceDetailObj.AadharCardNo || 0;
     }
   }
 }
