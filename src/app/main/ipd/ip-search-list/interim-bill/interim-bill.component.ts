@@ -15,6 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 import * as converter from 'number-to-words';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 
 @Component({
   selector: 'app-interim-bill',
@@ -254,10 +255,10 @@ export class InterimBillComponent implements OnInit {
      const interimBillCharge = new interimBill(interimBillChargesobj);
      const insertBillUpdateBillNo1 = new Bill(insertBillUpdateBillNo1obj);
      if (!this.InterimFormGroup.get('cashpay').value) {
-    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
-        height: '540px',
+        height: '740px',
         width: '100%',
         data: {
           advanceObj: PatientHeaderObj,

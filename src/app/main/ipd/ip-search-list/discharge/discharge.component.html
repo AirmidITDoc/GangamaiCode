@@ -37,111 +37,61 @@
                         <!-- ================================ LABEL HEADER  -->
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
                            
-                            <div>
-                                <fieldset class="fieldset-div">
-                                    <legend>Patient Information</legend>
-                                    <div fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item" style="width: 250px;">
-                                                    <h3 class="labels-h3">Patient Name</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h5 class="labels-h6">:</h5>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h5 class="labels-h6">{{PatientHeaderObj.PatientName}}</h5>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item" style="width: 250px;">
-                                                    <h3 class="labels-h3">Patient Category</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h4 class="labels-h6">:</h4>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h4 class="labels-h6">Staff</h4>
-                                                </div>
-                                            </div>
+                         
+
+                            <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                <div class="patient-info-container">
+                                    <div class="patient-info-box">
+                                        <div class="patient-info-title border-bottom pb-2">
+                                            <span class="h1">Patient Information</span>
                                         </div>
-                    
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Gender</h3>
+                                        <div class="patient-info-box my-8">
+                                            <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key ">Patient Name</span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
                                                 </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">Patient Category</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">Staff</span>
                                                 </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Male</h6>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">IPDNo</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
                                                 </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Tariff</h3>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">Tariff</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
                                                 </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key ">Age</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}</span>
                                                 </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Hospital</h6>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">Company</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
                                                 </div>
-                                            </div>
-                                        </div>
-                    
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Age</h3>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">Patient Source</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
                                                 </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">30</h6>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Company</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Airmid</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                    
-                                        <div class="patient-sub">
-                                            <div class="patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Patient Source</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">Hospital</h6>
-                                                </div>
-                                            </div>
-                                            <div class="patient-info-1-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="flex-item item-header">
-                                                    <h3 class="labels-h3">Doctor</h3>
-                                                </div>
-                                                <div class="flex-item-middle">
-                                                    <h6 class="labels-h6">:</h6>
-                                                </div>
-                                                <div class="flex-item">
-                                                    <h6 class="labels-h6">XYZ XYZ Xyz</h6>
+                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <span class="patient-col-key">Doctor</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </fieldset>
+                                </div>
                             </div>
                         </mat-card>
                         <!-- ================================ LABEL HEADER  -->
@@ -246,7 +196,7 @@
                         </div> -->  
                         <div class="footer-navigation-container mb-4" fxLayout="row wrap"
                         fxLayoutAlign="space-between center">
-                        <div class="next-div button-row-group">
+                        <div class="next-div button-row-group" style="float: right;">
                             <button class="btn btn-primary" color="accent" (click)="onDischarge()"  [disabled]="_IpSearchListService.mySaveForm.invalid">
                                 <span>Save</span>
                             </button>
