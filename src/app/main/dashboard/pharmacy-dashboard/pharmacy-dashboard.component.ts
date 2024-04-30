@@ -34,17 +34,17 @@ export class PharmacyDashboardComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     this.getPharmStoreList();
-
-    this.fetchStaticData();
-    this.getPharCollSummStoreWiseDashboard()
-    this.fetchThreeMonSalesSumData();
-    this.getPieChart_CurrentValueData()
   }
 
   getPharmStoreList() {
     this._DashboardService.getPharmStoreList().subscribe(data => {
       this.PharmStoreList = data;
       this._DashboardService.UseFrom.get('StoreId').setValue(this.PharmStoreList[0]);
+      this.fetchStaticData();
+      this.getPharCollSummStoreWiseDashboard()
+      this.fetchThreeMonSalesSumData();
+      this.getPieChart_CurrentValueData();
+      this.fetchLineChartData();
     });
   }
   public getPharCollSummStoreWiseDashboard() {
@@ -61,14 +61,16 @@ export class PharmacyDashboardComponent implements OnInit {
   onChangeStore() {
     this.fetchStaticData();
     this.fetchThreeMonSalesSumData();
-    this.getPharCollSummStoreWiseDashboard()
-    this.getPieChart_CurrentValueData()
+    this.getPharCollSummStoreWiseDashboard();
+    this.getPieChart_CurrentValueData();
+    this.fetchLineChartData();
   }
   onDateRangeChanged() {
     this.fetchStaticData();
     this.fetchThreeMonSalesSumData();
-    this.getPharCollSummStoreWiseDashboard()
-    this.getPieChart_CurrentValueData()
+    this.getPharCollSummStoreWiseDashboard();
+    this.getPieChart_CurrentValueData();
+    this.fetchLineChartData();
   }
 
   onChangeStatic(event) {
@@ -177,8 +179,49 @@ export class PharmacyDashboardComponent implements OnInit {
       this.sIsLoading = 'noPharSumData';
     });
   }
+  LineChartConfig: any = {
+    data: [],
+    multi: [],
+    view: [500, 300],
+    showXAxis: true,
+    showYAxis: true,
+    gradient: false,
+    showLegend: true,
+    showXAxisLabel: true,
+    xAxisLabel: 'Store',
+    showYAxisLabel: true,
+    yAxisLabel: 'Amount',
+    legendTitle: 'Month',
+    showGridLines: true,
+    showDataLabel: true,
+    timeline:false,
+    schemeType:"linear",
+    colorScheme : {
+      domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
+    }
+  }
+  
+  fetchLineChartData() {
+    this.LineChartConfig.data = [];
+    this.LineChartConfig.multi = [];
+    this.sIsLoading = 'loading-data';
+    var m_data = {
+      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0,
+    }
+    this._DashboardService.getPharDashboardBarchart("m_PharSalesMonthWiseSummaryDashboard", m_data).subscribe(data => {
+      if ((this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0) > 0) {
+        this.LineChartConfig.data = data["data"] as any[];
+      }
+      else {
+        this.LineChartConfig.multi = data["data"] as any[];
+      }
+     // this.LineChartConfig.colorScheme.domain=data["colors"] as any[];
+      this.sIsLoading = '';
+    }, error => {
+      this.sIsLoading = 'noPharSumData';
+    });
+  }
 }
-
 // export class PharDashSummary {
 //   StoreName: number;
 //   CollectionAmount: any;
