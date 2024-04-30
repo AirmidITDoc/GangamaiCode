@@ -162,6 +162,7 @@ export class NewOPBillingComponent implements OnInit {
   vTariffId: any = 0;
   vClassId: any = 0;
   CompanyId: any = 0;
+  AgeYear: any = 0;
   //doctorone filter
   public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -200,13 +201,16 @@ export class NewOPBillingComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
-      // this.vOPDNo = this.selectedAdvanceObj.AdmissionID;
+      this.AgeYear = this.selectedAdvanceObj.AgeYear;
       this.vOPIPId = this.selectedAdvanceObj.AdmissionID;
       this.PatientName = this.selectedAdvanceObj.PatientName;
       this.Doctorname = this.selectedAdvanceObj.Doctorname;
       this.CompanyId = this.selectedAdvanceObj.CompanyId;
       this.CompanyName = this.selectedAdvanceObj.CompanyName;
       this.Tarrifname = this.selectedAdvanceObj.TariffName;
+      this.vTariffId=this.selectedAdvanceObj.TariffId;
+      this.vClassId=this.selectedAdvanceObj.ClassId;
+      // this.PatientType
     }
 
     this.getServiceListCombobox();
@@ -312,9 +316,10 @@ export class NewOPBillingComponent implements OnInit {
     let tempObj;
     var m_data = {
       SrvcName: `${this.registeredForm.get('SrvcName').value}%`,
-      TariffId: 1,//this.selectedAdvanceObj.TariffId,
-      ClassId: 1,// this.selectedAdvanceObj.ClassId || 1
+      TariffId:  this.vTariffId, //this.selectedAdvanceObj.TariffId,
+      ClassId:   this.vClassId,
     };
+    console.log(m_data)
     if (this.registeredForm.get('SrvcName').value.length >= 1) {
       this._oPSearhlistService.getBillingServiceList(m_data).subscribe(data => {
         this.filteredOptions = data;
@@ -1264,7 +1269,8 @@ getSelectedObj1(obj) {
   this.vOPIPId = obj.VisitId;
   this.vOPDNo = obj.OPDNo;
   this.vTariffId = obj.TariffId;
-  this.vClassId = obj.classId
+  this.vClassId = obj.ClassId;
+  this.AgeYear=obj.AgeYear;
 }
 }
 
