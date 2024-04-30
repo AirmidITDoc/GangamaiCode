@@ -1,14 +1,12 @@
-<mat-tab-group style="width: 100%;">
-    <mat-tab label=" GRN Return List">
-        <div id="grn-return" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
+ 
+<div id="grn-return" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
             <mat-toolbar class="top-header accent">
                 <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
                     <button mat-icon-button class="sidebar-toggle">
                         <mat-icon>menu</mat-icon>
                     </button>
                     <button mat-icon-button class="user-icon">
-                        <mat-icon class="logo-icon"
-                            [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                        <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                         </mat-icon>
                     </button>
                     <div class="top-header-title">
@@ -17,6 +15,9 @@
                         </span>
                     </div>
                 </div>
+                <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="getNewGRNRet()">
+                    <span>New GRNReturn</span>
+                </button>
             </mat-toolbar>
             <div class="content">
                 <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar ">
@@ -24,7 +25,7 @@
                         <div class="sidebar-header accent" fxLayout="row" fxLayoutAlign="start center">
                             <span class="search-title">Search Facility</span>
                         </div>
-
+        
                         <div class="sidebar-body">
                             <div class="sidebar-form">
                                 <form [formGroup]="_GRNReturnService.GRNReturnSearchFrom">
@@ -39,7 +40,7 @@
                                             <mat-datepicker-toggle matSuffix [for]="grnPicker"></mat-datepicker-toggle>
                                             <mat-date-range-picker #grnPicker></mat-date-range-picker>
                                         </mat-form-field>
-
+        
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Store Name</mat-label>
                                             <mat-select formControlName="ToStoreId" name="ToStoreId">
@@ -49,12 +50,11 @@
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>
-
+        
                                         <mat-form-field appearance="outline" fxFlex="25%">
                                             <mat-label>Supplier Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Supplier" matInput formControlName="SupplierId"
-                                                [matAutocomplete]="autoSupllier">
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select Supplier"
+                                                matInput formControlName="SupplierId" [matAutocomplete]="autoSupllier">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_GRNReturnService.GRNReturnSearchFrom.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
@@ -69,20 +69,18 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
-
-                                        <mat-radio-group name="Status" formControlName="Status" fxLayout="row"
-                                            class="gap-4 " value="0" style="margin-top: 10px;">
+        
+                                        <mat-radio-group name="Status" formControlName="Status" fxLayout="row" class="gap-4 "
+                                            value="0" style="margin-top: 10px;">
                                             <mat-label>Status:</mat-label>&nbsp;
                                             <!-- <mat-radio-button value="2" class="mr-sm-12" (keyup)=" getGRNList()">All
-                                        </mat-radio-button> -->
-                                            <mat-radio-button value="1" class="mr-sm-12"
-                                                (keyup)=" getGRNReturnList()">Close
+                                                </mat-radio-button> -->
+                                            <mat-radio-button value="1" class="mr-sm-12" (keyup)=" getGRNReturnList()">Close
                                             </mat-radio-button>&nbsp;
-                                            <mat-radio-button value="0" class="mr-sm-12"
-                                                (keyup)=" getGRNReturnList()">Pending
+                                            <mat-radio-button value="0" class="mr-sm-12" (keyup)=" getGRNReturnList()">Pending
                                             </mat-radio-button>
                                         </mat-radio-group>
-
+        
                                         <div class="action-buttons" style="margin-top: 15px;">
                                             <button mat-raised-button (click)="onClear()" class="clear-button"
                                                 matTooltip="close">
@@ -95,23 +93,23 @@
                                         </div>
                                     </div>
                                 </form>
-
+        
                             </div>
                         </div>
                     </div>
                 </fuse-sidebar>
-
+        
                 <div class="center p-12 pb-56" fxFlexAlign="start center">
                     <div class="content-card" style="border-radius:4px; ">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                             <div fxFlex.gt-sm="100%" fxFlex>
-
+        
                                 <div fxlayout="row">
                                     <div style="width: 100%;">
-
+        
                                         <mat-table #table matSort class="table1" [dataSource]="dsGRNReturnList"
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
-
+        
                                             <ng-container matColumnDef="GRNReturnId">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GRN ReturnId</mat-header-cell>
@@ -119,7 +117,7 @@
                                                     <span> {{contact.GRNReturnId}}</span>
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="GRNReturnNo">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GRNReturn No</mat-header-cell>
@@ -127,7 +125,7 @@
                                                     <span> {{contact.GRNReturnNo}}</span>
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="GRNReturnDate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GRNReturnDate</mat-header-cell>
@@ -135,15 +133,15 @@
                                                     <span> {{contact.GRNReturnDate | date:'dd/MM/YYYY'}}</span>
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <!-- <ng-container matColumnDef="StoreName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Store Name </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.StoreName}}</span>
-                                                </mat-cell>
-                                            </ng-container> -->
-
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                            Store Name </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                            <span> {{contact.StoreName}}</span>
+                                                        </mat-cell>
+                                                    </ng-container> -->
+        
                                             <ng-container matColumnDef="SupplierName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     SupplierName</mat-header-cell>
@@ -151,7 +149,7 @@
                                                     <span> {{contact.SupplierName}}</span>
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="UserName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     UserName</mat-header-cell>
@@ -159,7 +157,7 @@
                                                     <span> {{contact.UserName}}</span>
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="GSTAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GST Amount</mat-header-cell>
@@ -167,7 +165,7 @@
                                                     <span> {{contact.TotalVatAmount}}</span>
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="NetAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Net Amount</mat-header-cell>
@@ -175,7 +173,7 @@
                                                     <span> {{contact.NetAmount}}</span>
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="Remark">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Remark</mat-header-cell>
@@ -183,7 +181,7 @@
                                                     <span> {{contact.Remark}}</span>
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="AddedBy">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     AddedBy</mat-header-cell>
@@ -191,35 +189,52 @@
                                                     <span> {{contact.AddedBy}}</span>
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <!-- stickyEnd -->
                                             <ng-container matColumnDef="action" stickyEnd>
-                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                    style="color: white;">Action
+                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let row">
-                                                    <button mat-icon-button matTooltip="print"
-                                                        (click)="getPrint(row,m)">
+                                                    <button mat-icon-button matTooltip="print" (click)="getPrint(row)">
                                                         <mat-icon>print</mat-icon>
                                                     </button>
+                                                    <!-- <button mat-icon-button matTooltip="print" (click)="getVerify(row)">
+                                                        <mat-icon>Verify</mat-icon>
+                                                    </button> -->
+                                                    <button mat-icon-button (click)="getVerify(row)"
+                                                    matTooltip="Verify">
+                                                    <mat-icon *ngIf="row.IsVerified==1"title="verify Menu">verified_user</mat-icon>
+                                                    <mat-icon title="verify Menu" *ngIf="row.IsVerified==0">verified_user</mat-icon>
+                                                </button>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Status">
+                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                    style="color: white;">Verify</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact">
+                                                    <mat-icon *ngIf="contact.IsVerified" matTooltip="Verified"
+                                                        class="pill green-600 s-16">circle</mat-icon>
+                                                    <mat-icon *ngIf="!contact.IsVerified" matTooltip="Pending"
+                                                        class="pill red-600 s-16">circle</mat-icon> 
+                                                  
                                                 </mat-cell>
                                             </ng-container>
                                             <ng-container matColumnDef="loading">
                                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                                 </mat-header-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
                                                     No data found...
                                                 </mat-footer-cell>
                                             </ng-container>
-
-                                            <mat-header-row class="accent"
-                                                *matHeaderRowDef="displayedColumns; sticky: true">
+        
+                                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                             </mat-header-row>
-
-                                            <mat-row  *matRowDef="let contact; columns: displayedColumns;" class="contact"
+        
+                                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
                                                 [@animate]="{value:'*',params:{y:'100%'}}"
                                                 (click)="getGRNReturnItemDetList(contact)"></mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
@@ -227,20 +242,20 @@
                                             <mat-footer-row *matFooterRowDef="['noData']"
                                                 [ngClass]="{'hide':!(dsGRNReturnList!=null && dsGRNReturnList.data.length==0)}"></mat-footer-row>
                                         </mat-table>
-
+        
                                         <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
                                             showFirstLastButtons>
                                         </mat-paginator>
-
-                                       
-
-
+        
+        
+        
+        
                                     </div>
                                     <div style="width: 100%;">
-
+        
                                         <mat-table #table matSort class="table2" [dataSource]="dsGRNReturnItemDetList"
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
-
+        
                                             <ng-container matColumnDef="ItemName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                     ItemName
@@ -249,7 +264,7 @@
                                                     {{contact.ItemName}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="BatchNo">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     BatchNo</mat-header-cell>
@@ -257,7 +272,7 @@
                                                     {{contact.BatchNo}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="BatchExpiryDate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     ExpDate</mat-header-cell>
@@ -265,7 +280,7 @@
                                                     {{contact.BatchExpiryDate | date:'dd/MM/YYYY'}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="Conversion">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Packing</mat-header-cell>
@@ -273,7 +288,7 @@
                                                     {{contact.Conversion}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="ReturnQty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     RQty</mat-header-cell>
@@ -281,7 +296,7 @@
                                                     {{contact.ReturnQty}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="TotalQty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     TotalQty</mat-header-cell>
@@ -289,7 +304,7 @@
                                                     {{contact.TotalQty}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="MRP">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     MRP</mat-header-cell>
@@ -297,7 +312,7 @@
                                                     {{contact.MRP}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="LandedRate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Landed Rate</mat-header-cell>
@@ -305,7 +320,7 @@
                                                     {{contact.LandedRate}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="Totalamt">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     TotalAmt</mat-header-cell>
@@ -313,7 +328,7 @@
                                                     {{contact.LandedTotalAmount}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="GST">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GST</mat-header-cell>
@@ -321,7 +336,7 @@
                                                     {{contact.VatPercentage}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="GSTAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     GSTAmount</mat-header-cell>
@@ -329,7 +344,7 @@
                                                     {{contact.VatAmount}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="NetAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     NetAmount</mat-header-cell>
@@ -337,8 +352,8 @@
                                                     {{contact.LandedTotalAmount}}
                                                 </mat-cell>
                                             </ng-container>
-
-
+        
+        
                                             <ng-container matColumnDef="StkId">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     StkId</mat-header-cell>
@@ -346,20 +361,19 @@
                                                     {{contact.StkId}}
                                                 </mat-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="loading">
                                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                                 </mat-header-cell>
                                             </ng-container>
-
+        
                                             <ng-container matColumnDef="noData">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
                                                     No data found...
                                                 </mat-footer-cell>
                                             </ng-container>
-
-                                            <mat-header-row class="accent"
-                                                *matHeaderRowDef="displayedColumns1; sticky: true">
+        
+                                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
                                             </mat-header-row>
                                             <mat-row *matRowDef="let contact; columns: displayedColumns1;"
                                                 [@animate]="{value:'*',params:{y:'100%'}}">
@@ -369,25 +383,24 @@
                                             <mat-footer-row *matFooterRowDef="['noData']"
                                                 [ngClass]="{'hide':!(dsGRNReturnItemDetList!=null && dsGRNReturnItemDetList.data.length==0)}"></mat-footer-row>
                                         </mat-table>
-
+        
                                         <mat-paginator #paginator1 [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12"
                                             showFirstLastButtons>
                                         </mat-paginator>
-
-
-
+        
+        
+        
                                     </div>
                                 </div>
-
+        
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </mat-tab>
+ </div>
 
-    <mat-tab label="New GRN Retrun">
+    <!-- <mat-tab label="New GRN Retrun">
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
             <mat-toolbar style="width: 100%;height: 50px;justify-content: space-between;">
                 <div fxLayout="row" fxLayoutAlign="start center">
@@ -736,5 +749,4 @@
                 </div>
             </div>
         </div>
-    </mat-tab>
-</mat-tab-group>
+    </mat-tab> --> 

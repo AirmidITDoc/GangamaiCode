@@ -30,7 +30,7 @@ export class GrnReturnService {
     });
   }
   GRNSearchFrom() {
-    return this._formBuilder.group({
+    return this._formBuilder.group({ 
       ToStoreId: '',
       SupplierId:'',
       Status:['0'],
@@ -51,11 +51,9 @@ export class GrnReturnService {
   }
 
   NewGRNItemList() {
-    return this._formBuilder.group({
-      ToStoreId: '',
+    return this._formBuilder.group({ 
       SupplierId:'',
-      CashType:['1'],
-      start: [(new Date()).toISOString()],
+      CashType:['true'], 
       Qty:['']
     });
   }
@@ -75,17 +73,14 @@ export class GrnReturnService {
   public getGRNList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name_For_GRNReturn",Param);
   }
-  public getSupplierSearchList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SupplierName",{});
+  public getSupplierSearchList(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list",param);
   }
 
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
-  // public GRNRetrunSave(Param){
-  //   return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
-  // }
-
+ 
   public getGrnItemList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemList_by_Supplier_Name_For_GRNReturn",Param);
   }
@@ -94,7 +89,9 @@ export class GrnReturnService {
     return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
   }
 
-
+  public getVerifyGRNReturn(Param) {
+    return this._httpClient.post("Pharmacy/VerifyGRNReturn", Param)
+  }
 
 }
 

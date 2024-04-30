@@ -142,6 +142,20 @@
                                         </mat-cell>
                                     </ng-container> -->
 
+
+                            <ng-container matColumnDef="IsBillGenerated" sticky>
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80" style="color: white;">Bill
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-80">
+                                    <mat-icon *ngIf="contact.IsBillGenerated=='1'; else noMLC " matTooltip="Bill Generated" class="pill green-600 s-16">
+                                    </mat-icon>
+                                    <ng-template #noMLC>
+                                        <span>--</span>
+                                    </ng-template>
+
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="IsMLC" sticky>
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80">IsMLC
                                 </mat-header-cell>

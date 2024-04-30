@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Inject, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -28,6 +28,7 @@ import { RFC_2822 } from 'moment';
 import { MatSelect } from '@angular/material/select';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
+import { IPBillingComponent } from '../../ip-search-list/ip-billing/ip-billing.component';
 
 @Component({
   selector: 'app-admission',
@@ -403,7 +404,8 @@ export class AdmissionComponent implements OnInit {
       RelativeAddress: '',
       RelatvieMobileNo: ['', [ Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       RelationshipId: '',
-      IsMLC:[false]
+      IsMLC:[false],
+      OPIPChange:[false]
     });
   }
   createSearchForm() {
@@ -2097,6 +2099,24 @@ agedaycheck(event){
     return;
   }
 }
+
+
+
+NewIPBill(row){
+  this.advanceDataStored.storage = new AdvanceDetailObj(row);
+      
+  const dialogRef = this._matDialog.open(IPBillingComponent,
+    {
+      maxWidth: "90%",
+      width:'98%',
+      height: '90%',   
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result);
+
+  });
+}
+
 
 }
 

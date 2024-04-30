@@ -1053,7 +1053,7 @@ debugger
           InsertBillUpdateBillNoObj['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
             InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
             InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
-          InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
+          InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
           InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
           InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
           InsertBillUpdateBillNoObj['TaxPer'] = 0;
@@ -1110,7 +1110,7 @@ debugger
       let InsertDraftBillOb = {};
       InsertDraftBillOb['DRBNo'] = 0;
       InsertDraftBillOb['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
-        InsertDraftBillOb['TotalAmt'] = this.Ipbillform.get('TotalAmt').value || 0;
+        InsertDraftBillOb['TotalAmt'] =  this.vTotalBillAmount  || this.Ipbillform.get('TotalAmt').value || 0;
       InsertDraftBillOb['ConcessionAmt'] = this.Ipbillform.get('concessionAmt').value || 0;
       InsertDraftBillOb['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
       InsertDraftBillOb['PaidAmt'] = 0;
@@ -1147,6 +1147,7 @@ debugger
         "ipIntremdraftbillInsert": InsertDraftBillObj,
         "interimBillDetailsInsert": DraftBilldetsarr
       };
+      console.log(submitData)
       this._IpSearchListService.InsertIPDraftBilling(submitData).subscribe(response => {
         if (response) {
           Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
@@ -1299,9 +1300,9 @@ debugger
     });
   }
 
-
+//For testing 
   viewgetDraftBillReportPdf(AdmissionID) {
-
+    
     this._IpSearchListService.getIpDraftBillReceipt(
       AdmissionID
     ).subscribe(res => {

@@ -191,21 +191,18 @@
 
                                             <div>
                                                 <div fxLayout="row">
+                                                    <div>
                                                 <mat-form-field appearance="outline">
                                                     <mat-label>Disc %</mat-label>
-                                                    <input matInput [(ngModel)]="formDiscPersc" name="formDiscPer" #disc
-                                                        (keyup)="calculatePersc()" formControlName="discPer"
-                                                        type="number" id="discPer"
-                                                        (keyup.enter)="setFocus('discAmount')">
+                                                    <input matInput [(ngModel)]="formDiscPersc" name="formDiscPer" #disc (keyup)="calculatePersc()"
+                                                        formControlName="discPer" type="number" id="discPer" (keyup.enter)="setFocus('discAmount')">
                                                 </mat-form-field>
                                                 <mat-form-field appearance="outline">
                                                     <mat-label>Disc Amt</mat-label>
-                                                    <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"
-                                                        formControlName="concessionAmt" type="number" id="discAmount"
-                                                        (keyup.enter)="setFocus('ConId')"
-                                                        (keyup)="calculatechargesDiscamt()">
+                                                    <input matInput [(ngModel)]="b_disAmount" name="bDisAmount" formControlName="concessionAmt" type="number"
+                                                        id="discAmount" (keyup.enter)="setFocus('ConId')" (keyup)="calculatechargesDiscamt()">
                                                 </mat-form-field>
-
+                                            </div>
                                             </div>
                                             </div>
                                             <div>

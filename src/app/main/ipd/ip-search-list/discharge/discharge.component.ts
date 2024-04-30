@@ -257,7 +257,7 @@ debugger;
     var m_data = {
       "insertIPDDischarg": {
         "DischargeId": 0,
-        "AdmissionId": this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value,
+        "AdmissionId": this.selectedAdvanceObj.AdmissionID,
         "DischargeDate": this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',//this._IpSearchListService.mySaveForm.get("DischargeDate").value,// this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
         "DischargeTime": this.datePipe.transform(this.currentDate,'hh:mm:ss') || '01/01/1900',//this._IpSearchListService.mySaveForm.get("DischargeDate").value,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
         "DischargeTypeId": this._IpSearchListService.mySaveForm.get("DischargeTypeId").value.DischargeTypeId || 0,
@@ -268,7 +268,7 @@ debugger;
         "AddedBy": this.accountService.currentUserValue.user.id,
       },
       "updateAdmission": {
-        "AdmissionId": this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value || 0,
+        "AdmissionId":this.selectedAdvanceObj.AdmissionID,
         "IsDischarged": 1,
         "DischargeDate":this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value ,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
         "DischargeTime":this.datePipe.transform(this.currentDate,'hh:mm:ss') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
@@ -280,7 +280,7 @@ debugger;
       if (response) {
         Swal.fire('Congratulations !', 'Discharge save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
-            let m = response;
+          
             this._matDialog.closeAll();
             console.log(response)
             this.viewgetCheckoutslipPdf(response)

@@ -380,10 +380,10 @@ export class SalesComponent implements OnInit {
     this.getBankNameList4();
     this.getDraftorderList();
 
-    console.log(this._loggedService.currentUserValue.user);
-    this.vPharExtOpt = this._loggedService.currentUserValue.user.PharExtOpt;
-    this.vPharOPOpt=this._loggedService.currentUserValue.user.PharOPOpt;
-    this.vPharIPOpt=this._loggedService.currentUserValue.user.PharIPOpt;
+    this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    this.vPharOPOpt=this._loggedService.currentUserValue.user.pharOPOpt;
+    this.vPharIPOpt=this._loggedService.currentUserValue.user.pharIPOpt;
+
   }
 
 
