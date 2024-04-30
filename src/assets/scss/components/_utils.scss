@@ -75,64 +75,68 @@
 .mb-5 {
     margin-bottom: 3rem;
 }
-.pill {
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
-}
-// Basic list
-ul.list-basic {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    li {
-        .list-item {
+.mat-typography {
+    .pill {
+        width: 16px;
+        height: 16px;
+        min-width: 16px;
+        min-height: 16px;
+        border-radius: 100%;
+    }
+    // Basic list
+    ul.list-basic {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        li {
+            .list-item {
+                display: flex;
+                justify-content: space-between;
+                gap: 4px;
+                flex-wrap: wrap;
+                .list-item-key {
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+    .net-amt-section {
+        .net-amt {
             display: flex;
-            justify-content: space-between;
-            gap: 4px;
-            flex-wrap: wrap;
-            .list-item-key {
-                font-weight: 600;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 24px;
+            .net-amt-box {
+                .net-amt-label {
+                    font-weight: 600;
+                }
+                .net-amt-value {
+                }
             }
         }
     }
-}
-.net-amt-section {
-    .net-amt {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 24px;
-        .net-amt-box {
-            .net-amt-label {
-                font-weight: 600;
-            }
-            .net-amt-value {
-            }
-        }
-    }
-}
-.patient-info-row {
-    display: flex;
-    align-items: center;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    @include media-breakpoint("sm") {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    @include media-breakpoint("xs") {
-        grid-template-columns: repeat(1, 1fr);
-    }
-    .patient-col {
+    .patient-info-row {
         display: flex;
         align-items: center;
-        gap: 3px;
-        @include font-size(14px);
-        .patient-col-key {
-            font-weight: 700;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        @include media-breakpoint("sm") {
+            grid-template-columns: repeat(2, 1fr);
         }
-        .patient-col-value {
+        @include media-breakpoint("xs") {
+            grid-template-columns: repeat(1, 1fr);
+        }
+        .patient-col {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            @include font-size(14px);
+            .patient-col-key {
+                font-weight: 700;
+            }
+            .patient-col-value {
+            }
         }
     }
 }
