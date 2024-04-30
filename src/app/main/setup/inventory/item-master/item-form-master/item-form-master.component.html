@@ -7,9 +7,9 @@
       <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
         style="color: white;">account_box
       </mat-icon>
-      <!-- <h3>Registration </h3> -->
       <h3 style="color: white;">New Item Master </h3>
-      <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="margin-left: 1150px;color: white;">
+      <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+        style="margin-left: 1150px;color: white;">
         <mat-icon>close</mat-icon>
       </button>
     </mat-toolbar-row>
@@ -17,15 +17,15 @@
 
   <div style="padding:10px; height: 100%;" fxLayoutGap="2px">
     <div class="dialog-content-wrapper" style="align-items: flex-end;margin-right:10px;">
-+
+
       <form [formGroup]="_itemService.myform" noValidate>
         <div style="padding: 20px;">
-          <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+          <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> 
+
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>HSNcode</mat-label>
               <input name="HSNcode" placeholder="Enter HSNcode" formControlName="HSNcode" [(ngModel)]="vHSNcode"
-                matInput type="number" required #HSN (keydown)="onEnterHsn($event)" required>
-              <mat-error>Please enter HSNcode </mat-error>
+                matInput type="number"  #HSN (keydown)="onEnterHsn($event)"> 
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -33,15 +33,7 @@
               <input name="ItemName" formControlName="ItemName" #Itemname [(ngModel)]="vItemName"
                 placeholder="Enter Item Name" matInput (keydown)="onEnterItemName($event)" required>
             </mat-form-field>
-            <!--             
-            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-              <mat-select placeholder="Select ItemColorcode" name="ItemColorcode" formControlName="ItemColorcode" #singleSelect>
-                <mat-option *ngFor="let M of CurrencycmbList" [value]="M.CurrencyId" >
-                  {{ M.CurrencyName}}
-                </mat-option>
-              </mat-select>
-              <mat-error>Select UnitofMeasurementName</mat-error>
-            </mat-form-field> -->
+
           </div>
 
           <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -125,7 +117,7 @@
               <mat-label>CurrencyId </mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select StockUOMId" matInput
                 formControlName="CurrencyId" [matAutocomplete]="autoCurrencyId" (keydown)="onEnterCurrencyId($event)"
-                #CurrencyId>
+                #CurrencyId >
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('CurrencyId').setValue(''); isCurrencySelected = false;">close</mat-icon>
@@ -146,7 +138,7 @@
               <mat-label>UnitofMeasurement Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select PurchaseUOMId" matInput
                 formControlName="PurchaseUOMId" [matAutocomplete]="autoPurchaseUOMId"
-                (keydown)="onEnterPurchaseUOMId($event)" #PurchaseUOMId required>
+                (keydown)="onEnterPurchaseUOMId($event)" #PurchaseUOMId required  [(ngModel)]="vPurchaseUOMId">
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('PurchaseUOMId').setValue(''); isPurchaseUOMIdSelected = false;">close</mat-icon>
@@ -182,21 +174,22 @@
               <mat-label>ConversionFactor</mat-label>
               <input name="ConversionFactor" placeholder="Enter ConversionFactor" required
                 (keydown)="onEnterConversionFactor($event)" #ConversionFactor formControlName="ConversionFactor"
-                matInput type="number" OnlyNumber>
+                matInput type="number" OnlyNumber  [(ngModel)]="vConversionFactor">
               <mat-error>Please enter ConversionFactor </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>ReOrder</mat-label>
               <input name="ReOrder" placeholder="Enter ReOrder" formControlName="ReOrder" type="number" OnlyNumber
-                (keydown)="onEnterReOrder($event)" #ReOrder matInput [(ngModel)]="registerObj.ReOrder" required>
-                <mat-error>ReOrder is required Enter only number </mat-error>
+                (keydown)="onEnterReOrder($event)" #ReOrder matInput [(ngModel)]="vROrder" required >
+              <mat-error>ReOrder is required Enter only number </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>MaxDisc</mat-label>
-              <input name="MaxDisc" placeholder="Enter MaxDisc" (keydown)="onEnterMaxdisc($event)" #Maxdisc required
-                formControlName="MaxDisc" (keyup)="Chkdisc()" [(ngModel)]="registerObj.MaxDisc" matInput type="number" OnlyNumber>
+              <input name="MaxDisc" placeholder="Enter MaxDisc" (keydown)="onEnterMaxdisc($event)" #Maxdisc  
+                formControlName="MaxDisc" (keyup)="Chkdisc()" [(ngModel)]="registerObj.MaxDisc" matInput type="number"
+                OnlyNumber>
               <mat-error>Please enter MaxDisc </mat-error>
             </mat-form-field>
           </div>
@@ -204,39 +197,39 @@
           <div>
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>CGST</mat-label>
-              <input name="CGST" placeholder="Enter CGST" [(ngModel)]="registerObj.CGST" formControlName="CGST" matInput
-              type="number"  step="0.01" (keydown)="onEnterCGST($event)" #CGST required>
+              <input name="CGST" placeholder="Enter CGST" [(ngModel)]="vCGST" formControlName="CGST" matInput
+                type="number" step="0.01" (keydown)="onEnterCGST($event)" #CGST required>
               <mat-error>CGST is required Enter only Numberr </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>SGST</mat-label>
-              <input name="SGST" placeholder="Enter SGST" [(ngModel)]="registerObj.SGST" formControlName="SGST" matInput
-              type="number" step="0.01" (keydown)="onEnterSGST($event)" #SGST required>
+              <input name="SGST" placeholder="Enter SGST" [(ngModel)]="vSGST" formControlName="SGST" matInput
+                type="number" step="0.01" (keydown)="onEnterSGST($event)" #SGST required>
               <mat-error>SGST is required Enter only Numberr </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>IGST</mat-label>
-              <input name="IGST" placeholder="Enter IGST" [(ngModel)]="registerObj.IGST" formControlName="IGST" matInput
-              type="number"  step="0.01" (keydown)="onEnterIGST($event)" #IGST required>
+              <input name="IGST" placeholder="Enter IGST" [(ngModel)]="vIGST" formControlName="IGST" matInput
+                type="number" step="0.01" (keydown)="onEnterIGST($event)" #IGST required>
               <mat-error>IGST is required Enter only Numberr </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>MinQty</mat-label>
               <input name="MinQty" placeholder="Enter MinQty" formControlName="MinQty" matInput type="number" OnlyNumber
-                (keydown)="onEnterMinQty($event)" #MinQty [(ngModel)]="registerObj.MinQty" required>
-                <mat-error>MinQty is required Enter only Numberr </mat-error>
+                (keydown)="onEnterMinQty($event)" #MinQty [(ngModel)]="registerObj.MinQty"  >
+              <mat-error>MinQty is required Enter only Numberr </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>MaxQty</mat-label>
               <input name="MaxQty" placeholder="Enter MaxQty" formControlName="MaxQty" matInput type="number" OnlyNumber
-                (keydown)="onEnterMaxQty($event)" #MaxQty [(ngModel)]="registerObj.MaxQty" required>
-                <mat-error>MaxQty is required Enter only Numberr </mat-error>
+                (keydown)="onEnterMaxQty($event)" #MaxQty [(ngModel)]="registerObj.MaxQty"  >
+              <mat-error>MaxQty is required Enter only Numberr </mat-error>
             </mat-form-field>
-            
+
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>Storagelocation</mat-label>
               <input name="Storagelocation" placeholder="Enter Storagelocation" (keydown)="onEnterStorage($event)"
@@ -304,7 +297,7 @@
               <mat-label>Store Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select StoreId" matInput
                 formControlName="StoreId" [matAutocomplete]="autoStoreId" required #storename
-                (keydown)="onEnterstorename($event)">
+                (keydown)="onEnterstorename($event)" [(ngModel)]="vStoreName">
               <span matSuffix style="display: flex;">
                 <mat-icon class="mat-icon-close"
                   (click)="_itemService.myform.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
@@ -328,24 +321,15 @@
             </mat-checkbox>
           </div>
 
-        </div>
-
-        <!-- <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-          <div class="button-row">
-           
-            <button class="footer-btn" (keydown)="onClear()">Reset</button>
-            <button class="next-btn" color="accent" type="submit" (click)="onSubmit()" style="border-radius: 16px;"
-              #addbutton>Save</button>
-
-          </div>
-        </div> -->
-        <div fxLayoutAlign="end">
-          <div class="sales-footer-buttons gap-8">
-            <button class="btn btn-primary" (click)="onSubmit()">Save</button>&nbsp;
+        </div> 
+      </form> 
+       
+      <div class="modal-footer" style="padding: 20px;"> 
+        <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end"> 
             <button class="btn btn-danger-outline" (click)="onClear()">Reset</button>
-          </div>
+            <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn">Save</button> 
         </div>
-      </form>
+     </div>
     </div>
 
   </div>

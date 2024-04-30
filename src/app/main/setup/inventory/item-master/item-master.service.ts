@@ -19,14 +19,7 @@ export class ItemMasterService {
 
     createItemmasterForm(): FormGroup {
         return this._formBuilder.group({
-            ItemID: [""],
-            // ItemShortName: [
-            //     "",
-            //     [
-            //         Validators.required,
-            //         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-            //     ],
-            // ],
+            ItemID: [""], 
             ItemName:['', [
                 Validators.required,
                 Validators.pattern("^[a-zA-Z._ -]+$"),
@@ -52,7 +45,7 @@ export class ItemMasterService {
             MaxQty: ["", Validators.pattern("[0-9]+")],
             ReOrder: ["", Validators.pattern("[0-9]+")],
             IsNursingFlag: ["true"],
-            HSNcode: ["", Validators.required],
+            HSNcode: [""],
             CGST: [""],
             SGST: [""],
             IGST: [""],
@@ -92,7 +85,7 @@ export class ItemMasterService {
     }
 
     public getItemMasterList(param) {
-        return this._httpClient.post(
+        return this._httpClient.post( 
             "Generic/GetByProc?procName=m_Rtrv_ItemMaster_by_Name",
             param
         );

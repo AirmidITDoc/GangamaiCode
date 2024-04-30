@@ -111,7 +111,7 @@
                                 {{option.MobileNo}}
                             </mat-option>
                         </mat-autocomplete> -->
-                    </mat-form-field>&nbsp;
+                    </mat-form-field>&nbsp;&nbsp;&nbsp;
 
                     <!-- <mat-form-field appearance="outline" fxFlex="10%">
                         <mat-label>From Date</mat-label>
@@ -128,6 +128,16 @@
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
                     </mat-form-field> --> 
+
+                     
+                    <div>
+                        <img width="32" height="10px" src="assets/images/logos/DoctorNote.png"
+                        (click)="getDoctornote()" style="padding-top: 5px;"  matTooltip="DoctorNote"> 
+                    </div>&nbsp; 
+                    <div>
+                        <img width="32" height="10px" src="assets/images/logos/NursingNote.png"
+                        (click)="getNursingnote()" style="padding-top: 5px;"  matTooltip="NuesingNote"> 
+                    </div>&nbsp;&nbsp;
 
                     <app-common-date [screenFrom]="screenFromString" style="margin-left: 300px;"
                     (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>

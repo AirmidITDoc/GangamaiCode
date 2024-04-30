@@ -322,7 +322,7 @@ OnSave(){
   this.dsGrnItemList.data.forEach((element) => {
     let grnReturnUpdateCurrentStockObj = {};
     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
-    grnReturnUpdateCurrentStockObj['issueQty'] = element.BalanceQty || 0;
+    grnReturnUpdateCurrentStockObj['issueQty'] = element.ReturnQty || 0;
     grnReturnUpdateCurrentStockObj['stkId'] = element.StkID || 0;
     grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.user.storeId || 0;
     grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);

@@ -94,12 +94,11 @@ export class ItemMasterComponent implements OnInit {
             StoreID: this._loggedService.currentUserValue.user.storeId
         };
         console.log(m_data)
-        this._itemService.getItemMasterList(m_data).subscribe(
-            (Menu) => {
-                this.DSItemMasterList.data = Menu as ItemMaster[];
-                this.isLoading = false;
+        this._itemService.getItemMasterList(m_data).subscribe((data) => {
+                this.DSItemMasterList.data = data as ItemMaster[]; 
                 this.DSItemMasterList.sort = this.sort;
                 this.DSItemMasterList.paginator = this.paginator;
+                console.log(this.DSItemMasterList.data)
             },
             (error) => (this.isLoading = false)
         );
