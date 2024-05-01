@@ -8,6 +8,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { DoctornoteComponent } from '../doctornote/doctornote/doctornote.component';
+import { NursingnoteComponent } from '../nursingnote/nursingnote/nursingnote.component';
 
 @Component({
   selector: 'app-clinical-care-chart',
@@ -93,7 +95,29 @@ export class ClinicalCareChartComponent implements OnInit {
   public setFocus(nextElementId): void {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
   }
- 
+  getDoctornote(){
+    //console.log(contact)
+    const dialogRef = this._matDialog.open(DoctornoteComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%', 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result); 
+    });
+  }
+  getNursingnote(){ 
+      const dialogRef = this._matDialog.open(NursingnoteComponent,
+        {
+          maxWidth: "100%",
+          height: '95%',
+          width: '95%', 
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result); 
+      });  
+  }
 }
 export class PatientList {
   patientId: any;

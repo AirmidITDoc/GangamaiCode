@@ -379,14 +379,10 @@ export class SalesComponent implements OnInit {
     this.getBankNameList3();
     this.getBankNameList4();
     this.getDraftorderList();
-debugger
-    console.log(this._loggedService.currentUserValue.user);
+
     this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
     this.vPharOPOpt=this._loggedService.currentUserValue.user.pharOPOpt;
     this.vPharIPOpt=this._loggedService.currentUserValue.user.pharIPOpt;
-    console.log(this.vPharExtOpt);
-    console.log( this.vPharOPOpt);
-    console.log(this.vPharIPOpt);
 
   }
 

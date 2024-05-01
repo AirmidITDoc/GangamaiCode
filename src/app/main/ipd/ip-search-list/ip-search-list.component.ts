@@ -67,8 +67,9 @@ export class IPSearchListComponent implements OnInit {
   sIsLoading: string = '';
 
   displayedColumns = [
+     'IsBillGenerated',
     'IsMLC',
-    // 'IsBillGenerated',
+   
     'RegNo',
     'PatientName',
     'DOA',
@@ -253,7 +254,7 @@ export class IPSearchListComponent implements OnInit {
   getRecord(contact, m): void {
     if (m == "Advance") {
       console.log(contact);
-      var m_data = {
+      var m_data3 = {
         RegNo: contact.RegNo,
         RegId: contact.RegID,
         AdmissionID: contact.AdmissionID,
@@ -273,13 +274,13 @@ export class IPSearchListComponent implements OnInit {
         BedNo: contact.BedName,
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
-        opD_IPD_Typec: contact.opD_IPD_Type
+        opD_IPD_Typec: contact.opD_IPD_Type,
+        CompanyName:contact.CompanyName
+        }
 
-      }
-
-      console.log(m_data)
-      this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-      this._IpSearchListService.populateForm(m_data);
+      console.log(m_data3)
+      this.advanceDataStored.storage = new AdvanceDetailObj(m_data3);
+      this._IpSearchListService.populateForm(m_data3);
       const dialogRef = this._matDialog.open(IPAdvanceComponent,
         {
           maxWidth: "100%",
@@ -293,17 +294,27 @@ export class IPSearchListComponent implements OnInit {
     else if (m == "Discharge Summary") {
       console.log(contact);
       var m_data1 = {
-        "RegNo": contact.RegNo,
-        "PatientName": contact.PatientName,
-        "AdmissionID": contact.AdmissionID,
-        "DOA": contact.DOA,
-        "DOT": contact.DOT,
-        "DoctorName": contact.DoctorName,
-        "RoomName": contact.RoomName,
-        "BedNo": contact.BedName,
-        "IPDNo": contact.IPDNo,
-        "DocNameID": contact.DocNameID,
-        "IsDischarged": contact.IsDischarged
+        RegNo: contact.RegNo,
+        RegId: contact.RegID,
+        AdmissionID: contact.AdmissionID,
+        OPD_IPD_ID: contact.OPD_IPD_Id,
+        PatientName: contact.PatientName,
+        Doctorname: contact.Doctorname,
+        AdmDateTime: contact.AdmDateTime,
+        AgeYear: contact.AgeYear,
+        ClassId: contact.ClassId,
+        TariffName: contact.TariffName,
+        TariffId: contact.TariffId,
+        DoctorId: contact.DoctorId,
+        DOA: contact.DOA,
+        DOT: contact.DOT,
+        DoctorName: contact.DoctorName,
+        RoomName: contact.RoomName,
+        BedNo: contact.BedName,
+        IPDNo: contact.IPDNo,
+        DocNameID: contact.DocNameID,
+        opD_IPD_Typec: contact.opD_IPD_Type,
+        CompanyName:contact.CompanyName
       }
      
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data1);
@@ -367,8 +378,10 @@ export class IPSearchListComponent implements OnInit {
     
       console.log(" This is for IP Refund of Bill pop : " + m);
       let xx = {
-        RegNo: contact.RegId,
+        RegNo: contact.RegNo,
+        RegId: contact.RegID,
         AdmissionID: contact.AdmissionID,
+        OPD_IPD_ID: contact.OPD_IPD_Id,
         PatientName: contact.PatientName,
         Doctorname: contact.Doctorname,
         AdmDateTime: contact.AdmDateTime,
@@ -384,6 +397,8 @@ export class IPSearchListComponent implements OnInit {
         BedNo: contact.BedName,
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
+        opD_IPD_Typec: contact.opD_IPD_Type,
+        CompanyName:contact.CompanyName
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
 
@@ -401,8 +416,10 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (m == "Refund of Advance") {
       let m_data = {
-        RegNo: contact.RegId,
+        RegNo: contact.RegNo,
+        RegId: contact.RegID,
         AdmissionID: contact.AdmissionID,
+        OPD_IPD_ID: contact.OPD_IPD_Id,
         PatientName: contact.PatientName,
         Doctorname: contact.Doctorname,
         AdmDateTime: contact.AdmDateTime,
@@ -418,6 +435,8 @@ export class IPSearchListComponent implements OnInit {
         BedNo: contact.BedName,
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
+        opD_IPD_Typec: contact.opD_IPD_Type,
+        CompanyName:contact.CompanyName
       }
      
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
@@ -435,7 +454,9 @@ export class IPSearchListComponent implements OnInit {
       console.log(" This is for  Bill pop : " + m);
       let xx = {
         RegNo: contact.RegNo,
+        RegId: contact.RegID,
         AdmissionID: contact.AdmissionID,
+        OPD_IPD_ID: contact.OPD_IPD_Id,
         PatientName: contact.PatientName,
         Doctorname: contact.Doctorname,
         AdmDateTime: contact.AdmDateTime,
@@ -443,13 +464,16 @@ export class IPSearchListComponent implements OnInit {
         ClassId: contact.ClassId,
         TariffName: contact.TariffName,
         TariffId: contact.TariffId,
-        IsDischarged: contact.IsDischarged,
+        DoctorId: contact.DoctorId,
+        DOA: contact.DOA,
+        DOT: contact.DOT,
+        DoctorName: contact.DoctorName,
+        RoomName: contact.RoomName,
+        BedNo: contact.BedName,
         IPDNo: contact.IPDNo,
-        BedName: contact.BedName,
-        WardName: contact.RoomName,
-        CompanyId: contact.CompanyId,
-        IsBillGenerated: contact.IsBillGenerated,
-        UnitId: contact.HospitalID
+        DocNameID: contact.DocNameID,
+        opD_IPD_Typec: contact.opD_IPD_Type,
+        CompanyName:contact.CompanyName
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
       
@@ -470,24 +494,34 @@ export class IPSearchListComponent implements OnInit {
     else if (m == "Discharge") {
       if (!contact.IsDischarged) {
         let m_data = {
-          "RegNo": contact.RegNo,
-          "PatientName": contact.PatientName,
-          "AdmissionID": contact.AdmissionID,
-          "DOA": contact.DOA,
-          "DOT": contact.DOT,
-          "DoctorName": contact.DoctorName,
-          "RoomName": contact.RoomName,
-          "BedNo": contact.BedName,
-          "IPDNo": contact.IPDNo,
-          "DocNameID": contact.DocNameID,
-          "IsDischarged": contact.IsDischarged
+          RegNo: contact.RegNo,
+          RegId: contact.RegID,
+          AdmissionID: contact.AdmissionID,
+          OPD_IPD_ID: contact.OPD_IPD_Id,
+          PatientName: contact.PatientName,
+          Doctorname: contact.Doctorname,
+          AdmDateTime: contact.AdmDateTime,
+          AgeYear: contact.AgeYear,
+          ClassId: contact.ClassId,
+          TariffName: contact.TariffName,
+          TariffId: contact.TariffId,
+          DoctorId: contact.DoctorId,
+          DOA: contact.DOA,
+          DOT: contact.DOT,
+          DoctorName: contact.DoctorName,
+          RoomName: contact.RoomName,
+          BedNo: contact.BedName,
+          IPDNo: contact.IPDNo,
+          DocNameID: contact.DocNameID,
+          opD_IPD_Typec: contact.opD_IPD_Type,
+          CompanyName:contact.CompanyName
         }
         this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
         this._IpSearchListService.populateForm(m_data);
         const dialogRef = this._matDialog.open(DischargeComponent,
           {
-            maxWidth: "85vw",
-            height: '600px',
+            maxWidth: "75vw",
+            height: '500px',
             width: '100%',
           });
         dialogRef.afterClosed().subscribe(result => {

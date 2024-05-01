@@ -24,64 +24,52 @@ export class PharmacyDashboardComponent implements OnInit {
     PharmStoreList: any = [];
     dashCardsData: any = [];
 
-    constructor(
-        public _DashboardService: DashboardService,
-        public datePipe: DatePipe,
-        private formBuilder: FormBuilder,
-        public _matDialog: MatDialog
-    ) {}
-    ngOnInit(): void {
-        this.getPharmStoreList();
+  constructor(
+    public _DashboardService: DashboardService,
+    public datePipe: DatePipe,
+    private formBuilder: FormBuilder,
+    public _matDialog: MatDialog,
+  ) { }
+  ngOnInit(): void {
+    this.getPharmStoreList();
+  }
 
-        this.fetchStaticData();
-        this.getPharCollSummStoreWiseDashboard();
-        this.fetchThreeMonSalesSumData();
-        this.getPieChart_CurrentValueData();
+  getPharmStoreList() {
+    this._DashboardService.getPharmStoreList().subscribe(data => {
+      this.PharmStoreList = data;
+      this._DashboardService.UseFrom.get('StoreId').setValue(this.PharmStoreList[0]);
+      this.fetchStaticData();
+      this.getPharCollSummStoreWiseDashboard()
+      this.fetchThreeMonSalesSumData();
+      this.getPieChart_CurrentValueData();
+      this.fetchLineChartData();
+    });
+  }
+  public getPharCollSummStoreWiseDashboard() {
+    var m_data = {
+      "FromDate": this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/2020',
+      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '03/01/2024',
+      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0,
     }
+    this._DashboardService.getPharCollSummStoreWiseDashboard(m_data).subscribe(data => {
+      this.dashCardsData = data;
+    });
+  }
 
-    getPharmStoreList() {
-        this._DashboardService.getPharmStoreList().subscribe((data) => {
-            this.PharmStoreList = data;
-            this._DashboardService.UseFrom.get("StoreId").setValue(
-                this.PharmStoreList[0]
-            );
-        });
-    }
-    public getPharCollSummStoreWiseDashboard() {
-        var m_data = {
-            FromDate:
-                this.datePipe.transform(
-                    this._DashboardService.UseFrom.get("start").value,
-                    "yyyy-MM-dd 00:00:00.000"
-                ) || "01/01/2020",
-            ToDate:
-                this.datePipe.transform(
-                    this._DashboardService.UseFrom.get("end").value,
-                    "yyyy-MM-dd 00:00:00.000"
-                ) || "03/01/2024",
-            StoreId:
-                this._DashboardService.UseFrom.get("StoreId").value?.storeid ??
-                0,
-        };
-        this._DashboardService
-            .getPharCollSummStoreWiseDashboard(m_data)
-            .subscribe((data) => {
-                this.dashCardsData = data;
-            });
-    }
-
-    onChangeStore() {
-        this.fetchStaticData();
-        this.fetchThreeMonSalesSumData();
-        this.getPharCollSummStoreWiseDashboard();
-        this.getPieChart_CurrentValueData();
-    }
-    onDateRangeChanged() {
-        this.fetchStaticData();
-        this.fetchThreeMonSalesSumData();
-        this.getPharCollSummStoreWiseDashboard();
-        this.getPieChart_CurrentValueData();
-    }
+  onChangeStore() {
+    this.fetchStaticData();
+    this.fetchThreeMonSalesSumData();
+    this.getPharCollSummStoreWiseDashboard();
+    this.getPieChart_CurrentValueData();
+    this.fetchLineChartData();
+  }
+  onDateRangeChanged() {
+    this.fetchStaticData();
+    this.fetchThreeMonSalesSumData();
+    this.getPharCollSummStoreWiseDashboard();
+    this.getPieChart_CurrentValueData();
+    this.fetchLineChartData();
+  }
 
     onChangeStatic(event) {
         this.selectedStatic = event.value;
@@ -196,121 +184,69 @@ export class PharmacyDashboardComponent implements OnInit {
         onSelect: null,
     };
 
-    fetchThreeMonSalesSumData() {
-        this.ThreeMonSalesConfig.data = [];
-        this.ThreeMonSalesConfig.multi = [];
-        this.sIsLoading = "loading-data";
-        var m_data = {
-            StoreId:
-                this._DashboardService.UseFrom.get("StoreId").value?.storeid ??
-                0,
-        };
-        this._DashboardService
-            .getPharDashboardBarchart(
-                "m_pharlast3MonthSalesSummaryDashboard",
-                m_data
-            )
-            .subscribe(
-                (data) => {
-                    if (
-                        (this._DashboardService.UseFrom.get("StoreId").value
-                            ?.storeid ?? 0) > 0
-                    ) {
-                        this.ThreeMonSalesConfig.data = data["data"] as any[];
-                    } else {
-                        this.ThreeMonSalesConfig.multi = data["data"] as any[];
-                    }
-                    // this.ThreeMonSalesConfig.colorScheme.domain = data["color"] as any[];
-                    this.sIsLoading = "";
-                },
-                (error) => {
-                    this.sIsLoading = "noPharSumData";
-                }
-            );
+  fetchThreeMonSalesSumData() {
+    this.ThreeMonSalesConfig.data = [];
+    this.ThreeMonSalesConfig.multi = [];
+    this.sIsLoading = 'loading-data';
+    var m_data = {
+      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0,
     }
-
-    // Line chart details
-
-    lineChartConfig: any = {
-        view: [500, 300],
-        showXAxis: true,
-        showYAxis: true,
-        gradient: false,
-        showLegend: true,
-        showXAxisLabel: true,
-        xAxisLabel: "Years",
-        showYAxisLabel: true,
-        yAxisLabel: "Salary",
-        colorScheme: {
-            domain: ["#5AA454", "#A10A28", "#C7B42C", "#AAAAAA"],
-        },
-        data: [
-            {
-                name: "Karthikeyan",
-                series: [
-                    { name: "2016", value: 15000 },
-                    { name: "2017", value: 20000 },
-                    { name: "2018", value: 25000 },
-                    { name: "2019", value: 30000 },
-                ],
-            },
-            {
-                name: "Gnana Prakasam",
-                series: [
-                    { name: "2016", value: 4000 },
-                    { name: "2017", value: 4500 },
-                    { name: "2018", value: 10000 },
-                    { name: "2019", value: 15000 },
-                ],
-            },
-            {
-                name: "Kumaresan",
-                series: [
-                    { name: "2016", value: 5000 },
-                    { name: "2017", value: 8000 },
-                    { name: "2018", value: 15000 },
-                    { name: "2019", value: 35000 },
-                ],
-            },
-        ],
-    };
-
-    //Bar Chart Details
-
-    BarChartConfig: any = {
-        view: [500, 300],
-        showXAxis: true,
-        showYAxis: true,
-        gradient: true,
-        showLegend: true,
-        animations:true,
-        showGridLines:false,
-        showXAxisLabel: true,
-        xAxisLabel: "Country",
-        showYAxisLabel: true,
-        yAxisLabel: "Population",
-
-        colorScheme: {
-            domain: ["#5AA454", "#A10A28", "#C7B42C", "#AAAAAA"],
-        },
-        schemeType:"ordinal"  ,
-        data: [
-            {
-                name: "Germany",
-                value: 8940000,
-            },
-            {
-                name: "USA",
-                value: 5000000,
-            },
-            {
-                name: "France",
-                value: 7200000,
-            },
-        ],
-    };
+    this._DashboardService.getPharDashboardBarchart("m_pharlast3MonthSalesSummaryDashboard", m_data).subscribe(data => {
+      if ((this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0) > 0) {
+        this.ThreeMonSalesConfig.data = data["data"] as any[];
+      }
+      else {
+        this.ThreeMonSalesConfig.multi = data["data"] as any[];
+      }
+      // this.ThreeMonSalesConfig.colorScheme.domain = data["color"] as any[];
+      this.sIsLoading = '';
+    }, error => {
+      this.sIsLoading = 'noPharSumData';
+    });
+  }
+  LineChartConfig: any = {
+    data: [],
+    multi: [],
+    view: [500, 300],
+    showXAxis: true,
+    showYAxis: true,
+    gradient: false,
+    showLegend: true,
+    showXAxisLabel: true,
+    xAxisLabel: 'Store',
+    showYAxisLabel: true,
+    yAxisLabel: 'Amount',
+    legendTitle: 'Month',
+    showGridLines: true,
+    showDataLabel: true,
+    timeline:false,
+    schemeType:"linear",
+    colorScheme : {
+      domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
+    }
+  }
+  
+  fetchLineChartData() {
+    this.LineChartConfig.data = [];
+    this.LineChartConfig.multi = [];
+    this.sIsLoading = 'loading-data';
+    var m_data = {
+      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0,
+    }
+    this._DashboardService.getPharDashboardBarchart("m_PharSalesMonthWiseSummaryDashboard", m_data).subscribe(data => {
+      if ((this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0) > 0) {
+        this.LineChartConfig.data = data["data"] as any[];
+      }
+      else {
+        this.LineChartConfig.multi = data["data"] as any[];
+      }
+     // this.LineChartConfig.colorScheme.domain=data["colors"] as any[];
+      this.sIsLoading = '';
+    }, error => {
+      this.sIsLoading = 'noPharSumData';
+    });
+  }
 }
-
 // export class PharDashSummary {
 //   StoreName: number;
 //   CollectionAmount: any;

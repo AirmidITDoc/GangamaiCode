@@ -47,40 +47,40 @@
                     <form [formGroup]="searchFormGroup">
                         <mat-card>
                             <div class="patient-info-container">
-                                <div class="patient-info-box">
-                                    <div class="patient-info-title border-bottom pb-2">
-                                        <span class="h2">Patient Information</span>
-                                    </div>
-                                    <div class="patient-info-box my-8">
-                                        <div class="patient-info-row">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key ">Patient Name</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{PatientName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">OPIPNo</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{vOPDNo}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">DoctorName</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Doctorname}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">CompanyName</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{CompanyName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key ">TarrifName</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Tarrifname}}</span>
+                                <fieldset class="fieldset-div">
+                                    <legend class="h2">Patient Information</legend>
+                                    <div class="sales-patient-info mb-3" fxLayout="row" fxLayoutAlign="space-between center">
+                                        <div class="patient-sub">
+                                            <div class="patient-info-row" fxLayout="row" fxLayoutAlign="space-between center">
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key ">Patient Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{PatientName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">OPIPNo</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{vOPDNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">DoctorName</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{Doctorname}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">CompanyName</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{CompanyName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">TarrifName</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{Tarrifname}}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </fieldset>
                             </div>
                         </mat-card>
                     </form>

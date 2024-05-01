@@ -323,7 +323,7 @@ export class DischargeSummaryComponent implements OnInit {
     if(this.DischargesumForm.get("AdmissionId").value){
       var m_data = {
         "updateIPDDischargSummary": {
-          "DischargesummaryId":29678,// this.DischargesumForm.get("DischargesummaryId").value || "0",
+          "DischargesummaryId":this.DischargesumForm.get("DischargesummaryId").value || "0",
           "DischargeId": this.DischargesumForm.get("DischargeId").value || "0",
           "History": this.DischargesumForm.get("History").value || "",
           "Diagnosis": this.DischargesumForm.get("Diagnosis").value || "",

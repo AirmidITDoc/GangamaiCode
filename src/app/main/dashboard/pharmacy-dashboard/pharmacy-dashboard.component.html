@@ -121,11 +121,7 @@
             </div>
         </div>
         <div class="content" dynamicHeight>
-
-            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                <ngx-charts-number-card [view]="StaticChartConfig.view" [scheme]="StaticChartConfig.colorScheme"
-                    [results]="StaticChartConfig.data">
-                </ngx-charts-number-card>
+            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <ngx-charts-pie-grid [view]="StaticChartConfig.view" [scheme]="StaticChartConfig.colorScheme"
                     [results]="StaticChartConfig.data">
                 </ngx-charts-pie-grid>
@@ -146,7 +142,6 @@
                             [scheme]="CurrentValChartConfig.colorScheme" [results]="CurrentValChartConfig.data"
                             [gradient]="CurrentValChartConfig.gradient" [legend]="CurrentValChartConfig.showLegend"
                             [labels]="CurrentValChartConfig.showLabels" [doughnut]="CurrentValChartConfig.isDoughnut">
-
                         </ngx-charts-pie-chart>
                     </div>
                 </div>
@@ -319,6 +314,58 @@
                 </mat-card>
             </div>
         </div>
+        <div class="content" dynamicHeight>
 
+            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                <mat-card class="chart-card">
+                    <mat-card-header>
+                        <div class="card-hearder">
+                            <mat-card-title>Sales Monthly Summary (Line Chart)</mat-card-title>
+                        </div>
+                    </mat-card-header>
+                    <hr>
+                    <mat-card-content>
+                        <div *ngIf="LineChartConfig.data.length > 0||LineChartConfig.multi.length > 0">
+                            <ngx-charts-line-chart [view]="LineChartConfig.view" [scheme]="'picnic'"
+                                [legend]="LineChartConfig.showLegend" [showXAxisLabel]="LineChartConfig.showXAxisLabel"
+                                [showYAxisLabel]="LineChartConfig.showYAxisLabel" [xAxis]="LineChartConfig.showXAxis"
+                                [yAxis]="LineChartConfig.showYAxis" [xAxisLabel]="LineChartConfig.xAxisLabel"
+                                [yAxisLabel]="LineChartConfig.yAxisLabel" [timeline]="LineChartConfig.timeline"
+                                [results]="LineChartConfig.multi" *ngIf="LineChartConfig.multi.length>0">
+                            </ngx-charts-line-chart>
+                            <ngx-charts-line-chart [view]="LineChartConfig.view" [scheme]="'picnic'"
+                                [legend]="LineChartConfig.showLegend" [showXAxisLabel]="LineChartConfig.showXAxisLabel"
+                                [showYAxisLabel]="LineChartConfig.showYAxisLabel" [xAxis]="LineChartConfig.showXAxis"
+                                [yAxis]="LineChartConfig.showYAxis" [xAxisLabel]="LineChartConfig.xAxisLabel"
+                                [yAxisLabel]="LineChartConfig.yAxisLabel" [timeline]="LineChartConfig.timeline"
+                                [results]="LineChartConfig.data" *ngIf="LineChartConfig.data.length>0">
+                            </ngx-charts-line-chart>
+
+
+                            <!-- <ngx-charts-bar-vertical-2d [view]="LineChartConfig.view"
+                        [scheme]="LineChartConfig.colorScheme" [results]="LineChartConfig.multi"
+                        [gradient]="LineChartConfig.gradient" [xAxis]="LineChartConfig.showXAxis"
+                        [yAxis]="LineChartConfig.showYAxis" [legend]="LineChartConfig.showLegend"
+                        [showXAxisLabel]="LineChartConfig.showXAxisLabel"
+                        [showYAxisLabel]="LineChartConfig.showYAxisLabel"
+                        [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel"
+                        [legendTitle]="LineChartConfig.legendTitle" [showDataLabel]="LineChartConfig.True"
+                        *ngIf="LineChartConfig.multi.length>0">
+                    </ngx-charts-bar-vertical-2d> -->
+                            <!-- <ngx-charts-bar-vertical [view]="LineChartConfig.view"
+                        [scheme]="LineChartConfig.colorScheme" [results]="LineChartConfig.data"
+                        [gradient]="LineChartConfig.gradient" [xAxis]="LineChartConfig.showXAxis"
+                        [yAxis]="LineChartConfig.showYAxis" [legend]="LineChartConfig.showLegend"
+                        [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                        [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel"
+                        [showGridLines]="LineChartConfig.True" [showDataLabel]="LineChartConfig.True"
+                        *ngIf="LineChartConfig.data.length>0">
+                    </ngx-charts-bar-vertical> -->
+                        </div>
+                        <!-- <canvas id="pharSumBarChart" style="width: 100%;"></canvas> -->
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
     </div>
 </div>

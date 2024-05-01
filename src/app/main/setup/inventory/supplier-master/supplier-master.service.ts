@@ -26,8 +26,7 @@ export class SupplierMasterService {
                 Validators.pattern("^[a-zA-Z ]*$"),
                 Validators.maxLength(200),
               ]],
-            ContactPerson:['', [
-                Validators.required,
+            ContactPerson:['', [ 
                 Validators.pattern("^[a-zA-Z._ -]+$"),
                 Validators.maxLength(100),
               ]],

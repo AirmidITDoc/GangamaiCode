@@ -25,6 +25,7 @@ import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.c
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { debug } from 'console';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 
 
 @Component({
@@ -377,8 +378,8 @@ export class IPBillingComponent implements OnInit {
     let tempObj;
     var m_data = {
       SrvcName: `${this.Serviceform.get('SrvcName').value}%`,
-      TariffId: 1,//this.selectedAdvanceObj.TariffId,
-      ClassId: 1,// this.selectedAdvanceObj.ClassId || 1
+      TariffId: this.selectedAdvanceObj.TariffId,
+      ClassId: this.selectedAdvanceObj.ClassId
     };
     if (this.Serviceform.get('SrvcName').value.length >= 1) {
       this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
@@ -854,10 +855,10 @@ debugger
       console.log('============================== Save IP Billing ===========');
       //==============-======--==============Payment======================
       // IPAdvancePaymentComponent
-      const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+      const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
         {
           maxWidth: "85vw",
-          height: '740px',
+          height: '840px',
           width: '100%',
           data: {
             vPatientHeaderObj: PatientHeaderObj,
@@ -1053,7 +1054,7 @@ debugger
           InsertBillUpdateBillNoObj['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
             InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
             InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
-          InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
+          InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
           InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
           InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = '';
           InsertBillUpdateBillNoObj['TaxPer'] = 0;
@@ -1110,7 +1111,7 @@ debugger
       let InsertDraftBillOb = {};
       InsertDraftBillOb['DRBNo'] = 0;
       InsertDraftBillOb['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
-        InsertDraftBillOb['TotalAmt'] = this.Ipbillform.get('TotalAmt').value || 0;
+        InsertDraftBillOb['TotalAmt'] =  this.vTotalBillAmount  || this.Ipbillform.get('TotalAmt').value || 0;
       InsertDraftBillOb['ConcessionAmt'] = this.Ipbillform.get('concessionAmt').value || 0;
       InsertDraftBillOb['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
       InsertDraftBillOb['PaidAmt'] = 0;
@@ -1147,6 +1148,7 @@ debugger
         "ipIntremdraftbillInsert": InsertDraftBillObj,
         "interimBillDetailsInsert": DraftBilldetsarr
       };
+      console.log(submitData)
       this._IpSearchListService.InsertIPDraftBilling(submitData).subscribe(response => {
         if (response) {
           Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
@@ -1299,9 +1301,9 @@ debugger
     });
   }
 
-
+//For testing 
   viewgetDraftBillReportPdf(AdmissionID) {
-
+    
     this._IpSearchListService.getIpDraftBillReceipt(
       AdmissionID
     ).subscribe(res => {

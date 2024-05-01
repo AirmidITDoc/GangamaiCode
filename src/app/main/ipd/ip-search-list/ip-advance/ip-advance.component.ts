@@ -96,9 +96,10 @@ export class IPAdvanceComponent implements OnInit {
     });
 
     if (this.advanceDataStored.storage) {
+     
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.PatientHeaderObj = this.advanceDataStored.storage;
-
+      // this.PatientHeaderObj = this.advanceDataStored.storage;
+      console.log( this.selectedAdvanceObj)
     }
 
     let AdmissionId = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value
@@ -210,7 +211,7 @@ export class IPAdvanceComponent implements OnInit {
 
       // console.log(this.AdvFormGroup.get('cashpay').value)
       // if (this.AdvFormGroup.get('cashpay').value != 1) {
-        const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+        const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
           {
             maxWidth: "100vw",
             height: '740px',

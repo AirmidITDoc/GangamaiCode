@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Inject, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -28,6 +28,9 @@ import { RFC_2822 } from 'moment';
 import { MatSelect } from '@angular/material/select';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
+import { IPBillingComponent } from '../../ip-search-list/ip-billing/ip-billing.component';
+import { NewRegistrationComponent } from 'app/main/opd/registration/new-registration/new-registration.component';
+import { RegistrationService } from 'app/main/opd/registration/registration.service';
 
 @Component({
   selector: 'app-admission',
@@ -235,6 +238,7 @@ export class AdmissionComponent implements OnInit {
   isLoading: string;
   Regflag: boolean = false;
   constructor(public _AdmissionService: AdmissionService,
+    public _registrationService: RegistrationService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     private _fuseSidebarService: FuseSidebarService,
@@ -403,7 +407,8 @@ export class AdmissionComponent implements OnInit {
       RelativeAddress: '',
       RelatvieMobileNo: ['', [ Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       RelationshipId: '',
-      IsMLC:[false]
+      IsMLC:[false],
+      OPIPChange:[false]
     });
   }
   createSearchForm() {
@@ -1302,10 +1307,11 @@ export class AdmissionComponent implements OnInit {
             if (result.isConfirmed) {
               
               this.getAdmittedPatientCasepaperview(response,true);
-              this.personalFormGroup.reset();
-              this.hospitalFormGroup.reset();
-              this.wardFormGroup.reset();
-              this.otherFormGroup.reset();
+              // this.personalFormGroup.reset();
+              // this.hospitalFormGroup.reset();
+              // this.wardFormGroup.reset();
+              // this.otherFormGroup.reset();
+              this.onReset();
             }
           });
         } else {
@@ -1381,12 +1387,13 @@ export class AdmissionComponent implements OnInit {
             Swal.fire('Congratulations !', 'Admission Of Registered Patient Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              this.personalFormGroup.reset();
-              this.hospitalFormGroup.reset();
-              this.wardFormGroup.reset();
-              this.otherFormGroup.reset();
+              // this.personalFormGroup.reset();
+              // this.hospitalFormGroup.reset();
+              // this.wardFormGroup.reset();
+              // this.otherFormGroup.reset();
               
               this.getAdmittedPatientCasepaperview(response,true);
+              this.onReset();
             }
           });
         } else {
@@ -2097,6 +2104,24 @@ agedaycheck(event){
     return;
   }
 }
+
+
+
+EditRegistration(row){
+  this.advanceDataStored.storage = new AdvanceDetailObj(row);
+  console.log(row)
+  this._registrationService.populateFormpersonal(row);
+    
+  const dialogRef = this._matDialog.open(NewRegistrationComponent, 
+    {   maxWidth: "90vw",
+        height: '450px',
+        width: '100%',
+         data : {
+        registerObj : row,
+      }
+  });
+}
+
 
 }
 
