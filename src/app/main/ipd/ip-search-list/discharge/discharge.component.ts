@@ -70,7 +70,7 @@ export class DischargeComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Discharge>();
   menuActions: Array<string> = [];
-  advanceAmount: any = 12345;
+  advanceAmount: any = 0;
 
   constructor(public _IpSearchListService: IPSearchListService,
     private accountService: AuthenticationService,
@@ -311,7 +311,7 @@ debugger;
         "updatedBy": this.accountService.currentUserValue.user.id,
       },
       "updateAdmission": {
-        "AdmissionId": this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value || 0,
+        "AdmissionId": this.selectedAdvanceObj.AdmissionID,
         "IsDischarged": 1,
         "DischargeDate": this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
         "DischargeTime": this.datePipe.transform(this.currentDate,'hh:mm:ss') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
@@ -324,7 +324,7 @@ debugger;
           if (result.isConfirmed) {
             let m = response;
             this._matDialog.closeAll();
-            this.viewgetCheckoutslipPdf(response)
+            this.viewgetCheckoutslipPdf(this.selectedAdvanceObj.AdmissionID)
           }
         });
       } else {

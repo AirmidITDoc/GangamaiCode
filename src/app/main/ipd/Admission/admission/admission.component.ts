@@ -649,10 +649,11 @@ export class AdmissionComponent implements OnInit {
   getSelectedObj(obj) {
     
     this.registerObj = new AdmissionPersonlModel({});
-       obj.AgeDay = obj.AgeDay.trim();
+    obj.AgeDay = obj.AgeDay.trim();
     obj.AgeMonth = obj.AgeMonth.trim();
     obj.AgeYear = obj.AgeYear.trim();
     this.registerObj = obj;
+    this.onChangeDateofBirth(this.registerObj.DateofBirth)
     this.setDropdownObjs();
   }
 
@@ -763,12 +764,26 @@ export class AdmissionComponent implements OnInit {
       this.otherFormGroup = this.otherForm();
       this.otherFormGroup.markAllAsTouched()
 
+      this.getPrefixList();
       this.getHospitalList();
       this.getPrefixList();
       this.getPatientTypeList();
       this.getTariffList();
-
+      this.getAreaList();
+      this.getMaritalStatusList();
+      this.getReligionList();
+      this.getDepartmentList();
+      this.getRelationshipList();
+      
+      this.getDoctorList();
+      this.getDoctor1List();
+      this.getDoctor2List();
+      this.getWardList();
+      this.getCompanyList();
+      this.getSubTPACompList();
       this.getcityList1();
+
+
       this.Regdisplay = false;
       this.showtable = false;
 
@@ -790,23 +805,38 @@ export class AdmissionComponent implements OnInit {
       this.otherFormGroup = this.otherForm();
       this.otherFormGroup.markAllAsTouched();
    
+      this.getPrefixList();
       this.getHospitalList();
+      this.getPrefixList();
       this.getPatientTypeList();
       this.getTariffList();
-      this.getPrefixList();
-
-      this.getDepartmentList();
-      this.getcityList1();
-      this.getWardList();
-      this.AreaList();
+      this.getAreaList();
       this.getMaritalStatusList();
-      this.ReligionList();
+      this.getReligionList();
+      this.getDepartmentList();
+      this.getRelationshipList();
+      
+      this.getDoctorList();
+      this.getDoctor1List();
+      this.getDoctor2List();
+      this.getWardList();
+      this.getCompanyList();
+      this.getSubTPACompList();
+      this.getcityList1();
       
       // this.getRegistrationList();
 
       this.showtable = true;
     }
 
+    const todayDate = new Date();
+    const dob = new Date(this.currentDate);
+    const timeDiff = Math.abs(Date.now() - dob.getTime());
+    this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+    this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+    this.registerObj.DateofBirth = this.currentDate;
+    this.personalFormGroup.get('DateOfBirth').setValue(this.currentDate);
    
   }
 
@@ -1038,18 +1068,30 @@ export class AdmissionComponent implements OnInit {
   }
 
   onChangeDateofBirth(DateOfBirth) {
-    if (DateOfBirth) {
-      const todayDate = new Date();
-      const dob = new Date(DateOfBirth);
-      const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-      this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-      this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-      this.registerObj.DateofBirth = DateOfBirth;
-      this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+    // if (DateOfBirth) {
+    //   const todayDate = new Date();
+    //   const dob = new Date(DateOfBirth);
+    //   const timeDiff = Math.abs(Date.now() - dob.getTime());
+    //   this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    //   this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+    //   this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+    //   this.registerObj.DateofBirth = DateOfBirth;
+    //   this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+    // }
+   
+      if (DateOfBirth) {
+        const todayDate = new Date();
+        const dob = new Date(DateOfBirth);
+        const timeDiff = Math.abs(Date.now() - dob.getTime());
+        this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+        this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+        this.registerObj.DateofBirth = DateOfBirth;
+        this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+      }
+  
     }
-
-  }
+  
 
   onChangeGenderList(prefixObj) {
     if (prefixObj) {
@@ -1126,7 +1168,13 @@ export class AdmissionComponent implements OnInit {
     // this._AdmissionService.mySaveForm.reset();
     this.personalFormGroup.get('RegId').reset();
     this.personalFormGroup.get('RegId').disable();
-    this.isRegSearchDisabled = true;
+    
+    if(this.searchFormGroup.get('regRadio').value == "registration")
+      this.searchFormGroup.get('RegId').disable();
+    else
+    this.searchFormGroup.get('RegId').enable();
+
+
     this.registerObj = new AdmissionPersonlModel({});
     this.personalFormGroup.reset();
 
@@ -1142,12 +1190,24 @@ export class AdmissionComponent implements OnInit {
     this.otherFormGroup = this.otherForm();
     this.otherFormGroup.markAllAsTouched()
 
-    this.getHospitalList();
     this.getPrefixList();
-    this.getPatientTypeList();
-    this.getTariffList();
-
-    this.getcityList1();
+      this.getHospitalList();
+      this.getPrefixList();
+      this.getPatientTypeList();
+      this.getTariffList();
+      this.getAreaList();
+      this.getMaritalStatusList();
+      this.getReligionList();
+      this.getDepartmentList();
+      this.getRelationshipList();
+      
+      this.getDoctorList();
+      this.getDoctor1List();
+      this.getDoctor2List();
+      this.getWardList();
+      this.getCompanyList();
+      this.getSubTPACompList();
+      this.getcityList1();
     
     // this.isCompanySelected = true;
     // this.hospitalFormGroup.get('CompanyId').clearValidators();
@@ -1161,6 +1221,7 @@ export class AdmissionComponent implements OnInit {
     this.hospitalFormGroup.get('SubCompanyId').clearValidators();
     this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
     this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
+
   
   }
 

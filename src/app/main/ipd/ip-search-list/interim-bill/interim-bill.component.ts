@@ -201,9 +201,10 @@ export class InterimBillComponent implements OnInit {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
   }
 
+  // 183224
+
   onSave() {
 
-  
     this.isLoading = 'submit';
     let interimBillChargesobj ={};
     interimBillChargesobj['chargesID']= 0// this.ChargesId;
@@ -255,7 +256,7 @@ export class InterimBillComponent implements OnInit {
      const interimBillCharge = new interimBill(interimBillChargesobj);
      const insertBillUpdateBillNo1 = new Bill(insertBillUpdateBillNo1obj);
      if (!this.InterimFormGroup.get('cashpay').value) {
-    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
         height: '740px',
@@ -280,9 +281,9 @@ export class InterimBillComponent implements OnInit {
             if (response) {
               Swal.fire('Congratulations !', 'Interim data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
-               //   let m=response;
+             
                this.viewgetInterimBillReportPdf(response);
-                  // this.getIPIntreimBillPrint(response);
+                  
                   this._matDialog.closeAll();
                 }
               });

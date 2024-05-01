@@ -98,14 +98,22 @@ dynamicTableHeight fusePerfectScrollbar>
                                     </mat-slide-toggle>
                                 </div>
 
-                                <div class="action-buttons">
-                                    <button mat-raised-button (click)="onClear()" matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon>
-                                    </button>
-                                    <button mat-raised-button (click)="getAdmittedPatientList()" matTooltip="search">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
-                                    </button>
-                                </div>
+                          
+
+
+                            </div>
+
+                            <div style="margin-top: 10px;">
+                                <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                    matTooltip="Close">
+                                    <mat-icon class="cleariconbutton">close</mat-icon>
+                                </button>
+
+                                <button mat-raised-button class="searchButton" (click)="getAdmittedPatientList()"
+                                    [disabled]="click" matTooltip="Search">
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                </button>
+
                             </div>
 
                         </form>

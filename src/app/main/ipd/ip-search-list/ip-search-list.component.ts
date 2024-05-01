@@ -520,8 +520,8 @@ export class IPSearchListComponent implements OnInit {
         this._IpSearchListService.populateForm(m_data);
         const dialogRef = this._matDialog.open(DischargeComponent,
           {
-            maxWidth: "75vw",
-            height: '500px',
+            maxWidth: "70vw",
+            height: '420px',
             width: '100%',
           });
         dialogRef.afterClosed().subscribe(result => {

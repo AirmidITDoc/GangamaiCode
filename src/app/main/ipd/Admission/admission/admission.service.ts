@@ -40,9 +40,9 @@ constructor(public _httpClient:HttpClient,
       RoomName: '',
       PatientType:'',
       patientstatus:'',
-      start: [''],
-      end: [''],
-      
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+
     });
   }
   

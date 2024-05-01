@@ -191,7 +191,7 @@
 
                                             <div>
                                                 <div fxLayout="row">
-                                                    <mat-form-field appearance="outline">
+                                                    <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Disc %</mat-label>
                                                         <input matInput [(ngModel)]="formDiscPersc" name="formDiscPer"
                                                             #disc (keyup)="calculatePersc()" formControlName="discPer"
@@ -200,7 +200,7 @@
                                                     </mat-form-field>
                                                   
                                                         <div fxLayout="row">
-                                                            <mat-form-field appearance="outline">
+                                                            <mat-form-field appearance="outline" fxFlex>
                                                                 <mat-label>Disc Amt</mat-label>
                                                                 <input matInput [(ngModel)]="b_disAmount"
                                                                     name="bDisAmount" formControlName="concessionAmt"
@@ -259,10 +259,7 @@
                                                 </div>
 
                                                 <br>
-                                                <mat-checkbox aria-label="Cash Payment" formControlName="cashpay"
-                                                    (checked)=true class="font-weight-600 text-primary">
-                                                    Cash Payment
-                                                </mat-checkbox>
+                                               
                                                 <!-- <div fxLayout="row" fxLayoutGap="15px" style="float: right;">
                                                 <button class="next-btn" (click)="onSave()"
                                                     style="border-radius: 16px;">Save</button>
@@ -271,6 +268,10 @@
                                             </div> -->
 
                                                 <div class="next-div button-row-group">
+                                                    <mat-checkbox aria-label="Cash Payment" formControlName="cashpay"
+                                                    (checked)=true class="font-weight-600 text-primary">
+                                                    Cash Payment
+                                                </mat-checkbox>
                                                     <button class="btn btn-primary" color="accent" (click)="onSave()">
                                                         <span>Save</span>
                                                     </button>

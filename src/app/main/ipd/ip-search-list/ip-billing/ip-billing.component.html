@@ -32,7 +32,7 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>Select</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select " matInput
-                                        formControlName="ChargeClass" [matAutocomplete]="autoclass" required
+                                        formControlName="ChargeClass" [matAutocomplete]="autoclass" required #itemid
                                         (keyup.enter)="setFocus('ServiceId')">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -50,11 +50,12 @@
 
                             </div>
                             <div fxFlex="100%">
+                                <!-- (keyup.enter)="setFocus('price')" -->
                                 <mat-form-field appearance="outline">
                                     <input type="text" name="SrvcName" formControlName="SrvcName"
                                         placeholder="Service Name" matInput [matAutocomplete]="auto"
-                                        (input)="getServiceListCombobox()" id="ServiceId"
-                                        (keyup.enter)="setFocus('price')" required>
+                                        (input)="getServiceListCombobox()" id="ServiceId"   (keydown)="onEnterservice($event)"
+                                         required>
                                         <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="Serviceform.get('SrvcName').setValue(''); isSrvcNameSelected = false;">close</mat-icon>
@@ -80,11 +81,12 @@
                             <div fxFlex="100%">
                                 <div fxLayout="row" class="gap-8">
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                        <!-- (keyup.enter)="setFocus('qty')"  -->
                                         <mat-form-field appearance="outline">
                                             <mat-label>Price</mat-label>
-                                            <input matInput [(ngModel)]="b_price" name="bPrice"
+                                            <input matInput [(ngModel)]="b_price" name="bPrice" #price
                                                 (keyup)="calculateTotalAmt()" formControlName="price" required
-                                                type="number" id="price" (keyup.enter)="setFocus('qty')">
+                                                type="number" id="price"  (keydown)="onEnterprice($event)">
                                             <mat-error
                                                 *ngIf="Serviceform.get('price').invalid && Serviceform.get('price').touched">
                                                 Price is required</mat-error>
@@ -93,7 +95,7 @@
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Qty</mat-label>
-                                            <input matInput [(ngModel)]="b_qty" name="bQty"
+                                            <input matInput [(ngModel)]="b_qty" name="bQty" #qty
                                                 (keyup)="calculateTotalAmt()" formControlName="qty" required
                                                 type="number" id="qty" (keydown)="onEnterqty($event)">
                                             <mat-error
@@ -177,15 +179,15 @@
                                             <mat-label>Disc %</mat-label>
                                             <input matInput [(ngModel)]="formDiscPersc" name="formDiscPer" #disc
                                                 (keyup)="calculatePersc()" formControlName="discPer" type="number"
-                                                id="discPer" (keyup.enter)="setFocus('discAmount')">
+                                                id="discPer"  (keydown)="onEnterdiscper($event)">
                                         </mat-form-field>
                                     </div>
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Disc Amt</mat-label>
-                                            <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"
+                                            <input matInput [(ngModel)]="b_disAmount" name="bDisAmount" #discamt
                                                 formControlName="discAmount" type="number" id="discAmount"
-                                                (keyup.enter)="setFocus('AddBtn')" (keyup)="calculatechargesDiscamt()">
+                                                (keydown)="onEnterdiscamt($event)" (keyup)="calculatechargesDiscamt()">
                                         </mat-form-field>
                                     </div>
                                 </div>
@@ -194,8 +196,8 @@
                             <div fxFlex="100%">
                                 <mat-form-field appearance="outline">
                                     <mat-label>NetAmount</mat-label>
-                                    <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly
-                                        formControlName="netAmount" required type="number">
+                                    <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly #Netamt
+                                        formControlName="netAmount" required type="number" (keydown)="onEnternetAmount($event)">
                                     <mat-error
                                         *ngIf="Serviceform.get('netAmount').invalid && Serviceform.get('netAmount').touched">
                                         NetAmount is required</mat-error>
@@ -204,8 +206,8 @@
                             <div fxFlex="100%">
                                 <!-- [disabled]="Serviceform.invalid" -->
                                 <div class="action-buttons">
-                                    <button class="btn btn-primary" (click)="onSaveAddCharges()" id="AddBtn"
-                                        (keyup.enter)="setFocus('ServiceId')" [disabled]="Serviceform.invalid">
+                                    <button class="btn btn-primary" (click)="onSaveAddCharges()" 
+                                        (keyup.enter)="setFocus('ServiceId')" [disabled]="!add" #addbutton>
                                         <span style="display: flex;justify-content: center; ">
                                             Save <mat-spinner *ngIf="isLoading == 'save'" class="spinner"
                                                 [diameter]="25" color="white">
@@ -289,6 +291,33 @@
                             <div class="patient-info-box">
                                 <div class="patient-info-title border-bottom pb-2">
                                     <span class="h1">Patient Information</span>
+                                    <div class="right-content" fxLayout="row" class="gap-8" fxLayoutAlign="center center">
+                                        <div fxLayout="row" class="gap-4" fxLayoutAlign="center center">
+                                            <form [formGroup]="Ipbillform">
+                                                <mat-form-field appearance="outline" fxFlex *ngIf="isFilteredDateDisabled"
+                                                    class="padding-fix">
+                                                    <mat-label>Choose date</mat-label>
+                                                    <input name="ChargeDate" matInput [matDatepicker]="picker"
+                                                        formControllName="ChargeDate"
+                                                        (dateChange)="getDatewiseChargesList($event.value)" [value]="currentDate"
+                                                        [readonly]="true">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                </mat-form-field>
+                                            </form>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutAlign="center center" class="date-time-container gap-8">
+                                            <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">
+                                                Show All Charges
+                                            </mat-checkbox>
+                                            <button mat-icon-button (click)="drawer1.toggle()">
+                                                
+                                                <span class="material-icons">
+                                                    notifications_none
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="patient-info-box my-8">
                                     <div class="patient-info-row row-gap-4" fxLayout="row wrap">
@@ -298,11 +327,11 @@
                                             <span
                                                 class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key">Patient Category</span>
                                             <span>:</span>
                                             <span class="patient-col-value">Staff</span>
-                                        </div>
+                                        </div> -->
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key">IPDNo</span>
                                             <span>:</span>
@@ -341,33 +370,7 @@
 
 
 
-                    <div class="right-content" fxLayout="row" class="gap-8" fxLayoutAlign="center center">
-                        <div fxLayout="row" class="gap-4" fxLayoutAlign="center center">
-                            <form [formGroup]="Ipbillform">
-                                <mat-form-field appearance="outline" fxFlex *ngIf="isFilteredDateDisabled"
-                                    class="padding-fix">
-                                    <mat-label>Choose date</mat-label>
-                                    <input name="ChargeDate" matInput [matDatepicker]="picker"
-                                        formControllName="ChargeDate"
-                                        (dateChange)="getDatewiseChargesList($event.value)" [value]="currentDate"
-                                        [readonly]="true">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
-                            </form>
-                        </div>
-                        <div fxLayout="row" fxLayoutAlign="center center" class="date-time-container gap-8">
-                            <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">
-                                Show All Charges
-                            </mat-checkbox>
-                            <button mat-icon-button (click)="drawer1.toggle()">
-                                <!-- <mat-icon>notifications_none</mat-icon> -->
-                                <span class="material-icons">
-                                    notifications_none
-                                </span>
-                            </button>
-                        </div>
-                    </div>
+                  
 
                     <!-- <mat-form-field appearance="outline" fxFlex="16%" style="margin-left:800px;">
                     <mat-label>Select</mat-label>

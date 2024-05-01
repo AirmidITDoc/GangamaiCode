@@ -70,14 +70,17 @@
 
 
                                 <div style="margin-top: 10px;">
+                                   
+                                    
                                     <button mat-raised-button (click)="onClear()" class="clearbutton"
-                                        matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon>
-                                    </button>&nbsp;
-                                    <button mat-raised-button class="searchButton" (click)="onShow_IpdAdvance()"
-                                        matTooltip="search">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
-                                    </button>
+                                    matTooltip="Close">
+                                    <mat-icon class="cleariconbutton">close</mat-icon>
+                                 </button>
+
+                                <button mat-raised-button class="searchButton" (click)="onShow_IpdAdvance()"
+                                     matTooltip="Search">
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                </button>
                                 </div>
                                 
                                 <button (click)="exportIpadvanceReportExcel()"
@@ -253,4 +256,4 @@
     </div>
 
 </div>
-TempDesign
+

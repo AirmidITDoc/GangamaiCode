@@ -9,9 +9,7 @@
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="width:80% ;font-size: 20px; font-weight: 400;">
                 Discharge
-                <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}} (IPD
-                    No:{{selectedAdvanceObj.IPDNo}}) - AdmissionDate:{{selectedAdvanceObj.AdmDateTime}} -
-                    Ward:{{selectedAdvanceObj.WardName}} - Tariff :{{selectedAdvanceObj.TariffName}}</span>
+                <span> RegNo - {{selectedAdvanceObj.RegNo}}</span>
             </span>
             <!-- </span> -->
             <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -36,9 +34,6 @@
                     <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
                         <!-- ================================ LABEL HEADER  -->
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                           
-                         
-
                             <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                 <div class="patient-info-container">
                                     <div class="patient-info-box">
@@ -54,9 +49,9 @@
                                                         class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
                                                 </div>
                                                 <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                    <span class="patient-col-key">Patient Category</span>
+                                                    <span class="patient-col-key">Admission Date</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">Staff</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
                                                 </div>
                                                 <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                                     <span class="patient-col-key">IPDNo</span>
@@ -79,9 +74,10 @@
                                                     <span class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
                                                 </div>
                                                 <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                    <span class="patient-col-key">Patient Source</span>
+                                                    <span class="patient-col-key">ward</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.WardName}}</span>
+                                                    {{selectedAdvanceObj.WardName}}
                                                 </div>
                                                 <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                                     <span class="patient-col-key">Doctor</span>
@@ -194,13 +190,19 @@
 
 
                         </div> -->  
-                        <div class="footer-navigation-container mb-4" fxLayout="row wrap"
+                        <div class="footer-navigation-container mb-4" fxLayout="row wrap" style="float: right;margin-top: 20px;"
                         fxLayoutAlign="space-between center">
-                        <div class="next-div button-row-group" style="float: right;">
+                        <div class="next-div button-row-group" >
                             <button class="btn btn-primary" color="accent" (click)="onDischarge()"  [disabled]="_IpSearchListService.mySaveForm.invalid">
                                 <span>Save</span>
                             </button>
                             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                            <!-- <button class="btn btn-primary" color="accent" (click)="onDischarge()"  [disabled]="_IpSearchListService.mySaveForm.invalid">
+                                <span>Refundbill</span>
+                            </button>
+                            <button class="btn btn-primary" color="accent" (click)="onDischarge()"  [disabled]="_IpSearchListService.mySaveForm.invalid">
+                                <span>Save</span>
+                            </button> -->
                         </div>
                         </div>
                     </div>
