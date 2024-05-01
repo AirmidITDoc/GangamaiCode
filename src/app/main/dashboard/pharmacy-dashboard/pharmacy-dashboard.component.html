@@ -52,11 +52,11 @@
 
                 <!-- WIDGET 2 -->
                 <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
-                    fxFlex.gt-xs="50" fxFlex.gt-md="20" *ngFor="let element of dashCardsData">
+                    fxFlex.gt-xs="50" fxFlex.gt-md="100" *ngFor="let element of dashCardsData">
 
                     <!-- Front -->
                     <div class="fuse-widget-front">
-                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="p-5" fxLayout="row" fxLayoutAlign="">
                             <!-- <div class="h3">{{widgets.widget2.title}}</div> -->
                             <div class="h3">{{element.Title}}</div>
 
@@ -67,13 +67,13 @@
 
                         <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
                             <div
-                                [ngClass]="element.Title == 'Total Summary' ? 'orange-fg red-fg font-size-50 line-height-50' : 'blue-grey-fg red-fg font-size-50 line-height-50'">
+                                [ngClass]="element.Title == 'Total Summary' ? 'orange-fg red-fg font-size-50 line-height-20' : 'blue-grey-fg red-fg font-size-50 line-height-20'">
                                 <!-- {{widgets.widget2.data.count}} -->
                                 {{element.count}}
                             </div>
                             <div class="h3 secondary-text font-weight-500">
                                 <!-- {{widgets.widget2.data.label}} -->
-                                {{element.label}}
+                                <!-- {{element.label}} -->
                             </div>
                         </div>
 
@@ -120,13 +120,15 @@
 
             </div>
         </div>
-
         <div class="content" dynamicHeight>
             <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <ngx-charts-pie-grid [view]="StaticChartConfig.view" [scheme]="StaticChartConfig.colorScheme"
                     [results]="StaticChartConfig.data">
                 </ngx-charts-pie-grid>
             </div>
+        </div>
+
+        <div class="content" dynamicHeight>
             <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <div fxLayout="column">
                     <div>
@@ -263,6 +265,51 @@
                             </ngx-charts-bar-vertical>
                         </div>
                         <!-- <canvas id="pharSumBarChart" style="width: 100%;"></canvas> -->
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                <mat-card class="chart-card">
+                    <mat-card-header>
+                        <div class="card-hearder">
+                            <mat-card-title>Static Line chart</mat-card-title>
+                        </div>
+                    </mat-card-header>
+                    <hr>
+                    <mat-card-content>
+
+                        <ngx-charts-area-chart [view]="lineChartConfig.view" [scheme]="lineChartConfig.colorScheme"
+                            [results]="lineChartConfig.data" [gradient]="lineChartConfig.gradient"
+                            [xAxis]="lineChartConfig.showXAxis" [yAxis]="lineChartConfig.showYAxis"
+                            [legend]="lineChartConfig.showLegend" [showXAxisLabel]="lineChartConfig.showXAxisLabel"
+                            [showYAxisLabel]="lineChartConfig.showYAxisLabel" [xAxisLabel]="lineChartConfig.xAxisLabel"
+                            [yAxisLabel]="lineChartConfig.yAxisLabel"></ngx-charts-area-chart>
+
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <div class="content" dynamicHeight>
+
+            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                <mat-card class="chart-card">
+                    <mat-card-header>
+                        <div class="card-hearder">
+                            <mat-card-title>Bar Chart</mat-card-title>
+                        </div>
+                    </mat-card-header>
+                    <hr>
+                    <mat-card-content>
+                        <ngx-charts-bar-vertical [view]="BarChartConfig.view" [scheme]="BarChartConfig.colorScheme"
+                            [results]="BarChartConfig.data" [gradient]="BarChartConfig.gradient"
+                            [xAxis]="BarChartConfig.showXAxis" [yAxis]="BarChartConfig.showYAxis"
+                            [legend]="BarChartConfig.showLegend" [showXAxisLabel]="BarChartConfig.showXAxisLabel"
+                            [showYAxisLabel]="BarChartConfig.showYAxisLabel" [xAxisLabel]="BarChartConfig.xAxisLabel"
+                            [yAxisLabel]="BarChartConfig.yAxisLabel" [schemeType]="BarChartConfig.schemeType"
+                            [animations]="BarChartConfig.animations" [showGridLines]="BarChartConfig.showGridLines">
+                        </ngx-charts-bar-vertical>
+
+
                     </mat-card-content>
                 </mat-card>
             </div>

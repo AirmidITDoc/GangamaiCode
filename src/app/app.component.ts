@@ -25,6 +25,7 @@ import { SpinnerService } from './core/services/spinner.service';
 // import { NgxSpinnerService } from 'ngx-spinner';
 import { Idle } from 'idlejs/dist';
 import { Router } from '@angular/router';
+import { BandwidthService } from './core/services/bandwidth.service';
 
 @Component({
     selector: 'app',
@@ -85,8 +86,12 @@ export class AppComponent implements OnInit, OnDestroy {
         private globalEvent$: SpinnerService,
         private ngxSpinner$: SpinnerService,
         private router: Router,
+        private bandwidthService : BandwidthService,
 
     ) {
+
+        this.bandwidthService.monitorBandwidth();
+
         this.onlineEvent = fromEvent(window, 'online');
         this.offlineEvent = fromEvent(window, 'offline');
 

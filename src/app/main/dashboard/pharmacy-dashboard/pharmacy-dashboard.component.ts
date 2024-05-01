@@ -1,30 +1,28 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { DashboardService } from '../dashboard.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { fuseAnimations } from '@fuse/animations';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { MatTableDataSource } from '@angular/material/table';
-import { DatePipe } from '@angular/common';
-import { Label } from 'ng2-charts';
-import Chart from 'chart.js';
-import { element } from 'protractor';
-import { filter, map } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
-import { SalesSummaryComponent } from './sales-summary/sales-summary.component';
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { DashboardService } from "../dashboard.service";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { fuseAnimations } from "@fuse/animations";
+import { ChartDataSets, ChartOptions, ChartType } from "chart.js";
+import { MatTableDataSource } from "@angular/material/table";
+import { DatePipe } from "@angular/common";
+import { Label } from "ng2-charts";
+import Chart from "chart.js";
+import { element } from "protractor";
+import { filter, map } from "rxjs/operators";
+import { MatDialog } from "@angular/material/dialog";
+import { SalesSummaryComponent } from "./sales-summary/sales-summary.component";
 
 @Component({
-  selector: 'app-pharmacy-dashboard',
-  templateUrl: './pharmacy-dashboard.component.html',
-  styleUrls: ['./pharmacy-dashboard.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
-
+    selector: "app-pharmacy-dashboard",
+    templateUrl: "./pharmacy-dashboard.component.html",
+    styleUrls: ["./pharmacy-dashboard.component.scss"],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class PharmacyDashboardComponent implements OnInit {
-
-  sIsLoading:any;
-  PharmStoreList: any = [];
-  dashCardsData: any = [];
+    sIsLoading: any;
+    PharmStoreList: any = [];
+    dashCardsData: any = [];
 
   constructor(
     public _DashboardService: DashboardService,
@@ -73,91 +71,118 @@ export class PharmacyDashboardComponent implements OnInit {
     this.fetchLineChartData();
   }
 
-  onChangeStatic(event) {
-    this.selectedStatic = event.value;
-    this.fetchStaticData();
-  }
-
-  staticOptions: any[] = [
-    { value: 'CollectionAmount', viewValue: 'Collection Amount' },
-    { value: 'BillCount', viewValue: 'Bill Count' }
-  ];
-
-  selectedStatic = this.staticOptions[0].value;
-
-  StaticChartConfig: any = {
-    gradient: true,
-    showLegend: true,
-    showLabels: true,
-    isDoughnut: true,
-    legendPosition: 'below',
-    colorScheme: { domain: [] },
-    view: [400, 300],
-    data: []
-  };
-  
-  fetchStaticData() {
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      "FromDate": this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/2020',
-      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '03/01/2024',
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0,
-      "Mode": this.selectedStatic || 'CollectionAmount'
+    onChangeStatic(event) {
+        this.selectedStatic = event.value;
+        this.fetchStaticData();
     }
-    console.log(m_data);
-    this._DashboardService.getPharDashboardPeichart("m_pharPayModeColSummaryDashboard", m_data).subscribe(data => {
-      this.StaticChartConfig.data = data["data"] as any[];
-      console.log(this.StaticChartConfig.data);
-      this.StaticChartConfig.colorScheme.domain = data["colors"] as any[];
-      this.sIsLoading = '';
-    }, error => {
-      this.sIsLoading = 'noPharSumData';
-    });
-  }
 
-  CurrentValChartConfig: any = {
-    gradient: true,
-    showLegend: false,
-    showLabels: true,
-    isDoughnut: true,
-    legendPosition: 'below',
-    colorScheme: { domain: ['#f44336', '#9c27b0', '#03a9f4', '#e91e63']},
-    view: [300, 250],
-    data: []
-  };
+    staticOptions: any[] = [
+        { value: "CollectionAmount", viewValue: "Collection Amount" },
+        { value: "BillCount", viewValue: "Bill Count" },
+    ];
 
-  public getPieChart_CurrentValueData() {
-    var m_data = {
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0, // this.pieChartCurStkData.currentRange,
+    selectedStatic = this.staticOptions[0].value;
+
+    StaticChartConfig: any = {
+        gradient: true,
+        showLegend: true,
+        showLabels: true,
+        isDoughnut: true,
+        legendPosition: "below",
+        colorScheme: { domain: [] },
+        view: [400, 300],
+        data: [],
+    };
+
+    fetchStaticData() {
+        this.sIsLoading = "loading-data";
+        var m_data = {
+            FromDate:
+                this.datePipe.transform(
+                    this._DashboardService.UseFrom.get("start").value,
+                    "yyyy-MM-dd 00:00:00.000"
+                ) || "01/01/2020",
+            ToDate:
+                this.datePipe.transform(
+                    this._DashboardService.UseFrom.get("end").value,
+                    "yyyy-MM-dd 00:00:00.000"
+                ) || "03/01/2024",
+            StoreId:
+                this._DashboardService.UseFrom.get("StoreId").value?.storeid ??
+                0,
+            Mode: this.selectedStatic || "CollectionAmount",
+        };
+        console.log(m_data);
+        this._DashboardService
+            .getPharDashboardPeichart(
+                "m_pharPayModeColSummaryDashboard",
+                m_data
+            )
+            .subscribe(
+                (data) => {
+                    this.StaticChartConfig.data = data["data"] as any[];
+                    console.log(this.StaticChartConfig.data);
+                    this.StaticChartConfig.colorScheme.domain = data[
+                        "colors"
+                    ] as any[];
+                    this.sIsLoading = "";
+                },
+                (error) => {
+                    this.sIsLoading = "noPharSumData";
+                }
+            );
     }
-    this._DashboardService.getPharDashboardPeichart("m_pharCurStockValueSummaryDashboard",m_data).subscribe(data => {
-      this.CurrentValChartConfig.data = data["data"] as any[];
-      console.log(this.CurrentValChartConfig.data);
-      // this.CurrentValChartConfig.colorScheme.domain = data["colors"] as any[];
-    });
-  }
 
-  ThreeMonSalesConfig: any = {
-    data: [],
-    multi: [],
-    view: [500, 300],
-    showXAxis: true,
-    showYAxis: true,
-    gradient: false,
-    showLegend: true,
-    showXAxisLabel: true,
-    xAxisLabel: 'Store',
-    showYAxisLabel: true,
-    yAxisLabel: 'Amount',
-    legendTitle: 'Month',
-    showGridLines: true,
-    showDataLabel: true,
-    colorScheme: {
-      domain:  ['#5AA454', '#C7B42C', '#AAAAAA'],
-      //['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
-    },
-    onSelect: null,
-  }
+    CurrentValChartConfig: any = {
+        gradient: true,
+        showLegend: false,
+        showLabels: true,
+        isDoughnut: true,
+        legendPosition: "below",
+        colorScheme: { domain: ["#f44336", "#9c27b0", "#03a9f4", "#e91e63"] },
+        view: [300, 250],
+        data: [],
+    };
+
+    public getPieChart_CurrentValueData() {
+        var m_data = {
+            StoreId:
+                this._DashboardService.UseFrom.get("StoreId").value?.storeid ??
+                0, // this.pieChartCurStkData.currentRange,
+        };
+        this._DashboardService
+            .getPharDashboardPeichart(
+                "m_pharCurStockValueSummaryDashboard",
+                m_data
+            )
+            .subscribe((data) => {
+                this.CurrentValChartConfig.data = data["data"] as any[];
+                console.log(this.CurrentValChartConfig.data);
+                // this.CurrentValChartConfig.colorScheme.domain = data["colors"] as any[];
+            });
+    }
+
+    ThreeMonSalesConfig: any = {
+        data: [],
+        multi: [],
+        view: [500, 300],
+        showXAxis: true,
+        showYAxis: true,
+        gradient: false,
+        showLegend: true,
+        showXAxisLabel: true,
+        xAxisLabel: "Store",
+        showYAxisLabel: true,
+        yAxisLabel: "Amount",
+        legendTitle: "Month",
+        showGridLines: true,
+        showDataLabel: true,
+        colorScheme: {
+            domain: ["#5AA454", "#C7B42C", "#AAAAAA"],
+            //['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
+        },
+        onSelect: null,
+    };
 
   fetchThreeMonSalesSumData() {
     this.ThreeMonSalesConfig.data = [];
@@ -290,14 +315,14 @@ export class PharmacyDashboardComponent implements OnInit {
 //   ChequePay: number;
 //   OnlinePay :number;
 //   NetColAmt: number;
-  
+
 //   constructor(PaymentSummary) {
 //     this.StoreName = PaymentSummary.StoreName || '';
 //     this.CashPay = PaymentSummary.CashPay || 0;
 //     this.ChequePay = PaymentSummary.ChequePay || 0;
 //     this.OnlinePay = PaymentSummary.OnlinePay || 0;
 //     this.NetColAmt = PaymentSummary.NetColAmt || 0;
-    
+
 //     }
 // }
 
@@ -315,11 +340,11 @@ export class PharmacyDashboardComponent implements OnInit {
 //   PathDate: Date;
 //   CategoryName:string;
 //   TCount: number;
-  
+
 //   constructor(PathCateSummary) {
 //     this.PathDate = PathCateSummary.PathDate || '';
 //     this.CategoryName = PathCateSummary.CategoryName || 0;
 //     this.TCount = PathCateSummary.TCount || 0 ;
-    
+
 //     }
 // }

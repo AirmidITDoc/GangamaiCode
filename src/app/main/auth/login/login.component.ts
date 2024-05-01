@@ -6,6 +6,8 @@ import { fuseAnimations } from "@fuse/animations";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import Swal from "sweetalert2";
+import { ServerMonitoringService } from "app/core/services/servermonitoring.service";
+import { setInterval, setTimeout } from "timers";
 
 @Component({
     selector: "login",
@@ -33,7 +35,8 @@ export class LoginComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private serverMonitoringService:ServerMonitoringService,
     ) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -123,6 +126,7 @@ export class LoginComponent implements OnInit {
                     this.router.navigate([this.returnUrl]);
                 },
                 (error) => {
+                    this.serverMonitoringService.showServerDownMessage();                    
                     this.errorMessage = error.error.message;
                 }
             );
