@@ -400,7 +400,7 @@ export class AppointmentComponent implements OnInit {
 
     const dialogRef = this._matDialog.open(CrossConsultationComponent,
       {
-        maxWidth: '85vw',
+        maxWidth: '75vw',
         height: '400px', width: '100%',
         data: contact,
 
