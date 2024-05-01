@@ -725,26 +725,38 @@ export class IssueToDepartmentComponent implements OnInit {
             }
             else if (this.Itemchargeslist1.length > 0) {
                 let ItemID = contact.ItemId;
+                // Debugger
+                let remaing_qty = contact.Qty;
+                let bal_qnt = 0;
                 this.Itemchargeslist1.forEach((element) => {
 
-                    let IndQty = contact.Qty
-
-                    if (ItemID != element.ItemId) {
-                        this.QtyBalchk = 0;
-                    }
-                    if (this.QtyBalchk != 1) {
-                        if (contact.Qty <= element.BalanceQty) {
+                    let IndQty = remaing_qty;
+                    if (IndQty > 0){                            
+                        
+                        if (ItemID != element.ItemId) {
+                            this.QtyBalchk = 0;
+                        }
+                        // if (this.QtyBalchk != 1) {
+                        if (IndQty <= element.BalanceQty) {
                             this.QtyBalchk = 1;
-                            this.getFinalCalculation(element, contact.Qty);
+                            this.getFinalCalculation(element, IndQty);
+                            ItemID = element.ItemId;
+                            bal_qnt += element.BalanceQty-IndQty;
+                        }
+                        else if (IndQty > element.BalanceQty) {                          
+                            this.QtyBalchk = 1;
+                            //Swal.fire("For Item :" + element.ItemId + " adding the Balance Qty: ", element.BalanceQty)
+                            this.getFinalCalculation(element, element.BalanceQty);
                             ItemID = element.ItemId;
                         }
-                        else if (IndQty > element.BalanceQty) {
-                            Swal.fire("Balance Qty is :", element.Qty)
-                            this.QtyBalchk = 0;
-                            Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
-                        }
+                        // }
+
+                        remaing_qty = IndQty- element.BalanceQty;
+                    }else{
+                        bal_qnt+=element.BalanceQty;
                     }
                 });
+                Swal.fire("Balance Qty is :", String(bal_qnt))
             }
         });
         }
@@ -781,7 +793,7 @@ export class IssueToDepartmentComponent implements OnInit {
             }
 
             this.chargeslist = this.dsTempItemNameList.data;
-            let gstper
+            
             this.chargeslist.push(
                 {
                     ItemId: contact.ItemId || 0,

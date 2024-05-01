@@ -14,7 +14,7 @@
                     </span>
 
                     <span  style="margin-left:600px;" hidden><app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>  
-                    <span class="material-icons" style="cursor: pointer; margin-left: 1124px; color: #fff;" (click)="onClose()">
+                    <span class="material-icons" style="cursor: pointer; margin-left: 1424px; color: #fff;" (click)="onClose()">
                         close
                     </span>
                 </div>
@@ -77,35 +77,51 @@
                                         <div class="patient-info-title border-bottom pb-2">
                                             <span class="h1">Patient Information</span>
                                         </div>
-                                        <div class="patient-info-box my-8">
-                                            <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                    <span class="patient-col-key ">Patient Name</span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{PatientName}}</span>
+                                        
+                                            <div class="patient-info-box my-8">
+                                                <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                        <span class="patient-col-key ">Patient Name</span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{PatientName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                        <span class="patient-col-key">Patient Category</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">Staff</span>
+                                                    </div>
+                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                        <span class="patient-col-key">OPDNo</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vOPDNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                        <span class="patient-col-key">Tariff</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{Tarrifname}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                        <span class="patient-col-key ">Age</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{AgeYear}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                        <span class="patient-col-key">Company</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{CompanyName}}</span>
+                                                    </div>
+                                                    <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                        <span class="patient-col-key">Patient Source</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{PatientType}}</span>
+                                                    </div> -->
+                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                        <span class="patient-col-key">Doctor</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{Doctorname}}</span>
+                                                    </div>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                    <span class="patient-col-key">OPIPNo</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vOPDNo}}</span>
-                                                </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                    <span class="patient-col-key">DoctorName</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{Doctorname}}</span>
-                                                </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                    <span class="patient-col-key">CompanyName</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{CompanyName}}</span>
-                                                </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                    <span class="patient-col-key ">{{Tarrifname}}</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value"></span>
-                                                </div>
-                                               
                                             </div>
                                         </div>
                                     </div>
@@ -113,7 +129,7 @@
                             </div>
                        
                     </div>
-                </div>
+                <!-- </div> -->
                 <div fxLayout="column">
 
                     <div class="content-card" style="width:100%;" class="my-12">

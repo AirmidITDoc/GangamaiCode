@@ -13,6 +13,7 @@ import { MatSelect } from "@angular/material/select";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { CasepaperVisitDetails, HistoryClass } from "app/main/opd/new-casepaper/new-casepaper.component";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { DatePipe } from "@angular/common";
 
 @Component({
     selector: "app-item-form-master",
@@ -112,13 +113,16 @@ export class ItemFormMasterComponent implements OnInit {
             this.vItemName = this.registerObj.ItemName
             this.vHSNcode = this.registerObj.HSNcode
             this.vStoragelocation = this.registerObj.ProdLocation
+            this.vConversionFactor = this.registerObj.ConversionFactor
+            this.vROrder = this.registerObj.ReOrder
+            this.vCGST = this.registerObj.CGST
+            this.vSGST = this.registerObj.SGST
+            this.vIGST = this.registerObj.IGST
             this.vchkactive = (this.registerObj.Isdeleted)
            
             this.setDropdownObjs1();
            
         }
-
-
         this.getitemtypeNameMasterCombo();
         this.getitemclassNameMasterCombo();
         this.getitemcategoryNameMasterCombo();
@@ -130,9 +134,7 @@ export class ItemFormMasterComponent implements OnInit {
         this.getCurrencyNameMasterCombo();
         this.getCompanyList();
         this.getDrugTypeList();
-
         this.setDropdownObjs1();
-
     }
  
 
@@ -485,6 +487,7 @@ export class ItemFormMasterComponent implements OnInit {
         
         this._itemService.getStoreMasterCombo().subscribe(data => {
             this.StorecmbList = data;
+           // console.log(this.StorecmbList)
          
             if (this.data) {
                
@@ -719,8 +722,7 @@ export class ItemFormMasterComponent implements OnInit {
     }
     public onEnterConversionFactor(event): void {
         if (event.which === 13) {
-            this.ReOrder.nativeElement.focus();
-           
+            this.ReOrder.nativeElement.focus(); 
         }
     }
 
@@ -812,16 +814,102 @@ export class ItemFormMasterComponent implements OnInit {
 
 
     assets:[]
-    
+    vPurchaseUOMId:any;
+    vConversionFactor:any;
+    vCGST:any;
+    vIGST:any;
+    vSGST:any;
+    vStoreName:any
+    vROrder:any;
+    Savebtn:boolean=false; 
     onSubmit() {
-        if ((this.vHSNcode == undefined || this.vItemName == undefined || this.vItemTypeID == undefined )) {
-            this.toastr.warning('Please select All Data Type.', 'Warning !', {
+        const currentDate = new Date();
+        const datePipe = new DatePipe('en-US'); 
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+        if ((this.vItemName == undefined || this.vItemName == undefined || this.vItemName == undefined )) {
+            this.toastr.warning('Please enter ItemName.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
+        if ((this.vItemTypeID == undefined || this.vItemTypeID == undefined || this.vItemTypeID == undefined )) {
+            this.toastr.warning('Please enter ItemType.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if ((this.vPurchaseUOMId == undefined || this.vPurchaseUOMId == undefined || this.vPurchaseUOMId == undefined )) {
+            this.toastr.warning('Please enter UnitMeasurementName..', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if ((this.vConversionFactor == undefined || this.vConversionFactor == undefined || this.vConversionFactor == undefined )) {
+            this.toastr.warning('Please enter ConversionFactor.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        
+        if ((this.vROrder == undefined || this.vROrder == undefined || this.vROrder == undefined )) {
+            this.toastr.warning('Please enter Rorder.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        } 
+        if ((this.vCGST == undefined || this.vSGST == undefined || this.vIGST == undefined )) {
+            this.toastr.warning('Please enter GST.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if ((this.vStoreName == undefined || this.vStoreName == undefined || this.vStoreName == undefined )) {
+            this.toastr.warning('Please select StoreName.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        let ItemCategaryId = 0;
+        if (this._itemService.myform.get("ItemCategoryId").value)
+            ItemCategaryId =this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId;
+    
+        let itemGenericNameId = 0;
+        if (this._itemService.myform.get("ItemGenericNameId").value)
+            itemGenericNameId = this._itemService.myform.get("ItemGenericNameId").value.ItemGenericNameId;
+    
+        let itemClassId = 0;
+        if (this._itemService.myform.get("ItemClassId").value)
+            itemClassId = this._itemService.myform.get("ItemClassId").value.ItemClassId;
+
+        let currencyId = 0;
+        if (this._itemService.myform.get("CurrencyId").value)
+            currencyId =this._itemService.myform.get("CurrencyId").value.CurrencyId ;
+    
+        let stockUOMId = 0;
+        if (this._itemService.myform.get("StockUOMId").value)
+            stockUOMId = this._itemService.myform.get("StockUOMId").value.UnitOfMeasurementId;
+    
+        let itemCompnayId = 0;
+        if (this._itemService.myform.get("CompanyId").value)
+            itemCompnayId = this._itemService.myform.get("CompanyId").value.CompanyId;
+
+        let drugTypeName = 0;
+        if (this._itemService.myform.get("DrugType").value)
+            drugTypeName =this._itemService.myform.get("DrugType").value.DrugTypeName ;
+    
+        let drugType = 0;
+        if (this._itemService.myform.get("DrugType").value)
+            drugType = this._itemService.myform.get("DrugType").value.ItemDrugTypeId;
+    
+        let manufId = 0;
+        if (this._itemService.myform.get("ManufId").value)
+            manufId = this._itemService.myform.get("ManufId").value.ManufId;
+
+        
         else {
             if (!this._itemService.myform.get("ItemID").value) {
+                this.Savebtn=true;
+              
                 var data2 = [];
                 // for (var val of this._itemService.myform.get("StoreId").value) {
                     var data = {
@@ -829,21 +917,21 @@ export class ItemFormMasterComponent implements OnInit {
                         itemId: 0,
                     }; 
                     data2.push(data);
-                // 
+                //  
                 var m_data = {
                     insertItemMaster: {
                         itemName: this._itemService.myform.get("ItemName").value || "%",
                         itemTypeId: this._itemService.myform.get("ItemTypeID").value.ItemTypeId || 0,
-                        ItemCategaryId: this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId || 0,
-                        itemGenericNameId: this._itemService.myform.get("ItemGenericNameId").value.ItemGenericNameId || 0,
-                        itemClassId: this._itemService.myform.get("ItemClassId").value.ItemClassId || 0,
+                        ItemCategaryId:  ItemCategaryId || 0,
+                        itemGenericNameId: itemGenericNameId || 0,
+                        itemClassId: itemClassId || 0,
                         purchaseUOMId: this._itemService.myform.get("PurchaseUOMId").value.UnitOfMeasurementId || 0,
-                        stockUOMId: this._itemService.myform.get("StockUOMId").value.UnitOfMeasurementId || 0,
+                        stockUOMId: stockUOMId || 0,
                         conversionFactor: this._itemService.myform.get("ConversionFactor").value || 0,
-                        currencyId: this._itemService.myform.get("CurrencyId").value.CurrencyId || 0,
+                        currencyId: currencyId || 0,
                         taxPer: 0,
                         isDeleted: this._itemService.myform.get("IsDeleted").value || 0,
-                        addedBy: 1,
+                        addedBy:this._loggedService.currentUserValue.user.id || 0 ,
                         isBatchRequired: this._itemService.myform.get("IsBatchRequired").value || 0,
                         minQty: this._itemService.myform.get("MinQty").value || 0,
                         maxQty: this._itemService.myform.get("MaxQty").value || 0,
@@ -853,7 +941,7 @@ export class ItemFormMasterComponent implements OnInit {
                         cgst: this._itemService.myform.get("CGST").value || "0",
                         sgst: this._itemService.myform.get("SGST").value || "0",
                         igst: this._itemService.myform.get("IGST").value || "0",
-                        manufId: this._itemService.myform.get("ManufId").value.ManufId || "0",
+                        manufId: manufId || 0,
                         isNarcotic: 0,//this._itemService.myform.get("IsNarcotic").value || 0,
 
                         prodLocation: this._itemService.myform.get("Storagelocation").value || "%",
@@ -864,10 +952,10 @@ export class ItemFormMasterComponent implements OnInit {
                         isLASA: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsLASA").value)),
                         isEmgerency: 0,//Boolean(JSON.parse(this._itemService.myform.get("IsEmgerency").value)),
 
-                        drugType: this._itemService.myform.get("DrugType").value.ItemDrugTypeId || "0",
-                        drugTypeName: this._itemService.myform.get("DrugType").value.DrugTypeName || "",
-                        itemCompnayId: this._itemService.myform.get("CompanyId").value.CompanyId || "0",
-                        isCreatedBy: "01/01/1900",
+                        drugType: drugType ||  0,
+                        drugTypeName:  drugTypeName || '',
+                        itemCompnayId: itemCompnayId ||  0,
+                        isCreatedBy: formattedDate,
                         itemId: this._itemService.myform.get("ItemID").value || 0,
                     },
 
@@ -882,7 +970,7 @@ export class ItemFormMasterComponent implements OnInit {
                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
                             toastClass: 'tostr-tost custom-toast-success',
                         });
-                      
+                        this.Savebtn=false;
                     } else {
                         this.toastr.error('Item-Form Master Master Data not Saved !, Please check API error..', 'Error !', {
                             toastClass: 'tostr-tost custom-toast-error',
@@ -894,6 +982,7 @@ export class ItemFormMasterComponent implements OnInit {
                     });
                 });
             } else {
+                this.Savebtn=true;
                 var data3 = [];
                 // for (var val of this._itemService.myform.get("StoreId").value.Storeid) {
                     var data4 = {
@@ -911,13 +1000,13 @@ export class ItemFormMasterComponent implements OnInit {
                         itemShortName: '%',
                         itemName: this._itemService.myform.get("ItemName").value || "%",
                         itemTypeID: this._itemService.myform.get("ItemTypeID").value.ItemTypeId || 0,
-                        ItemCategaryId: this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId || 0,
-                        itemGenericNameId: this._itemService.myform.get("ItemGenericNameId").value.ItemGenericNameId || 0,
-                        itemClassId: this._itemService.myform.get("ItemClassId").value.ItemClassId || 0,
+                        ItemCategaryId:  ItemCategaryId || 0,
+                        itemGenericNameId: itemGenericNameId || 0,
+                        itemClassId: itemClassId || 0,
                         purchaseUOMId: this._itemService.myform.get("PurchaseUOMId").value.UnitOfMeasurementId,
-                        stockUOMId: this._itemService.myform.get("StockUOMId").value.UnitOfMeasurementId || 0,
+                        stockUOMId: stockUOMId || 0,
                         conversionFactor: this._itemService.myform.get("ConversionFactor").value || 0,
-                        currencyId: this._itemService.myform.get("CurrencyId").value.CurrencyId || 0,
+                        currencyId: currencyId || 0,
                         taxPer: 0,
                         isBatchRequired: 0,//Boolean(JSON.parse(this._itemService.myform.get("IsBatchRequired").value)),
                         isDeleted: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsDeleted").value)),
@@ -932,7 +1021,7 @@ export class ItemFormMasterComponent implements OnInit {
                         sgst: this._itemService.myform.get("SGST").value || "0",
                         igst: this._itemService.myform.get("IGST").value || "0",
                         isNarcotic: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsNarcotic").value)),
-                        manufId: this._itemService.myform.get("ManufId").value.ManufId || "0",
+                        manufId: manufId || "0",
                         prodLocation: this._itemService.myform.get("Storagelocation").value || "%",
                         isH1Drug: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsH1Drug").value)),
                         isScheduleH: 0,//Boolean(JSON.parse(this._itemService.myform.get("IsScheduleH").value)),
@@ -940,9 +1029,9 @@ export class ItemFormMasterComponent implements OnInit {
                         isScheduleX: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsScheduleX").value)                        ),
                         isLASA: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsLASA").value)),
                         isEmgerency: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsEmgerency").value)),
-                        drugType: this._itemService.myform.get("DrugType").value.ItemDrugTypeId || "0",
-                        drugTypeName: this._itemService.myform.get("DrugType").value.DrugTypeName || "",
-                        itemCompnayId: this._itemService.myform.get("CompanyId").value.CompanyId || "0",
+                        drugType: drugType ||  0,
+                        drugTypeName:  drugTypeName || '',
+                        itemCompnayId: itemCompnayId ||  0,
                         isUpdatedBy: "01/01/1900",
                     },
                     deleteAssignItemToStore: {
@@ -959,7 +1048,7 @@ export class ItemFormMasterComponent implements OnInit {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
                             });
-                          
+                            this.Savebtn=false;
                         } else {
                             this.toastr.error('Item-Form Master Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',

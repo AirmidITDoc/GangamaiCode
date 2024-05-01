@@ -88,7 +88,7 @@ export class NewOPRefundofbillComponent implements OnInit {
   serselamttot: any = 0;
   RefAmt: any = 0;
   RefAmt1: any = 0;
-
+  AgeYear: any = 0;
 
   registerObj = new RegInsert({});
   PatientName: any = "";
@@ -238,7 +238,6 @@ vBillBalanceAmt=0;
     this.dataSource.data = [];
     console.log(obj)
     this.registerObj = obj;
-    // this.PatientName = obj.FirstName + " " + obj.PatientName;
     this.PatientName = obj.FirstName + " " + obj.LastName;
     this.RegId = obj.RegId;
     this.City = obj.City;
@@ -246,10 +245,10 @@ vBillBalanceAmt=0;
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
     this.Doctorname = obj.DoctorName;
-    // this.vOPIPId = obj.RegId || obj.visitId;
     this.vOPDNo = obj.RegId;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
+   this.AgeYear=obj.AgeYear;
 
     this.getRefundofBillOPDListByReg();
   }

@@ -507,7 +507,7 @@ var m = {
     return option && option.VenderTypeName ? option.VenderTypeName : '';
 
   }
-
+  Savebtn:boolean=false;
     onSubmit() {
         debugger
     //   if ((this.vSupplierName == undefined || this.vSupplierType == undefined || this.vAddress == undefined || this.vPincode == undefined ||
@@ -520,7 +520,26 @@ var m = {
     //     return;
     // }
     // else {
+
+    let termsofPayment = 0;
+    if (this._supplierService.myform.get("TermOfPayment").value)
+      termsofPayment =this._supplierService.myform.get("TermOfPayment").value.Id;
+
+    let BankId = 0;
+    if (this._supplierService.myform.get("BankName").value)
+      BankId =this._supplierService.myform.get("BankName").value.BankId;
+
+    let bankname = '';
+    if (this._supplierService.myform.get("BankName").value)
+      bankname = this._supplierService.myform.get("BankName").value.BankName;
+
+    let venderTypeId = 0;
+    if (this._supplierService.myform.get("VenderTypeId").value)
+      venderTypeId = this._supplierService.myform.get("VenderTypeId").value.VenderTypeId ;
+
+
             if (!this._supplierService.myform.get("SupplierId").value) {
+              this.Savebtn=true;
                 var data2 = [];
                 // for (var val of this._supplierService.myform.get("StoreId")
                 //     .value) {
@@ -547,7 +566,7 @@ var m = {
                         fax:this._supplierService.myform.get("Fax").value || "0",
                         email:this._supplierService.myform.get("Email").value || "%",
                         modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
-                        termsofPayment:this._supplierService.myform.get("TermOfPayment").value.Id || "0",
+                        termsofPayment:termsofPayment || "0",
                         currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
                         octroi:0,
                         freight:this._supplierService.myform.get("Freight").value ||"0",
@@ -561,12 +580,12 @@ var m = {
                         licNo:this._supplierService.myform.get("LicNo").value || "0",
                         expDate: this.registerObj.ExpDate,//this._supplierService.myform.get("ExpDate").value.ExpDate || "",
                         dlNo:this._supplierService.myform.get("DlNo").value || "0",
-                        BankId:this._supplierService.myform.get("BankName").value.BankId || "0",
-                        bankname:this._supplierService.myform.get("BankName").value.BankName || "0",
+                        BankId:BankId || "0",
+                        bankname:bankname|| " ",
                         branch:this._supplierService.myform.get("BankBranch").value || "0",
                         bankNo:this._supplierService.myform.get("BankNo").value || "0",
                         ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
-                        venderTypeId:this._supplierService.myform.get("VenderTypeId").value.VenderTypeId || "0",
+                        venderTypeId:venderTypeId || "0",
                         openingBalance:this._supplierService.myform.get("OpeningBal").value || "0",
                         TaxNature:this._supplierService.myform.get("TaxNature").value || "0",
                     },
@@ -580,15 +599,8 @@ var m = {
                         if (data) {
                             this.toastr.success('Record Saved Successfully.', 'Saved !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
+                              });   
+                              this.Savebtn=false;
                         } else {
                             this.toastr.error('Supplier-from Master Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
@@ -601,6 +613,7 @@ var m = {
                      });
             } else {
                 var data3 = [];
+                this.Savebtn=true;
                 // for (var val of this._supplierService.myform.get("StoreId")
                 //     .value) {
                     var data4 = {
@@ -625,7 +638,7 @@ var m = {
                         fax:this._supplierService.myform.get("Fax").value || "0",
                         email:this._supplierService.myform.get("Email").value || "%",
                         modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
-                        termsofPayment:this._supplierService.myform.get("TermOfPayment").value.Id || "0",
+                        termsofPayment:termsofPayment || "0",
                         taxNature:this._supplierService.myform.get("TaxNature").value || "0",
                         currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
                         octroi:0,
@@ -639,12 +652,12 @@ var m = {
                         licNo:this._supplierService.myform.get("LicNo").value || "0",
                         expDate:this._supplierService.myform.get("ExpDate").value || "0",
                         dlNo:this._supplierService.myform.get("DlNo").value || "0",
-                        BankId:this._supplierService.myform.get("BankName").value.BankId || "0",
-                        bankname:this._supplierService.myform.get("BankName").value.BankName || "0",
+                        BankId:BankId || "0",
+                        bankname:bankname|| " ",
                         branch:this._supplierService.myform.get("BankBranch").value || "0",
                         bankNo:this._supplierService.myform.get("BankNo").value || "0",
                         ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
-                        venderTypeId:this._supplierService.myform.get("VenderTypeId").value.VenderTypeId || "0",
+                        venderTypeId:venderTypeId || "0",
                         openingBalance:this._supplierService.myform.get("OpeningBal").value || "0"
                     },
                     deleteAssignSupplierToStore: {
@@ -661,15 +674,8 @@ var m = {
                         if (data) {
                             this.toastr.success('Record updated Successfully.', 'updated !', {
                                 toastClass: 'tostr-tost custom-toast-success',
-                              });
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
+                              });  
+                               this.Savebtn=false;
                         } else {
                             this.toastr.error('Supplier-from Master Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',

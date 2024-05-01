@@ -23,6 +23,7 @@ import { AdmissionPersonlModel } from '../Admission/admission/admission.componen
 import * as converter from 'number-to-words';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 
 
 @Component({
@@ -321,7 +322,7 @@ export class IPSettlementComponent implements OnInit {
     PatientHeaderObj['OPD_IPD_Id'] = this.RegId;
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;//this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
 
-    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "95vw",
         height: '640px',

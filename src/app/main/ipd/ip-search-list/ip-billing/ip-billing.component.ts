@@ -25,6 +25,7 @@ import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.c
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { debug } from 'console';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 
 
 @Component({
@@ -377,8 +378,8 @@ export class IPBillingComponent implements OnInit {
     let tempObj;
     var m_data = {
       SrvcName: `${this.Serviceform.get('SrvcName').value}%`,
-      TariffId: 1,//this.selectedAdvanceObj.TariffId,
-      ClassId: 1,// this.selectedAdvanceObj.ClassId || 1
+      TariffId: this.selectedAdvanceObj.TariffId,
+      ClassId: this.selectedAdvanceObj.ClassId
     };
     if (this.Serviceform.get('SrvcName').value.length >= 1) {
       this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
@@ -854,10 +855,10 @@ debugger
       console.log('============================== Save IP Billing ===========');
       //==============-======--==============Payment======================
       // IPAdvancePaymentComponent
-      const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+      const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
         {
           maxWidth: "85vw",
-          height: '740px',
+          height: '840px',
           width: '100%',
           data: {
             vPatientHeaderObj: PatientHeaderObj,
