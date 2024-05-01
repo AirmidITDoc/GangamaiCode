@@ -272,54 +272,6 @@
                 <mat-card class="chart-card">
                     <mat-card-header>
                         <div class="card-hearder">
-                            <mat-card-title>Static Line chart</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-card-content>
-
-                        <ngx-charts-area-chart [view]="lineChartConfig.view" [scheme]="lineChartConfig.colorScheme"
-                            [results]="lineChartConfig.data" [gradient]="lineChartConfig.gradient"
-                            [xAxis]="lineChartConfig.showXAxis" [yAxis]="lineChartConfig.showYAxis"
-                            [legend]="lineChartConfig.showLegend" [showXAxisLabel]="lineChartConfig.showXAxisLabel"
-                            [showYAxisLabel]="lineChartConfig.showYAxisLabel" [xAxisLabel]="lineChartConfig.xAxisLabel"
-                            [yAxisLabel]="lineChartConfig.yAxisLabel"></ngx-charts-area-chart>
-
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div>
-        <div class="content" dynamicHeight>
-
-            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
-                <mat-card class="chart-card">
-                    <mat-card-header>
-                        <div class="card-hearder">
-                            <mat-card-title>Bar Chart</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-card-content>
-                        <ngx-charts-bar-vertical [view]="BarChartConfig.view" [scheme]="BarChartConfig.colorScheme"
-                            [results]="BarChartConfig.data" [gradient]="BarChartConfig.gradient"
-                            [xAxis]="BarChartConfig.showXAxis" [yAxis]="BarChartConfig.showYAxis"
-                            [legend]="BarChartConfig.showLegend" [showXAxisLabel]="BarChartConfig.showXAxisLabel"
-                            [showYAxisLabel]="BarChartConfig.showYAxisLabel" [xAxisLabel]="BarChartConfig.xAxisLabel"
-                            [yAxisLabel]="BarChartConfig.yAxisLabel" [schemeType]="BarChartConfig.schemeType"
-                            [animations]="BarChartConfig.animations" [showGridLines]="BarChartConfig.showGridLines">
-                        </ngx-charts-bar-vertical>
-
-
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div>
-        <div class="content" dynamicHeight>
-
-            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
-                <mat-card class="chart-card">
-                    <mat-card-header>
-                        <div class="card-hearder">
                             <mat-card-title>Sales Monthly Summary (Line Chart)</mat-card-title>
                         </div>
                     </mat-card-header>
@@ -366,6 +318,55 @@
                     </mat-card-content>
                 </mat-card>
             </div>
+            <!-- <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                <mat-card class="chart-card">
+                    <mat-card-header>
+                        <div class="card-hearder">
+                            <mat-card-title>Static Line chart</mat-card-title>
+                        </div>
+                    </mat-card-header>
+                    <hr>
+                    <mat-card-content>
+
+                        <ngx-charts-area-chart [view]="LineChartConfig.view" [scheme]="LineChartConfig.colorScheme"
+                            [results]="LineChartConfig.data" [gradient]="LineChartConfig.gradient"
+                            [xAxis]="LineChartConfig.showXAxis" [yAxis]="LineChartConfig.showYAxis"
+                            [legend]="LineChartConfig.showLegend" [showXAxisLabel]="LineChartConfig.showXAxisLabel"
+                            [showYAxisLabel]="LineChartConfig.showYAxisLabel" [xAxisLabel]="LineChartConfig.xAxisLabel"
+                            [yAxisLabel]="LineChartConfig.yAxisLabel"></ngx-charts-area-chart>
+
+                    </mat-card-content>
+                </mat-card>
+            </div> -->
+        </div>
+        <div class="content" dynamicHeight>
+
+            <!-- <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                <mat-card class="chart-card">
+                    <mat-card-header>
+                        <div class="card-hearder">
+                            <mat-card-title>Bar Chart</mat-card-title>
+                        </div>
+                    </mat-card-header>
+                    <hr>
+                    <mat-card-content>
+                        <ngx-charts-bar-vertical [view]="BarChartConfig.view" [scheme]="BarChartConfig.colorScheme"
+                            [results]="BarChartConfig.data" [gradient]="BarChartConfig.gradient"
+                            [xAxis]="BarChartConfig.showXAxis" [yAxis]="BarChartConfig.showYAxis"
+                            [legend]="BarChartConfig.showLegend" [showXAxisLabel]="BarChartConfig.showXAxisLabel"
+                            [showYAxisLabel]="BarChartConfig.showYAxisLabel" [xAxisLabel]="BarChartConfig.xAxisLabel"
+                            [yAxisLabel]="BarChartConfig.yAxisLabel" [schemeType]="BarChartConfig.schemeType"
+                            [animations]="BarChartConfig.animations" [showGridLines]="BarChartConfig.showGridLines">
+                        </ngx-charts-bar-vertical>
+
+
+                    </mat-card-content>
+                </mat-card>
+            </div> -->
+        </div>
+        <div class="content" dynamicHeight>
+
+
         </div>
     </div>
 </div>
