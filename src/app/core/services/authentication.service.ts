@@ -20,7 +20,9 @@ export class AuthenticationService {
      * @param {FuseNavigationService} _fuseNavigationService
      */
     navigation: any;
-    constructor(private router: Router, private http: HttpClient,
+    constructor(
+        
+        private router: Router, private http: HttpClient,
         public _httpClient: HttpClient,
         private _fuseNavigationService: FuseNavigationService,
         private locationStrategy: LocationStrategy) {

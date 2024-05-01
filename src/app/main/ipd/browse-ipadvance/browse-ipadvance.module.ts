@@ -26,6 +26,7 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { BrowseIPAdvanceService } from './browse-ipadvance.service';
 import { BrowseIPAdvanceComponent } from './browse-ipadvance.component';
 import { ViewIPAdvanceComponent } from './view-ipadvance/view-ipadvance.component';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 
 const routes: Routes = [
@@ -60,7 +61,8 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-        MatExpansionModule
+        MatExpansionModule,
+        SharedModule
     ],
     providers: [
       // BrowseIPAdvanceService,

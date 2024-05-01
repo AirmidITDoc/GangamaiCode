@@ -140,6 +140,29 @@
 
                                             <div fxlayout="row">
                                                 <div style="width: 100%;">
+                                                    
+                                                    <div class="info-badge-top pb-2 border-bottom">
+                                                        <!-- "pill" class is used for rounded border -->
+                                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                                                            <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                                                <span class="blue-600-fg">New Admissions : 0</span>
+                                                            </div>
+                                                            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                                                <span class="green-600-fg"> Total Admissions  : 0</span>
+                                                            </div>
+                                                            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                                                <span class="orange-600-fg">Today's Discharges  :0</span>
+                                                            </div>
+                                                            <!-- <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                                                                <span class="red-600-fg">Bill Count : 0</span>
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+
                                                     <div matColumnDef="loading"
                                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                                         class="backgroundBlur" style="height: 100%;">
@@ -155,10 +178,22 @@
                                                                 style="color: white;">IsMLC
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" class="w-80">
-                                                                <mat-icon *ngIf="contact.IsMLC=='1'; else noMLC "
+                                                                <!-- <mat-icon *ngIf="contact.IsMLC==1; else noMLC "
                                                                     matTooltip="IsNotMLC" class="pill green-600 s-16"
-                                                                    (click)="NewMLc(contact)">Yes
+                                                                    (click)="NewMLc(contact)">edit
                                                                 </mat-icon>
+                                                                <mat-icon *ngIf="contact.IsMLC==1; else noMLC "
+                                                                matTooltip="IsNotMLC" class="pill green-600 s-16"
+                                                                (click)="NewMLc(contact)">print
+                                                                </mat-icon> -->
+
+                                                                <button mat-icon-button *ngIf="contact.IsMLC==1; else noMLC " matTooltip="IsMLC" (click)="NewMLc(contact)">
+                                                                    <mat-icon>edit</mat-icon>
+                                                                </button>
+                                                                <button mat-icon-button *ngIf="contact.IsMLC==1; else noMLC " matTooltip="Print MLC paper">
+                                                                    <mat-icon>print</mat-icon>
+                                                                </button>
+
                                                                 <ng-template #noMLC>
                                                                     <span>--</span>
                                                                 </ng-template>
@@ -189,18 +224,18 @@
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                 fxShow.gt-md>Date</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                                                <span> {{contact.DOA}}</span>
+                                                                <span> {{contact.DOA}} - {{contact.DOT}} </span>
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="DOT">
+                                                        <!-- <ng-container matColumnDef="DOT">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-md>Time
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                                 <span> {{contact.DOT}}</span>
                                                             </mat-cell>
-                                                        </ng-container>
+                                                        </ng-container> -->
 
                                                         <ng-container matColumnDef="Doctorname">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -295,7 +330,7 @@
                                                                 <div fxLayout="row">
                                                                     <button mat-icon-button
                                                                         (click)="EditRegistration(contact)"
-                                                                        matTooltip="Bill">
+                                                                        matTooltip="edit Registration">
                                                                         <mat-icon
                                                                             style="color: black;">edit</mat-icon>
                                                                     </button>

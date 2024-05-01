@@ -201,7 +201,7 @@ export class AdmissionComponent implements OnInit {
     'RegNo',
     'PatientName',
     'DOA',
-    'DOT',
+    // 'DOT',
     'Doctorname',
     'RefDocName',
     'IPNo',
@@ -214,14 +214,14 @@ export class AdmissionComponent implements OnInit {
     'buttons'
   ];
 
-  displayedColumns1: string[] = [
-    'RegNo',
-    'PatientName',
-    'AgeYear',
-    'GenderName',
-    'PhoneNo',
-    'MobileNo'
-  ];
+  // displayedColumns1: string[] = [
+  //   'RegNo',
+  //   'PatientName',
+  //   'AgeYear',
+  //   'GenderName',
+  //   'PhoneNo',
+  //   'MobileNo'
+  // ];
 
   dataSource = new MatTableDataSource<Admission>();
 
