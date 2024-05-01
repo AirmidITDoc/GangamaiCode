@@ -160,8 +160,12 @@
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80">IsMLC
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" class="w-80">
-                                    <mat-icon *ngIf="contact.IsMLC=='1'; else noMLC " matTooltip="IsNotMLC" class="pill green-600 s-16" (click)="NewMLc(contact)">Yes
-                                    </mat-icon>
+                                    <button mat-icon-button *ngIf="contact.IsMLC==1; else noMLC " matTooltip="IsMLC" (click)="NewMLc(contact)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button *ngIf="contact.IsMLC==1; else noMLC " matTooltip="Print MLC paper">
+                                        <mat-icon>print</mat-icon>
+                                    </button>
                                     <ng-template #noMLC>
                                         <span>--</span>
                                     </ng-template>

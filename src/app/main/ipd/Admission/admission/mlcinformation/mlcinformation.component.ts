@@ -147,7 +147,6 @@ public onEnterpolic(event): void {
 
 }
 else{
-  debugger;
   var m_data1 = {
     "updateMLCInfo": {
       "mlcId": 13,//this.MlcInfoFormGroup.get("MLCId").value,
@@ -158,9 +157,7 @@ else{
       "AuthorityName": this.MlcInfoFormGroup.get("AuthorityName").value || 0,
       "BuckleNo": this.MlcInfoFormGroup.get("ABuckleNo").value || 0,
       "PoliceStation": this.MlcInfoFormGroup.get("PoliceStation").value,
-      
     }
-
   }
     console.log(m_data1);
   this._AdmissionService.GetMLCUpdate(m_data1).subscribe(response => {
