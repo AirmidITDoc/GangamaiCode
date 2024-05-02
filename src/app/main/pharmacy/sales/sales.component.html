@@ -52,11 +52,11 @@
                                                             fxLayoutAlign="start center" formControlName="PatientType"
                                                             name="PatientType" (change)="onChangePatientType($event)"
                                                             (blur)="onChangePatientType($event)">
-                                                            <mat-radio-button value="OP" (checked)="true" *ngIf="vPharOPOpt">OP</mat-radio-button>
-                                                            <mat-radio-button value="IP" *ngIf="vPharIPOpt">IP</mat-radio-button>
+                                                            <mat-radio-button value="OP" [(ngModel)]="vSelectedOption" *ngIf="vPharOPOpt">OP</mat-radio-button>
+                                                            <mat-radio-button value="IP" [(ngModel)]="vSelectedOption" *ngIf="vPharIPOpt">IP</mat-radio-button>
                                                             <!-- *ngIf="vPharExtOpt" -->
-                                                            <mat-radio-button value="External" *ngIf="vPharExtOpt" 
-                                                                (checked)="true">External</mat-radio-button>
+                                                            <mat-radio-button value="External" [(ngModel)]="vSelectedOption" *ngIf="vPharExtOpt" 
+                                                            >External</mat-radio-button>
                                                         </mat-radio-group>
 
                                                         <mat-form-field appearance="outline"

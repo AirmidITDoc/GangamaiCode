@@ -164,12 +164,13 @@ export class PharmItemSummaryComponent implements OnInit {
   }  
 
   getItemExpdatewiseList() {
-    this.sIsLoading = 'loading-data';
+    // this.sIsLoading = 'loading-data';
     var vdata = {
      "ExpMonth":this.chosenMonth || 0,
      "ExpYear": this.chosenYear  || 'YYYY',     
      "StoreID": this.accountService.currentUserValue.user.storeId || 0        
     } 
+    console.log(vdata)
     setTimeout(() => {
       this._PharmaitemsummaryService.getItemexpdatewise(vdata).subscribe(
         (Visit) => {
@@ -180,7 +181,7 @@ export class PharmItemSummaryComponent implements OnInit {
           this.isLoadingStr = this.dsItemExpdatewiseStock.data.length == 0 ? 'no-data' : '';
         },
         (error) => {
-         this.isLoadingStr = 'no-data';
+        //  this.isLoadingStr = 'no-data';
         }
       );
     }, 1000);
@@ -195,6 +196,7 @@ export class PharmItemSummaryComponent implements OnInit {
   reportPrintObjTax: ItemWiseStockList;
   subscriptionArr: Subscription[] = [];
   _loaderShow:boolean = true;
+
   exportItemExpwiseReportExcel() {
     debugger
     this.sIsLoading == 'loading-data'
@@ -277,35 +279,66 @@ export class PharmItemSummaryComponent implements OnInit {
   //   },100);
   // }
 
-  viewgetExpItemListReportPdf() {
-    debugger
-    // this.accountService.currentUserValue.user.storeId|| 
-let Expyear =  this._PharmaitemsummaryService.userFormGroup.get("ExpYear").value || 0
-let ExpMonth =  this._PharmaitemsummaryService.userFormGroup.get("ExpMonth").value || 0
+//   viewgetExpItemListReportPdf() {
+//     debugger
 
-let ToStoreId = this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId || 0
+// let Expyear =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpYear").value) || 0
+// let ExpMonth =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpMonth").value) || 0
 
-    this.sIsLoading == 'loading-data'
+// let ToStoreId = this.accountService.currentUserValue.user.storeId || parseInt(this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId) || 0
 
-    setTimeout(() => {
-        this.SpinLoading = true;
-        //  this.AdList=true;
-        this._PharmaitemsummaryService.getExpiryItemview(ExpMonth,Expyear,ToStoreId).subscribe(res => {
-            const dialogRef = this._matDialog.open(PdfviewerComponent,
-                {
-                    maxWidth: "95vw",
-                    height: '850px',
-                    width: '100%',
-                    data: {
-                        base64: res["base64"] as string,
-                        title: "Expiry Item  Report Viewer"
-                    }
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                this.sIsLoading = '';
-            });
-        });
-    }, 1000);
+//     this.sIsLoading == 'loading-data'
+
+//     setTimeout(() => {
+//         this.SpinLoading = true;
+//         //  this.AdList=true;
+//         this._PharmaitemsummaryService.getExpiryItemview(ExpMonth,Expyear,ToStoreId).subscribe(res => {
+//             const dialogRef = this._matDialog.open(PdfviewerComponent,
+//                 {
+//                     maxWidth: "95vw",
+//                     height: '850px',
+//                     width: '100%',
+//                     data: {
+//                         base64: res["base64"] as string,
+//                         title: "Expiry Item  Report Viewer"
+//                     }
+//                 });
+//             dialogRef.afterClosed().subscribe(result => {
+//                 this.sIsLoading = '';
+//             });
+//         });
+//     }, 1000);
+// }
+
+
+viewgetExpItemListReportPdf(el) {
+debugger
+  let Expyear =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpYear").value) || 0
+  let ExpMonth =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpMonth").value) || 0
+  
+  let ToStoreId = this.accountService.currentUserValue.user.storeId || parseInt(this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId) || 0
+  
+  setTimeout(() => {
+    // this.SpinLoading =true;
+  //  this.AdList=true;
+  this._PharmaitemsummaryService.getExpiryItemview(ExpMonth,Expyear,ToStoreId).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Expiry  Item List viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        // this.sIsLoading = '';
+      });
+  });
+ 
+  },100);
 }
 
 ChkNonMovvalue(){
