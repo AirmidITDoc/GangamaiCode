@@ -327,6 +327,8 @@ export class SalesComponent implements OnInit {
   vPharOPOpt: any = 0;
   vPharIPOpt: any = 0;
 
+  vSelectedOption: any;
+  vCondition:any;
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
     public _salesService: SalesService,
@@ -358,6 +360,26 @@ export class SalesComponent implements OnInit {
     // this.Paymentobj['TransactionType'] = 0;
     this.IsCreditflag = false
     this.showTable = false;
+
+    console.log(this._loggedService.currentUserValue.user);
+    this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    this.vPharOPOpt=this._loggedService.currentUserValue.user.pharOPOpt;
+    this.vPharIPOpt=this._loggedService.currentUserValue.user.pharIPOpt;
+      
+    if (this.vPharOPOpt == true){
+      this.vCondition = 'OP'
+      this.vSelectedOption = this.vCondition;
+    }else if (this.vPharIPOpt == true){
+      this.vCondition = 'IP'
+      // this.vCondition = true;
+      this.vSelectedOption = this.vCondition;
+    }else if (this.vPharExtOpt == true){
+      this.vCondition = 'External'
+      // this.vCondition = true;
+      this.vSelectedOption = this.vCondition;
+    }
+      
+    
   }
 
   ngOnInit(): void {
@@ -380,9 +402,9 @@ export class SalesComponent implements OnInit {
     this.getBankNameList4();
     this.getDraftorderList();
 
-    this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
-    this.vPharOPOpt=this._loggedService.currentUserValue.user.pharOPOpt;
-    this.vPharIPOpt=this._loggedService.currentUserValue.user.pharIPOpt;
+    
+
+    // onChangePatientType('OP');
 
   }
 
