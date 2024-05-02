@@ -276,7 +276,7 @@ export class IPBillingComponent implements OnInit {
       map(value => this._filterDoctor(value)),
 
     );
-
+debugger
 
     if (this.selectedAdvanceObj.IsDischarged) {
       this.Ipbillform.get('GenerateBill').enable();
@@ -1270,7 +1270,7 @@ export class IPBillingComponent implements OnInit {
       });
       this.onClearServiceAddList()
       this.isLoading = '';
-
+      this.b_disAmount=0;
     }
         
   this.itemid.nativeElement.focus();
@@ -1298,10 +1298,14 @@ export class IPBillingComponent implements OnInit {
   calculatePersc() {
     debugger
     let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
-    if (this.formDiscPersc) {
+    if (this.formDiscPersc > 0) {
       let discAmt = Math.round((netAmt * parseInt(this.formDiscPersc)) / 100);
       this.b_disAmount = discAmt;
       this.b_netAmount = (netAmt - discAmt).toString();
+    }
+    if(this.formDiscPersc ==0 || this.formDiscPersc == ''){
+      this.b_disAmount = 0;
+      this.b_netAmount = (netAmt).toString();
     }
   }
 
@@ -1322,7 +1326,7 @@ export class IPBillingComponent implements OnInit {
       this.Serviceform.get('netAmount').setValue(this.b_totalAmount);
       this.Consession = true;
     }
-
+this.add=false;
   }
 
 

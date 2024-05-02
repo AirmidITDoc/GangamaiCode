@@ -493,6 +493,8 @@ export class DischargeSummary{
   IsNormalOrDeath:any;  
   DischargesummaryId:any;  
   Pathology:any;
+  
+  
   constructor(DischargeSummary){
     this.DischargesummaryId=DischargeSummary.DischargesummaryId || 0,
     this.AdmissionId=DischargeSummary.AdmissionId || 0,

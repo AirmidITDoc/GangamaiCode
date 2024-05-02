@@ -207,7 +207,7 @@ viewgetRefundofbillReportPdf(row) {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Refund Of Bill  Viewer"
+          title: "Refund Of Advance  Viewer"
         }
       });
       dialogRef.afterClosed().subscribe(result => {

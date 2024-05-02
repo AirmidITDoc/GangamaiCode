@@ -473,7 +473,8 @@ export class IPSearchListComponent implements OnInit {
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
         opD_IPD_Typec: contact.opD_IPD_Type,
-        CompanyName:contact.CompanyName
+        CompanyName:contact.CompanyName,
+        IsDischarged:contact.IsDischarged,
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
       
@@ -510,6 +511,7 @@ export class IPSearchListComponent implements OnInit {
           DOT: contact.DOT,
           DoctorName: contact.DoctorName,
           RoomName: contact.RoomName,
+          WardName: contact.RoomName,
           BedNo: contact.BedName,
           IPDNo: contact.IPDNo,
           DocNameID: contact.DocNameID,
@@ -520,8 +522,8 @@ export class IPSearchListComponent implements OnInit {
         this._IpSearchListService.populateForm(m_data);
         const dialogRef = this._matDialog.open(DischargeComponent,
           {
-            maxWidth: "70vw",
-            height: '420px',
+            maxWidth: "75vw",
+            height: '470px',
             width: '100%',
           });
         dialogRef.afterClosed().subscribe(result => {

@@ -18,55 +18,56 @@
             </div>
         </div>
     </div>
+    <div class="modal-card-container">
+        <mat-card>
+            <div class="patient-info-container">
+                <div class="patient-info-box">
+                    <div class="patient-info-title border-bottom pb-2">
+                        <span class="h2">Patient Information</span>
+                    </div>
+                    <div class="patient-info-box my-8">
+                        <div class="patient-info-row">
+                            <div class="patient-col">
+                                <span class="patient-col-key ">RegNo</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                            </div>
+                            <div class="patient-col">
+                                <span class="patient-col-key ">Patient Name</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                            </div>
+                            <div class="patient-col">
+                                <span class="patient-col-key ">IPD No</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                            </div>
+                            <div class="patient-col">
+                                <span class="patient-col-key ">AdmissionDate</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                            </div>
+                            <div class="patient-col">
+                                <span class="patient-col-key ">Ward</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{selectedAdvanceObj.WardName}}</span>
+                            </div>
+                            <div class="patient-col">
+                                <span class="patient-col-key ">Tariff</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+    </div>
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="DischargesumForm">
                 <div fxLayout="column" class="gap-12">
-                    <div class="modal-card-container">
-                        <mat-card>
-                            <div class="patient-info-container">
-                                <div class="patient-info-box">
-                                    <div class="patient-info-title border-bottom pb-2">
-                                        <span class="h2">Patient Information</span>
-                                    </div>
-                                    <div class="patient-info-box my-8">
-                                        <div class="patient-info-row">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key ">RegNo</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key ">Patient Name</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key ">IPD No</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key ">AdmissionDate</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key ">Ward</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.WardName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key ">Tariff</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </mat-card>
-                    </div>
+                   
                     <div class="modal-card-container">
                         <div class="mat-tab-container">
                             <mat-tab-group>
@@ -369,12 +370,12 @@
                                                         </div>
 
                                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                            <mat-form-field appearance="outline" fxFlex>
+                                                            <!-- <mat-form-field appearance="outline" fxFlex>
                                                                 <mat-label>Followup Date</mat-label>
                                                                 <input name="Followupdate" matInput [matDatepicker]="picker1" formControllName="Followupdate" [value]="registerObj.Followupdate">
                                                                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                                                 <mat-datepicker #picker1></mat-datepicker>
-                                                            </mat-form-field>
+                                                            </mat-form-field> -->
                                                         </div>
                                                     </div>
                                                 </div>
