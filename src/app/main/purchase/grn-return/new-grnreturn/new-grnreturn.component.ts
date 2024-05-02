@@ -113,8 +113,7 @@ export class NewGRNReturnComponent implements OnInit {
     });
   }
   vsupplierName:any;
-  getSupplierSearchCombo() {
-    debugger
+  getSupplierSearchCombo() { 
     if (this.VsupplierId > 0) {
       this.vsupplierName = this.VsupplierName;
     } 
@@ -239,11 +238,13 @@ export class NewGRNReturnComponent implements OnInit {
       contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
       let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
       contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount)).toFixed(2);
-     
+      this.interimArray.push(contact);
+      console.log(this.interimArray) 
     }
   }
-  
-  Savebtn:boolean=false;
+interimArray: any = [];
+ 
+Savebtn:boolean=false;
 OnSave(){
   if ((!this.dsGrnItemList.data.length)) {
     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -256,10 +257,13 @@ OnSave(){
       toastClass: 'tostr-tost custom-toast-warning',
     });
     return;
-  }
-  debugger
-  const isCheckReturnQty = this.dsGrnItemList.data.some((item) => item.ReturnQty === this.VReQty);
-  if (!isCheckReturnQty) {
+  } 
+  if ((!this.interimArray.length)) {
+    this.toastr.warning('Please enter ReturnQty.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } 
   this.Savebtn = true;
   let grnReturnSave = {};
   grnReturnSave['grnId'] = this.vGRNID || 0;
@@ -285,7 +289,7 @@ OnSave(){
   grnReturnSave['grnReturnId'] =0;
 
   let grnReturnDetailSavearray=[];
-  this.dsGrnItemList.data.forEach((element) => {
+  this.interimArray.forEach((element) => {
   //console.log(element)  
   let mrpTotal = element.ReturnQty * element.MRP;
   let PurchaseTotalAmt =element.ReturnQty * element.Rate;
@@ -319,7 +323,7 @@ OnSave(){
   });
 
   let grnReturnUpdateCurrentStockarray = [];
-  this.dsGrnItemList.data.forEach((element) => {
+  this.interimArray.forEach((element) => {
     let grnReturnUpdateCurrentStockObj = {};
     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
     grnReturnUpdateCurrentStockObj['issueQty'] = element.ReturnQty || 0;
@@ -329,7 +333,7 @@ OnSave(){
   });
 
   let grnReturnUpateReturnQtyarray = [];
-  this.dsGrnItemList.data.forEach((element) => {
+  this.interimArray.data.forEach((element) => {
     let grnReturnUpateReturnQty = {};
     grnReturnUpateReturnQty['grnDetID'] = element.GRNDetID || 0;
     grnReturnUpateReturnQty['returnQty'] = element.ReturnQty || 0;
@@ -359,13 +363,7 @@ OnSave(){
     this.toastr.error('New GRN Return Data not saved !, Please check API error..', 'Error !', {
       toastClass: 'tostr-tost custom-toast-error',
     });
-  });
-} 
-else {
-  this.toastr.warning('Please enter ReturnQty.', 'Warning !', {
-    toastClass: 'tostr-tost custom-toast-warning',
-  });
-}
+  }); 
 }
 OnReset() { 
   this._GRNReturnService.NewGRNReturnFrom.reset();
@@ -387,8 +385,7 @@ OnReset() {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      // console.log(result)
-debugger
+      // console.log(result) 
       this.dsNewGRNReturnItemList.data = result as ItemNameList[];
       this.VsupplierId = this.dsNewGRNReturnItemList.data[0]['SupplierId']
       this.VsupplierName = this.dsNewGRNReturnItemList.data[0]['SupplierName']

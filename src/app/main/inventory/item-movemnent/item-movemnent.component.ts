@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { map, startWith, takeUntil } from 'rxjs/operators';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-item-movemnent',
@@ -58,7 +59,7 @@ export class ItemMovemnentComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
- 
+    private reportDownloadService: ExcelDownloadService,
   ) { }
 
   public ItemNameFilterCtrl: FormControl = new FormControl();
@@ -169,6 +170,13 @@ noOptionFound:boolean=false;
       this._ItemMovemnentService.ItemSearchGroup.get('StoreId').setValue(this.StoreList[0]);
     });
   }
+  exportItemMovementExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['TranDate','DocumentNo', 'ItemName','BatchNo', 'ReceiptQty', 'IssueQty', 'BalQty'];
+    this.reportDownloadService.getExportJsonData(this.dsItemMovement.data, exportHeaders, 'ItemMovement');
+    this.dsItemMovement.data=[];
+    this.sIsLoading = '';
+  } 
   
 }
 

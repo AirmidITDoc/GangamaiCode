@@ -198,8 +198,9 @@ export class PharmItemSummaryComponent implements OnInit {
   _loaderShow:boolean = true;
 
   exportItemExpwiseReportExcel() {
+    debugger
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['ItemName', 'ConversionFactor', 'Current_BalQty', 'Received_Qty', 'Sales_Qty'];
+    let exportHeaders = ['ItemName', 'ConversionFactor', 'BalanceQty', 'ReceivedQty', 'SalesQty'];
     this.reportDownloadService.getExportJsonData(this.dsItemExpdatewiseStock.data, exportHeaders, 'ItemWise Report');
  
     this.dsItemExpdatewiseStock.data=[];
