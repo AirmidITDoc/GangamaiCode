@@ -311,7 +311,7 @@ export class PharmItemSummaryComponent implements OnInit {
 // }
 
 
-viewgetExpItemListReportPdf(el) {
+viewgetExpItemListReportPdf() {
 debugger
   let Expyear =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpYear").value) || 0
   let ExpMonth =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpMonth").value) || 0
