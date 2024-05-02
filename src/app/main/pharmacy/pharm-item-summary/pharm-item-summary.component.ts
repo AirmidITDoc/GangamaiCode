@@ -196,8 +196,9 @@ export class PharmItemSummaryComponent implements OnInit {
   subscriptionArr: Subscription[] = [];
   _loaderShow:boolean = true;
   exportItemExpwiseReportExcel() {
+    debugger
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['ItemName', 'ConversionFactor', 'Current_BalQty', 'Received_Qty', 'Sales_Qty'];
+    let exportHeaders = ['ItemName', 'ConversionFactor', 'BalanceQty', 'ReceivedQty', 'SalesQty'];
     this.reportDownloadService.getExportJsonData(this.dsItemExpdatewiseStock.data, exportHeaders, 'ItemWise Report');
  
     this.dsItemExpdatewiseStock.data=[];
@@ -278,11 +279,11 @@ export class PharmItemSummaryComponent implements OnInit {
 
   viewgetExpItemListReportPdf() {
     debugger
-
+    // this.accountService.currentUserValue.user.storeId|| 
 let Expyear =  this._PharmaitemsummaryService.userFormGroup.get("ExpYear").value || 0
 let ExpMonth =  this._PharmaitemsummaryService.userFormGroup.get("ExpMonth").value || 0
 
-let ToStoreId = 1//this.accountService.currentUserValue.user.storeId|| this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId || 0
+let ToStoreId = this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId || 0
 
     this.sIsLoading == 'loading-data'
 

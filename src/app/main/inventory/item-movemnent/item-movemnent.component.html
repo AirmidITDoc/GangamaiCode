@@ -99,18 +99,32 @@
                             </mat-autocomplete>
                         </mat-form-field>
 
-
-                        <div style="margin-top: 10px;">
-                            <button mat-raised-button class="clearbutton" matTooltip="close">
+                        <div fxLayout="row" fxLayoutGap="4px">
+                            <button mat-raised-button  class="clearbutton"
+                                matTooltip="close" style="margin: 10px;">
                                 <mat-icon class="cleariconbutton">close</mat-icon>
-                            </button>&nbsp;
-                            <button mat-raised-button class="searchButton" (click)="getItemMovementList()"
-                                matTooltip="search">
+                            </button> 
+                            <button mat-raised-button class="searchButton" style="margin-top: 10px;"
+                                (click)="getItemMovementList()" matTooltip="search">
                                 <mat-icon class="searchiconbutton">search</mat-icon>
-                            </button>
+                            </button> 
 
+                            <button  
+                                matTooltip="Pdf" style="width: 45px;border-color: white;">
+                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                            </button> 
+
+                            <button  (click)="exportItemMovementExcel()"
+                                [disabled]="! (dsItemMovement.data.length > 0)"
+                                style="background-color: white;color: white;width: 45px;">
+                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                            </button> 
                         </div>
 
+
+
+                     
+                        
                     </div>
 
                 </form>
