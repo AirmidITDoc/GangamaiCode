@@ -345,7 +345,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
     /// this.Indbalqty = parseInt(contact.TotalIndQty) - parseInt(contact.Qty);
 
-        if(contact.Qty > contact.BalanceQty){
+        if(parseFloat(contact.Qty) > parseFloat(contact.BalanceQty)){
             this.toastr.warning('Issue Qty cannot be greater than BalanceQty.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
               });

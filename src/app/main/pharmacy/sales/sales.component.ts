@@ -323,12 +323,8 @@ export class SalesComponent implements OnInit {
   newDateTimeObj: any = {};
   vextAddress: any = '';
 
-  vPharExtOpt: any = 0;
-  vPharOPOpt: any = 0;
-  vPharIPOpt: any = 0;
+ 
 
-  vSelectedOption: any;
-  vCondition:any;
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
     public _salesService: SalesService,
@@ -361,27 +357,33 @@ export class SalesComponent implements OnInit {
     this.IsCreditflag = false
     this.showTable = false;
 
-    console.log(this._loggedService.currentUserValue.user);
-    this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
-    this.vPharOPOpt=this._loggedService.currentUserValue.user.pharOPOpt;
-    this.vPharIPOpt=this._loggedService.currentUserValue.user.pharIPOpt;
-      
-    if (this.vPharOPOpt == true){
-      this.vCondition = 'OP'
-      this.vSelectedOption = this.vCondition;
-    }else if (this.vPharIPOpt == true){
-      this.vCondition = 'IP'
-      // this.vCondition = true;
-      this.vSelectedOption = this.vCondition;
-    }else if (this.vPharExtOpt == true){
-      this.vCondition = 'External'
-      // this.vCondition = true;
-      this.vSelectedOption = this.vCondition;
-    }
+
+    // console.log(this._loggedService.currentUserValue.user);
+    // this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    // this.vPharOPOpt=this._loggedService.currentUserValue.user.pharOPOpt;
+    // this.vPharIPOpt=this._loggedService.currentUserValue.user.pharIPOpt;
+    // if (this.vPharOPOpt == true){
+    //   this.vCondition = 'OP'
+    //   this.vSelectedOption = this.vCondition;
+    // }else if (this.vPharIPOpt == true){
+    //   this.vCondition = 'IP'
+    //   // this.vCondition = true;
+    //   this.vSelectedOption = this.vCondition;
+    // }else if (this.vPharExtOpt == true){
+    //   this.vCondition = 'External'
+    //   // this.vCondition = true;
+    //   this.vSelectedOption = this.vCondition;
+    // }
       
     
   }
-
+  vPharExtOpt:any ;
+  vPharOPOpt: any ;
+  vPharIPOpt: any ; 
+  vSelectedOption: any= '';
+  vCondition:boolean=false;
+  vConditionExt:boolean=false;
+  vConditionIP:boolean=false;
   ngOnInit(): void {
     this.patientDetailsFormGrp = this.createForm();
     this.gePharStoreList();
@@ -405,9 +407,37 @@ export class SalesComponent implements OnInit {
     
 
     // onChangePatientType('OP');
+    debugger
+    this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
+    this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
 
+    if (this.vPharOPOpt == true) {
+     // this.vCondition = false
+      this.vSelectedOption = 'OP'; 
+    }else{
+      this.vCondition = true
+    }
+
+    if (this.vPharIPOpt == true) { 
+      if (this.vPharOPOpt == false) {
+        this.vSelectedOption = 'IP'; 
+      }
+    }else{
+      this.vConditionIP = true
+    }
+
+    if (this.vPharExtOpt == true) {
+      if (this.vPharOPOpt == false) { 
+        this.vSelectedOption = 'External'; 
+      }
+    } else{
+      this.vConditionExt = true
+    } 
+
+console.log(this.vSelectedOption)
+ 
   }
-
 
   createForm() {
     return this.formBuilder.group({
@@ -1020,7 +1050,8 @@ export class SalesComponent implements OnInit {
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
-      PatientType: ['External', [Validators.required]],
+      PatientType: ['OP'],
+      // paymode: ['cashpay'],
       // OP_IP_ID: [0,[Validators.required]],
       TotalAmt: '',
       GSTPer: '',
@@ -1268,7 +1299,7 @@ export class SalesComponent implements OnInit {
   calculateTotalAmt() {
 
 
-    debugger
+   // debugger
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
@@ -1568,7 +1599,7 @@ export class SalesComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result1 => {
-      debugger
+     // debugger
       let result = result1.selectedData
       let vescflag = result1.vEscflag
       console.log(result);
@@ -3373,7 +3404,7 @@ export class SalesComponent implements OnInit {
   chargeslistBarcode: any = [];
   onAddBarcodeItemList(contact, DraftQty) {
     console.log(contact)
-    debugger
+   // debugger
     this.vBarcodeflag = true;
     let i = 0;
 
@@ -3387,7 +3418,7 @@ export class SalesComponent implements OnInit {
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-          debugger
+         // debugger
 
 
           if (contact.IssueQty != null) {

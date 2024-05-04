@@ -262,7 +262,7 @@ export class NewGRNReturnComponent implements OnInit {
   }
  
   CalculateTotalAmt(){
-    if(this.vQty > 0 && this.vBalQty > this.vQty){
+    if(this.vQty > 0 && this.vBalQty >= this.vQty){
       this.vTotalAmount = (parseFloat(this.vQty) * parseFloat(this.vLandedRate)).toFixed(2);
       this.vNetAmount = this.vTotalAmount;
     }else{
@@ -270,7 +270,7 @@ export class NewGRNReturnComponent implements OnInit {
       this.vTotalAmount = 0;
       this.vGSTAmount =0;
       this.vNetAmount = 0;
-      this.toastr.warning('Please Qty lessthan BalQty', 'Warning !', {
+      this.toastr.warning('Please enter Qty lessthan BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
@@ -337,11 +337,11 @@ export class NewGRNReturnComponent implements OnInit {
     grnReturnSave['netAmount'] =  this._GRNReturnService.ReturnFinalForm.get('FinalNetPayamt').value || 0;
     grnReturnSave['cash_Credit'] = true//this._GRNReturnService.NewGRNReturnFrom.get('CashType').value;
     grnReturnSave['remark'] = this._GRNReturnService.ReturnFinalForm.get('Remark').value || '';
-    grnReturnSave['isVerified'] = true;
-    grnReturnSave['isClosed'] = true;
+    grnReturnSave['isVerified'] = false;
+    grnReturnSave['isClosed'] = false;
     grnReturnSave['addedby'] =this._loggedService.currentUserValue.user.id || 0;
-    grnReturnSave['isCancelled'] =true;
-    grnReturnSave['grnType'] = 0 ;
+    grnReturnSave['isCancelled'] =false;
+    grnReturnSave['grnType'] = this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value || '';
     grnReturnSave['isGrnTypeFlag'] = true;
     grnReturnSave['grnReturnId'] =0;
   
@@ -366,13 +366,15 @@ export class NewGRNReturnComponent implements OnInit {
       grnDetailSaveObj['octroiPer'] =  0;
       grnDetailSaveObj['octroiAmt'] =  0;
       grnDetailSaveObj['landedTotalAmount'] =  element.TotalAmount || 0;
-      grnDetailSaveObj['mrpTotalAmount'] = this.mrpTotalAmount || 0;
+      grnDetailSaveObj['mrpTotalAmount'] = this.mrpTotalAmount || 0; 
+      grnDetailSaveObj['purchaseTotalAmount'] =  0;
       grnDetailSaveObj['conversion'] = element.ConversionFactor || 0;
-      grnDetailSaveObj['remarks'] = '';
+      grnDetailSaveObj['remarks'] = ''; 
+      grnDetailSaveObj['stkId'] = element.StockId || 0;
       grnDetailSaveObj['cf'] = element.ConversionFactor || 0;
       grnDetailSaveObj['totalQty'] =totalQty || 0;
       grnDetailSaveObj['grnId'] =  0
-      grnReturnDetailSavearray.push(grnDetailSaveObj);
+      grnReturnDetailSavearray.push(grnDetailSaveObj); 
   
     });
   

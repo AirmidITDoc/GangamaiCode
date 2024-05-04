@@ -159,6 +159,19 @@
                                     <mat-table matSort [dataSource]="dsIndentList"
                                         [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
+                                        <!-- <ng-container matColumnDef="CheckBox" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                <span class="material-icons" >
+                                                    cached
+                                                </span>
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" required>
+                                                <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
+                                                </mat-checkbox>
+                                            </mat-cell>
+                                              
+                                        </ng-container> -->
+
                                         <ng-container matColumnDef="IndentNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Indent No

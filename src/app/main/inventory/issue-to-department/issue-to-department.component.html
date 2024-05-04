@@ -534,8 +534,7 @@
                                     <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Qty</mat-label>
                                         <input name="Qty" formControlName="Qty" matInput #Quantity
-                                            (keydown)="onEnterQty($event)" required
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
+                                            (keydown)="onEnterQty($event)" required type="text" OnlyNumber
                                             required (keyup)="CalculateTotalAmt()" [(ngModel)]="vQty"
                                             autocomplete="off">
                                     </mat-form-field>
@@ -626,12 +625,11 @@
                                                         IssueQty</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
                                                         <mat-form-field appearance="legacy">
-                                                            <input matInput type="text" [(ngModel)]="contact.Qty"
-                                                                step="0.1" autocomplete="off" OnlyNumber
-                                                                (keyup)="getCellCalculation(contact,contact.Qty)">
+                                                            <input matInput type="text" OnlyNumber [(ngModel)]="contact.Qty" 
+                                                                (keyup)="getCellCalculation(contact,contact.Qty)"  autocomplete="off"  >
                                                         </mat-form-field>
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container>  
 
                                                 <ng-container matColumnDef="UnitRate">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>

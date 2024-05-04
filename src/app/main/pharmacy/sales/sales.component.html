@@ -48,16 +48,36 @@
                                                     fxLayoutAlign="space-between" class="gap-8">
                                                     <div class="radio-group-left gap-8" fxLayout="row"
                                                         fxLayoutAlign="start center">
-                                                        <mat-radio-group aria-label="Select an option" fxLayout="row"
-                                                            fxLayoutAlign="start center" formControlName="PatientType"
-                                                            name="PatientType" (change)="onChangePatientType($event)"
-                                                            (blur)="onChangePatientType($event)">
-                                                            <mat-radio-button value="OP" [(ngModel)]="vSelectedOption" *ngIf="vPharOPOpt">OP</mat-radio-button>
-                                                            <mat-radio-button value="IP" [(ngModel)]="vSelectedOption" *ngIf="vPharIPOpt">IP</mat-radio-button>
-                                                            <!-- *ngIf="vPharExtOpt" -->
-                                                            <mat-radio-button value="External" [(ngModel)]="vSelectedOption" *ngIf="vPharExtOpt" 
-                                                            >External</mat-radio-button>
-                                                        </mat-radio-group>
+
+                                                        <!-- <mat-radio-group [(ngModel)]="vSelectedOption" formControlName="PatientType" [(ngModel)]="registerObj.IsPOVerify"
+                                                            name="PatientType" (change)="onChangePatientType($event)" (blur)="onChangePatientType($event)">
+                                                            <mat-radio-button value="OP" *ngIf="vPharOPOpt">OP</mat-radio-button>
+                                                            <mat-radio-button value="IP" *ngIf="vPharIPOpt">IP</mat-radio-button>
+                                                        
+                                                            <mat-radio-button value="External" *ngIf="vPharExtOpt">External</mat-radio-button>
+                                                        </mat-radio-group> -->
+                                                        
+                                                            <mat-radio-group aria-label="Select an option" formControlName="PatientType" [(ngModel)]="vSelectedOption"
+                                                                name="paymode" (change)="onChangePatientType($event)" (blur)="onChangePatientType($event)"  fxLayout="row">
+                                                                <mat-radio-button    value="OP" [disabled]="vCondition">OP</mat-radio-button>
+                                                                <mat-radio-button    value="IP" [disabled]="vConditionIP">IP</mat-radio-button>
+                                                                <mat-radio-button    value="External" [disabled]="vConditionExt">External</mat-radio-button>
+                                                            </mat-radio-group>   
+                                                        
+
+                                                        <!-- <mat-radio-group aria-label="Select an option" formControlName="PatientType" [(ngModel)]="vSelectedOption"
+                                                            name="paymode" (change)="onChangePatientType($event)" (blur)="onChangePatientType($event)" fxLayout="row">
+                                                            <div  *ngIf="vPharOPOpt == 'false'">
+                                                                <mat-radio-button value="OP" [disabled]="vCondition">OP</mat-radio-button>
+                                                            </div>
+                                                            <div  *ngIf="vPharIPOpt == 'false'">
+                                                                <mat-radio-button value="IP" [disabled]="vConditionIP">IP</mat-radio-button>
+                                                            </div>
+                                                            <div  *ngIf="vPharExtOpt == 'false'">
+                                                                <mat-radio-button value="External" [disabled]="vConditionExt">External</mat-radio-button>
+                                                            </div>
+                                                        </mat-radio-group> -->
+                                                   
 
                                                         <mat-form-field appearance="outline"
                                                             *ngIf="ItemSubform.get('PatientType').value != 'External'">

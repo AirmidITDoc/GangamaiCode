@@ -21,6 +21,7 @@ import { NewGRNReturnComponent } from './new-grnreturn/new-grnreturn.component';
 })
 export class GrnReturnWithoutgrnComponent implements OnInit {
   displayedColumns = [
+    'Status',
     'GRNReturnId',
     'GRNReturnNo',
     'GRNReturnDate',
@@ -161,6 +162,36 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
       this.getGRNReturnList();
     });
     
+  }
+  getVerify(row) {
+
+    let updateGRNReturnVerifyStatus = {};
+    updateGRNReturnVerifyStatus['grnReturnId'] = row.GRNReturnId;
+    updateGRNReturnVerifyStatus['isVerifiedUserId'] = this._loggedService.currentUserValue.user.id;
+
+    let submitObj = {
+      "updateGRNReturnVerifyStatus": updateGRNReturnVerifyStatus
+    }
+   // console.log(submitObj)
+    this._GRNReturnService.getVerifyGRNReturn(submitObj).subscribe(response => {
+      if (response) {
+        this.toastr.success('Record Verified Successfully.', 'Verified !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('Record Not Verified !, Please check error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+      // this.isLoading = '';
+    },
+      success => {
+        this.toastr.success('Record Verified Successfully.', 'Verified !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+
+      });
+    this.getGRNReturnList();
   }
 }
 export class GRNReturnList {

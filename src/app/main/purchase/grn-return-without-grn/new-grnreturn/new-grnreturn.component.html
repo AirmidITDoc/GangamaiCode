@@ -58,10 +58,10 @@
                                 <mat-datepicker #picker1></mat-datepicker>
                             </mat-form-field>
 
-                            <mat-radio-group name="GSTType" formControlName="GSTType"  value="0" 
+                            <mat-radio-group name="GSTType" formControlName="GSTType"  value="GST Return" 
                                 style="padding:15px;" (change)="CalculateTotalAmt()">
-                                <mat-radio-button value="0" >GST Return</mat-radio-button>
-                                <mat-radio-button value="1" >Without GST</mat-radio-button>
+                                <mat-radio-button value="GST Return" >GST Return</mat-radio-button>
+                                <mat-radio-button value="Without GST" >Without GST</mat-radio-button>
                             </mat-radio-group>
 
                             <app-common-date [screenFrom]="screenFromString"
