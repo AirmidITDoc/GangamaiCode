@@ -71,7 +71,7 @@ export class NewRegistrationComponent implements OnInit {
   isAreaSelected: boolean = false;
   isMstatusSelected: boolean = false;
   isreligionSelected: boolean = false;
-
+  RegID: any=0;
 
   isPrefixSelected: boolean = false;
   optionsPrefix: any[] = [];
@@ -141,6 +141,7 @@ export class NewRegistrationComponent implements OnInit {
         this.registerObj = this.data.registerObj;
         this.registerObj.PrefixID=this.registerObj.PrefixId;
         this.RegId = this.registerObj.RegId;
+        this.RegID=this.registerObj.RegID;
         this.isDisabled = true
         if(this.registerObj.AgeYear)
           this.registerObj.Age=this.registerObj.AgeYear.trim();
@@ -532,7 +533,7 @@ export class NewRegistrationComponent implements OnInit {
   onSubmit() {
     debugger
     this.isLoading = 'submit';
-    if (!this.registerObj.RegId) {
+    if (!this.registerObj.RegId && this.RegID ==0) {
       var m_data = {
         "opdRegistrationSave": {
           "RegID": 0,
@@ -582,7 +583,10 @@ export class NewRegistrationComponent implements OnInit {
         }
       });
     }
-    else {
+    else if(this.RegID !==0 || this.registerObj.RegId) {
+      if(this.RegID !==0){
+        this.registerObj.RegId=this.RegID ;
+      }
       var m_data1 = {
         "opdRegistrationUpdate": {
           "RegID": this.registerObj.RegId,
@@ -615,6 +619,7 @@ export class NewRegistrationComponent implements OnInit {
           "Photo": ''// this.file.name || '',
         }
       }
+      console.log()
       this._registerService.regUpdate(m_data1).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'Register Data Udated Successfully !', 'success').then((result) => {

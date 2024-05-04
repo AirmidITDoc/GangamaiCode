@@ -178,6 +178,21 @@ export class AdmissionComponent implements OnInit {
   filteredOptionsSubCompany: Observable<string[]>;
   filteredOptionssearchDoctor: Observable<string[]>;
   filteredOptionsRegSearch: Observable<string[]>;
+  filteredOptionsPatientType: Observable<string[]>;
+  filteredOptionsTarrif: Observable<string[]>;
+
+  ispatienttypeSelected: boolean = false;
+  isTariffIdSelected: boolean = false;
+  optionsPatientType: any[] = [];
+  optionsTariff: any[] = [];
+
+  Vtotalcount = 0;
+  VNewcount = 0;
+  VFollowupcount = 0;
+  VBillcount = 0;
+  VOPtoIPcount = 0;
+  vIsDischarg=0;
+  VAdmissioncount=0;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -325,6 +340,45 @@ export class AdmissionComponent implements OnInit {
   }
 
 
+  Admissiondetail(data) {
+    this.Vtotalcount = 0;
+    this.VNewcount = 0;
+    this.VFollowupcount = 0;
+    this.VBillcount = 0;
+    this.vIsDischarg=0;
+    console.log(data)
+    this.Vtotalcount;
+    debugger
+    for (var i=0;i< data.length;i++){
+      if(data[i].PatientOldNew==1){
+          this.VNewcount=this.VNewcount+1;
+        }
+        else if(data[i].PatientOldNew==2){
+          this.VFollowupcount=this.VFollowupcount+1;
+        }
+        else if(data[i].AdmissionID !==0){
+          this.VAdmissioncount=data.length;
+        }
+         else if(data[i].IsBillGenerated ==1){
+          this.VBillcount= this.VBillcount+1;
+        }
+        else if(data[i].IsOpToIPConv ==1){
+          
+          this.VOPtoIPcount=this.VOPtoIPcount + 1;
+        }else if(data[i].IsDischarged ==1){
+          this.vIsDischarg= this.vIsDischarg +1;
+        }
+        this.Vtotalcount= this.Vtotalcount+1;
+    }
+  //  data.forEach((element) => {
+  //     console.log(element)
+  //     // if(element.PatientOldNew==1){
+  //     //   this.Vtotalcount+1;
+  //     // }
+
+  //   });
+  }
+
   ngOnDestroys() {
     this.isAlive = false;
   }
@@ -336,7 +390,7 @@ export class AdmissionComponent implements OnInit {
         ['', [
           Validators.required,
           Validators.maxLength(50),
-          Validators.pattern("^[a-zA-Z._ -]+$"),
+          Validators.pattern("^[a-zA-Z._ -]+[( )]$"),
         ]],
       MiddleName:
         ['', [
@@ -887,11 +941,31 @@ export class AdmissionComponent implements OnInit {
   }
 
 
+  // getTariffList() {
+  //   this._AdmissionService.getTariffCombo().subscribe(data => {
+  //     this.TariffList = data;
+  //     this.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
+  //   });
+  // }
+
   getTariffList() {
     this._AdmissionService.getTariffCombo().subscribe(data => {
       this.TariffList = data;
-      this.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
+      this.optionsTariff = this.TariffList.slice();
+      this.filteredOptionsTarrif = this.hospitalFormGroup.get('TariffId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterTariff(value) : this.TariffList.slice()),
+      );
+
     });
+    this.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
+  }
+  getOptionTextpatienttype(option) {
+    return option && option.PatientType ? option.PatientType : '';
+  }
+
+  getOptionTextTariff(option) {
+    return option && option.TariffName ? option.TariffName : '';
   }
 
   getAreaList() {
@@ -1011,11 +1085,41 @@ export class AdmissionComponent implements OnInit {
     });
   }
 
+  // getPatientTypeList() {
+  //   this._AdmissionService.getPatientTypeCombo().subscribe(data => {
+  //     this.PatientTypeList = data;
+  //     this.hospitalFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
+  //   })
+  // }
+
   getPatientTypeList() {
     this._AdmissionService.getPatientTypeCombo().subscribe(data => {
       this.PatientTypeList = data;
-      this.hospitalFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
-    })
+      this.optionsPatientType = this.PatientTypeList.slice();
+      this.filteredOptionsPatientType = this.hospitalFormGroup.get('PatientTypeID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterPatientType(value) : this.PatientTypeList.slice()),
+      );
+
+    });
+    this.hospitalFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
+  }
+  private _filterPatientType(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
+
+      return this.optionsPatientType.filter(option => option.PatientType.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  private _filterTariff(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();
+
+      return this.optionsTariff.filter(option => option.TariffName.toLowerCase().includes(filterValue));
+    }
+
   }
 
   onChangeStateList(CityId) {
@@ -1349,6 +1453,7 @@ export class AdmissionComponent implements OnInit {
       admissionNewInsert['AprovAmount'] = 0;
       admissionNewInsert['CompDOD'] = this.dateTimeObj.date || '01/01/1900',
       admissionNewInsert['IsPackagePatient'] = 0;
+      admissionNewInsert['isOpToIPConv'] =this.otherFormGroup.get('OPIPChange').value, 
       admissionNewInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
       submissionObj['admissionNewInsert'] = admissionNewInsert;
 
@@ -1431,6 +1536,8 @@ export class AdmissionComponent implements OnInit {
       admissionInsert['AprovAmount'] = 0;
       admissionInsert['CompDOD'] = this.dateTimeObj.date || '01/01/1900',
       admissionInsert['IsPackagePatient'] = 0;
+      admissionInsert['isOpToIPConv'] =this.otherFormGroup.get('OPIPChange').value, 
+      
       admissionInsert['RefDoctorDept'] = this.hospitalFormGroup.get('Departmentid').value.DepartmentName || '';
 
       submissionObj['admissionNewInsert'] = admissionInsert;
@@ -1573,7 +1680,9 @@ onClose(){
     console.log(Param);
     this._AdmissionService.getAdmittedPatientList_1(Param).subscribe(data => {
       this.dataSource.data = data["Table1"]??[] as Admission[];
-      console.log(this.dataSource.data)
+      if (this.dataSource.data.length > 0) {
+        this.Admissiondetail( this.dataSource.data);
+      }
       this.dataSource.sort = this.sort;
       this.resultsLength= data["Table"][0]["total_row"];
       this.sIsLoading = '';
@@ -1916,9 +2025,10 @@ onClose(){
 @ViewChild('religion') religion: ElementRef;
 @ViewChild('city') city: ElementRef;
 @ViewChild('admitdoc1') admitdoc1: ElementRef;
-
-@ViewChild('ptype') ptype: MatSelect;
-@ViewChild('tariff') tariff: MatSelect;
+@ViewChild('ptype') ptype: ElementRef;
+@ViewChild('tariff') tariff: ElementRef;
+// @ViewChild('ptype') ptype: MatSelect;
+// @ViewChild('tariff') tariff: MatSelect;
 @ViewChild('dept') dept: ElementRef;
 @ViewChild('deptdoc') deptdoc: ElementRef;
 @ViewChild('refdoc') refdoc: ElementRef;
@@ -2033,16 +2143,16 @@ public onEnterarea(event): void {
 
 public onEntercity(event): void {
   if (event.which === 13) {
-    if(this.ptype) this.ptype.focus();
     
+    this.ptype.nativeElement.focus();
   }
 }
 
 
 public onEnterptype(event): void {
   if (event.which === 13) {
-    if(this.tariff) this.tariff.focus();
-    
+   
+    this.tariff.nativeElement.focus();
   }
 }
 
@@ -2258,6 +2368,7 @@ export class Admission {
   SubCompanyId: any;
   AdmittedDoctorName: any;
   PatientTypeId:any;
+  IsOpToIPconv:any;
   /**
 * Constructor
 *
@@ -2340,6 +2451,7 @@ export class Admission {
       this.SubCompanyId = Admission.SubCompanyId || 0;
       this.AdmittedDoctorName = Admission.AdmittedDoctorName || ''
       this.PatientTypeId = Admission.PatientTypeId || ''
+      this.IsOpToIPconv=Admission.IsOpToIPconv || 0;
     }
   }
 }

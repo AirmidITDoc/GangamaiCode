@@ -684,6 +684,13 @@ public updateIPDDischargSummary(employee)
   public InsertIPAddCharges(employee){
     return this._httpClient.post("InPatient/AddIPCharges", employee);
   }
+
+  
+  public Addchargescancle(employee){
+    return this._httpClient.post("InPatient/DeleteIPCharges", employee);
+  }
+
+
   public InsertIPAddChargesNew(employee){
     return this._httpClient.post("InPatient/AddIPCharges",employee)
   }

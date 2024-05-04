@@ -172,20 +172,26 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
 
-                                    </div>
-                                    <div>
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Comments</mat-label>
                                             <input name="Comments" formControlName="Modeofdischarge"
                                                 placeholder="Comments" matInput>
                                         </mat-form-field>
+
+                                    </div>
+                                    <div>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Comments</mat-label>
+                                            <input name="Comments" formControlName="Modeofdischarge"
+                                                placeholder="Comments" matInput>
+                                        </mat-form-field> -->
                                     </div>
                                 </div>
                             </div>
                         </mat-card>
                       
 
-                        <div class="next-div button-row-group">
+                        <div class="next-div button-row-group" style="margin-left: 1100px;">
                             <button class="btn btn-primary" color="accent" (click)="onDischarge()"
                             [disabled]="isLoading=='submit'">
                                 <span>Save</span>

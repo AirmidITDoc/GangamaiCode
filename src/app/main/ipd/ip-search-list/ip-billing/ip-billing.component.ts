@@ -276,7 +276,7 @@ export class IPBillingComponent implements OnInit {
       map(value => this._filterDoctor(value)),
 
     );
-debugger
+
 
     if (this.selectedAdvanceObj.IsDischarged) {
       this.Ipbillform.get('GenerateBill').enable();
@@ -525,7 +525,10 @@ debugger
     }
   }
 
-
+  addData() {
+    this.add = true;
+    this.addbutton.nativeElement.focus();
+  }
   public onEnternetAmount(event): void {
 
     if (event.which === 13) {
@@ -683,6 +686,7 @@ debugger
       }
     });
     this.onClearServiceAddList()
+    this.itemid.nativeElement.focus();
     this.isLoading = '';
    
   }
@@ -1140,7 +1144,7 @@ debugger
                   this._matDialog.closeAll();
 
                   this.viewgetBillReportPdf(response);
-                  // this.getPrint(response);
+                  
                 }
               });
             } else {
@@ -1264,7 +1268,14 @@ debugger
         "classId": this.selectedAdvanceObj.ClassId,
       }
       console.log(m_data);
-      this._IpSearchListService.InsertIPAddCharges(m_data).subscribe(data => {
+    
+
+      let submitData = {
+        "addCharges": m_data
+      
+      };
+
+      this._IpSearchListService.InsertIPAddCharges(submitData).subscribe(data => {
         this.msg = data;
         this.getChargesList();
       });
@@ -1326,7 +1337,7 @@ debugger
       this.Serviceform.get('netAmount').setValue(this.b_totalAmount);
       this.Consession = true;
     }
-this.add=false;
+      this.add=false;
   }
 
 
@@ -1382,6 +1393,42 @@ this.add=false;
   }
 
 
+  deletecharges(contact){
+    Swal.fire({
+      title: 'Do you want to Delete Charges',
+      // showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+
+    }).then((flag) => {
+
+
+      if (flag.isConfirmed) {
+        let Chargescancle={};
+        Chargescancle['ChargesId'] =  contact.ChargesId;
+        Chargescancle['userId'] = this.accountService.currentUserValue.user.id;
+
+
+        let submitData = {
+          "deleteCharges": Chargescancle
+        
+        };
+        debugger  
+        console.log(submitData);
+        this._IpSearchListService.Addchargescancle(submitData).subscribe(response => {
+          if (response) {
+            Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
+              
+            });
+          } else {
+            Swal.fire('Error !', 'Charges cancelled data not saved', 'error');
+          }
+          this.isLoading = '';
+        });
+      }
+    });
+    this.getChargesList();
+  }
 
 
   calBalanceAmt() {

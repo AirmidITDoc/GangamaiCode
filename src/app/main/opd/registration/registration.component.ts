@@ -149,6 +149,7 @@ onEdit(row){
 export class RegInsert
 {
     RegId : Number;
+    RegID : Number;
     RegDate : Date;
     PatientName:string;
     RegTime : Time; 
@@ -193,6 +194,7 @@ export class RegInsert
     constructor(RegInsert) {
         {
            this.RegId = RegInsert.RegId || '';
+           this.RegID = RegInsert.RegID || '';
            this.RegDate = RegInsert.RegDate || '';
             this.RegTime = RegInsert.RegTime || '';
             this.PrefixId = RegInsert.PrefixId || '';

@@ -196,7 +196,7 @@
                             <div fxFlex="100%">
                                 <mat-form-field appearance="outline">
                                     <mat-label>NetAmount</mat-label>
-                                    <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly #Netamt
+                                    <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly #Netamt (keyup)="addData()"
                                         formControlName="netAmount" required type="number" (keydown)="onEnternetAmount($event)">
                                     <mat-error
                                         *ngIf="Serviceform.get('netAmount').invalid && Serviceform.get('netAmount').touched">
@@ -206,14 +206,22 @@
                             <div fxFlex="100%">
                                 <!-- [disabled]="Serviceform.invalid" -->
                                 <div class="action-buttons">
-                                    <button class="btn btn-primary" (click)="onSaveAddCharges()" 
+                                    <!-- <button class="btn btn-primary" (click)="onSaveAddCharges()" 
                                         (keyup.enter)="setFocus('ServiceId')" [disabled]="!add" #addbutton>
                                         <span style="display: flex;justify-content: center; ">
                                             Save <mat-spinner *ngIf="isLoading == 'save'" class="spinner"
                                                 [diameter]="25" color="white">
                                             </mat-spinner>
                                         </span>
-                                    </button>
+                                    </button> -->
+
+                                    <button (click)="onSaveAddCharges()"
+                                    class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
+                                    #addbutton>
+                                    <span class="btn-icon">
+                                        <mat-icon> add </mat-icon>
+                                    </span>
+                                </button>
                                 </div>
                             </div>
                         </form>
@@ -514,8 +522,12 @@
                                 <mat-cell *matCellDef="let contact">
                                     <ng-container class="actions">
                                        
-                                        <span class="material-icons" style="cursor: pointer;color: #5b5858;"
+                                        <!-- <span class="material-icons" style="cursor: pointer;color: #5b5858;"
                                             (click)="deleteTableRow(contact)">
+                                            delete
+                                        </span> -->
+                                        <span class="material-icons" style="cursor: pointer;color: #5b5858;"
+                                            (click)="deletecharges(contact)">
                                             delete
                                         </span>
                                     </ng-container>
