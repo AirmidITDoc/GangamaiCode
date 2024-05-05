@@ -257,6 +257,9 @@ export class SalesComponent implements OnInit {
   vStockId: any = 0;
   Itemflag: boolean = false;
 
+  opflag:Boolean=false;
+  ipflag:Boolean=false;
+  externalflag:Boolean=false;
 
   displayedColumns = [
     'FromStoreId',
@@ -315,14 +318,15 @@ export class SalesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   data: any;
-  PatientListfilteredOptions: any;
+  PatientListfilteredOptionsOP: any;
+  PatientListfilteredOptionsIP: any;
   registerObj = new RegInsert({});
   RegId: any = '';
   vAdmissionID: any;
   isPaymentSuccess: boolean = false;
   newDateTimeObj: any = {};
   vextAddress: any = '';
-
+  Patienttype:any;
  
 
   constructor(
@@ -356,7 +360,7 @@ export class SalesComponent implements OnInit {
     // this.Paymentobj['TransactionType'] = 0;
     this.IsCreditflag = false
     this.showTable = false;
-
+    
 
     // console.log(this._loggedService.currentUserValue.user);
     // this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
@@ -381,6 +385,7 @@ export class SalesComponent implements OnInit {
   vPharOPOpt: any ;
   vPharIPOpt: any ; 
   vSelectedOption: any= '';
+
   vCondition:boolean=false;
   vConditionExt:boolean=false;
   vConditionIP:boolean=false;
@@ -407,30 +412,75 @@ export class SalesComponent implements OnInit {
     
 
     // onChangePatientType('OP');
+
     debugger
+    // this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    // this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
+    // this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
+
+    // if (this.vPharOPOpt == true) {
+    //  // this.vCondition = false
+    //   this.vSelectedOption = 'OP'; 
+    // }else{
+    //   this.vCondition = true
+    // }
+
+    // if (this.vPharIPOpt == true) { 
+    //   if (this.vPharOPOpt == false) {
+    //     this.vSelectedOption = 'IP'; 
+    //   }
+    // }else{
+    //   this.vConditionIP = true
+    // }
+
+    // if (this.vPharExtOpt == true) {
+    //   if (this.vPharOPOpt == false) { 
+    //     this.vSelectedOption = 'External'; 
+    //   }
+    // } else{
+    //   this.vConditionExt = true
+    // } 
     this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
     this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
     this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
+    
+    // this.vPharExtOpt = false;
+    // this.vPharOPOpt = false;
+    // this.vPharIPOpt =true ;
+    
 
     if (this.vPharOPOpt == true) {
      // this.vCondition = false
       this.vSelectedOption = 'OP'; 
+      this.opflag=true;
+      this.ipflag=false;
+      this.externalflag=false;
+      this.ItemSubform.get('PatientType').setValue('OP');
+      this.Patienttype='OP'; 
     }else{
       this.vCondition = true
     }
 
     if (this.vPharIPOpt == true) { 
-      if (this.vPharOPOpt == false) {
+      
         this.vSelectedOption = 'IP'; 
-      }
+        this.opflag=false;
+        this.ipflag=true;
+        this.externalflag=false;
+        this.ItemSubform.get('PatientType').setValue('IP');
+        this.Patienttype='IP'; 
     }else{
       this.vConditionIP = true
     }
 
     if (this.vPharExtOpt == true) {
-      if (this.vPharOPOpt == false) { 
+    
         this.vSelectedOption = 'External'; 
-      }
+        this.opflag=false;
+        this.ipflag=false;
+        this.externalflag=true;
+        this.ItemSubform.get('PatientType').setValue('External');
+        this.Patienttype='External'; 
     } else{
       this.vConditionExt = true
     } 
@@ -1070,6 +1120,7 @@ console.log(this.vSelectedOption)
       CashPay: ['CashPay'],
       referanceNo: '',
       RegID: '',
+      RegID1: '',
       PaidbyPatient: '',
       PaidbacktoPatient: '',
       roundoffAmt: '0'
@@ -3312,8 +3363,28 @@ console.log(this.vSelectedOption)
   }
 
 
+  // Patient Search;
+  getSearchListOp() {
 
-  getSearchList() {
+  var m_data = {
+    "Keyword": `${this.ItemSubform.get('RegID1').value}%`
+  }
+
+  this._RequestforlabtestService.getPatientVisitedListSearch(m_data).subscribe(data => {
+    this.PatientListfilteredOptionsOP = data;
+
+    if (this.PatientListfilteredOptionsOP.length == 0) {
+      this.noOptionFound = true;
+    } else {
+      this.noOptionFound = false;
+    }
+  });
+
+}
+
+
+
+  getSearchListIP() {
     var m_data = {
       "Keyword": `${this.ItemSubform.get('RegID').value}%`
     }
@@ -3321,7 +3392,7 @@ console.log(this.vSelectedOption)
       this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         // console.log(resData);
-        this.PatientListfilteredOptions = resData;
+        this.PatientListfilteredOptionsIP = resData;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
@@ -3334,7 +3405,7 @@ console.log(this.vSelectedOption)
     this.saleSelectedDatasource.data = [];
   }
 
-  getSelectedObjReg(obj) {
+  getSelectedObjRegIP(obj) {
 
     this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
@@ -3346,6 +3417,23 @@ console.log(this.vSelectedOption)
     // this.getDraftorderList(obj);
   }
 
+  getSelectedObjOP(obj) {
+    // this.dataSource.data = [];
+  
+    this.registerObj = obj;
+    this.PatientName = obj.FirstName + " " + obj.LastName;
+    this.RegId = obj.RegId;
+    // this.City = obj.City;
+    // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    // this.CompanyName = obj.CompanyName;
+    // this.Tarrifname = obj.TariffName;
+    // this.Doctorname = obj.DoctorName;
+    // this.vOPIPId = obj.VisitId;
+    // this.vOPDNo = obj.OPDNo;
+    // this.vTariffId = obj.TariffId;
+    // this.vClassId = obj.ClassId;
+    // this.AgeYear=obj.AgeYear;
+  }
   CalPaidbackAmt() {
     this.v_PaidbacktoPatient = (parseFloat(this.roundoffAmt) - parseFloat(this.v_PaidbyPatient)).toFixed(2);
   }

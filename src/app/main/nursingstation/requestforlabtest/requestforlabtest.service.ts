@@ -42,7 +42,10 @@ export class RequestforlabtestService {
   public getAdmittedPatientList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
   }
-  
+  public getPatientVisitedListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
+
   
   public getServiceListDetails(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadServiceList",Param);

@@ -390,7 +390,8 @@ export class AdmissionComponent implements OnInit {
         ['', [
           Validators.required,
           Validators.maxLength(50),
-          Validators.pattern("^[a-zA-Z._ -]+[( )]$"),
+          // Validators.pattern("^[a-zA-Z._ -]*$"),
+          Validators.pattern('^[a-zA-Z ]*$')
         ]],
       MiddleName:
         ['', [
@@ -1811,7 +1812,7 @@ onClose(){
     const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
         maxWidth: '85vw',
-        height: '400px', width: '100%',
+        height: '600px', width: '100%',
       });
 
     dialogRef.afterClosed().subscribe(result => {

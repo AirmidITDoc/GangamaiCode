@@ -23,6 +23,8 @@ import * as XLSX from 'xlsx';
 const jsPDF = require('jspdf');
 // require('jspdf-autotable');
 import autoTable from 'jspdf-autotable'
+import { Admission } from 'app/main/ipd/Admission/admission/admission.component';
+import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -120,11 +122,31 @@ export class BrowsSalesBillComponent implements OnInit {
     'SGST',
     'IGST'
   ]
+
+  
+  displayedColumnsplist = [
+    // 'IsMLC',
+    'RegNo',
+    'PatientName',
+    'DOA',
+    // 'DOT',
+    'Doctorname',
+    'RefDocName',
+    'IPNo',
+    'PatientType',
+    'WardName',
+    'TariffName',
+    'ClassName',
+    // 'CompanyName',
+    // 'RelativeName',
+    'buttons'
+  ];
+
   StoreList: any = [];
   Store1List: any = [];
   hasSelectedContacts: boolean;
 
-
+  dataSource = new MatTableDataSource<Admission>();
   dssaleList1 = new MatTableDataSource<SaleList>();
   dssalesList2 = new MatTableDataSource<SalesDetList>();
 
@@ -137,6 +159,7 @@ export class BrowsSalesBillComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    public _AdmissionService: AdmissionService,
     public _BrowsSalesBillService: BrowsSalesBillService,
     public _BrowsSalesService: SalesService,
     public _AppointmentSreviceService: AppointmentSreviceService,
@@ -149,11 +172,78 @@ export class BrowsSalesBillComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getAdmittedPatientList_1();
     this.getSalesList();
     this.getSalesReturnList()
     this.gePharStoreList();
     this.gePharStoreList1();
   }
+
+
+  resultsLength = 0;
+  getAdmittedPatientList_1() {
+    var Param = {
+      "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
+      "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
+      "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || "0",
+      "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorID || "0",
+      "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      "Admtd_Dschrgd_All": 0,
+      "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
+      "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '0',
+      Start:(this.paginator?.pageIndex??1),
+      Length:(this.paginator?.pageSize??10),
+    }
+    console.log(Param);
+    this._AdmissionService.getAdmittedPatientList_1(Param).subscribe(data => {
+      this.dataSource.data = data["Table1"]??[] as Admission[];
+      if (this.dataSource.data.length > 0) {
+        this.Admissiondetail( this.dataSource.data);
+      }
+      this.dataSource.sort = this.sort;
+      this.resultsLength= data["Table"][0]["total_row"];
+      this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+
+  Admissiondetail(data) {
+    // this.Vtotalcount = 0;
+    // this.VNewcount = 0;
+    // this.VFollowupcount = 0;
+    // this.VBillcount = 0;
+    // this.vIsDischarg=0;
+    // console.log(data)
+    // this.Vtotalcount;
+    // debugger
+    // for (var i=0;i< data.length;i++){
+    //   if(data[i].PatientOldNew==1){
+    //       this.VNewcount=this.VNewcount+1;
+    //     }
+    //     else if(data[i].PatientOldNew==2){
+    //       this.VFollowupcount=this.VFollowupcount+1;
+    //     }
+    //     else if(data[i].AdmissionID !==0){
+    //       this.VAdmissioncount=data.length;
+    //     }
+    //      else if(data[i].IsBillGenerated ==1){
+    //       this.VBillcount= this.VBillcount+1;
+    //     }
+    //     else if(data[i].IsOpToIPConv ==1){
+          
+    //       this.VOPtoIPcount=this.VOPtoIPcount + 1;
+    //     }else if(data[i].IsDischarged ==1){
+    //       this.vIsDischarg= this.vIsDischarg +1;
+    //     }
+    //     this.Vtotalcount= this.Vtotalcount+1;
+    // }
+  
+  }
+
+
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId

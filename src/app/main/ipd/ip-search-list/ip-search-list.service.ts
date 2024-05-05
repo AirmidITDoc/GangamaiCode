@@ -733,7 +733,9 @@ public updateIPDDischargSummary(employee)
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList",employee)
   }
 
-
+  public getAdmittedPatientDetailList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
+  }
 
   fieldValidations() {
     return [

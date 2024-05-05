@@ -459,7 +459,10 @@ public getOPPatient(employee) {
   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
 }
 
+public getMLCCombo() {
 
+  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_MLCType", {})
+}
 
 public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
   
