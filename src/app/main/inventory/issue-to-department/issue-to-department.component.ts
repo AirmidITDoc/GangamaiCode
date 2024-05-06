@@ -538,74 +538,77 @@ export class IssueToDepartmentComponent implements OnInit {
             }
 
         }
+        const isDuplicate = this.dsNewIssueList3.data.some(item => item.BatchNo === this.vBatchNo);
 
-        if (!this.vBarcodeflag) {
-            // const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId);
-            // if (!isDuplicate) {
-            let gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
-
-            this.chargeslist = this.dsTempItemNameList.data;
-            // if (this.dsNewIssueList3.data.length > 0) {
-            //   this.chargeslist = this.dsNewIssueList3.data;
-            // }
-
-
-            let TotalMRP = this.vUnitMRP * this.vQty
-            let PurTotAmt = this.vPurchaseRate * this.vQty
-
-            let LandedRateandedTotal = this.vLandedRate * this.vQty
-
-            let GSTAmount = (((this.vUnitMRP) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(2);
-            // let  CGSTAmt = (((contact.LandedRate) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
-            // let  SGSTAmt = (((contact.LandedRate) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
-            // let  IGSTAmt = (((contact.LandedRate) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+        if (!isDuplicate) {
+            if (!this.vBarcodeflag) {
+                // const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId);
+                // if (!isDuplicate) {
+                let gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
 
 
 
+                this.chargeslist = this.dsTempItemNameList.data;
+                // if (this.dsNewIssueList3.data.length > 0) {
+                //   this.chargeslist = this.dsNewIssueList3.data;
+                // }
 
-            this.chargeslist.push(
-                {
-                    ItemId: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId || 0,
-                    ItemName: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemName || '',
-                    BatchNo: this.vBatchNo,
-                    BatchExpDate: this.vBatchExpDate || '01/01/1900',
-                    BalanceQty: this.vBalanceQty || 0,
-                    Qty: this.vQty || 0,
-                    LandedRate: this.vLandedRate || 0,
-                    UnitMRP:this.vUnitMRP || 0,
-                    VatPer: gstper || 0,
-                    VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
-                    TotalAmount: this.vTotalAmount || 0,
-                    StockId: this.vStockId,
 
-                    TotalMRP: TotalMRP,
-                    DiscPer: 0,// contact.DiscPer || 0,
-                    DiscAmt: 0,
-                    NetAmt: LandedRateandedTotal,
-                    RoundNetAmt: Math.round(LandedRateandedTotal),// Math.round(TotalNet),
-                    mrpTotalAmount:TotalMRP,
+                let TotalMRP = this.vUnitMRP * this.vQty
+                let PurTotAmt = this.vPurchaseRate * this.vQty
 
-                    //LandedRate: this.vLandedRate,
-                    LandedRateandedTotal: LandedRateandedTotal,
-                    CgstPer: this.vCgstPer,
-                    //   CGSTAmt: CGSTAmt,
-                    SgstPer: this.vSgstPer,
-                    //   SGSTAmt: SGSTAmt,
-                    IgstPer: this.vIgstPer,
-                    //   IGSTAmt: IGSTAmt,
-                    PurchaseRate: this.vPurchaseRate,
-                    PurTotAmt: PurTotAmt,
-                    purTotalAmount: PurTotAmt,
-                    //   MarginAmt: v_marginamt,
-                    SalesDraftId: 1
-                });
-            console.log(this.chargeslist);
-            this.dsNewIssueList3.data = this.chargeslist
-            // } else {
-            //     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-            //         toastClass: 'tostr-tost custom-toast-warning',
-            //     });
-            // }
+                let LandedRateandedTotal = this.vLandedRate * this.vQty
+
+                let GSTAmount = (((this.vUnitMRP) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(2);
+                // let  CGSTAmt = (((contact.LandedRate) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+                // let  SGSTAmt = (((contact.LandedRate) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+                // let  IGSTAmt = (((contact.LandedRate) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2); 
+
+
+                this.chargeslist.push(
+                    {
+                        ItemId: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId || 0,
+                        ItemName: this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemName || '',
+                        BatchNo: this.vBatchNo,
+                        BatchExpDate: this.vBatchExpDate || '01/01/1900',
+                        BalanceQty: this.vBalanceQty || 0,
+                        Qty: this.vQty || 0,
+                        LandedRate: this.vLandedRate || 0,
+                        UnitMRP: this.vUnitMRP || 0,
+                        VatPer: gstper || 0,
+                        VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
+                        TotalAmount: this.vTotalAmount || 0,
+                        StockId: this.vStockId,
+
+                        TotalMRP: TotalMRP,
+                        DiscPer: 0,// contact.DiscPer || 0,
+                        DiscAmt: 0,
+                        NetAmt: LandedRateandedTotal,
+                        RoundNetAmt: Math.round(LandedRateandedTotal),// Math.round(TotalNet),
+                        mrpTotalAmount: TotalMRP,
+
+                        //LandedRate: this.vLandedRate,
+                        LandedRateandedTotal: LandedRateandedTotal,
+                        CgstPer: this.vCgstPer,
+                        //   CGSTAmt: CGSTAmt,
+                        SgstPer: this.vSgstPer,
+                        //   SGSTAmt: SGSTAmt,
+                        IgstPer: this.vIgstPer,
+                        //   IGSTAmt: IGSTAmt,
+                        PurchaseRate: this.vPurchaseRate,
+                        PurTotAmt: PurTotAmt,
+                        purTotalAmount: PurTotAmt,
+                        //   MarginAmt: v_marginamt,
+                        SalesDraftId: 1
+                    });
+                console.log(this.chargeslist);
+                this.dsNewIssueList3.data = this.chargeslist
+
+            }
+        } else {
+            this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
         }
 
 
@@ -613,11 +616,8 @@ export class IssueToDepartmentComponent implements OnInit {
         this.ItemReset();
         this.itemid.nativeElement.focus();
         this._IssueToDep.NewIssueGroup.get('ItemID').setValue('');
-        this.Addflag = false;
+        this.Addflag = false; 
 
-
-        // &&   this.vFinalNetAmount > 0 
-        
         if (!(this._IssueToDep.NewIssueGroup.invalid) && this.dsNewIssueList3.data.length > 0) {
             this.vsaveflag = false;
         }
@@ -656,7 +656,15 @@ export class IssueToDepartmentComponent implements OnInit {
     //         // }
     //     });
     // }
-
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp)) {
+          return true;
+        } else {
+          event.preventDefault();
+          return false;
+        }
+      }
     Indentid:any;
     indentdetid:any;
     IsClosed:any;

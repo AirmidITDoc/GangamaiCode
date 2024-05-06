@@ -418,11 +418,11 @@ export class SalesComponent implements OnInit {
     this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
     this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
 
-    if (this.vPharOPOpt == true) {
+    if (this.vPharExtOpt == true) {
      // this.vCondition = false
-      this.vSelectedOption = 'OP'; 
+      this.vSelectedOption = 'External'; 
     }else{
-      this.vCondition = true
+      this.vPharOPOpt = true
     }
 
     if (this.vPharIPOpt == true) { 
@@ -433,16 +433,16 @@ export class SalesComponent implements OnInit {
       this.vConditionIP = true
     }
 
-    if (this.vPharExtOpt == true) {
-      if (this.vPharOPOpt == false) { 
-        this.vSelectedOption = 'External'; 
+    if (this.vPharOPOpt == true) {
+      if (this.vPharExtOpt == false) { 
+        this.vSelectedOption = 'OP'; 
       }
     } else{
-      this.vConditionExt = true
+      this.vCondition = true
     } 
-    this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
-    this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
-    this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
+    // this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    // this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
+    // this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
     
 //     this.vPharExtOpt = true;
 //     this.vPharOPOpt = true;
