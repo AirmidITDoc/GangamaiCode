@@ -49,13 +49,11 @@
                                                     <div class="radio-group-left gap-8" fxLayout="row"
                                                         fxLayoutAlign="start center">
 
-
-                                                                                                           
                                                             <mat-radio-group aria-label="Select an option" formControlName="PatientType" [(ngModel)]="vSelectedOption"
                                                                 name="paymode" (change)="onChangePatientType($event)" (blur)="onChangePatientType($event)"  fxLayout="row">
-                                                                <mat-radio-button    value="OP" [disabled]="vCondition">OP</mat-radio-button>
-                                                                <mat-radio-button    value="IP" [disabled]="vConditionIP">IP</mat-radio-button>
-                                                                <mat-radio-button    value="External" [disabled]="vConditionExt">External</mat-radio-button>
+                                                                <mat-radio-button value="OP" [disabled]="vCondition">OP</mat-radio-button>
+                                                                <mat-radio-button value="IP" [disabled]="vConditionIP">IP</mat-radio-button>
+                                                                <mat-radio-button value="External" [disabled]="vConditionExt">External</mat-radio-button>
                                                             </mat-radio-group>   
 
                                                         <!-- <mat-radio-group aria-label="Select an option" 
@@ -96,11 +94,11 @@
                                                                     {{option.MobileNo}}
                                                                 </mat-option>
                                                             </mat-autocomplete>
-                                                            <!-- <mat-error
+                                                            <mat-error
                                                                 *ngIf="ItemSubform.get('RegID').hasError('required')  && ItemSubform.get('RegID').touched">
                                                                 Required field cannot be left blank
-                                                            </mat-error> -->
-                                                        </mat-form-field>
+                                                            </mat-error>
+                                                        </mat-form-field> -->
 
 
                                                         <mat-form-field appearance="outline"
