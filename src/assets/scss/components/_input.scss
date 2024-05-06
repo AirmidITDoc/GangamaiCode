@@ -179,6 +179,11 @@
                             color: t($input-control-label);
                         }
                     }
+                    .mat-date-range-input{
+                        .mat-date-range-input-separator{
+                            color: inherit;
+                        }
+                    }
                 }
                 .mat-form-field-suffix {
                     .mat-datepicker-toggle {

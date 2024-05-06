@@ -97,6 +97,9 @@
                 .list-item-key {
                     font-weight: 600;
                 }
+                &-start{
+                    justify-content: flex-start;
+                }
             }
         }
     }
