@@ -175,11 +175,19 @@
                             <div fxFlex="100%">
                                 <div fxLayout="row" class="gap-8">
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                        <mat-form-field appearance="outline">
+                                        <!-- <mat-form-field appearance="outline">
                                             <mat-label>Disc %</mat-label>
                                             <input matInput [(ngModel)]="formDiscPersc" name="formDiscPer" #disc
                                                 (keyup)="calculatePersc()" formControlName="discPer" type="number"
-                                                id="discPer"  (keydown)="onEnterdiscper($event)">
+                                                id="discPer"  (keydown)="onEnterdiscper($event)"  (keypress)="keyPressAlphanumeric($event)">
+                                        </mat-form-field> -->
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Disc %</mat-label>
+                                            <input name="discPer" formControlName="discPer" placeholder="Disc (%)" (keyup)="calculatePersc()"
+                                             matInput [ngModel]="formDiscPersc"  type="number" maxlength="2" #disc (keydown)="onEnterdiscper($event)"
+                                              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                                            <!-- <mat-error *ngIf="Serviceform.get('discPer').invalid && Serviceform.get('discPer').touched">Please
+                                                enter Age Year </mat-error> -->
                                         </mat-form-field>
                                     </div>
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
@@ -804,16 +812,25 @@
                                     <!-- <mat-checkbox (change)="Adminchange($event)" (checked)=true>
                                         Admin Charges
                                     </mat-checkbox> -->
-
-                                    <mat-form-field appearance="outline" fxFlex="5%" *ngIf="admin">
+                                    <!-- *ngIf="admin" -->
+                                    <!-- <mat-form-field appearance="outline" fxFlex="5%" >
                                         <mat-label>%</mat-label>
                                         <input matInput name="Percentage" formControlName="Percentage" placeholder="0"
                                             (keyup)='CalAdmincharge()' type="number">
+                                    </mat-form-field> -->
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Disc %</mat-label>
+                                        <input name="Percentage" formControlName="Percentage" placeholder="Disc (%)" (keyup)="CalAdmincharge()"
+                                         matInput  type="number" maxlength="2" 
+                                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                                        <!-- <mat-error *ngIf="Serviceform.get('discPer').invalid && Serviceform.get('discPer').touched">Please
+                                            enter Age Year </mat-error> -->
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="10%" *ngIf="admin">
+                                    <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Concession Amount</mat-label>
-                                        <input matInput [(ngModel)]="vDiscountAmount" name="vDiscountAmount" readonly
+                                        <input matInput [(ngModel)]="vfDiscountAmount" name="vDiscountAmount" readonly
                                             formControlName="concessionAmt" (keyup)="getNetAmount()">
                                     </mat-form-field>
 
@@ -866,7 +883,7 @@
                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
                         <div class="button-row-group">
                             <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
-                            <button class="btn btn-primary-outline" (click)="getInterimData()">Interim</button>
+                            <button class="btn btn-primary-outline" (click)="getInterimData()" [disabled]="Ipbillform.invalid">Interim</button>
                             <button class="btn btn-primary" (click)="onSave()"
                                 [disabled]="Ipbillform.invalid">Save</button>
 

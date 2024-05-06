@@ -26,6 +26,7 @@ import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { debug } from 'console';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -121,7 +122,7 @@ export class IPBillingComponent implements OnInit {
   b_totalAmount = '0';
   b_netAmount = '0';
   FinalAmountpay = 0;
-  b_disAmount = 0;
+  b_disAmount:any;
   b_DoctorName = '';
   b_traiffId = '';
   b_isPath = '';
@@ -139,7 +140,7 @@ export class IPBillingComponent implements OnInit {
   SrvcName: any;
   totalAmtOfNetAmt: any = 0;
   interimArray: any = [];
-  formDiscPersc: any = 0;
+  formDiscPersc: any;
   serviceId: number;
   serviceName: String;
   totalAmt: number;
@@ -176,6 +177,8 @@ export class IPBillingComponent implements OnInit {
   vNetBillAmount: any;
   vAdvTotalAmount: any = 0;
   vBalanceAmt: any = 0;
+  vfDiscountAmount:any=0;
+
 
   isClasselected: boolean = false;
   isSrvcNameSelected: boolean = false;
@@ -226,6 +229,7 @@ export class IPBillingComponent implements OnInit {
     public datePipe: DatePipe,
     private dialogRef: MatDialogRef<IPBillingComponent>,
     private accountService: AuthenticationService,
+    public toastr: ToastrService,
     private formBuilder: FormBuilder) {
     this.showTable = false;
 
@@ -314,7 +318,9 @@ export class IPBillingComponent implements OnInit {
       totalAmount: [Validators.required,
       Validators.pattern("^[0-9]*$")],
       DoctorID: [''],
-      discPer: [Validators.pattern("^[0-9]*$")],
+      discPer: ['', [
+        Validators.minLength(2),
+        Validators.maxLength(2),Validators.pattern("^[0-9]*$")]],
       discAmt: [Validators.pattern("^[0-9]*$")],
       discAmount: [''],
       netAmount: [''],
@@ -745,6 +751,9 @@ export class IPBillingComponent implements OnInit {
     let netAmt;
     netAmt = element.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0);
     this.vDiscountAmount = netAmt;
+    this.vfDiscountAmount= this.vDiscountAmount;
+    // this.Ipbillform.get("concessionAmt").setValue(this.vDiscountAmount)
+    
     if (this.vDiscountAmount > 0)
 
       return netAmt;
@@ -809,34 +818,56 @@ export class IPBillingComponent implements OnInit {
       this.vGenbillflag = false;
   }
 
-
+  
   CalAdmincharge() {
-
+debugger
     let Percentage = this.Ipbillform.get('Percentage').value;
-    if (this.Ipbillform.get('Percentage').value) {
-      // this.vDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100);
-      this.vNetBillAmount = Math.round(this.vTotalBillAmount - this.vDiscountAmount);
+    if (this.Ipbillform.get('Percentage').value > 0) {
+      this.vfDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100);
+      this.vNetBillAmount = Math.round(this.vTotalBillAmount - this.vfDiscountAmount);
       this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+      this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
       this.ConShow = true
     }
-    else {
+    else if(Percentage > 99 || Percentage < 0){
+      this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
       this.vNetBillAmount = this.vTotalBillAmount;
       this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
       this.ConShow = false
       this.Ipbillform.get('ConcessionId').reset();
       this.Ipbillform.get('ConcessionId').clearValidators();
       this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-      this.vDiscountAmount = 0;
-    }
-
-    if (Percentage == 0 || Percentage == null) {
+      this.vfDiscountAmount = 0;
+      this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+    }else if ((Percentage == 0 || Percentage == null || Percentage == ' ') &&  this.vDiscountAmount ==0) {
       this.Ipbillform.get('ConcessionId').reset();
       this.Ipbillform.get('ConcessionId').clearValidators();
       this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-      this.vDiscountAmount = 0;
+      this.vfDiscountAmount = 0;
+      this.vNetBillAmount = this.vTotalBillAmount;
+      this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
+      this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
       this.ConShow = false
-    }
 
+    } 
+    if (Percentage == 0 || Percentage == null || Percentage == ' ') {
+      this.vfDiscountAmount = 0;
+      this.vNetBillAmount = this.vTotalBillAmount;
+      this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
+      this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+    }
+    if(this.vDiscountAmount > 0){
+      
+      this.Ipbillform.get('ConcessionId').reset();
+      this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+      this.Ipbillform.get('ConcessionId').enable;
+      this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+      this.Consession = true;
+    }
+   
   }
 
   tableElementChecked(event, element) {
@@ -876,7 +907,7 @@ export class IPBillingComponent implements OnInit {
       };
       console.log(xx)
       this.advanceDataStored.storage = new Bill(xx);
-
+     
       console.log('this.interimArray==', this.interimArray);
       this._matDialog.open(InterimBillComponent,
         {
@@ -887,6 +918,7 @@ export class IPBillingComponent implements OnInit {
 
         });
     }
+  
   }
 
   onOk() {
@@ -897,6 +929,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   SaveBill() {
+    
 
     let InterimOrFinal = 1;
     if (this.dataSource.data.length > 0 && (this.vNetBillAmount > 0)) {
@@ -1308,13 +1341,20 @@ export class IPBillingComponent implements OnInit {
 
   calculatePersc() {
     debugger
+    this.b_disAmount=0;
+    this.formDiscPersc=  this.Serviceform.get('discPer').value;
     let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
     if (this.formDiscPersc > 0) {
       let discAmt = Math.round((netAmt * parseInt(this.formDiscPersc)) / 100);
       this.b_disAmount = discAmt;
       this.b_netAmount = (netAmt - discAmt).toString();
+    }else if(this.formDiscPersc >99 || this.formDiscPersc < 0){
+      this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
     }
-    if(this.formDiscPersc ==0 || this.formDiscPersc == ''){
+    if(this.formDiscPersc ==0 || this.formDiscPersc == '' || this.formDiscPersc == null){
       this.b_disAmount = 0;
       this.b_netAmount = (netAmt).toString();
     }
@@ -1322,20 +1362,46 @@ export class IPBillingComponent implements OnInit {
 
 
   calculatechargesDiscamt() {
-    // let d = this.Ipbillform.get('discAmount').value;
+    debugger
     this.disamt = this.Serviceform.get('discAmount').value;
     let Netamt = parseInt(this.b_netAmount);
 
     if (parseInt(this.disamt) > 0 && this.disamt < this.b_totalAmount) {
       let tot = 0;
       if (Netamt > 0) {
-        tot = Netamt - parseInt(this.disamt);
+        tot = parseInt(this.b_totalAmount) - parseInt(this.disamt);
         this.b_netAmount = tot.toString();
         this.Serviceform.get('netAmount').setValue(tot);
       }
-    } else if (this.Serviceform.get('discAmount').value == null) {
+    } else if (this.Serviceform.get('discAmount').value == null || this.Serviceform.get('discAmount').value == 0) {
+    
       this.Serviceform.get('netAmount').setValue(this.b_totalAmount);
       this.Consession = true;
+      if(this.formDiscPersc > 0){
+        let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
+        let discAmt = Math.round((netAmt * parseInt(this.formDiscPersc)) / 100);
+         this.b_disAmount = discAmt;
+         this.b_netAmount = (netAmt - discAmt).toString();
+      }else{
+        this.b_netAmount= (parseInt(this.b_price) * parseInt(this.b_qty)).toString();
+      }
+    }else if(this.Serviceform.get('discAmount').value > this.b_netAmount || this.Serviceform.get('discAmount').value < 0){
+      this.toastr.warning('Please Enter Discount Amount less than NetAmount', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+
+      });
+      this.b_disAmount=0;
+      if(this.formDiscPersc > 0){
+        let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
+        let discAmt = Math.round((netAmt * parseInt(this.formDiscPersc)) / 100);
+         this.b_disAmount = discAmt;
+         this.b_netAmount = (netAmt - discAmt).toString();
+      }else{
+        this.b_netAmount= (parseInt(this.b_price) * parseInt(this.b_qty)).toString();
+      }
+      return;
+      
+    
     }
       this.add=false;
   }
@@ -1418,7 +1484,7 @@ export class IPBillingComponent implements OnInit {
         this._IpSearchListService.Addchargescancle(submitData).subscribe(response => {
           if (response) {
             Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
-              
+              this.getChargesList();
             });
           } else {
             Swal.fire('Error !', 'Charges cancelled data not saved', 'error');
@@ -1427,7 +1493,7 @@ export class IPBillingComponent implements OnInit {
         });
       }
     });
-    this.getChargesList();
+   
   }
 
 
@@ -1482,6 +1548,14 @@ export class IPBillingComponent implements OnInit {
   }
 
   onSave() {
+    // if(this.Ipbillform.get('Percentage').value > 0 || this.vfDiscountAmount > 0){
+    //   if(this.Ipbillform.get('Percentage').value.ConcessionId == 0 || this.Ipbillform.get('ConcessionId').value.ConcessionId ==null){
+    //     this.toastr.warning('Please Concession Reason', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // }else{
     if (this.dataSource.data.length > 0) {
       if (this.Ipbillform.get('GenerateBill').value) {
         Swal.fire({
@@ -1520,7 +1594,7 @@ export class IPBillingComponent implements OnInit {
       Swal.fire("Select Data For Save")
     }
   }
-
+  // }
 }
 
 export class Bill {
