@@ -70,6 +70,7 @@ export class UpdateWorkorderComponent implements OnInit {
  registerObj:any;
  vSupplierId:any;
  vWorkId:any;
+ vItemName:any;
 
   dsItemNameList = new MatTableDataSource<ItemNameList>(); 
   dsTempItemNameList = new MatTableDataSource<ItemNameList>();
@@ -244,7 +245,7 @@ export class UpdateWorkorderComponent implements OnInit {
     this.chargeslist.push(
       {
         ItemID: this.ItemID,
-        ItemName: this._WorkOrderService.WorkorderItemForm.get('ItemName').value.ItemName || '',
+        ItemName: this.vItemName || '',
         Qty: this.vQty || 0,
         Rate: this.vRate || 0,
         TotalAmount: this.vTotalAmount || 0,
@@ -603,7 +604,7 @@ getTotalAmt(element) {
   }
   public onEnterGST(event): void {
     if (event.which === 13) {
-      this.specification.nativeElement.focus();
+      //this.specification.nativeElement.focus();
     }
   } 
   public onEnterSpecification(event): void {

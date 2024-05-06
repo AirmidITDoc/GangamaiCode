@@ -276,7 +276,7 @@ export class NewGRNReturnComponent implements OnInit {
     }
     let RadioValue = this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value || 1 ;
     console.log(RadioValue);
-    if(RadioValue == 0){
+    if(RadioValue == 'GST Return'){
       this.vGSTAmount = ((parseFloat(this.vGST) * parseFloat(this.vTotalAmount)) / 100).toFixed(2);
       this.vNetAmount = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
     }else{

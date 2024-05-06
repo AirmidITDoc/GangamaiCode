@@ -903,86 +903,95 @@ export class IssueToDepartmentComponent implements OnInit {
             });
             return;
         }
-        if ((this. vTostoreId == '' || this. vTostoreId == null || this. vTostoreId == undefined)) {
+        if ((this.vTostoreId == '' || this.vTostoreId == null || this.vTostoreId == undefined)) {
             this.toastr.warning('Please select TostoreId', 'Warning !', {
               toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
           }
-        this.savebtn=true;
-        let insertheaderObj = {};
-        insertheaderObj['issueDate'] = formattedDate;
-        insertheaderObj['issueTime'] = formattedTime;
-        insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
-        insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
-        insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
-        insertheaderObj['totalVatAmount'] = this._IssueToDep.IssueFinalForm.get('GSTAmount').value || 0;
-        insertheaderObj['netAmount'] = this._IssueToDep.IssueFinalForm.get('FinalNetAmount').value || 0;
-        insertheaderObj['remark'] = this._IssueToDep.IssueFinalForm.get('Remark').value || '';
-        insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
-        insertheaderObj['isVerified'] = false;
-        insertheaderObj['isclosed'] = false;
-        insertheaderObj['indentId'] = 0;
-        insertheaderObj['issueId'] = 0;
+        
+        const isChecked = this.ToStoreList.some(item => item.StoreName ===  this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreName);
+        if (isChecked) {
+            this.savebtn = true;
+            let insertheaderObj = {};
+            insertheaderObj['issueDate'] = formattedDate;
+            insertheaderObj['issueTime'] = formattedTime;
+            insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
+            insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
+            insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
+            insertheaderObj['totalVatAmount'] = this._IssueToDep.IssueFinalForm.get('GSTAmount').value || 0;
+            insertheaderObj['netAmount'] = this._IssueToDep.IssueFinalForm.get('FinalNetAmount').value || 0;
+            insertheaderObj['remark'] = this._IssueToDep.IssueFinalForm.get('Remark').value || '';
+            insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
+            insertheaderObj['isVerified'] = false;
+            insertheaderObj['isclosed'] = false;
+            insertheaderObj['indentId'] = 0;
+            insertheaderObj['issueId'] = 0;
 
-        let isertItemdetailsObj = [];
-        this.dsNewIssueList3.data.forEach(element => {
-            console.log(element)
+            let isertItemdetailsObj = [];
+            this.dsNewIssueList3.data.forEach(element => {
+                console.log(element)
 
-            let insertitemdetail = {};
-            insertitemdetail['issueId'] = 0;
-            insertitemdetail['itemId'] = element.ItemId;
-            insertitemdetail['batchNo'] = element.BatchNo;
-            insertitemdetail['batchExpDate'] = element.BatchExpDate;
-            insertitemdetail['issueQty'] = element.Qty;
-            insertitemdetail['perUnitLandedRate'] = element.LandedRate;
-            insertitemdetail['LandedTotalAmount'] = element.LandedRateandedTotal;
-            insertitemdetail['unitMRP'] = element.UnitMRP;
-            insertitemdetail['mrpTotalAmount'] = element.TotalMRP;
-            insertitemdetail['unitPurRate'] = element.PurchaseRate;
-            insertitemdetail['purTotalAmount'] = element.PurTotAmt;
-            insertitemdetail['vatPercentage'] = element.VatPer || 0;
-            insertitemdetail['vatAmount'] = element.VatAmount || 0;
-            insertitemdetail['stkId'] = element.StockId;
-            isertItemdetailsObj.push(insertitemdetail);
-        });
-        let updateissuetoDepartmentStock = [];
-        this.dsNewIssueList3.data.forEach(element => {
-            let updateitemdetail = {};
-            updateitemdetail['itemId'] = element.ItemId;
-            updateitemdetail['issueQty'] = element.Qty;
-            updateitemdetail['stkId'] = element.StockId;
-            updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
-            updateissuetoDepartmentStock.push(updateitemdetail);
-        });
+                let insertitemdetail = {};
+                insertitemdetail['issueId'] = 0;
+                insertitemdetail['itemId'] = element.ItemId;
+                insertitemdetail['batchNo'] = element.BatchNo;
+                insertitemdetail['batchExpDate'] = element.BatchExpDate;
+                insertitemdetail['issueQty'] = element.Qty;
+                insertitemdetail['perUnitLandedRate'] = element.LandedRate;
+                insertitemdetail['LandedTotalAmount'] = element.LandedRateandedTotal;
+                insertitemdetail['unitMRP'] = element.UnitMRP;
+                insertitemdetail['mrpTotalAmount'] = element.TotalMRP;
+                insertitemdetail['unitPurRate'] = element.PurchaseRate;
+                insertitemdetail['purTotalAmount'] = element.PurTotAmt;
+                insertitemdetail['vatPercentage'] = element.VatPer || 0;
+                insertitemdetail['vatAmount'] = element.VatAmount || 0;
+                insertitemdetail['stkId'] = element.StockId;
+                isertItemdetailsObj.push(insertitemdetail);
+            });
+            let updateissuetoDepartmentStock = [];
+            this.dsNewIssueList3.data.forEach(element => {
+                let updateitemdetail = {};
+                updateitemdetail['itemId'] = element.ItemId;
+                updateitemdetail['issueQty'] = element.Qty;
+                updateitemdetail['stkId'] = element.StockId;
+                updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
+                updateissuetoDepartmentStock.push(updateitemdetail);
+            });
 
-        let submitData = {
-            "insertIssuetoDepartmentHeader": insertheaderObj,
-            "insertIssuetoDepartmentDetail": isertItemdetailsObj,
-            "updateissuetoDepartmentStock": updateissuetoDepartmentStock
-        };
+            let submitData = {
+                "insertIssuetoDepartmentHeader": insertheaderObj,
+                "insertIssuetoDepartmentDetail": isertItemdetailsObj,
+                "updateissuetoDepartmentStock": updateissuetoDepartmentStock
+            };
 
-        console.log(submitData);
+            console.log(submitData);
 
-        this._IssueToDep.IssuetodepSave(submitData).subscribe(response => {
-            if (response) {
-                this.toastr.success('Record New Issue To Department Saved Successfully.', 'Saved !', {
-                    toastClass: 'tostr-tost custom-toast-success',
-                });
-                this.viewgetIssuetodeptReportPdf(response, this.vprintflag);
-                this.OnReset();
-                this.getIssueToDep();
-                this.savebtn=false;
-            } else {
-                this.toastr.error('New Issue To Department Data not saved !, Please check validation error..', 'Error !', {
+            this._IssueToDep.IssuetodepSave(submitData).subscribe(response => {
+                if (response) {
+                    this.toastr.success('Record New Issue To Department Saved Successfully.', 'Saved !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });
+                    this.viewgetIssuetodeptReportPdf(response, this.vprintflag);
+                    this.OnReset();
+                    this.getIssueToDep();
+                    this.savebtn = false;
+                } else {
+                    this.toastr.error('New Issue To Department Data not saved !, Please check validation error..', 'Error !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                }
+            }, error => {
+                this.toastr.error('New Issue To Department Data not saved !, Please check API error..', 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
                 });
-            }
-        }, error => {
-            this.toastr.error('New Issue To Department Data not saved !, Please check API error..', 'Error !', {
-                toastClass: 'tostr-tost custom-toast-error',
             });
-        });
+        } else {
+            this.toastr.warning('Please select TostoreId', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
     }
     OnSaveAgaintIndent() {
         const currentDate = new Date();
@@ -996,114 +1005,121 @@ export class IssueToDepartmentComponent implements OnInit {
             });
             return;
         }
-        if ((this. vTostoreId == '' || this. vTostoreId == null || this. vTostoreId == undefined)) {
+        if ((this.vTostoreId == '' || this.vTostoreId == null || this.vTostoreId == undefined)) {
             this.toastr.warning('Please select TostoreId', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
+                toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-          }
-        
-        this.savebtn=true;
-        let insertheaderObj = {};
-        insertheaderObj['issueDate'] = formattedDate;
-        insertheaderObj['issueTime'] = formattedTime;
-        insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
-        insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
-        insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
-        insertheaderObj['totalVatAmount'] = this._IssueToDep.IssueFinalForm.get('GSTAmount').value || 0;
-        insertheaderObj['netAmount'] = this._IssueToDep.IssueFinalForm.get('FinalNetAmount').value || 0;
-        insertheaderObj['remark'] = this._IssueToDep.IssueFinalForm.get('Remark').value || '';
-        insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
-        insertheaderObj['isVerified'] = false;
-        insertheaderObj['isclosed'] = false;
-        insertheaderObj['indentId'] =  this.vIndentId;
-        insertheaderObj['issueId'] = 0;
-       
-        let isertItemdetailsObj = [];
-        this.dsNewIssueList3.data.forEach(element => {
-            console.log(element)
+        }
+        const isChecked = this.ToStoreList.some(item => item.StoreName === this.vTostoreId);
+        if (isChecked) {
+            this.savebtn = true;
+            let insertheaderObj = {};
+            insertheaderObj['issueDate'] = formattedDate;
+            insertheaderObj['issueTime'] = formattedTime;
+            insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
+            insertheaderObj['toStoreId'] = this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
+            insertheaderObj['totalAmount'] = this._IssueToDep.IssueFinalForm.get('FinalTotalAmount').value || 0;
+            insertheaderObj['totalVatAmount'] = this._IssueToDep.IssueFinalForm.get('GSTAmount').value || 0;
+            insertheaderObj['netAmount'] = this._IssueToDep.IssueFinalForm.get('FinalNetAmount').value || 0;
+            insertheaderObj['remark'] = this._IssueToDep.IssueFinalForm.get('Remark').value || '';
+            insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
+            insertheaderObj['isVerified'] = false;
+            insertheaderObj['isclosed'] = false;
+            insertheaderObj['indentId'] = this.vIndentId;
+            insertheaderObj['issueId'] = 0;
 
-            let insertitemdetail = {};
-            insertitemdetail['issueId'] = 0;
-            insertitemdetail['itemId'] = element.ItemId;
-            insertitemdetail['batchNo'] = element.BatchNo;
-            insertitemdetail['batchExpDate'] = element.BatchExpDate;
-            insertitemdetail['issueQty'] = element.Qty;
-            insertitemdetail['perUnitLandedRate'] = element.LandedRate;
-            insertitemdetail['LandedTotalAmount'] = element.LandedRateandedTotal;
-            insertitemdetail['unitMRP'] = element.UnitMRP;
-            insertitemdetail['mrpTotalAmount'] = element.TotalMRP;
-            insertitemdetail['unitPurRate'] = element.PurchaseRate;
-            insertitemdetail['purTotalAmount'] = element.PurTotAmt;
-            insertitemdetail['vatPercentage'] = element.VatPer || 0;
-            insertitemdetail['vatAmount'] = element.VatAmount || 0;
-            insertitemdetail['stkId'] = element.StockId;
-            isertItemdetailsObj.push(insertitemdetail);
-        });
-        
-        let updateissuetoDepartmentStock = [];
-        this.dsNewIssueList3.data.forEach(element => {
-           
-            let updateitemdetail = {};
-            updateitemdetail['itemId'] = element.ItemId;
-            updateitemdetail['issueQty'] = element.Qty;
-            updateitemdetail['stkId'] = element.StockId;
-            updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
-            updateissuetoDepartmentStock.push(updateitemdetail);
-        });
+            let isertItemdetailsObj = [];
+            this.dsNewIssueList3.data.forEach(element => {
+                console.log(element)
 
-        let update_IndentHeader_StatusObj = {};
+                let insertitemdetail = {};
+                insertitemdetail['issueId'] = 0;
+                insertitemdetail['itemId'] = element.ItemId;
+                insertitemdetail['batchNo'] = element.BatchNo;
+                insertitemdetail['batchExpDate'] = element.BatchExpDate;
+                insertitemdetail['issueQty'] = element.Qty;
+                insertitemdetail['perUnitLandedRate'] = element.LandedRate;
+                insertitemdetail['LandedTotalAmount'] = element.LandedRateandedTotal;
+                insertitemdetail['unitMRP'] = element.UnitMRP;
+                insertitemdetail['mrpTotalAmount'] = element.TotalMRP;
+                insertitemdetail['unitPurRate'] = element.PurchaseRate;
+                insertitemdetail['purTotalAmount'] = element.PurTotAmt;
+                insertitemdetail['vatPercentage'] = element.VatPer || 0;
+                insertitemdetail['vatAmount'] = element.VatAmount || 0;
+                insertitemdetail['stkId'] = element.StockId;
+                isertItemdetailsObj.push(insertitemdetail);
+            });
+
+            let updateissuetoDepartmentStock = [];
+            this.dsNewIssueList3.data.forEach(element => {
+
+                let updateitemdetail = {};
+                updateitemdetail['itemId'] = element.ItemId;
+                updateitemdetail['issueQty'] = element.Qty;
+                updateitemdetail['stkId'] = element.StockId;
+                updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
+                updateissuetoDepartmentStock.push(updateitemdetail);
+            });
+
+            let update_IndentHeader_StatusObj = {};
             update_IndentHeader_StatusObj['indentId'] = this.vIndentId;
-            update_IndentHeader_StatusObj['isClosed'] =  this.Isclosedchk;
-        
+            update_IndentHeader_StatusObj['isClosed'] = this.Isclosedchk;
 
-        let updateIndentStatusIndentDetails = [];
-        this.dsNewIssueList3.data.forEach(element => {
-            debugger
-            let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
-            if(balQty == 0){
-                this.Isclosedchk = false;
-            }else{
-                this.Isclosedchk = true;
-            }
-            let updateIndentStatusIndentDetailsObj = {};
-            updateIndentStatusIndentDetailsObj['indentId'] = element.IndentId;
-            updateIndentStatusIndentDetailsObj['indDetID'] =element.IndentDetailsId;
-            updateIndentStatusIndentDetailsObj['isClosed'] =  this.Isclosedchk;
-            updateIndentStatusIndentDetailsObj['indQty'] = balQty;
-            updateIndentStatusIndentDetails.push(updateIndentStatusIndentDetailsObj);
-        });
 
-        let submitData = {
-            "insertIssuetoDepartmentHeader1": insertheaderObj,
-            "insertIssuetoDepartmentDetail1": isertItemdetailsObj,
-            "updateissuetoDepartmentStock1": updateissuetoDepartmentStock,
-            "update_IndentHeader_Status" :update_IndentHeader_StatusObj,
-            "updateIndentStatusIndentDetails":updateIndentStatusIndentDetails
-        };
+            let updateIndentStatusIndentDetails = [];
+            this.dsNewIssueList3.data.forEach(element => {
+                debugger
+                let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
+                if (balQty == 0) {
+                    this.Isclosedchk = false;
+                } else {
+                    this.Isclosedchk = true;
+                }
+                let updateIndentStatusIndentDetailsObj = {};
+                updateIndentStatusIndentDetailsObj['indentId'] = element.IndentId;
+                updateIndentStatusIndentDetailsObj['indDetID'] = element.IndentDetailsId;
+                updateIndentStatusIndentDetailsObj['isClosed'] = this.Isclosedchk;
+                updateIndentStatusIndentDetailsObj['indQty'] = balQty;
+                updateIndentStatusIndentDetails.push(updateIndentStatusIndentDetailsObj);
+            });
 
-        console.log(submitData);
+            let submitData = {
+                "insertIssuetoDepartmentHeader1": insertheaderObj,
+                "insertIssuetoDepartmentDetail1": isertItemdetailsObj,
+                "updateissuetoDepartmentStock1": updateissuetoDepartmentStock,
+                "update_IndentHeader_Status": update_IndentHeader_StatusObj,
+                "updateIndentStatusIndentDetails": updateIndentStatusIndentDetails
+            };
 
-        this._IssueToDep.IssuetodepAgaintIndetSave(submitData).subscribe(response => {
-            if (response) {
-                this.toastr.success('Record New Issue To Department Againt Indent Saved Successfully.', 'Saved !', {
-                    toastClass: 'tostr-tost custom-toast-success',
-                });
-                this.viewgetIssuetodeptReportPdf(response, this.vprintflag);
-                this.OnReset();
-                this.getIssueToDep();
-                this.savebtn=false;
-                this.vIndentId = 0;
-            } else {
-                this.toastr.error('New Issue To Department Againt Indent Data not saved !, Please check validation error..', 'Error !', {
+            console.log(submitData);
+
+            this._IssueToDep.IssuetodepAgaintIndetSave(submitData).subscribe(response => {
+                if (response) {
+                    this.toastr.success('Record New Issue To Department Againt Indent Saved Successfully.', 'Saved !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });
+                    this.viewgetIssuetodeptReportPdf(response, this.vprintflag);
+                    this.OnReset();
+                    this.getIssueToDep();
+                    this.savebtn = false;
+                    this.vIndentId = 0;
+                } else {
+                    this.toastr.error('New Issue To Department Againt Indent Data not saved !, Please check validation error..', 'Error !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                }
+            }, error => {
+                this.toastr.error('New Issue To Department Againt Indent Data not saved !, Please check API error..', 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
                 });
-            }
-        }, error => {
-            this.toastr.error('New Issue To Department Againt Indent Data not saved !, Please check API error..', 'Error !', {
-                toastClass: 'tostr-tost custom-toast-error',
             });
-        });
+        } else {
+            this.toastr.warning('Please select TostoreId', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
     }
     OnReset() {
         this._IssueToDep.NewIssueGroup.reset();

@@ -202,7 +202,15 @@ export class NewGRNReturnComponent implements OnInit {
       this.SelectedArray.push(element);
     }
   }
-  
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
   getTotalamt(element) {
     this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
@@ -218,6 +226,7 @@ export class NewGRNReturnComponent implements OnInit {
     return this.vFinalNetAmount;
   }
   RQty:any;
+  VReturnQty:any;
   getCellCalculation(contact, ReturnQty) {
     if (parseInt(contact.ReturnQty) > parseInt(contact.BalanceQty)) {
       this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
@@ -238,8 +247,12 @@ export class NewGRNReturnComponent implements OnInit {
       contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
       let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
       contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount)).toFixed(2);
-      this.interimArray.push(contact);
-      console.log(this.interimArray) 
+      this.VReturnQty = contact.ReturnQty
+      if(parseInt(this.VReturnQty) > 0){
+        this.interimArray.push(contact);
+        console.log(this.interimArray) 
+      }
+   
     }
   }
 interimArray: any = [];
@@ -333,7 +346,7 @@ OnSave(){
   });
 
   let grnReturnUpateReturnQtyarray = [];
-  this.interimArray.data.forEach((element) => {
+  this.interimArray.forEach((element) => {
     let grnReturnUpateReturnQty = {};
     grnReturnUpateReturnQty['grnDetID'] = element.GRNDetID || 0;
     grnReturnUpateReturnQty['returnQty'] = element.ReturnQty || 0;
