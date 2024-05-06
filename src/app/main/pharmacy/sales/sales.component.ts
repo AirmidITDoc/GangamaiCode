@@ -414,78 +414,78 @@ export class SalesComponent implements OnInit {
     // onChangePatientType('OP');
 
     debugger
-    // this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
-    // this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
-    // this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
-
-    // if (this.vPharOPOpt == true) {
-    //  // this.vCondition = false
-    //   this.vSelectedOption = 'OP'; 
-    // }else{
-    //   this.vCondition = true
-    // }
-
-    // if (this.vPharIPOpt == true) { 
-    //   if (this.vPharOPOpt == false) {
-    //     this.vSelectedOption = 'IP'; 
-    //   }
-    // }else{
-    //   this.vConditionIP = true
-    // }
-
-    // if (this.vPharExtOpt == true) {
-    //   if (this.vPharOPOpt == false) { 
-    //     this.vSelectedOption = 'External'; 
-    //   }
-    // } else{
-    //   this.vConditionExt = true
-    // } 
     this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
     this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
     this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
-    
-    // this.vPharExtOpt = false;
-    // this.vPharOPOpt = false;
-    // this.vPharIPOpt =true ;
-    
 
     if (this.vPharOPOpt == true) {
      // this.vCondition = false
       this.vSelectedOption = 'OP'; 
-      this.opflag=true;
-      this.ipflag=false;
-      this.externalflag=false;
-      this.ItemSubform.get('PatientType').setValue('OP');
-      this.Patienttype='OP'; 
     }else{
       this.vCondition = true
     }
 
     if (this.vPharIPOpt == true) { 
-      
+      if (this.vPharOPOpt == false) {
         this.vSelectedOption = 'IP'; 
-        this.opflag=false;
-        this.ipflag=true;
-        this.externalflag=false;
-        this.ItemSubform.get('PatientType').setValue('IP');
-        this.Patienttype='IP'; 
+      }
     }else{
       this.vConditionIP = true
     }
 
     if (this.vPharExtOpt == true) {
-    
+      if (this.vPharOPOpt == false) { 
         this.vSelectedOption = 'External'; 
-        this.opflag=false;
-        this.ipflag=false;
-        this.externalflag=true;
-        this.ItemSubform.get('PatientType').setValue('External');
-        this.Patienttype='External'; 
+      }
     } else{
       this.vConditionExt = true
     } 
+    this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
+    this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
+    
+//     this.vPharExtOpt = true;
+//     this.vPharOPOpt = true;
+//     this.vPharIPOpt =true ;
+    
 
-console.log(this.vSelectedOption)
+//     if (this.vPharOPOpt == true) {
+//      // this.vCondition = false
+//       this.vSelectedOption = 'OP'; 
+//       this.opflag=true;
+//       this.ipflag=false;
+//       this.externalflag=false;
+//       this.ItemSubform.get('PatientType').setValue('OP');
+//       this.Patienttype='OP'; 
+//     }else{
+//       this.vCondition = true
+//     }
+
+//     if (this.vPharIPOpt == true) { 
+      
+//         this.vSelectedOption = 'IP'; 
+//         this.opflag=false;
+//         this.ipflag=true;
+//         this.externalflag=false;
+//         this.ItemSubform.get('PatientType').setValue('IP');
+//         this.Patienttype='IP'; 
+//     }else{
+//       this.vConditionIP = true
+//     }
+
+//     if (this.vPharExtOpt == true) {
+    
+//         this.vSelectedOption = 'External'; 
+//         this.opflag=false;
+//         this.ipflag=false;
+//         this.externalflag=true;
+//         this.ItemSubform.get('PatientType').setValue('External');
+//         this.Patienttype='External'; 
+//     } else{
+//       this.vConditionExt = true
+//     } 
+
+// console.log(this.vSelectedOption)
  
   }
 
