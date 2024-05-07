@@ -1,160 +1,160 @@
-@import "src/@fuse/scss/fuse";
+// @import "src/@fuse/scss/fuse";
 
-app-ipd-paymentreceipt {
-.active-icon {
-    border-radius: 50%;
-}
-.mat-header-row {
-    width: 100%;
-    max-width: 2000px;
-    min-width: 2000px;  
-     min-height: 30px;     
-}
+// app-ipd-paymentreceipt {
+// .active-icon {
+//     border-radius: 50%;
+// }
+// .mat-header-row {
+//     width: 100%;
+//     max-width: 2000px;
+//     min-width: 2000px;  
+//      min-height: 30px;     
+// }
 
-.mat-row {
-    width: 100%;
-    max-width: 2000px;
-    min-width: 2000px;  
-    min-height: 30px;     
-}           
+// .mat-row {
+//     width: 100%;
+//     max-width: 2000px;
+//     min-width: 2000px;  
+//     min-height: 30px;     
+// }           
 
 
-.mat-column-RegNo {
-    width:90px;
-    max-width: 90px;
-    min-width: 90px;
-}
+// .mat-column-RegNo {
+//     width:90px;
+//     max-width: 90px;
+//     min-width: 90px;
+// }
 
-.mat-column-PatientName {
-    width:250px;
-    max-width: 250px;
-    min-width: 250px;
-    text-align: left;
-    white-space: nowrap; 
-    text-overflow: ellipsis; 
-    overflow: hidden !important;
+// .mat-column-PatientName {
+//     width:250px;
+//     max-width: 250px;
+//     min-width: 250px;
+//     text-align: left;
+//     white-space: nowrap; 
+//     text-overflow: ellipsis; 
+//     overflow: hidden !important;
  
-    justify-content:left; 
-}
-.mat-column-TotalAmt {
-    width: 130px;
-    max-width: 130px;
-    min-width: 130px;
-    justify-content:center;
-}
-.mat-column-BalanceAmt {
-    width: 110px;
-    max-width: 110px;
-    min-width: 110px;
-     justify-content:center;
-}
+//     justify-content:left; 
+// }
+// .mat-column-TotalAmt {
+//     width: 130px;
+//     max-width: 130px;
+//     min-width: 130px;
+//     justify-content:center;
+// }
+// .mat-column-BalanceAmt {
+//     width: 110px;
+//     max-width: 110px;
+//     min-width: 110px;
+//      justify-content:center;
+// }
 
-.mat-column-Remark {
-    width:200px;
-    max-width: 200px;
-    min-width: 200px;
-    justify-content:left;
-}
+// .mat-column-Remark {
+//     width:200px;
+//     max-width: 200px;
+//     min-width: 200px;
+//     justify-content:left;
+// }
 
-.mat-column-PaymentDate{
-    width:90px;
-    max-width: 90px;
-    min-width: 90px;
-}
-.mat-column-CashPayAmount{
-    width: 90px;
-    max-width:90px;
-    min-width:90px;
-    // text-align: center;
-    justify-content:center;
-}
-.mat-column-ChequePayAmount{
-    width: 110px;
-    max-width:110px;
-    min-width:110px;
-    // text-align: center;
-    justify-content:center;
-}
-.mat-column-CardPayAmount{
-    width: 90px;
-    max-width:90px;
-    min-width:90px;
-    justify-content:center;
-}
-.mat-column-AdvanceUsedAmount{
-    width: 130px;
-    max-width:130px;
-    min-width:130px;
-    justify-content:center;
-}
+// .mat-column-PaymentDate{
+//     width:90px;
+//     max-width: 90px;
+//     min-width: 90px;
+// }
+// .mat-column-CashPayAmount{
+//     width: 90px;
+//     max-width:90px;
+//     min-width:90px;
+//     // text-align: center;
+//     justify-content:center;
+// }
+// .mat-column-ChequePayAmount{
+//     width: 110px;
+//     max-width:110px;
+//     min-width:110px;
+//     // text-align: center;
+//     justify-content:center;
+// }
+// .mat-column-CardPayAmount{
+//     width: 90px;
+//     max-width:90px;
+//     min-width:90px;
+//     justify-content:center;
+// }
+// .mat-column-AdvanceUsedAmount{
+//     width: 130px;
+//     max-width:130px;
+//     min-width:130px;
+//     justify-content:center;
+// }
 
 
-.mat-column-PBillNo {
-    width:90px;
-    max-width: 90px;
-    min-width: 90px;
-}
-.mat-column-ReceiptNo {
-    width:90px;
-    max-width: 90px;
-    min-width: 90px;
-}
-.mat-column-PayDate {
-    width:80px;
-    max-width: 80px;
-    min-width: 80px;
-}
+// .mat-column-PBillNo {
+//     width:90px;
+//     max-width: 90px;
+//     min-width: 90px;
+// }
+// .mat-column-ReceiptNo {
+//     width:90px;
+//     max-width: 90px;
+//     min-width: 90px;
+// }
+// .mat-column-PayDate {
+//     width:80px;
+//     max-width: 80px;
+//     min-width: 80px;
+// }
 
-.mat-column-PaidAmount{
-    width: 120px;
-    max-width:120px;
-    min-width:120px;
-    // text-align: center;
-    justify-content:center;
-}
-.mat-column-NEFTPayAmount{
-    width: 120px;
-    max-width:120px;
-    min-width:120px;
-    // text-align: center;
-    justify-content:center;
-}
-.mat-column-PayTMAmount{
-    width: 110px;
-    max-width:110px;
-    min-width:110px;
-    // text-align: center;
-    justify-content:center;
-}
-.mat-column-UserName {
-    width:170px;
-    max-width: 170px;
-    min-width: 170px;
-}
+// .mat-column-PaidAmount{
+//     width: 120px;
+//     max-width:120px;
+//     min-width:120px;
+//     // text-align: center;
+//     justify-content:center;
+// }
+// .mat-column-NEFTPayAmount{
+//     width: 120px;
+//     max-width:120px;
+//     min-width:120px;
+//     // text-align: center;
+//     justify-content:center;
+// }
+// .mat-column-PayTMAmount{
+//     width: 110px;
+//     max-width:110px;
+//     min-width:110px;
+//     // text-align: center;
+//     justify-content:center;
+// }
+// .mat-column-UserName {
+//     width:170px;
+//     max-width: 170px;
+//     min-width: 170px;
+// }
 
-.mat-column-buttons {
-    width:170px;
-    max-width: 170px;
-    min-width: 170px;
-    text-align: center;
-    justify-content:center;
-}
+// .mat-column-buttons {
+//     width:170px;
+//     max-width: 170px;
+//     min-width: 170px;
+//     text-align: center;
+//     justify-content:center;
+// }
 
-.mat-icon-button {
-    padding: 0;
-    min-width: 0;
-    width: 40px;
-    height: 20px;
-    flex-shrink: 0;
-    line-height: 20px;
-    border-radius: 50%;
-}
-.mat-menu-item {
-    line-height: 25px;
-    height: 25px;
-    padding: 0px 5px;
-    text-align: left;
-    justify-content:center;
-}
+// .mat-icon-button {
+//     padding: 0;
+//     min-width: 0;
+//     width: 40px;
+//     height: 20px;
+//     flex-shrink: 0;
+//     line-height: 20px;
+//     border-radius: 50%;
+// }
+// .mat-menu-item {
+//     line-height: 25px;
+//     height: 25px;
+//     padding: 0px 5px;
+//     text-align: left;
+//     justify-content:center;
+// }
 
-}
+// }

@@ -10,7 +10,7 @@
         @include themed() {
             .fuse-widget-front,
             .fuse-widget-back {
-                border-color: rgba(0, 0, 0, 0.12);
+                border-color:  $gray-200;
                 background-color: t($ngt-card);
                 color: t($text-color);
             }

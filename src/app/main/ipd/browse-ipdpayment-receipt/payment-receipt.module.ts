@@ -27,56 +27,57 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ViewBrowseIPDPaymentComponent } from './view-browse-ipdpayment/view-browse-ipdpayment.component';
 import { PaymentReceiptService } from './payment-receipt.service';
 import { IpdPaymentreceiptComponent } from './ipd-paymentreceipt/ipd-paymentreceipt.component';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 
 
 const routes: Routes = [
-  { path: '**', component: IpdPaymentreceiptComponent },
+    { path: '**', component: IpdPaymentreceiptComponent },
 ];
 
 
 @NgModule({
-  declarations: [
+    declarations: [
         ViewBrowseIPDPaymentComponent,
-    IpdPaymentreceiptComponent
-  ],
- 
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatExpansionModule,
-    MatTooltipModule,
-   
-  ],
-  providers: [
-    PaymentReceiptService,
-      DatePipe,
-      
-  ],
-  entryComponents: [
-    IpdPaymentreceiptComponent,
-  
-  ]
+        IpdPaymentreceiptComponent
+    ],
+
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatExpansionModule,
+        MatTooltipModule,
+        SharedModule
+    ],
+    providers: [
+        PaymentReceiptService,
+        DatePipe,
+
+    ],
+    entryComponents: [
+        IpdPaymentreceiptComponent,
+
+    ]
 })
 export class PaymentReceiptModule { }

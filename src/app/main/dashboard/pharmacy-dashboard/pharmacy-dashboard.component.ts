@@ -90,7 +90,7 @@ export class PharmacyDashboardComponent implements OnInit {
         isDoughnut: true,
         legendPosition: "below",
         colorScheme: { domain: [] },
-        view: [400, 300],
+        view: [300, 250],
         data: [],
     };
 
@@ -119,7 +119,12 @@ export class PharmacyDashboardComponent implements OnInit {
                 m_data
             )
             .subscribe(
-                (data) => {
+                (data : any) => {
+                    if(data && data.data.length){
+                        for(let item of data.data){
+                            item.value = +item.value
+                        }
+                    }
                     this.StaticChartConfig.data = data["data"] as any[];
                     console.log(this.StaticChartConfig.data);
                     this.StaticChartConfig.colorScheme.domain = data[
