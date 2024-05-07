@@ -558,9 +558,9 @@ else if(this.CompanyId =='' || this.CompanyId ==0){
     if (!this.BillingForm.get('cashpay').value) {
       const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
         {
-          maxWidth: "100vw",
+          maxWidth: "80vw",
           height: '650px',
-          width: '100%',
+          width: '80%',
           data: {
             vPatientHeaderObj: PatientHeaderObj,
             FromName: "OP-Bill",
