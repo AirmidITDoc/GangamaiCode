@@ -36,8 +36,8 @@ export class FuseShortcutsComponent implements OnInit, AfterViewInit, OnDestroy 
         return this.shortcutItems.filter(x => x.isFavourite);
     }
     ngOnInit(): void {
-        if ((JSON.parse(localStorage.getItem("currentUser"))?.user?.roleId ?? 0) > 0) {
-            this._authService.getFavMenus(JSON.parse(localStorage.getItem("currentUser")).user.roleId, JSON.parse(localStorage.getItem("currentUser")).user.id).subscribe((Menu) => {
+        if ((JSON.parse(localStorage.getItem("currentUser"))?.user?.webRoleId ?? 0) > 0) {
+            this._authService.getFavMenus(JSON.parse(localStorage.getItem("currentUser")).user.webRoleId, JSON.parse(localStorage.getItem("currentUser")).user.id).subscribe((Menu) => {
                 this.shortcutItems = Menu as any[];
                 this.filteredShortcutItems = this.shortcutItems;
             });
