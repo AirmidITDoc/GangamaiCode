@@ -83,7 +83,7 @@ import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-
     MatPaginatorModule,
     MatCardModule,
     MatToolbarModule,
-    
+    SharedModule
   ],
   providers: [
     DatePipe
