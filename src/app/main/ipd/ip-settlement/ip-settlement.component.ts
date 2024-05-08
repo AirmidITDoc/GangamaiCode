@@ -273,7 +273,7 @@ export class IPSettlementComponent implements OnInit {
   getCreditBillDetails(){
     
     this.sIsLoading = 'loading-data';
-    this.regId= 80541//this.RegId;
+    this.regId= 93586//this.RegId;
     
     let query = "Select * from lvwBillIPD  where TransactionType =0 and companyId = 0 and RegID= " + this.regId + " and BalanceAmt>0";
     console.log(query);

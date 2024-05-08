@@ -149,12 +149,13 @@ export class OPAdvancePaymentComponent implements OnInit {
       this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.billNo = parseInt(this.advanceData.advanceObj.BillId);
-
+      this.PatientName = this.advanceData.advanceObj.PatientName;
     }
     else {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
+      this.PatientName = this.advanceData.advanceObj.PatientName;
       this.getBalanceAmt();
     }
   }

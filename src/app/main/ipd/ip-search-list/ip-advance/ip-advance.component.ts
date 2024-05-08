@@ -205,6 +205,7 @@ export class IPAdvanceComponent implements OnInit {
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
       PatientHeaderObj['NetPayAmount'] = this.advanceAmount;
+      PatientHeaderObj['BillId'] = 0;
 
       // const advanceHeaderInsert = new AdvanceHeader(advanceHeaderObj);
       // const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);

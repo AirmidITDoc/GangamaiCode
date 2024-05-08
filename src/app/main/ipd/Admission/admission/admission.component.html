@@ -664,10 +664,10 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Pan Card No</mat-label>
                                     <input name="Pancardno" formControlName="Pancardno" placeholder="PanCardNo Number"
-                                        matInput [(ngModel)]="registerObj.Pancardno" #pan
+                                        matInput [(ngModel)]="registerObj.Pancardno" #pan maxlength="10"
                                         (keydown)="onEnterpan($event)">
                                     <mat-error class="error"
-                                        *ngIf="personalFormGroup.get('Pancardno').invalid && personalFormGroup.get('Pancardno').touched">12
+                                        *ngIf="personalFormGroup.get('Pancardno').invalid && personalFormGroup.get('Pancardno').touched">10
                                         digits Pan Card No is required</mat-error>
                                 </mat-form-field>
 
@@ -796,7 +796,9 @@
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Patient Type</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Patient Type" matInput #ptype (keydown)="onEnterptype($event)" formControlName="PatientTypeID" [matAutocomplete]="autoPatientTypeID">
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Patient Type" matInput #ptype
+                                     (keydown)="onEnterptype($event,vPatientTypeID.PatientTypeId)" formControlName="PatientTypeID" [(ngModel)]="vPatientTypeID"
+                                     [matAutocomplete]="autoPatientTypeID">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('PatientTypeID').setValue(''); ispatienttypeSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('PatientTypeID').setValue(''); ispatienttypeSelected = false;">search</mat-icon>
@@ -819,7 +821,8 @@
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Tariff Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Patient Type" matInput #tariff (keydown)="onEnterptariff($event)" formControlName="TariffId" [matAutocomplete]="autoTariffId">
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Patient Type" matInput 
+                                    #tariff (keydown)="onEnterptariff($event,vTariffId.TariffId)" formControlName="TariffId" [matAutocomplete]="autoTariffId" [(ngModel)]="vTariffId">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('TariffId').setValue(''); isTariffIdSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('TariffId').setValue(''); isTariffIdSelected = false;">search</mat-icon>
@@ -833,8 +836,8 @@
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Department</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Department"
-                                        matInput #dept (keydown)="onEnterdept($event)" formControlName="Departmentid"
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Department" [(ngModel)]="vDepartmentid"
+                                        matInput #dept (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" formControlName="Departmentid"
                                         [matAutocomplete]="autoDep" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -853,7 +856,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name"
-                                        matInput #deptdoc (keydown)="onEnterdeptdoc($event)" formControlName="DoctorId"
+                                        matInput #deptdoc (keydown)="onEnterdeptdoc($event,vDoctorId.DoctorId)" formControlName="DoctorId" [(ngModel)]="vDoctorId"
                                         [matAutocomplete]="autoDoctor" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -875,7 +878,7 @@
                                     <mat-label>Admitted Doctor 1</mat-label>
                                     <input matAutocompletePosition="below" type="text"
                                         placeholder="Select Admitted Doctor 1" matInput #admitdoc1
-                                        (keydown)="onEnteradmitdoc1($event)" formControlName="admittedDoctor1"
+                                        (keydown)="onEnteradmitdoc1($event,vadmittedDoctor1.DoctorID)" formControlName="admittedDoctor1" [(ngModel)]="vadmittedDoctor1"
                                         [matAutocomplete]="autoRefdoc">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -895,8 +898,8 @@
                                     <mat-label>Admitted Doctor 2</mat-label>
                                     <input matAutocompletePosition="below" type="text"
                                         placeholder="Select Admitted Doctor 2 " matInput
-                                        formControlName="admittedDoctor2" [matAutocomplete]="autodoc2" #admitdoc2
-                                        (keydown)="onEnteradmitdoc2($event)">
+                                        formControlName="admittedDoctor2" [matAutocomplete]="autodoc2" #admitdoc2 [(ngModel)]="vadmittedDoctor2"
+                                        (keydown)="onEnteradmitdoc2($event,vadmittedDoctor2.DoctorID)">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="hospitalFormGroup.get('admittedDoctor2').setValue(''); isAdmittedDoctor2Selected = false;">close</mat-icon>
@@ -913,7 +916,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Ref Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor "
-                                        matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="refDoctorId"
+                                        matInput #refdoc (keydown)="onEnterrefdoc($event,vrefDoctorId.DoctorID)" formControlName="refDoctorId" [(ngModel)]="vrefDoctorId"
                                         [matAutocomplete]="autodoc2">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -931,7 +934,7 @@
                                 <ng-container *ngIf="isCompanySelected">
                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-label>Company Name </mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Company"
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Company" [(ngModel)]="vCompanyId"
                                             matInput formControlName="CompanyId" [matAutocomplete]="autoCompany">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
@@ -991,7 +994,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Ward Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Ward"
-                                        matInput #ward (keydown)="onEnterward($event)" formControlName="RoomId"
+                                        matInput #ward (keydown)="onEnterward($event,vRoomId.RoomId)" formControlName="RoomId" [(ngModel)]="vRoomId"
                                         [matAutocomplete]="autoWard" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -1010,7 +1013,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Bed Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Bed" matInput
-                                        #bed (keydown)="onEnterbed($event)" formControlName="BedId"
+                                        #bed (keydown)="onEnterbed($event,vBedId.BedId)" formControlName="BedId" [(ngModel)]="vBedId"
                                         [matAutocomplete]="autoBed" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -1099,7 +1102,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Relationship Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Relationship"
-                                        matInput #relation formControlName="RelationshipId" 
+                                        matInput #relation formControlName="RelationshipId" [(ngModel)]="vRelationshipId"
                                         [matAutocomplete]="autoRelation">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"

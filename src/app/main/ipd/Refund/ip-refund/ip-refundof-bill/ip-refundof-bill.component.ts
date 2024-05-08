@@ -232,7 +232,7 @@ export class IPRefundofBillComponent implements OnInit {
     
     console.log(this.selectedAdvanceObj.RegNo);
     var m_data = {
-      "RegId": 1// this.selectedAdvanceObj.RegNo
+      "RegId":11// this.selectedAdvanceObj.RegNo
       
     }
     // this.isLoadingStr = 'loading';
@@ -476,7 +476,7 @@ viewgetRefundofbillReportPdf(RefundId) {
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['OPD_IPD_Id'] = 10,//this._IPRefundService.myShowAdvanceForm.get("AdmissionID").value;
+    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.RegNo,//this._IPRefundService.myShowAdvanceForm.get("AdmissionID").value;
     PatientHeaderObj['NetPayAmount'] =   this.TotalRefundAmount;
 
     // let DocShareGroupwiseObj = {};

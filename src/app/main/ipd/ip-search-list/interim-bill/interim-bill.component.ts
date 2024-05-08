@@ -228,229 +228,248 @@ export class InterimBillComponent implements OnInit {
       this.InterimFormGroup.get('UPINO').setValidators([Validators.required]);
       this.InterimFormGroup.get('UPINO').enable();
       this.InterimFormGroup.get('DoctorID').updateValueAndValidity();
-    }else{
+    } else {
       this.onlineflag = false;
       this.InterimFormGroup.get('UPINO').reset();
       this.InterimFormGroup.get('UPINO').clearValidators();
       this.InterimFormGroup.get('UPINO').updateValueAndValidity();
     }
   }
-
+  vConcessionId: any = 0
+  vconflag: boolean = true;
   onSave() {
 
-    this.isLoading = 'submit';
-    let interimBillChargesobj = {};
-    interimBillChargesobj['chargesID'] = 0// this.ChargesId;
-
-    let insertBillUpdateBillNo1obj = {};
-    insertBillUpdateBillNo1obj['billNo'] = 0;
-    insertBillUpdateBillNo1obj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
-    insertBillUpdateBillNo1obj['totalAmt'] = this.InterimFormGroup.get('TotalAmt').value //this.netAmount;
-    insertBillUpdateBillNo1obj['concessionAmt'] = this.InterimFormGroup.get('concessionAmt').value || this.b_disAmount,
-      insertBillUpdateBillNo1obj['netPayableAmt'] = this.InterimFormGroup.get('NetpayAmount').value, // this.netAmount;
-      insertBillUpdateBillNo1obj['paidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0,//this.advanceAmount;
-      insertBillUpdateBillNo1obj['balanceAmt'] = 0;
-    insertBillUpdateBillNo1obj['billDate'] = this.dateTimeObj.date;
-    insertBillUpdateBillNo1obj['opD_IPD_Type'] = 1,
-      insertBillUpdateBillNo1obj['AddedBy'] = this.accountService.currentUserValue.user.id;
-    insertBillUpdateBillNo1obj['totalAdvanceAmount'] = 0;
-    insertBillUpdateBillNo1obj['billTime'] = this.dateTimeObj.date;
-    insertBillUpdateBillNo1obj['concessionReasonId'] = this.InterimFormGroup.get('ConcessionId').value.concessionReasonId || 0,
-      insertBillUpdateBillNo1obj['isSettled'] = 0,
-      insertBillUpdateBillNo1obj['isPrinted'] = 1,
-      insertBillUpdateBillNo1obj['isFree'] = 0,//this.advanceAmount;
-      insertBillUpdateBillNo1obj['companyId'] = this.selectedAdvanceObj.companyId || 0,
-      insertBillUpdateBillNo1obj['tariffId'] = this.selectedAdvanceObj.tariffId || 0,
-      insertBillUpdateBillNo1obj['unitId'] = this.selectedAdvanceObj.unitId || 0;
-    insertBillUpdateBillNo1obj['interimOrFinal'] = 1,
-      insertBillUpdateBillNo1obj['companyRefNo'] = 0;
-    insertBillUpdateBillNo1obj['concessionAuthorizationName'] = 0;
-    insertBillUpdateBillNo1obj['taxPer'] = this.InterimFormGroup.get('Percentage').value || 0,
-      insertBillUpdateBillNo1obj['taxAmount'] = this.InterimFormGroup.get('Amount').value || 0,
-      insertBillUpdateBillNo1obj['DiscComments'] = this.InterimFormGroup.get('Remark').value || ''
-    insertBillUpdateBillNo1obj['CashCounterId'] = this.InterimFormGroup.get('CashCounterId').value.CashCounterId || 0
-    // insertBillUpdateBillNo1obj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''
-    let billDetailsInsert = [];
-
-    this.dataSource.data.forEach((element) => {
-      let billDetailsInsert1Obj = {};
-
-      billDetailsInsert1Obj['billNo'] = 0;
-      billDetailsInsert1Obj['chargesId'] = element.ChargesId;
-
-      billDetailsInsert.push(billDetailsInsert1Obj);
-    });
-
-    // let PatientHeaderObj = {};
-    // PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-    // PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    // PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID || 0; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
-    // PatientHeaderObj['NetPayAmount'] = this.netAmount;
-
-    const interimBillCharge = new interimBill(interimBillChargesobj);
-    const insertBillUpdateBillNo1 = new Bill(insertBillUpdateBillNo1obj);
-
-
-
-    let Paymentobj = {};
-    Paymentobj['BillNo'] = 0;
-    Paymentobj['ReceiptNo'] = "";
-    Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
-      Paymentobj['CashPayAmount'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
-    Paymentobj['ChequePayAmount'] = 0;
-    Paymentobj['ChequeNo'] = 0;
-    Paymentobj['BankName'] = "";
-    Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      Paymentobj['CardPayAmount'] = 0;
-    Paymentobj['CardNo'] = 0;
-    Paymentobj['CardBankName'] = "";
-    Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      Paymentobj['AdvanceUsedAmount'] = 0;
-    Paymentobj['AdvanceId'] = 0;
-    Paymentobj['RefundId'] = 0;
-    Paymentobj['TransactionType'] = 0;
-    Paymentobj['Remark'] = "Cashpayment";
-    Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-      Paymentobj['IsCancelled'] = 0;
-    Paymentobj['IsCancelledBy'] = 0;
-    Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      Paymentobj['CashCounterId'] = 0;
-    Paymentobj['NEFTPayAmount'] = 0;
-    Paymentobj['NEFTNo'] = 0;
-    Paymentobj['NEFTBankMaster'] = "";
-    Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      Paymentobj['PayTMAmount'] = 0;
-    Paymentobj['PayTMTranNo'] = 0;
-    Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      Paymentobj['PaidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
-    Paymentobj['BalanceAmt'] = 0;
-    
-
-    if (this.InterimFormGroup.get('paymode').value != 'credit') {
-      if (this.InterimFormGroup.get('paymode').value == 'cashpay') {
-        Paymentobj['CashPayAmount'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
-
-      } else if (this.InterimFormGroup.get('paymode').value == 'onlinepay') {
-        
-        if (this.InterimFormGroup.get('paymode').value == 'onlinepay' && this.vUPINO == '') {
-          this.toastr.warning('Please Enter UPI No.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
-        Paymentobj['CashPayAmount'] = 0;
-        Paymentobj['PayTMAmount'] = this.InterimFormGroup.get('NetpayAmount').value;
-
-        Paymentobj['PayTMTranNo'] = this.InterimFormGroup.get('UPINO').value;
+    if (this.formDiscPersc > 0 || this.b_disAmount > 0) {
+      if (this.vConcessionId == 0) {
+        this.toastr.warning('Please Enter ConcessionReason.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
       }
+      else {
+        this.vConcessionId = this.InterimFormGroup.get('ConcessionId').value.ConcessionId
+        this.vconflag == true;
+      }
+    }
 
+    if (this.vconflag) {
+      this.isLoading = 'submit';
+      let interimBillChargesobj = {};
+      interimBillChargesobj['chargesID'] = 0// this.ChargesId;
 
-      const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
-      let submitData = {
-        "interimBillChargesUpdate": interimBillCharge,
-        "insertBillUpdateBillNo1": insertBillUpdateBillNo1,
-        "billDetailsInsert1": billDetailsInsert,
-        "ipIntremPaymentInsert": ipPaymentInsert,
+      let insertBillUpdateBillNo1obj = {};
+      insertBillUpdateBillNo1obj['billNo'] = 0;
+      insertBillUpdateBillNo1obj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
+      insertBillUpdateBillNo1obj['totalAmt'] = this.InterimFormGroup.get('TotalAmt').value //this.netAmount;
+      insertBillUpdateBillNo1obj['concessionAmt'] = this.InterimFormGroup.get('concessionAmt').value || this.b_disAmount,
+        insertBillUpdateBillNo1obj['netPayableAmt'] = this.InterimFormGroup.get('NetpayAmount').value, // this.netAmount;
+        insertBillUpdateBillNo1obj['paidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0,//this.advanceAmount;
+        insertBillUpdateBillNo1obj['balanceAmt'] = 0;
+      insertBillUpdateBillNo1obj['billDate'] = this.dateTimeObj.date;
+      insertBillUpdateBillNo1obj['opD_IPD_Type'] = 1,
+        insertBillUpdateBillNo1obj['AddedBy'] = this.accountService.currentUserValue.user.id;
+      insertBillUpdateBillNo1obj['totalAdvanceAmount'] = 0;
+      insertBillUpdateBillNo1obj['billTime'] = this.dateTimeObj.date;
+      insertBillUpdateBillNo1obj['concessionReasonId'] = this.vConcessionId || 0,
+        insertBillUpdateBillNo1obj['isSettled'] = 0,
+        insertBillUpdateBillNo1obj['isPrinted'] = 1,
+        insertBillUpdateBillNo1obj['isFree'] = 0,//this.advanceAmount;
+        insertBillUpdateBillNo1obj['companyId'] = this.selectedAdvanceObj.companyId || 0,
+        insertBillUpdateBillNo1obj['tariffId'] = this.selectedAdvanceObj.tariffId || 0,
+        insertBillUpdateBillNo1obj['unitId'] = this.selectedAdvanceObj.unitId || 0;
+      insertBillUpdateBillNo1obj['interimOrFinal'] = 1,
+        insertBillUpdateBillNo1obj['companyRefNo'] = 0;
+      insertBillUpdateBillNo1obj['concessionAuthorizationName'] = 0;
+      insertBillUpdateBillNo1obj['taxPer'] = this.InterimFormGroup.get('Percentage').value || 0,
+        insertBillUpdateBillNo1obj['taxAmount'] = this.InterimFormGroup.get('Amount').value || 0,
+        insertBillUpdateBillNo1obj['DiscComments'] = this.InterimFormGroup.get('Remark').value || ''
+      insertBillUpdateBillNo1obj['CashCounterId'] = this.InterimFormGroup.get('CashCounterId').value.CashCounterId || 0
+      // insertBillUpdateBillNo1obj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''
+      let billDetailsInsert = [];
 
-      };
-      
-      console.log(submitData);
-      this._IpSearchListService.InsertInterim(submitData).subscribe(response => {
-        if (response) {
+      this.dataSource.data.forEach((element) => {
+        let billDetailsInsert1Obj = {};
 
-          if (this.InterimFormGroup.get('paymode').value == 'onlinepay') {
-            Swal.fire('Congratulations !', 'Online Pay Interim data saved Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                this.viewgetInterimBillReportPdf(response);
+        billDetailsInsert1Obj['billNo'] = 0;
+        billDetailsInsert1Obj['chargesId'] = element.ChargesId;
 
-                this._matDialog.closeAll();
-              }
-            });
-          } else if (this.InterimFormGroup.get('paymode').value == 'cashpay') {
-            Swal.fire('Congratulations !', 'Cash Pay Interim data saved Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                this.viewgetInterimBillReportPdf(response);
-
-                this._matDialog.closeAll();
-              }
-            });
-
-          }
-
-        } else {
-          Swal.fire('Error !', 'Interim data not saved', 'error');
-        }
-        this.isLoading = '';
+        billDetailsInsert.push(billDetailsInsert1Obj);
       });
 
+      // let PatientHeaderObj = {};
+      // PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+      // PatientHeaderObj['Date'] = this.dateTimeObj.date;
+      // PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID || 0; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
+      // PatientHeaderObj['NetPayAmount'] = this.netAmount;
 
-    } else {
-     
-      insertBillUpdateBillNo1obj['paidAmt'] = 0;
-      insertBillUpdateBillNo1obj['balanceAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
-
-      let Cal_DiscAmount_IPBillObj = {};
-      Cal_DiscAmount_IPBillObj['BillNo'] = 0;
-
-      let AdmissionIPBillingUpdateObj = {};
-      AdmissionIPBillingUpdateObj['AdmissionID'] = this.selectedAdvanceObj.AdmissionID;
-
-      const InsertBillUpdateBillNo = new Bill(insertBillUpdateBillNo1obj);
-      const Cal_DiscAmount_IPBill = new Cal_DiscAmount(Cal_DiscAmount_IPBillObj);
-      const AdmissionIPBillingUpdate = new AdmissionIPBilling(AdmissionIPBillingUpdateObj);
-      //
-      let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
-      // UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
-      // console.log(UpdateAdvanceDetailarr1);
-
-      // new
-      let UpdateBillBalAmtObj = {};
-      UpdateBillBalAmtObj['BillNo'] = 0;
-      UpdateBillBalAmtObj['BillBalAmount'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
+      const interimBillCharge = new interimBill(interimBillChargesobj);
+      const insertBillUpdateBillNo1 = new Bill(insertBillUpdateBillNo1obj);
 
 
-      let UpdateAdvanceDetailarr = [];
 
-      let UpdateAdvanceDetailObj = {};
-      UpdateAdvanceDetailObj['AdvanceDetailID'] = 0,
-        UpdateAdvanceDetailObj['UsedAmount'] = 0,
-        UpdateAdvanceDetailObj['BalanceAmount'] = 0,
-        UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
+      let Paymentobj = {};
+      Paymentobj['BillNo'] = 0;
+      Paymentobj['ReceiptNo'] = "";
+      Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
+        Paymentobj['CashPayAmount'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
+      Paymentobj['ChequePayAmount'] = 0;
+      Paymentobj['ChequeNo'] = 0;
+      Paymentobj['BankName'] = "";
+      Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['CardPayAmount'] = 0;
+      Paymentobj['CardNo'] = 0;
+      Paymentobj['CardBankName'] = "";
+      Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['AdvanceUsedAmount'] = 0;
+      Paymentobj['AdvanceId'] = 0;
+      Paymentobj['RefundId'] = 0;
+      Paymentobj['TransactionType'] = 0;
+      Paymentobj['Remark'] = "Cashpayment";
+      Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+        Paymentobj['IsCancelled'] = 0;
+      Paymentobj['IsCancelledBy'] = 0;
+      Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['CashCounterId'] = 0;
+      Paymentobj['NEFTPayAmount'] = 0;
+      Paymentobj['NEFTNo'] = 0;
+      Paymentobj['NEFTBankMaster'] = "";
+      Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['PayTMAmount'] = 0;
+      Paymentobj['PayTMTranNo'] = 0;
+      Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        Paymentobj['PaidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
+      Paymentobj['BalanceAmt'] = 0;
+      debugger
 
-      let UpdateAdvanceHeaderObj = {};
-      UpdateAdvanceHeaderObj['AdvanceId'] = 0,
-        UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
-        UpdateAdvanceHeaderObj['BalanceAmount'] = 0
+      if (this.InterimFormGroup.get('paymode').value != 'credit') {
+        debugger
+        if (this.InterimFormGroup.get('paymode').value == 'cashpay') {
+          Paymentobj['CashPayAmount'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
 
+        }
+        else if (this.InterimFormGroup.get('paymode').value == 'onlinepay') {
 
-      let submitData = {
-        "insertBillcreditUpdateBillNo": InsertBillUpdateBillNo,
-        "billDetailscreditInsert": billDetailsInsert,
-        "cal_DiscAmount_IPBillcredit": Cal_DiscAmount_IPBill,
-        "admissionIPBillingcreditUpdate": AdmissionIPBillingUpdate,
-        "ipBillBalAmountcredit": UpdateBillBalAmtObj,
-        "ipAdvanceDetailUpdatecedit": UpdateAdvanceDetailarr,
-        "ipAdvanceHeaderUpdatecredit": UpdateAdvanceHeaderObj
-      };
-      console.log(submitData);
-      this._IpSearchListService.InsertIPBillingCredit(submitData).subscribe(response => {
-        if (response) {
-          Swal.fire('Bill successfully !', 'IP Interim bill Credited successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
+          if (this.InterimFormGroup.get('paymode').value == 'onlinepay' && this.vUPINO == '') {
+            this.toastr.warning('Please Enter UPI No.', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          } else {
+            Paymentobj['CashPayAmount'] = 0;
+            Paymentobj['PayTMAmount'] = this.InterimFormGroup.get('NetpayAmount').value;
 
-              this._matDialog.closeAll();
+            Paymentobj['PayTMTranNo'] = this.InterimFormGroup.get('UPINO').value;
+          }
+        }
 
-              this.viewgetInterimBillReportPdf(response);
+        const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
+        let submitData = {
+          "interimBillChargesUpdate": interimBillCharge,
+          "insertBillUpdateBillNo1": insertBillUpdateBillNo1,
+          "billDetailsInsert1": billDetailsInsert,
+          "ipIntremPaymentInsert": ipPaymentInsert,
+
+        };
+
+        console.log(submitData);
+        this._IpSearchListService.InsertInterim(submitData).subscribe(response => {
+          if (response) {
+
+            if (this.InterimFormGroup.get('paymode').value == 'onlinepay') {
+              Swal.fire('Congratulations !', 'Online Pay Interim data saved Successfully !', 'success').then((result) => {
+                if (result.isConfirmed) {
+                  this.viewgetInterimBillReportPdf(response);
+
+                  this._matDialog.closeAll();
+                }
+              });
+            } else if (this.InterimFormGroup.get('paymode').value == 'cashpay') {
+              Swal.fire('Congratulations !', 'Cash Pay Interim data saved Successfully !', 'success').then((result) => {
+                if (result.isConfirmed) {
+                  this.viewgetInterimBillReportPdf(response);
+
+                  this._matDialog.closeAll();
+                }
+              });
 
             }
-          });
-        } else {
-          Swal.fire('Error !', 'IP Interim Billing Credited data not saved', 'error');
-        }
-        this.isLoading = '';
-      });
 
+          } else {
+            Swal.fire('Error !', 'Interim data not saved', 'error');
+          }
+          this.isLoading = '';
+        });
+
+
+      } 
+      else {
+
+        insertBillUpdateBillNo1obj['paidAmt'] = 0;
+        insertBillUpdateBillNo1obj['balanceAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
+
+        let Cal_DiscAmount_IPBillObj = {};
+        Cal_DiscAmount_IPBillObj['BillNo'] = 0;
+
+        let AdmissionIPBillingUpdateObj = {};
+        AdmissionIPBillingUpdateObj['AdmissionID'] = this.selectedAdvanceObj.AdmissionID;
+
+        const InsertBillUpdateBillNo = new Bill(insertBillUpdateBillNo1obj);
+        const Cal_DiscAmount_IPBill = new Cal_DiscAmount(Cal_DiscAmount_IPBillObj);
+        const AdmissionIPBillingUpdate = new AdmissionIPBilling(AdmissionIPBillingUpdateObj);
+        //
+        let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+        // UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
+        // console.log(UpdateAdvanceDetailarr1);
+
+        // new
+        let UpdateBillBalAmtObj = {};
+        UpdateBillBalAmtObj['BillNo'] = 0;
+        UpdateBillBalAmtObj['BillBalAmount'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
+
+
+        let UpdateAdvanceDetailarr = [];
+
+        let UpdateAdvanceDetailObj = {};
+        UpdateAdvanceDetailObj['AdvanceDetailID'] = 0,
+          UpdateAdvanceDetailObj['UsedAmount'] = 0,
+          UpdateAdvanceDetailObj['BalanceAmount'] = 0,
+          UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
+
+        let UpdateAdvanceHeaderObj = {};
+        UpdateAdvanceHeaderObj['AdvanceId'] = 0,
+          UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
+          UpdateAdvanceHeaderObj['BalanceAmount'] = 0
+
+
+        let submitData = {
+          "insertBillcreditUpdateBillNo": InsertBillUpdateBillNo,
+          "billDetailscreditInsert": billDetailsInsert,
+          "cal_DiscAmount_IPBillcredit": Cal_DiscAmount_IPBill,
+          "admissionIPBillingcreditUpdate": AdmissionIPBillingUpdate,
+          "ipBillBalAmountcredit": UpdateBillBalAmtObj,
+          "ipAdvanceDetailUpdatecedit": UpdateAdvanceDetailarr,
+          "ipAdvanceHeaderUpdatecredit": UpdateAdvanceHeaderObj
+        };
+        console.log(submitData);
+        this._IpSearchListService.InsertIPBillingCredit(submitData).subscribe(response => {
+          if (response) {
+            Swal.fire('Bill successfully !', 'IP Interim bill Credited successfully !', 'success').then((result) => {
+              if (result.isConfirmed) {
+
+                this._matDialog.closeAll();
+
+                this.viewgetInterimBillReportPdf(response);
+
+              }
+            });
+          } else {
+            Swal.fire('Error !', 'IP Interim Billing Credited data not saved', 'error');
+          }
+          this.isLoading = '';
+        });
+
+      }
     }
   }
 
@@ -640,7 +659,7 @@ export class InterimBillComponent implements OnInit {
       this.InterimFormGroup.get('ConcessionId').enable;
       // this.Consession = false;
     }
-    if (this.InterimFormGroup.get("discPer").value == 0 || this.InterimFormGroup.get("discPer").value == ''){
+    if (this.InterimFormGroup.get("discPer").value == 0 || this.InterimFormGroup.get("discPer").value == '') {
       this.b_disAmount = 0;
       this.vNetAmount = this.vTotalBillAmt;
     }

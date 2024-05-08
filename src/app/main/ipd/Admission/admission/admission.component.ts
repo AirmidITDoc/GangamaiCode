@@ -444,7 +444,10 @@ export class AdmissionComponent implements OnInit {
         Validators.maxLength(12),
         Validators.pattern("^[0-9]*$")
       ]],
-      Pancardno:["",Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")],
+      Pancardno:["",[
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")]],
       MaritalStatusId: '',
       ReligionId: '',
       AreaId: '',
@@ -2093,7 +2096,7 @@ public onEnterprefix(event,value): void {
   if (event.which === 13) {
 
     console.log(value)
-    if (!isNaN(value)) {
+    if (value ==undefined) {
       this.toastr.warning('Please Enter Valid Prefix.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -2124,28 +2127,28 @@ public onEnterlname(event): void {
 
 public onEntermstatus(event,value): void {
   if (event.which === 13) {
-    console.log(value)
-    if (!isNaN(value)) {
-      this.toastr.warning('Please Enter Valid MStatus.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } else {
-        this.religion.nativeElement.focus();
-
-    }
+      
+  console.log(value)
+  if (value ==undefined) {
+    this.toastr.warning('Please Enter Valid MStatus.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } else{
+    this.religion.nativeElement.focus();
   }
+}
 }
 
 public onEnterreligion(event,value): void {
   if (event.which === 13) {
-   console.log(value)
-  if (!isNaN(value)) {
-    this.toastr.warning('Please Enter Valid Regigion.', 'Warning !', {
+    console.log(value)
+  if (value ==undefined) {
+    this.toastr.warning('Please Enter Valid Religion.', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
     });
     return;
-  } else {
+  } else{
     this.bday.nativeElement.focus();
 
   }
@@ -2203,96 +2206,159 @@ public onEnteraddress(event): void {
 public onEnterarea(event,value): void {
   if (event.which === 13) {
   
-    console.log(value)
-    if (!isNaN(value)) {
+     if (value ==undefined) {
       this.toastr.warning('Please Enter Valid Area.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    } else {
+    } else{
       this.city.nativeElement.focus();
-
+  
     }
   }
 }
 
 public onEntercity(event,value): void {
   if (event.which === 13) {
-    
-    console.log(value)
-    if (!isNaN(value)) {
+ 
+    if (value ==undefined) {
       this.toastr.warning('Please Enter Valid City.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    } else {
+    } else{
       this.ptype.nativeElement.focus();
-
+  
     }
   }
 }
 
 
-public onEnterptype(event): void {
+public onEnterptype(event,value): void {
   if (event.which === 13) {
-   
+    
+  if (value ==undefined) {
+    this.toastr.warning('Please Enter Valid PType.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } else{
     this.tariff.nativeElement.focus();
+
   }
 }
+}
 
-public onEnterptariff(event): void {
+
+public onEnterptariff(event,value): void {
   if (event.which === 13) {
     
+  if (value ==undefined) {
+    this.toastr.warning('Please Enter Valid Tariff.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } else{
     this.dept.nativeElement.focus();
-    
+
   }
 }
+}
 
-public onEnterdept(event): void {
+public onEnterdept(event,value): void {
   if (event.which === 13) {
-    
+if (value ==undefined) {
+    this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } else{
     this.deptdoc.nativeElement.focus();
   }
-}
-public onEnterdeptdoc(event): void {
-  if (event.which === 13) {
-    // if(this.refdoc) this.refdoc.focus();
-    this.admitdoc1.nativeElement.focus();
   }
 }
 
 
-public onEnteradmitdoc1(event): void {
+
+
+public onEnterdeptdoc(event,value): void {
   if (event.which === 13) {
-    
+   if (value ==undefined) {
+    this.toastr.warning('Please Enter Valid Doctor.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } else{
+    this.admitdoc1.nativeElement.focus();
+  }
+  }
+
+}
+
+
+public onEnteradmitdoc1(event,value): void {
+  if (event.which === 13) {
+ 
+  if (value ==undefined) {
+    this.toastr.warning('Please Enter Valid Admitted Doctor 1.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } else{
     this.admitdoc2.nativeElement.focus();
   }
 }
-public onEnteradmitdoc2(event): void {
+}
+public onEnteradmitdoc2(event,value): void {
   if (event.which === 13) {
-    
+   
+  if (value ==undefined) {
+    this.toastr.warning('Please Enter Valid Admitted Doctor 2.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } else{
     this.refdoc.nativeElement.focus();
   }
-}
-public onEnterrefdoc(event): void {
+}}
+public onEnterrefdoc(event,value): void {
   if (event.which === 13) {
-    
+  
+  if (value ==undefined) {
+    this.toastr.warning('Please Enter Valid Refrence Doctor.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } else{
     this.ward.nativeElement.focus();
   }
-}
+}}
 
-public onEnterward(event): void {
+public onEnterward(event,value): void {
   if (event.which === 13) {
-    
+  
+  if (value ==undefined) {
+    this.toastr.warning('Please Enter Valid Ward', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } else{
     this.bed.nativeElement.focus();
   }
-}
+}}
 
-public onEnterbed(event): void {
+public onEnterbed(event,value): void {
   if (event.which === 13) {
+ 
+  if (value ==undefined) {
+    this.toastr.warning('Please Enter Valid Bed', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } else{
     if(this.class) this.class.focus();
-    
   }
+}
 }
 public onEnterclass(event): void {
   if (event.which === 13) {

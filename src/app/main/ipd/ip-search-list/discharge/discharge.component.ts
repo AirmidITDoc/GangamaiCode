@@ -333,7 +333,7 @@ debugger;
       this.isLoading = '';
     });
   }
-  
+  this._IpSearchListService.mySaveForm.reset();
   }
 
   dateTimeObj: any;
