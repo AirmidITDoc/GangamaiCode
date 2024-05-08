@@ -556,21 +556,22 @@ export class IPBillingComponent implements OnInit {
     }
   }
 
-  public onEnterdoctor(event, v): void {
-    console.log(v)
-    console.log(event)
+  public onEnterdoctor(event, value): void {
+    console.log(value)
+    
     if (event.which === 13) {
-      this.disc.nativeElement.focus();
-    }
+     
     if (this.isDoctor) {
-      if ((this.vDoctorID == '' || this.vDoctorID == null || this.vDoctorID == undefined)) {
+      if ((value== '' || value == null || value == undefined || !isNaN(value))) {
         this.toastr.warning('Please select Doctor', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
+      }else{
+        this.disc.nativeElement.focus();
       }
     }
-
+  }
   }
 
   public onEnterdiscper(event): void {
@@ -1001,6 +1002,8 @@ export class IPBillingComponent implements OnInit {
 
   getInterimData() {
     if (this.interimArray.length > 0) {
+      // this.admin=false;
+      // this.conshow=false;
       let xx = {
         AdmissionID: this.selectedAdvanceObj.AdmissionID,
         BillNo: 0,
@@ -1025,16 +1028,16 @@ export class IPBillingComponent implements OnInit {
       };
       console.log(xx)
       this.advanceDataStored.storage = new Bill(xx);
-      if (this.ConShow = true) {
-        if (this.vConcessionId == 0) {
+      // if (this.ConShow = true) {
+      //   if (this.vConcessionId == 0) {
 
-          this.toastr.warning('Enter  Concession Reason', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
+      //     this.toastr.warning('Enter  Concession Reason', 'Warning !', {
+      //       toastClass: 'tostr-tost custom-toast-warning',
+      //     });
+      //     return;
+      //   }
 
-        else {
+      //   else {
           console.log('this.interimArray==', this.interimArray);
           this._matDialog.open(InterimBillComponent,
             {
@@ -1044,20 +1047,11 @@ export class IPBillingComponent implements OnInit {
               data: this.interimArray
 
             });
-        }
-      } else {
-        console.log('this.interimArray==', this.interimArray);
-        this._matDialog.open(InterimBillComponent,
-          {
-            maxWidth: "85vw",
-            //maxHeight: "65vh",
-            width: '100%', height: "500px",
-            data: this.interimArray
-
-          });
-      }
+        
+      } 
+      
     }
-  }
+  // }
     onOk() {
       // this.dialogRef.close({ result: "ok" });
     }

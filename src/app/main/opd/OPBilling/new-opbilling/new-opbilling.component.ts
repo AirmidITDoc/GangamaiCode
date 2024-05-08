@@ -1272,6 +1272,17 @@ getSelectedObj1(obj) {
   this.vClassId = obj.ClassId;
   this.AgeYear=obj.AgeYear;
 }
+
+keyPressAlphanumeric(event) {
+  var inp = String.fromCharCode(event.keyCode);
+  if (/[a-zA-Z0-9]/.test(inp)) {
+    return true;
+  } else {
+    event.preventDefault();
+    return false;
+  }
+}
+
 }
 
 

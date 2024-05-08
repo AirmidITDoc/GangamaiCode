@@ -58,7 +58,7 @@ export class InterimBillComponent implements OnInit {
   vTotalBillAmt: any = 0;
   vDiscountAmt: any = 0;
   vNetAmount: any = 0;
-  vUPINO: any = 0;
+  vUPINO: any;
   disamt: any;
   b_price = '0';
   b_qty = '1';
@@ -333,7 +333,7 @@ export class InterimBillComponent implements OnInit {
 
       } else if (this.InterimFormGroup.get('paymode').value == 'onlinepay') {
         
-        if (this.InterimFormGroup.get('paymode').value == 'onlinepay' && this.vUPINO == 0) {
+        if (this.InterimFormGroup.get('paymode').value == 'onlinepay' && this.vUPINO == '') {
           this.toastr.warning('Please Enter UPI No.', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });

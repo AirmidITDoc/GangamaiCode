@@ -194,6 +194,7 @@ export class AdmissionComponent implements OnInit {
   vIsDischarg=0;
   VAdmissioncount=0;
 
+  
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() dataArray: any;
@@ -245,6 +246,29 @@ export class AdmissionComponent implements OnInit {
   menuActions: Array<string> = [];
   centered = false;
   unbounded = false;
+
+  // Checking dropdown validation
+  vPrefixID: any = 0;
+  vMaritalStatusId: any = 0;
+  vReligionId: any = 0;
+  vAreaId: any = 0;
+  vCityId: any = 0;
+
+  vPatientTypeID: any = 0;
+  vTariffId: any = 0;
+  vDoctorId: any = 0;
+  vDoctorID: any = 0;
+  vDepartmentid: any = 0;
+  vCompanyId: any = 0;
+  vSubCompanyId: any = 0;
+  vadmittedDoctor1: any = 0;
+  vadmittedDoctor2: any = 0;
+  vrefDoctorId: any = 0;
+  vRoomId: any = 0;
+  vBedId: any = 0;
+  vClassId: any = 0;
+  vRelationshipId: any = 0;
+
 
   radius: number;
   color: string;
@@ -491,9 +515,21 @@ export class AdmissionComponent implements OnInit {
         }
       });
     }
-
+    if( this.V_SearchRegList.length > 0)
+    this.chekAdmittedpatient();
   }
 
+
+  chekAdmittedpatient(){
+    // let SelectQueryForAllAdmitted = "select isnull(RegId,0) as regid from Admission where regid =  " + this.searchFormGroup.get('RegId').value;
+  //  let Query = "select isnull(RegId,0) as regid from Admission where regid =  " + .dgvRegistration.Item(0, PIdSearch.dgvRegistration.CurrentRow.Index).Value.ToString + " and Admissionid not in(select Admissionid from Discharge) "
+  
+  //  this._AdmissionService.getRegIdDetailforAdmission(Query).subscribe(data => {
+  //   this.registerObj = data[0];
+  //   console.log(this.registerObj);
+  // });
+
+  }
     
   getRegSearchList() {
     var m_data = {
@@ -2051,11 +2087,23 @@ add: boolean = false;
 @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
  
 
-
-public onEnterprefix(event): void {
+// isNaN(value
+public onEnterprefix(event,value): void {
+  debugger
   if (event.which === 13) {
-    this.fname.nativeElement.focus();
+
+    console.log(value)
+    if (!isNaN(value)) {
+      this.toastr.warning('Please Enter Valid Prefix.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else{
+      this.fname.nativeElement.focus();
+    }
   }
+
+
 }
 public onEnterfname(event): void {
   if (event.which === 13) {
@@ -2074,18 +2122,34 @@ public onEnterlname(event): void {
   }
 }
 
-public onEntermstatus(event): void {
+public onEntermstatus(event,value): void {
   if (event.which === 13) {
-  this.religion.nativeElement.focus();
-  
+    console.log(value)
+    if (!isNaN(value)) {
+      this.toastr.warning('Please Enter Valid MStatus.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
+        this.religion.nativeElement.focus();
+
+    }
   }
 }
 
-public onEnterreligion(event): void {
+public onEnterreligion(event,value): void {
   if (event.which === 13) {
-  this.bday.nativeElement.focus();
-  
+   console.log(value)
+  if (!isNaN(value)) {
+    this.toastr.warning('Please Enter Valid Regigion.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } else {
+    this.bday.nativeElement.focus();
+
   }
+}
 }
 public onEnterbday(event): void {
   if (event.which === 13) {
@@ -2136,16 +2200,35 @@ public onEnteraddress(event): void {
   }
 }
 
-public onEnterarea(event): void {
+public onEnterarea(event,value): void {
   if (event.which === 13) {
-    this.city.nativeElement.focus();
+  
+    console.log(value)
+    if (!isNaN(value)) {
+      this.toastr.warning('Please Enter Valid Area.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
+      this.city.nativeElement.focus();
+
+    }
   }
 }
 
-public onEntercity(event): void {
+public onEntercity(event,value): void {
   if (event.which === 13) {
     
-    this.ptype.nativeElement.focus();
+    console.log(value)
+    if (!isNaN(value)) {
+      this.toastr.warning('Please Enter Valid City.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
+      this.ptype.nativeElement.focus();
+
+    }
   }
 }
 

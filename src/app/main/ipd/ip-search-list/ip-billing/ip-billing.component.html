@@ -120,7 +120,7 @@
                                     <mat-label>Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" #doctorname
                                         [(ngModel)]="vDoctorID" placeholder="Select Doctor" matInput
-                                        (keydown)="onEnterdoctor($event,$event.value)" formControlName="DoctorID"
+                                        (keydown)="onEnterdoctor($event,vDoctorID.DoctorID)" formControlName="DoctorID"
                                         [matAutocomplete]="autosearchDoctor1" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"

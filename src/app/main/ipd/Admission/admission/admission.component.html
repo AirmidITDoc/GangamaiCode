@@ -482,7 +482,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Prefix</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Prefix"
-                                        matInput (keydown)="onEnterprefix($event)" formControlName="PrefixID"
+                                        matInput (keydown)="onEnterprefix($event,vPrefixID.PrefixID)" formControlName="PrefixID" [(ngModel)]="vPrefixID"
                                         [matAutocomplete]="autoPrefix" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -560,8 +560,8 @@
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Marital Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Area"
-                                        matInput #mstatus (keydown)="onEntermstatus($event)"
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select MaritalStatusId" [(ngModel)]="vMaritalStatusId"
+                                        matInput #mstatus (keydown)="onEntermstatus($event,vMaritalStatusId.MaritalStatusId)"
                                         formControlName="MaritalStatusId" [matAutocomplete]="autoMarital">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -580,8 +580,8 @@
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Religion Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Religion"
-                                        matInput #religion (keydown)="onEnterreligion($event)"
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Religion" [(ngModel)]="vReligionId"
+                                        matInput #religion (keydown)="onEnterreligion($event,vReligionId.ReligionId)"
                                         formControlName="ReligionId" [matAutocomplete]="autoReligion">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -711,8 +711,8 @@
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Area Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Area"
-                                        matInput #area (keydown)="onEnterarea($event)" formControlName="AreaId"
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Area" [(ngModel)]="vAreaId"
+                                        matInput #area (keydown)="onEnterarea($event,vAreaId.AreaId)" formControlName="AreaId"
                                         [matAutocomplete]="autoArea">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -730,7 +730,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>City</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select City"
-                                        matInput #city (keydown)="onEntercity($event)" formControlName="CityId"
+                                        matInput #city (keydown)="onEntercity($event,vCityId.CityId)" formControlName="CityId" [(ngModel)]="vCityId"
                                         [matAutocomplete]="autoCity" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"

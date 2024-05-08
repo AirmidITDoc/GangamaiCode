@@ -199,7 +199,7 @@
                                                             (keyup.enter)="setFocus('discAmount')">
                                                     </mat-form-field> -->
                                                     <!-- #disc (keydown)="onEnterdiscper($event)" -->
-                                                    <mat-form-field appearance="outline">
+                                                    <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Disc %</mat-label>
                                                         <input name="formDiscPer" formControlName="discPer" (keyup.enter)="setFocus('discAmount')" id="discPer"
                                                             placeholder="Disc (%)" (keyup)="calculatePersc()" matInput 
@@ -278,7 +278,7 @@
                                                 </mat-checkbox> -->
 
                                                 <mat-radio-group aria-label="Select an option" formControlName="paymode"
-                                                    name="paymode" (change)="onChangeReg($event)">
+                                                    name="paymode" (change)="onChangeReg($event)" fxFlex>
                                                     <mat-radio-button value="cashpay">Cash Pay </mat-radio-button>
                                                     <mat-radio-button value="onlinepay">Online Pay</mat-radio-button>
                                                     <mat-radio-button value="credit">Credit</mat-radio-button>
