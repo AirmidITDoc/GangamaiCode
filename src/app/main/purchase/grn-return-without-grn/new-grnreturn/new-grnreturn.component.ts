@@ -176,12 +176,11 @@ export class NewGRNReturnComponent implements OnInit {
         this.vExpDates = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
         this.vQty = '';
         this.vBalQty = result.BalanceQty;
-        this.vLandedRate = result.PurchaseRate;
+        this.vLandedRate = result.LandedRate;
         this.vTotalAmount = 0;
         this.vGST = result.VatPercentage;
         this.vGSTAmount = 0;
-        this.vNetAmount = 0;
-        this.vLandedrate = result.LandedRate;
+        this.vNetAmount = 0; 
         this.vUnitMRP = result.UnitMRP;
         this.vStockId = result.StockId;
         this.vConversionFactor = result.ConversionFactor;
@@ -382,7 +381,7 @@ export class NewGRNReturnComponent implements OnInit {
     this.dsItemList.data.forEach((element) => {
       let grnReturnUpdateCurrentStockObj = {};
       grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
-      grnReturnUpdateCurrentStockObj['issueQty'] = element.BalQty || 0;
+      grnReturnUpdateCurrentStockObj['issueQty'] = element.Qty || 0;
       grnReturnUpdateCurrentStockObj['stkId'] = element.StockId || 0;
       grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.user.storeId || 0;
       grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);

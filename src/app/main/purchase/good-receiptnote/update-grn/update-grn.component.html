@@ -559,7 +559,7 @@
                                                         autocomplete="off" [disabled]="contact.IsVerifiedUserId>0"
                                                         (keydown.arrowdown)="setFocus('MRP_'+(index+1))"
                                                         (keydown.arrowup)="setFocus('MRP_'+(index-1))"
-                                                        >
+                                                        (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
                                                 <!-- {{contact.MRP | number:'1.2-2' }} -->
                                             </mat-cell>
