@@ -102,7 +102,7 @@ export class IPSearchListComponent implements OnInit {
 
     if (this._ActRoute.url == '/ipd/ipadvance') {
       this.menuActions.push('Advance');
-      this.menuActions.push('Bed Transfer');
+      // this.menuActions.push('Bed Transfer');
     }
     else if (this._ActRoute.url == '/ipd/discharge') {
       this.menuActions.push('Discharge');
@@ -877,7 +877,7 @@ export class ChargesList {
   BalanceQty:any;
   IsStatus:any;
   extMobileNo:any;
-
+  ConcessionPercentage:any;
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
     this.ServiceId = ChargesList.ServiceId || '';
@@ -899,6 +899,7 @@ export class ChargesList {
     this.BalanceQty=ChargesList.BalanceQty || 0;
     this.IsStatus=ChargesList.IsStatus || 0;
     this.extMobileNo=ChargesList.extMobileNo || ''
+    this.ConcessionPercentage=ChargesList.ConcessionPercentage ||''
   }
 }
 export class AdvanceHeader {

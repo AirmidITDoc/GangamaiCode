@@ -363,8 +363,8 @@
 
                             <mat-form-field appearance="outline">
                                 <mat-label>Trans ID/Mobile No</mat-label>
-                                <input name="MobileNo" formControlName="paytmMobileNoController" #mobile
-                                    placeholder="Mobile Number" matInput required
+                                <input name="UPI No" formControlName="paytmMobileNoController" #mobile
+                                    placeholder="UPI Number" matInput required
                                     [(ngModel)]="paytmTransNo" max="9999999999"
                                     min="1000000000" autocomplete="off" maxlength="10"
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"

@@ -16,6 +16,7 @@ import { IPRefundService } from '../ip-refund.service';
 import { IPAdvancePaymentComponent } from 'app/main/ipd/ip-search-list/ip-advance-payment/ip-advance-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 type NewType = Observable<any[]>;
 @Component({
   selector: 'app-ip-refundof-bill',
@@ -486,7 +487,7 @@ viewgetRefundofbillReportPdf(RefundId) {
     // const oP_DoctorShare_GroupWise_RefundOfBill = new DocShareGroupwise(DocShareGroupwiseObj);
     // const insertOPPayment = new PaymentInsert(PaymentInsertObj);
 
-    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
         height: '540px',

@@ -191,12 +191,21 @@
 
                                             <div>
                                                 <div fxLayout="row">
-                                                    <mat-form-field appearance="outline" fxFlex>
+                                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Disc %</mat-label>
                                                         <input matInput [(ngModel)]="formDiscPersc" name="formDiscPer"
                                                             #disc (keyup)="calculatePersc()" formControlName="discPer"
                                                             type="number" id="discPer"
                                                             (keyup.enter)="setFocus('discAmount')">
+                                                    </mat-form-field> -->
+                                                    <!-- #disc (keydown)="onEnterdiscper($event)" -->
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Disc %</mat-label>
+                                                        <input name="formDiscPer" formControlName="discPer" (keyup.enter)="setFocus('discAmount')" id="discPer"
+                                                            placeholder="Disc (%)" (keyup)="calculatePersc()" matInput 
+                                                            [(ngModel)]="formDiscPersc" type="number" maxlength="2"
+                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+
                                                     </mat-form-field>
 
                                                     <div fxLayout="row">
@@ -232,7 +241,7 @@
                                                     </mat-select>
                                                 </mat-form-field>
                                             </div>
-                                           
+
                                             <div>
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Net Paid Amount</mat-label>
@@ -250,7 +259,7 @@
                                                         name="Remark">
                                                 </mat-form-field>
                                             </div>
-                                                                                      
+
 
                                             <div class="next-div button-row-group">
                                                 <!-- <mat-checkbox aria-label="Cash Payment" formControlName="cashpay"
@@ -269,22 +278,45 @@
                                                 </mat-checkbox> -->
 
                                                 <mat-radio-group aria-label="Select an option" formControlName="paymode"
-                                                name="paymode" (change)="onChangeReg($event)">
-                                                <mat-radio-button value="cashpay">Cash Pay </mat-radio-button>
-                                                <mat-radio-button value="onlinepay">Online Pay</mat-radio-button>
-                                                <mat-radio-button value="credit">Credit</mat-radio-button>
-                                                 </mat-radio-group>
+                                                    name="paymode" (change)="onChangeReg($event)">
+                                                    <mat-radio-button value="cashpay">Cash Pay </mat-radio-button>
+                                                    <mat-radio-button value="onlinepay">Online Pay</mat-radio-button>
+                                                    <mat-radio-button value="credit">Credit</mat-radio-button>
+                                                </mat-radio-group>
 
-                                                 <div fxLayout="row" fxLayoutGap="4px" *ngIf="onlineflag">
-                                                    <mat-form-field appearance="outline" fxFlex>
+                                                <div fxLayout="row" fxLayoutGap="4px" *ngIf="onlineflag">
+                                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>UPI No</mat-label>
-                                                        <input matInput  formControlName="UPINO" [(ngModel)]="vUPINO"
+                                                        <input matInput formControlName="UPINO" [(ngModel)]="vUPINO"
                                                             name="UPI No">
+                                                    </mat-form-field> -->
+
+                                                    <!-- <mat-form-field appearance="outline">
+                                                        <mat-label>Trans ID/Mobile No</mat-label>
+                                                        <input name="UPI" formControlName="UPINO" #mobile
+                                                            placeholder="UPI Number" matInput required
+                                                            [(ngModel)]="vUPINO" max="9999999999" min="1000000000"
+                                                            autocomplete="off" maxlength="10"
+                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                                            required="required" value="9876658688">
+                                                        <mat-error class="error"
+                                                            *ngIf="InterimFormGroup.get('UPINO').invalid && InterimFormGroup.get('paytmMobileNoController').touched">10
+                                                            digits UPI number is
+                                                            required</mat-error>
+                                                    </mat-form-field> -->
+
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>UPI NO</mat-label>
+                                                        <input matInput placeholder="UPI Number" formControlName="UPINO" [(ngModel)]="vUPINO"
+                                                             onlyNumber  maxlength="10" 
+                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
+                                                            (keypress)="keyPressAlphanumeric($event)">
                                                     </mat-form-field>
+
                                                 </div>
                                             </div>
-                                                <div>
-                                                <button class="btn btn-primary" color="accent" (click)="onSave()">
+                                            <div style="margin-top: 10px;">
+                                                <button class="btn btn-primary" color="accent" [disabled]="InterimFormGroup.invalid" (click)="onSave()">
                                                     <span>Save</span>
                                                 </button>
                                                 <button class="btn btn-danger-outline"

@@ -66,7 +66,7 @@ export class InterimBillComponent implements OnInit {
   b_netAmount = '0';
   FinalAmountpay = 0;
   b_disAmount = 0;
-  formDiscPersc: any = 0;
+  formDiscPersc: any;
 
   Consession: boolean = true;
   percentag: boolean = true;
@@ -147,8 +147,8 @@ export class InterimBillComponent implements OnInit {
       TotalRefundAmount: [Validators.pattern("^[0-9]*$")],
       ConcessionId: [''],
       Remark: [''],
-      price: [Validators.required, Validators.pattern("^[0-9]*$")],
-      qty: [Validators.required, Validators.pattern("^[0-9]*$")],
+      // price: [Validators.required, Validators.pattern("^[0-9]*$")],
+      // qty: [Validators.required, Validators.pattern("^[0-9]*$")],
       TotalAmount: [Validators.pattern("^[0-9]*$")],
       doctorId: [''],
       DoctorID: [''],
@@ -157,7 +157,7 @@ export class InterimBillComponent implements OnInit {
       discAmt: [Validators.pattern("^[0-9]*$")],
       balanceAmt: [''],
       netAmount: [''],
-      totalAmount: [Validators.required, Validators.pattern("^[0-9]*$")],
+      // totalAmount: [Validators.required, Validators.pattern("^[0-9]*$")],
       discAmount: [''],
       BillDate: [''],
       BillRemark: [''],
@@ -209,10 +209,30 @@ export class InterimBillComponent implements OnInit {
 
   // 183224
 
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+
   onChangeReg(event) {
     debugger
     if (event.value == 'onlinepay') {
       this.onlineflag = true;
+
+      this.InterimFormGroup.get('UPINO').setValidators([Validators.required]);
+      this.InterimFormGroup.get('UPINO').enable();
+      this.InterimFormGroup.get('DoctorID').updateValueAndValidity();
+    }else{
+      this.onlineflag = false;
+      this.InterimFormGroup.get('UPINO').reset();
+      this.InterimFormGroup.get('UPINO').clearValidators();
+      this.InterimFormGroup.get('UPINO').updateValueAndValidity();
     }
   }
 
@@ -305,15 +325,14 @@ export class InterimBillComponent implements OnInit {
     Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       Paymentobj['PaidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
     Paymentobj['BalanceAmt'] = 0;
-    debugger
-
+    
 
     if (this.InterimFormGroup.get('paymode').value != 'credit') {
       if (this.InterimFormGroup.get('paymode').value == 'cashpay') {
         Paymentobj['CashPayAmount'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
 
       } else if (this.InterimFormGroup.get('paymode').value == 'onlinepay') {
-        debugger
+        
         if (this.InterimFormGroup.get('paymode').value == 'onlinepay' && this.vUPINO == 0) {
           this.toastr.warning('Please Enter UPI No.', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
@@ -335,7 +354,7 @@ export class InterimBillComponent implements OnInit {
         "ipIntremPaymentInsert": ipPaymentInsert,
 
       };
-      debugger
+      
       console.log(submitData);
       this._IpSearchListService.InsertInterim(submitData).subscribe(response => {
         if (response) {
@@ -610,7 +629,7 @@ export class InterimBillComponent implements OnInit {
   calculatePersc() {
     debugger
 
-    if (this.formDiscPersc > 0) {
+    if (this.InterimFormGroup.get("discPer").value > 0) {
       let discAmt = Math.round((this.vTotalBillAmt * parseInt(this.formDiscPersc)) / 100);
       this.b_disAmount = discAmt;
       this.vNetAmount = (this.vTotalBillAmt - discAmt).toString();
@@ -621,9 +640,10 @@ export class InterimBillComponent implements OnInit {
       this.InterimFormGroup.get('ConcessionId').enable;
       // this.Consession = false;
     }
-    if (this.formDiscPersc == 0 || this.formDiscPersc == '')
+    if (this.InterimFormGroup.get("discPer").value == 0 || this.InterimFormGroup.get("discPer").value == ''){
       this.b_disAmount = 0;
-    this.vNetAmount = this.vTotalBillAmt;
+      this.vNetAmount = this.vTotalBillAmt;
+    }
   }
 
   calculatechargesDiscamt() {

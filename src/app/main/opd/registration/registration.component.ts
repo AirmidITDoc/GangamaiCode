@@ -144,6 +144,7 @@ onEdit(row){
     });
   }
 
+ 
 }
 
 export class RegInsert
@@ -185,6 +186,7 @@ export class RegInsert
     AadharCardNo: string;
     PanCardNo : string;
     currentDate = new Date();
+    AdmissionID:any;
     /**
      * Constructor
      *
@@ -229,6 +231,7 @@ export class RegInsert
             this.AreaName = RegInsert.AreaName || '';
             this.AadharCardNo= RegInsert.AadharCardNo || '';
             this.PanCardNo = RegInsert.PanCardNo || '';
+            this.AdmissionID = RegInsert.AdmissionID || '';
         }
     }
 }

@@ -257,9 +257,9 @@
                             <mat-header-cell *matHeaderCellDef class="table-actions">Action</mat-header-cell>
                             <mat-cell *matCellDef="let contact">
                                 <div fxFlex="row" fxLayoutAlign="start">
-                                    <button mat-icon-button (click)="SubMenu(contact)">
+                                    <!-- <button mat-icon-button (click)="SubMenu(contact)">
                                         <mat-icon title="Add SubMenu" class="indigo-600-fg">add_circle_outline</mat-icon>
-                                    </button>
+                                    </button> -->
                                     <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
                                         <mat-icon class="secondary-text">more_vert</mat-icon>
                                     </button>

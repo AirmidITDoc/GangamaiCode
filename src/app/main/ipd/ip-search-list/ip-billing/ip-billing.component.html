@@ -54,9 +54,9 @@
                                 <mat-form-field appearance="outline">
                                     <input type="text" name="SrvcName" formControlName="SrvcName"
                                         placeholder="Service Name" matInput [matAutocomplete]="auto"
-                                        (input)="getServiceListCombobox()" id="ServiceId"   (keydown)="onEnterservice($event)"
-                                         required>
-                                        <span matSuffix style="display: flex;">
+                                        (input)="getServiceListCombobox()" id="ServiceId"
+                                        (keydown)="onEnterservice($event)" required>
+                                    <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="Serviceform.get('SrvcName').setValue(''); isSrvcNameSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
@@ -70,7 +70,7 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                     <mat-hint>
-                                       <span *ngIf="noOptionFound" style="color: #f44336;">No data
+                                        <span *ngIf="noOptionFound" style="color: #f44336;">No data
                                             Found</span>
                                     </mat-hint>
                                     <mat-error *ngIf="Serviceform.get('SrvcName').hasError('required')">
@@ -86,7 +86,7 @@
                                             <mat-label>Price</mat-label>
                                             <input matInput [(ngModel)]="b_price" name="bPrice" #price
                                                 (keyup)="calculateTotalAmt()" formControlName="price" required
-                                                type="number" id="price"  (keydown)="onEnterprice($event)">
+                                                type="number" id="price" (keydown)="onEnterprice($event)">
                                             <mat-error
                                                 *ngIf="Serviceform.get('price').invalid && Serviceform.get('price').touched">
                                                 Price is required</mat-error>
@@ -116,61 +116,47 @@
                                 </mat-form-field>
                             </div>
                             <div fxFlex="100%" *ngIf="isDoctor">
-                                <!-- <mat-form-field appearance="outline">
-                                    <input type="text" name="DoctorID" formControlName="DoctorID"
-                                        placeholder="Doctor Name" matInput [matAutocomplete]="auto" #doctorname
-                                        (input)="getServiceListCombobox()" id="DoctorID" (keyup.enter)="setFocus('discPer')">
-
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Doctor Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" #doctorname
+                                        [(ngModel)]="vDoctorID" placeholder="Select Doctor" matInput
+                                        (keydown)="onEnterdoctor($event,$event.value)" formControlName="DoctorID"
+                                        [matAutocomplete]="autosearchDoctor1" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
-                                                (click)="Serviceform.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                            (click)="Serviceform.myFilterform.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
-                                                (click)="Serviceform.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                            (click)="Serviceform.myFilterform.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionDoctor"
-                                        showPanel="true" (optionsScroll)="onScroll()"
-                                        (optionSelected)='getSelectedObjDoctorName($event.option.value)'>
-                                        <mat-option *ngFor="let option of filteredDoctor" [value]="option">
+                                    <mat-autocomplete #autosearchDoctor1="matAutocomplete"
+                                        [displayWith]="getOptionTextsearchDoctor">
+                                        <mat-option *ngFor="let option of filteredOptionssearchDoctor | async"
+                                            [value]="option">
                                             {{option.DoctorName}}
                                         </mat-option>
                                     </mat-autocomplete>
-                                    <mat-hint>
-                                        
-                                        <span *ngIf="noOptionFound" style="color: #f44336;">No data
-                                            Found</span>
-                                    </mat-hint>
-                                    <mat-error *ngIf="Serviceform.get('DoctorID').hasError('required')">
-                                        Required field cannot be left blank
-                                    </mat-error>
-                                </mat-form-field> -->
-                                <!-- (keyup.enter)="setFocus('discPer')" -->
-                                <mat-form-field appearance="outline">
-                                    <input type="text" name="DoctorID" formControlName="DoctorID"
-                                        placeholder="Doctor Name" matInput [matAutocomplete]="doctorauto" #doctorname
-                                        (input)="getAdmittedDoctorCombo()" id="DoctorID"
-                                        (keydown)="onEnterdoctor($event)">
-                                        <span matSuffix style="display: flex;">
+                                </mat-form-field>
+
+                                <!-- <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Doctor</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"  (input)="getDoctorList()"
+                                        matInput #doctorname (keydown)="onEnterdoctor($event)" formControlName="DoctorID"
+                                        [matAutocomplete]="autoDoc" required>
+                                    <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="Serviceform.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
                                             (click)="Serviceform.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #doctorauto="matAutocomplete" [displayWith]="getOptionDoctor"
-                                        showPanel="true" (optionsScroll)="onScroll()"
-                                        (optionSelected)='getSelectedObjDoctorName($event.option.value)'>
-                                        <mat-option *ngFor="let option of filteredDoctor" [value]="option">
+                                    <mat-autocomplete #autoDoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
+                                        <mat-option *ngFor="let option of filteredOptionsRefDoc | async" [value]="option">
                                             {{option.DoctorName}}
                                         </mat-option>
                                     </mat-autocomplete>
-                                    <mat-hint>
-                                        <!-- <span *ngIf="!noOptionFound">Select Service Name</span> -->
-                                        <span *ngIf="noOptionFound" style="color: #f44336;">No data
-                                            Found</span>
-                                    </mat-hint>
-                                    <mat-error *ngIf="Serviceform.get('SrvcName').hasError('required')">
-                                        Required field cannot be left blank
-                                    </mat-error>
-                                </mat-form-field>
+                                </mat-form-field> -->
+
+
+
                             </div>
                             <div fxFlex="100%">
                                 <div fxLayout="row" class="gap-8">
@@ -181,14 +167,24 @@
                                                 (keyup)="calculatePersc()" formControlName="discPer" type="number"
                                                 id="discPer"  (keydown)="onEnterdiscper($event)"  (keypress)="keyPressAlphanumeric($event)">
                                         </mat-form-field> -->
-                                        <mat-form-field appearance="outline">
+                                        <!-- <mat-form-field appearance="outline">
                                             <mat-label>Disc %</mat-label>
                                             <input name="discPer" formControlName="discPer" placeholder="Disc (%)" (keyup)="calculatePersc()"
                                              matInput [ngModel]="formDiscPersc"  type="number" maxlength="2" #disc (keydown)="onEnterdiscper($event)"
                                               oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
-                                            <!-- <mat-error *ngIf="Serviceform.get('discPer').invalid && Serviceform.get('discPer').touched">Please
-                                                enter Age Year </mat-error> -->
+                                          
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Disc %</mat-label>
+                                            <input matInput placeholder="Percentage" formControlName="discPer"
+                                                [ngModel]="formDiscPersc" autocomplete="off" #disc
+                                                (keydown)="onEnterdiscper($event)" (keyup)="calculatePersc()" onlyNumber
+                                                maxlength="3"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                (keypress)="keyPressAlphanumeric($event)">
                                         </mat-form-field>
+
                                     </div>
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                         <mat-form-field appearance="outline">
@@ -204,8 +200,9 @@
                             <div fxFlex="100%">
                                 <mat-form-field appearance="outline">
                                     <mat-label>NetAmount</mat-label>
-                                    <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly #Netamt (keyup)="addData()"
-                                        formControlName="netAmount" required type="number" (keydown)="onEnternetAmount($event)">
+                                    <input matInput [(ngModel)]="b_netAmount" name="bNetAmount" readonly #Netamt
+                                        (keyup)="addData()" formControlName="netAmount" required type="number"
+                                        (keydown)="onEnternetAmount($event)">
                                     <mat-error
                                         *ngIf="Serviceform.get('netAmount').invalid && Serviceform.get('netAmount').touched">
                                         NetAmount is required</mat-error>
@@ -223,13 +220,12 @@
                                         </span>
                                     </button> -->
 
-                                    <button (click)="onSaveAddCharges()"
-                                    class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
-                                    #addbutton>
-                                    <span class="btn-icon">
-                                        <mat-icon> add </mat-icon>
-                                    </span>
-                                </button>
+                                    <button (click)="onSaveAddCharges()" class="btn btn-primary btn-with-icon py-8"
+                                        [disabled]="!add" #addbutton>
+                                        <span class="btn-icon">
+                                            <mat-icon> add </mat-icon>
+                                        </span>
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -261,6 +257,12 @@
                                     <div class="list-item">
                                         <span class="list-item-key">Balance Amount :</span>
                                         <span class="list-item-value"> {{vBalanceAmt}}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="list-item">
+                                        <span class="list-item-key">Paid Remain :</span>
+                                        <span class="list-item-value"> {{vpaidBalanceAmt}}</span>
                                     </div>
                                 </li>
                                 <li>
@@ -307,27 +309,30 @@
                             <div class="patient-info-box">
                                 <div class="patient-info-title border-bottom pb-2">
                                     <span class="h1">Patient Information</span>
-                                    <div class="right-content" fxLayout="row" class="gap-8" fxLayoutAlign="center center">
+                                    <div class="right-content" fxLayout="row" class="gap-8"
+                                        fxLayoutAlign="center center">
                                         <div fxLayout="row" class="gap-4" fxLayoutAlign="center center">
                                             <form [formGroup]="Ipbillform">
-                                                <mat-form-field appearance="outline" fxFlex *ngIf="isFilteredDateDisabled"
-                                                    class="padding-fix">
+                                                <mat-form-field appearance="outline" fxFlex
+                                                    *ngIf="isFilteredDateDisabled" class="padding-fix">
                                                     <mat-label>Choose date</mat-label>
                                                     <input name="ChargeDate" matInput [matDatepicker]="picker"
                                                         formControllName="ChargeDate"
-                                                        (dateChange)="getDatewiseChargesList($event.value)" [value]="currentDate"
-                                                        [readonly]="true">
-                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                        (dateChange)="getDatewiseChargesList($event.value)"
+                                                        [value]="currentDate" [readonly]="true">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="picker"></mat-datepicker-toggle>
                                                     <mat-datepicker #picker></mat-datepicker>
                                                 </mat-form-field>
                                             </form>
                                         </div>
-                                        <div fxLayout="row" fxLayoutAlign="center center" class="date-time-container gap-8">
+                                        <div fxLayout="row" fxLayoutAlign="center center"
+                                            class="date-time-container gap-8">
                                             <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">
                                                 Show All Charges
                                             </mat-checkbox>
                                             <button mat-icon-button (click)="drawer1.toggle()">
-                                                
+
                                                 <span class="material-icons">
                                                     notifications_none
                                                 </span>
@@ -340,8 +345,7 @@
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key ">Patient Name</span>
                                             <span>:</span>
-                                            <span
-                                                class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                            <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
                                         </div>
                                         <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key">Patient Category</span>
@@ -386,7 +390,7 @@
 
 
 
-                  
+
 
                     <!-- <mat-form-field appearance="outline" fxFlex="16%" style="margin-left:800px;">
                     <mat-label>Select</mat-label>
@@ -411,7 +415,7 @@
                 </mat-form-field> -->
 
                 </div>
-                <mat-tab-group class="mat-tab-header-small">
+                <mat-tab-group class="mat-tab-header-small" #tabGroup (selectedTabChange)="tabChanged($event)">
 
                     <mat-tab label="Charges List">
                         <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
@@ -529,7 +533,7 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
                                     <ng-container class="actions">
-                                       
+
                                         <!-- <span class="material-icons" style="cursor: pointer;color: #5b5858;"
                                             (click)="deleteTableRow(contact)">
                                             delete
@@ -569,11 +573,25 @@
                                 [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
                             </mat-footer-row>
                         </mat-table>
+                        <div class="net-amt-section mb-2 mt-16">
+                            <div class="net-amt gap-24" fxLayout="row" fxLayoutAlign="start center">
+                                <div class="net-amt-box">
+                                    <span class="net-amt-label">No of Items : </span>
+                                    <span class="net-amt-value">{{advancedatasource.data.length }}</span>
+                                </div>
+                                <div class="net-amt-box">
+                                    <span class="net-amt-label">Net amount : </span>
+                                    <span class="net-amt-value">{{getAdvAmtSum(advancedatasource.data) |
+                                        currency:'INR'}}</span>
+                                </div>
+                            </div>
+                        </div>
                     </mat-tab>
-
+                    
                     <mat-tab label="Advance">
-                        <mat-table #table matSort [dataSource]="advancedatasource" [@animateStagger]="{value:'50'}"
-                            class="table2 mt-8" style="height: calc(100vh - 500px);">
+                        <mat-table matSort [dataSource]="advancedatasource" [@animateStagger]="{value:'50'}"
+                            class="table3 mt-8" style="height: calc(100vh - 500px);">
+
 
                             <ng-container matColumnDef="Date">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
@@ -591,7 +609,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="UsedAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UsedAmount
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Used Amt
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <span> {{contact.UsedAmount | currency:'INR' }}</span>
@@ -599,7 +617,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="BalanceAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BalanceAmount
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Bal Amt
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <span> {{contact.BalanceAmount}}</span>
@@ -607,13 +625,12 @@
                             </ng-container>
 
                             <ng-container matColumnDef="RefundAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmount
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Refund Amt
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <span> {{contact.RefundAmount | currency:'INR' }}</span>
                                 </mat-cell>
                             </ng-container>
-
 
                             <ng-container matColumnDef="loading">
                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -629,33 +646,133 @@
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent min-width-1000"
+                            <mat-header-row class="accent min-width-1100"
                                 *matHeaderRowDef="AdvDetailColumns; sticky: true">
                             </mat-header-row>
-                            <mat-row [@animate]="{value:'*',params:{y:'100%'}}" class="min-width-1000"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':advancedatasource!=null}">
+
+                            <mat-row class="min-width-1100" *matRowDef="let contact; columns: AdvDetailColumns;"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':AdvDetailColumns!=null}">
                             </mat-footer-row>
                             <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{'hide':!(advancedatasource!=null && advancedatasource.data.length==0)}">
                             </mat-footer-row>
                         </mat-table>
-                        <div class="net-amt-section mb-2 mt-16">
-                            <div class="net-amt gap-24" fxLayout="row" fxLayoutAlign="start center">
-                                <div class="net-amt-box">
-                                    <span class="net-amt-label">No of Items : </span>
-                                    <span class="net-amt-value">{{advancedatasource.data.length }}</span>
-                                </div>
-                                <div class="net-amt-box">
-                                    <span class="net-amt-label">Net amount : </span>
-                                    <span class="net-amt-value">{{getAdvAmtSum(advancedatasource.data) |
-                                        currency:'INR'}}</span>
-                                </div>
-                            </div>
-                        </div>
                     </mat-tab>
-
+                    
                     <mat-tab label="Package Det.">
+                        <mat-table matSort [dataSource]="prevbilldatasource" [@animateStagger]="{value:'50'}"
+                            class="table3 mt-8" style="height: calc(100vh - 500px);">
 
+                            <ng-container matColumnDef="BDate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>BDate</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <span> {{contact.BDate}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="PBillNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PBillNo
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.PBillNo}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="TotalAmt">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.TotalAmt | currency:'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ConcessionAmt">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.ConcessionAmt}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="NetPayableAmt">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>NetPay Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.NetPayableAmt | currency:'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="BalanceAmt">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Bal.Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.BalanceAmt | currency:'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="CashPayAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Cash Pay
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.CashPayAmount}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ChequePayAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">Cheque
+                                    Pay
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.ChequePayAmount}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="CardPayAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">Card
+                                    Pay
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.CardPayAmount}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="AdvanceUsedAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Adv.UsedAmt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.AdvanceUsedAmount}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                    <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                    </mat-spinner>
+                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent min-width-1100"
+                                *matHeaderRowDef="PrevBillColumns; sticky: true">
+                            </mat-header-row>
+
+                            <mat-row class="min-width-1100" *matRowDef="let contact; columns: PrevBillColumns;"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':PrevBillColumns!=null}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(prevbilldatasource!=null && prevbilldatasource.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
                     </mat-tab>
 
                     <mat-tab label="Prev.Bill">
@@ -782,7 +899,7 @@
                     <div class="footer-container" fxLayoutAlign="start center">
 
                         <div class="row row-container" style="width: 100%;">
-                          
+
                             <div class="amount-section" fxLayout="column" class="gap-12">
                                 <div class="net-amt-section mb-2 mt-16">
                                     <div class="net-amt gap-24">
@@ -797,13 +914,15 @@
                                         </div>
                                         <div class="net-amt-box">
                                             <span class="net-amt-label">Disc Amt : </span>
-                                            <span class="net-amt-value">{{getDiscountSum(dataSource.data) | currency:'INR'}}</span>
+                                            <span class="net-amt-value">{{getDiscountSum(dataSource.data) |
+                                                currency:'INR'}}</span>
                                         </div>
 
                                         <div class="net-amt-box">
                                             <span class="net-amt-label">Net Amt : </span>
-                                           
-                                            <span class="net-amt-value">{{getNetAmtSum(dataSource.data) | currency:'INR'}}</span>
+
+                                            <span class="net-amt-value">{{getNetAmtSum(dataSource.data) |
+                                                currency:'INR'}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -818,17 +937,25 @@
                                         <input matInput name="Percentage" formControlName="Percentage" placeholder="0"
                                             (keyup)='CalAdmincharge()' type="number">
                                     </mat-form-field> -->
-
-                                    <mat-form-field appearance="outline">
+                                    <!-- 
+                                    <mat-form-field appearance="outline" *ngIf="admin">
                                         <mat-label>Disc %</mat-label>
                                         <input name="Percentage" formControlName="Percentage" placeholder="Disc (%)" (keyup)="CalAdmincharge()"
-                                         matInput  type="number" maxlength="2" 
-                                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
-                                        <!-- <mat-error *ngIf="Serviceform.get('discPer').invalid && Serviceform.get('discPer').touched">Please
-                                            enter Age Year </mat-error> -->
+                                         matInput  maxlength="3"  autocomplete="off" onlyNumber
+                                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+                                        
+                                    </mat-form-field> -->
+
+                                    <mat-form-field appearance="outline" *ngIf="admin">
+                                        <mat-label>Final Disc %</mat-label>
+                                        <input matInput placeholder="Percentage" formControlName="Percentage"
+                                            [ngModel]="formDiscPersc" autocomplete="off" #disc onlyNumber maxlength="3"
+                                            (keyup)="CalAdmincharge()"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                            (keypress)="keyPressAlphanumeric($event)">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-form-field appearance="outline" fxFlex="10%" *ngIf="admin">
                                         <mat-label>Concession Amount</mat-label>
                                         <input matInput [(ngModel)]="vfDiscountAmount" name="vDiscountAmount" readonly
                                             formControlName="concessionAmt" (keyup)="getNetAmount()">
@@ -836,7 +963,7 @@
 
                                     <mat-form-field *ngIf="ConShow" appearance="outline" fxFlex="10%">
                                         <mat-label>Concession Reason Type</mat-label>
-                                        <mat-select formControlName="ConcessionId">
+                                        <mat-select formControlName="ConcessionId" [(ngModel)]="vConcessionId">
                                             <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
                                                 {{Doc.ConcessionReason}}
                                             </mat-option>
@@ -883,7 +1010,8 @@
                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
                         <div class="button-row-group">
                             <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
-                            <button class="btn btn-primary-outline" (click)="getInterimData()" [disabled]="Ipbillform.invalid">Interim</button>
+                            <button class="btn btn-primary-outline" (click)="getInterimData()"
+                                [disabled]="Ipbillform.invalid">Interim</button>
                             <button class="btn btn-primary" (click)="onSave()"
                                 [disabled]="Ipbillform.invalid">Save</button>
 
