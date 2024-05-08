@@ -36,10 +36,12 @@ export class FuseShortcutsComponent implements OnInit, AfterViewInit, OnDestroy 
         return this.shortcutItems.filter(x => x.isFavourite);
     }
     ngOnInit(): void {
-        this._authService.getFavMenus(JSON.parse(localStorage.getItem("currentUser")).user.roleId, JSON.parse(localStorage.getItem("currentUser")).user.id).subscribe((Menu) => {
-            this.shortcutItems = Menu as any[];
-            this.filteredShortcutItems = this.shortcutItems;
-        });
+        if ((JSON.parse(localStorage.getItem("currentUser"))?.user?.roleId ?? 0) > 0) {
+            this._authService.getFavMenus(JSON.parse(localStorage.getItem("currentUser")).user.roleId, JSON.parse(localStorage.getItem("currentUser")).user.id).subscribe((Menu) => {
+                this.shortcutItems = Menu as any[];
+                this.filteredShortcutItems = this.shortcutItems;
+            });
+        }
     }
     ngAfterViewInit(): void {
         // Subscribe to media changes
@@ -82,7 +84,7 @@ export class FuseShortcutsComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     toggleShortcut(event, itemToToggle): void {
         event.stopPropagation();
-        var data={UserId:itemToToggle.userId,MenuId:itemToToggle.menuId};
+        var data = { UserId: itemToToggle.userId, MenuId: itemToToggle.menuId };
         this._authService.setFavMenus(data).subscribe((data) => {
             itemToToggle.isFavourite = !itemToToggle.isFavourite;
         });
