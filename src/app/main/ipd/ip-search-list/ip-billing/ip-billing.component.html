@@ -573,19 +573,7 @@
                                 [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
                             </mat-footer-row>
                         </mat-table>
-                        <div class="net-amt-section mb-2 mt-16">
-                            <div class="net-amt gap-24" fxLayout="row" fxLayoutAlign="start center">
-                                <div class="net-amt-box">
-                                    <span class="net-amt-label">No of Items : </span>
-                                    <span class="net-amt-value">{{advancedatasource.data.length }}</span>
-                                </div>
-                                <div class="net-amt-box">
-                                    <span class="net-amt-label">Net amount : </span>
-                                    <span class="net-amt-value">{{getAdvAmtSum(advancedatasource.data) |
-                                        currency:'INR'}}</span>
-                                </div>
-                            </div>
-                        </div>
+                       
                     </mat-tab>
                     
                     <mat-tab label="Advance">
@@ -659,6 +647,19 @@
                                 [ngClass]="{'hide':!(advancedatasource!=null && advancedatasource.data.length==0)}">
                             </mat-footer-row>
                         </mat-table>
+                        <div class="net-amt-section mb-2 mt-16">
+                            <div class="net-amt gap-24" fxLayout="row" fxLayoutAlign="start center">
+                                <div class="net-amt-box">
+                                    <span class="net-amt-label">No of Items : </span>
+                                    <span class="net-amt-value">{{advancedatasource.data.length }}</span>
+                                </div>
+                                <div class="net-amt-box">
+                                    <span class="net-amt-label">Advance Amount : </span>
+                                    <span class="net-amt-value">{{getAdvAmtSum(advancedatasource.data) |
+                                        currency:'INR'}}</span>
+                                </div>
+                            </div>
+                        </div>
                     </mat-tab>
                     
                     <mat-tab label="Package Det.">
