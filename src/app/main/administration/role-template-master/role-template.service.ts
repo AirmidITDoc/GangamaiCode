@@ -52,6 +52,12 @@ export class RoleTemplateService {
     public getmenus(Param) {
         return this._httpClient.get("Login/get-menus?RoleId="+Param);
     }
+    public getFavMenus(RoleId,UserId) {
+        return this._httpClient.get("Favourite/get-favmenus?RoleId="+RoleId+"&UserId="+UserId);
+    }
+    public setFavMenus(data) {
+        return this._httpClient.post("Favourite/save", data);
+    }
     public getpermissionmenus(Param) {
         return this._httpClient.get("Login/get-permission-menu?RoleId="+Param);
     }

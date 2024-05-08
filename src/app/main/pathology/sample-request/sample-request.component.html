@@ -115,15 +115,12 @@
                                         <div class="table-header-right">
                                             <div class="export-buttons">
                                                 <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                                    <button (click)="exportReportPdf()" class="btn-primary btn btn-with-icon btn-xs">
-                                                        <span class="btn-icon">
-                                                            <mat-icon>cloud_download</mat-icon>
-                                                        </span>
-                                                        <span>Export Table (PDF)</span>
+                                                    <button mat-icon-button (click)="exportReportPdf()" [disabled]="! (dataSource.data.length > 0)">
+                                                        <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
                                                     </button>
 
                                                     <button mat-icon-button (click)="exportSamplerequstReportExcel()" [disabled]="! (dataSource.data.length > 0)">
-                                                        <img width="32" height="10px" src="assets/images/logos/xls.png">
+                                                        <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
                                                     </button>
                                                 </div>
                                             </div>
@@ -135,7 +132,7 @@
                                         <div class="spinner-border text-danger"></div>
                                     </div>
 
-                                    <mat-table class="h-240" #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                                    <mat-table class="h-260" #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
                                         <ng-container matColumnDef="RegNo" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
                                             </mat-header-cell>
@@ -246,15 +243,12 @@
                                         <div class="table-header-right">
                                             <div class="export-buttons">
                                                 <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                                    <button (click)="exportdetailReportPdf()" class="btn-primary btn btn-with-icon btn-xs">
-                                                        <span class="btn-icon">
-                                                            <mat-icon>cloud_download</mat-icon>
-                                                        </span>
-                                                        <span>Export Table(PDF)</span>
+                                                    <button mat-icon-button (click)="exportdetailReportPdf()" [disabled]="! (dataSource1.data.length > 0)">
+                                                        <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
                                                     </button>
 
-                                                    <button mat-icon-button (click)="exportSamplerequstdetailReportExcel()" [disabled]="! (dataSource.data.length > 0)">
-                                                        <img width="32" height="10px" src="assets/images/logos/xls.png">
+                                                    <button mat-icon-button (click)="exportSamplerequstdetailReportExcel()" [disabled]="! (dataSource1.data.length > 0)">
+                                                        <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
                                                     </button>
                                                 </div>
                                             </div>
@@ -266,7 +260,7 @@
                                         <div class="spinner-border"></div>
                                     </div>
                                     <!-- mat table -->
-                                    <mat-table class="h-240" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
+                                    <mat-table class="h-260" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
                                         <ng-container matColumnDef="ReqDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 ReqDate

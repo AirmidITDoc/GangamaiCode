@@ -1,0 +1,72 @@
+// -----------------------------------------------------------------------------------------------------
+// @ Border helpers
+// -----------------------------------------------------------------------------------------------------
+
+// .mat-typography {
+//     --border-color: 1px solid rgba(0, 0, 0, 0.12);
+//     @include themed() {
+//         // --border-color: t($ngt-inverse);
+//     }
+// }
+// $border-style: 1px solid rgba(0, 0, 0, 0.12);
+$border-style: 1px solid $gray-200;
+
+.border,
+.b {
+    border: $border-style;
+}
+
+.border-top,
+.bt {
+    border-top: $border-style;
+}
+
+.border-right,
+.br {
+    border-right: $border-style;
+}
+
+.border-bottom,
+.bb {
+    border-bottom: $border-style;
+}
+
+.border-left,
+.bl {
+    border-left: $border-style;
+}
+
+.border-horizontal,
+.bx {
+    border-left: $border-style;
+    border-right: $border-style;
+}
+
+.border-vertical,
+.by {
+    border-top: $border-style;
+    border-bottom: $border-style;
+}
+
+// -----------------------------------------------------------------------------------------------------
+// @ Border radius helpers
+// -----------------------------------------------------------------------------------------------------
+.border-radius-100 {
+    border-radius: 100%;
+}
+
+.border-radius-2 {
+    border-radius: 2px;
+}
+
+.border-radius-4 {
+    border-radius: 4px;
+}
+
+.border-radius-8 {
+    border-radius: 8px;
+}
+
+.border-radius-16 {
+    border-radius: 16px;
+}
