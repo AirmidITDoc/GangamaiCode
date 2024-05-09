@@ -16,6 +16,7 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class ServiceMasterComponent implements OnInit {
+    showDivs:boolean = false;
     submitted = false;
 
     RadiologytemplateMasterList: any;
@@ -343,6 +344,11 @@ export class ServiceMasterComponent implements OnInit {
             EmgPer: row.EmgPer,
             IsDocEditable: JSON.stringify(row.IsDocEditable),
             UpdatedBy: row.UpdatedBy,
+            GroupId: row.GroupId,
+            GroupName:row.GroupName,
+            IsActive: row.IsActive,
+            TariffId: row.TariffId,
+            TariffName: row.TariffName
         };
 
         console.log(m_data);
@@ -352,7 +358,7 @@ export class ServiceMasterComponent implements OnInit {
             maxWidth: "80vw",
             maxHeight: "95vh",
             width: "100%",
-            height: "100%",
+            // height: "100%",
         });
 
         dialogRef.afterClosed().subscribe((result) => {
@@ -366,7 +372,7 @@ export class ServiceMasterComponent implements OnInit {
             maxWidth: "80vw",
             maxHeight: "100vh",
             width: "100%",
-            height: "100%",
+            // height: "100%",
         });
         dialogRef.afterClosed().subscribe((result) => {
             this.getServiceMasterList();

@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 export class ServiceMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
-
+    edit_data = {};
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: FormBuilder
@@ -41,7 +41,7 @@ export class ServiceMasterService {
             IsDocEditable: ["0"],
             AddedBy: [""],
             UpdatedBy: [""],
-
+            IsActive:true,
             ServiceDetailId: [""],
             TariffId: [""],
             ClassId: ["0"],
@@ -61,46 +61,38 @@ export class ServiceMasterService {
 
     public getServiceMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_ServList",
-            param
+            "Generic/GetByProc?procName=Rtrv_ServList", param
         );
     }
 
     public getGroupMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_GroupMasterForCombo",
-            {}
+            "Generic/GetByProc?procName=Retrieve_GroupMasterForCombo", {}
         );
     }
 
     public getDoctorMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_DoctorMasterForCombo",
-            {}
+            "Generic/GetByProc?procName=Retrieve_DoctorMasterForCombo", {}
         );
     }
 
     public getSubgroupMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_SubGroupMasterForCombo ",
-            {}
+            "Generic/GetByProc?procName=Rtrv_M_SubGroupMasterForCombo ", {}
         );
     }
     public getTariffMasterCombo() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveTariffMasterForCombo",
-            {}
+            "Generic/GetByProc?procName=RetrieveTariffMasterForCombo", {}
         );
     }
 
     public getClassMasterList() {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveClassMasterForCombo",
-            { }
+            "Generic/GetByProc?procName=RetrieveClassMasterForCombo",{}
         );
     }
-
- 
 
     public serviceMasterInsert(param) {
         return this._httpClient.post("Billing/ServiceSave", param);
@@ -120,5 +112,13 @@ export class ServiceMasterService {
 
     populateForm(param) {
         this.myform.patchValue(param);
+        this.edit_data = param;
+        this.myform.get("CreditedtoDoctor").setValue(param.CreditedtoDoctor);
+        this.myform.get("IsActive").setValue(param.IsActive);
+        this.myform.get("IsEditable").setValue(param.IsEditable);
+        this.myform.get("IsEmergency").setValue(param.IsEmergency);
+        this.myform.get("IsPathology").setValue(param.IsPathology == 1 ? true : false);
+        this.myform.get("IsRadiology").setValue(param.IsRadiology == 1 ? true : false);
+
     }
 }
