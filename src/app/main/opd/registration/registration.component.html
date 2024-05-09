@@ -1,9 +1,7 @@
-<div id="contacts" fusePerfectScrollbar
-    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
+<div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" dynamicTableHeight>
     <!-- HEADER -->
 
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
 
         <!-- APP TITLE -->
         <div class="top-header-info">
@@ -16,11 +14,9 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <!-- <app-common-date [screenFrom]="screenFromString"
                 (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
-            <button mat-raised-button (click)="newRegistration()" style="background-color: aliceblue;color: brown;">New
+            <button mat-raised-button (click)="newRegistration()">New
                 Registration
-
             </button>
-           
         </div>
     </div>
 
@@ -49,8 +45,7 @@
                                 <mat-label>Enter a date range</mat-label>
                                 <mat-date-range-input [rangePicker]="picker">
                                     <input matStartDate formControlName="start" placeholder="Start date">
-                                    <input matEndDate formControlName="end" placeholder="End date"
-                                        (dateChange)="getregistrationList()">
+                                    <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getregistrationList()">
                                 </mat-date-range-input>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-date-range-picker #picker></mat-date-range-picker>
@@ -58,31 +53,27 @@
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>First Name</mat-label>
-                                <input name="FirstName" formControlName="FirstName" matInput
-                                    (keyup)="getregistrationList()">
+                                <input name="FirstName" formControlName="FirstName" matInput (keyup)="getregistrationList()">
                                 <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">FirstName is
                                     required Enter only Alphabets</span>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Last Name</mat-label>
-                                <input name="LastName" formControlName="LastName" matInput
-                                    (keyup)="getregistrationList()">
+                                <input name="LastName" formControlName="LastName" matInput (keyup)="getregistrationList()">
                                 <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName is
                                     required Enter only Alphabets</span>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Mobile Number</mat-label>
-                                <input name="MobileNo" formControlName="MobileNo" matInput type="number"
-                                    (keyup)="getregistrationList()">
+                                <input name="MobileNo" formControlName="MobileNo" matInput type="number" (keyup)="getregistrationList()">
                                 <span class="error" *ngIf="f.MobileNo.invalid && f.MobileNo.touched">MobileNo is
                                     required Enter only Digits</span>
                             </mat-form-field>
 
                             <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-                                <button mat-raised-button (click)="getregistrationList()" class="searchButton"
-                                    matTooltip="search">
+                                <button mat-raised-button (click)="getregistrationList()" class="searchButton" matTooltip="search">
                                     <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
                                     Search
                                 </button>
@@ -103,7 +94,7 @@
 
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
-            <div class="content-card" style="border-radius:4px; ">
+            <div class="content-card">
 
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
@@ -111,47 +102,38 @@
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                    class="backgroundBlur">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
                                 </div>
                                 <!-- sppinner -->
-                                <mat-table #table class="table1" matSort [dataSource]="dataSource"
-                                    [@animateStagger]="{value:'50'}"
-                                    style="overflow: auto;width: 100%;margin-top: 2px;">
-
+                                <mat-table #table class="table1" matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
                                     <ng-container matColumnDef="RegDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                            fxShow.gt-md>RegDate</mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>RegDate</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            {{contact.RegDate | date:ShortDate}}
+                                            <span> {{contact.RegDate | date:ShortDate}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="RegNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg
-                                            No</mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg No</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.RegNo}}
+                                            <span> {{contact.RegNo}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="PatientName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                                            fxShow.gt-sm>PatientName</mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientName</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.PatientName}}
+                                            <span> {{contact.PatientName}}</span>
                                         </mat-cell>
                                     </ng-container>
-
-
 
                                     <ng-container matColumnDef="AgeYear">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Age
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            {{contact.AgeYear}}
+                                            <span> {{contact.AgeYear}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -159,7 +141,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Gender
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            {{contact.GenderName}}
+                                            <span> {{contact.GenderName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -167,7 +149,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>PhoneNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            {{contact.PhoneNo}}
+                                            <span> {{contact.PhoneNo}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -175,11 +157,9 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>MobileNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            {{contact.MobileNo}}
+                                            <span> {{contact.MobileNo}}</span>
                                         </mat-cell>
                                     </ng-container>
-
-
 
                                     <ng-container matColumnDef="Address">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Address
@@ -190,38 +170,38 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                                        <mat-header-cell *matHeaderCellDef > Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                    title="Edit Menu">launch</mat-icon></button>
+                                            <button mat-icon-button (click)="onEdit(row)"><mat-icon title="Edit Menu">launch</mat-icon></button>
 
                                         </mat-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button (click)="getAdmittedPatientCasepaperview(row)"><mat-icon title="Casepaper Print">print</mat-icon></button>
+
+                                        </mat-cell>
+                                        
                                     </ng-container>
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                         </mat-header-cell>
                                     </ng-container>
+                                    
                                     <ng-container matColumnDef="noData">
                                         <mat-footer-cell *matFooterCellDef colspan="6">
                                             no data found...
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent"
-                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading')}">
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading')}">
                                     </mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                 </mat-table>
 
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
-                                    showFirstLastButtons>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
                                 </mat-paginator>
                             </div>
                         </div>

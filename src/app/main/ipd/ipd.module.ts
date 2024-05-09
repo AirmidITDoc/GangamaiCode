@@ -57,6 +57,7 @@ import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth
 import { StockManagementComponent } from './stock-management/stock-management.component';
 import { IPSettlementViewComponent } from './ip-settlement/ipsettlement-view/ipsettlement-view.component';
 import { ViewBrowseIPDPaymentComponent } from './browse-ipdpayment-receipt/view-browse-ipdpayment/view-browse-ipdpayment.component';
+import { CompanyInformationComponent } from './company-information/company-information.component';
 
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';

@@ -1,4 +1,4 @@
-<div class="dashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
+<div class="dashboard-project" class="page-layout simple right-sidebar " fxLayout="row" fusePerfectScrollbar *ngIf="false">
 
     <!-- CENTER -->
     <div class="center">
@@ -10,8 +10,7 @@
                     <mat-icon>menu</mat-icon>
                 </button>
 
-                <span class="mat-display-1 my-0 my-sm-12 welcome-message"
-                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                <span class="mat-display-1 my-0 my-sm-12 welcome-message" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                     Pharmacy Dashboard
                 </span>
             </div>
@@ -35,8 +34,7 @@
                     <mat-label>Enter a date range</mat-label>
                     <mat-date-range-input [rangePicker]="picker">
                         <input matStartDate formControlName="start" placeholder="Start date">
-                        <input matEndDate formControlName="end" placeholder="End date"
-                            (dateChange)="onDateRangeChanged()">
+                        <input matEndDate formControlName="end" placeholder="End date" (dateChange)="onDateRangeChanged()">
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
@@ -47,12 +45,10 @@
         </div>
 
         <div class="content" dynamicHeight>
-            <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
-                [@animateStagger]="{value:'50'}">
+            <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom [@animateStagger]="{value:'50'}">
 
                 <!-- WIDGET 2 -->
-                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
-                    fxFlex.gt-xs="50" fxFlex.gt-md="100" *ngFor="let element of dashCardsData">
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="100" *ngFor="let element of dashCardsData">
 
                     <!-- Front -->
                     <div class="fuse-widget-front">
@@ -66,8 +62,7 @@
                         </div>
 
                         <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
-                            <div
-                                [ngClass]="element.Title == 'Total Summary' ? 'orange-fg red-fg font-size-50 line-height-20' : 'blue-grey-fg red-fg font-size-50 line-height-20'">
+                            <div [ngClass]="element.Title == 'Total Summary' ? 'orange-fg red-fg font-size-50 line-height-20' : 'blue-grey-fg red-fg font-size-50 line-height-20'">
                                 <!-- {{widgets.widget2.data.count}} -->
                                 {{element.count}}
                             </div>
@@ -79,8 +74,7 @@
 
                         <div class="py-8 mh-16 border-top" fxLayout="row wrap" fxLayoutAlign="start center">
 
-                            <div class="py-8 border-right" fxLayout="column" fxLayoutAlign="start center" fxFlex="100"
-                                fxFlex.gt-sm="50">
+                            <div class="py-8 border-right" fxLayout="column" fxLayoutAlign="start center" fxFlex="100" fxFlex.gt-sm="50">
                                 <span class="h4 secondary-text text-truncate">
                                     {{element.SelfLbl}}
                                 </span>
@@ -89,8 +83,7 @@
                                 </span>
                             </div>
 
-                            <div class="py-8" fxLayout="column" fxLayoutAlign="start center" fxFlex="100"
-                                fxFlex.gt-sm="50">
+                            <div class="py-8" fxLayout="column" fxLayoutAlign="start center" fxFlex="100" fxFlex.gt-sm="50">
                                 <span class="h4 secondary-text text-truncate">
                                     {{element.CompanyLbl}}
                                 </span>
@@ -104,8 +97,7 @@
 
                     <!-- Back -->
                     <div class="fuse-widget-back p-16 pt-32">
-                        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
-                            aria-label="Flip widget">
+                        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button" aria-label="Flip widget">
                             <mat-icon class="s-16">close</mat-icon>
                         </button>
 
@@ -122,8 +114,7 @@
         </div>
         <div class="content" dynamicHeight>
             <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <ngx-charts-pie-grid [view]="StaticChartConfig.view" [scheme]="StaticChartConfig.colorScheme"
-                    [results]="StaticChartConfig.data">
+                <ngx-charts-pie-grid [view]="StaticChartConfig.view" [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data">
                 </ngx-charts-pie-grid>
             </div>
         </div>
@@ -138,10 +129,7 @@
                         <span class="cust-labels-value"></span>
                     </div>
                     <div>
-                        <ngx-charts-pie-chart [view]="CurrentValChartConfig.view"
-                            [scheme]="CurrentValChartConfig.colorScheme" [results]="CurrentValChartConfig.data"
-                            [gradient]="CurrentValChartConfig.gradient" [legend]="CurrentValChartConfig.showLegend"
-                            [labels]="CurrentValChartConfig.showLabels" [doughnut]="CurrentValChartConfig.isDoughnut">
+                        <ngx-charts-pie-chart [view]="CurrentValChartConfig.view" [scheme]="CurrentValChartConfig.colorScheme" [results]="CurrentValChartConfig.data" [gradient]="CurrentValChartConfig.gradient" [legend]="CurrentValChartConfig.showLegend" [labels]="CurrentValChartConfig.showLabels" [doughnut]="CurrentValChartConfig.isDoughnut">
                         </ngx-charts-pie-chart>
                     </div>
                 </div>
@@ -174,10 +162,7 @@
                         <span class="cust-labels-value"></span>
                     </div>
                     <div>
-                        <ngx-charts-pie-chart [view]="CurrentValChartConfig.view"
-                            [scheme]="CurrentValChartConfig.colorScheme" [results]="CurrentValChartConfig.data"
-                            [gradient]="CurrentValChartConfig.gradient" [legend]="CurrentValChartConfig.showLegend"
-                            [labels]="CurrentValChartConfig.showLabels" [doughnut]="CurrentValChartConfig.isDoughnut">
+                        <ngx-charts-pie-chart [view]="CurrentValChartConfig.view" [scheme]="CurrentValChartConfig.colorScheme" [results]="CurrentValChartConfig.data" [gradient]="CurrentValChartConfig.gradient" [legend]="CurrentValChartConfig.showLegend" [labels]="CurrentValChartConfig.showLabels" [doughnut]="CurrentValChartConfig.isDoughnut">
                         </ngx-charts-pie-chart>
                     </div>
                 </div>
@@ -206,7 +191,7 @@
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
                 <mat-card class="chart-card">
                     <mat-card-header>
-                        <div class="card-hearder">
+                        <div class="card-header">
                             <mat-card-title>Static</mat-card-title>
                             <mat-form-field>
                                 <mat-select [(value)]="selectedStatic" (selectionChange)="onChangeStatic($event)">
@@ -219,12 +204,13 @@
                     </mat-card-header>
                     <hr>
                     <mat-card-content>
-                        <mat-spinner *ngIf="sIsLoading === 'loading-data'"></mat-spinner>
+                        <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                            <mat-spinner *ngIf="sIsLoading === 'loading-data'"></mat-spinner>
+                            <!-- <div class="spinner-border"></div> -->
+                        </div>
                         <div fxLayout="row" fxLayoutAlign="space-between">
 
-                            <ngx-charts-advanced-pie-chart [view]="StaticChartConfig.view"
-                                [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data"
-                                [gradient]="StaticChartConfig.gradient">
+                            <ngx-charts-advanced-pie-chart [view]="StaticChartConfig.view" [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data" [gradient]="StaticChartConfig.gradient">
                             </ngx-charts-advanced-pie-chart>
                         </div>
                         <div *ngIf="sIsLoading === 'noPharSumData'">
@@ -236,32 +222,18 @@
             <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
                 <mat-card class="chart-card">
                     <mat-card-header>
-                        <div class="card-hearder">
+                        <div class="card-header">
                             <mat-card-title>Sales Monthly Summary</mat-card-title>
                         </div>
                     </mat-card-header>
                     <hr>
                     <mat-card-content>
                         <div *ngIf="ThreeMonSalesConfig.data.length > 0||ThreeMonSalesConfig.multi.length > 0">
-                            <ngx-charts-bar-vertical-2d [view]="ThreeMonSalesConfig.view"
-                                [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.multi"
-                                [gradient]="ThreeMonSalesConfig.gradient" [xAxis]="ThreeMonSalesConfig.showXAxis"
-                                [yAxis]="ThreeMonSalesConfig.showYAxis" [legend]="ThreeMonSalesConfig.showLegend"
-                                [showXAxisLabel]="ThreeMonSalesConfig.showXAxisLabel"
-                                [showYAxisLabel]="ThreeMonSalesConfig.showYAxisLabel"
-                                [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel"
-                                [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel"
-                                [legendTitle]="ThreeMonSalesConfig.legendTitle"
-                                [showDataLabel]="ThreeMonSalesConfig.True" *ngIf="ThreeMonSalesConfig.multi.length>0">
+                            <ngx-charts-bar-vertical-2d [view]="ThreeMonSalesConfig.view" [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.multi" [gradient]="ThreeMonSalesConfig.gradient" [xAxis]="ThreeMonSalesConfig.showXAxis" [yAxis]="ThreeMonSalesConfig.showYAxis" [legend]="ThreeMonSalesConfig.showLegend" [showXAxisLabel]="ThreeMonSalesConfig.showXAxisLabel" [showYAxisLabel]="ThreeMonSalesConfig.showYAxisLabel" [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel"
+                                [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel" [legendTitle]="ThreeMonSalesConfig.legendTitle" [showDataLabel]="ThreeMonSalesConfig.True" *ngIf="ThreeMonSalesConfig.multi.length>0">
                             </ngx-charts-bar-vertical-2d>
-                            <ngx-charts-bar-vertical [view]="ThreeMonSalesConfig.view"
-                                [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.data"
-                                [gradient]="ThreeMonSalesConfig.gradient" [xAxis]="ThreeMonSalesConfig.showXAxis"
-                                [yAxis]="ThreeMonSalesConfig.showYAxis" [legend]="ThreeMonSalesConfig.showLegend"
-                                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
-                                [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel"
-                                [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel" [showGridLines]="ThreeMonSalesConfig.True"
-                                [showDataLabel]="ThreeMonSalesConfig.True" *ngIf="ThreeMonSalesConfig.data.length>0">
+                            <ngx-charts-bar-vertical [view]="ThreeMonSalesConfig.view" [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.data" [gradient]="ThreeMonSalesConfig.gradient" [xAxis]="ThreeMonSalesConfig.showXAxis" [yAxis]="ThreeMonSalesConfig.showYAxis" [legend]="ThreeMonSalesConfig.showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel" [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel"
+                                [showGridLines]="ThreeMonSalesConfig.True" [showDataLabel]="ThreeMonSalesConfig.True" *ngIf="ThreeMonSalesConfig.data.length>0">
                             </ngx-charts-bar-vertical>
                         </div>
                         <!-- <canvas id="pharSumBarChart" style="width: 100%;"></canvas> -->
@@ -271,26 +243,18 @@
             <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
                 <mat-card class="chart-card">
                     <mat-card-header>
-                        <div class="card-hearder">
+                        <div class="card-header">
                             <mat-card-title>Sales Monthly Summary (Line Chart)</mat-card-title>
                         </div>
                     </mat-card-header>
                     <hr>
                     <mat-card-content>
                         <div *ngIf="LineChartConfig.data.length > 0||LineChartConfig.multi.length > 0">
-                            <ngx-charts-line-chart [view]="LineChartConfig.view" [scheme]="'picnic'"
-                                [legend]="LineChartConfig.showLegend" [showXAxisLabel]="LineChartConfig.showXAxisLabel"
-                                [showYAxisLabel]="LineChartConfig.showYAxisLabel" [xAxis]="LineChartConfig.showXAxis"
-                                [yAxis]="LineChartConfig.showYAxis" [xAxisLabel]="LineChartConfig.xAxisLabel"
-                                [yAxisLabel]="LineChartConfig.yAxisLabel" [timeline]="LineChartConfig.timeline"
-                                [results]="LineChartConfig.multi" *ngIf="LineChartConfig.multi.length>0">
+                            <ngx-charts-line-chart [view]="LineChartConfig.view" [scheme]="'picnic'" [legend]="LineChartConfig.showLegend" [showXAxisLabel]="LineChartConfig.showXAxisLabel" [showYAxisLabel]="LineChartConfig.showYAxisLabel" [xAxis]="LineChartConfig.showXAxis" [yAxis]="LineChartConfig.showYAxis" [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel" [timeline]="LineChartConfig.timeline" [results]="LineChartConfig.multi"
+                                *ngIf="LineChartConfig.multi.length>0">
                             </ngx-charts-line-chart>
-                            <ngx-charts-line-chart [view]="LineChartConfig.view" [scheme]="'picnic'"
-                                [legend]="LineChartConfig.showLegend" [showXAxisLabel]="LineChartConfig.showXAxisLabel"
-                                [showYAxisLabel]="LineChartConfig.showYAxisLabel" [xAxis]="LineChartConfig.showXAxis"
-                                [yAxis]="LineChartConfig.showYAxis" [xAxisLabel]="LineChartConfig.xAxisLabel"
-                                [yAxisLabel]="LineChartConfig.yAxisLabel" [timeline]="LineChartConfig.timeline"
-                                [results]="LineChartConfig.data" *ngIf="LineChartConfig.data.length>0">
+                            <ngx-charts-line-chart [view]="LineChartConfig.view" [scheme]="'picnic'" [legend]="LineChartConfig.showLegend" [showXAxisLabel]="LineChartConfig.showXAxisLabel" [showYAxisLabel]="LineChartConfig.showYAxisLabel" [xAxis]="LineChartConfig.showXAxis" [yAxis]="LineChartConfig.showYAxis" [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel" [timeline]="LineChartConfig.timeline" [results]="LineChartConfig.data"
+                                *ngIf="LineChartConfig.data.length>0">
                             </ngx-charts-line-chart>
 
 
@@ -321,7 +285,7 @@
             <!-- <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
                 <mat-card class="chart-card">
                     <mat-card-header>
-                        <div class="card-hearder">
+                        <div class="card-header">
                             <mat-card-title>Static Line chart</mat-card-title>
                         </div>
                     </mat-card-header>
@@ -344,7 +308,7 @@
             <!-- <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
                 <mat-card class="chart-card">
                     <mat-card-header>
-                        <div class="card-hearder">
+                        <div class="card-header">
                             <mat-card-title>Bar Chart</mat-card-title>
                         </div>
                     </mat-card-header>
@@ -369,4 +333,493 @@
 
         </div>
     </div>
+</div>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar dashboard-pharmacy">
+    <!-- HEADER -->
+    <div class="top-header accent h-60">
+        <div class="top-header-info">
+            <!-- <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
+                <mat-icon>menu</mat-icon>
+            </button> -->
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>Pharmacy Dashboard </span>
+            </div>
+        </div>
+        <div class="top-header-right">
+            <div class="top-header-form">
+                <form [formGroup]="_DashboardService.UseFrom">
+                    <div fxLayout="row" fxLayoutAlign="end center" class="gap-8">
+                        <mat-form-field appearance="outline" fxFlex="270px">
+                            <mat-label>Select Store</mat-label>
+                            <mat-select formControlName="StoreId" name="StoreId" (selectionChange)="onChangeStore()">
+                                <mat-option></mat-option>
+                                <mat-option *ngFor="let m of PharmStoreList" [value]="m">
+                                    {{m.StoreName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="start" placeholder="Start date">
+                                <input matEndDate formControlName="end" placeholder="End date" (dateChange)="onDateRangeChanged()">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    
+    <!-- CONTENT -->
+    <div class="content layout-body">
+        <div class="center p-12 " fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxLayout="column" class="gap-12">
+                    <div class="layout-card-container">
+                        <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="12px grid">
+                            <!-- Dashboard card chart  -->
+                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <div class="chart-card-container">
+                                    <div class="chart-card">
+                                        <mat-card>
+                                            <div fxLayout="column" fxLayoutAlign="center" fxFlexFill>
+                                                <div class="fuse-widget-container" fusePerfectScrollbar>
+                                                    <div class="fuse-widget-item" *ngFor="let element of dashCardsData ">
+                                                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxFlex>
+
+                                                            <!-- Front -->
+                                                            <div class="fuse-widget-front">
+                                                                <div class="fuse-widget-container" style="text-align: center;">
+                                                                    <div class="fuse-widget-header ">
+                                                                        <div class="fuse-widget-header-title border-bottom py-8 ">
+                                                                            <span class="h1 font-weight-600">{{element.Title }}</span>
+                                                                        </div>
+                                                                        <div class="fuse-widget-value pt-4">
+                                                                            <span class="font-size-28 font-weight-600" [ngClass]="element.Title == 'Total Summary' ? 'orange-fg' : 'blue-grey-fg'">
+                                                                                {{element.count}}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="fuse-widget-body p-16">
+                                                                        <ul class="gap-4 list-basic" fxLayout="column">
+                                                                            <li>
+                                                                                <div class="list-item h3">
+                                                                                    <span class="list-item-key">{{element.SelfLbl }}</span>
+                                                                                    <span class="list-item-value">{{element.SelfCnt }}</span>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <div class="list-item h3">
+                                                                                    <span class="list-item-key"> {{element.CompanyLbl }} </span>
+                                                                                    <span class="list-item-value"> {{element.CompayCnt }} </span>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- / Front -->
+
+                                                            <!-- Back -->
+                                                            <div class="fuse-widget-back p-16 pt-32">
+                                                                <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button" aria-label="Flip widget">
+                                                                    <mat-icon class="s-16">close</mat-icon>
+                                                                </button>
+
+                                                                <!-- <div>
+                                                                            {{widgets.widget2.detail}}
+                                                                        </div> -->
+                                                            </div>
+                                                            <!-- / Back -->
+
+                                                        </fuse-widget>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Static chart 1-->
+                            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <div class="chart-card-container">
+                                    <div class="chart-card chart-static-1" #chartStaticRef1>
+                                        <mat-card>
+                                            <div class="chart-card-content gap-8" fxLayout="column">
+                                                <div class="chart-card-header gap-8" fxLayout="column">
+                                                    <div class="chard-card-label">
+                                                        <span class="h2 font-weight-600">Static chart</span>
+                                                    </div>
+                                                    <!-- <div class="chard-card-label-value">
+                                                        <span></span>
+                                                    </div> -->
+                                                </div>
+                                                <div class="chat-card-body">
+                                                    <div class="chard-card-canvas">
+                                                        <ngx-charts-pie-grid [view]="[chartStaticRef1.offsetWidth,300]" [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data">
+                                                        </ngx-charts-pie-grid>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <ngx-charts-pie-grid [view]="[chartStaticRef1.offsetWidth,300]" [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data">
+                                            </ngx-charts-pie-grid> -->
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stock value chart-->
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <div class="chart-card-container" #chartStockValueRef>
+                                    <div class="chart-card chart-stock-value">
+                                        <mat-card>
+                                            <div class="chart-card-content gap-8" fxLayout="column">
+                                                <div class="chart-card-header gap-8" fxLayout="column">
+                                                    <div class="chard-card-label">
+                                                        <span class="h2 font-weight-600">Stock Value</span>
+                                                    </div>
+                                                    <!-- <div class="chard-card-label-value">
+                                                        <span></span>
+                                                    </div> -->
+                                                    <div class="chard-card-canvas">
+                                                        <ngx-charts-pie-chart [view]="CurrentValChartConfig.view" [scheme]="CurrentValChartConfig.colorScheme" [results]="CurrentValChartConfig.data" [gradient]="CurrentValChartConfig.gradient" [legend]="CurrentValChartConfig.showLegend" [labels]="CurrentValChartConfig.showLabels" [doughnut]="CurrentValChartConfig.isDoughnut">
+                                                        </ngx-charts-pie-chart>
+                                                    </div>
+                                                </div>
+                                                <div class="chat-card-body">
+                                                    <ul class="gap-4 list-basic" fxLayout="column">
+                                                        <li>
+                                                            <div class="list-item list-item-start">
+                                                                <span class="list-item-key">Purchase Rate (excl gst) : </span>
+                                                                <span class="list-item-value">0</span>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="list-item list-item-start">
+                                                                <span class="list-item-key">MRP (incl gst) : </span>
+                                                                <span class="list-item-value"> 0 </span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- customer chart-->
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <div class="chart-card-container">
+                                    <div class="chart-card chart-customer" #chartCustomerRef>
+                                        <mat-card>
+                                            <div class="chart-card-content gap-8" fxLayout="column">
+                                                <div class="chart-card-header gap-8" fxLayout="column">
+                                                    <div class="chard-card-label">
+                                                        <span class="h2 font-weight-600">Customer</span>
+                                                    </div>
+                                                    <!-- <div class="chard-card-label-value">
+                                                        <span ></span>
+                                                    </div> -->
+                                                    <div class="chard-card-canvas">
+                                                        <ngx-charts-pie-chart [view]="CurrentValChartConfig.view" [scheme]="CurrentValChartConfig.colorScheme" [results]="CurrentValChartConfig.data" [gradient]="CurrentValChartConfig.gradient" [legend]="CurrentValChartConfig.showLegend" [labels]="CurrentValChartConfig.showLabels" [doughnut]="CurrentValChartConfig.isDoughnut">
+                                                        </ngx-charts-pie-chart>
+                                                    </div>
+                                                </div>
+                                                <div class="chat-card-body">
+                                                    <ul class="gap-4 list-basic" fxLayout="column">
+                                                        <li>
+                                                            <div class="list-item list-item-start">
+                                                                <span class="list-item-key">Avg Order Value : </span>
+                                                                <span class="list-item-value">0</span>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="list-item list-item-start">
+                                                                <span class="list-item-key">MRP (incl gst) : </span>
+                                                                <span class="list-item-value"> 0 </span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Static chart 2 -->
+                            <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <div class="chart-card-container">
+                                    <div class="chart-card chart-static manual-css-chart" #chartStaticRef>
+                                        <mat-card>
+                                            <mat-card-header>
+                                                <div class="card-header">
+                                                    <mat-card-title>Static</mat-card-title>
+                                                    <mat-form-field>
+                                                        <mat-select [(value)]="selectedStatic" (selectionChange)="onChangeStatic($event)">
+                                                            <mat-option *ngFor="let option of staticOptions" [value]="option.value">
+                                                                {{ option.viewValue }}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </mat-card-header>
+                                            <hr>
+                                            <mat-card-content class="position-relative">
+                                                <!-- <mat-spinner *ngIf="sIsLoading === 'loading-data'"></mat-spinner> -->
+                                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                                                    <mat-spinner *ngIf="sIsLoading === 'loading-data'"></mat-spinner>
+                                                    <!-- <div class="spinner-border"></div> -->
+                                                </div>
+                                                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="8px">
+                                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                                        <ngx-charts-pie-chart [view]="StaticChartConfig.view" [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data" [gradient]="StaticChartConfig.gradient" [legend]="StaticChartConfig.showLegend" [legendPosition]="StaticChartConfig.legendPosition"></ngx-charts-pie-chart>
+                                                    </div>
+                                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                                        <div fxFlexFill fxLayout="column" fxLayoutAlign="center end" class="gap-16">
+                                                            <div class="chart-info-item" *ngFor="let item of StaticChartConfig.data">
+                                                                <div class="item-name">
+                                                                    <span class="h2 font-weight-600">{{item.name}}</span>
+                                                                </div>
+                                                                <div class="item-value">
+                                                                    <span class="h4">₹ {{item.value}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <ngx-charts-advanced-pie-chart [view]="[chartStaticRef.offsetWidth,300]" [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data" [gradient]="StaticChartConfig.gradient" [legend]="StaticChartConfig.showLegend" [legendPosition]="StaticChartConfig.legendPosition">
+                                                    </ngx-charts-advanced-pie-chart> -->
+
+                                                </div>
+                                                <div *ngIf="sIsLoading === 'noPharSumData'">
+                                                    <h3>No Data</h3>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sales month summary  -->
+                            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <div class="chart-card-container">
+                                    <div class="chart-card chart-sales-summary" #salesMonthSummaryRef>
+                                        <mat-card>
+                                            <mat-card-header>
+                                                <div class="card-header">
+                                                    <mat-card-title>Sales Monthly Summary</mat-card-title>
+                                                </div>
+                                            </mat-card-header>
+                                            <hr>
+                                            <mat-card-content>
+                                                <div *ngIf="ThreeMonSalesConfig.data.length > 0||ThreeMonSalesConfig.multi.length > 0">
+                                                    <ngx-charts-bar-vertical-2d [view]="[salesMonthSummaryRef.offsetWidth - 20,300]" [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.multi" [gradient]="ThreeMonSalesConfig.gradient" [xAxis]="ThreeMonSalesConfig.showXAxis" [yAxis]="ThreeMonSalesConfig.showYAxis" [legend]="ThreeMonSalesConfig.showLegend" [showXAxisLabel]="ThreeMonSalesConfig.showXAxisLabel" [showYAxisLabel]="ThreeMonSalesConfig.showYAxisLabel"
+                                                        [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel" [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel" [legendTitle]="ThreeMonSalesConfig.legendTitle" [showDataLabel]="ThreeMonSalesConfig.True" *ngIf="ThreeMonSalesConfig.multi.length>0">
+                                                    </ngx-charts-bar-vertical-2d>
+                                                    <ngx-charts-bar-vertical [view]="[salesMonthSummaryRef.offsetWidth - 20,300]" [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.data" [gradient]="ThreeMonSalesConfig.gradient" [xAxis]="ThreeMonSalesConfig.showXAxis" [yAxis]="ThreeMonSalesConfig.showYAxis" [legend]="ThreeMonSalesConfig.showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel"
+                                                        [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel" [showGridLines]="ThreeMonSalesConfig.True" [showDataLabel]="ThreeMonSalesConfig.True" *ngIf="ThreeMonSalesConfig.data.length>0">
+                                                    </ngx-charts-bar-vertical>
+                                                </div>
+                                                <!-- <canvas id="pharSumBarChart" style="width: 100%;"></canvas> -->
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+
+                             <!-- Sales month summary  ( Line chart )-->
+                            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <div class="chart-card-container">
+                                    <div class="chart-card chart-sales-summary-line">
+                                        <mat-card>
+                                            <mat-card-header>
+                                                <div class="card-header">
+                                                    <mat-card-title>Sales Monthly Summary (Line Chart)</mat-card-title>
+                                                </div>
+                                            </mat-card-header>
+                                            <hr>
+                                            <mat-card-content>
+                                                <div *ngIf="LineChartConfig.data.length > 0||LineChartConfig.multi.length > 0">
+                                                    <ngx-charts-line-chart [view]="LineChartConfig.view" [scheme]="'picnic'" [legend]="LineChartConfig.showLegend" [showXAxisLabel]="LineChartConfig.showXAxisLabel" [showYAxisLabel]="LineChartConfig.showYAxisLabel" [xAxis]="LineChartConfig.showXAxis" [yAxis]="LineChartConfig.showYAxis" [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel" [timeline]="LineChartConfig.timeline" [results]="LineChartConfig.multi"
+                                                        *ngIf="LineChartConfig.multi.length>0">
+                                                    </ngx-charts-line-chart>
+                                                    <ngx-charts-line-chart [view]="LineChartConfig.view" [scheme]="'picnic'" [legend]="LineChartConfig.showLegend" [showXAxisLabel]="LineChartConfig.showXAxisLabel" [showYAxisLabel]="LineChartConfig.showYAxisLabel" [xAxis]="LineChartConfig.showXAxis" [yAxis]="LineChartConfig.showYAxis" [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel" [timeline]="LineChartConfig.timeline" [results]="LineChartConfig.data"
+                                                        *ngIf="LineChartConfig.data.length>0">
+                                                    </ngx-charts-line-chart>
+
+
+                                                    <!-- <ngx-charts-bar-vertical-2d [view]="LineChartConfig.view"
+                                                [scheme]="LineChartConfig.colorScheme" [results]="LineChartConfig.multi"
+                                                [gradient]="LineChartConfig.gradient" [xAxis]="LineChartConfig.showXAxis"
+                                                [yAxis]="LineChartConfig.showYAxis" [legend]="LineChartConfig.showLegend"
+                                                [showXAxisLabel]="LineChartConfig.showXAxisLabel"
+                                                [showYAxisLabel]="LineChartConfig.showYAxisLabel"
+                                                [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel"
+                                                [legendTitle]="LineChartConfig.legendTitle" [showDataLabel]="LineChartConfig.True"
+                                                *ngIf="LineChartConfig.multi.length>0">
+                                            </ngx-charts-bar-vertical-2d> -->
+                                                    <!-- <ngx-charts-bar-vertical [view]="LineChartConfig.view"
+                                                [scheme]="LineChartConfig.colorScheme" [results]="LineChartConfig.data"
+                                                [gradient]="LineChartConfig.gradient" [xAxis]="LineChartConfig.showXAxis"
+                                                [yAxis]="LineChartConfig.showYAxis" [legend]="LineChartConfig.showLegend"
+                                                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                                                [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel"
+                                                [showGridLines]="LineChartConfig.True" [showDataLabel]="LineChartConfig.True"
+                                                *ngIf="LineChartConfig.data.length>0">
+                                            </ngx-charts-bar-vertical> -->
+                                                </div>
+                                                <!-- <canvas id="pharSumBarChart" style="width: 100%;"></canvas> -->
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layout-card-container" *ngIf="false">
+                        <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="12px grid">
+
+                            <!-- Static chart 2 -->
+                            <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <div class="chart-card-container">
+                                    <div class="chart-card chart-static manual-css-chart" #chartStaticRef>
+                                        <mat-card>
+                                            <mat-card-header>
+                                                <div class="card-header">
+                                                    <mat-card-title>Static</mat-card-title>
+                                                    <mat-form-field>
+                                                        <mat-select [(value)]="selectedStatic" (selectionChange)="onChangeStatic($event)">
+                                                            <mat-option *ngFor="let option of staticOptions" [value]="option.value">
+                                                                {{ option.viewValue }}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </mat-card-header>
+                                            <hr>
+                                            <mat-card-content class="position-relative">
+                                                <!-- <mat-spinner *ngIf="sIsLoading === 'loading-data'"></mat-spinner> -->
+                                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                                                    <mat-spinner *ngIf="sIsLoading === 'loading-data'"></mat-spinner>
+                                                    <!-- <div class="spinner-border"></div> -->
+                                                </div>
+                                                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="8px">
+                                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                                        <ngx-charts-pie-chart [view]="StaticChartConfig.view" [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data" [gradient]="StaticChartConfig.gradient" [legend]="StaticChartConfig.showLegend" [legendPosition]="StaticChartConfig.legendPosition"></ngx-charts-pie-chart>
+                                                    </div>
+                                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                                        <div fxFlexFill fxLayout="column" fxLayoutAlign="center end" class="gap-16">
+                                                            <div class="chart-info-item" *ngFor="let item of StaticChartConfig.data">
+                                                                <div class="item-name">
+                                                                    <span class="h2 font-weight-600">{{item.name}}</span>
+                                                                </div>
+                                                                <div class="item-value">
+                                                                    <span class="h4">₹ {{item.value}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <ngx-charts-advanced-pie-chart [view]="[chartStaticRef.offsetWidth,300]" [scheme]="StaticChartConfig.colorScheme" [results]="StaticChartConfig.data" [gradient]="StaticChartConfig.gradient" [legend]="StaticChartConfig.showLegend" [legendPosition]="StaticChartConfig.legendPosition">
+                                                    </ngx-charts-advanced-pie-chart> -->
+
+                                                </div>
+                                                <div *ngIf="sIsLoading === 'noPharSumData'">
+                                                    <h3>No Data</h3>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sales month summary  -->
+                            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <div class="chart-card-container">
+                                    <div class="chart-card chart-sales-summary" #salesMonthSummaryRef>
+                                        <mat-card>
+                                            <mat-card-header>
+                                                <div class="card-header">
+                                                    <mat-card-title>Sales Monthly Summary</mat-card-title>
+                                                </div>
+                                            </mat-card-header>
+                                            <hr>
+                                            <mat-card-content>
+                                                <div *ngIf="ThreeMonSalesConfig.data.length > 0||ThreeMonSalesConfig.multi.length > 0">
+                                                    <ngx-charts-bar-vertical-2d [view]="[salesMonthSummaryRef.offsetWidth - 20,300]" [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.multi" [gradient]="ThreeMonSalesConfig.gradient" [xAxis]="ThreeMonSalesConfig.showXAxis" [yAxis]="ThreeMonSalesConfig.showYAxis" [legend]="ThreeMonSalesConfig.showLegend" [showXAxisLabel]="ThreeMonSalesConfig.showXAxisLabel" [showYAxisLabel]="ThreeMonSalesConfig.showYAxisLabel"
+                                                        [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel" [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel" [legendTitle]="ThreeMonSalesConfig.legendTitle" [showDataLabel]="ThreeMonSalesConfig.True" *ngIf="ThreeMonSalesConfig.multi.length>0">
+                                                    </ngx-charts-bar-vertical-2d>
+                                                    <ngx-charts-bar-vertical [view]="[salesMonthSummaryRef.offsetWidth - 20,300]" [scheme]="ThreeMonSalesConfig.colorScheme" [results]="ThreeMonSalesConfig.data" [gradient]="ThreeMonSalesConfig.gradient" [xAxis]="ThreeMonSalesConfig.showXAxis" [yAxis]="ThreeMonSalesConfig.showYAxis" [legend]="ThreeMonSalesConfig.showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="ThreeMonSalesConfig.xAxisLabel"
+                                                        [yAxisLabel]="ThreeMonSalesConfig.yAxisLabel" [showGridLines]="ThreeMonSalesConfig.True" [showDataLabel]="ThreeMonSalesConfig.True" *ngIf="ThreeMonSalesConfig.data.length>0">
+                                                    </ngx-charts-bar-vertical>
+                                                </div>
+                                                <!-- <canvas id="pharSumBarChart" style="width: 100%;"></canvas> -->
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+
+                             <!-- Sales month summary  ( Line chart )-->
+                            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <div class="chart-card-container">
+                                    <div class="chart-card chart-sales-summary-line">
+                                        <mat-card>
+                                            <mat-card-header>
+                                                <div class="card-header">
+                                                    <mat-card-title>Sales Monthly Summary (Line Chart)</mat-card-title>
+                                                </div>
+                                            </mat-card-header>
+                                            <hr>
+                                            <mat-card-content>
+                                                <div *ngIf="LineChartConfig.data.length > 0||LineChartConfig.multi.length > 0">
+                                                    <ngx-charts-line-chart [view]="LineChartConfig.view" [scheme]="'picnic'" [legend]="LineChartConfig.showLegend" [showXAxisLabel]="LineChartConfig.showXAxisLabel" [showYAxisLabel]="LineChartConfig.showYAxisLabel" [xAxis]="LineChartConfig.showXAxis" [yAxis]="LineChartConfig.showYAxis" [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel" [timeline]="LineChartConfig.timeline" [results]="LineChartConfig.multi"
+                                                        *ngIf="LineChartConfig.multi.length>0">
+                                                    </ngx-charts-line-chart>
+                                                    <ngx-charts-line-chart [view]="LineChartConfig.view" [scheme]="'picnic'" [legend]="LineChartConfig.showLegend" [showXAxisLabel]="LineChartConfig.showXAxisLabel" [showYAxisLabel]="LineChartConfig.showYAxisLabel" [xAxis]="LineChartConfig.showXAxis" [yAxis]="LineChartConfig.showYAxis" [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel" [timeline]="LineChartConfig.timeline" [results]="LineChartConfig.data"
+                                                        *ngIf="LineChartConfig.data.length>0">
+                                                    </ngx-charts-line-chart>
+
+
+                                                    <!-- <ngx-charts-bar-vertical-2d [view]="LineChartConfig.view"
+                                                [scheme]="LineChartConfig.colorScheme" [results]="LineChartConfig.multi"
+                                                [gradient]="LineChartConfig.gradient" [xAxis]="LineChartConfig.showXAxis"
+                                                [yAxis]="LineChartConfig.showYAxis" [legend]="LineChartConfig.showLegend"
+                                                [showXAxisLabel]="LineChartConfig.showXAxisLabel"
+                                                [showYAxisLabel]="LineChartConfig.showYAxisLabel"
+                                                [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel"
+                                                [legendTitle]="LineChartConfig.legendTitle" [showDataLabel]="LineChartConfig.True"
+                                                *ngIf="LineChartConfig.multi.length>0">
+                                            </ngx-charts-bar-vertical-2d> -->
+                                                    <!-- <ngx-charts-bar-vertical [view]="LineChartConfig.view"
+                                                [scheme]="LineChartConfig.colorScheme" [results]="LineChartConfig.data"
+                                                [gradient]="LineChartConfig.gradient" [xAxis]="LineChartConfig.showXAxis"
+                                                [yAxis]="LineChartConfig.showYAxis" [legend]="LineChartConfig.showLegend"
+                                                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                                                [xAxisLabel]="LineChartConfig.xAxisLabel" [yAxisLabel]="LineChartConfig.yAxisLabel"
+                                                [showGridLines]="LineChartConfig.True" [showDataLabel]="LineChartConfig.True"
+                                                *ngIf="LineChartConfig.data.length>0">
+                                            </ngx-charts-bar-vertical> -->
+                                                </div>
+                                                <!-- <canvas id="pharSumBarChart" style="width: 100%;"></canvas> -->
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CENTER -->
+    </div>
+    <!-- / CONTENT-->
 </div>

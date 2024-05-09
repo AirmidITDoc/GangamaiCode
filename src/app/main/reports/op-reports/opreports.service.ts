@@ -42,7 +42,33 @@ export class OPReportsService {
   public getAppointmentReport(VisitId){
     return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
   }
-  public getOpRefundview(RefundId){
-    return this._httpClient.get("OutPatient/view-OPRefundofBill?RefundId=" + RefundId);
+  
+  public getRegisteredPatientCasepaaperView(VisitId){
+  
+    return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
   }
+
+  
+
+  public getDoctorwisevisistView(VisitId){
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo",+ VisitId)
+  }
+ 
+  public getdepartmentwisecountsummView(PaymentId){
+    return this._httpClient.get("OutPatient/view-OP-PaymentReceipt?PaymentId=" + PaymentId);
+  }
+  public getDocwisevisitsummaryView(VisitId){
+    return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
+  }
+  
+  public getAppointmentlistwithserviceavailedView(VisitId){
+  
+    return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
+  }
+  public getDocwisenewoldpatientView(VisitId){
+  
+    return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
+  }
+
+  
   }

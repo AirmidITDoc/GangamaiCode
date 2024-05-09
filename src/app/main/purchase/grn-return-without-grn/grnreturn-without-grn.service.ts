@@ -38,7 +38,7 @@ export class GRNReturnWithoutGRNService {
     return this._formBuilder.group({
       FromStoreId: '',
       SupplierName:'',
-      GSTType:['0'],
+      GSTType:['GST Return'],
       ReturnDate: [(new Date()).toISOString()],
       ItemName:[''],
       BatchNo:[''],
@@ -88,5 +88,7 @@ export class GRNReturnWithoutGRNService {
   public GRNReturnSave(Param){
     return this._httpClient.post("Pharmacy/InsertGRNReturn", Param);
   }
-  
+  public getVerifyGRNReturn(Param) {
+    return this._httpClient.post("Pharmacy/VerifyGRNReturn", Param)
+  }
 }

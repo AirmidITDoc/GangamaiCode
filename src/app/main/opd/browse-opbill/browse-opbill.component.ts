@@ -10,13 +10,11 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ViewOPBillComponent } from './view-opbill/view-opbill.component';
-import * as converter from 'number-to-words';
 import { IpPaymentInsert, OPAdvancePaymentComponent, UpdateBill } from '../op-search-list/op-advance-payment/op-advance-payment.component';
 import Swal from 'sweetalert2';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { OpPaymentNewComponent } from '../op-search-list/op-payment-new/op-payment-new.component';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
 import { HeaderComponent } from 'app/main/shared/componets/header/header.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
@@ -61,19 +59,51 @@ export class BrowseOPBillComponent implements OnInit {
   isLoading = true;
   sIsLoading: string = '';
   displayedColumns = [
-    'Self',
-    'chkBalanceAmt',
+    // 'Self',
+    // 'chkBalanceAmt',
     // "Bill",
+    // 'BillDate',
+    // 'BillNo',
+    // 'RegNo',
+    // 'PatientName',
+    // 'CompanyName',
+    // 'TotalAmt',
+    // 'ConcessionAmt',
+    // 'NetPayableAmt',
+    // 'PaidAmount',
+    // 'useraction',
+    'useraction',
     'BillDate',
-    'BillNo',
+    'PBillNo',
     'RegNo',
     'PatientName',
+    'PatientAge',
+    'MobileNo',
+    // // 'VisitId',
+    'VisitDate',
+    'DoctorName',
+    'RefDoctorName',
+    'HospitalName',
+    'PatientType',
+    'TariffName',
     'CompanyName',
+    'DepartmentName',
+    // // 'CrossConsulFlag',
+    // // 'PhoneAppId',
     'TotalAmt',
     'ConcessionAmt',
     'NetPayableAmt',
-    'PaidAmount',
+    'PaidAmt',
     'BalanceAmt',
+    // // 'IsCancelled',
+    'CashPay',
+    'ChequePay',
+    'CardPay',
+    'AdvUsedPay',
+    'OnlinePay',
+    'PayCount',
+    'RefundAmount',
+    'CashCounterName',
     'action'
   ];
 
@@ -246,7 +276,7 @@ export class BrowseOPBillComponent implements OnInit {
   }
 
 
-
+  resultsLength = 0;
   getBrowseOPDBillsList() {
     this.isLoadingStr = 'loading';
     var D_data = {
@@ -256,13 +286,20 @@ export class BrowseOPBillComponent implements OnInit {
       "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy"),
       "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0,
       "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value || 0,
+      Start:(this.paginator?.pageIndex??1),
+      Length:(this.paginator?.pageSize??35),
     }
     setTimeout(() => {
       this.isLoadingStr = 'loading';
       this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
         this.dataSource.data = Visit as BrowseOPDBill[];
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+        this.dataSource.data = Visit["Table1"]??[] as BrowseOPDBill[];
+        console.log(this.dataSource.data)
+        // this.dataSource.sort = this.sort;
+        this.resultsLength= Visit["Table"][0]["total_row"];
+
+        // this.dataSource.sort = this.sort;
+        // this.dataSource.paginator = this.paginator;
         this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
       },
         error => {

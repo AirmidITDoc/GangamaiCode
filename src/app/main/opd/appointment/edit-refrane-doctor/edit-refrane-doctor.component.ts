@@ -32,6 +32,7 @@ export class EditRefraneDoctorComponent implements OnInit {
   AdmittedDoc1: any;
   PatientName: any;
   VisitDate:any;
+  RegID:any=0;
   //doctorone filter
   public doctoroneFilterCtrl: FormControl = new FormControl();
   public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -60,7 +61,11 @@ export class EditRefraneDoctorComponent implements OnInit {
       this.PatientName = this.PatientHeaderObj.PatientName;
       this.RefDoctorId = this.PatientHeaderObj.RefDoctorId;
       this.VisitDate=this.PatientHeaderObj.VistDateTime;
-      // console.log(this.PatientHeaderObj);
+      this.RegID = this.PatientHeaderObj.RegId;
+
+      debugger
+      if (this.data.FormName == "Admission")
+        this.RegID = this.PatientHeaderObj.RegId;
     }
 
     this.getDoctor1List();
@@ -120,7 +125,17 @@ export class EditRefraneDoctorComponent implements OnInit {
     
     this.RefDoctorId = this.searchFormGroup.get('DoctorId').value.DoctorId;
     
-   let query = "Update VisitDetails set RefDocId= " + this.RefDoctorId +" where VisitId=" + this.VisitId + " ";
+  //  let query = "Update VisitDetails set RefDocId= " + this.RefDoctorId +" where VisitId=" + this.VisitId + " ";
+
+   let query = '';
+   if (this.data.FormName == "Appointment") {
+      query = "Update VisitDetails set RefDocId= " + this.RefDoctorId + " where Visitid=" + this.VisitId + " ";
+   }
+   if (this.data.FormName == "Admission") {
+      query = "Update VisitDetails set RefDocId= " + this.RefDoctorId + " where RegID=" + this.RegID + " ";
+   }
+
+
     console.log(query);
     this._OpAppointmentService.UpdateQueryByStatement(query).subscribe(response => {
       if (response) {

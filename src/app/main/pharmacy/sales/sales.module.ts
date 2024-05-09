@@ -38,6 +38,7 @@ import { SalesComponent } from './sales.component';
 import { SalePopupComponent } from './sale-popup/sale-popup.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SubstitutesComponent } from './substitutes/substitutes.component';
+import { PrescriptionComponent } from './prescription/prescription.component';
 
 
 const routes: Routes = [
@@ -52,6 +53,7 @@ const routes: Routes = [
     SalesComponent,
     SalePopupComponent,
     SubstitutesComponent,
+    PrescriptionComponent,
   ],
   imports: [
     CommonModule,

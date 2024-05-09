@@ -1,218 +1,218 @@
-app-ip-sales-return {
-    .table1 {
-      height: 600px !important;
-      width: 1700px;
-    }
+// app-ip-sales-return {
+//     .table1 {
+//       height: 600px !important;
+//       width: 1700px;
+//     }
 
-    .table2 {
-      // height: 600px !important;
-      width: 2000px;
+//     .table2 {
+//       // height: 600px !important;
+//       width: 2000px;
 
-      .mat-column-ItemName {
-        width: 490px;
-        max-width: 490px;
-        min-width: 490px;
-        text-align: left;
-      }
+//       .mat-column-ItemName {
+//         width: 490px;
+//         max-width: 490px;
+//         min-width: 490px;
+//         text-align: left;
+//       }
       
-    }
+//     }
   
-    .mat-header-row {
-      width:200;
-      //max-width: 1600px;
-      min-width: 1000px;
-      min-height: 30px;
-      background-color: blue;
-    }
+//     .mat-header-row {
+//       width:200;
+//       //max-width: 1600px;
+//       min-width: 1000px;
+//       min-height: 30px;
+//       background-color: blue;
+//     }
   
-    .mat-row {
-      width: 100%;
-      //max-width: 1600px;
-      min-width: 1400px;
-      min-height: 30px;
+//     .mat-row {
+//       width: 100%;
+//       //max-width: 1600px;
+//       min-width: 1400px;
+//       min-height: 30px;
      
-    }
+//     }
    
-    .mat-column-FromStoreId {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
+//     .mat-column-FromStoreId {
+//       width: 110px;
+//       max-width: 110px;
+//       min-width: 110px;
+//       text-align: left;
   
-    }
+//     }
 
-    .mat-column-IndentNo {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
+//     .mat-column-IndentNo {
+//       width: 110px;
+//       max-width: 110px;
+//       min-width: 110px;
+//       text-align: left;
   
-    }
+//     }
   
-    .mat-column-IndentDate {
-      width: 220px;
-      max-width: 220px;
-      min-width: 220px;
-      text-align: left;
-    }
+//     .mat-column-IndentDate {
+//       width: 220px;
+//       max-width: 220px;
+//       min-width: 220px;
+//       text-align: left;
+//     }
   
-    .mat-column-FromStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
+//     .mat-column-FromStoreName {
+//       width: 200px;
+//       max-width: 200px;
+//       min-width: 200px;
+//       text-align: left;
+//     }
 
-    .mat-column-ToStoreName {
-      width: 200px;
-      max-width: 200px;
-      min-width: 200px;
-      text-align: left;
-    }
+//     .mat-column-ToStoreName {
+//       width: 200px;
+//       max-width: 200px;
+//       min-width: 200px;
+//       text-align: left;
+//     }
 
 
-    .mat-column-Addedby {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
+//     .mat-column-Addedby {
+//       width: 110px;
+//       max-width: 110px;
+//       min-width: 110px;
+//       text-align: left;
+//     }
 
-    .mat-column-IsInchargeVerify {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
+//     .mat-column-IsInchargeVerify {
+//       width: 110px;
+//       max-width: 110px;
+//       min-width: 110px;
+//       text-align: left;
+//     }
 
-    .mat-column-ItemName {
-      width: 490px;
-      max-width: 490px;
-      min-width: 290px;
-      text-align: left;
-    }
+//     .mat-column-ItemName {
+//       width: 490px;
+//       max-width: 490px;
+//       min-width: 290px;
+//       text-align: left;
+//     }
     
-    .mat-column-Qty {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-    }
+//     .mat-column-Qty {
+//       width: 100px;
+//       max-width: 100px;
+//       min-width: 100px;
+//       text-align: left;
+//     }
 
-    .mat-column-UnitMRP {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: left;
-    }
+//     .mat-column-UnitMRP {
+//       width: 100px;
+//       max-width: 100px;
+//       min-width: 100px;
+//       text-align: left;
+//     }
   
   
-    .mat-column-IssueQty {
-      width: 80px;
-      max-width: 80px;
-      min-width: 80px;
-      text-align: left;
-    }
-    .mat-column-Bal {
-      width: 70px;
-      max-width: 70px;
-      min-width: 70px;
-      text-align: left;
-    }
+//     .mat-column-IssueQty {
+//       width: 80px;
+//       max-width: 80px;
+//       min-width: 80px;
+//       text-align: left;
+//     }
+//     .mat-column-Bal {
+//       width: 70px;
+//       max-width: 70px;
+//       min-width: 70px;
+//       text-align: left;
+//     }
 
     
 
-    .mat-column-TotalAmount {
-      width: 110px;
-      max-width: 110px;
-      min-width: 110px;
-      text-align: left;
-    }
-    .mat-column-action {
-      width: 100px;
-      max-width: 100px;
-      min-width: 100px;
-      text-align: center;
-      justify-content: center;
+//     .mat-column-TotalAmount {
+//       width: 110px;
+//       max-width: 110px;
+//       min-width: 110px;
+//       text-align: left;
+//     }
+//     .mat-column-action {
+//       width: 100px;
+//       max-width: 100px;
+//       min-width: 100px;
+//       text-align: center;
+//       justify-content: center;
   
-    }
-    .mat-tab-group {
-  margin-bottom: 48px;
+//     }
+//     .mat-tab-group {
+//   margin-bottom: 48px;
     
-}
+// }
 
-.table4{
+// .table4{
 
   
-  .mat-header-row {
-    width:1000;
-    //max-width: 1600px;
-    min-width: 1000px;
-    min-height: 20px;
-    background-color: blue;
-  }
+//   .mat-header-row {
+//     width:1000;
+//     //max-width: 1600px;
+//     min-width: 1000px;
+//     min-height: 20px;
+//     background-color: blue;
+//   }
 
-  .mat-row {
-    width: 100%;
-    //max-width: 1600px;
-    min-width: 700px;
-    min-height: 20px;
+//   .mat-row {
+//     width: 100%;
+//     //max-width: 1600px;
+//     min-width: 700px;
+//     min-height: 20px;
    
-  }
+//   }
 
-  .mat-column-ItemName {
-    width: 400px;
-    max-width: 400px;
-    min-width: 400px;
-    text-align: left;
-  }
+//   .mat-column-ItemName {
+//     width: 400px;
+//     max-width: 400px;
+//     min-width: 400px;
+//     text-align: left;
+//   }
   
-  .mat-column-Qty {
-    width: 70px;
-    max-width: 70px;
-    min-width: 70px;
-    text-align: left;
-  }
+//   .mat-column-Qty {
+//     width: 70px;
+//     max-width: 70px;
+//     min-width: 70px;
+//     text-align: left;
+//   }
 
   
-  .mat-column-IssueQty {
-    width: 80px;
-    max-width: 80px;
-    min-width: 80px;
-    text-align: left;
-  }
+//   .mat-column-IssueQty {
+//     width: 80px;
+//     max-width: 80px;
+//     min-width: 80px;
+//     text-align: left;
+//   }
 
-  .mat-column-UnitMRP {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    text-align: left;
-  }
+//   .mat-column-UnitMRP {
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     text-align: left;
+//   }
   
-  .mat-column-ReturnQty {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    text-align: left;
-  }
+//   .mat-column-ReturnQty {
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     text-align: left;
+//   }
 
-  .mat-column-Bal {
-    width: 70px;
-    max-width: 70px;
-    min-width: 70px;
-    text-align: left;
-  }
+//   .mat-column-Bal {
+//     width: 70px;
+//     max-width: 70px;
+//     min-width: 70px;
+//     text-align: left;
+//   }
 
-  .mat-column-TotalAmount {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    text-align: left;
-  }
-}
+//   .mat-column-TotalAmount {
+//     width: 100px;
+//     max-width: 100px;
+//     min-width: 100px;
+//     text-align: left;
+//   }
+// }
 
 
-}
+// }
 
 
   

@@ -1,0 +1,30 @@
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+<mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+            style="color: white;">
+            <mat-icon>account_box</mat-icon>
+        </button>
+        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+            New IPD Refund Advance
+        </span>
+        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="color: white;"
+            style="margin-left: 1200px;">
+            <mat-icon style="color: white;">close</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>
+
+<div class="content">
+
+    <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+        <div class="content-card" style="border-radius:4px; ">
+
+        </div>
+    </div>
+</div>
+</div>

@@ -64,6 +64,7 @@
     "ng-multiselect-dropdown": "1.0.0",
     "ng2-charts": "2.4.3",
     "ngrx-store-freeze": "0.2.4",
+    "ngx-barcode": "0.3.0",
     "ngx-color-picker": "8.2.0",
     "ngx-cookie-service": "2.3.0",
     "ngx-extended-pdf-viewer": "10.5.0",

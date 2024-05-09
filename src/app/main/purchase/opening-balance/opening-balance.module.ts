@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { OpeningBalanceComponent } from '../opening-balance/opening-balance.component';
+import { NewOpeningBalanceComponent } from './new-opening-balance/new-opening-balance.component';
 
 
 
@@ -48,6 +49,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     OpeningBalanceComponent,
+    NewOpeningBalanceComponent,
     
   ],
   imports: [

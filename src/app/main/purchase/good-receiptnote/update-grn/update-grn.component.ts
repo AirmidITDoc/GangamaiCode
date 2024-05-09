@@ -570,6 +570,7 @@ export class UpdateGRNComponent implements OnInit {
       return '';
     return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
   }
+  
   getCellCalculation(contact, ReceiveQty) {
     if (contact.PurchaseId > 0) {
       if (contact.ReceiveQty > contact.POQty) {
@@ -579,13 +580,24 @@ export class UpdateGRNComponent implements OnInit {
       }
     }
 
-    
+  
+    let freeqty = contact.FreeQty || 0;
+    let R_qty = contact.ReceiveQty || 0
+    if (contact.ConversionFactor > 0) {
+      contact.TotalQty = ((parseInt(R_qty) + parseInt(freeqty)) * parseInt(contact.ConversionFactor));
+    } else {
+      contact.ConversionFactor = 1
+      this.toastr.warning('Packing cannot be 0', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      contact.TotalQty = ((parseInt(R_qty) + parseInt(freeqty)) * parseInt(contact.ConversionFactor));
+    }
+
     if (contact.ReceiveQty > 0 && contact.Rate > 0) {
       let IGSTPer =contact.IGSTPer ||  0;
       contact.IGSTPer = IGSTPer;
-      if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
 
-        contact.TotalQty = ((parseFloat(contact.ReceiveQty) + parseFloat(contact.FreeQty)) * parseFloat(contact.ConversionFactor));
+      if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
         //total amt
         contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
         //disc
@@ -602,7 +614,7 @@ export class UpdateGRNComponent implements OnInit {
 
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST Before Disc') {
-        contact.TotalQty = ((parseFloat(contact.FreeQty) + parseFloat(contact.ReceiveQty)) * parseFloat(contact.ConversionFactor));
+       
 
         //total amt
         contact.TotalAmount = parseFloat(contact.ReceiveQty) * parseFloat(contact.Rate);
@@ -617,17 +629,11 @@ export class UpdateGRNComponent implements OnInit {
         //disc
         contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100);
         contact.NetAmount = ((totalAmt) - parseFloat(contact.DiscAmount));
-        // //LandedRate As New Double
-        // contact.LandedRate = (contact.NetAmount / contact.TotalQty);
-        // ///PurUnitRate
-        // contact.PurUnitRate = (((contact.TotalAmount) / (contact.ReceiveQty)) * (contact.ConversionFactor));
-        // //PurUnitRateWF
-        // contact.PurUnitRateWF = (((contact.TotalAmount) / (contact.TotalQty)) * (contact.ConversionFactor));
-        // contact.UnitMRP = ((contact.MRP) / (contact.ConversionFactor));
+        
 
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
-        contact.TotalQty = ((parseFloat(contact.FreeQty) + parseFloat(contact.ReceiveQty)) * parseFloat(contact.ConversionFactor));
+       
         //total amt
         contact.TotalAmount = parseFloat(contact.ReceiveQty) * parseFloat(contact.Rate);
         //disc 1
@@ -644,12 +650,7 @@ export class UpdateGRNComponent implements OnInit {
         // contact.VatAmount = ((contact.CGSTAmt) + (contact.SGSTAmt) + (contact.IGSTAmt));
         contact.VatAmount = (((totalamt2) * parseFloat(contact.VatPercentage)) / 100);
         contact.NetAmount = ((totalamt2) + parseFloat(contact.VatAmount)).toFixed(2);
-        // contact.LandedRate = (contact.NetAmount / contact.TotalQty);
-        // ///PurUnitRate
-        // contact.PurUnitRate = (((contact.TotalAmount) / (contact.ReceiveQty)) * (contact.ConversionFactor));
-        // //PurUnitRateWF
-        // contact.PurUnitRateWF = (((contact.TotalAmount) / (contact.TotalQty)) * (contact.ConversionFactor));
-        // contact.UnitMRP = ((contact.MRP) / (contact.ConversionFactor));
+       
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST on MRP Plus FreeQty") {
         let mrpTotal = (parseFloat(contact.TotalQty) * parseFloat(contact.ConversionFactor) * parseFloat(contact.MRP));
@@ -711,7 +712,7 @@ export class UpdateGRNComponent implements OnInit {
   }
   calculateTotalamt() {
     let Qty = this._GRNList.userFormGroup.get('Qty').value;
-    let freeqty = this._GRNList.userFormGroup.get('FreeQty').value;
+    let freeqty = this._GRNList.userFormGroup.get('FreeQty').value || 0;
     this.FinalTotalQty = ((parseInt(Qty) + parseInt(freeqty)) * parseInt(this.vConversionFactor));
 
     if (Qty > 0 && this.vRate > 0) {
@@ -1170,31 +1171,47 @@ export class UpdateGRNComponent implements OnInit {
   }
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp)) {
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  } 
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
       event.preventDefault();
       return false;
     }
   }
-
-  OnSave() {
-    console.log(this.vPurchaseId)
+  vTotalQty:any=0
+  OnSave() { 
     debugger
-    if (!this.vPurchaseId) {
-      if (this.data.chkNewGRN == 1) {
-        this.OnSavenew();
-      } else if (this.data.chkNewGRN == 2) {
-        if (this.PoID > 0) {
-          this.OnEditPO();
+    const checkTotalQty = this.dsItemNameList.data.some(item => item.TotalQty === this.vTotalQty && item.TotalQty == null);
+
+    if (!checkTotalQty) {
+      if (!this.vPurchaseId) {
+        if (this.data.chkNewGRN == 1) {
+          this.OnSavenew();
+        } else if (this.data.chkNewGRN == 2) {
+          if (this.PoID > 0) {
+            this.OnEditPO();
+          }
+          else {
+            this.OnSaveEdit();
+            this.viewGRNREPORTPdf(this.registerObj.GRNID)
+          }
         }
-        else {
-          this.OnSaveEdit();
-          this.viewGRNREPORTPdf(this.registerObj.GRNID)
-        }
+      } else {
+        this.OnSavePO();
       }
-    } else {
-      this.OnSavePO();
+    }else{
+      this.toastr.warning('We found TotalQty column value is 0 please check', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
     }
   }
   Savebtn: boolean = false;

@@ -1,0 +1,122 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <div class="modal-wrapper">
+
+        <div class="modal-header">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <div class="title-icon">
+                        <span>
+                            <mat-icon class="logo-icon">account_box
+                            </mat-icon>
+                        </span>
+                    </div>
+                    <div class="title">
+                        <span>New Scheduler</span>
+                    </div>
+                </div>
+                <div class="modal-header-icon">
+                    <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                        <span class="modal-icon">
+                            <mat-icon>close</mat-icon>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="content">
+                <div class="center px-12" fxFlexAlign="start center">
+                    <form [formGroup]="searchFormGroup">
+                        <div fxLayout="column" fxLayout.gt-sm="row" style="margin-left: 20px;margin-top: 20px;">
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Scheduler Name</mat-label>
+                                <input name="ScheduleName" formControlName="ScheduleName" placeholder="Scheduler Name"
+                                    matInput required type="text">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="validStartPicker" formControllName="StartDate" #bday
+                                    [value]="StartDate" (dateChange)="onChangeStartDate($event.value)"
+                                    placeholder="mm/dd/yyyy">
+                                <mat-datepicker-toggle matSuffix [for]="validStartPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #validStartPicker></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="validEndPicker" formControllName="EndDate" #bday1
+                                    [value]="EndDate" (dateChange)="onChangeEndDate($event.value)"
+                                    placeholder="mm/dd/yyyy">
+                                <mat-datepicker-toggle matSuffix [for]="validEndPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #validEndPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start"
+                            fxLayoutAlign.gt-sm="space-between center" class="appointment-header gap-12">
+
+                            <div class="redio-container"
+                                style="border:1px solid grey;text-align:center;padding:2px;background-color: lightsteelblue;margin-top: 20px;">
+
+                                <label style="padding: 20px;">Scheduler Type: </label>
+                                <mat-radio-group aria-label="Select an option" [(ngModel)]="ScheduleType"
+                                    formControlName="ScheduleType" name="ScheduleType">
+                                    <mat-radio-button value="1" [checked]="ScheduleType==1">Daily</mat-radio-button>
+                                    <mat-radio-button value="2" [checked]="ScheduleType==2">Weekly</mat-radio-button>
+                                    <mat-radio-button value="3" [checked]="ScheduleType==3">Monthly</mat-radio-button>
+                                    <mat-radio-button value="4" [checked]="ScheduleType==4">Custom</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayout.gt-sm="row" style="margin-left: 20px;margin-top: 20px;">
+                            <section class="example-section" *ngIf="ScheduleType==2">
+                                <mat-checkbox (change)="getValue($event,week)"
+                                    style="margin-right: 10px;" *ngFor="let week of Weeks" value="week.Checked" [checked]="week.Checked">{{week.Text}}</mat-checkbox>
+                            </section>
+
+                            <mat-form-field appearance="outline" *ngIf="ScheduleType==3">
+                                <mat-label>Date</mat-label>
+                                <input name="Hours" formControlName="Monthdate" placeholder="Dates" matInput required
+                                    type="text">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" *ngIf="ScheduleType==4">
+                                <mat-label>Date(s)</mat-label>
+                                <input matInput [matDatepicker]="validCustomPicker" formControllName="CustomDate" #bday2
+                                    (dateChange)="onChangeCustomDate($event.value)" placeholder="mm/dd/yyyy">
+                                <mat-datepicker-toggle matSuffix [for]="validCustomPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #validCustomPicker></mat-datepicker>
+                            </mat-form-field>
+                            <button class="btn btn btn-secondary-outline" *ngIf="ScheduleType==4"
+                                style="margin-left: 15px; margin-right: 15px;;" (click)="onAddCustomDate()">
+                                Add Another Date(s)
+                            </button>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Hours</mat-label>
+                                <input name="Hours" formControlName="Hours" placeholder="Hours" matInput required
+                                    type="text">
+                            </mat-form-field>
+                            <div *ngIf="ScheduleType==4">
+                                <ul *ngFor="let week of CustomDates">
+                                    <li>{{week}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start"
+                            fxLayoutAlign.gt-sm="space-between center" class="appointment-header gap-12"
+                            style="margin-top: 10px;margin-left: 20px;">
+
+                            <textarea rows="8" cols="150" formControlName="Query">
+                                   Query
+                                </textarea>
+                        </div>
+                        <div class="button-row-group" style="margin-top: 20px;">
+                            <button class="btn btn-primary" type="submit" (click)="onSubmit()">
+                                Save
+                            </button>
+                            <button class="btn btn-danger-outline" (click)="onClear()">
+                                Clear
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

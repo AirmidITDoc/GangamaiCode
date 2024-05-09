@@ -200,8 +200,26 @@
                                                 (click)="getPrint(row,m)">
                                                 <mat-icon>print</mat-icon>
                                             </button>
+                                            <button mat-icon-button (click)="getVerify(row)"
+                                            matTooltip="Verify">
+                                            <mat-icon *ngIf="row.IsVerified==1"title="verify Menu">verified_user</mat-icon>
+                                            <mat-icon title="verify Menu" *ngIf="row.IsVerified==0">verified_user</mat-icon>
+                                        </button>
                                         </mat-cell>
                                     </ng-container>
+
+                                    <ng-container matColumnDef="Status">
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                            style="color: white;">Verify</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <mat-icon *ngIf="contact.IsVerified" matTooltip="Verified"
+                                                class="pill green-600 s-16">circle</mat-icon>
+                                            <mat-icon *ngIf="!contact.IsVerified" matTooltip="Pending"
+                                                class="pill red-600 s-16">circle</mat-icon> 
+                                          
+                                        </mat-cell>
+                                    </ng-container>
+                                    
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                         </mat-header-cell>

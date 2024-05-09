@@ -22,6 +22,8 @@ import { Admission } from '../Admission/admission/admission.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component';
 import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
+import { ToastrService } from 'ngx-toastr';
+import { CompanyInformationComponent } from '../company-information/company-information.component';
 
 
 
@@ -93,6 +95,7 @@ export class IPSearchListComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     private _ActRoute: Router,
     public datePipe: DatePipe,
+    public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored) { }
 
   ngOnInit(): void {
@@ -100,7 +103,7 @@ export class IPSearchListComponent implements OnInit {
 
     if (this._ActRoute.url == '/ipd/ipadvance') {
       this.menuActions.push('Advance');
-      this.menuActions.push('Bed Transfer');
+      // this.menuActions.push('Bed Transfer');
     }
     else if (this._ActRoute.url == '/ipd/discharge') {
       this.menuActions.push('Discharge');
@@ -114,7 +117,7 @@ export class IPSearchListComponent implements OnInit {
 
       this.menuActions.push('Refund of Bill');
       this.menuActions.push('Refund of Advance');
-
+      this.menuActions.push('Refund of Advance');
     }
 
     else if (this._ActRoute.url == '/ipd/add-billing') {
@@ -122,7 +125,8 @@ export class IPSearchListComponent implements OnInit {
       this.menuActions.push('Bill');
       this.menuActions.push('Refund of Bill');
       this.menuActions.push('Refund of Advance');
-      this.menuActions.push('Payment');
+      // this.menuActions.push('Payment');
+      this.menuActions.push('Update Company Information');
     }
     else if (this._ActRoute.url == '/ipd/medicalrecords') {
       this.menuActions.push('Case Paper');
@@ -175,7 +179,7 @@ export class IPSearchListComponent implements OnInit {
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
         Start:(this.paginator?.pageIndex??1),
-        Length:(this.paginator?.pageSize??20),
+        Length:(this.paginator?.pageSize??35),
       }
       console.log(D_data);
       setTimeout(() => {
@@ -281,6 +285,16 @@ export class IPSearchListComponent implements OnInit {
       console.log(m_data3)
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data3);
       this._IpSearchListService.populateForm(m_data3);
+      debugger
+      let Advflag:boolean=false;
+      if (contact.IsBillGenerated) {
+        Advflag=true;
+      }
+      if(contact.IsDischarged){
+        Advflag=true;
+      }
+
+      if(!Advflag){
       const dialogRef = this._matDialog.open(IPAdvanceComponent,
         {
           maxWidth: "100%",
@@ -290,9 +304,18 @@ export class IPSearchListComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
       });
+    }else{
+      Swal.fire("Bil Generatd !")
+    }
     }
     else if (m == "Discharge Summary") {
       console.log(contact);
+      if(!contact.IsDischarged){
+        this.toastr.warning('Please Check Patient Is Not Discharged', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
       var m_data1 = {
         RegNo: contact.RegNo,
         RegId: contact.RegID,
@@ -314,7 +337,8 @@ export class IPSearchListComponent implements OnInit {
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
         opD_IPD_Typec: contact.opD_IPD_Type,
-        CompanyName:contact.CompanyName
+        CompanyName:contact.CompanyName,
+        IsDischarged:contact.IsDischarged
       }
      
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data1);
@@ -402,7 +426,7 @@ export class IPSearchListComponent implements OnInit {
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
 
-      // this._ActRoute.navigate(['opd/new-OpdBilling']);
+      // if (!contact.IsBillGenerated || contact.IsDischarged ==1) {
       const dialogRef = this._matDialog.open(IPRefundofBillComponent,
         {
           maxWidth: "75vw",
@@ -413,6 +437,7 @@ export class IPSearchListComponent implements OnInit {
         console.log('The dialog was closed - Insert Action', result);
         //  this.getRadiologytemplateMasterList();
       });
+    // }else{Swal.fire("Bill Generated")}
     }
     else if (m == "Refund of Advance") {
       let m_data = {
@@ -441,6 +466,7 @@ export class IPSearchListComponent implements OnInit {
      
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm2(m_data);
+      // if (!contact.IsBillGenerated) {
       const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
         {
           maxWidth: "75vw",
@@ -449,6 +475,45 @@ export class IPSearchListComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         
       });
+    // }else Swal.fire("Bill already Generated")
+    }
+    else if (m == "Update Company Information") {
+      let m_data = {
+        RegNo: contact.RegNo,
+        RegId: contact.RegID,
+        AdmissionID: contact.AdmissionID,
+        OPD_IPD_ID: contact.OPD_IPD_Id,
+        PatientName: contact.PatientName,
+        Doctorname: contact.Doctorname,
+        AdmDateTime: contact.AdmDateTime,
+        AgeYear: contact.AgeYear,
+        ClassId: contact.ClassId,
+        TariffName: contact.TariffName,
+        TariffId: contact.TariffId,
+        DoctorId: contact.DoctorId,
+        DOA: contact.DOA,
+        DOT: contact.DOT,
+        DoctorName: contact.DoctorName,
+        RoomName: contact.RoomName,
+        BedNo: contact.BedName,
+        IPDNo: contact.IPDNo,
+        DocNameID: contact.DocNameID,
+        opD_IPD_Typec: contact.opD_IPD_Type,
+        CompanyName:contact.CompanyName
+      }
+     
+      this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
+      this._IpSearchListService.populateForm2(m_data);
+      // if (!contact.IsBillGenerated) {
+      const dialogRef = this._matDialog.open(CompanyInformationComponent,
+        {
+          maxWidth: "75vw",
+          maxHeight: "99%", width: '100%', height: "100%"
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        
+      });
+    // }else Swal.fire("Bill already Generated")
     }
     else if (m == "Bill") {
       console.log(" This is for  Bill pop : " + m);
@@ -473,7 +538,8 @@ export class IPSearchListComponent implements OnInit {
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
         opD_IPD_Typec: contact.opD_IPD_Type,
-        CompanyName:contact.CompanyName
+        CompanyName:contact.CompanyName,
+        IsDischarged:contact.IsDischarged,
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
       
@@ -510,18 +576,21 @@ export class IPSearchListComponent implements OnInit {
           DOT: contact.DOT,
           DoctorName: contact.DoctorName,
           RoomName: contact.RoomName,
+          WardName: contact.RoomName,
           BedNo: contact.BedName,
+          BedId: contact.BedId,
           IPDNo: contact.IPDNo,
           DocNameID: contact.DocNameID,
           opD_IPD_Typec: contact.opD_IPD_Type,
-          CompanyName:contact.CompanyName
+          CompanyName:contact.CompanyName,
+          IsDischarged:contact.IsDischarged,
         }
         this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
         this._IpSearchListService.populateForm(m_data);
         const dialogRef = this._matDialog.open(DischargeComponent,
           {
             maxWidth: "75vw",
-            height: '500px',
+            height: '400px',
             width: '100%',
           });
         dialogRef.afterClosed().subscribe(result => {
@@ -558,10 +627,10 @@ export class IPSearchListComponent implements OnInit {
             this._IpSearchListService.populateForm(m_data);
             const dialogRef = this._matDialog.open(DischargeComponent,
               {
-
-                maxWidth: "85vw",
+                maxWidth: "90vw",
+                maxHeight: "90vh",
                 height: '600px',
-                width: '100%',
+                width: '1300px',
               });
             dialogRef.afterClosed().subscribe(result => {
               console.log('The dialog was closed - Insert Action', result);
@@ -592,7 +661,8 @@ export class IPSearchListComponent implements OnInit {
         "TariffId": contact.TariffId,
         "TariffName": contact.TariffName,
         "ClassId": contact.ClassId,
-        "ClassName": contact.ClassName
+        "ClassName": contact.ClassName,
+        IsDischarged:contact.IsDischarged,
       }
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm(m_data);
@@ -863,7 +933,7 @@ export class ChargesList {
   BalanceQty:any;
   IsStatus:any;
   extMobileNo:any;
-
+  ConcessionPercentage:any;
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
     this.ServiceId = ChargesList.ServiceId || '';
@@ -885,6 +955,7 @@ export class ChargesList {
     this.BalanceQty=ChargesList.BalanceQty || 0;
     this.IsStatus=ChargesList.IsStatus || 0;
     this.extMobileNo=ChargesList.extMobileNo || ''
+    this.ConcessionPercentage=ChargesList.ConcessionPercentage ||''
   }
 }
 export class AdvanceHeader {

@@ -163,7 +163,7 @@
                                         </mat-header-cell>
                                         <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
                                             <mat-form-field appearance="legacy">
-                                                <input matInput [(ngModel)]="element.RefundAmt" type="number"
+                                                <input matInput [(ngModel)]="element.RefundAmt"  onlyNumber
                                                     (keyup)="getCellCalculation(element,element.RefundAmt)"
                                                     (keypress)="keyPressAlphanumeric($event)">
                                             </mat-form-field>
@@ -495,7 +495,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" id="btncancel" (click)="onClose()">Cancel</button>
-                <button class="btn btn-primary-outline">RePrint</button>
+                <!-- <button class="btn btn-primary-outline">RePrint</button> -->
                 <button class="btn btn-primary" (click)="onSave()"
                     [disabled]="RefundOfBillFormGroup.invalid">Save</button>
             </div>

@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
 import { MatSelect } from '@angular/material/select';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-registration',
@@ -71,7 +72,8 @@ export class NewRegistrationComponent implements OnInit {
   isAreaSelected: boolean = false;
   isMstatusSelected: boolean = false;
   isreligionSelected: boolean = false;
-
+  RegID: any=0;
+  AdmissionID: any=0;
 
   isPrefixSelected: boolean = false;
   optionsPrefix: any[] = [];
@@ -83,7 +85,7 @@ export class NewRegistrationComponent implements OnInit {
   optionsReligion: any[] = [];
   optionsArea: any[] = [];
   optionsMstatus: any[] = [];
-
+  Submitflag:boolean=false;
 
   private _onDestroy = new Subject<void>();
 
@@ -97,13 +99,16 @@ export class NewRegistrationComponent implements OnInit {
   selectedPrefixId: any;
 
   matDialogRef: any;
-
+  sIsLoading: string = '';
   optionsCity: any[] = [];
   filteredOptionsCity: Observable<string[]>;
   filteredOptionsPrefix: Observable<string[]>;
   filteredOptionsReligion: Observable<string[]>;
   filteredOptionsMstatus: Observable<string[]>;
   filteredOptionsArea: Observable<string[]>;
+
+        
+
 
   constructor(public _registerService: RegistrationService,
     private formBuilder: FormBuilder,
@@ -115,7 +120,9 @@ export class NewRegistrationComponent implements OnInit {
     public datePipe: DatePipe,
     private router: Router,
 
-  ) { console.log(this.data) }
+  ) { console.log(this.data) 
+    this.registerObj = this.data.registerObj;
+  }
 
 
   ngOnInit(): void {
@@ -137,11 +144,16 @@ export class NewRegistrationComponent implements OnInit {
 
     if (this.data) {
       debugger
-
+console.log(this.data.registerObj)
         this.registerObj = this.data.registerObj;
         this.registerObj.PrefixID=this.registerObj.PrefixId;
-        this.RegId = this.registerObj.RegId;
+      
+        this.RegID=this.registerObj.RegID;
+        this.AdmissionID=this.registerObj.AdmissionID;
         this.isDisabled = true
+        this.Submitflag=this.data.Submitflag;
+
+
         if(this.registerObj.AgeYear)
           this.registerObj.Age=this.registerObj.AgeYear.trim();
         if(this.registerObj.AgeMonth)
@@ -204,7 +216,7 @@ export class NewRegistrationComponent implements OnInit {
       PrefixID: '',
       FirstName: ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z] *[a-zA-Z]*$"),
+        Validators.pattern("^[A-Za-z()] *[a-zA-Z()]*$"),
       ]],
       MiddleName: ['', [
 
@@ -212,7 +224,7 @@ export class NewRegistrationComponent implements OnInit {
       ]],
       LastName: ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+        Validators.pattern("^[A-Za-z()]*[a-zA-z()]*$"),
       ]],
       GenderId: '',
       Address: '',
@@ -276,6 +288,7 @@ export class NewRegistrationComponent implements OnInit {
   }
 
   getPrefixList() {
+    debugger
     this._registerService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
       if (this.data) {
@@ -530,9 +543,9 @@ export class NewRegistrationComponent implements OnInit {
     this._registerService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
   }
   onSubmit() {
-    debugger
+    
     this.isLoading = 'submit';
-    if (!this.registerObj.RegId) {
+    if (!this.registerObj.RegId && this.RegID ==0) {
       var m_data = {
         "opdRegistrationSave": {
           "RegID": 0,
@@ -575,6 +588,7 @@ export class NewRegistrationComponent implements OnInit {
           Swal.fire('Congratulations !', 'Register Data save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
+              this.getRegistredPatientCasepaperview(response);
             }
           });
         } else {
@@ -582,7 +596,14 @@ export class NewRegistrationComponent implements OnInit {
         }
       });
     }
-    else {
+    else
+    //  if(this.RegID !==0 || this.registerObj.RegId) {
+    //   if(this.RegID !==0){
+    //     this.registerObj.RegId=this.RegID ;
+    //   }
+    //   if(this.Submitflag)
+    //     this.registerObj.RegId= this.RegId;
+debugger
       var m_data1 = {
         "opdRegistrationUpdate": {
           "RegID": this.registerObj.RegId,
@@ -592,7 +613,7 @@ export class NewRegistrationComponent implements OnInit {
           "LastName": this.registerObj.LastName || "",
           "Address": this.registerObj.Address || "",
           "City": this.personalFormGroup.get('CityId').value.CityName || 0,
-          "PinNo": '222',// this._registerService.mySaveForm.get("PinNo").value || "0",
+          "PinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
           "DateOfBirth": "2023-04-26T11:13:30.638Z",//this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
           "Age": this.registerObj.AgeYear || 0,//this._registerService.mySaveForm.get("Age").value || "0",
           "GenderID": this.personalFormGroup.get('GenderId').value.GenderId || 0,
@@ -615,12 +636,19 @@ export class NewRegistrationComponent implements OnInit {
           "Photo": ''// this.file.name || '',
         }
       }
+      console.log(m_data1)
       this._registerService.regUpdate(m_data1).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'Register Data Udated Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
+             
+              debugger
+              // if(this.Submitflag )
+                this.getAdmittedPatientCasepaperview(this.AdmissionID);
+              
+              // if(!this.Submitflag)
+              //   this.getRegistredPatientCasepaperview(this.registerObj.VisitId);
               this._matDialog.closeAll();
-
             }
           });
         }
@@ -631,7 +659,7 @@ export class NewRegistrationComponent implements OnInit {
 
       });
     }
-  }
+  // }
   getOptionTextPrefix(option) {
     return option && option.PrefixName ? option.PrefixName : '';
   }
@@ -874,5 +902,63 @@ export class NewRegistrationComponent implements OnInit {
 
       this.mstatus.nativeElement.focus();
     }
+  }
+
+  getAdmittedPatientCasepaperview(AdmissionId) {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+    //   this.SpinLoading =true;
+    //  this.AdList=true;
+    this._registerService.getAdmittedPatientCasepaaperView(
+      AdmissionId
+      ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Admission Paper  Viewer"
+          }
+        });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+    });
+   
+    },100);
+
+  }
+
+  getRegistredPatientCasepaperview(VisitId) {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+    //   this.SpinLoading =true;
+    //  this.AdList=true;
+    this._registerService.getRegisteredPatientCasepaaperView(
+      VisitId
+      ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Admission Paper  Viewer"
+          }
+        });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+    });
+   
+    },100);
+
   }
 }

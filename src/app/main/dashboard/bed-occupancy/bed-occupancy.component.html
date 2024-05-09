@@ -1,4 +1,4 @@
-<div id="dashboard-project" class="page-layout simple right-sidebar bed-occupancy-section" fxLayout="row">
+<div id="dashboard-project" class="page-layout simple right-sidebar bed-occupancy-section" fxLayout="row" *ngIf="false">
 
     <!-- CENTER -->
     <div class="center">
@@ -8,8 +8,7 @@
 
             <div class="header-row" fxLayout="row" fxLayoutAlign="space-between center">
 
-                <span class="mat-display-1 m-0 welcome-message"
-                    [@animate]="{value:'*',params:{x:'50px'}}">Bed Occupancy Dashboard
+                <span class="mat-display-1 m-0 welcome-message" [@animate]="{value:'*',params:{x:'50px'}}">Bed Occupancy Dashboard
                 </span>
 
                 <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md>
@@ -29,8 +28,7 @@
                         {{ele.LocationName}}
                     </div>
                 </div>
-                <div
-                    [ngClass]="ele.isSelected ? 'ward-details-container active' : 'ward-details-container '"> <!--ward-white-->
+                <div [ngClass]="ele.isSelected ? 'ward-details-container active' : 'ward-details-container '"> <!--ward-white-->
                     <div class="detail-div" fxLayout="column" fxLayoutGap="15px">
                         <div style="text-align: center;">
                             <span class="labels">Ward Charges: </span><span class="ward-value-class">1500/-</span>
@@ -56,12 +54,11 @@
             </div>
         </div>
 
-        
+
         <div class="ward-availibility" fxLayout="row wrap" fxLayoutGap="15px grid">
             <div class="ward-avail-details" fxFlex="20%" *ngFor="let ele of warItemArr">
                 <div style="margin-bottom: 10px;">
-                    <span
-                        [ngClass]="ele.IsAvailible ? 'ward-status status-green' : 'ward-status status-orange'">{{ele.IsAvailible
+                    <span [ngClass]="ele.IsAvailible ? 'ward-status status-green' : 'ward-status status-orange'">{{ele.IsAvailible
                         ? 'Available' : 'Occupied'}}</span>
                 </div>
                 <div>
@@ -85,3 +82,163 @@
 
     </div>
 </div>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar bed-occupancy-section" dynamicTableHeight>
+    <!-- HEADER -->
+    <div class="top-header accent h-60">
+        <div class="top-header-info">
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box </mat-icon>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>Bed Occupancy Dashboard </span>
+            </div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content layout-body">
+        <div class="center p-12 ">
+            <div class="content-card ward-dashboard-container">
+                <div fxLayout="row" class="gap-8">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <div class="layout-content-container " fusePerfectScrollbar>
+                            <div fxFlexFill fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="12px grid">
+                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" *ngFor="let item of warDataArr">
+                                    <div class="ward-card-container" (click)="onSelectWard(item)">
+                                        <mat-card class="ward-card" [ngClass]="{'active':item.isSelected}">
+                                            <div class="card-header border-bottom pb-2">
+                                                <div class="card-header-title">
+                                                    <span class="h3 font-weight-600">{{item.RoomName}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body py-16 ">
+                                                <div fxLayout="column" class="gap-8">
+                                                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                                                        <div class="room-info">
+                                                            <span class="ward-info-title">Total Rooms : </span>
+                                                            <span class="ward-info-value">0</span>
+                                                        </div>
+                                                        <div class="bed-info">
+                                                            <span class="ward-info-title">Total Beds : </span>
+                                                            <span class="ward-info-value">0</span>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                                                        <div class="total-occupied orange-800-fg">
+                                                            <span class="ward-info-title">Occupied : </span>
+                                                            <span class="ward-info-value"> {{item.OccuipedCount}}</span>
+                                                        </div>
+                                                        <div class="total-available green-800-fg">
+                                                            <span class="ward-info-title">Available : </span>
+                                                            <span class="ward-info-value"> {{item.AvailableCount}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer border-top pt-8">
+                                                <div fxLayout="row" fxLayoutAlign="space-between center" class="gap-8">
+                                                    <div class="floor">
+                                                        <span class="font-weight-600">{{item.LocationName}}</span>
+                                                    </div>
+                                                    <div class="ward-charges">
+                                                        <span class="font-weight-600">Ward Charges : </span>
+                                                        <span>1500 /-</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <div class="layout-content-container">
+                            <div class="table-header" *ngIf="selectedRoom">
+                                <div class="table-header-title pb-2 mb-3 border-bottom">
+                                    <span class="h1 font-weight-600">{{selectedRoom}}</span>
+                                </div>
+                            </div>
+                            <div class="table-wrapper">
+                                <!-- Mat table -->
+                                <div matColumnDef="loading" [ngClass]="{'hide': !isTableLoading}" class="backgroundBlur">
+                                    <div class="spinner-border"></div>
+                                </div>
+                                <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+
+                                    <ng-container matColumnDef="RegNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Reg No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let item">
+                                            <span> {{item.RegNo || '--'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PatientName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Patient name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let item">
+                                            <span> {{item.PatientName || '--' }}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="DoctorName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Doctor name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let item">
+                                            <span> {{item.DoctorName || '--' }}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IsAvailible">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Status </mat-header-cell>
+                                        <mat-cell *matCellDef="let item">
+                                            <span [ngClass]="item.IsAvailible ? 'green-800-fg' :'orange-800-fg'"> {{item.IsAvailible ? 'Available':'Occupied'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="BedName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Bed name</mat-header-cell>
+                                        <mat-cell *matCellDef="let item">
+                                            <span> {{item.BedName || '--' }}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef>
+                                            <span *ngIf="!warItemArr.length ">No Data Found...</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent min-width-600" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+
+                                    <mat-row class="min-width-600" *matRowDef="let item; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': warItemArr.length > 0 }">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <!-- <div fxFlexFill fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="12px grid">
+                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" *ngFor="let item of warItemArr">
+                                        <div class="ward-card-container">
+                                            <mat-card>
+                                                <div>
+                                                    <pre>
+                                                    {{item | json}}
+                                                    </pre>
+                                                </div>
+                                            </mat-card>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CENTER -->
+    </div>
+    <!-- / CONTENT-->
+</div>
+<!-- RegNo PatientName DoctorName Bed Status  -->

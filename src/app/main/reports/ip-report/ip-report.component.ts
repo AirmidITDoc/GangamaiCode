@@ -122,7 +122,187 @@ var data={
       this.FlagRequestIdSelected = false;
       this.FlagPaymentIdSelected = false;
       this.FlagMaterialConsumptionIdSelected=false;
-    } else if (this.ReportName == 'IP Patient CasePaper') {
+    }else if (this.ReportName == 'IPD Admission List Company Wise Details') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    }
+    else if (this.ReportName == 'IPD Admission List Company Wise Summary') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    }
+    else if (this.ReportName == 'IPD Current Admitted List') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=false
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    }
+    else if (this.ReportName == 'IPD Current Admitted - Ward Wise Charges') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    } 
+    else if (this.ReportName == 'Department Wise Count Summary') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    } 
+    else if (this.ReportName == 'Doctor Wise Count Summary') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    } 
+    else if (this.ReportName == 'IPD Current Admitted - Ward Wise Charges') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    } 
+    else if (this.ReportName == 'IPD Current Ref Admitted List') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    } 
+    else if (this.ReportName == 'IPD Discharge Type Wise') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    } 
+    else if (this.ReportName == 'IPD Discharge Type Company Wise') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    }  else if (this.ReportName == 'IPD RefDoctor Wise') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    }
+    else if (this.ReportName == 'IPD Discharge Details') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    }
+    else if (this.ReportName == 'IPD Discharge Report with Mark Status') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    }
+    else if (this.ReportName == 'IPD Discharge Report with Bill Summary') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    }
+    else if (this.ReportName == 'OP to IP Converted List With Service availed') {
+      // this.getAdmittedPatientCasepaperview();
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    }
+
+    else if (this.ReportName == 'IP Patient CasePaper') {
       // this.getAdmittedPatientCasepaperview();
       this.FlagAdmissionIdSelected=true
       this.FlagUserSelected = false;
@@ -264,27 +444,59 @@ var data={
     } else if (this.ReportName == 'IP Patient CasePaper') {
       this.getAdmittedPatientCasepaperview();
       
-    } else if (this.ReportName == 'IP Advance Receipt') {
+    } 
+    else if (this.ReportName == 'IP Advance Receipt') {
       this.viewgetIPAdvanceReportPdf();
       
-    }
-     else if (this.ReportName == 'IP Lab Request Report') {
-      this.viewgetLabrequestReportPdf();
     } 
-    else if (this.ReportName == 'IP Settlement Receipt') {
-      this.getIpPaymentReceiptview();
-    } else if (this.ReportName == 'Material Consumption Report') {
-      this.getMaterialConsumptionpdf();
+     else if (this.ReportName == 'IPD Admission List Company Wise Details') {
+      this.getAdmissionlistcompanywiseview();
+      
+    } else if (this.ReportName == 'IPD Admission List Company Wise Summary') {
+      this.viewgetAdmlistcompanywisesummaryReportPdf();
+      
+    }
+     else if (this.ReportName == 'IPD Current Admitted List') {
+      this.viewgetCurrentadmittedReportPdf();
+    } 
+    else if (this.ReportName == 'IPD Current Admitted - Ward Wise Charges') {
+      this.getCurrentadmitwardwisechargsview();
+    } else if (this.ReportName == 'Department Wise Count Summary') {
+      this.getDeptwisecountsummarypdf();
       
     } 
-    // else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
-    //   this.viewgetPharCollsummDayuserwiseReportPdf();
-    // }
-    // else if (this.ReportName == 'Sales Cash Book Report') {
-    //   this.viewgetSalesCashBookReportPdf();
-    // }
-    // else if (this.ReportName == 'Purchase Order') {
-    //   this.viewgetPurchaseorderReportPdf();
+    else if (this.ReportName == 'Doctor Wise Count Summary') {
+      this.viewgetDoctorwisecountsummaryReportPdf();
+    }
+    else if (this.ReportName == 'IPD Current Ref Admitted List') {
+      this.viewgetCurrRefdocAdmitlistReportPdf();
+    }
+    else if (this.ReportName == 'IPD Discharge Type Wise') {
+      this.viewgetDischargeTypewiseReportPdf();
+    }
+    else if (this.ReportName == 'IPD Discharge Type Company Wise') {
+      this.viewgetDischargetypecompanywisePdf();
+    }
+    else if (this.ReportName == 'IPD Discharge Type Company Wise Count') {
+      this.viewgetDisctypecompanywisecountPdf();
+    }
+    else if (this.ReportName == 'IPD RefDoctor Wise') {
+      this.viewgetRefDoctorwiseReportPdf();
+    }
+    else if (this.ReportName == 'IPD Discharge Details') {
+      this.viewgetDischargedetailReportPdf();
+    }
+    else if (this.ReportName == 'IPD Discharge Report with Mark Status') {
+      this.viewgetDischareRptwithmarkstatusPdf();
+    }
+    else if (this.ReportName == 'IPD Discharge Report with Bill Summary') {
+      this.viewgetDischargerptwithbillsummaryPdf();
+    }
+    else if (this.ReportName == 'OP to IP Converted List With Service availed') {
+      this.viewgetOPTOIPConwithserviceavaliedPdf();
+    }
+    // else if (this.ReportName == 'IPD Discharge Report with Bill Summary') {
+    //   // this.viewgetPurchaseorderReportPdf();
     // }
   }
 
@@ -325,15 +537,10 @@ var data={
 
   
   getAdmittedPatientCasepaperview() {
-    // this.sIsLoading = 'loading-data';
+   debugger
 
     let AdmissionID=this._IPReportService.userForm.get('AdmissionID').value || 0;
-    // if(flag){
-    //   AdmissionID=AdmissionId
-    // }else{
-    //   AdmissionID=AdmissionId.AdmissionID
-    // }
-
+    
     setTimeout(() => {
       this.SpinLoading =true;
      this.AdList=true;
@@ -361,8 +568,6 @@ var data={
 
   }
 
-
-  
   
 viewgetIPAdvanceReportPdf() {
   let AdvanceDetailID=this._IPReportService.userForm.get('AdvanceDetailID').value || 0;
@@ -391,8 +596,7 @@ viewgetIPAdvanceReportPdf() {
    
     },100)
   }
-  
-
+ 
   
   viewgetLabrequestReportPdf() {
     let RequestId=this._IPReportService.userForm.get('RequestId').value || 0;
@@ -485,6 +689,53 @@ viewgetIPAdvanceReportPdf() {
    
   }
 
+
+
+  viewgetCurrentadmittedReportPdf(){
+    setTimeout(() => {
+      
+      this.AdList=true;
+     this._IPReportService.getAdmittedPatientListView(
+      
+       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+       0,0,
+       ).subscribe(res => {
+       const matDialog = this._matDialog.open(PdfviewerComponent,
+         {
+           maxWidth: "85vw",
+           height: '750px',
+           width: '100%',
+           data: {
+             base64: res["base64"] as string,
+             title: "Admission List  Viewer"
+           }
+         });
+ 
+         matDialog.afterClosed().subscribe(result => {
+           this.AdList=false;
+           this.sIsLoading = ' ';
+         });
+     });
+    
+     },100);
+  }
+
+  
+  getAdmissionlistcompanywiseview(){}
+  viewgetAdmlistcompanywisesummaryReportPdf(){}
+  getCurrentadmitwardwisechargsview(){}
+  getDeptwisecountsummarypdf(){}
+  viewgetDoctorwisecountsummaryReportPdf(){}
+  viewgetCurrRefdocAdmitlistReportPdf(){}
+  viewgetDischargeTypewiseReportPdf(){}
+  viewgetDisctypecompanywisecountPdf(){}
+  viewgetRefDoctorwiseReportPdf(){}
+  viewgetDischargedetailReportPdf(){}
+  viewgetDischareRptwithmarkstatusPdf(){}
+  viewgetDischargerptwithbillsummaryPdf(){}
+  viewgetOPTOIPConwithserviceavaliedPdf(){}
+  viewgetDischargetypecompanywisePdf(){}
 
   userChk(option) {
     this.UserId = option.UserID || 0;

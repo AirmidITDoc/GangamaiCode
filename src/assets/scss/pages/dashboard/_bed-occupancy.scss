@@ -1,43 +1,24 @@
 .bed-occupancy-section {
-    .ward-dashboard {
-        .ward-main-conatiner {
-            .ward-container {
-                font-weight: normal;
-                font-weight: 600;
-            }
-            .ward-details-container {
-                background-color: $primary-25;
-                transition: 0.2s;
-                &:hover,
-                &.active {
-                    background-color: $primary-50;
-                }
-                .detail-div {
-                    .ward-value-class {
-                        font-weight: normal;
-                        font-weight: 600;
-                    }
+    .ward-dashboard-container {
+        .layout-content-container {
+            height: calc(100vh - 130px);
+            .ward-card-container {
+                cursor: pointer;
+                .ward-card {
+                    transition: 0.2s;
                 }
             }
         }
     }
     @include themed() {
-        .ward-dashboard {
-            .ward-main-conatiner {
-                .ward-container {
-                    background: t($ngt-inverse-dark);
-                    color:  t($bg-color);
-                }
-                .ward-details-container {
-                    background-color: t($ngt-inverse);
-                    &:hover,
-                    &.active {
-                        background: $gray-400;
-                    }
-                    .detail-div {
-                        .labels {
-                        }
-                        .ward-value-class {
+        .ward-dashboard-container {
+            .layout-content-container {
+                .ward-card-container {
+                    cursor: pointer;
+                    .ward-card {
+                        &.active,
+                        &:hover {
+                            background-color: t($ngt-primary-50);
                         }
                     }
                 }

@@ -176,12 +176,11 @@ export class NewGRNReturnComponent implements OnInit {
         this.vExpDates = this.datePipe.transform(result.BatchExpDate, "MM-dd-yyyy");
         this.vQty = '';
         this.vBalQty = result.BalanceQty;
-        this.vLandedRate = result.PurchaseRate;
+        this.vLandedRate = result.LandedRate;
         this.vTotalAmount = 0;
         this.vGST = result.VatPercentage;
         this.vGSTAmount = 0;
-        this.vNetAmount = 0;
-        this.vLandedrate = result.LandedRate;
+        this.vNetAmount = 0; 
         this.vUnitMRP = result.UnitMRP;
         this.vStockId = result.StockId;
         this.vConversionFactor = result.ConversionFactor;
@@ -262,7 +261,7 @@ export class NewGRNReturnComponent implements OnInit {
   }
  
   CalculateTotalAmt(){
-    if(this.vQty > 0 && this.vBalQty > this.vQty){
+    if(this.vQty > 0 && this.vBalQty >= this.vQty){
       this.vTotalAmount = (parseFloat(this.vQty) * parseFloat(this.vLandedRate)).toFixed(2);
       this.vNetAmount = this.vTotalAmount;
     }else{
@@ -270,13 +269,13 @@ export class NewGRNReturnComponent implements OnInit {
       this.vTotalAmount = 0;
       this.vGSTAmount =0;
       this.vNetAmount = 0;
-      this.toastr.warning('Please Qty lessthan BalQty', 'Warning !', {
+      this.toastr.warning('Please enter Qty lessthan BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
     let RadioValue = this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value || 1 ;
     console.log(RadioValue);
-    if(RadioValue == 0){
+    if(RadioValue == 'GST Return'){
       this.vGSTAmount = ((parseFloat(this.vGST) * parseFloat(this.vTotalAmount)) / 100).toFixed(2);
       this.vNetAmount = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
     }else{
@@ -337,11 +336,11 @@ export class NewGRNReturnComponent implements OnInit {
     grnReturnSave['netAmount'] =  this._GRNReturnService.ReturnFinalForm.get('FinalNetPayamt').value || 0;
     grnReturnSave['cash_Credit'] = true//this._GRNReturnService.NewGRNReturnFrom.get('CashType').value;
     grnReturnSave['remark'] = this._GRNReturnService.ReturnFinalForm.get('Remark').value || '';
-    grnReturnSave['isVerified'] = true;
-    grnReturnSave['isClosed'] = true;
+    grnReturnSave['isVerified'] = false;
+    grnReturnSave['isClosed'] = false;
     grnReturnSave['addedby'] =this._loggedService.currentUserValue.user.id || 0;
-    grnReturnSave['isCancelled'] =true;
-    grnReturnSave['grnType'] = 0 ;
+    grnReturnSave['isCancelled'] =false;
+    grnReturnSave['grnType'] = this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value || '';
     grnReturnSave['isGrnTypeFlag'] = true;
     grnReturnSave['grnReturnId'] =0;
   
@@ -366,13 +365,15 @@ export class NewGRNReturnComponent implements OnInit {
       grnDetailSaveObj['octroiPer'] =  0;
       grnDetailSaveObj['octroiAmt'] =  0;
       grnDetailSaveObj['landedTotalAmount'] =  element.TotalAmount || 0;
-      grnDetailSaveObj['mrpTotalAmount'] = this.mrpTotalAmount || 0;
+      grnDetailSaveObj['mrpTotalAmount'] = this.mrpTotalAmount || 0; 
+      grnDetailSaveObj['purchaseTotalAmount'] =  0;
       grnDetailSaveObj['conversion'] = element.ConversionFactor || 0;
-      grnDetailSaveObj['remarks'] = '';
+      grnDetailSaveObj['remarks'] = ''; 
+      grnDetailSaveObj['stkId'] = element.StockId || 0;
       grnDetailSaveObj['cf'] = element.ConversionFactor || 0;
       grnDetailSaveObj['totalQty'] =totalQty || 0;
       grnDetailSaveObj['grnId'] =  0
-      grnReturnDetailSavearray.push(grnDetailSaveObj);
+      grnReturnDetailSavearray.push(grnDetailSaveObj); 
   
     });
   
@@ -380,7 +381,7 @@ export class NewGRNReturnComponent implements OnInit {
     this.dsItemList.data.forEach((element) => {
       let grnReturnUpdateCurrentStockObj = {};
       grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
-      grnReturnUpdateCurrentStockObj['issueQty'] = element.BalQty || 0;
+      grnReturnUpdateCurrentStockObj['issueQty'] = element.Qty || 0;
       grnReturnUpdateCurrentStockObj['stkId'] = element.StockId || 0;
       grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.user.storeId || 0;
       grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);

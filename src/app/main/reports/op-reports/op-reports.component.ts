@@ -103,7 +103,12 @@ var data={
   ReportSelection(el) {
     this.ReportName = el.ReportName;
     this.ReportID = el.ReportId;
-
+    if (this.ReportName == 'Registration Report') {
+      this.FlagVisitSelected=true
+      this.FlagPaymentIdSelected=false
+      this.getRegistredPatientCasepaperview();
+    
+    } 
     if (this.ReportName == 'Patient Appointment Detail') {
       this.FlagVisitSelected=true
       this.FlagPaymentIdSelected=false
@@ -117,42 +122,37 @@ var data={
       this.FlagRefundIdSelected = false;
       
     } 
-     else if (this.ReportName == 'OP RefundofBill') {
-      this.FlagUserSelected = false;
-      this.FlagPaymentIdSelected=false
-      this.FlagRefundIdSelected = true;
+    
+    else if (this.ReportName == 'DoctorWise Visit Report') {
+      this.FlagUserSelected = true;
+      // this.FlagPaymentSelected = false;
+
+    } else if (this.ReportName == 'Refrance doctor wise Report') {
+      this.FlagUserSelected = true;
+      // this.FlagPaymentSelected = false;
 
     } 
-    // else if (this.ReportName == 'OP IP COMMAN COLLECTION') {
-    //   this.FlagUserSelected = true;
-    //   this.FlagPaymentSelected = false;
+    else if (this.ReportName == 'Department Wise count summury') {
+      // this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
 
-    // } else if (this.ReportName == 'OP IP BILL SUMMARY') {
-    //   this.FlagUserSelected = true;
-    //   this.FlagPaymentSelected = false;
+    } else if (this.ReportName == 'DoctorWise Visit Count Summary') {
+      // this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
+    } else if (this.ReportName == 'Appoinment List with servise Availed') {
+      // this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
 
-    // } 
-    // else if (this.ReportName == 'Sales Return Summary Report') {
-    //   this.FlagPaymentSelected = false;
-    //   this.FlagUserSelected = false;
+    } else if (this.ReportName == 'Cross Consultation Report') {
+      this.FlagUserSelected = true;
+      // this.FlagPaymentSelected = false;
 
-    // } else if (this.ReportName == 'Sales Return PatientWise Report') {
-    //   this.FlagPaymentSelected = false;
-    //   this.FlagUserSelected = false;
-    // } else if (this.ReportName == 'Sales Credit Report') {
-    //   this.FlagPaymentSelected = false;
-    //   this.FlagUserSelected = false;
+    }
+    else if (this.ReportName == 'Doctor Wise new and Old Patient Report') {
+      // this.FlagPaymentSelected = true;
+      this.FlagUserSelected = false;
 
-    // } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
-    //   this.FlagUserSelected = true;
-    //   this.FlagPaymentSelected = false;
-
-    // }
-    // else if (this.ReportName == 'Sales Cash Book Report') {
-    //   this.FlagPaymentSelected = true;
-    //   this.FlagUserSelected = false;
-
-    // }
+    }
   }
 
 
@@ -165,28 +165,26 @@ var data={
       this.viewgetOPPayemntPdf();
      
     } 
-    else if (this.ReportName == 'OP RefundofBill') {
-      this.viewgetOPRefundofBillPdf();
+   
+    else if (this.ReportName == 'Registration Report') {
+      this.viewgetPatientAppointmentReportPdf();
     }
-    // else if (this.ReportName == 'OP IP BILL SUMMARY') {
-    //   this.viewgetOPIPBillSummaryReportPdf();
-    // }
-    //  else if (this.ReportName == 'Sales Return Summary Report') {
-    //   this.viewgetSalesReturnReportPdf();
-    // } 
-    // else if (this.ReportName == 'Sales Return PatientWise Report') {
-    //   this.viewgetSalesReturnPatientwiseReportPdf();
-    // } else if (this.ReportName == 'Sales Credit Report') {
-    //   this.viewgetSalesCreditReportPdf();
-    // } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
-    //   this.viewgetPharCollsummDayuserwiseReportPdf();
-    // }
-    // else if (this.ReportName == 'Sales Cash Book Report') {
-    //   this.viewgetSalesCashBookReportPdf();
-    // }
-    // else if (this.ReportName == 'Purchase Order') {
-    //   this.viewgetPurchaseorderReportPdf();
-    // }
+     else if (this.ReportName == 'DoctorWise Visit Report ') {
+      this.viewgetDoctorwisevisitReportPdf();
+    } 
+    else if (this.ReportName == 'Department Wise count summury') {
+      this.viewgetDeptwisecountsummaryReportPdf();
+    } else if (this.ReportName == 'DoctorWise Visit Count Summary') {
+      this.viewgetDocwisevisitcountsummaryReportPdf();
+    } else if (this.ReportName == 'Appoinment List with servise Availed') {
+      this.viewgetApplistwithserviceavailedReportPdf();
+    }
+    else if (this.ReportName == 'Cross Consultation Report') {
+      this.getCrossConsultationview();
+    }
+    else if (this.ReportName == 'Doctor Wise new and Old Patient Report') {
+      this.viewgetDocwisenewoldpatientReportPdf();
+    }
   }
 
 
@@ -220,8 +218,7 @@ var data={
      }, 100);
    }
 
-
-   
+  
 
 viewgetOPPayemntPdf() {
  let PaymentId=this._OPReportsService.userForm.get('PaymentId').value ||0;
@@ -249,34 +246,208 @@ viewgetOPPayemntPdf() {
  
   },100);
 }
-viewgetOPRefundofBillPdf() {
-  // this.sIsLoading = 'loading-data';
-  let RefundId=this._OPReportsService.userForm.get('RefundId').value ||0;
+
+
+getRegistredPatientCasepaperview() {
+  this.sIsLoading = 'loading-data';
   setTimeout(() => {
-  
-  this._OPReportsService.getOpRefundview(
-    RefundId
-  ).subscribe(res => {
-    const dialogRef = this._matDialog.open(PdfviewerComponent,
+  //   this.SpinLoading =true;
+  let VisitId
+  this._OPReportsService.getRegisteredPatientCasepaaperView(
+    VisitId
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
       {
         maxWidth: "85vw",
         height: '750px',
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Op Refund Of Bill Receipt Viewer"
+          title: "Admission Paper  Viewer"
         }
       });
-      dialogRef.afterClosed().subscribe(result => {
-       
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        
-        this.sIsLoading = '';
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
       });
   });
  
   },100);
+
+}
+
+
+getCrossConsultationview() {
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+  //   this.SpinLoading =true;
+  let VisitId
+  this._OPReportsService.getRegisteredPatientCasepaaperView(
+    VisitId
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Admission Paper  Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+viewgetDoctorwisevisitReportPdf() {
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+  //   this.SpinLoading =true;
+  let VisitId
+  this._OPReportsService.getDoctorwisevisistView(
+    VisitId
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Doctor Wise Visit  Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+viewgetDeptwisecountsummaryReportPdf() {
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+  //   this.SpinLoading =true;
+  let VisitId
+  this._OPReportsService.getdepartmentwisecountsummView(
+    VisitId
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Department wise count Summary Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+viewgetDocwisevisitcountsummaryReportPdf() {
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+  //   this.SpinLoading =true;
+  let VisitId
+  this._OPReportsService.getDocwisevisitsummaryView(
+    VisitId
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Doctor Wise Vissit count Summary Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+viewgetApplistwithserviceavailedReportPdf() {
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+  //   this.SpinLoading =true;
+  let VisitId
+  this._OPReportsService.getAppointmentlistwithserviceavailedView(
+    VisitId
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Appointment list With Service Availed Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+viewgetDocwisenewoldpatientReportPdf() {
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+  //   this.SpinLoading =true;
+  let VisitId
+  this._OPReportsService.getDocwisenewoldpatientView(
+    VisitId
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Doctor Wise New Old Patient Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
 }
 
   userChk(option) {
