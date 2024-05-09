@@ -8,51 +8,47 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class IpSalesReturnService {
 
   userFormGroup: FormGroup;
-  IndentSearchGroup :FormGroup;
+  IPFinalform :FormGroup;
 
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.IndentID();
-    this.IndentSearchGroup= this.IndentSearchFrom();
+    this.userFormGroup = this.CreateusefromGroup();
+    this.IPFinalform= this.CreateaIpFinalform();
   }
 
-  IndentSearchFrom() {
+  CreateaIpFinalform() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:'',
-      PatientName:'',
-      RegNoSearch:'',
-      CashPay:'',
-      ItemName:'',
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      FinalNetAmount: '',
+      FinalTotalAmt:'' ,
+      FinalGSTAmt:'',
+      FinalDiscAmount:''
     });
   }
   
-    IndentID() {
+  CreateusefromGroup() {
     return this._formBuilder.group({
-      RoleId: '',
-      RoleName: '',
-      AdmDate:'',
-      Date:'',
-      StoreName:'',
-      PreNo:'',
-      IsActive: '',
-      NetAmt:'',
-      ReturnAmt:''
+      RegID: [''],
+      Op_ip_id: ['1'],
+      TypeodPay:['CashPay'],
+      ItemName:'',
+      ReturnQty:'',
+      TotalQty:'', 
     });
   }
- 
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+  public getAdmittedpatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
-
-
-  public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
+  public getItemlist(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemNameForSalesReturnSearch",Param)
+  }  
+  public getCashItemList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPSalesBillForReturn_Cash",Param);
+  } 
+  public getCreditItemList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPSalesBillForReturn_Credit",Param);
   }
 
   // Retrieve_BrowseSalesBill

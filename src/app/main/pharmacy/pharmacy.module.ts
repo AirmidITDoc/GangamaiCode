@@ -33,7 +33,7 @@ const appRoutes: Routes = [
   },
   {
     path:"ipsalesreturn",
-    loadChildren:() => import("./pharm-item-summary/pharmaitemsummary.module").then((m)=>m.PharmaitemsummaryModule),
+    loadChildren:() => import("./ip-sales-return/ip-sales-return.module").then((m)=>m.IpSalesReturnModule),
   },
   //  {
   //    path:"pharmacyclearence",
