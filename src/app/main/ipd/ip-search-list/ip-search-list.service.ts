@@ -684,6 +684,13 @@ public updateIPDDischargSummary(employee)
   public InsertIPAddCharges(employee){
     return this._httpClient.post("InPatient/AddIPCharges", employee);
   }
+
+  
+  public Addchargescancle(employee){
+    return this._httpClient.post("InPatient/DeleteIPCharges", employee);
+  }
+
+
   public InsertIPAddChargesNew(employee){
     return this._httpClient.post("InPatient/AddIPCharges",employee)
   }
@@ -726,7 +733,9 @@ public updateIPDDischargSummary(employee)
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList",employee)
   }
 
-
+  public getAdmittedPatientDetailList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
+  }
 
   fieldValidations() {
     return [

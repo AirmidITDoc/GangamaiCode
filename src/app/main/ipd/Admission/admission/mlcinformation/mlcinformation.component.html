@@ -14,27 +14,69 @@
             <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
               <!-- ================================ LABEL HEADER  -->
               <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                  <h3 style="font-weight: bold; font-size: 13px; margin: 0 0 0px;">Patient Information
-                  </h3>
+                <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                    <div class="patient-info-container">
+                        <div class="patient-info-box">
+                            <div class="patient-info-title border-bottom pb-2">
+                                <span class="h1">Patient Information</span>
+                            </div>
+                            <div class="patient-info-box my-8">
+                                <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                    <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key ">Patient Name</span>
+                                        <span>:</span>
+                                        <span
+                                            class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key">Admission Date</span>
+                                        <span>:</span>
+                                        <span
+                                            class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key">IPDNo</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key">Tariff</span>
+                                        <span>:</span>
+                                        <span
+                                            class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key ">Age</span>
+                                        <span>:</span>
+                                        <span
+                                            class="patient-col-value">{{selectedAdvanceObj.AgeYear}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key">Company</span>
+                                        <span>:</span>
+                                        <span
+                                            class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key">ward</span>
+                                        <span>:</span>
+                                        <span
+                                            class="patient-col-value">{{selectedAdvanceObj.WardName}}</span>
+                                        {{selectedAdvanceObj.WardName}}
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key">Doctor</span>
+                                        <span>:</span>
+                                        <span
+                                            class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
-                  style="align-items: baseline;">
-  
-                  <span class="label">Admission No :</span>
-                  <span class="data_input">{{_AdmissionService.mySaveForm.get("AdmissionID").value}}</span>
-  
-                  <span class="label"> Patient Name : </span>
-                  <span class="data_input">{{_AdmissionService.mySaveForm.get("PatientName").value}}</span>
-  
-                  <span class="label">Admission ON : </span>
-                  <span class="data_input">{{_AdmissionService.mySaveForm.get("AdmissionDate").value}}
-  
-                  </span>
-                  <app-common-date [screenFrom]="screenFromString"
-                  (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                </div>
-              </mat-card>
+              
+            </mat-card>
               <!-- ================================ LABEL HEADER  -->
             </div>
   
@@ -54,7 +96,10 @@
               #mlc (keydown)="onEntermlc($event)">
             </mat-form-field>
          
-  
+            <mat-form-field appearance="outline">
+              <mat-label>Reporting Collection Date / Time</mat-label>
+              <input matInput type="datetime-local" placeholder="start date" [value]="date" (change)="date=$event.target.value" formControlName="ReportingDate">
+            </mat-form-field>
          
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>Authority Name</mat-label>
@@ -69,16 +114,55 @@
               #buckleno (keydown)="onEnterbuckleno($event)" required>
             </mat-form-field>
           </div>
-         
           <div fxLayoutGap="5px">
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>PoliceStation</mat-label>
               <input name="PoliceStation" formControlName="PoliceStation" placeholder="PoliceStation" 
               #polic (keydown)="onEnterpolic($event)" matInput required>
             </mat-form-field>
+            <!-- (keydown)="onEnterreligion($event)" -->
+            <!-- <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <mat-label>MLC Type</mat-label>
+              <input matAutocompletePosition="below" type="text" placeholder="Select MLC"
+                  matInput #religion 
+                  formControlName="MlcType" [matAutocomplete]="autoMLC">
+              <span matSuffix style="display: flex;">
+                  <mat-icon class="mat-icon-close"
+                      (click)="MlcInfoFormGroup.get('MlcType').setValue(''); isMLCselected = false;">close</mat-icon>
+                  <mat-icon class="mat-icon-close"
+                      (click)="MlcInfoFormGroup.get('MlcType').setValue(''); isMLCselected = false;">search</mat-icon>
+              </span>
+              <mat-autocomplete #autoMLC="matAutocomplete"
+                  [displayWith]="getOptionTextMLC">
+                  <mat-option *ngFor="let option of filteredOptionsMLC | async"
+                      [value]="option">
+                      {{option.ReligionName}}
+                  </mat-option>
+              </mat-autocomplete>
+          </mat-form-field> -->
+          </div>
+
+          <div fxLayoutGap="5px">
+            
+            <textarea rows="8" cols="450">
+              
+           </textarea>
+
+           <textarea rows="28" cols="450">
+              
+           </textarea>
+          </div>
+
+                  
+          <!-- <div fxLayoutGap="5px">
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>PoliceStation</mat-label>
+              <input name="PoliceStation" formControlName="PoliceStation" placeholder="PoliceStation" 
+              #polic (keydown)="onEnterpolic($event)" matInput required>
+            </mat-form-field> -->
   
         
-  
+<!--   
        
             <mat-form-field appearance="outline" fxFlex>
               <input matInput [matDatepicker]="picker2" placeholder="Choose a ReportingDate" name="ReportingDate"
@@ -92,35 +176,18 @@
                 formControlName="ReportingTime" [(ngModel)]="value">
               <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
               <mat-datepicker #picker3></mat-datepicker>
-            </mat-form-field>
-          </div>
+            </mat-form-field> -->
+          <!-- </div> -->
    
   
-          <!-- <div class="footer-navigation-container" style=" float: right;">
-                   
-            <div class="next-div">
-              
-              <button class="next-btn" (click)="onSubmit()" style="border-radius: 16px;"> Save </button>
-  
-              <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;" >Cancel</button>
-            </div>
-          </div>  -->
+
+          <div class="next-div button-row-group" style="margin-left: 1100px;">
+            <button class="btn btn-primary" color="accent" (click)="onSubmit()"
+             [disabled]="MlcInfoFormGroup.invalid">
+                <span>Save</span>
+            </button>
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
        
-          <div class="footer-navigation-container" style=" float: right;">
-  
-          
-
-            <div class="next-div button-row-group">
-              <button class="btn btn-primary" color="accent" (click)="onSubmit()"
-              [disabled]="MlcInfoFormGroup.invalid">
-              <span style="display: flex;justify-content: center;">
-                <mat-spinner *ngIf="isLoading=='submit'" [color]="white" [diameter]="20"></mat-spinner>
-                <span style="margin-right: 10px;">Save</span>
-              </span>
-              </button>
-              <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
-          </div>
-
 
           </div>
         </form>

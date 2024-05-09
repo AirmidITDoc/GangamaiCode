@@ -48,34 +48,46 @@
                                                     fxLayoutAlign="space-between" class="gap-8">
                                                     <div class="radio-group-left gap-8" fxLayout="row"
                                                         fxLayoutAlign="start center">
-                                                        <mat-radio-group aria-label="Select an option" fxLayout="row"
-                                                            fxLayoutAlign="start center" formControlName="PatientType"
-                                                            name="PatientType" (change)="onChangePatientType($event)"
-                                                            (blur)="onChangePatientType($event)">
-                                                            <!-- <mat-radio-button value="OP" *ngIf="vPharOPOpt">OP</mat-radio-button>
-                                                            <mat-radio-button value="IP" *ngIf="vPharIPOpt">IP</mat-radio-button> -->
-                                                            <!-- *ngIf="vPharExtOpt" -->
-                                                            <mat-radio-button value="External" 
-                                                                (checked)="true">External</mat-radio-button>
+
+                                                            <mat-radio-group aria-label="Select an option" formControlName="PatientType" [(ngModel)]="vSelectedOption"
+                                                                name="paymode" (change)="onChangePatientType($event)" (blur)="onChangePatientType($event)"  fxLayout="row">
+                                                                <!-- <mat-radio-button value="OP" [disabled]="vCondition">OP</mat-radio-button>
+                                                                <mat-radio-button value="IP" [disabled]="vConditionIP">IP</mat-radio-button> -->
+                                                                <mat-radio-button value="External" [disabled]="vConditionExt">External</mat-radio-button>
+                                                            </mat-radio-group>   
+
+                                                        <!-- <mat-radio-group aria-label="Select an option" 
+                                                            formControlName="PatientType" [(ngModel)]="vSelectedOption"
+                                                            name="paymode" (change)="onChangePatientType($event)"
+                                                            (blur)="onChangePatientType($event)" fxLayout="row">
+                                                            <span *ngIf="opflag" hidden="true"><mat-radio-button 
+                                                                    value="OP" checked="opflag">OP</mat-radio-button></span>
+                                                            <span *ngIf="ipflag" hidden="true"><mat-radio-button 
+                                                                    value="IP" checked="ipflag" >IP</mat-radio-button></span>
+                                                            <span *ngIf="externalflag" hidden="true"><mat-radio-button 
+                                                                    value="External" checked="externalflag">External</mat-radio-button></span>
                                                         </mat-radio-group>
+                                                        <span style="font-weight: bold;">Selected Patinet Type :{{Patienttype}}</span>
+                                                         -->
+
 
                                                         <mat-form-field appearance="outline"
-                                                            *ngIf="ItemSubform.get('PatientType').value != 'External'">
-                                                            <input type="text" name="RegID" formControlName="RegID"
-                                                                placeholder="RegNo / First Name / Last Name / Mobile No"
+                                                            *ngIf="ItemSubform.get('PatientType').value != 'IP' && ItemSubform.get('PatientType').value != 'External'"  >
+                                                            <input type="text" name="RegID" formControlName="RegID1"
+                                                                placeholder="OP-RegNo / First Name / Last Name / Mobile No"
                                                                 matInput [matAutocomplete]="auto1"
-                                                                (input)="getSearchList()">
+                                                                (input)="getSearchListOp()">
                                                             <span matSuffix style="display: flex;">
                                                                 <mat-icon class="mat-icon-close"
-                                                                    (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                                    (click)="ItemSubform.get('RegID1').setValue(''); isRegIdSelected = false;">close</mat-icon>
                                                                 <mat-icon class="mat-icon-close"
-                                                                    (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                                                    (click)="ItemSubform.get('RegID1').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                                             </span>
                                                             <mat-autocomplete #auto1="matAutocomplete"
-                                                                [displayWith]="getOptionTextReg"
-                                                                (optionSelected)='getSelectedObjReg($event.option.value)'>
+                                                                [displayWith]="getSelectedObjOP"
+                                                                (optionSelected)='getSelectedObjOP($event.option.value)'>
                                                                 <mat-option
-                                                                    *ngFor="let option of PatientListfilteredOptions"
+                                                                    *ngFor="let option of PatientListfilteredOptionsOP"
                                                                     [value]="option">
                                                                     {{option.FirstName}} {{option.MiddleName}}
                                                                     {{option.LastName}} | {{option.RegNo}} |
@@ -86,6 +98,36 @@
                                                                 *ngIf="ItemSubform.get('RegID').hasError('required')  && ItemSubform.get('RegID').touched">
                                                                 Required field cannot be left blank
                                                             </mat-error>
+                                                        </mat-form-field>  
+
+
+                                                        <mat-form-field appearance="outline"
+                                                            *ngIf="ItemSubform.get('PatientType').value != 'OP' && ItemSubform.get('PatientType').value != 'External'" >
+                                                            <input type="text" name="RegID" formControlName="RegID"
+                                                                placeholder="IP-RegNo / First Name / Last Name / Mobile No"
+                                                                matInput [matAutocomplete]="auto2"
+                                                                (input)="getSearchListIP()">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                                <mat-icon class="mat-icon-close"
+                                                                    (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                                            </span>
+                                                            <mat-autocomplete #auto2="matAutocomplete"
+                                                                [displayWith]="getSelectedObjRegIP"
+                                                                (optionSelected)='getSelectedObjRegIP($event.option.value)'>
+                                                                <mat-option
+                                                                    *ngFor="let option of PatientListfilteredOptionsIP"
+                                                                    [value]="option">
+                                                                    {{option.FirstName}} {{option.MiddleName}}
+                                                                    {{option.LastName}} | {{option.RegNo}} |
+                                                                    {{option.MobileNo}}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                            <!-- <mat-error
+                                                                *ngIf="ItemSubform.get('RegID').hasError('required')  && ItemSubform.get('RegID').touched">
+                                                                Required field cannot be left blank
+                                                            </mat-error> -->
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline"
@@ -365,7 +407,7 @@
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="9px"
                                                 fusePerfectScrollbar>
 
-                                                <mat-form-field appearance="outline" fxFlex="7%" >
+                                                <mat-form-field appearance="outline" fxFlex="7%">
                                                     <mat-label>Barcode No</mat-label>
                                                     <input matInput placeholder="Placeholder" [(ngModel)]="vBarcode"
                                                         formControlName="Barcode" (change)="barcodeItemfetch()">
@@ -447,7 +489,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="5%">
                                                     <mat-label>Disc %</mat-label>
                                                     <input matInput placeholder="Placeholder" formControlName="DiscPer"
-                                                        autocomplete="off" #disper [(ngModel)]="DiscPer" 
+                                                        autocomplete="off" #disper [(ngModel)]="DiscPer"
                                                         (keyup)="getDiscPer()" (keydown)="onEnterdiscper($event)"
                                                         (blur)="onEnterdiscper($event)" onlyNumber
                                                         (keypress)="keyPressAlphanumeric($event)">
@@ -812,7 +854,8 @@
                                                         </mat-form-field>&nbsp;
 
                                                         <div class="sales-footer-buttons gap-8" fxLayout="row">
-                                                            <button class="btn btn-primary " (click)="onSave($event)" [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save(F9)</button>
+                                                            <button class="btn btn-primary " (click)="onSave($event)"
+                                                                [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save(F9)</button>
                                                             <button class="btn btn-primary-outline"
                                                                 *ngIf="IsOnlineRefNo"
                                                                 (click)="payOnline()">Online</button>

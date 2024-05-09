@@ -170,4 +170,8 @@ public getPatientTypeCombo() {
   getregisterListByRegId(employee){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegbyRegID", employee)
   }
+  public getAdmittedPatientCasepaaperView(AdmissionId){
+  
+    return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+  }
 }

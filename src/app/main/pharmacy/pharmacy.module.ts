@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PharmItemSummaryComponent } from './pharm-item-summary/pharm-item-summary.component';
+import { PharmaAdvanceComponent } from './pharma-advance/pharma-advance.component';
 
 
 
@@ -34,10 +35,14 @@ const appRoutes: Routes = [
     path:"ipsalesreturn",
     loadChildren:() => import("./pharm-item-summary/pharmaitemsummary.module").then((m)=>m.PharmaitemsummaryModule),
   },
+  //  {
+  //    path:"pharmacyclearence",
+  //    loadChildren:() => import("./pharmacy-clearence/pharmacy-clearence.module").then((m)=>m.PharmacyClearenceModule),
+  //  },
    {
-     path:"pharmacyclearence",
-     loadChildren:() => import("./pharmacy-clearence/pharmacy-clearence.module").then((m)=>m.PharmacyClearenceModule),
-   },
+    path:"pharmacyclearence",
+    loadChildren: () => import("./pharma-advance/pharma-advance.module").then((m)=>m.PharmaAdvanceModule),
+  },
   {
     path:"salesbillsettlement",
     loadChildren:() => import("./sales-return-bill-settlement/sales-return-bill-settlement.module").then((m)=>m.SalesReturnBillSettlementModule),
@@ -46,7 +51,11 @@ const appRoutes: Routes = [
     path:"reorderlevelsummary",
     loadChildren: () => import("./reorderlevelsummary/reorderlevelsummary.module").then((m)=>m.ReorderlevelsummaryModule),
   },
-
+  // {
+  //   path:"pharmacyadvance",
+  //   loadChildren: () => import("./pharma-advance/pharma-advance.module").then((m)=>m.PharmaAdvanceModule),
+  // },
+  
   // {
   //   path:"pharmacyitemwisesupplierList",
   //   loadChildren:() => import("./pharmacy-item-wise-supplier-list/pharmacy-item-wise-supplier-list.module").then((m)=>m.PharmacyItemWiseSupplierListModule),

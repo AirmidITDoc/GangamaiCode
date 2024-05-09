@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { RegInsert } from '../../Admission/admission/admission.component';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 
 type NewType = Observable<any[]>;
 @Component({
@@ -353,7 +354,7 @@ createSearchForm() {
   getRefundofBillIPDList() {
     debugger
         var m_data = {
-      "RegId ": this.vOPIPId
+      "RegId ": 12//this.vOPIPId
       
     }
     // this.isLoadingStr = 'loading';
@@ -597,11 +598,10 @@ createSearchForm() {
       debugger;
     const insertRefund = new InsertRefund(InsertRefundObj);
    
-    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
-        maxWidth: "85vw",
-        height: '540px',
-        width: '100%',
+        maxWidth: "75vw",
+        maxHeight: "93vh", width: '100%', height: "100%",
         data: {
          
           advanceObj: PatientHeaderObj, 

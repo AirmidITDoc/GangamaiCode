@@ -89,14 +89,22 @@
                                     </mat-slide-toggle>
                                 </div>
 
-                                <div class="action-buttons">
-                                    <button mat-raised-button (click)="onClear()" matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon>
-                                    </button>
-                                    <button mat-raised-button (click)="getAdmittedPatientList()" matTooltip="search">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
-                                    </button>
-                                </div>
+                          
+
+
+                            </div>
+
+                            <div style="margin-top: 10px;">
+                                <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                    matTooltip="Close">
+                                    <mat-icon class="cleariconbutton">close</mat-icon>
+                                </button>
+
+                                <button mat-raised-button class="searchButton" (click)="getAdmittedPatientList()"
+                                    [disabled]="click" matTooltip="Search">
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                </button>
+
                             </div>
 
                         </form>
@@ -160,8 +168,12 @@
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80">IsMLC
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" class="w-80">
-                                    <mat-icon *ngIf="contact.IsMLC=='1'; else noMLC " matTooltip="IsNotMLC" class="pill green-600 s-16" (click)="NewMLc(contact)">Yes
-                                    </mat-icon>
+                                    <button mat-icon-button *ngIf="contact.IsMLC==1; else noMLC " matTooltip="IsMLC" (click)="NewMLc(contact)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button *ngIf="contact.IsMLC==1; else noMLC " matTooltip="Print MLC paper">
+                                        <mat-icon>print</mat-icon>
+                                    </button>
                                     <ng-template #noMLC>
                                         <span>--</span>
                                     </ng-template>

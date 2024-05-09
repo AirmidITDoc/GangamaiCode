@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
 import { MatSelect } from '@angular/material/select';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-registration',
@@ -71,7 +72,8 @@ export class NewRegistrationComponent implements OnInit {
   isAreaSelected: boolean = false;
   isMstatusSelected: boolean = false;
   isreligionSelected: boolean = false;
-
+  RegID: any=0;
+  AdmissionID: any=0;
 
   isPrefixSelected: boolean = false;
   optionsPrefix: any[] = [];
@@ -97,7 +99,7 @@ export class NewRegistrationComponent implements OnInit {
   selectedPrefixId: any;
 
   matDialogRef: any;
-
+  sIsLoading: string = '';
   optionsCity: any[] = [];
   filteredOptionsCity: Observable<string[]>;
   filteredOptionsPrefix: Observable<string[]>;
@@ -141,6 +143,8 @@ export class NewRegistrationComponent implements OnInit {
         this.registerObj = this.data.registerObj;
         this.registerObj.PrefixID=this.registerObj.PrefixId;
         this.RegId = this.registerObj.RegId;
+        this.RegID=this.registerObj.RegID;
+        this.AdmissionID=this.registerObj.AdmissionID;
         this.isDisabled = true
         if(this.registerObj.AgeYear)
           this.registerObj.Age=this.registerObj.AgeYear.trim();
@@ -204,7 +208,7 @@ export class NewRegistrationComponent implements OnInit {
       PrefixID: '',
       FirstName: ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z] *[a-zA-Z]*$"),
+        Validators.pattern("^[A-Za-z()] *[a-zA-Z()]*$"),
       ]],
       MiddleName: ['', [
 
@@ -212,7 +216,7 @@ export class NewRegistrationComponent implements OnInit {
       ]],
       LastName: ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+        Validators.pattern("^[A-Za-z()]*[a-zA-z()]*$"),
       ]],
       GenderId: '',
       Address: '',
@@ -532,7 +536,7 @@ export class NewRegistrationComponent implements OnInit {
   onSubmit() {
     debugger
     this.isLoading = 'submit';
-    if (!this.registerObj.RegId) {
+    if (!this.registerObj.RegId && this.RegID ==0) {
       var m_data = {
         "opdRegistrationSave": {
           "RegID": 0,
@@ -582,7 +586,10 @@ export class NewRegistrationComponent implements OnInit {
         }
       });
     }
-    else {
+    else if(this.RegID !==0 || this.registerObj.RegId) {
+      if(this.RegID !==0){
+        this.registerObj.RegId=this.RegID ;
+      }
       var m_data1 = {
         "opdRegistrationUpdate": {
           "RegID": this.registerObj.RegId,
@@ -615,12 +622,17 @@ export class NewRegistrationComponent implements OnInit {
           "Photo": ''// this.file.name || '',
         }
       }
+      console.log()
       this._registerService.regUpdate(m_data1).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'Register Data Udated Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
+             
+              debugger
+              if( this.RegID !=0){
+                this.getAdmittedPatientCasepaperview(this.AdmissionID);
+              }
               this._matDialog.closeAll();
-
             }
           });
         }
@@ -874,5 +886,34 @@ export class NewRegistrationComponent implements OnInit {
 
       this.mstatus.nativeElement.focus();
     }
+  }
+
+  getAdmittedPatientCasepaperview(AdmissionId) {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+    //   this.SpinLoading =true;
+    //  this.AdList=true;
+    this._registerService.getAdmittedPatientCasepaaperView(
+      AdmissionId
+      ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Admission Paper  Viewer"
+          }
+        });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+    });
+   
+    },100);
+
   }
 }

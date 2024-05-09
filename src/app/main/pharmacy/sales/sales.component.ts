@@ -257,6 +257,9 @@ export class SalesComponent implements OnInit {
   vStockId: any = 0;
   Itemflag: boolean = false;
 
+  opflag:Boolean=false;
+  ipflag:Boolean=false;
+  externalflag:Boolean=false;
 
   displayedColumns = [
     'FromStoreId',
@@ -315,17 +318,16 @@ export class SalesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   data: any;
-  PatientListfilteredOptions: any;
+  PatientListfilteredOptionsOP: any;
+  PatientListfilteredOptionsIP: any;
   registerObj = new RegInsert({});
   RegId: any = '';
   vAdmissionID: any;
   isPaymentSuccess: boolean = false;
   newDateTimeObj: any = {};
   vextAddress: any = '';
-
-  vPharExtOpt: any = 0;
-  vPharOPOpt: any = 0;
-  vPharIPOpt: any = 0;
+  Patienttype:any;
+ 
 
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
@@ -358,8 +360,35 @@ export class SalesComponent implements OnInit {
     // this.Paymentobj['TransactionType'] = 0;
     this.IsCreditflag = false
     this.showTable = false;
-  }
+    
 
+    // console.log(this._loggedService.currentUserValue.user);
+    // this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    // this.vPharOPOpt=this._loggedService.currentUserValue.user.pharOPOpt;
+    // this.vPharIPOpt=this._loggedService.currentUserValue.user.pharIPOpt;
+    // if (this.vPharOPOpt == true){
+    //   this.vCondition = 'OP'
+    //   this.vSelectedOption = this.vCondition;
+    // }else if (this.vPharIPOpt == true){
+    //   this.vCondition = 'IP'
+    //   // this.vCondition = true;
+    //   this.vSelectedOption = this.vCondition;
+    // }else if (this.vPharExtOpt == true){
+    //   this.vCondition = 'External'
+    //   // this.vCondition = true;
+    //   this.vSelectedOption = this.vCondition;
+    // }
+      
+    
+  }
+  vPharExtOpt:any ;
+  vPharOPOpt: any ;
+  vPharIPOpt: any ; 
+  vSelectedOption: any= '';
+
+  vCondition:boolean=false;
+  vConditionExt:boolean=false;
+  vConditionIP:boolean=false;
   ngOnInit(): void {
     this.patientDetailsFormGrp = this.createForm();
     this.gePharStoreList();
@@ -380,12 +409,85 @@ export class SalesComponent implements OnInit {
     this.getBankNameList4();
     this.getDraftorderList();
 
+    
+
+    // onChangePatientType('OP');
+
+    debugger
     this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
-    this.vPharOPOpt=this._loggedService.currentUserValue.user.pharOPOpt;
-    this.vPharIPOpt=this._loggedService.currentUserValue.user.pharIPOpt;
+    this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
+    this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
 
+    if (this.vPharExtOpt == true) {
+     // this.vCondition = false
+      this.vSelectedOption = 'External'; 
+    }else{
+      this.vPharOPOpt = true
+    }
+
+    if (this.vPharIPOpt == true) { 
+      if (this.vPharOPOpt == false) {
+        this.vSelectedOption = 'IP'; 
+      }
+    }else{
+      this.vConditionIP = true
+    }
+
+    if (this.vPharOPOpt == true) {
+      if (this.vPharExtOpt == false) { 
+        this.vSelectedOption = 'OP'; 
+      }
+    } else{
+      this.vCondition = true
+    } 
+    // this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    // this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
+    // this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
+    
+//     this.vPharExtOpt = true;
+//     this.vPharOPOpt = true;
+//     this.vPharIPOpt =true ;
+    
+
+//     if (this.vPharOPOpt == true) {
+//      // this.vCondition = false
+//       this.vSelectedOption = 'OP'; 
+//       this.opflag=true;
+//       this.ipflag=false;
+//       this.externalflag=false;
+//       this.ItemSubform.get('PatientType').setValue('OP');
+//       this.Patienttype='OP'; 
+//     }else{
+//       this.vCondition = true
+//     }
+
+//     if (this.vPharIPOpt == true) { 
+      
+//         this.vSelectedOption = 'IP'; 
+//         this.opflag=false;
+//         this.ipflag=true;
+//         this.externalflag=false;
+//         this.ItemSubform.get('PatientType').setValue('IP');
+//         this.Patienttype='IP'; 
+//     }else{
+//       this.vConditionIP = true
+//     }
+
+//     if (this.vPharExtOpt == true) {
+    
+//         this.vSelectedOption = 'External'; 
+//         this.opflag=false;
+//         this.ipflag=false;
+//         this.externalflag=true;
+//         this.ItemSubform.get('PatientType').setValue('External');
+//         this.Patienttype='External'; 
+//     } else{
+//       this.vConditionExt = true
+//     } 
+
+// console.log(this.vSelectedOption)
+ 
   }
-
 
   createForm() {
     return this.formBuilder.group({
@@ -998,7 +1100,8 @@ export class SalesComponent implements OnInit {
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
-      PatientType: ['External', [Validators.required]],
+      PatientType: ['OP'],
+      // paymode: ['cashpay'],
       // OP_IP_ID: [0,[Validators.required]],
       TotalAmt: '',
       GSTPer: '',
@@ -1017,6 +1120,7 @@ export class SalesComponent implements OnInit {
       CashPay: ['CashPay'],
       referanceNo: '',
       RegID: '',
+      RegID1: '',
       PaidbyPatient: '',
       PaidbacktoPatient: '',
       roundoffAmt: '0'
@@ -1246,7 +1350,7 @@ export class SalesComponent implements OnInit {
   calculateTotalAmt() {
 
 
-    debugger
+   // debugger
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
@@ -1546,7 +1650,7 @@ export class SalesComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result1 => {
-      debugger
+     // debugger
       let result = result1.selectedData
       let vescflag = result1.vEscflag
       console.log(result);
@@ -3259,8 +3363,28 @@ export class SalesComponent implements OnInit {
   }
 
 
+  // Patient Search;
+  getSearchListOp() {
 
-  getSearchList() {
+  var m_data = {
+    "Keyword": `${this.ItemSubform.get('RegID1').value}%`
+  }
+
+  this._RequestforlabtestService.getPatientVisitedListSearch(m_data).subscribe(data => {
+    this.PatientListfilteredOptionsOP = data;
+
+    if (this.PatientListfilteredOptionsOP.length == 0) {
+      this.noOptionFound = true;
+    } else {
+      this.noOptionFound = false;
+    }
+  });
+
+}
+
+
+
+  getSearchListIP() {
     var m_data = {
       "Keyword": `${this.ItemSubform.get('RegID').value}%`
     }
@@ -3268,7 +3392,7 @@ export class SalesComponent implements OnInit {
       this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         // console.log(resData);
-        this.PatientListfilteredOptions = resData;
+        this.PatientListfilteredOptionsIP = resData;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
@@ -3281,7 +3405,7 @@ export class SalesComponent implements OnInit {
     this.saleSelectedDatasource.data = [];
   }
 
-  getSelectedObjReg(obj) {
+  getSelectedObjRegIP(obj) {
 
     this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
@@ -3293,6 +3417,23 @@ export class SalesComponent implements OnInit {
     // this.getDraftorderList(obj);
   }
 
+  getSelectedObjOP(obj) {
+    // this.dataSource.data = [];
+  
+    this.registerObj = obj;
+    this.PatientName = obj.FirstName + " " + obj.LastName;
+    this.RegId = obj.RegId;
+    // this.City = obj.City;
+    // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    // this.CompanyName = obj.CompanyName;
+    // this.Tarrifname = obj.TariffName;
+    // this.Doctorname = obj.DoctorName;
+    // this.vOPIPId = obj.VisitId;
+    // this.vOPDNo = obj.OPDNo;
+    // this.vTariffId = obj.TariffId;
+    // this.vClassId = obj.ClassId;
+    // this.AgeYear=obj.AgeYear;
+  }
   CalPaidbackAmt() {
     this.v_PaidbacktoPatient = (parseFloat(this.roundoffAmt) - parseFloat(this.v_PaidbyPatient)).toFixed(2);
   }
@@ -3351,7 +3492,7 @@ export class SalesComponent implements OnInit {
   chargeslistBarcode: any = [];
   onAddBarcodeItemList(contact, DraftQty) {
     console.log(contact)
-    debugger
+   // debugger
     this.vBarcodeflag = true;
     let i = 0;
 
@@ -3365,7 +3506,7 @@ export class SalesComponent implements OnInit {
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-          debugger
+         // debugger
 
 
           if (contact.IssueQty != null) {

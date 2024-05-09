@@ -1,4 +1,4 @@
-<div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" fusePerfectScrollbar dynamicTableHeight>
+<div id="content" class="simple inner-scroll inner-sidebar page-layout right-sidebar" fusePerfectScrollbar  >
     <mat-toolbar>
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -218,12 +218,12 @@
 
                     <div fxLayoutAlign="end">
                       
-                        <mat-form-field appearance="outline" fxFlex="50%">
+                        <mat-form-field appearance="outline" fxFlex="60%">
                             <mat-label>Remark</mat-label>
                             <input name="Remark" formControlName="Remark" [(ngModel)]="vRemark" matInput>
                         </mat-form-field>
 
-                        <div class="sales-footer-buttons gap-8 " fxLayout="row" style="margin: 0px 40px 0px 260px;">
+                        <div class="sales-footer-buttons gap-8 " fxLayout="row" style="margin: 0px 40px 0px 410px;">
                             <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
                             <button class="btn btn-primary " (click)="OnSave()">Save</button>
                         </div>

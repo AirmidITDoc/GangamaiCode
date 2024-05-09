@@ -16,6 +16,7 @@ import { IPRefundService } from '../ip-refund.service';
 import { IPAdvancePaymentComponent } from 'app/main/ipd/ip-search-list/ip-advance-payment/ip-advance-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 type NewType = Observable<any[]>;
 @Component({
   selector: 'app-ip-refundof-bill',
@@ -231,7 +232,7 @@ export class IPRefundofBillComponent implements OnInit {
     
     console.log(this.selectedAdvanceObj.RegNo);
     var m_data = {
-      "RegId": 1// this.selectedAdvanceObj.RegNo
+      "RegId":11// this.selectedAdvanceObj.RegNo
       
     }
     // this.isLoadingStr = 'loading';
@@ -475,7 +476,7 @@ viewgetRefundofbillReportPdf(RefundId) {
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['OPD_IPD_Id'] = 10,//this._IPRefundService.myShowAdvanceForm.get("AdmissionID").value;
+    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.RegNo,//this._IPRefundService.myShowAdvanceForm.get("AdmissionID").value;
     PatientHeaderObj['NetPayAmount'] =   this.TotalRefundAmount;
 
     // let DocShareGroupwiseObj = {};
@@ -486,7 +487,7 @@ viewgetRefundofbillReportPdf(RefundId) {
     // const oP_DoctorShare_GroupWise_RefundOfBill = new DocShareGroupwise(DocShareGroupwiseObj);
     // const insertOPPayment = new PaymentInsert(PaymentInsertObj);
 
-    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "85vw",
         height: '540px',

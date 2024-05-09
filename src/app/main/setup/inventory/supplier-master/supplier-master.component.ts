@@ -108,7 +108,7 @@ export class SupplierMasterComponent implements OnInit {
         this.confirmDialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 let Query =
-                    "Update M_SupplierMaster set IsDeleted=1 where SupplierId=" +
+                    "Update M_SupplierMaster set IsDeleted=0 where SupplierId=" +
                     SupplierId;
                 console.log(Query);
                 this._supplierService

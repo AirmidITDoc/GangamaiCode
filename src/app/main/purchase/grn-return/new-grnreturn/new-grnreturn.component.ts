@@ -23,6 +23,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewGRNReturnComponent implements OnInit {
   displayedColumns3 = [
+    "checkbox",
     "ItemName",
     "BatchNo",
     "BatchExpDate",
@@ -30,7 +31,7 @@ export class NewGRNReturnComponent implements OnInit {
     "BalanceQty",
     "ReturnQty",
     "MRP",
-    "Rate",
+    //"Rate",
     "LandedRate",
     "TotalAmount", 
     "VatPercentage",
@@ -113,8 +114,7 @@ export class NewGRNReturnComponent implements OnInit {
     });
   }
   vsupplierName:any;
-  getSupplierSearchCombo() {
-    debugger
+  getSupplierSearchCombo() { 
     if (this.VsupplierId > 0) {
       this.vsupplierName = this.VsupplierName;
     } 
@@ -153,7 +153,7 @@ export class NewGRNReturnComponent implements OnInit {
     }
     this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
       this.dsItemNameList1.data = data as ItemNameList[];
-     // console.log(this.dsItemNameList1.data)
+      console.log(this.dsItemNameList1.data)
       this.dsItemNameList1.data.forEach((element) => {
         this.chargeslist.push(
           {
@@ -165,13 +165,13 @@ export class NewGRNReturnComponent implements OnInit {
             BalanceQty: element.BalanceQty,
             ReturnQty: 0,
             MRP: element.MRP || 0,
-            Rate: element.Rate || 0,
+            //Rate: element.Rate || 0,
             TotalAmount: 0,
             VatPer: element.VatPer || 0,
             VatAmount: 0,
             DiscPercentage: element.DiscPercentage || 0,
             DiscAmount: 0,
-            LandedRate: element.LandedRate || 0,
+            LandedRate: element.Rate || 0,
             NetAmount: 0,
             StkID: element.StkID || 0 ,
             GRNID:element.GRNID || 0,
@@ -197,13 +197,16 @@ export class NewGRNReturnComponent implements OnInit {
       });
   }
   
-  SelectedArray: any = [];
-  tableElementChecked(event, element) {
-    if (event.checked) {
-      this.SelectedArray.push(element);
+
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
-  }
-  
+  } 
   getTotalamt(element) {
     this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
@@ -218,7 +221,7 @@ export class NewGRNReturnComponent implements OnInit {
   
     return this.vFinalNetAmount;
   }
-  RQty:any;
+  RQty:any; 
   getCellCalculation(contact, ReturnQty) {
     if (parseInt(contact.ReturnQty) > parseInt(contact.BalanceQty)) {
       this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
@@ -239,11 +242,19 @@ export class NewGRNReturnComponent implements OnInit {
       contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
       let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
       contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount)).toFixed(2);
-     
+      
     }
   }
-  
-  Savebtn:boolean=false;
+ 
+interimArray: any = [];
+tableElementChecked(event, element) {
+  if (event.checked) {
+    this.interimArray.push(element);
+  }
+}
+ 
+ 
+Savebtn:boolean=false;
 OnSave(){
   if ((!this.dsGrnItemList.data.length)) {
     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -256,10 +267,13 @@ OnSave(){
       toastClass: 'tostr-tost custom-toast-warning',
     });
     return;
-  }
-  debugger
-  const isCheckReturnQty = this.dsGrnItemList.data.some((item) => item.ReturnQty === this.VReQty);
-  if (!isCheckReturnQty) {
+  } 
+  if ((!this.interimArray.length)) {
+    this.toastr.warning('Please select Check Box & enter ReturnQty.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } 
   this.Savebtn = true;
   let grnReturnSave = {};
   grnReturnSave['grnId'] = this.vGRNID || 0;
@@ -285,7 +299,7 @@ OnSave(){
   grnReturnSave['grnReturnId'] =0;
 
   let grnReturnDetailSavearray=[];
-  this.dsGrnItemList.data.forEach((element) => {
+  this.interimArray.forEach((element) => {
   //console.log(element)  
   let mrpTotal = element.ReturnQty * element.MRP;
   let PurchaseTotalAmt =element.ReturnQty * element.Rate;
@@ -319,7 +333,7 @@ OnSave(){
   });
 
   let grnReturnUpdateCurrentStockarray = [];
-  this.dsGrnItemList.data.forEach((element) => {
+  this.interimArray.forEach((element) => {
     let grnReturnUpdateCurrentStockObj = {};
     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
     grnReturnUpdateCurrentStockObj['issueQty'] = element.ReturnQty || 0;
@@ -329,7 +343,7 @@ OnSave(){
   });
 
   let grnReturnUpateReturnQtyarray = [];
-  this.dsGrnItemList.data.forEach((element) => {
+  this.interimArray.forEach((element) => {
     let grnReturnUpateReturnQty = {};
     grnReturnUpateReturnQty['grnDetID'] = element.GRNDetID || 0;
     grnReturnUpateReturnQty['returnQty'] = element.ReturnQty || 0;
@@ -359,13 +373,7 @@ OnSave(){
     this.toastr.error('New GRN Return Data not saved !, Please check API error..', 'Error !', {
       toastClass: 'tostr-tost custom-toast-error',
     });
-  });
-} 
-else {
-  this.toastr.warning('Please enter ReturnQty.', 'Warning !', {
-    toastClass: 'tostr-tost custom-toast-warning',
-  });
-}
+  }); 
 }
 OnReset() { 
   this._GRNReturnService.NewGRNReturnFrom.reset();
@@ -387,8 +395,7 @@ OnReset() {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      // console.log(result)
-debugger
+       //console.log(result) 
       this.dsNewGRNReturnItemList.data = result as ItemNameList[];
       this.VsupplierId = this.dsNewGRNReturnItemList.data[0]['SupplierId']
       this.VsupplierName = this.dsNewGRNReturnItemList.data[0]['SupplierName']

@@ -15,6 +15,7 @@ import { IPAdvancePaymentComponent } from 'app/main/ipd/ip-search-list/ip-advanc
 import * as converter from 'number-to-words';
 import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 
 
 @Component({
@@ -291,7 +292,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     PatientHeaderObj['NetPayAmount'] =  this.NewRefundAmount;
 debugger
 
-    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "75vw",
         maxHeight: "93vh", width: '100%', height: "100%",

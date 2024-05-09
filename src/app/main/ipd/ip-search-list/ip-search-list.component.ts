@@ -22,6 +22,7 @@ import { Admission } from '../Admission/admission/admission.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component';
 import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -93,6 +94,7 @@ export class IPSearchListComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     private _ActRoute: Router,
     public datePipe: DatePipe,
+    public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored) { }
 
   ngOnInit(): void {
@@ -100,7 +102,7 @@ export class IPSearchListComponent implements OnInit {
 
     if (this._ActRoute.url == '/ipd/ipadvance') {
       this.menuActions.push('Advance');
-      this.menuActions.push('Bed Transfer');
+      // this.menuActions.push('Bed Transfer');
     }
     else if (this._ActRoute.url == '/ipd/discharge') {
       this.menuActions.push('Discharge');
@@ -293,6 +295,12 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (m == "Discharge Summary") {
       console.log(contact);
+      if(!contact.IsDischarged){
+        this.toastr.warning('Please Check Patient Is Not Discharged', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
       var m_data1 = {
         RegNo: contact.RegNo,
         RegId: contact.RegID,
@@ -314,7 +322,8 @@ export class IPSearchListComponent implements OnInit {
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
         opD_IPD_Typec: contact.opD_IPD_Type,
-        CompanyName:contact.CompanyName
+        CompanyName:contact.CompanyName,
+        IsDischarged:contact.IsDischarged
       }
      
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data1);
@@ -473,7 +482,8 @@ export class IPSearchListComponent implements OnInit {
         IPDNo: contact.IPDNo,
         DocNameID: contact.DocNameID,
         opD_IPD_Typec: contact.opD_IPD_Type,
-        CompanyName:contact.CompanyName
+        CompanyName:contact.CompanyName,
+        IsDischarged:contact.IsDischarged,
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
       
@@ -510,18 +520,20 @@ export class IPSearchListComponent implements OnInit {
           DOT: contact.DOT,
           DoctorName: contact.DoctorName,
           RoomName: contact.RoomName,
+          WardName: contact.RoomName,
           BedNo: contact.BedName,
           IPDNo: contact.IPDNo,
           DocNameID: contact.DocNameID,
           opD_IPD_Typec: contact.opD_IPD_Type,
-          CompanyName:contact.CompanyName
+          CompanyName:contact.CompanyName,
+          IsDischarged:contact.IsDischarged,
         }
         this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
         this._IpSearchListService.populateForm(m_data);
         const dialogRef = this._matDialog.open(DischargeComponent,
           {
             maxWidth: "75vw",
-            height: '500px',
+            height: '400px',
             width: '100%',
           });
         dialogRef.afterClosed().subscribe(result => {
@@ -593,7 +605,8 @@ export class IPSearchListComponent implements OnInit {
         "TariffId": contact.TariffId,
         "TariffName": contact.TariffName,
         "ClassId": contact.ClassId,
-        "ClassName": contact.ClassName
+        "ClassName": contact.ClassName,
+        IsDischarged:contact.IsDischarged,
       }
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm(m_data);
@@ -864,7 +877,7 @@ export class ChargesList {
   BalanceQty:any;
   IsStatus:any;
   extMobileNo:any;
-
+  ConcessionPercentage:any;
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
     this.ServiceId = ChargesList.ServiceId || '';
@@ -886,6 +899,7 @@ export class ChargesList {
     this.BalanceQty=ChargesList.BalanceQty || 0;
     this.IsStatus=ChargesList.IsStatus || 0;
     this.extMobileNo=ChargesList.extMobileNo || ''
+    this.ConcessionPercentage=ChargesList.ConcessionPercentage ||''
   }
 }
 export class AdvanceHeader {

@@ -86,18 +86,20 @@
                                         <mat-icon>search</mat-icon>
                                     </button>
                                 </div>
+                                <!-- <button (click)="viewgetBillReportDatewisePdf(dataSource)" matTooltip="Pdf"
+                                style="width: 45px;border-color: white;">
+                                <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
+                                  </button>&nbsp; -->
+                                  <button (click)="exportBillDatewiseReportExcel()"
+                                [disabled]="! (dataSource.data.length > 0)"
+                                style="background-color: white;color: white;width: 45px;margin-top: 10px;">
+                                <img width="32" height="10px" src="assets/images/logos/xls.png">
+                               </button>
 
-                                <div class="export-buttons mt-12">
-                                    <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="gap-8">
-                                        <button type="button" (click)="exportReportPdf()" class="btn btn-primary btn-with-icon btn-xs">
-                                            <span class="btn-icon"><mat-icon>cloud_download</mat-icon></span>
-                                            <span>Export Table(PDF)</span>
-                                        </button>
-                                        <button type="button" mat-icon-button (click)="exportBillDatewiseReportExcel()" [disabled]="! (dataSource.data.length > 0)">
-                                            <img width="32" height="10px" src="assets/images/logos/xls.png">
-                                        </button>
-                                    </div>
-                                </div>
+                                <span *ngIf="SpinLoading" style="width:60px;height: 60px;">
+                                    Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
+                                </span>
+
                             </div>
                         </form>
                     </div>
@@ -255,9 +257,9 @@
                             <mat-header-cell *matHeaderCellDef class="table-actions">Action</mat-header-cell>
                             <mat-cell *matCellDef="let contact">
                                 <div fxFlex="row" fxLayoutAlign="start">
-                                    <button mat-icon-button (click)="SubMenu(contact)">
+                                    <!-- <button mat-icon-button (click)="SubMenu(contact)">
                                         <mat-icon title="Add SubMenu" class="indigo-600-fg">add_circle_outline</mat-icon>
-                                    </button>
+                                    </button> -->
                                     <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
                                         <mat-icon class="secondary-text">more_vert</mat-icon>
                                     </button>

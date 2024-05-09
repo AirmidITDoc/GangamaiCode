@@ -144,11 +144,13 @@ onEdit(row){
     });
   }
 
+ 
 }
 
 export class RegInsert
 {
     RegId : Number;
+    RegID : Number;
     RegDate : Date;
     PatientName:string;
     RegTime : Time; 
@@ -184,6 +186,7 @@ export class RegInsert
     AadharCardNo: string;
     PanCardNo : string;
     currentDate = new Date();
+    AdmissionID:any;
     /**
      * Constructor
      *
@@ -193,6 +196,7 @@ export class RegInsert
     constructor(RegInsert) {
         {
            this.RegId = RegInsert.RegId || '';
+           this.RegID = RegInsert.RegID || '';
            this.RegDate = RegInsert.RegDate || '';
             this.RegTime = RegInsert.RegTime || '';
             this.PrefixId = RegInsert.PrefixId || '';
@@ -227,6 +231,7 @@ export class RegInsert
             this.AreaName = RegInsert.AreaName || '';
             this.AadharCardNo= RegInsert.AadharCardNo || '';
             this.PanCardNo = RegInsert.PanCardNo || '';
+            this.AdmissionID = RegInsert.AdmissionID || '';
         }
     }
 }

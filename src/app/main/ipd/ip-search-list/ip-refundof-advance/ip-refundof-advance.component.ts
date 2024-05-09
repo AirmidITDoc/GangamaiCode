@@ -16,6 +16,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { RegInsert } from '../../Admission/admission/admission.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -211,7 +212,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   getReturndetails() {
     
     var m_data = {
-    "RegID":this.vOPIPId 
+    "RegID": 2//this.vOPIPId 
     }
  
     this.isLoading = 'list-loading';
@@ -226,7 +227,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   getRefundofAdvanceList() {
     var m_data = {
       // "RefundId": this._IpSearchListService.myRefundAdvanceForm.get("RefundId").value || "0",
-      "RegID": this.vOPIPId//410
+      "RegID":2// this.vOPIPId//410
 
     }
     this.isLoadingStr = 'loading';
@@ -331,7 +332,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     IPRefundofAdvanceObj['UsedAmount'] = this.UsedAmount;
     IPRefundofAdvanceObj['RefundAmount'] = this.NewRefundAmount;
     IPRefundofAdvanceObj['Remark'] = this.RefundOfAdvanceFormGroup.get("Remark").value;
-    IPRefundofAdvanceObj['TransactionId'] = 2;
+    IPRefundofAdvanceObj['TransactionId'] = 1;
     IPRefundofAdvanceObj['AddedBy'] =  this.accountService.currentUserValue.user.id,
     IPRefundofAdvanceObj['IsCancelled'] = false;
     IPRefundofAdvanceObj['IsCancelledBy'] = 0;
@@ -366,9 +367,10 @@ export class IPRefundofAdvanceComponent implements OnInit {
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['OPD_IPD_Id'] =this.vOPIPId,
     PatientHeaderObj['NetPayAmount'] =  this.NewRefundAmount;
-    PatientHeaderObj['PatientName'] =   this.PatientName
+    PatientHeaderObj['PatientName'] =   this.PatientName;
+    PatientHeaderObj['BillId'] =  1;
 
-    const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
+    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
         maxWidth: "75vw",
         maxHeight: "93vh", width: '100%', height: "100%",
@@ -378,7 +380,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
           FromName: "Advance-Refund"
         }
       });
-      // // debugger;
+     
     dialogRef.afterClosed().subscribe(result => {
       if(result.IsSubmitFlag){
       console.log('============================== Return RefAdv ===========');
@@ -389,7 +391,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
         "updateAdvanceDetailBalAmount": AdvanceDetailBalAmountUpdate,
         "insertPayment": result.submitDataPay.ipPaymentInsert
       };
-      // console.log("Submit Data:");
+      
       console.log(submitData);
       this._IpSearchListService.insertIPRefundOfAdvance(submitData).subscribe(response => {
         console.log(response);

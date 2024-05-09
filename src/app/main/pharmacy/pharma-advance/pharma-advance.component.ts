@@ -1,38 +1,35 @@
-import { Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { ChargesList } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { IPSearchListService } from '../ip-search-list.service';
 import { DatePipe } from '@angular/common';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDataStored } from '../../advance';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
-import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-payment.component';
-import { fuseAnimations } from '@fuse/animations';
+import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { AdvanceDetail, AdvanceDetailObj } from '../ip-search-list.component';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import * as converter from 'number-to-words';
-import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
-import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
-import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { debug } from 'console';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { IpdAdvanceBrowseModel } from 'app/main/ipd/browse-ipadvance/browse-ipadvance.component';
+import { IPAdvancePaymentComponent } from 'app/main/ipd/ip-search-list/ip-advance-payment/ip-advance-payment.component';
+import { IPAdvanceComponent } from 'app/main/ipd/ip-search-list/ip-advance/ip-advance.component';
+import { AdvanceDetail, AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
+import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
-
+import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-ip-advance',
-  templateUrl: './ip-advance.component.html',
-  styleUrls: ['./ip-advance.component.scss'],
+  selector: 'app-pharma-advance',
+  templateUrl: './pharma-advance.component.html',
+  styleUrls: ['./pharma-advance.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class IPAdvanceComponent implements OnInit {
-
+export class PharmaAdvanceComponent implements OnInit {
+  searchFormGroup: FormGroup;
   msg: any;
   sIsLoading: string = '';
   @ViewChild(MatSort) sort: MatSort;
@@ -75,19 +72,40 @@ export class IPAdvanceComponent implements OnInit {
   printTemplate: any;
   CashCounterList: any = [];
   PatientHeaderObj: any;
+  registerObj = new RegInsert({});
+  City: any;
+  CompanyName: any;
+  Tarrifname: any;
+  Doctorname: any;
+  Paymentdata: any;
+  vOPIPId: any = 0;
+  vOPDNo: any = 0;
+  vTariffId: any = 0;
+  vClassId: any = 0;
+  CompanyId: any = 0;
+  AgeYear: any = 0;
+  PatientName: any = "";
+  RegId: any;
+  RegDate: any;
+  vAdmissionId: any=0;
+  PatientListfilteredOptions: any;
+  isRegIdSelected: boolean = false;
+  noOptionFound: boolean = false;
+
   constructor(public _IpSearchListService: IPSearchListService,
     public _opappointmentService: OPSearhlistService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
-    private dialogRef: MatDialogRef<IPAdvanceComponent>,
+    // private dialogRef: MatDialogRef<IPAdvanceComponent>,
     private accountService: AuthenticationService,
     private formBuilder: FormBuilder) {
-    dialogRef.disableClose = true;
+    // dialogRef.disableClose = true;
   }
 
   ngOnInit(): void {
+    this.searchFormGroup = this.createSearchForm();
     this.AdvFormGroup = this.formBuilder.group({
       advanceAmt: ['', [Validators.pattern('^[0-9]{2,8}$')]],
       comment: [''],
@@ -107,10 +125,68 @@ export class IPAdvanceComponent implements OnInit {
     this.getCashCounterComboList();
   }
 
+  createSearchForm() {
+    return this.formBuilder.group({
+      RegId: ['']
+    });
+  }
+
+
+
+
+
+
+  // Patient Search;
+  getSearchList() {
+    
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+    }
+    
+    this._IpSearchListService.getPatientVisitedListSearch(m_data).subscribe(data => {
+      this.PatientListfilteredOptions = data;
+      console.log(this.PatientListfilteredOptions )
+      if (this.PatientListfilteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+
+  }
+
+  getSelectedObj1(obj) {
+    console.log(obj)
+    this.dataSource.data = [];
+    
+    this.registerObj = obj;
+    this.PatientName = obj.FirstName + " " + obj.LastName;
+    this.RegId = obj.RegId;
+    this.City = obj.City;
+    // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    this.CompanyName = obj.CompanyName;
+    this.Tarrifname = obj.TariffName;
+    this.Doctorname = obj.DoctorName;
+    this.vOPIPId = obj.RegId;
+    this.vOPDNo = obj.RegId;//obj.OPDNo;
+    this.vTariffId = obj.TariffId;
+    this.vClassId = obj.classId
+    
+  }
+
+  getOptionText1(option) {
+    if (!option)
+      return '';
+      return option.FirstName + ' ' + option.MiddleName  + ' ' + option.LastName ;
+
+  }
+
+
+
   getAdvanceList() {
     this.isLoadingStr = 'loading';
     var m_data = {
-      "AdmissionID": this.selectedAdvanceObj.AdmissionID
+      "AdmissionID":this.vAdmissionId
     }
     setTimeout(() => {
       this.isLoadingStr = 'loading';
@@ -205,14 +281,13 @@ export class IPAdvanceComponent implements OnInit {
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
       PatientHeaderObj['NetPayAmount'] = this.advanceAmount;
-      PatientHeaderObj['BillId'] = 0;
 
       // const advanceHeaderInsert = new AdvanceHeader(advanceHeaderObj);
       // const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
 
       // console.log(this.AdvFormGroup.get('cashpay').value)
       // if (this.AdvFormGroup.get('cashpay').value != 1) {
-        const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+        const dialogRef = this._matDialog.open(IPAdvancePaymentComponent,
           {
             maxWidth: "100vw",
             height: '740px',
@@ -235,7 +310,7 @@ export class IPAdvanceComponent implements OnInit {
           this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
 
             if (response) {
-              Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
+              Swal.fire('Congratulations !', 'Pharma Advance data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                   this.viewgetAdvanceReceiptReportPdf(response);
 
@@ -243,74 +318,13 @@ export class IPAdvanceComponent implements OnInit {
                 }
               });
             } else {
-              Swal.fire('Error !', 'IP Advance data not saved', 'error');
+              Swal.fire('Error !', 'Pharma Advance data not saved', 'error');
             }
             this.isLoading = '';
           });
 
         });
-      // }
-      // else if (this.AdvFormGroup.get('cashpay').value == 1) {
-
-      //   let Paymentobj = {};
-      //   Paymentobj['BillNo'] = 0;
-      //   Paymentobj['ReceiptNo'] = "";
-      //   Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
-      //     Paymentobj['CashPayAmount'] = this.advanceAmount || 0;
-      //   Paymentobj['ChequePayAmount'] = 0;
-      //   Paymentobj['ChequeNo'] = 0;
-      //   Paymentobj['BankName'] = "";
-      //   Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['CardPayAmount'] = 0;
-      //   Paymentobj['CardNo'] = 0;
-      //   Paymentobj['CardBankName'] = "";
-      //   Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['AdvanceUsedAmount'] = 0;
-      //   Paymentobj['AdvanceId'] = 0;
-      //   Paymentobj['RefundId'] = 0;
-      //   Paymentobj['TransactionType'] = 0;
-      //   Paymentobj['Remark'] = "Cashpayment";
-      //   Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-      //     Paymentobj['IsCancelled'] = 0;
-      //   Paymentobj['IsCancelledBy'] = 0;
-      //   Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['CashCounterId'] = 0;
-      //   Paymentobj['NEFTPayAmount'] = 0;
-      //   Paymentobj['NEFTNo'] = 0;
-      //   Paymentobj['NEFTBankMaster'] = "";
-      //   Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['PayTMAmount'] = 0;
-      //   Paymentobj['PayTMTranNo'] = 0;
-      //   Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['PaidAmt'] = this.advanceAmount || 0;
-      //   Paymentobj['BalanceAmt'] = 0;
-
-      //   let submitData = {
-      //     "advanceHeaderInsert": advanceHeaderObj,
-      //     "advanceDetailInsert": AdvanceDetObj,
-      //     "ipPaymentInsert": Paymentobj
-      //   };
-      //   console.log(submitData);
-      //   this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
-
-      //     if (response) {
-      //       Swal.fire('Congratulations !', 'IP Advance Cash data saved Successfully !', 'success').then((result) => {
-      //         if (result.isConfirmed) {
-      //           this.viewgetAdvanceReceiptReportPdf(response);
-
-      //           this._matDialog.closeAll();
-      //         }
-      //       });
-      //     } else {
-      //       Swal.fire('Error !', 'IP Advance data not saved', 'error');
-      //     }
-      //     this.isLoading = '';
-      //   });
-
-      // }
-
-
+     
 
     }
     else {
@@ -374,7 +388,7 @@ export class IPAdvanceComponent implements OnInit {
           console.log(submitData);
           this._IpSearchListService.InsertAdvanceHeaderUpdate(submitData).subscribe(response => {
             if (response) {
-              Swal.fire('Congratulations !', 'IP Advance data Updated Successfully !', 'success').then((result) => {
+              Swal.fire('Congratulations !', 'Pharma Advance data Updated Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                   this.getAdvanceList();
                   this._matDialog.closeAll();
@@ -383,72 +397,13 @@ export class IPAdvanceComponent implements OnInit {
                 }
               });
             } else {
-              Swal.fire('Error !', 'IP Advance data not Updated', 'error');
+              Swal.fire('Error !', 'Pharma Advance data not Updated', 'error');
             }
             this.isLoading = '';
           });
 
         });
-      // }
-      // else if (this.AdvFormGroup.get('cashpay').value == 1) {
-
-      //   let Paymentobj = {};
-      //   Paymentobj['BillNo'] = 0;
-      //   Paymentobj['ReceiptNo'] = "";
-      //   Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
-      //     Paymentobj['CashPayAmount'] = this.advanceAmount || 0;
-      //   Paymentobj['ChequePayAmount'] = 0;
-      //   Paymentobj['ChequeNo'] = 0;
-      //   Paymentobj['BankName'] = "";
-      //   Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['CardPayAmount'] = 0;
-      //   Paymentobj['CardNo'] = 0;
-      //   Paymentobj['CardBankName'] = "";
-      //   Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['AdvanceUsedAmount'] = 0;
-      //   Paymentobj['AdvanceId'] = 0;
-      //   Paymentobj['RefundId'] = 0;
-      //   Paymentobj['TransactionType'] = 0;
-      //   Paymentobj['Remark'] = "Cashpayment";
-      //   Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-      //     Paymentobj['IsCancelled'] = 0;
-      //   Paymentobj['IsCancelledBy'] = 0;
-      //   Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['CashCounterId'] = 0;
-      //   Paymentobj['NEFTPayAmount'] = 0;
-      //   Paymentobj['NEFTNo'] = 0;
-      //   Paymentobj['NEFTBankMaster'] = "";
-      //   Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['PayTMAmount'] = 0;
-      //   Paymentobj['PayTMTranNo'] = 0;
-      //   Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      //     Paymentobj['PaidAmt'] = this.advanceAmount || 0;
-      //   Paymentobj['BalanceAmt'] = 0;
-
-      //   let submitData = {
-      //     "advanceHeaderUpdate": advanceHeaderUpdate,
-      //     "advanceDetailInsert1": advanceDetailInsert,
-      //     "ipPaymentInsert": Paymentobj
-      //   };
-      //   console.log(submitData);
-      //   this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
-
-      //     if (response) {
-      //       Swal.fire('Congratulations !', 'IP Advance Cash data saved Successfully !', 'success').then((result) => {
-      //         if (result.isConfirmed) {
-      //           this.viewgetAdvanceReceiptReportPdf(response);
-
-      //           this._matDialog.closeAll();
-      //         }
-      //       });
-      //     } else {
-      //       Swal.fire('Error !', 'IP Advance data not saved', 'error');
-      //     }
-      //     this.isLoading = '';
-      //   });
-
-      // }
+     
 
     }
     this.AdvFormGroup.get('advanceAmt').reset(0);
@@ -456,10 +411,7 @@ export class IPAdvanceComponent implements OnInit {
     this.AdvFormGroup.get('CashCounterId').reset(0);
   }
 
-  convertToWord(e) {
 
-    return converter.toWords(e);
-  }
 
   getPrint(contact){
     this.viewgetAdvanceReceiptReportPdf(contact.AdvanceDetailID);
@@ -498,7 +450,7 @@ export class IPAdvanceComponent implements OnInit {
 
 
   onClose() {
-    this.dialogRef.close();
+    // this.dialogRef.close();
   }
 
 

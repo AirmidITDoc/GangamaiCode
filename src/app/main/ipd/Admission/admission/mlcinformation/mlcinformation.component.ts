@@ -9,6 +9,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Admission } from '../admission.component';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 
 @Component({
@@ -26,6 +28,8 @@ export class MLCInformationComponent implements OnInit {
   isLoading: any;
   AdmissionId: any;
   public value = new Date();
+  date: string;
+  dateValue: any = new Date().toISOString();
 
   constructor(public _AdmissionService: AdmissionService,
     private formBuilder: FormBuilder,
@@ -36,7 +40,9 @@ export class MLCInformationComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<MLCInformationComponent>,
     private router: Router
-  ) { }
+  ) {
+    this.date = new Date().toISOString().slice(0, 16);
+   }
 
   ngOnInit(): void {
 
@@ -56,13 +62,41 @@ export class MLCInformationComponent implements OnInit {
       AuthorityName: '',
       ABuckleNo: '',
       PoliceStation: '',
-
+      MlcType:''
     });
   }
 
 
+  filteredOptionsMLC: Observable<string[]>;
+  MLCList:any=[];
+  
+  optionsMLC: any[] = [];
 
+  getReligionList() {
+    this._AdmissionService.getMLCCombo().subscribe(data => {
+      this.MLCList = data;
+      this.optionsMLC = this.MLCList.slice();
+      this.filteredOptionsMLC = this.MlcInfoFormGroup.get('MlcType').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterMLC(value) : this.MLCList.slice()),
+      );
 
+    });
+
+  }
+  private _filterMLC(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.ReligionName ? value.ReligionName.toLowerCase() : value.toLowerCase();
+      return this.optionsMLC.filter(option => option.ReligionName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  getOptionTextMLC(option) {
+    return option && option.ReligionName ? option.ReligionName : '';
+  }
+
+  
   @ViewChild('mlc') mlc: ElementRef;
 @ViewChild('authority') authority: ElementRef;
 @ViewChild('buckleno') buckleno: ElementRef;
@@ -147,7 +181,6 @@ public onEnterpolic(event): void {
 
 }
 else{
-  debugger;
   var m_data1 = {
     "updateMLCInfo": {
       "mlcId": 13,//this.MlcInfoFormGroup.get("MLCId").value,
@@ -158,9 +191,7 @@ else{
       "AuthorityName": this.MlcInfoFormGroup.get("AuthorityName").value || 0,
       "BuckleNo": this.MlcInfoFormGroup.get("ABuckleNo").value || 0,
       "PoliceStation": this.MlcInfoFormGroup.get("PoliceStation").value,
-      
     }
-
   }
     console.log(m_data1);
   this._AdmissionService.GetMLCUpdate(m_data1).subscribe(response => {

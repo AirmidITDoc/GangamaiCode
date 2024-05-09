@@ -58,18 +58,15 @@
                                     <input name="LastName" formControlName="LastName" matInput (keyup)="onShow_IpdAdvance()">
                                 </mat-form-field>
 
-                                <div class="sidebar-spinner mt-12" *ngIf="SpinLoading">
-                                    <span>
-                                        Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
-                                    </span>
-                                </div>
 
-                                <div class="action-buttons">
-                                    <button type="button" mat-raised-button class="clearbutton" matTooltip="close" (click)="onClear()">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                    <button type="submit" mat-raised-button class="searchButton" (click)="onShow_IpdAdvance()" matTooltip="search">
-                                        <mat-icon>search</mat-icon>
+                                <div style="margin-top: 10px;">
+                                    <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                        matTooltip="close">
+                                        <mat-icon class="cleariconbutton">close</mat-icon>
+                                    </button>&nbsp;
+                                    <button mat-raised-button class="searchButton" (click)="onShow_IpdAdvance()"
+                                        matTooltip="search">
+                                        <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
                                 </div>
 
@@ -216,3 +213,4 @@
         <!-- CENTER -->
     </div>
 </div>
+TempDesign

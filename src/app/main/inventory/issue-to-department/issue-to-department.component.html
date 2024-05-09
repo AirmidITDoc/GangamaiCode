@@ -534,8 +534,7 @@
                                     <mat-form-field appearance="outline" fxFlex="6%">
                                         <mat-label>Qty</mat-label>
                                         <input name="Qty" formControlName="Qty" matInput #Quantity
-                                            (keydown)="onEnterQty($event)" required
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,5);"
+                                            (keydown)="onEnterQty($event)" required type="text" OnlyNumber
                                             required (keyup)="CalculateTotalAmt()" [(ngModel)]="vQty"
                                             autocomplete="off">
                                     </mat-form-field>
@@ -574,8 +573,9 @@
                                     <div fxlayout="row">
 
                                         <div style="width: 100%;">
+ 
 
-                                            <mat-table #table class="tab3" matSort [dataSource]="dsNewIssueList3"
+                                           <mat-table #table class="tab3" matSort [dataSource]="dsNewIssueList3"
                                                 [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                                 <ng-container matColumnDef="ItemId">
@@ -621,14 +621,27 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="Qty">
+                                                <!-- <ng-container matColumnDef="Qty">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         IssueQty</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
                                                         <mat-form-field appearance="legacy">
-                                                            <input matInput type="text" [(ngModel)]="contact.Qty"
-                                                                step="0.1" autocomplete="off" OnlyNumber
-                                                                (keyup)="getCellCalculation(contact,contact.Qty)">
+                                                            <input matInput type="number" OnlyNumber [(ngModel)]="contact.Qty" 
+                                                                (keyup)="getCellCalculation(contact,contact.Qty)"   >
+                                                        </mat-form-field>
+                                                    </mat-cell>
+                                                </ng-container>   -->
+
+                                                <ng-container matColumnDef="Qty">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-80 border-right">IssueQty
+                                                    </mat-header-cell>
+                                                    <mat-cell class="w-80 border-right" *matCellDef="let contact" fxShow.gt-sm>
+                                                        <mat-form-field appearance="legacy">
+                                                            
+                                                            <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber 
+                                                                (keyup)="getCellCalculation(contact,contact.Qty)"
+                                                                (keypress)="keyPressAlphanumeric($event)">
                                                         </mat-form-field>
                                                     </mat-cell>
                                                 </ng-container>
@@ -637,8 +650,7 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Rate</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.LandedRate |
-                                                            currency:'INR':'symbol-narrow':'0.2'}}
+                                                        {{contact.LandedRate | number:'1.2-2'}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -646,8 +658,7 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         GSTPer</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.VatPer |
-                                                            currency:'INR':'symbol-narrow':'0.2'}}
+                                                        {{contact.VatPer  | number:'1.2-2'}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -655,8 +666,7 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         GSTAmount</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.VatAmount |
-                                                            currency:'INR':'symbol-narrow':'0.2'}}
+                                                        {{contact.VatAmount | number:'1.2-2'}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -664,28 +674,9 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         TotalAmount</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.LandedRateandedTotal |
-                                                            currency:'INR':'symbol-narrow':'0.2'}}
+                                                        {{contact.LandedRateandedTotal | number:'1.2-2'}}
                                                     </mat-cell>
-                                                </ng-container>
-
-                                                <!-- <ng-container matColumnDef="indDetID">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        IndDetID</mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.IndDetID}}
-                                                        </mat-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="indQty">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        IndQty</mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                            {{contact.indQty}}
-                                                        </mat-cell>
-                                                </ng-container> -->
-
-
+                                                </ng-container>  
 
                                                 <ng-container matColumnDef="Action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef style="color: white;">
@@ -722,7 +713,7 @@
                                                 <mat-footer-row *matFooterRowDef="['noData']"
                                                     [ngClass]="{'hide':!(dsNewIssueList3!=null && dsNewIssueList3.data.length==0)}">
                                                 </mat-footer-row>
-                                            </mat-table>
+                                            </mat-table>  
                                             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
                                                 showFirstLastButtons>
                                             </mat-paginator>
