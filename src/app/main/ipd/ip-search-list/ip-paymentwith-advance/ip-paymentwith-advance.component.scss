@@ -1,0 +1,89 @@
+app-ippayment-with-advance {
+    .mat-table {
+        height: fit-content !important;
+    }
+    .first-part, .second-part {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .patient-div .mat-form-field {
+        width: 500px !important;
+    }
+    
+    .bill-div .mat-form-field {
+        width: 200px !important;
+    }
+    
+    .patient-div, .bill-div, .concession, .net-pay, .balance-amt {
+        display: flex;
+        align-items: center;
+    }
+    
+    .concession .mat-form-field, .net-pay .mat-form-field, .balance-amt .mat-form-field {
+        width: 200px !important;
+    }
+    
+    .chips-name {
+        font-size: 15px;
+        font-weight: 400;
+    }
+    
+    .mat-chip.mat-standard-chip.mat-chip-selected.mat-primary {
+        background-color: #3f51b5 !important;
+    }
+    
+    ::ng-deep.mat-form-field-subscript-wrapper {
+        position: relative !important;
+    }
+    
+    .top-header-div {
+        background-color: #e8e9ef !important;
+        padding-left: 20px;
+    }
+    
+    .payment-container {
+        padding: 20px 20px 10px 20px;
+        // height: 400px !important;
+        // overflow: auto !important;
+    }
+    
+    .next-btn {
+        width: 100px;
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 2px;
+        background-color: #0d3c82;
+        border: 1px solid #48a348;
+        color: white;
+        cursor: pointer;
+    }
+    
+    button:disabled {
+        color: #FFFFFF !important;
+        background-color: #CCCCCC !important;
+        border-radius: 2px;
+        border: 1px solid #CCCCCC;
+    }
+    
+    .save-payment {
+        width: 100%;
+        text-align: right;
+    }
+    
+    .payment-container .mat-form-field .mat-form-field-subscript-wrapper {
+        position: relative !important;
+    }
+    
+    .close-button {
+        width: 100px;
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 2px;
+        background-color: #7c7b71;
+        color: white;
+        border: 1px solid #7c7b71;
+        cursor: pointer;
+    }
+}

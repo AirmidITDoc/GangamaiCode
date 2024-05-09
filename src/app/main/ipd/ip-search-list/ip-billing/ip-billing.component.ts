@@ -29,6 +29,7 @@ import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advanc
 import { ToastrService } from 'ngx-toastr';
 import { forEach } from 'lodash';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { IpPaymentwithAdvanceComponent } from '../ip-paymentwith-advance/ip-paymentwith-advance.component';
 
 
 @Component({
@@ -182,7 +183,8 @@ export class IPBillingComponent implements OnInit {
   vfDiscountAmount: any = 0;
   vpaidBalanceAmt: any = 0;
   vConcessionId: any = 0;
-
+  vPercentage: any;
+  vserviceDiscflag: boolean = false;
 
   isClasselected: boolean = false;
   isSrvcNameSelected: boolean = false;
@@ -297,7 +299,11 @@ export class IPBillingComponent implements OnInit {
       this.Ipbillform.get('GenerateBill').disable();
       this.Ipbillform.get('GenerateBill').setValue(false);
     }
+    // console.log(this.vfDiscountAmount )
+    // if (this.vDiscountAmount > 0) {
+    //   this.admin = false;
 
+    // }
     this.setClassdata();
 
   }
@@ -558,7 +564,7 @@ export class IPBillingComponent implements OnInit {
 
   public onEnterdoctor(event, value): void {
     console.log(value)
-    debugger
+    
     if (event.which === 13) {
 
       if (this.isDoctor) {
@@ -660,6 +666,7 @@ export class IPBillingComponent implements OnInit {
       (error) => {
         this.isLoading = 'list-loaded';
       });
+
     this.chkdiscstatus();
 
   }
@@ -681,28 +688,17 @@ export class IPBillingComponent implements OnInit {
   }
 
   chkdiscstatus() {
-    debugger
 
-    // if (this.dataSource.data.length > 0) {
-    //   this.dataSource.data.forEach((element) => {
-
-    //     if (element.ConcessionPercentage > 0) {
-    //       this.chkDiscflag = true;
-    //       console.log(this.chkDiscflag)
-    //     }
-    //   });
-    // }
-
-    if (this.vDiscountAmount == 0) {
+        if (this.vDiscountAmount == 0) {
       this.admin = true;
-      this.ConShow = true;
+      // this.ConShow = true;
 
-      this.Ipbillform.get('ConcessionId').reset();
-      this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
-      this.Ipbillform.get('ConcessionId').enable;
-      this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-      this.Consession = true;
-    } else {
+      // this.Ipbillform.get('ConcessionId').reset();
+      // this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+      // this.Ipbillform.get('ConcessionId').enable;
+      // this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+      // this.Consession = true;
+    } else if (this.vDiscountAmount > 0) {
       this.admin = false;
       this.ConShow = true;
 
@@ -852,20 +848,12 @@ export class IPBillingComponent implements OnInit {
     this.vDiscountAmount = netAmt;
     this.vfDiscountAmount = this.vDiscountAmount;
     // this.Ipbillform.get("concessionAmt").setValue(this.vDiscountAmount)
-
+    
+    console.log(this.vfDiscountAmount )
     if (this.vDiscountAmount > 0) {
-
-      this.ConShow = true;
-
-      // this.Ipbillform.get('ConcessionId').reset();
-      // this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
-      // this.Ipbillform.get('ConcessionId').enable;
-      // this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-
+      this.admin = false;
+      this.ConShow=true;
     }
-    // else if(this.vDiscountAmount==0){
-    //   this.admin=true;
-    // }
     return netAmt;
   }
 
@@ -1061,13 +1049,14 @@ export class IPBillingComponent implements OnInit {
       PatientHeaderObj['Date'] = this.dateTimeObj.date;
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
-      PatientHeaderObj['AdvanceAmount'] = 0;
+      // PatientHeaderObj['AdvanceAmount'] = 0;
+      PatientHeaderObj['AdvanceAmount'] = this.Ipbillform.get('FinalAmount').value;
       PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
 
       console.log('============================== Save IP Billing ===========');
       //==============-======--==============Payment======================
       // IPAdvancePaymentComponent
-      const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+      const dialogRef = this._matDialog.open(IpPaymentwithAdvanceComponent,
         {
           maxWidth: "85vw",
           height: '840px',
@@ -1391,7 +1380,7 @@ export class IPBillingComponent implements OnInit {
     }
     this.isLoading = 'save';
 
-    if (this.SrvcName && this.b_price && this.b_qty) {
+    if (this.SrvcName && (parseInt(this.b_price) > 0 || this.b_price == '0') && this.b_qty) {
 
       var m_data = {
         "chargeID": 0,
@@ -1445,7 +1434,10 @@ export class IPBillingComponent implements OnInit {
 
     this.itemid.nativeElement.focus();
     this.add = false;
-
+    if (this.formDiscPersc > 0) {
+      this.vserviceDiscflag = true;
+      this.admin = false;
+    }
 
   }
   onClearServiceAddList() {
@@ -1690,94 +1682,96 @@ export class IPBillingComponent implements OnInit {
   onSave() {
 
     // if (this.ConShow = true) {
-      // if (this.vConcessionId == 0) {
+    // if (this.vConcessionId == 0) {
 
-      //   this.toastr.warning('Enter  Concession Reason', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // }
+    //   this.toastr.warning('Enter  Concession Reason', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
 
-      // else {
+    // else {
 
-      //   if (this.dataSource.data.length > 0) {
-      //     if (this.Ipbillform.get('GenerateBill').value) {
-      //       Swal.fire({
-      //         title: 'Do you want to save the Final Bill ',
+    //   if (this.dataSource.data.length > 0) {
+    //     if (this.Ipbillform.get('GenerateBill').value) {
+    //       Swal.fire({
+    //         title: 'Do you want to save the Final Bill ',
 
-      //         showCancelButton: true,
-      //         confirmButtonText: 'OK',
-      //       }).then((result) => {
-      //         /* Read more about isConfirmed, isDenied below */
-      //         if (result.isConfirmed) {
+    //         showCancelButton: true,
+    //         confirmButtonText: 'OK',
+    //       }).then((result) => {
+    //         /* Read more about isConfirmed, isDenied below */
+    //         if (result.isConfirmed) {
 
-      //           this.SaveBill();
-      //         }
-      //       })
+    //           this.SaveBill();
+    //         }
+    //       })
 
-      //     }
-      //     else {
+    //     }
+    //     else {
 
-      //       Swal.fire({
-      //         title: 'Do you want to save the Draft Bill ',
+    //       Swal.fire({
+    //         title: 'Do you want to save the Draft Bill ',
 
-      //         showCancelButton: true,
-      //         confirmButtonText: 'OK',
+    //         showCancelButton: true,
+    //         confirmButtonText: 'OK',
 
-      //       }).then((result) => {
-      //         /* Read more about isConfirmed, isDenied below */
-      //         if (result.isConfirmed) {
+    //       }).then((result) => {
+    //         /* Read more about isConfirmed, isDenied below */
+    //         if (result.isConfirmed) {
 
-      //           this.onSaveDraft();
-      //         }
+    //           this.onSaveDraft();
+    //         }
 
-      //       })
+    //       })
 
-      //     }
-      //   } else {
-      //     Swal.fire("Select Data For Save")
-      //   }
-      // }
+    //     }
+    //   } else {
+    //     Swal.fire("Select Data For Save")
+    //   }
+    // }
     // } else {
 
-      if (this.dataSource.data.length > 0) {
-        if (this.Ipbillform.get('GenerateBill').value) {
-          Swal.fire({
-            title: 'Do you want to save the Final Bill ',
+    if (this.dataSource.data.length > 0) {
+      if (this.Ipbillform.get('GenerateBill').value) {
+        Swal.fire({
+          title: 'Do you want to save the Final Bill ',
 
-            showCancelButton: true,
-            confirmButtonText: 'OK',
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              
-              this.SaveBill();
-            }
-          })
+          showCancelButton: true,
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
 
-        }
-        else {
+            this.SaveBill();
+          }
+        })
 
-          Swal.fire({
-            title: 'Do you want to save the Draft Bill ',
-
-            showCancelButton: true,
-            confirmButtonText: 'OK',
-
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-
-              this.onSaveDraft();
-            }
-
-          })
-
-        }
-      } else {
-        Swal.fire("Select Data For Save")
       }
+      else {
+
+        Swal.fire({
+          title: 'Do you want to save the Draft Bill ',
+
+          showCancelButton: true,
+          confirmButtonText: 'OK',
+
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+
+            this.onSaveDraft();
+          }
+
+        })
+
+      }
+    } else {
+      Swal.fire("Select Data For Save")
+    }
     // }
+
+    this.Ipbillform.get('GenerateBill').setValue(false);
   }
 
   tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {

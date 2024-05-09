@@ -283,6 +283,16 @@ export class IPSearchListComponent implements OnInit {
       console.log(m_data3)
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data3);
       this._IpSearchListService.populateForm(m_data3);
+      debugger
+      let Advflag:boolean=false;
+      if (contact.IsBillGenerated) {
+        Advflag=true;
+      }
+      if(contact.IsDischarged){
+        Advflag=true;
+      }
+
+      if(!Advflag){
       const dialogRef = this._matDialog.open(IPAdvanceComponent,
         {
           maxWidth: "100%",
@@ -292,6 +302,9 @@ export class IPSearchListComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
       });
+    }else{
+      Swal.fire("Bil Generatd !")
+    }
     }
     else if (m == "Discharge Summary") {
       console.log(contact);
@@ -411,7 +424,7 @@ export class IPSearchListComponent implements OnInit {
       };
       this.advanceDataStored.storage = new AdvanceDetailObj(xx);
 
-      // this._ActRoute.navigate(['opd/new-OpdBilling']);
+      // if (!contact.IsBillGenerated || contact.IsDischarged ==1) {
       const dialogRef = this._matDialog.open(IPRefundofBillComponent,
         {
           maxWidth: "75vw",
@@ -422,6 +435,7 @@ export class IPSearchListComponent implements OnInit {
         console.log('The dialog was closed - Insert Action', result);
         //  this.getRadiologytemplateMasterList();
       });
+    // }else{Swal.fire("Bill Generated")}
     }
     else if (m == "Refund of Advance") {
       let m_data = {
@@ -450,6 +464,7 @@ export class IPSearchListComponent implements OnInit {
      
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
       this._IpSearchListService.populateForm2(m_data);
+      // if (!contact.IsBillGenerated) {
       const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
         {
           maxWidth: "75vw",
@@ -458,6 +473,7 @@ export class IPSearchListComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         
       });
+    // }else Swal.fire("Bill already Generated")
     }
     else if (m == "Bill") {
       console.log(" This is for  Bill pop : " + m);

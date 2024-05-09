@@ -1507,8 +1507,7 @@ export class AppointmentComponent implements OnInit {
     this.registerObj = obj;
     this.PatientName = obj.PatientName;
     this.RegId = obj.RegId;
-    console.log(obj.AgeDay )
-    console.log(obj.AgeMonth )
+   
     this.onChangeDateofBirth(this.registerObj.DateofBirth)
     this.setDropdownObjs();
 

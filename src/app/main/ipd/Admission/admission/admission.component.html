@@ -424,10 +424,11 @@
                                     </mat-radio-group>
                                 </div>
                                 <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
+                                    <!-- getSelectedObj -->
                                     <mat-form-field appearance="outline" *ngIf="Regflag">
                                         <input type="text" name="RegId" formControlName="RegId"
                                             placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                                            [matAutocomplete]="auto" (input)="getSearchList()">
+                                            [matAutocomplete]="auto" (input)="getSearchList()" >
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
                                                 (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
@@ -435,7 +436,7 @@
                                                 (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                                            (optionSelected)='getSelectedObj($event.option.value)'>
+                                            (optionSelected)='chekAdmittedpatient($event.option.value)'>
                                             <mat-option *ngFor="let option of filteredOptions" [value]="option">
                                                 {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
                                                 {{option.RegNo}} |
@@ -561,7 +562,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Marital Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select MaritalStatusId" [(ngModel)]="vMaritalStatusId"
-                                        matInput #mstatus (keydown)="onEntermstatus($event,vMaritalStatusId.MaritalStatusId)"
+                                        matInput #mstatus (keydown)="onEntermstatus($event)"
                                         formControlName="MaritalStatusId" [matAutocomplete]="autoMarital">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -581,7 +582,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Religion Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Religion" [(ngModel)]="vReligionId"
-                                        matInput #religion (keydown)="onEnterreligion($event,vReligionId.ReligionId)"
+                                        matInput #religion (keydown)="onEnterreligion($event)"
                                         formControlName="ReligionId" [matAutocomplete]="autoReligion">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -712,7 +713,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Area Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Area" [(ngModel)]="vAreaId"
-                                        matInput #area (keydown)="onEnterarea($event,vAreaId.AreaId)" formControlName="AreaId"
+                                        matInput #area (keydown)="onEnterarea($event)" formControlName="AreaId"
                                         [matAutocomplete]="autoArea">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -878,7 +879,7 @@
                                     <mat-label>Admitted Doctor 1</mat-label>
                                     <input matAutocompletePosition="below" type="text"
                                         placeholder="Select Admitted Doctor 1" matInput #admitdoc1
-                                        (keydown)="onEnteradmitdoc1($event,vadmittedDoctor1.DoctorID)" formControlName="admittedDoctor1" [(ngModel)]="vadmittedDoctor1"
+                                        (keydown)="onEnteradmitdoc1($event)" formControlName="admittedDoctor1" [(ngModel)]="vadmittedDoctor1"
                                         [matAutocomplete]="autoRefdoc">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -899,7 +900,7 @@
                                     <input matAutocompletePosition="below" type="text"
                                         placeholder="Select Admitted Doctor 2 " matInput
                                         formControlName="admittedDoctor2" [matAutocomplete]="autodoc2" #admitdoc2 [(ngModel)]="vadmittedDoctor2"
-                                        (keydown)="onEnteradmitdoc2($event,vadmittedDoctor2.DoctorID)">
+                                        (keydown)="onEnteradmitdoc2($event)">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="hospitalFormGroup.get('admittedDoctor2').setValue(''); isAdmittedDoctor2Selected = false;">close</mat-icon>
@@ -916,7 +917,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Ref Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor "
-                                        matInput #refdoc (keydown)="onEnterrefdoc($event,vrefDoctorId.DoctorID)" formControlName="refDoctorId" [(ngModel)]="vrefDoctorId"
+                                        matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="refDoctorId" [(ngModel)]="vrefDoctorId"
                                         [matAutocomplete]="autodoc2">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -1127,9 +1128,25 @@
                                 <mat-checkbox aria-label="Remember Me" formControlName="IsMLC">
                                     ISMLC
                                 </mat-checkbox>
+
                                 <mat-checkbox aria-label="Op TO Ip Change" formControlName="OPIPChange" style="margin-left:30px;">
                                     OP TO IP Convert
                                 </mat-checkbox>
+                                
+                                <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsCharity" style="margin-left:30px;">
+                                    IsCharity
+                                </mat-checkbox>
+                                <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsSenior" style="margin-left:30px;">
+                                    IsSenior
+                                </mat-checkbox>
+                                <mat-checkbox aria-label="Op TO Ip Change" formControlName="Citizen" style="margin-left:30px;">
+                                    Citizen
+                                </mat-checkbox>
+                                <mat-checkbox aria-label="Op TO Ip Change" formControlName="Emergancy" style="margin-left:30px;">
+                                    Emergancy
+                                </mat-checkbox>
+                               
+                                
                             </div>
                             <div class="next-div button-row-group">
                                 <button class="btn btn-primary" color="accent" (click)="nextClicked(otherFormGroup)"
