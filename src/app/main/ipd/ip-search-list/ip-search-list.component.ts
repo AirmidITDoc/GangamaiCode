@@ -177,7 +177,7 @@ export class IPSearchListComponent implements OnInit {
         "M_Name": this._IpSearchListService.myFilterform.get("MiddleName").value + '%' || "%",
         "IPNo": this._IpSearchListService.myFilterform.get("IPDNo").value || 0,
         Start:(this.paginator?.pageIndex??1),
-        Length:(this.paginator?.pageSize??20),
+        Length:(this.paginator?.pageSize??35),
       }
       console.log(D_data);
       setTimeout(() => {
@@ -538,6 +538,7 @@ export class IPSearchListComponent implements OnInit {
           RoomName: contact.RoomName,
           WardName: contact.RoomName,
           BedNo: contact.BedName,
+          BedId: contact.BedId,
           IPDNo: contact.IPDNo,
           DocNameID: contact.DocNameID,
           opD_IPD_Typec: contact.opD_IPD_Type,
@@ -586,7 +587,6 @@ export class IPSearchListComponent implements OnInit {
             this._IpSearchListService.populateForm(m_data);
             const dialogRef = this._matDialog.open(DischargeComponent,
               {
-
                 maxWidth: "90vw",
                 maxHeight: "90vh",
                 height: '600px',

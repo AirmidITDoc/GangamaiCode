@@ -2941,6 +2941,7 @@ export class RegInsert {
   PanCardNo: string;
   currentDate = new Date();
   AdmissionID: any;
+  VisitId: any;
   WardId: any;
   /**
    * Constructor
@@ -2984,6 +2985,7 @@ export class RegInsert {
       this.AadharCardNo = RegInsert.AadharCardNo || "";
       this.PanCardNo = RegInsert.PanCardNo || '';
       this.AdmissionID = RegInsert.AdmissionID || 0;
+      this.VisitId = RegInsert.VisitId || 0;
       this.WardId = RegInsert.WardId || 0;
     }
   }

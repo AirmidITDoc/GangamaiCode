@@ -90,6 +90,7 @@ export class DischargeComponent implements OnInit {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.PatientHeaderObj = this.advanceDataStored.storage;
     }
+    console.log( this.selectedAdvanceObj);
   
     this.getDischargetypeCombo();
     this.getDoctor1List();
@@ -249,11 +250,9 @@ viewgetCheckoutslipPdf(AdmId) {
   }
 
   onDischarge() {
-debugger;
     this.submitted = true;
     this.isLoading = 'submit';
     if(!this.selectedAdvanceObj.IsDischarged){
-
     var m_data = {
       "insertIPDDischarg": {
         "DischargeId": 0,
@@ -272,7 +271,9 @@ debugger;
         "IsDischarged": 1,
         "DischargeDate":this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value ,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
         "DischargeTime":this.datePipe.transform(this.currentDate,'hh:mm:ss') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-
+      },
+      "dischargeBedRelease": {
+        "bedId":this.selectedAdvanceObj.BedId,
       }
     }
     console.log(m_data);

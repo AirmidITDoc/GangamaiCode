@@ -646,7 +646,6 @@ export class InterimBillComponent implements OnInit {
   }
 
   calculatePersc() {
-    debugger
 
     if (this.InterimFormGroup.get("discPer").value > 0) {
       let discAmt = Math.round((this.vTotalBillAmt * parseInt(this.formDiscPersc)) / 100);

@@ -51,8 +51,8 @@
 
                                                             <mat-radio-group aria-label="Select an option" formControlName="PatientType" [(ngModel)]="vSelectedOption"
                                                                 name="paymode" (change)="onChangePatientType($event)" (blur)="onChangePatientType($event)"  fxLayout="row">
-                                                                <!-- <mat-radio-button value="OP" [disabled]="vCondition">OP</mat-radio-button>
-                                                                <mat-radio-button value="IP" [disabled]="vConditionIP">IP</mat-radio-button> -->
+                                                                <mat-radio-button value="OP" [disabled]="vCondition">OP</mat-radio-button>
+                                                                <mat-radio-button value="IP" [disabled]="vConditionIP">IP</mat-radio-button>
                                                                 <mat-radio-button value="External" [disabled]="vConditionExt">External</mat-radio-button>
                                                             </mat-radio-group>   
 
@@ -71,7 +71,7 @@
                                                          -->
 
 
-                                                        <mat-form-field appearance="outline"
+                                                        <!-- <mat-form-field appearance="outline"
                                                             *ngIf="ItemSubform.get('PatientType').value != 'IP' && ItemSubform.get('PatientType').value != 'External'"  >
                                                             <input type="text" name="RegID" formControlName="RegID1"
                                                                 placeholder="OP-RegNo / First Name / Last Name / Mobile No"
@@ -98,13 +98,12 @@
                                                                 *ngIf="ItemSubform.get('RegID').hasError('required')  && ItemSubform.get('RegID').touched">
                                                                 Required field cannot be left blank
                                                             </mat-error>
-                                                        </mat-form-field>  
+                                                        </mat-form-field>   -->
 
 
-                                                        <mat-form-field appearance="outline"
-                                                            *ngIf="ItemSubform.get('PatientType').value != 'OP' && ItemSubform.get('PatientType').value != 'External'" >
+                                                        <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value != 'External'"  fxFlex="50%">
                                                             <input type="text" name="RegID" formControlName="RegID"
-                                                                placeholder="IP-RegNo / First Name / Last Name / Mobile No"
+                                                                placeholder="RegNo / First Name / Last Name / Mobile No"
                                                                 matInput [matAutocomplete]="auto2"
                                                                 (input)="getSearchListIP()">
                                                             <span matSuffix style="display: flex;">
@@ -182,7 +181,7 @@
                                                     </div>
                                                 </div>
                                                 <div
-                                                    *ngIf="ItemSubform.get('PatientType').value != 'External' && RegId != ''">
+                                                    *ngIf="ItemSubform.get('PatientType').value != 'External'">
                                                     <div class="content-card">
                                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                             fxLayoutGap="5px">

@@ -1,142 +1,142 @@
-app-interim-bill {
-    .count,
-    .net-amount {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+// app-interim-bill {
+//     .count,
+//     .net-amount {
+//         display: flex;
+//         flex-direction: row;
+//         justify-content: space-between;
+//     }
 
-    .labels {
-        font-size: 16px;
-    }
+//     .labels {
+//         font-size: 16px;
+//     }
 
-    .label-value {
-        font-size: 18px;
-        font-weight: 700;
-    }
+//     .label-value {
+//         font-size: 18px;
+//         font-weight: 700;
+//     }
 
-    .heading {
-        background-color: #039BE5;
-        color: white;
-        justify-content: center;
-        text-align: center;
-        padding: 12px;
-    }
+//     .heading {
+//         background-color: #039BE5;
+//         color: white;
+//         justify-content: center;
+//         text-align: center;
+//         padding: 12px;
+//     }
 
-    .total-count {
-        width: 250px;
-        padding: 15px;
-    }
+//     .total-count {
+//         width: 250px;
+//         padding: 15px;
+//     }
 
-    .action {
-        padding: 15px;
-    }
+//     .action {
+//         padding: 15px;
+//     }
 
-    .mat-header-row {
-        width: 100%;
-        max-width: 1400px;
-        min-width: 1400px;
-        height: 10px;
-        background-color: #039be5 !important;
-    }
+//     .mat-header-row {
+//         width: 100%;
+//         max-width: 1400px;
+//         min-width: 1400px;
+//         height: 10px;
+//         background-color: #039be5 !important;
+//     }
 
-    .mat-row {
-        width: 100%;
-        max-width: 1400px;
-        min-width: 1400px;
-    }
+//     .mat-row {
+//         width: 100%;
+//         max-width: 1400px;
+//         min-width: 1400px;
+//     }
 
-    .mat-column-ChargesDate {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-    }
+//     .mat-column-ChargesDate {
+//         width: 110px;
+//         max-width: 110px;
+//         min-width: 110px;
+//     }
 
-    .mat-column-ServiceName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
-        text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden !important;
-        display: inline-block;
-        justify-content: left;
-        margin-top: 11px;
-        ;
-    }
+//     .mat-column-ServiceName {
+//         width: 200px;
+//         max-width: 200px;
+//         min-width: 200px;
+//         text-align: center;
+//         white-space: nowrap;
+//         overflow: hidden;
+//         text-overflow: ellipsis;
+//         overflow: hidden !important;
+//         display: inline-block;
+//         justify-content: left;
+//         margin-top: 11px;
+//         ;
+//     }
 
-    .mat-column-Price {
-        width: 80px;
-        max-width: 80px;
-        min-width: 80px;
-        // justify-content:left;
-        text-align: center;
-    }
+//     .mat-column-Price {
+//         width: 80px;
+//         max-width: 80px;
+//         min-width: 80px;
+//         // justify-content:left;
+//         text-align: center;
+//     }
 
-    .mat-column-Qty {
-        width: 60px;
-        max-width: 60px;
-        min-width: 60px;
-        // justify-content:center;
-        text-align: center;
-    }
+//     .mat-column-Qty {
+//         width: 60px;
+//         max-width: 60px;
+//         min-width: 60px;
+//         // justify-content:center;
+//         text-align: center;
+//     }
 
-    .mat-column-TotalAmt {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-        text-align: center;
-    }
+//     .mat-column-TotalAmt {
+//         width: 120px;
+//         max-width: 120px;
+//         min-width: 120px;
+//         text-align: center;
+//     }
 
-    .mat-column-DiscPer {
-        width: 70px;
-        max-width: 70px;
-        min-width: 70px;
-        text-align: center;
-    }
+//     .mat-column-DiscPer {
+//         width: 70px;
+//         max-width: 70px;
+//         min-width: 70px;
+//         text-align: center;
+//     }
 
-    .mat-column-DiscAmt {
-        width: 80px;
-        max-width: 80px;
-        min-width: 80px;
-        text-align: center;
-    }
+//     .mat-column-DiscAmt {
+//         width: 80px;
+//         max-width: 80px;
+//         min-width: 80px;
+//         text-align: center;
+//     }
 
-    .mat-column-NetAmount {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        align-items: center;
-        //margin-right: 20px;
-    }
+//     .mat-column-NetAmount {
+//         width: 100px;
+//         max-width: 100px;
+//         min-width: 100px;
+//         align-items: center;
+//         //margin-right: 20px;
+//     }
 
-    .mat-column-ChargeDoctorName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
-    }
+//     .mat-column-ChargeDoctorName {
+//         width: 250px;
+//         max-width: 250px;
+//         min-width: 250px;
+//     }
 
-    .mat-column-ClassName {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: left;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden !important;
-        display: inline-block;
-        // justify-content:left; 
-        margin-right: 10px;
-    }
+//     .mat-column-ClassName {
+//         width: 100px;
+//         max-width: 100px;
+//         min-width: 100px;
+//         text-align: left;
+//         white-space: nowrap;
+//         overflow: hidden;
+//         text-overflow: ellipsis;
+//         overflow: hidden !important;
+//         display: inline-block;
+//         // justify-content:left; 
+//         margin-right: 10px;
+//     }
 
-    .mat-column-ChargesAddedName {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-        text-align: center;
-    }
+//     .mat-column-ChargesAddedName {
+//         width: 150px;
+//         max-width: 150px;
+//         min-width: 150px;
+//         text-align: center;
+//     }
 
-}
+// }
