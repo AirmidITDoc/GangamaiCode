@@ -190,14 +190,21 @@
                             </div>
                         </mat-card>
                       
+                        <div class="modal-footer-buttons gap-8 p-16" fxLayout="row" fxLayoutAlign="end center">
+                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                            <button class="btn btn-primary " (click)="onDischarge()"  [disabled]="isLoading=='submit'"> 
+                                <span>Save</span>
+                            </button>
+                        </div>
 
-                        <div class="next-div button-row-group" style="margin-left: 900px;">
+                        <!-- <div class="next-div button-row-group"">
+                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                             <button class="btn btn-primary" color="accent" (click)="onDischarge()"
                             [disabled]="isLoading=='submit'">
                                 <span>Save</span>
                             </button>
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                        </div>
+                          
+                        </div> -->
                     </div>
                 </form>
             </div>
