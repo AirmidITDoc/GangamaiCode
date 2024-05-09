@@ -82,7 +82,7 @@
 
     </div>
 </div>
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar bed-occupancy-section">
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar bed-occupancy-section" dynamicTableHeight>
     <!-- HEADER -->
     <div class="top-header accent h-60">
         <div class="top-header-info">
@@ -152,10 +152,72 @@
                         </div>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                        <div class="layout-content-container" fusePerfectScrollbar>
+                        <div class="layout-content-container">
+                            <div class="table-header" *ngIf="selectedRoom">
+                                <div class="table-header-title pb-2 mb-3 border-bottom">
+                                    <span class="h1 font-weight-600">{{selectedRoom}}</span>
+                                </div>
+                            </div>
                             <div class="table-wrapper">
                                 <!-- Mat table -->
-                                <div fxFlexFill fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="12px grid">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !isTableLoading}" class="backgroundBlur">
+                                    <div class="spinner-border"></div>
+                                </div>
+                                <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+
+                                    <ng-container matColumnDef="RegNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Reg No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let item">
+                                            <span> {{item.RegNo || '--'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PatientName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Patient name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let item">
+                                            <span> {{item.PatientName || '--' }}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="DoctorName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Doctor name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let item">
+                                            <span> {{item.DoctorName || '--' }}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IsAvailible">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Status </mat-header-cell>
+                                        <mat-cell *matCellDef="let item">
+                                            <span [ngClass]="item.IsAvailible ? 'green-800-fg' :'orange-800-fg'"> {{item.IsAvailible ? 'Available':'Occupied'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="BedName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Bed name</mat-header-cell>
+                                        <mat-cell *matCellDef="let item">
+                                            <span> {{item.BedName || '--' }}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef>
+                                            <span *ngIf="!warItemArr.length ">No Data Found...</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent min-width-600" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+
+                                    <mat-row class="min-width-600" *matRowDef="let item; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': warItemArr.length > 0 }">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <!-- <div fxFlexFill fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="12px grid">
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" *ngFor="let item of warItemArr">
                                         <div class="ward-card-container">
                                             <mat-card>
@@ -167,7 +229,8 @@
                                             </mat-card>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
+
                             </div>
                         </div>
                     </div>
@@ -178,3 +241,4 @@
     </div>
     <!-- / CONTENT-->
 </div>
+<!-- RegNo PatientName DoctorName Bed Status  -->
