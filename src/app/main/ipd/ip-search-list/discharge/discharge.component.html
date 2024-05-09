@@ -110,27 +110,20 @@
             <div fxFlex.gt-sm="100%" fxFlex fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px;">
                 <form [formGroup]="_IpSearchListService.mySaveForm">
                     <div class="dialog-content-wrapper">
-                        <mat-card style="padding: 0 9px; height: fit-content;width: 99%;">
-                            <div class="discharge">
-                                <div fxlayout="row" fxFlex="80%">
-                                    <h3 style="font-weight: bolder; font-size: 18px; margin: 0 0 5px;">Discharge Details
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                                <div fxlayout="row" fxFlex>
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h1">Discharge Information</span>
+                                    </div>
 
-                                    </h3>
-
-                                    <div style="width:55%;margin-left: 50px;margin-bottom: 30px;font-weight: bolder;">
-                                        <!-- <ejs-datetimepicker #ejDateTimePicker formControlName="DischargeDate"
-                                        placeholder="Select Discharge Date" name="datetimepicker" floatLabelType='Auto'
-                                         [(ngModel)]="Today" >
-                                         </ejs-datetimepicker> -->
-
+                                    <!-- <div style="width:55%;margin-left: 50px;margin-bottom: 30px;font-weight: bolder;">
                                         <ejs-datetimepicker #ejDateTimePicker [(ngModel)]="Today"
                                             formControlName="DischargeDate" placeholder="Select DischargeDate Date/Time"
                                             name="datetimepicker" floatLabelType='Auto' style="width:85%;height:60px;">
                                         </ejs-datetimepicker>
-                                    </div>
+                                    </div> -->
 
-                                    <div>
-                                  
+                                    <div fxLayoutGap="1px">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
@@ -179,34 +172,18 @@
                                         </mat-form-field>
 
                                     </div>
-                                    <div>
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Comments</mat-label>
-                                            <input name="Comments" formControlName="Modeofdischarge"
-                                                placeholder="Comments" matInput>
-                                        </mat-form-field> -->
-                                    </div>
                                 </div>
-                            </div>
                         </mat-card>
-                      
-                        <div class="modal-footer-buttons gap-8 p-16" fxLayout="row" fxLayoutAlign="end center">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary " (click)="onDischarge()"  [disabled]="isLoading=='submit'"> 
-                                <span>Save</span>
-                            </button>
-                        </div>
 
-                        <!-- <div class="next-div button-row-group"">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" color="accent" (click)="onDischarge()"
-                            [disabled]="isLoading=='submit'">
-                                <span>Save</span>
-                            </button>
-                          
-                        </div> -->
+                      
                     </div>
                 </form>
+                <div class="modal-footer-buttons gap-8 p-16" fxLayout="row" fxLayoutAlign="end center">
+                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button class="btn btn-primary " (click)="onDischarge()"  [disabled]="isLoading=='submit'"> 
+                        <span>Save</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

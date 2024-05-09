@@ -1007,8 +1007,6 @@ export class IPBillingComponent implements OnInit {
 
   getInterimData() {
     if (this.interimArray.length > 0) {
-      // this.admin=false;
-      // this.conshow=false;
       let xx = {
         AdmissionID: this.selectedAdvanceObj.AdmissionID,
         BillNo: 0,
@@ -1033,26 +1031,15 @@ export class IPBillingComponent implements OnInit {
       };
       console.log(xx)
       this.advanceDataStored.storage = new Bill(xx);
-      // if (this.ConShow = true) {
-      //   if (this.vConcessionId == 0) {
-
-      //     this.toastr.warning('Enter  Concession Reason', 'Warning !', {
-      //       toastClass: 'tostr-tost custom-toast-warning',
-      //     });
-      //     return;
-      //   }
-
-      //   else {
       console.log('this.interimArray==', this.interimArray);
       this._matDialog.open(InterimBillComponent,
         {
           maxWidth: "85vw",
           //maxHeight: "65vh",
-          width: '100%', height: "500px",
+          width: '100%', 
+          height: "500px",
           data: this.interimArray
-
         });
-
     }
 
   }
