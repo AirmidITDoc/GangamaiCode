@@ -410,6 +410,7 @@ export class SalesComponent implements OnInit {
     // this.getBankNameList4();
     this.getDraftorderList();
 
+
     // onChangePatientType('OP');
 
     this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
@@ -494,14 +495,14 @@ export class SalesComponent implements OnInit {
 
   // }
 
-  // getBalanceAmt() {
-  //   // 
-  //   this.balanceAmt = parseInt(this.FinalNetAmount) - ((this.amount1 ? parseInt(this.amount1) : 0)
-  //     + (this.amount2 ? parseInt(this.amount2) : 0)
-  //     + (this.amount3 ? parseInt(this.amount3) : 0)
-  //     + (this.amount4 ? parseInt(this.amount4) : 0)
-  //     + (this.amount5 ? parseInt(this.amount5) : 0));
-  // }
+  getBalanceAmt() {
+    // 
+    this.balanceAmt = parseInt(this.FinalNetAmount) - ((this.amount1 ? parseInt(this.amount1) : 0)
+      + (this.amount2 ? parseInt(this.amount2) : 0)
+      + (this.amount3 ? parseInt(this.amount3) : 0)
+      + (this.amount4 ? parseInt(this.amount4) : 0)
+      + (this.amount5 ? parseInt(this.amount5) : 0));
+  }
 
   // onAddClick(paymentOption: string) {
   //   this.paymentRowObj[paymentOption] = true;
@@ -1850,42 +1851,42 @@ export class SalesComponent implements OnInit {
       this.OP_IPType = 2;
     }
   }
-  // onChangePaymentMode(event) {
-  //   if (event.value == 'Online') {
-  //     this.IsOnlineRefNo = true;
+  onChangePaymentMode(event) {
+    if (event.value == 'Online') {
+      this.IsOnlineRefNo = true;
 
-  //     this.ItemSubform.get('referanceNo').reset();
-  //     this.ItemSubform.get('referanceNo').setValidators([Validators.required]);
-  //     this.ItemSubform.get('referanceNo').enable();
-  //     // other payment Option   
-  //     this.isPaymentSelected = false;
+      this.ItemSubform.get('referanceNo').reset();
+      this.ItemSubform.get('referanceNo').setValidators([Validators.required]);
+      this.ItemSubform.get('referanceNo').enable();
+      // other payment Option   
+      this.isPaymentSelected = false;
 
-  //   } else if (event.value == 'Other') {
-  //     this.isPaymentSelected = true;
-  //     this.amount1 = this.FinalNetAmount;
-  //     this.paidAmt = this.FinalNetAmount;
-  //     this.netPayAmt = this.FinalNetAmount;
-  //     this.getBalanceAmt();
-  //     this.paymentRowObj["cash"] = true;
-  //     this.onPaymentChange(1, 'cash');
+    } else if (event.value == 'Other') {
+      this.isPaymentSelected = true;
+      this.amount1 = this.FinalNetAmount;
+      this.paidAmt = this.FinalNetAmount;
+      this.netPayAmt = this.FinalNetAmount;
+      this.getBalanceAmt();
+      this.paymentRowObj["cash"] = true;
+      //this.onPaymentChange(1, 'cash');
 
-  //     this.IsOnlineRefNo = false;
-  //     this.ItemSubform.get('referanceNo').clearValidators();
-  //     this.ItemSubform.get('referanceNo').updateValueAndValidity();
-  //   } else if (event.value == "PayOption") {
-  //     this.IsOnlineRefNo = false;
-  //     this.ItemSubform.get('referanceNo').clearValidators();
-  //     this.ItemSubform.get('referanceNo').updateValueAndValidity();
-  //   }
-  //   else {
-  //     this.IsOnlineRefNo = false;
-  //     this.ItemSubform.get('referanceNo').clearValidators();
-  //     this.ItemSubform.get('referanceNo').updateValueAndValidity();
-  //     // other payment Option   
-  //     this.isPaymentSelected = false;
-  //   }
+      this.IsOnlineRefNo = false;
+      this.ItemSubform.get('referanceNo').clearValidators();
+      this.ItemSubform.get('referanceNo').updateValueAndValidity();
+    } else if (event.value == "PayOption") {
+      this.IsOnlineRefNo = false;
+      this.ItemSubform.get('referanceNo').clearValidators();
+      this.ItemSubform.get('referanceNo').updateValueAndValidity();
+    }
+    else {
+      this.IsOnlineRefNo = false;
+      this.ItemSubform.get('referanceNo').clearValidators();
+      this.ItemSubform.get('referanceNo').updateValueAndValidity();
+      // other payment Option   
+      this.isPaymentSelected = false;
+    }
 
-  // }
+  }
   // OtherPayment(){
   //   // 
   //     this.amount1=this.FinalNetAmount;
