@@ -173,7 +173,7 @@
                                         </mat-header-cell>
                                         <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
                                             <mat-form-field appearance="legacy">
-                                                <input matInput [(ngModel)]="element.RefundAmt" type="number"
+                                                <input matInput [(ngModel)]="element.RefundAmt" onlyNumber
                                                     (keyup)="getCellCalculation(element,element.RefundAmt)"
                                                     (keypress)="keyPressAlphanumeric($event)">
                                             </mat-form-field>

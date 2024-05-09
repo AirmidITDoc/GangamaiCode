@@ -573,7 +573,31 @@
                                 [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
                             </mat-footer-row>
                         </mat-table>
-                       
+                        <div class="net-amt-section mb-2 mt-16">
+                            <div class="net-amt gap-24">
+                                <div class="net-amt-box">
+                                    <span class="net-amt-label">No of Items : </span>
+                                    <span class="net-amt-value">{{chargeslist.length }}</span>
+                                </div>
+                                <div class="net-amt-box">
+                                    <span class="net-amt-label">Total Amt : </span>
+                                    <span class="net-amt-value">{{getTotalAmtSum(dataSource.data) |
+                                        currency:'INR' }}</span>
+                                </div>
+                                <div class="net-amt-box">
+                                    <span class="net-amt-label">Disc Amt : </span>
+                                    <span class="net-amt-value">{{getDiscountSum(dataSource.data) |
+                                        currency:'INR'}}</span>
+                                </div>
+
+                                <div class="net-amt-box">
+                                    <span class="net-amt-label">Net Amt : </span>
+
+                                    <span class="net-amt-value">{{getNetAmtSum(dataSource.data) |
+                                        currency:'INR'}}</span>
+                                </div>
+                            </div>
+                        </div>
                     </mat-tab>
                     
                     <mat-tab label="Advance">
@@ -902,31 +926,7 @@
                         <div class="row row-container" style="width: 100%;">
 
                             <div class="amount-section" fxLayout="column" class="gap-12">
-                                <div class="net-amt-section mb-2 mt-16">
-                                    <div class="net-amt gap-24">
-                                        <div class="net-amt-box">
-                                            <span class="net-amt-label">No of Items : </span>
-                                            <span class="net-amt-value">{{chargeslist.length }}</span>
-                                        </div>
-                                        <div class="net-amt-box">
-                                            <span class="net-amt-label">Total Amt : </span>
-                                            <span class="net-amt-value">{{getTotalAmtSum(dataSource.data) |
-                                                currency:'INR' }}</span>
-                                        </div>
-                                        <div class="net-amt-box">
-                                            <span class="net-amt-label">Disc Amt : </span>
-                                            <span class="net-amt-value">{{getDiscountSum(dataSource.data) |
-                                                currency:'INR'}}</span>
-                                        </div>
-
-                                        <div class="net-amt-box">
-                                            <span class="net-amt-label">Net Amt : </span>
-
-                                            <span class="net-amt-value">{{getNetAmtSum(dataSource.data) |
-                                                currency:'INR'}}</span>
-                                        </div>
-                                    </div>
-                                </div>
+                               
                                 <div fxLayout="row" class="gap-8">
 
                                     <!-- <mat-checkbox (change)="Adminchange($event)" (checked)=true>
@@ -950,7 +950,7 @@
                                     <mat-form-field appearance="outline" *ngIf="admin">
                                         <mat-label>Final Disc %</mat-label>
                                         <input matInput placeholder="Percentage" formControlName="Percentage"
-                                            [ngModel]="formDiscPersc" autocomplete="off" #disc onlyNumber maxlength="3"
+                                           [(ngModel)]="vPercentage" autocomplete="off" #disc onlyNumber maxlength="3"
                                             (keyup)="CalAdmincharge()"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                             (keypress)="keyPressAlphanumeric($event)">

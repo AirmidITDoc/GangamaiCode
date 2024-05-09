@@ -85,7 +85,7 @@ export class NewRegistrationComponent implements OnInit {
   optionsReligion: any[] = [];
   optionsArea: any[] = [];
   optionsMstatus: any[] = [];
-
+  Submitflag:boolean=false;
 
   private _onDestroy = new Subject<void>();
 
@@ -106,6 +106,9 @@ export class NewRegistrationComponent implements OnInit {
   filteredOptionsReligion: Observable<string[]>;
   filteredOptionsMstatus: Observable<string[]>;
   filteredOptionsArea: Observable<string[]>;
+
+        
+
 
   constructor(public _registerService: RegistrationService,
     private formBuilder: FormBuilder,
@@ -142,10 +145,15 @@ export class NewRegistrationComponent implements OnInit {
 
         this.registerObj = this.data.registerObj;
         this.registerObj.PrefixID=this.registerObj.PrefixId;
+        if(this.data.Submitflag)
         this.RegId = this.registerObj.RegId;
+
         this.RegID=this.registerObj.RegID;
         this.AdmissionID=this.registerObj.AdmissionID;
         this.isDisabled = true
+        this.Submitflag=this.data.Submitflag;
+
+
         if(this.registerObj.AgeYear)
           this.registerObj.Age=this.registerObj.AgeYear.trim();
         if(this.registerObj.AgeMonth)
@@ -534,7 +542,7 @@ export class NewRegistrationComponent implements OnInit {
     this._registerService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
   }
   onSubmit() {
-    debugger
+    
     this.isLoading = 'submit';
     if (!this.registerObj.RegId && this.RegID ==0) {
       var m_data = {
@@ -590,6 +598,9 @@ export class NewRegistrationComponent implements OnInit {
       if(this.RegID !==0){
         this.registerObj.RegId=this.RegID ;
       }
+      if(this.Submitflag)
+        this.registerObj.RegId= this.RegId;
+debugger
       var m_data1 = {
         "opdRegistrationUpdate": {
           "RegID": this.registerObj.RegId,
@@ -599,7 +610,7 @@ export class NewRegistrationComponent implements OnInit {
           "LastName": this.registerObj.LastName || "",
           "Address": this.registerObj.Address || "",
           "City": this.personalFormGroup.get('CityId').value.CityName || 0,
-          "PinNo": '222',// this._registerService.mySaveForm.get("PinNo").value || "0",
+          "PinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
           "DateOfBirth": "2023-04-26T11:13:30.638Z",//this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
           "Age": this.registerObj.AgeYear || 0,//this._registerService.mySaveForm.get("Age").value || "0",
           "GenderID": this.personalFormGroup.get('GenderId').value.GenderId || 0,
@@ -622,7 +633,7 @@ export class NewRegistrationComponent implements OnInit {
           "Photo": ''// this.file.name || '',
         }
       }
-      console.log()
+      console.log(m_data1)
       this._registerService.regUpdate(m_data1).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'Register Data Udated Successfully !', 'success').then((result) => {

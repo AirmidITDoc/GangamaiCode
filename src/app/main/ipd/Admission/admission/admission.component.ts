@@ -415,7 +415,7 @@ export class AdmissionComponent implements OnInit {
           Validators.required,
           Validators.maxLength(50),
           // Validators.pattern("^[a-zA-Z._ -]*$"),
-          Validators.pattern('^[a-zA-Z ]*$')
+          Validators.pattern('^[a-zA-Z () ]*$')
         ]],
       MiddleName:
         ['', [
@@ -425,7 +425,7 @@ export class AdmissionComponent implements OnInit {
         ]],
       LastName: ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+        Validators.pattern("^[A-Za-z() ]*[a-zA-z() ]*$"),
       ]],
       GenderId: '',
       Address: '',
@@ -490,7 +490,11 @@ export class AdmissionComponent implements OnInit {
       RelatvieMobileNo: ['', [ Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       RelationshipId: '',
       IsMLC:[false],
-      OPIPChange:[false]
+      OPIPChange:[false],
+      IsCharity:[false],
+      IsSenior:[false],
+      Citizen:[false],
+      Emergancy:[false]
     });
   }
   createSearchForm() {
@@ -518,21 +522,12 @@ export class AdmissionComponent implements OnInit {
         }
       });
     }
-    if( this.V_SearchRegList.length > 0)
-    this.chekAdmittedpatient();
+    // if( this.V_SearchRegList.length > 0)
+   
   }
 
 
-  chekAdmittedpatient(){
-    // let SelectQueryForAllAdmitted = "select isnull(RegId,0) as regid from Admission where regid =  " + this.searchFormGroup.get('RegId').value;
-  //  let Query = "select isnull(RegId,0) as regid from Admission where regid =  " + .dgvRegistration.Item(0, PIdSearch.dgvRegistration.CurrentRow.Index).Value.ToString + " and Admissionid not in(select Admissionid from Discharge) "
   
-  //  this._AdmissionService.getRegIdDetailforAdmission(Query).subscribe(data => {
-  //   this.registerObj = data[0];
-  //   console.log(this.registerObj);
-  // });
-
-  }
     
   getRegSearchList() {
     var m_data = {
@@ -749,6 +744,30 @@ export class AdmissionComponent implements OnInit {
     this.registerObj = obj;
     this.onChangeDateofBirth(this.registerObj.DateofBirth)
     this.setDropdownObjs();
+
+    // this.chekAdmittedpatient();
+  }
+
+  AdmittedRegId: any = 0;
+  chekAdmittedpatient(obj){
+    debugger
+    this.AdmittedRegId = obj.RegId;
+    // let SelectQueryForAllAdmitted = "select isnull(RegId,0) as regid from Admission where regid =  " + this.searchFormGroup.get('RegId').value;
+   let Query = "select isnull(RegID,0) as RegID from Admission where RegID =  " + this.AdmittedRegId + " and Admissionid not in(select Admissionid from Discharge) "
+  console.log(Query)
+   this._AdmissionService.getRegIdDetailforAdmission(Query).subscribe(data => {
+    this.registerObj = data[0];
+    console.log(this.registerObj);
+    if(this.registerObj==undefined){
+      this.AdmittedRegId=0;
+      Swal.fire("selected patient is already admitted!!..")
+      this.onReset();
+      // this.registerObj = new AdmissionPersonlModel({});
+    }else{
+      this.getSelectedObj(obj);
+    }
+  });
+
   }
 
   setDropdownObjs() {
@@ -1144,11 +1163,13 @@ export class AdmissionComponent implements OnInit {
     });
     this.hospitalFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
   }
+
   private _filterPatientType(value: any): string[] {
     if (value) {
       const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
 
       return this.optionsPatientType.filter(option => option.PatientType.toLowerCase().includes(filterValue));
+      
     }
 
   }
@@ -1442,14 +1463,14 @@ export class AdmissionComponent implements OnInit {
       regInsert['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
       regInsert['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
       regInsert['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
-      regInsert['isCharity'] = false;
+      regInsert['isCharity'] = this.otherFormGroup.get('IsCharity').value ? this.otherFormGroup.get('IsCharity').value : false;
       regInsert['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
       regInsert['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
-      regInsert['IsSeniorCitizen'] = 1;//this.personalFormGroup.get('IsSeniorCitizen').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
+      regInsert['IsSeniorCitizen'] = this.otherFormGroup.get('IsSenior').value ? this.otherFormGroup.get('IsSenior').value : 0;
       regInsert['aadharCardNo'] = this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0;
       regInsert['panCardNo'] = this.personalFormGroup.get('Pancardno').value ? this.personalFormGroup.get('Pancardno').value : 0;
       // regInsert['Photo']=''
-
+      
       submissionObj['regInsert'] = regInsert;
 
       admissionNewInsert['admissionID'] = 0;
@@ -1513,10 +1534,7 @@ export class AdmissionComponent implements OnInit {
             if (result.isConfirmed) {
               
               this.getAdmittedPatientCasepaperview(response,true);
-              // this.personalFormGroup.reset();
-              // this.hospitalFormGroup.reset();
-              // this.wardFormGroup.reset();
-              // this.otherFormGroup.reset();
+             
               this.onReset();
             }
           });
@@ -2125,35 +2143,36 @@ public onEnterlname(event): void {
   }
 }
 
-public onEntermstatus(event,value): void {
+public onEntermstatus(event): void {
   if (event.which === 13) {
-      
-  console.log(value)
-  if (value ==undefined) {
-    this.toastr.warning('Please Enter Valid MStatus.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  } else{
+  //     debugger
+  // console.log(value)
+  // if (value ==undefined || isNaN(value)) {
+  //   this.toastr.warning('Please Enter Valid MStatus.', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // } else if(value.MaritalStatusId > 0 || value==""){
     this.religion.nativeElement.focus();
   }
 }
-}
+// }
 
-public onEnterreligion(event,value): void {
+public onEnterreligion(event): void {
   if (event.which === 13) {
-    console.log(value)
-  if (value ==undefined) {
-    this.toastr.warning('Please Enter Valid Religion.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  } else{
+  //   console.log(value)
+  // if (value ==undefined) {
+  //   this.toastr.warning('Please Enter Valid Religion.', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // } else{
     this.bday.nativeElement.focus();
 
   }
 }
-}
+// }
+
 public onEnterbday(event): void {
   if (event.which === 13) {
   this.agey.nativeElement.focus();
@@ -2203,18 +2222,18 @@ public onEnteraddress(event): void {
   }
 }
 
-public onEnterarea(event,value): void {
+public onEnterarea(event): void {
   if (event.which === 13) {
   
-     if (value ==undefined) {
-      this.toastr.warning('Please Enter Valid Area.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } else{
+    //  if (value ==undefined) {
+    //   this.toastr.warning('Please Enter Valid Area.', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // } else{
       this.city.nativeElement.focus();
   
-    }
+    // }
   }
 }
 
@@ -2296,42 +2315,42 @@ public onEnterdeptdoc(event,value): void {
 }
 
 
-public onEnteradmitdoc1(event,value): void {
+public onEnteradmitdoc1(event): void {
   if (event.which === 13) {
  
-  if (value ==undefined) {
-    this.toastr.warning('Please Enter Valid Admitted Doctor 1.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  } else{
+  // if (value ==undefined) {
+  //   this.toastr.warning('Please Enter Valid Admitted Doctor 1.', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // } else{
     this.admitdoc2.nativeElement.focus();
-  }
+  // }
 }
 }
-public onEnteradmitdoc2(event,value): void {
+public onEnteradmitdoc2(event): void {
   if (event.which === 13) {
    
-  if (value ==undefined) {
-    this.toastr.warning('Please Enter Valid Admitted Doctor 2.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  } else{
+  // if (value ==undefined) {
+  //   this.toastr.warning('Please Enter Valid Admitted Doctor 2.', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // } else{
     this.refdoc.nativeElement.focus();
-  }
+  // }
 }}
-public onEnterrefdoc(event,value): void {
+public onEnterrefdoc(event): void {
   if (event.which === 13) {
   
-  if (value ==undefined) {
-    this.toastr.warning('Please Enter Valid Refrence Doctor.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  } else{
+  // if (value ==undefined) {
+  //   this.toastr.warning('Please Enter Valid Refrence Doctor.', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // } else{
     this.ward.nativeElement.focus();
-  }
+  // }
 }}
 
 public onEnterward(event,value): void {
