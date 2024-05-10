@@ -48,7 +48,15 @@ export class IpSalesReturnService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPSalesBillForReturn_Cash",Param);
   } 
   public getCreditItemList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPSalesBillForReturn_Credit",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPSalesBillForReturn_Credit",Param);
+  }
+
+  public InsertCreditSalesReturn(employee){
+    return this._httpClient.post("Pharmacy/InsertSalesReturnCredit", employee)
+  }
+  
+  public InsertCashSalesReturn (employee){
+    return this._httpClient.post("Pharmacy/InsertSalesReturnPaid", employee)
   }
 
   // Retrieve_BrowseSalesBill
