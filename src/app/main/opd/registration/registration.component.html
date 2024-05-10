@@ -176,6 +176,11 @@
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon title="Edit Menu">launch</mat-icon></button>
 
                                         </mat-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button (click)="getAdmittedPatientCasepaperview(row)"><mat-icon title="Casepaper Print">print</mat-icon></button>
+
+                                        </mat-cell>
+                                        
                                     </ng-container>
 
                                     <ng-container matColumnDef="loading">

@@ -227,6 +227,7 @@ export class AdmissionComponent implements OnInit {
     'ClassName',
     'CompanyName',
     'RelativeName',
+    // 'IsMLC',
     'buttons'
   ];
 
@@ -762,6 +763,8 @@ export class AdmissionComponent implements OnInit {
       this.AdmittedRegId=0;
       Swal.fire("selected patient is already admitted!!..")
       this.onReset();
+      this.personalFormGroup.get('RegId').reset();
+      this.regno.nativeElement.focus();
       // this.registerObj = new AdmissionPersonlModel({});
     }else{
       this.getSelectedObj(obj);
@@ -2101,6 +2104,7 @@ onClose(){
 @ViewChild('relativeadd') relativeadd: ElementRef;
 @ViewChild('relativemobile') relativemobile: ElementRef;
 @ViewChild('relation') relation: ElementRef;
+@ViewChild('regno') regno: ElementRef;
 
 
 
@@ -2538,6 +2542,7 @@ export class Admission {
   AdmittedDoctorName: any;
   PatientTypeId:any;
   IsOpToIPconv:any;
+  
   /**
 * Constructor
 *

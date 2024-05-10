@@ -30,6 +30,7 @@ import { ToastrService } from 'ngx-toastr';
 import { forEach } from 'lodash';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { IpPaymentwithAdvanceComponent } from '../ip-paymentwith-advance/ip-paymentwith-advance.component';
+import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 
 
 @Component({
@@ -453,7 +454,7 @@ export class IPBillingComponent implements OnInit {
 
 
   getBillingClasslist() {
-
+debugger
     var m_data = {
       'ClassName': '%' //`${this.vClassName}%`
     }
@@ -511,11 +512,6 @@ export class IPBillingComponent implements OnInit {
   }
 
 
-  getSelectedObjDoctorName(obj) {
-    console.log(obj)
-    // this.doct = obj.doctorId;
-    // this.b_price = obj.doctorName;
-  }
 
   add: Boolean = false;
 
@@ -563,7 +559,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   public onEnterdoctor(event, value): void {
-    console.log(value)
+    // console.log(value)
     
     if (event.which === 13) {
 
@@ -582,12 +578,20 @@ export class IPBillingComponent implements OnInit {
     }
   }
 
-  public onEnterdiscper(event): void {
+  public onEnterdiscper(event,value): void {
+    debugger
     if (event.which === 13) {
+      // if(!(value < 0) && !(value > 101)){
+      //   this.calculatePersc();
       this.discamt.nativeElement.focus();
+    // }else if (event.which === 13 && (value < 0 && value > 101)){
+    //   this.toastr.warning('Please Enter disc % less than 101 and Greater than 0  ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+      return;
     }
   }
-
+  // }
   public onEnterdiscamt(event): void {
     if (event.which === 13) {
       this.Netamt.nativeElement.focus();
@@ -608,7 +612,8 @@ export class IPBillingComponent implements OnInit {
 
 
   getSelectedObj(obj) {
-
+    debugger
+console.log(obj)
     this.SrvcName = obj.ServiceName;
     this.b_price = obj.Price;
     this.b_totalAmount = obj.Price;
@@ -679,7 +684,7 @@ export class IPBillingComponent implements OnInit {
       this.sIsLoading = 'loading-data';
       this._IpSearchListService.getpreviousbilldetail(D_data).subscribe(Visit => {
         this.prevbilldatasource.data = Visit as Bill[];
-        console.log(this.prevbilldatasource.data)
+        // console.log(this.prevbilldatasource.data)
       },
         error => {
           this.sIsLoading = '';
@@ -711,6 +716,8 @@ export class IPBillingComponent implements OnInit {
   }
 
   getAdvanceDetList() {
+
+    debugger
     var D_data = {
       "AdmissionID": this.selectedAdvanceObj.AdmissionID
     }
@@ -726,7 +733,7 @@ export class IPBillingComponent implements OnInit {
     }, 5);
   }
   getDatewiseChargesList(param) {
-    console.log(param);
+    // console.log(param);
     this.chargeslist = [];
     this.dataSource.data = [];
 
@@ -849,7 +856,7 @@ export class IPBillingComponent implements OnInit {
     this.vfDiscountAmount = this.vDiscountAmount;
     // this.Ipbillform.get("concessionAmt").setValue(this.vDiscountAmount)
     
-    console.log(this.vfDiscountAmount )
+    // console.log(this.vfDiscountAmount )
     if (this.vDiscountAmount > 0) {
       this.admin = false;
       this.ConShow=true;
@@ -869,15 +876,12 @@ export class IPBillingComponent implements OnInit {
     netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
     this.vAdvTotalAmount = netAmt;
     // this.vNetBillAmount = this.vTotalBillAmount;
+
+    // console.log(this.vAdvTotalAmount )
     if (this.vNetBillAmount > this.vAdvTotalAmount) {
       this.vBalanceAmt = 0;
       this.vpaidBalanceAmt = parseInt(this.vNetBillAmount) - parseInt(this.vAdvTotalAmount)
-      // if( this.vpaidBalanceAmt >0){
-      // this.toastr.warning('Advance Less than  Bill Amount', 'Warning !', {
-      //   toastClass: 'tostr-tost custom-toast-warning',
-      // });
-      // return;
-      // }
+    
     }
     return netAmt;
   }
@@ -1017,7 +1021,7 @@ export class IPBillingComponent implements OnInit {
         IsBillGenerated: this.selectedAdvanceObj.IsBillGenerated,
         UnitId: this.selectedAdvanceObj.UnitId
       };
-      console.log(xx)
+      // console.log(xx)
       this.advanceDataStored.storage = new Bill(xx);
       console.log('this.interimArray==', this.interimArray);
       this._matDialog.open(InterimBillComponent,
@@ -1052,11 +1056,14 @@ export class IPBillingComponent implements OnInit {
       // PatientHeaderObj['AdvanceAmount'] = 0;
       PatientHeaderObj['AdvanceAmount'] = this.Ipbillform.get('FinalAmount').value;
       PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
+    
+
 
       console.log('============================== Save IP Billing ===========');
       //==============-======--==============Payment======================
       // IPAdvancePaymentComponent
-      const dialogRef = this._matDialog.open(IpPaymentwithAdvanceComponent,
+      this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj);
+      const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
         {
           maxWidth: "85vw",
           height: '840px',
@@ -1152,6 +1159,7 @@ export class IPBillingComponent implements OnInit {
         const Cal_DiscAmount_IPBill = new Cal_DiscAmount(Cal_DiscAmount_IPBillObj);
         const AdmissionIPBillingUpdate = new AdmissionIPBilling(AdmissionIPBillingUpdateObj);
         //
+        debugger
         let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
         // console.log(UpdateAdvanceDetailarr1);
@@ -1163,7 +1171,7 @@ export class IPBillingComponent implements OnInit {
 
 
         let UpdateAdvanceDetailarr = [];
-        if (result.submitDataAdvancePay > 0) {
+        if (result.submitDataAdvancePay.length > 0) {
           result.submitDataAdvancePay.forEach((element) => {
             let UpdateAdvanceDetailObj = {};
             UpdateAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
@@ -1182,7 +1190,7 @@ export class IPBillingComponent implements OnInit {
         }
 
         let UpdateAdvanceHeaderObj = {};
-        if (result.submitDataAdvancePay > 0) {
+        if (result.submitDataAdvancePay.length > 0) {
           UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceNo'],
             UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UpdateAdvanceDetailarr1[0]['AdvanceAmount'],
             UpdateAdvanceHeaderObj['BalanceAmount'] = UpdateAdvanceDetailarr1[0]['BalanceAmount']
@@ -1461,26 +1469,29 @@ export class IPBillingComponent implements OnInit {
   }
 
   calculatePersc() {
-
+debugger
     this.b_disAmount = 0;
     this.formDiscPersc = this.Serviceform.get('discPer').value;
     let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
-    if (this.formDiscPersc > 0 || this.formDiscPersc < 100) {
+    if (this.formDiscPersc > 0 || this.formDiscPersc < 101) {
       let discAmt = Math.round((netAmt * parseInt(this.formDiscPersc)) / 100);
       this.b_disAmount = discAmt;
       this.b_netAmount = (netAmt - discAmt).toString();
+      // this.discamt.nativeElement.focus();
     }
     if (this.formDiscPersc > 100 || this.formDiscPersc < 0) {
       this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
+      this.formDiscPersc
+      this.disc.nativeElement.focus();
     }
     if (this.formDiscPersc == 0 || this.formDiscPersc == '' || this.formDiscPersc == null) {
       this.b_disAmount = 0;
       this.b_netAmount = (netAmt).toString();
     }
-    console.log(this.b_netAmount)
+    // console.log(this.b_netAmount)
   }
 
 
@@ -1523,7 +1534,7 @@ export class IPBillingComponent implements OnInit {
         this.b_netAmount = (parseInt(this.b_price) * parseInt(this.b_qty)).toString();
       }
       // return;
-      console.log(this.b_netAmount)
+      // console.log(this.b_netAmount)
     }
 
     this.add = false;
@@ -1549,7 +1560,7 @@ export class IPBillingComponent implements OnInit {
       this.dataSource.data = this.chargeslist;
     }
 
-    console.log(this.dataSource.data)
+    // console.log(this.dataSource.data)
     Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
   }
 
@@ -1775,7 +1786,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
-    debugger
+    
     // console.log('tabChangeEvent => ', tabChangeEvent); 
     // console.log('index => ', tabChangeEvent.index); 
     if (tabChangeEvent.index == 1) {

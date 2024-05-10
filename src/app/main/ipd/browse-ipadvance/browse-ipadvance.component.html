@@ -163,6 +163,15 @@
                             </mat-cell>
                         </ng-container>
 
+                        <ng-container matColumnDef="PayTMAmount">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>OnlinePayAmount
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                <span> {{contact.PayTMAmount | currency:'INR'}}</span>
+                            </mat-cell>
+                        </ng-container>
+                        
+
                         <ng-container matColumnDef="UserName">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>UserName
                             </mat-header-cell>

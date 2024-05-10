@@ -237,8 +237,10 @@ export class InterimBillComponent implements OnInit {
   }
   vConcessionId: any = 0
   vconflag: boolean = true;
-  onSave() {
 
+  
+  onSave() {
+    debugger
     if (this.formDiscPersc > 0 || this.b_disAmount > 0) {
       if (this.vConcessionId == 0) {
         this.toastr.warning('Please Enter ConcessionReason.', 'Warning !', {
@@ -646,7 +648,7 @@ export class InterimBillComponent implements OnInit {
   }
 
   calculatePersc() {
-
+debugger
     if (this.InterimFormGroup.get("discPer").value > 0) {
       let discAmt = Math.round((this.vTotalBillAmt * parseInt(this.formDiscPersc)) / 100);
       this.b_disAmount = discAmt;
@@ -661,6 +663,12 @@ export class InterimBillComponent implements OnInit {
     if (this.InterimFormGroup.get("discPer").value == 0 || this.InterimFormGroup.get("discPer").value == '') {
       this.b_disAmount = 0;
       this.vNetAmount = this.vTotalBillAmt;
+      this.InterimFormGroup.get('NetpayAmount').setValue(this.vNetAmount);
+      this.ConShow = false;
+      this.InterimFormGroup.get('ConcessionId').reset();
+      this.InterimFormGroup.get('ConcessionId').clearValidators();
+      this.InterimFormGroup.get('ConcessionId').updateValueAndValidity();
+
     }
   }
 

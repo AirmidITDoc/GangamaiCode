@@ -1,19 +1,14 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { fuseAnimations } from '@fuse/animations';
-import { NewSchdulerService } from './new-schduler.service';
+import { SchdulerComponent } from '../scheduler.component';
 
 @Component({
-  selector: 'app-new-schduler',
-  templateUrl: './new-schduler.component.html',
-  styleUrls: ['./new-schduler.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+  selector: 'app-managescheduler',
+  templateUrl: './managescheduler.component.html',
+  styleUrls: ['./managescheduler.component.scss']
 })
-export class NewSchdulerComponent implements OnInit {
+export class ManageschedulerComponent implements OnInit {
   searchFormGroup: FormGroup;
   Dailydisplay:boolean=true;
   Weeklydisplay:boolean=false;
@@ -23,16 +18,10 @@ export class NewSchdulerComponent implements OnInit {
    weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
   constructor(private formBuilder: FormBuilder,
-    private _ActRoute: Router,
-    private _NewSchdulerService :NewSchdulerService,
-    private dialogRef: MatDialogRef<NewSchdulerComponent>) { }
+    private dialogRef: MatDialogRef<SchdulerComponent>) { }
 
   ngOnInit(): void {
-    this.searchFormGroup = this.createSearchForm();
-    // this.highlightCurrentWeekday();
   }
-
-
   createSearchForm() {
     return this.formBuilder.group({
       schduleRadio: ['1'],

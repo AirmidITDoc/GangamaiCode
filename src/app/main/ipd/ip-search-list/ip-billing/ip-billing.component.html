@@ -178,8 +178,8 @@
                                         <mat-form-field appearance="outline">
                                             <mat-label>Disc %</mat-label>
                                             <input matInput placeholder="Percentage" formControlName="discPer"
-                                                [ngModel]="formDiscPersc" autocomplete="off" #disc
-                                                (keydown)="onEnterdiscper($event)" (keyup)="calculatePersc()" onlyNumber
+                                                [(ngModel)]="formDiscPersc" autocomplete="off" #disc
+                                                (keydown)="onEnterdiscper($event,formDiscPersc)" (keyup)="calculatePersc()"
                                                 maxlength="3"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                                 (keypress)="keyPressAlphanumeric($event)">
