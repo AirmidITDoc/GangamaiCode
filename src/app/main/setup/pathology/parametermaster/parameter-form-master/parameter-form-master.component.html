@@ -14,7 +14,7 @@
                 Parameter Master"}}
             </span>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                style="margin-left: 680px;">
+                style="margin-left: 760px;">
                 <mat-icon>close</mat-icon>
             </button>
 
@@ -43,19 +43,6 @@
                                                 *ngIf="f.ParameterShortName.invalid && f.ParameterShortName.touched">ParameterShortName
                                                 Enter only Alphabets</span>
                                         </mat-form-field>
-
-                                        <div style="margin-left: 70px;margin-top: 15px;">
-                                            <section class="example-section">
-                                                <mat-checkbox class="example-margin" formControlName="IsPrintDisSummary"
-                                                  [checked]="false"  name="IsPrintDisSummary">IsPrintDisSummary</mat-checkbox>
-                                            </section>
-
-                                        </div>
-                                    
-
-                                    </div>
-
-                                    <div>
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="65%">
                                             <mat-label>Parameter Name</mat-label>
                                             <input name="ParameterName" placeholder="Select Parameter Name"
@@ -67,18 +54,7 @@
                                                 Enter only Alphabets</span>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-select placeholder="Select unitName " name="UnitId"
-                                                formControlName="UnitId" required>
-                                                <mat-option>-select-</mat-option>
-                                                <mat-option *ngFor="let M of UnitcmbList" [value]="M.UnitId">
-                                                    {{ M.UnitName }}
-                                                </mat-option>
-                                            </mat-select>
-                                            <mat-error>Please Select Unit Name </mat-error>
-                                        </mat-form-field>
                                     </div>
-
                                     <div>
                                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="65%">
                                             <mat-label>PrintParameter Name</mat-label>
@@ -89,15 +65,51 @@
                                                 *ngIf="f.PrintParameterName.invalid && f.PrintParameterName.touched">PrintParameterName
                                                 required Enter only Digits</span>
                                         </mat-form-field>
-
-                                        <mat-radio-group name="IsNumeric" formControlName="IsNumeric" value='false'
-                                            aria-label="Select an option" style="margin-top: 20px; margin-left: 20px;">
-                                            <mat-radio-button fxFlex (click)="toggle()"
-                                                value="1">IsNumeric</mat-radio-button>
-                                            <mat-radio-button fxFlex (click)="toggle1()" style="margin-left: 20px;"
-                                                value="2">IsDescriptive</mat-radio-button>
-                                        </mat-radio-group>
+                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="65%">
+                                            <mat-label>Method Name</mat-label>
+                                            <input name="MethodName" placeholder="Select MethodName"
+                                                formControlName="MethodName" matInput required
+                                                [ngClass]="{ 'is-invalid': submitted && f.MethodName.errors }">
+                                            <span class="error"
+                                                *ngIf="f.MethodName.invalid && f.MethodName.touched">MethodName Enter
+                                                Only Alphabets
+                                            </span>
+                                        </mat-form-field>
                                     </div>
+                                    <div fxLayoutAlign="space-between" >
+
+                                        <mat-radio-group name="IsNumeric" formControlName="IsNumeric" [value]='true'
+                                            aria-label="Select an option" style="margin-top: 20px; margin-left: 20px;">
+                                            <mat-radio-button fxFlex (click)="toggle()" 
+                                                value="true">IsNumeric</mat-radio-button>
+                                            <mat-radio-button fxFlex (click)="toggle1()" style="margin-left: 20px;"
+                                                >IsDescriptive</mat-radio-button>
+                                        </mat-radio-group>
+
+                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'
+                                        style="margin-top: 20px; margin-left: 20px;">
+                                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
+                                        </mat-radio-group>
+                                        
+                                        <div style="margin-top: 20px; margin-left: 20px;">
+                                            <section class="example-section">
+                                                <mat-checkbox class="example-margin" formControlName="IsPrintDisSummary"
+                                                  [checked]="false"  name="IsPrintDisSummary">IsPrintDisSummary</mat-checkbox>
+                                            </section>
+                                            </div>
+                                        <mat-form-field appearance="outline" fxFlex="35%" style="padding-right: 10px;">
+                                            <mat-select placeholder="Select unitName " name="UnitId"
+                                                formControlName="UnitId" required>
+                                                <mat-option>-select-</mat-option>
+                                                <mat-option *ngFor="let M of UnitcmbList" [value]="M.UnitId">
+                                                    {{ M.UnitName }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>Please Select Unit Name </mat-error>
+                                        </mat-form-field> 
+                                    </div>
+
+                                    
                                     <hr>
                                 </div>
                             </form>
@@ -112,16 +124,16 @@
 
                             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="5px">
 
-                                <div fxFlex.gt-sm="100%" fxFlex>
+                                <div fxFlex.gt-sm="100%" fxFlex *ngIf="show">
                                     <ng-container *ngIf="show">
                                         <mat-card class="example-card" name="m1" style="padding: 0%;">
-                                            <mat-card-header>
-                                                <div mat-card-avatar class="example-header-image"></div>
+                                            <mat-card-content fxLayout="row" fxLayoutAlign="center center">
                                                 <mat-card-title>IsNumeric Info</mat-card-title>
-                                            </mat-card-header>
+                                              </mat-card-content>
+            
                                             <mat-card-content>
                                                 <div>
-                                                    <div>
+                                                    <div fxLayoutAlign= "space-between" style="padding:10px">
                                                         <mat-form-field appearance="outline" class="mr-sm-12"
                                                             fxFlex="20%">
                                                             <mat-label>Gender</mat-label>
@@ -151,6 +163,22 @@
                                                                 [(ngModel)]="vMaxAge" formControlName="MaxAge" matInput
                                                                 required>
                                                         </mat-form-field>
+                                                        <mat-form-field appearance="outline" class="mr-sm-12">
+                                                            <mat-select placeholder="Select Options" 
+                                                                formControlName="">
+                                                                <mat-option>-select-</mat-option>
+                                                                <mat-option>
+                                                                   Days
+                                                                </mat-option>
+                                                                <mat-option>
+                                                                   Months
+                                                                </mat-option>
+                                                                <mat-option>
+                                                                   Years
+                                                                </mat-option>
+                                                            </mat-select>
+                                                            <mat-error>Please Select </mat-error>
+                                                        </mat-form-field> 
 
                                                         <mat-form-field appearance="outline" class="mr-sm-12"
                                                             fxFlex="10%">
@@ -171,8 +199,13 @@
                                                         </mat-form-field>
 
                                                         <div matTooltip="Select All Value to enable this button!!">
-                                                            <button mat-raised-button style="background-color: blue; color: white; width: 70px;
-                                                            margin-left: 20px; margin-top: 10px;"
+                                                            <button mat-raised-button 
+                                                            style="background-color: #5e35b1;
+                                                            color: white;
+                                                            width: 101px;
+                                                            margin-left: 20px;
+                                                            margin-top: 3px;
+                                                            padding: 6px;"
                                                                 (click)="onAdd($event)"
                                                                 [disabled]="_ParameterService.myform.invalid">
                                                                 <mat-icon> add </mat-icon>Add
@@ -265,14 +298,14 @@
                                     <div fxFlex.gt-sm="100%" fxFlex>
 
                                         <mat-card class="example-card">
-                                            <mat-card-header>
-                                                <div mat-card-avatar class="example-header-image"></div>
-                                                <mat-card-title>IsDescriptive Info</mat-card-title>
-                                            </mat-card-header>
+                                                <mat-card-content fxLayout="row" fxLayoutAlign="center center">
+                                                  <mat-card-title>IsDescriptive Info</mat-card-title>
+                                                </mat-card-content>
+                                              
                                             <mat-card-content>
 
                                                 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
-                                                    <div flex="50%">
+                                                    <div flex="100%">
                                                         <input type="text" #txt placeholder="Enter Value To Add"
                                                             name="ParaId" formControlName="ParaId" name="text1" multiple
                                                             matinput>
@@ -283,7 +316,7 @@
                                                     </div>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                                    <div flex="50%">
+                                                    <div flex="100%">
 
                                                         <mat-list style="text-align: center;background: cornflowerblue;"
                                                             formControlName="parameterValues">
@@ -332,19 +365,16 @@
 
                     </div>
 
-                    
-                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'
-                        style="margin-left: 15px;">
-                            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
-                          
-                        </mat-radio-group>
-                    
-                    
+
+                  
+
+
 
                     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
                         <div class="button-row">
                             <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
-                                style="border-radius: 16px;color: aliceblue;" [disabled]="_ParameterService.myform.invalid">Save</button>
+                                style="border-radius: 16px;color: aliceblue;"
+                                [disabled]="_ParameterService.myform.invalid">Save</button>
                             <button mat-raised-button color="warn" (click)="onClear()"
                                 style="border-radius: 16px;">Clear</button>
                         </div>
