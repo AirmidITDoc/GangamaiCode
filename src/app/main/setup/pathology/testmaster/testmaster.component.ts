@@ -546,12 +546,12 @@ export class TestmasterComponent implements OnInit {
     //     });
     // }
 
-    onAdd(tabName: string, tabGroup: MatTabGroup) {
-        const tabIndex = tabName === 'tab1' ? 0 : 1;
-        tabGroup.selectedIndex = tabIndex;
-        // console.log(row)
-        this.getTestMasterList();
-        this.onClear();
+    // onAdd(tabName: string, tabGroup: MatTabGroup) {
+    //     const tabIndex = tabName === 'tab1' ? 0 : 1;
+    //     tabGroup.selectedIndex = tabIndex;
+    //     // console.log(row)
+    //     this.getTestMasterList();
+    //     this.onClear();
         // const dialogRef = this._matDialog.open(TestFormMasterComponent, {
 
         //     maxWidth: "100%",
@@ -562,6 +562,18 @@ export class TestmasterComponent implements OnInit {
         //     console.log("The dialog was closed - Insert Action", result);
         //     this.getTestMasterList();
         // });
+    // }
+    onAdd() {
+        const dialogRef = this._matDialog.open(TestFormMasterComponent, {
+            maxWidth: "70vw",
+            maxHeight: "90vh",
+            width: "100%",
+            height: "100%",
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            this.getTestMasterList();
+        });
     }
     onClear() {
         this._TestService.myform.reset({ IsDeleted: "false" });

@@ -118,7 +118,7 @@ export class ParameterFormMasterComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    public show: boolean = false; //numeric
+    public show: boolean = true; //numeric
     public show1: boolean = false; ///descriptive
 
     toggle() {
@@ -437,7 +437,6 @@ export class ParameterFormMasterComponent implements OnInit {
     selectedItems: any = [];
 
     AddData(txt) {
-        debugger
         console.log(txt);
         this.selectedItems = this.selectedItems.concat(txt);
         this.selectedToAdd = [];
