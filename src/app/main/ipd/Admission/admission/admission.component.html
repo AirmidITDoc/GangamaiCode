@@ -326,6 +326,15 @@
                                                                 <span> {{contact.RelativeName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
+                                                        <!-- <ng-container matColumnDef="IsMLC">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-md>IsMLC
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                                <span> {{contact.IsMLC}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                         -->
 
                                                         <ng-container matColumnDef="buttons" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef
@@ -427,7 +436,7 @@
                                     <!-- getSelectedObj -->
                                     <mat-form-field appearance="outline" *ngIf="Regflag">
                                         <input type="text" name="RegId" formControlName="RegId"
-                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput #regno
                                             [matAutocomplete]="auto" (input)="getSearchList()" >
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"

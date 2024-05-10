@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -7,6 +7,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { IPBrowseBillService } from '../../ip-bill-browse-list/ip-browse-bill.service';
 import { IPSettlementService } from '../ip-settlement.service';
 import { InvalidDataValidator } from 'app/main/shared/validators/invalide-validators';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 // import { InvalidDataValidator } from 'app/shared/validators/invalide-validators';
 
 
@@ -60,6 +62,28 @@ export class IPpaymentWithadvanceComponent implements OnInit {
   isLoading: string = '';
   dateTimeObj: any;
   AdvanceId: any;
+
+  BankNameList: any = [];
+  BankNameList1: any = [];
+  BankNameList2: any = [];
+
+//bANK filter
+public bankFilterCtrl: FormControl = new FormControl();
+public filteredBank: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+
+//cheque filter
+public chequebankFilterCtrl: FormControl = new FormControl();
+public filteredChequebank: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+
+//Card filter
+public cardbankFilterCtrl: FormControl = new FormControl();
+public filteredCardbank: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+private _onDestroy = new Subject<void>();
+
+
   displayedColumns = [
     'Date',
     'AdvanceNo',
@@ -83,6 +107,7 @@ export class IPpaymentWithadvanceComponent implements OnInit {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       // this.cashAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
+      this.PatientName = this.advanceData.advanceObj.PatientName;
       this.getBalanceAmt();
     }
     debugger;
@@ -105,6 +130,30 @@ export class IPpaymentWithadvanceComponent implements OnInit {
     this.createForm();
     this.getAdvcanceDetails(false);
     console.log(this.authServie.currentUserValue);
+
+
+    this.getBankNameList();
+    this.getBankNameList1();
+    this.getBankNameList2();
+
+    
+    this.bankFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterBank();
+      });
+
+    this.chequebankFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filtercardbank();
+      });
+
+    this.cardbankFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterchequebank();
+      });
   }
 
   createForm() {
@@ -140,9 +189,103 @@ export class IPpaymentWithadvanceComponent implements OnInit {
     });
   }
 
+
+  // bank filter code
+  private filterBank() {
+
+    if (!this.BankNameList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.bankFilterCtrl.value;
+    if (!search) {
+      this.filteredBank.next(this.BankNameList.slice());
+      return;
+    }
+    else {
+      search = search.toLowerCase();
+    }
+    // filter
+    this.filteredBank.next(
+      this.BankNameList.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+
+  // bank filter code
+  private filtercardbank() {
+
+    if (!this.BankNameList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.chequebankFilterCtrl.value;
+    if (!search) {
+      this.filteredChequebank.next(this.BankNameList2.slice());
+      return;
+    }
+    else {
+      search = search.toLowerCase();
+    }
+    // filter
+    this.filteredChequebank.next(
+      this.BankNameList2.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+
+  // bank filter code
+  private filterchequebank() {
+
+    if (!this.BankNameList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.cardbankFilterCtrl.value;
+    if (!search) {
+      this.filteredCardbank.next(this.BankNameList1.slice());
+      return;
+    }
+    else {
+      search = search.toLowerCase();
+    }
+    // filter
+    this.filteredCardbank.next(
+      this.BankNameList1.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+
+
+  getBankNameList() {
+    this.ipSearchService.getBankMasterCombo().subscribe(data => {
+      this.BankNameList = data;
+      this.filteredBank.next(this.BankNameList.slice());
+
+
+    });
+  }
+
+  getBankNameList1() {
+    this.ipSearchService.getBankMasterCombo().subscribe(data => {
+      this.BankNameList1 = data;
+      this.filteredCardbank.next(this.BankNameList1.slice());
+    });
+  }
+
+
+  getBankNameList2() {
+    this.ipSearchService.getBankMasterCombo().subscribe(data => {
+      this.BankNameList2 = data;
+      this.filteredChequebank.next(this.BankNameList2.slice());
+    });
+  }
+
+
   getAdvcanceDetails(isReset?: any) {
     debugger
-    this.advanceData.advanceObj.OPD_IPD_Id=4;
+    // checking 
+            this.advanceData.advanceObj.OPD_IPD_Id=4;
     this.dataSource.data = [];
     this.isLoading = 'loading';
     let Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.advanceObj.OPD_IPD_Id + ""

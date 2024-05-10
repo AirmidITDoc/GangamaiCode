@@ -896,7 +896,7 @@ export class AppointmentComponent implements OnInit {
 
   }
   onEdit(row) {
-    debugger
+    
     console.log(row)
     let Query = "Select * from Registration where  RegId=" + row.RegId + " ";
     this._AppointmentSreviceService.getRegIdDetail(Query).subscribe(data => {
@@ -906,10 +906,15 @@ export class AppointmentComponent implements OnInit {
 
     console.log(row)
     debugger
+   
+    this.EditRegistration();
+  }
+
+  EditRegistration(){
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "85vw",
-        height: "550px",
+        height: "450px",
         width: "100%",
         data: {
           registerObj: this.registerObj,
@@ -917,7 +922,6 @@ export class AppointmentComponent implements OnInit {
         },
       }
     );
-    // this.getSelectedObj(row);
   }
 
   AppointmentCancle(contact){
