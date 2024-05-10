@@ -9,7 +9,7 @@ import { RoleTemplateService } from "./role-template.service";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { RolePermissionComponent } from "../role-permission/role-permission.component";
-import { NewSchdulerComponent } from "../new-schduler/new-schduler.component";
+import {SchdulerComponent } from "../scheduler/scheduler.component";
 
 @Component({
   selector: 'app-role-template-master',

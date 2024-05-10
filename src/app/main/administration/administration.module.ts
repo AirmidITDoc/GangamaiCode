@@ -57,7 +57,10 @@ const appRoutes: Routes = [
     path:"pharmacypayipadvmode",
     loadChildren: () => import("./pharmacypayipadvmode/pharmacypayipadvmode.module").then((m)=>m.PharmacypayipadvmodeModule),
    },
-   
+   {
+    path:"scheduler",
+    loadChildren: () => import("./scheduler/scheduler.module").then((m)=>m.NewScdulerModule),
+   },
  
  
 ];
