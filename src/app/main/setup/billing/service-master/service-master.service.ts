@@ -113,12 +113,10 @@ export class ServiceMasterService {
     populateForm(param) {
         this.myform.patchValue(param);
         this.edit_data = param;
-        this.myform.get("CreditedtoDoctor").setValue(param.CreditedtoDoctor);
-        this.myform.get("IsActive").setValue(param.IsActive);
-        this.myform.get("IsEditable").setValue(param.IsEditable);
-        this.myform.get("IsEmergency").setValue(param.IsEmergency);
-        this.myform.get("IsPathology").setValue(param.IsPathology == 1 ? true : false);
-        this.myform.get("IsRadiology").setValue(param.IsRadiology == 1 ? true : false);
-
+        this.myform.get("IsPathology").setValue(param.IsPathology == "1" ? true : false);
+        this.myform.get("IsRadiology").setValue(param.IsRadiology == "1" ? true : false);
+        this.myform.get("CreditedtoDoctor").setValue(param.CreditedtoDoctor == "true" ? true : false);
+        this.myform.get("IsEditable").setValue(param.IsEditable == "true" ? true : false);
+        this.myform.get("IsEmergency").setValue(param.IsEmergency == "true" ? true : false);
     }
 }
