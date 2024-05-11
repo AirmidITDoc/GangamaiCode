@@ -4,6 +4,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { NewOpeningBalanceComponent } from './new-opening-balance/new-opening-balance.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-opening-balance',
@@ -55,7 +57,8 @@ export class OpeningBalanceComponent {
   constructor(
     public _OpeningBalanceService:OpeningBalanceService,
     private _fuseSidebarService: FuseSidebarService,
-    private _loggedService: AuthenticationService,
+    private _loggedService: AuthenticationService, 
+    public _matDialog: MatDialog,
   )
    {}
 
@@ -83,7 +86,18 @@ export class OpeningBalanceComponent {
       this._OpeningBalanceService.NewUseForm.get('StoreID').setValue(this.StoreList[0]);
     });
   }
-  
+  NewOpeningBal() {
+    const dialogRef = this._matDialog.open(NewOpeningBalanceComponent,
+      {
+        maxWidth: "100%",
+        height: '90%',
+        width: '90%' 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+    //this.getGRNLit();
+  }
 }
 export class OpeningBalanceList{
   No:number;

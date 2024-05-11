@@ -670,6 +670,7 @@ keyPressAlphanumeric(event) {
     this.vPatienName = '';
     this.vAdmissionID = '';
     this.vAdmissionDate = '';
+    this._IpSalesRetService.userFormGroup.get('Op_ip_id').setValue(1);
   }
 
   onClear() {
@@ -697,8 +698,7 @@ export class IPSalesItemList {
   Disc:any;
   GSTAmt:any;
   DiscAmt:any;
-  NetAmount:any;
-
+  NetAmount:any; 
   ItemId:any;
   SalesId:any;
   SalesDetId:any;

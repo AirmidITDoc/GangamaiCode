@@ -2023,7 +2023,7 @@ export class SalesComponent implements OnInit {
     }
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     if ((patientTypeValue == 'OP' || patientTypeValue == 'IP')
-      && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
+      && (this.registerObj.RegNo == '' || this.registerObj.RegNo == null || this.registerObj.RegNo == undefined)) {
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -3321,6 +3321,7 @@ export class SalesComponent implements OnInit {
   }
   this._RequestforlabtestService.getPatientVisitedListSearch(m_data).subscribe(data => {
     this.PatientListfilteredOptionsOP = data;
+    console.log(this.PatientListfilteredOptionsOP)
     if (this.PatientListfilteredOptionsOP.length == 0) {
       this.noOptionFound = true;
     } else {
@@ -3329,6 +3330,7 @@ export class SalesComponent implements OnInit {
   });
 
 }
+ 
 getSearchListIP() {
     var m_data = {
       "Keyword": `${this.ItemSubform.get('RegID').value}%`
@@ -3337,13 +3339,13 @@ getSearchListIP() {
       if (this.ItemSubform.get('RegID').value.length >= 1) {
         this._RequestforlabtestService.getPatientVisitedListSearch(m_data).subscribe(resData => {
           this.filteredOptions = resData;
-          this.PatientListfilteredOptionsIP = resData;
+          this.PatientListfilteredOptionsOP = resData;
+           console.log(resData);
           if (this.filteredOptions.length == 0) {
             this.noOptionFound = true;
           } else {
             this.noOptionFound = false;
-          }
-  
+          } 
         });
       }
     }else if (this.ItemSubform.get('PatientType').value == 'IP') {
