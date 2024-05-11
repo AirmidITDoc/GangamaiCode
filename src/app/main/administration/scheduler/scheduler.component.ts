@@ -64,5 +64,11 @@ export class SchdulerComponent implements OnInit {
     });
   }
 
-  
+  onClear(){
+
+  }
+
+  onShow(){
+    
+  }
 }
