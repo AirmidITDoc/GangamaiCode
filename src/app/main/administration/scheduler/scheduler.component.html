@@ -191,14 +191,14 @@
                                         [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
-                                    <!-- <mat-row 
+                                    <mat-row 
                                         *matRowDef="let contact; columns: displayedColumns;" 
                                         class="contact"
                                         [@animate]="{value:'*',params:{y:'100%'}}"
-                                        (click)="onresultentry($event,contact)"></mat-row> -->
+                                        (click)="onresultentry($event,contact)"></mat-row> 
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':dataSource1!=null}">
-                                        <!-- [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" -->
+                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" 
                                     </mat-footer-row>
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}"></mat-footer-row>
