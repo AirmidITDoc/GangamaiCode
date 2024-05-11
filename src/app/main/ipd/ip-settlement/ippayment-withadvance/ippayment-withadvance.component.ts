@@ -285,7 +285,7 @@ private _onDestroy = new Subject<void>();
   getAdvcanceDetails(isReset?: any) {
     debugger
     // checking 
-            this.advanceData.advanceObj.OPD_IPD_Id=4;
+            this.advanceData.advanceObj.OPD_IPD_Id;//=4;
     this.dataSource.data = [];
     this.isLoading = 'loading';
     let Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.advanceObj.OPD_IPD_Id + ""

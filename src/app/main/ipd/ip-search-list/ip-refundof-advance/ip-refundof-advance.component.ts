@@ -53,7 +53,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   advDetailId:any;
   AdvanceDetailID: any;
   
-  vOPIPId=410;
+  vOPIPId:any;
   
   
   printTemplate: any;
@@ -136,12 +136,12 @@ export class IPRefundofAdvanceComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
-      // this.vOPIPId=this.selectedAdvanceObj.AdmissionID
+      this.vOPIPId=this.selectedAdvanceObj.AdmissionID;
       this.PatientName=this.selectedAdvanceObj.PatientName;
       this.Doctorname=this.selectedAdvanceObj.Doctorname
     }
    
-    this.getRefundofAdvanceList();
+    this.getRefundofAdvanceListRegIdwise();
     // this.getReturndetails();
   }
 
@@ -199,6 +199,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
     this.PatientName='sk';
     this.getReturndetails();
+    this.getRefundofAdvanceListRegIdwise();
   }
 
   getOptionText1(option) {
@@ -210,9 +211,9 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
 
   getReturndetails() {
-    
+    debugger
     var m_data = {
-    "RegID": 2//this.vOPIPId 
+    "AdmissionId": this.vOPIPId 
     }
  
     this.isLoading = 'list-loading';
@@ -224,16 +225,16 @@ export class IPRefundofAdvanceComponent implements OnInit {
     });
   }
 
-  getRefundofAdvanceList() {
+  getRefundofAdvanceListRegIdwise() {
     var m_data = {
       // "RefundId": this._IpSearchListService.myRefundAdvanceForm.get("RefundId").value || "0",
-      "RegID":2// this.vOPIPId//410
+      "RegID":this.vOPIPId//410
 
     }
     this.isLoadingStr = 'loading';
     this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as IPRefundofAdvance[];
-     
+     console.log( this.dataSource.data )
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
@@ -398,7 +399,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
         if (response) {
           Swal.fire('Congratulations !', 'Refund Of Advance data saved Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-              this.getRefundofAdvanceList();
+              this.getRefundofAdvanceListRegIdwise();
             this.getReturndetails();
           this.viewgetRefundofAdvanceReportPdf(response);
           

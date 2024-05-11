@@ -237,6 +237,10 @@ export class AppointmentComponent implements OnInit {
 
   VisitFlagDisp: boolean = false;
   DoctorId: any;
+  AdList: boolean = false;
+  chkprint: boolean = false;
+
+
   @ViewChild('attachments') attachment: any;
 
   imageForm = new FormGroup({
@@ -904,13 +908,18 @@ export class AppointmentComponent implements OnInit {
       console.log(this.registerObj);
     });
 
-    console.log(row)
+    
     debugger
-   
+   this.registerObj["VisitId"]=row.VisitId;
+   console.log(this.registerObj)
     this.EditRegistration();
   }
 
   EditRegistration(){
+    this.advanceDataStored.storage = new AdvanceDetailObj(this.registerObj);
+    console.log(this.registerObj)
+    this._registrationService.populateFormpersonal(this.registerObj);
+
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "85vw",
@@ -918,10 +927,13 @@ export class AppointmentComponent implements OnInit {
         width: "100%",
         data: {
           registerObj: this.registerObj,
-          Submitflag:true
+          Submitflag:false
         },
       }
     );
+    console.log(this.registerObj)
+    this.getVisitList1();
+    // this.viewgetPatientAppointmentReportPdf(this.registerObj, true);
   }
 
   AppointmentCancle(contact){
@@ -1928,6 +1940,7 @@ debugger
           width: "70%",
           data: {
             registerObj: m_data2,
+            FormName:"Appointment"
           },
         }
       );
@@ -1950,6 +1963,7 @@ debugger
         width: "70%",
         data: {
           registerObj: m_data3,
+          FormName:"Appointment"
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
@@ -2074,8 +2088,7 @@ debugger
   }
 
 
-  AdList: boolean = false;
-  chkprint: boolean = false;
+ 
   viewgetPatientAppointmentReportPdf(obj, Pflag) {
     this.chkprint = true;
     let VisitId;

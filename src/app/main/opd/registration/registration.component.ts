@@ -217,6 +217,7 @@ export class RegInsert
     PanCardNo : string;
     currentDate = new Date();
     AdmissionID:any;
+    VisitId:any;
     /**
      * Constructor
      *
@@ -262,6 +263,7 @@ export class RegInsert
             this.AadharCardNo= RegInsert.AadharCardNo || '';
             this.PanCardNo = RegInsert.PanCardNo || '';
             this.AdmissionID = RegInsert.AdmissionID || '';
+            this.VisitId=RegInsert.VisitId ||''
         }
     }
 }

@@ -1446,7 +1446,7 @@ console.log(obj)
       this.vserviceDiscflag = true;
       this.admin = false;
     }
-
+    this.isDoctor=false;
   }
   onClearServiceAddList() {
     this.Serviceform.get('SrvcName').reset();

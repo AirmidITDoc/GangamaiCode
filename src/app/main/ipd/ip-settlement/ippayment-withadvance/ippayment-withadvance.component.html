@@ -35,45 +35,48 @@
 
 
                     <div fxlayout="row">
-
-                        <!-- ================================ LABEL HEADER  -->
-                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                            <div class="patient-info-container">
-                                <div class="patient-info-box">
-                                    <div class="patient-info-title border-bottom pb-2">
-                                        <span class="h1">Patient Information</span>
-                                    </div>
-                                    <div class="patient-info-box my-8">
-                                        <div class="patient-info-row ">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key ">OPD/IPD No &nbsp; :</span>
-                                                <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{advanceData.advanceObj.OPD_IPD_Id}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Name &nbsp; : </span>
-                                                <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{advanceData.advanceObj.PatientName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Date &nbsp; :</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{advanceData.advanceObj.Date}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">
-                                                    Amount &nbsp; :</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{netPayAmt}}</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
+                        <div class="patient-info-box my-8">
+                            <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                <div class="patient-col gap-3" fxFlex="35%" fxFlex.gt-sm="35%">
+                                    <span class="patient-col-key ">Patient Name</span>
+                                    <span>:</span>
+                                    <span class="patient-col-value">{{advanceData.advanceObj..PatientName}}</span>
+                                </div>
+                                <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="h-100-p">
+                                    <span class="patient-col-key">RegID</span>
+                                    <span>:</span>
+                                    <span class="patient-col-value">{{advanceData.advanceObj.RegID}}</span>
+                                </div>
+                                <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="15%">
+                                    <span class="patient-col-key">IPDNo</span>
+                                    <span>:</span>
+                                    <span class="patient-col-value">{{advanceData.advanceObj.OPD_IPD_Id}}</span>
+                                </div>
+                              
+                                <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
+                                    <span class="patient-col-key ">PBillNo </span>
+                                    <span>:</span>
+                                    <span class="patient-col-value">{{advanceData.advanceObj.PBillNo}}</span>
+                                </div>
+                                <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
+                                    <span class="patient-col-key">BillTime </span>
+                                    <span>:</span>
+                                    <span class="patient-col-value">{{advanceData.advanceObj.BillTime}}</span>
+                                </div>
+                                <!-- <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
+                                    <span class="patient-col-key">Patient Source</span>
+                                    <span>:</span>
+                                    <span class="patient-col-value">{{advanceData.advanceObj..PatientType}}</span>
+                                </div> -->
+                                <div class="patient-col gap-3" fxFlex="20%" fxFlex.gt-sm="20%">
+                                    <span class="patient-col-key">NetPay Amount</span>
+                                    <span>:</span>
+                                    <span class="patient-col-value">{{netPayAmt}}</span>
                                 </div>
                             </div>
                         </div>
+                        <!-- ================================ LABEL HEADER  -->
+                    
 
                         <!-- ================================ LABEL HEADER  -->
                     </div>

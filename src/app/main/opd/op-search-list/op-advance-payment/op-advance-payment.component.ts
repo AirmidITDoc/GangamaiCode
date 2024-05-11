@@ -77,7 +77,7 @@ export class OPAdvancePaymentComponent implements OnInit {
   vcompany:any=''
   vdoctorname:any=''
   vCategory:any=''
-
+  OPD_IPD_Id:any=''
 
 
 
@@ -113,6 +113,8 @@ export class OPAdvancePaymentComponent implements OnInit {
     this.PatientHeaderObj = this.data.advanceObj;
     this.PatientHeaderObj1=this.data.vPatientHeaderObj;
     console.log(this.data.selectedAdvanceObj)
+   
+   
     // this.vage=this.data.selectedAdvanceObj.
     // this.vtariff=this.data.selectedAdvanceObj.TariffName
     // this.vcompany=this.data.selectedAdvanceObj.CompanyName
@@ -120,7 +122,7 @@ export class OPAdvancePaymentComponent implements OnInit {
     // this.vCategory=this.data.selectedAdvanceObj.PatientType
 
     console.log(this.PatientHeaderObj1);
-
+    this.OPD_IPD_Id=this.advanceData.advanceObj.OPD_IPD_Id
     if (this.advanceData.FromName == "Advance-Refund") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.RefundAmount);
       this.cashAmt = parseInt(this.advanceData.advanceObj.RefundAmount);

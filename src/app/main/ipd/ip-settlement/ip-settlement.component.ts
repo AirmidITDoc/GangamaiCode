@@ -330,7 +330,7 @@ debugger
   }
 
   addpayment(contact) {
-
+console.log(contact)
     this.FinalAmt = contact.NetPayableAmt;
 
     let PatientHeaderObj = {};
@@ -340,8 +340,14 @@ debugger
     PatientHeaderObj['OPD_IPD_Id'] = this.RegId;
     PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt;
 
-    PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;//this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
+    PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+    PatientHeaderObj['PBillNo'] = contact.PBillNo;
+    PatientHeaderObj['BillTime'] = contact.BillTime;
+    PatientHeaderObj['RegID'] = contact.RegID;
 
+    
+    
+    
     const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
       {
         maxWidth: "95vw",

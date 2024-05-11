@@ -342,7 +342,7 @@
                                 </div>
                                 <div class="patient-info-box my-8">
                                     <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <div class="patient-col gap-3" fxFlex="35%" fxFlex.gt-sm="35%">
                                             <span class="patient-col-key ">Patient Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
@@ -352,32 +352,32 @@
                                             <span>:</span>
                                             <span class="patient-col-value">Staff</span>
                                         </div> -->
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="15%">
                                             <span class="patient-col-key">IPDNo</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="h-100-p">
                                             <span class="patient-col-key">Tariff</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
                                             <span class="patient-col-key ">Age</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}</span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key">Company</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key">Patient Source</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key">Doctor</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
@@ -573,7 +573,7 @@
                                 [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
                             </mat-footer-row>
                         </mat-table>
-                        <div class="net-amt-section mb-2 mt-16">
+                        <div class="net-amt-section mb-2 mt-16" style="margin-left: 500px;">
                             <div class="net-amt gap-24">
                                 <div class="net-amt-box">
                                     <span class="net-amt-label">No of Items : </span>
