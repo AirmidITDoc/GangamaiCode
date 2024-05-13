@@ -226,7 +226,7 @@ export class TestFormMasterComponent implements OnInit {
         this.ChargeList = this.dsTemparoryList.data;
         this.ChargeList.push(
             {
-                ParameterName: this._TestService.AddParameterFrom.get('ParameterName').value.ParameterName || "",
+                ParameterName: event.ParameterName || "",
             });
         this.DSTestList.data = this.ChargeList
         // console.log(this.ChargeList);
