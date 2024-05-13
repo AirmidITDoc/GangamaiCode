@@ -203,10 +203,11 @@ export class NewOPBillingComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
-
+debugger
       this.VisitId=this.selectedAdvanceObj.VisitId;
+      this.RegId=this.selectedAdvanceObj.RegId;
       this.AgeYear = this.selectedAdvanceObj.AgeYear;
-      this.vOPIPId = this.selectedAdvanceObj.OPD_IPD_ID;
+      this.vOPIPId = this.selectedAdvanceObj.VisitId;
       this.PatientName = this.selectedAdvanceObj.PatientName;
       this.Doctorname = this.selectedAdvanceObj.Doctorname;
       this.CompanyId = this.selectedAdvanceObj.CompanyId;
@@ -448,7 +449,7 @@ export class NewOPBillingComponent implements OnInit {
   onSaveOPBill2() {
 debugger
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
-      this.toastr.warning('Please select Patient Type.', 'Warning !', {
+      this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
