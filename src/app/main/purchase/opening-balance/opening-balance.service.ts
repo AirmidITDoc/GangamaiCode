@@ -56,4 +56,10 @@ CreateStorForm() {
   public getItemNameList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
   }
+  public getOpeningBalList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OpeningItemList", Param);
+  }
+  public getOpeningBalItemDetList(Param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OpeningItemDet", Param);
+  }
 }

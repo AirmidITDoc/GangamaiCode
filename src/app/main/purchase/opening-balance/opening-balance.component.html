@@ -33,7 +33,7 @@
                         <mat-form-field appearance="outline" style="margin-left: 2%;">
                             <mat-label>Enter a date range</mat-label>
                             <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="startdate" placeholder="Start date">
+                                <input matStartDate formControlName="startdate" placeholder="Start date" (dateChange)="getOpeningBalList()">
                                 <input matEndDate formControlName="enddate" placeholder="End date">
                             </mat-date-range-input>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -54,7 +54,7 @@
                             <button mat-raised-button class="clearbutton" matTooltip="close">
                                 <mat-icon class="cleariconbutton">close</mat-icon>
                             </button>&nbsp;&nbsp;
-                            <button mat-raised-button class="searchButton" matTooltip="search">
+                            <button mat-raised-button class="searchButton" matTooltip="search" (click)="getOpeningBalList()">
                                 <mat-icon class="searchiconbutton">search</mat-icon>
                             </button>
                         </div> 
@@ -72,22 +72,22 @@
                             class="backgroundBlur">
                             <div class="spinner-border text-danger"></div>
                         </div>
-                        <mat-table class="tab1" matSort [dataSource]="dsOpeningBalnce" [@animateStagger]="{value:'50'}"
+                        <mat-table class="tab1" matSort [dataSource]="dsOpeningBalnceList" [@animateStagger]="{value:'50'}"
                             style="overflow: auto;">
 
                             <ng-container matColumnDef="No">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                    No </mat-header-cell>
+                                    OpeningHId </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.No}}
+                                    {{contact.OpeningHId}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="Date">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Date </mat-header-cell>
+                                    OpeningDate </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.Date | date: 'dd/MM/yyyy'}}
+                                    {{contact.OpeningDate | date: 'dd/MM/yyyy'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -103,7 +103,17 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Added By Name</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.AddedByName}}
+                                    {{contact.AdddedByName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <button mat-icon-button matTooltip="Print">
+                                        <mat-icon>print</mat-icon>
+                                    </button>
                                 </mat-cell>
                             </ng-container>
 
@@ -121,21 +131,21 @@
                             <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                             </mat-header-row>
                             <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [@animate]="{value:'*',params:{y:'100%'}}" (click)="getOpeningBalItemDetList(contact)"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']" 
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                             </mat-footer-row>
                             <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsOpeningBalnce!=null && dsOpeningBalnce.data.length==0)}">
+                                [ngClass]="{'hide':!(dsOpeningBalnceList!=null && dsOpeningBalnceList.data.length==0)}">
                             </mat-footer-row>
                         </mat-table>
-                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
+                        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>
                         </mat-paginator>
 
 
 
                         <div>
-                            <mat-table class="tab2" matSort [dataSource]="dsOpeningBalnce1"
+                            <mat-table class="tab2" matSort [dataSource]="dsOpeningBalItemDetList"
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                 <ng-container matColumnDef="ItemName">
@@ -158,7 +168,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                         Exp.Date </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.ExpDate | date: 'dd/MM/yyyy'}}
+                                        {{contact.BatchExpDate | date: 'dd/MM/yyyy'}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -176,7 +186,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                         Pur.Rate </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.PurRate}}
+                                        {{contact.PerUnitPurRate | number:'1.2-2' }}
                                     </mat-cell>
                                 </ng-container>
 
@@ -184,27 +194,19 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                         MRP </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.MRP }}
+                                        {{contact.PerUnitMrp | number:'1.2-2'  }}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="GSTPer">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        GST Per</mat-header-cell>
+                                        GST %</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.GSTPer}}
+                                        {{contact.VatPer}}
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="action" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact">
-                                        <button mat-icon-button matTooltip="Print">
-                                            <mat-icon>print</mat-icon>
-                                        </button>
-                                    </mat-cell>
-                                </ng-container>
+                              
 
                                 <ng-container matColumnDef="loading">
                                     <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -225,7 +227,7 @@
                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                 </mat-footer-row>
                                 <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dsOpeningBalnce1!=null && dsOpeningBalnce1.data.length==0)}">
+                                    [ngClass]="{'hide':!(dsOpeningBalItemDetList!=null && dsOpeningBalItemDetList.data.length==0)}">
                                 </mat-footer-row>
                             </mat-table>
                             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15" showFirstLastButtons>

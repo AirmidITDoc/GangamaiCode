@@ -2034,14 +2034,15 @@ export class SalesComponent implements OnInit {
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashOnlinePaySave()
     }
-    // else if (this.ItemSubform.get('CashPay').value == 'Credit') {
-    //   this.onCreditpaySave()
-    // }
+    else if (this.ItemSubform.get('CashPay').value == 'Credit') {
+      this.onCreditpaySave()
+    }
     else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
       this.onSavePayOption()
     }
+   
     this.getDraftorderList();
-    this.mobileno.nativeElement.focus();
+    //this.mobileno.nativeElement.focus();
     event.srcElement.removeAttribute('disabled');
   }
   isLoading123 = false;
@@ -2215,7 +2216,8 @@ export class SalesComponent implements OnInit {
           this.Itemchargeslist = [];
           this._matDialog.closeAll();
           this.ItemFormreset();
-          this.patientDetailsFormGrp.reset();
+         // this.patientDetailsFormGrp.reset();
+         this.ItemSubform.reset();
           this.Formreset();
           this.ItemSubform.get('ConcessionId').reset();
           // this.PatientName = '';
@@ -2421,8 +2423,8 @@ export class SalesComponent implements OnInit {
           this.patientDetailsFormGrp.reset();
           this.Formreset();
           this.ItemSubform.get('ConcessionId').reset();
-          this.PatientName = '';
-          this.MobileNo = '';
+          // this.PatientName = '';
+          // this.MobileNo = '';
           this.saleSelectedDatasource.data = [];
         }
         else {
@@ -2448,7 +2450,7 @@ export class SalesComponent implements OnInit {
     })
 
   }
-
+ 
 
   getPrint3(el) {
     var D_data = {
@@ -2778,7 +2780,7 @@ export class SalesComponent implements OnInit {
     salesInsertCredit['salesHeadName'] = ""
     salesInsertCredit['salesTypeId'] = 0;
     salesInsertCredit['salesId'] = 0;
-    salesInsertCredit['extMobileNo'] = this.MobileNo;
+    salesInsertCredit['extMobileNo'] = this.MobileNo || 0;
     salesInsertCredit['extAddress'] = this.vextAddress || '';
 
     let salesDetailInsertCreditarr = [];
@@ -2837,6 +2839,7 @@ export class SalesComponent implements OnInit {
       "cal_DiscAmount_SalesCredit": cal_DiscAmount_SalesCredit,
       "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
     };
+    console.log(submitData)
     let vMobileNo = this.mobileno;
     this._salesService.InsertCreditSales(submitData).subscribe(response => {
       if (response) {
@@ -2865,7 +2868,7 @@ export class SalesComponent implements OnInit {
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.getConcessionReasonList();
-    this.PatientName = '';
+    //this.PatientName = '';
     // this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
     this.saleSelectedDatasource.data = [];
@@ -3366,8 +3369,9 @@ getSearchListIP() {
   }
 
   getSelectedObjRegIP(obj) {
+    //console.log(obj)
     this.registerObj = obj;
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+    this.PatientName = obj.FirstName + ' ' + obj.LastName;
     this.RegId = obj.RegID;
     this.OP_IP_Id = this.registerObj.AdmissionID;
     // if (this.ItemSubform.get('PatientType').value == 'IP'){
