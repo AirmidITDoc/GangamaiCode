@@ -23,6 +23,7 @@ import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component';
 import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
 import { ToastrService } from 'ngx-toastr';
+import { CompanyInformationComponent } from '../company-information/company-information.component';
 
 
 
@@ -116,7 +117,7 @@ export class IPSearchListComponent implements OnInit {
 
       this.menuActions.push('Refund of Bill');
       this.menuActions.push('Refund of Advance');
-
+      this.menuActions.push('Refund of Advance');
     }
 
     else if (this._ActRoute.url == '/ipd/add-billing') {
@@ -124,7 +125,8 @@ export class IPSearchListComponent implements OnInit {
       this.menuActions.push('Bill');
       this.menuActions.push('Refund of Bill');
       this.menuActions.push('Refund of Advance');
-      this.menuActions.push('Payment');
+      // this.menuActions.push('Payment');
+      this.menuActions.push('Update Company Information');
     }
     else if (this._ActRoute.url == '/ipd/medicalrecords') {
       this.menuActions.push('Case Paper');
@@ -469,6 +471,44 @@ export class IPSearchListComponent implements OnInit {
         {
           maxWidth: "75vw",
           maxHeight: "95%", width: '100%', height: "100%"
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        
+      });
+    // }else Swal.fire("Bill already Generated")
+    }
+    else if (m == "Update Company Information") {
+      let m_data = {
+        RegNo: contact.RegNo,
+        RegId: contact.RegID,
+        AdmissionID: contact.AdmissionID,
+        OPD_IPD_ID: contact.OPD_IPD_Id,
+        PatientName: contact.PatientName,
+        Doctorname: contact.Doctorname,
+        AdmDateTime: contact.AdmDateTime,
+        AgeYear: contact.AgeYear,
+        ClassId: contact.ClassId,
+        TariffName: contact.TariffName,
+        TariffId: contact.TariffId,
+        DoctorId: contact.DoctorId,
+        DOA: contact.DOA,
+        DOT: contact.DOT,
+        DoctorName: contact.DoctorName,
+        RoomName: contact.RoomName,
+        BedNo: contact.BedName,
+        IPDNo: contact.IPDNo,
+        DocNameID: contact.DocNameID,
+        opD_IPD_Typec: contact.opD_IPD_Type,
+        CompanyName:contact.CompanyName
+      }
+     
+      this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
+      this._IpSearchListService.populateForm2(m_data);
+      // if (!contact.IsBillGenerated) {
+      const dialogRef = this._matDialog.open(CompanyInformationComponent,
+        {
+          maxWidth: "75vw",
+          maxHeight: "99%", width: '100%', height: "100%"
         });
       dialogRef.afterClosed().subscribe(result => {
         

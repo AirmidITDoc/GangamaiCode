@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,13 +9,16 @@ import { IPSettlementService } from '../ip-settlement.service';
 import { InvalidDataValidator } from 'app/main/shared/validators/invalide-validators';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { fuseAnimations } from '@fuse/animations';
 // import { InvalidDataValidator } from 'app/shared/validators/invalide-validators';
 
 
 @Component({
   selector: 'app-ippayment-withadvance',
   templateUrl: './ippayment-withadvance.component.html',
-  styleUrls: ['./ippayment-withadvance.component.scss']
+  styleUrls: ['./ippayment-withadvance.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class IPpaymentWithadvanceComponent implements OnInit {
 
@@ -530,11 +533,11 @@ private _onDestroy = new Subject<void>();
     Paymentobj['CashPayAmount'] = this.cashAmt;
     Paymentobj['ChequePayAmount'] = this.chequeAmt;
     Paymentobj['ChequeNo'] = this.chequeNo;
-    Paymentobj['BankName'] = this.chequeBankName;
+    Paymentobj['BankName'] =this.paymentForm.get('chequeBankNameController').value.BankName || '';// this.chequeBankName;
     Paymentobj['ChequeDate'] = this.dateTimeObj.date;
     Paymentobj['CardPayAmount'] = this.cardAmt;
     Paymentobj['CardNo'] = this.cardNo;
-    Paymentobj['CardBankName'] = this.cardBankName;
+    Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName || '';//this.cardBankName;
     Paymentobj['CardDate'] = this.dateTimeObj.date;
     Paymentobj['AdvanceUsedAmount'] = this.advanceAmt;
     Paymentobj['AdvanceId'] = this.AdvanceId,
@@ -551,7 +554,7 @@ private _onDestroy = new Subject<void>();
     Paymentobj['CompanyId'] = '0';
     Paymentobj['NEFTPayAmount'] = this.neftAmt;
     Paymentobj['NEFTNo'] = this.neftNo;
-    Paymentobj['NEFTBankMaster'] = this.neftBankName;
+    Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName || '';//this.neftBankName;
     Paymentobj['NEFTDate'] = this.dateTimeObj.date;
     Paymentobj['PayTMAmount'] = this.paytmAmt;
     Paymentobj['PayTMTranNo'] = this.paytmTransNo;
@@ -583,8 +586,8 @@ private _onDestroy = new Subject<void>();
     let IsSubmit = {
       "submitDataPay": submitDataPay,
       "submitDataAdvancePay": Advancesarr,
-      "PaidAmt":this.paymentForm.get('paidAmountController').value,
-      "BalAmt" :this.paymentForm.get('balanceAmountController').value,
+      "PaidAmt": this.paymentForm.get('paidAmountController').value,
+      "BalAmt" : this.paymentForm.get('balanceAmountController').value,
       "IsSubmitFlag": true,
       "Iscredited": this.paymentForm.get('Iscredited').value
     }
@@ -638,13 +641,33 @@ private _onDestroy = new Subject<void>();
       Paymentobj['BalanceAmt'] = ''//this.paymentForm.get('balanceAmountController').value;
 
     const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
+
+    let Advancesarr = [];
+
+    this.dataSource.data.forEach((element) => {
+      let Advanceobj = {};
+      console.log(element);
+      Advanceobj['AdvanceNo'] = this.dataSource.data[0].AdvanceId;
+      Advanceobj['AdvanceDetailID'] = this.dataSource.data[0].AdvanceDetailID;
+      Advanceobj['AdvanceAmount'] = this.dataSource.data[0].AdvanceAmount;
+      Advanceobj['UsedAmount'] = this.dataSource.data[0].UsedAmount;
+      Advanceobj['Date'] = this.dataSource.data[0].Date;
+      Advanceobj['BalanceAmount'] = this.dataSource.data[0].BalanceAmount;
+      Advanceobj['RefundAmount'] = this.dataSource.data[0].RefundAmount;
+      Advancesarr.push(Advanceobj);
+    });
+
+
     let submitDataPay1 = {
       ipPaymentInsert,
     };
     let IsSubmit = {
 
       "submitDataPay": submitDataPay1,
-      "IsSubmitFlag": false
+      "IsSubmitFlag": false,
+      "PaidAmt":0,// this.paymentForm.get('paidAmountController').value,
+      "BalAmt" : this.netPayAmt,//this.paymentForm.get('balanceAmountController').value,
+      "submitDataAdvancePay": Advancesarr,
     }
     this.dialogRef.close(IsSubmit);
   }

@@ -1,0 +1,260 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="width:80% ;font-size: 20px; font-weight: 400;">
+                Company Information
+            </span>
+            <!-- </span> -->
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                </app-common-date>
+                <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog"
+                    (click)="onClose()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- / HEADER -->
+
+    <div class="content-card">
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+
+            <div fxFlex.gt-sm="100%" fxFlex>
+                <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
+                    <!-- ================================ LABEL HEADER  -->
+                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h1">Patient Information</span>
+                                    </div>
+                                    <div class="patient-info-box my-8">
+                                        <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <span class="patient-col-key ">Patient Name</span>
+                                                <span>:</span>
+                                                <!-- <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span> -->
+                                            </div>
+                                            <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
+                                                <span class="patient-col-key">Admission Date</span>
+                                                <span>:</span>
+                                                <!-- <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span> -->
+                                            </div>
+                                            <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
+                                                <span class="patient-col-key">IPDNo</span>
+                                                <span>:</span>
+                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span> -->
+                                            </div>
+                                            <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
+                                                <span class="patient-col-key">Tariff</span>
+                                                <span>:</span>
+                                                <!-- <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span> -->
+                                            </div>
+                                            <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
+                                                <span class="patient-col-key ">Age</span>
+                                                <span>:</span>
+                                                <!-- <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.AgeYear}}</span> -->
+                                            </div>
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <span class="patient-col-key">Company</span>
+                                                <span>:</span>
+                                                <!-- <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span> -->
+                                            </div>
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <span class="patient-col-key">ward</span>
+                                                <span>:</span>
+                                                <!-- <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.WardName}}</span>
+                                                    {{selectedAdvanceObj.WardName}} -->
+                                            </div>
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <span class="patient-col-key">Doctor</span>
+                                                <span>:</span>
+                                                <!-- <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </mat-card>
+                    <!-- ================================ LABEL HEADER  -->
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- CONTENT -->
+    <div class="content-card">
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="1px">
+            <div fxFlex.gt-sm="100%" fxFlex fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px;">
+                <form [formGroup]="companyFormGroup">
+                    <div class="dialog-content-wrapper">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                            <div fxlayout="row" fxFlex>
+                                <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h1">Policy Information</span>
+                                </div>
+
+                                <div fxLayoutGap="1px">
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Policy No / Member No </mat-label>
+                                        <input name="PolicyNo" formControlName="PolicyNo" placeholder="PolicyNo"
+                                            matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Claim No</mat-label>
+                                        <input name="ClaimNo" formControlName="ClaimNo" placeholder="ClaimNo" matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Final Bill To TPA Scheme</mat-label>
+                                        <input name="BillToTpa" formControlName="BillToTpa" placeholder="BillToTpa"
+                                            matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>PAdvance</mat-label>
+                                        <input name="PAdvance" formControlName="PAdvance" placeholder="PAdvance"
+                                            matInput>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayoutGap="1px">
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Comments</mat-label>
+                                        <input name="Comments" formControlName="Modeofdischarge" placeholder="Comments"
+                                            matInput>
+                                    </mat-form-field>
+
+                                </div>
+                                <div fxLayoutGap="1px">
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>EstimatAmt</mat-label>
+                                        <input name="EstimatAmt" formControlName="EstimatAmt" placeholder="EstimatAmt"
+                                            matInput>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Approv BY TPA Scheme</mat-label>
+                                        <input name="ApprovBYTpa" formControlName="ApprovBYTpa"
+                                            placeholder="ApprovBYTpa" matInput>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Investigation Paid</mat-label>
+                                        <input name="InvestigationPaid" formControlName="InvestigationPaid"
+                                            placeholder="InvestigationPaid" matInput>
+                                    </mat-form-field>
+
+                                </div>
+
+                                <div fxLayoutGap="1px">
+
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Approved Hospital Amt</mat-label>
+                                        <input name="AppHospitalAmt" formControlName="AppHospitalAmt"
+                                            placeholder="AppHospitalAmt" matInput>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Disallowed Amount By TPA</mat-label>
+                                        <input name="DisallowAmt" formControlName="DisallowAmt"
+                                            placeholder="DisallowAmt" matInput>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Refund Amt/Recovered From</mat-label>
+                                        <input name="NetAmtRefund" formControlName="NetAmtRefund"
+                                            placeholder="NetAmtRefund" matInput>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayoutGap="1px">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Path Amt</mat-label>
+                                        <input name="PathAmt" formControlName="PathAmt" placeholder="PathAmt" matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Discount By TPA</mat-label>
+                                        <input name="DiscByTpa" formControlName="DiscByTpa" placeholder="DiscByTpa"
+                                            matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Refund Amount </mat-label>
+                                        <input name="RefundAmt" formControlName="RefundAmt" placeholder="RefundAmt"
+                                            matInput>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayoutGap="1px">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Radi Amt</mat-label>
+                                        <input name="RadiAmt" formControlName="RadiAmt" placeholder="RadiAmt" matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Disc As Per Management</mat-label>
+                                        <input name="DiscByManagement" formControlName="DiscByManagement"
+                                            placeholder="DiscByManagement" matInput>
+                                    </mat-form-field>
+
+
+
+                                </div>
+                                <div fxLayoutGap="1px">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Pharmacy Amt</mat-label>
+                                        <input name="PharmacyAmt" formControlName="PharmacyAmt"
+                                            placeholder="PharmacyAmt" matInput>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Amt Recovered From Patient</mat-label>
+                                        <input name="RecoverAmtbyPatient" formControlName="RecoverAmtbyPatient"
+                                            placeholder="RecoverAmtbyPatient" matInput>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayoutGap="1px">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Medical Amt</mat-label>
+                                        <input name="MedicalAmt" formControlName="MedicalAmt" placeholder="MedicalAmt"
+                                            matInput>
+                                    </mat-form-field>
+
+                                </div>
+                            </div>
+                        </mat-card>
+
+
+                    </div>
+                </form>
+                <div class="modal-footer-buttons gap-8 p-16" fxLayout="row" fxLayoutAlign="end center"
+                    style="margin-left: 900px;">
+                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button class="btn btn-primary " (click)="Save()">
+                        <span>Save</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

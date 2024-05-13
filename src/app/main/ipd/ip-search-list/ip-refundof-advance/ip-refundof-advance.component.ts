@@ -98,7 +98,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   vOPDNo: any = 0;
   vTariffId: any = 0;
   vClassId: any = 0;
-
+  RegNo: any = 0;
   PatientName: any = "";
   RegId: any = 0;
   noOptionFound: boolean = false;
@@ -187,12 +187,14 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;
     this.RegId = obj.RegId;
+    this.RegNo = obj.RegNo;
     this.City = obj.City;
     // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
     this.Doctorname = obj.DoctorName;
     this.vOPIPId = obj.RegId;
+    // this.vOPIPId = obj.VisitId;
     this.vOPDNo = obj.RegId;//obj.OPDNo;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
@@ -228,7 +230,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   getRefundofAdvanceListRegIdwise() {
     var m_data = {
       // "RefundId": this._IpSearchListService.myRefundAdvanceForm.get("RefundId").value || "0",
-      "RegID":this.vOPIPId//410
+      "RegID": 335//this.vOPIPId//410
 
     }
     this.isLoadingStr = 'loading';
@@ -325,7 +327,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     let IPRefundofAdvanceObj = {};
     IPRefundofAdvanceObj['RefundDate'] = this.dateTimeObj.date;
     IPRefundofAdvanceObj['RefundTime'] = this.dateTimeObj.time;
-    IPRefundofAdvanceObj['BillId'] = 1;
+    IPRefundofAdvanceObj['BillId'] = 0;
     IPRefundofAdvanceObj['AdvanceId'] = this.advId;
     IPRefundofAdvanceObj['OPD_IPD_Type'] = 1;
     IPRefundofAdvanceObj['OPD_IPD_ID'] =  this.vOPIPId,
@@ -369,7 +371,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     PatientHeaderObj['OPD_IPD_Id'] =this.vOPIPId,
     PatientHeaderObj['NetPayAmount'] =  this.NewRefundAmount;
     PatientHeaderObj['PatientName'] =   this.PatientName;
-    PatientHeaderObj['BillId'] =  1;
+    PatientHeaderObj['BillId'] =  0;
 
     const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {

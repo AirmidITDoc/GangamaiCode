@@ -164,7 +164,7 @@ export class IPSettlementComponent implements OnInit {
   }
 
 
-  // 9902666262,9844983510
+  // 9902666262
   getSelectedObj(obj) {
     console.log(obj)
     this.registerObj = obj;

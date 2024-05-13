@@ -997,25 +997,54 @@ calculateTotalAmtbyprice() {
 }
 // Charges Wise Disc Percentage 
 calculatePersc() {
-  if (this.v_ChargeDiscPer) {
+  debugger
+  
+  this.v_ChargeDiscPer= this.registeredForm.get('ChargeDiscPer').value;
+
+  if ((this.v_ChargeDiscPer < 101) && (this.v_ChargeDiscPer > 0) ) {
     this.b_ChargeDisAmount = Math.round(this.b_totalAmount * parseInt(this.v_ChargeDiscPer)) / 100;
+
     this.b_netAmount = this.b_totalAmount - this.b_ChargeDisAmount;
-    // this.registeredForm.get('ChargeDiscAmount').disable();
+    this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
+  }
+  else if((this.v_ChargeDiscPer > 100) || (this.v_ChargeDiscPer < 0) ){
+    Swal.fire("Enter Discount % Less than 100 & Greater > 0")
+    // this.v_ChargeDiscPer=0;
+    this.b_ChargeDisAmount=0;
+    this.b_netAmount=this.b_totalAmount;
+  }
+
+  if( this.b_netAmount < 0){
+    this.add=false;
   }
 }
+
+
 // Charges Wise Disc Amount 
 calculatechargesDiscamt() {
-  if (this.b_ChargeDisAmount) {
+  if ( (this.b_ChargeDisAmount > 0) && (this.b_ChargeDisAmount <  this.b_totalAmount)) {
     this.b_netAmount = this.b_totalAmount - this.b_ChargeDisAmount;
+   this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
+  }else if((this.b_ChargeDisAmount < 0) || (this.b_ChargeDisAmount > this.b_totalAmount)){
+    Swal.fire("Enter Discount Amt Less Than TotalAmount")
     this.v_ChargeDiscPer = 0;
-    // this.registeredForm.get('ChargeDiscPer').disable();
+    this.b_ChargeDisAmount=0;
+    this.Consessionres = false;
+   this.BillingForm.get('ConcessionId').reset();
+    this.BillingForm.get('ConcessionId').clearValidators();
+    this.BillingForm.get('ConcessionId').updateValueAndValidity();
+  }
+  if( this.b_netAmount < 0){
+    this.add=false;
   }
 }
 
 
 calcDiscPersonTotal() {
-
-  if (this.b_concessionDiscPer > 0 || this.v_ChargeDiscPer > 0) {
+debugger
+this.b_concessionDiscPer= this.BillingForm.get('concesDiscPer').value;
+  if (this.b_concessionDiscPer > 0 && this.b_concessionDiscPer < 101) {
+  
     this.b_concessionamt = Math.round((this.b_TotalChargesAmount * parseInt(this.b_concessionDiscPer)) / 100);
 
     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
@@ -1029,11 +1058,15 @@ calcDiscPersonTotal() {
     this.BillingForm.get('ConcessionId').enable();
 
   }
-  else {
+  else if((this.b_concessionDiscPer < 0 || this.b_concessionDiscPer > 100)) {
+    Swal.fire("Concession % Less Than 100 & Greater Than 0");
     this.Consessionres = false;
     this.BillingForm.get('ConcessionId').reset();
     this.BillingForm.get('ConcessionId').clearValidators();
     this.BillingForm.get('ConcessionId').updateValueAndValidity();
+    this.b_concessionDiscPer=0;
+    this.b_concessionamt=0;
+    this.TotalnetPaybleAmt=this.b_TotalChargesAmount;
 
 
     if (this.b_concessionDiscPer == 0 || this.BillingForm.get('concesDiscPer').value == null)
@@ -1045,7 +1078,7 @@ calcDiscPersonTotal() {
 calculateDiscamtfinal() {
 
   this.b_concessionamt = this.BillingForm.get('concessionAmt').value;
-  if (this.b_concessionamt > 0) {
+  if (this.b_concessionamt > 0 && this.b_concessionamt < this.b_TotalChargesAmount) {
     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
 
     this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt);
@@ -1054,13 +1087,15 @@ calculateDiscamtfinal() {
     this.BillingForm.get('ConcessionId').reset();
     this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
   }
-  else {
+  else if((this.b_concessionamt < 0 || this.b_concessionamt > this.b_TotalChargesAmount)){
+    Swal.fire("Enter Concession Amount Less Than Total Amount")
     this.Consessionres = false;
     this.BillingForm.get('ConcessionId').reset();
     this.BillingForm.get('ConcessionId').clearValidators();
     this.BillingForm.get('ConcessionId').updateValueAndValidity();
-
-
+    this.b_concessionamt=0;
+    this.b_concessionDiscPer=0;
+    
     if (this.b_concessionamt == 0 || this.BillingForm.get('concessionAmt').value == null) {
 
       this.BillingForm.get('FinalAmt').setValue(this.b_TotalChargesAmount);
@@ -1271,6 +1306,7 @@ getSelectedObj1(obj) {
   this.CompanyName = obj.CompanyName;
   this.Tarrifname = obj.TariffName;
   this.Doctorname = obj.DoctorName;
+  this.RegId = obj.RegId;
   this.vOPIPId = obj.VisitId;
   this.vOPDNo = obj.OPDNo;
   this.vTariffId = obj.TariffId;

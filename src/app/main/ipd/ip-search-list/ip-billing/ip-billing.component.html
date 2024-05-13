@@ -261,7 +261,7 @@
                                 </li>
                                 <li>
                                     <div class="list-item">
-                                        <span class="list-item-key">Paid Remain :</span>
+                                        <span class="list-item-key">Payment Remain :</span>
                                         <span class="list-item-value"> {{vpaidBalanceAmt}}</span>
                                     </div>
                                 </li>
@@ -950,7 +950,7 @@
                                     <mat-form-field appearance="outline" *ngIf="admin">
                                         <mat-label>Final Disc %</mat-label>
                                         <input matInput placeholder="Percentage" formControlName="Percentage"
-                                           [(ngModel)]="vPercentage" autocomplete="off" #disc onlyNumber maxlength="3"
+                                           [(ngModel)]="vPercentage" autocomplete="off" #finaldisc onlyNumber maxlength="3"
                                             (keyup)="CalAdmincharge()"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                             (keypress)="keyPressAlphanumeric($event)">
