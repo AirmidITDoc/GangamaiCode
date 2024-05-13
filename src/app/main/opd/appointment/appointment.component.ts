@@ -2524,8 +2524,10 @@ debugger
 
   Billpayment(contact) {
     let xx = {
-      RegNo: contact.RegId,
+      RegId: contact.RegId,
       OPD_IPD_ID: contact.OPD_IPD_ID,
+      
+      RegNo:contact.RegNo,
       VisitId: contact.VisitId,
       PatientName: contact.PatientName,
       Doctorname: contact.Doctorname,
