@@ -46,6 +46,7 @@ import { ThisReceiver } from "@angular/compiler";
 import { ToastrService } from "ngx-toastr";
 import { NewOPBillingComponent } from "../OPBilling/new-opbilling/new-opbilling.component";
 import { Table } from "jspdf-autotable";
+import { invalid } from "moment";
 
 export class DocData {
   doc: any;
@@ -233,13 +234,29 @@ export class AppointmentComponent implements OnInit {
   vPhoneFlage = 0;
   vPhoneAppId: any = 0;
   vOPDNo: any = 0;
-  vTariffId=3;
+  vTariffId=0;
 
   VisitFlagDisp: boolean = false;
   DoctorId: any;
   AdList: boolean = false;
   chkprint: boolean = false;
 
+
+  vPrefixID: any = 0;
+  vMaritalStatusId: any = 0;
+  vReligionId: any = 0;
+  vAreaId: any = 0;
+  vCityId: any = 0;
+
+  vPatientTypeID: any = 0;
+  vTariff: any = 0;
+  vDoctorId: any = 0;
+  vDoctorID: any = 0;
+  vDepartmentid: any = 0;
+  vCompanyId: any = 0;
+  vSubCompanyId: any = 0;
+  vadmittedDoctor1: any = 0;
+ 
 
   @ViewChild('attachments') attachment: any;
 
@@ -678,7 +695,9 @@ export class AppointmentComponent implements OnInit {
       PrefixID: '',
       FirstName: ['', [
         Validators.required,
-        Validators.pattern("^[a-zA-Z._ -]+$"),
+        Validators.maxLength(50),
+        // Validators.pattern("^[a-zA-Z._ -]*$"),
+        Validators.pattern('^[a-zA-Z () ]*$')
       ]],
       MiddleName: ['', [
       ]],
@@ -720,33 +739,37 @@ export class AppointmentComponent implements OnInit {
     return this.formBuilder.group({
       HospitalID: '',
       UnitId: '',
-      PatientTypeID: '',
-      PatientTypeId: '',
+      PatientTypeID: ['', [
+        Validators.required]],
+      // PatientTypeId: '',
       PatientType: '',
-      TariffId: '',
+      TariffId: ['', [
+        Validators.required]],
       CompanyId: '',
       SubCompanyId: '',
-      DoctorId: '',
-      DoctorID: '',
-      DepartmentId: '',
-      Departmentid: '',
+      // DoctorId: '',
+      DoctorID:  ['', [
+        Validators.required]],
+      // DepartmentId: '',
+      Departmentid: ['', [
+        Validators.required]],
       DoctorIdOne: '',
       DoctorIdTwo: '',
       VisitId: '',
-      PrefixId: '',
-      RegNoWithPrefix: '',
-      PatientName: '',
+      // PrefixId: '',
+      // RegNoWithPrefix: '',
+      // PatientName: '',
       VisitDate: '',
       VisitTime: '',
       HospitalId: '',
       HospitalName: '',
       OPDNo: '',
-      TariffName: '',
-      ConsultantDocId: '',
+      // TariffName: '',
+      // ConsultantDocId: '',
       RefDocId: '',
-      Doctorname: '',
-      RefDocName: '',
-      ClassId: '',
+      // Doctorname: '',
+      // RefDocName: '',
+      // ClassId: '',
       PurposeId: ''
     });
   }
@@ -1564,6 +1587,8 @@ export class AppointmentComponent implements OnInit {
 
   onSave() {
     //
+
+
     if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
 
       if (this.searchFormGroup.get('regRadio').value == "registration") {
@@ -1577,9 +1602,9 @@ export class AppointmentComponent implements OnInit {
       }
 
     }
-
-
   }
+
+  
 
 
 
@@ -2500,8 +2525,8 @@ debugger
   Billpayment(contact) {
     let xx = {
       RegNo: contact.RegId,
-      // RegId: contact.RegId,
-      AdmissionID: contact.VisitId,
+      OPD_IPD_ID: contact.OPD_IPD_ID,
+      VisitId: contact.VisitId,
       PatientName: contact.PatientName,
       Doctorname: contact.Doctorname,
       AdmDateTime: contact.AdmDateTime,
@@ -2589,11 +2614,22 @@ debugger
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
 
 
-
-  public onEnterprefix(event): void {
+  public onEnterprefix(event, value): void {
+    debugger
     if (event.which === 13) {
-      this.fname.nativeElement.focus();
+
+      console.log(value)
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Valid Prefix.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else {
+        this.fname.nativeElement.focus();
+      }
     }
+
+
   }
   public onEnterfname(event): void {
     if (event.which === 13) {
@@ -2695,12 +2731,19 @@ debugger
     }
   }
 
-  public onEntercity(event): void {
+  public onEntercity(event,value): void {
     if (event.which === 13) {
-      // if (this.hname) this.hname.focus();
-
+        
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid City.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
       this.mstatus.nativeElement.focus();
+
     }
+  }
   }
 
   public onEnterhname(event): void {
@@ -2711,32 +2754,59 @@ debugger
   }
 
 
-  public onEnterptype(event): void {
+  public onEnterptype(event,value): void {
     if (event.which === 13) {
-     this.tariff.nativeElement.focus()
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid PType.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
+      this.tariff.nativeElement.focus()
 
     }
   }
+  }
 
-  public onEnterptariff(event): void {
+  public onEnterptariff(event,value): void {
     if (event.which === 13) {
-      // if(this.dept) this.dept.focus();
-      this.dept.nativeElement.focus();
+   
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Valid Tariff.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else {
+        this.dept.nativeElement.focus();
 
+      }
     }
   }
 
-  public onEnterdept(event): void {
+  public onEnterdept(event,value): void {
     if (event.which === 13) {
-      // if(this.deptdoc) this.deptdoc.focus();
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
       this.deptdoc.nativeElement.focus();
     }
   }
-  public onEnterdeptdoc(event): void {
+  }
+  public onEnterdeptdoc(event,value): void {
     if (event.which === 13) {
-      // if(this.refdoc) this.refdoc.focus();
+   
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid Doctor.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
       this.refdoc.nativeElement.focus();
     }
+  }
   }
 
   public onEnterrefdoc(event): void {

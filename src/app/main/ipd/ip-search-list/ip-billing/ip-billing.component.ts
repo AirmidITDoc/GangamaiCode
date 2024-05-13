@@ -1056,7 +1056,13 @@ console.log(obj)
       // PatientHeaderObj['AdvanceAmount'] = 0;
       PatientHeaderObj['AdvanceAmount'] = this.Ipbillform.get('FinalAmount').value;
       PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
+      PatientHeaderObj['Date'] = this.dateTimeObj.date;
     
+      
+      PatientHeaderObj['PBillNo'] = 0;
+      PatientHeaderObj['BillTime'] = this.dateTimeObj.date;
+      PatientHeaderObj['RegID'] = this.selectedAdvanceObj.RegID,
+  
 
 
       console.log('============================== Save IP Billing ===========');

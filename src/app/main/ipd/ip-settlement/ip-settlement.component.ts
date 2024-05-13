@@ -170,7 +170,7 @@ export class IPSettlementComponent implements OnInit {
     this.registerObj = obj;
     // this.PatientName = obj.FirstName + '' + obj.LastName;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
-    this.RegId = 81985// obj.RegID;
+    this.RegId = obj.RegID; //81985//
     this.vAdmissionID = obj.AdmissionID
 
     console.log(obj);

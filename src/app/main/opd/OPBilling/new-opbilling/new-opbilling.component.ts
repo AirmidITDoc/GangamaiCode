@@ -163,6 +163,8 @@ export class NewOPBillingComponent implements OnInit {
   vClassId: any = 0;
   CompanyId: any = 0;
   AgeYear: any = 0;
+  VisitId: any = 0;
+
   //doctorone filter
   public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -201,8 +203,10 @@ export class NewOPBillingComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
+
+      this.VisitId=this.selectedAdvanceObj.VisitId;
       this.AgeYear = this.selectedAdvanceObj.AgeYear;
-      this.vOPIPId = this.selectedAdvanceObj.AdmissionID;
+      this.vOPIPId = this.selectedAdvanceObj.OPD_IPD_ID;
       this.PatientName = this.selectedAdvanceObj.PatientName;
       this.Doctorname = this.selectedAdvanceObj.Doctorname;
       this.CompanyId = this.selectedAdvanceObj.CompanyId;

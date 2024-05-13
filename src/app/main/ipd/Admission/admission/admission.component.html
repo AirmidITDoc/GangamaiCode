@@ -686,7 +686,7 @@
                                     <mat-label>AadharCard Number</mat-label>
                                     <input name="AadharCardNo" formControlName="AadharCardNo"
                                         placeholder="AadharCard Number" matInput [(ngModel)]="registerObj.AadharCardNo"
-                                        type="number" #AadharCardNo (keydown)="onEnterAadharCardNo($event)"
+                                        #AadharCardNo (keydown)="onEnterAadharCardNo($event)"
                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
                                     <mat-error class="error"
                                         *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">Aadhar
@@ -700,7 +700,7 @@
                                         matInput required #mobile (keydown)="onEntermobile($event)"
                                         [(ngModel)]="registerObj.MobileNo"
                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                        required="required" type="number" value="9876658688">
+                                        required="required"  value="9876658688">
                                     <mat-error class="error"
                                         *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
                                         digits Mobile number is
@@ -1159,7 +1159,7 @@
                             </div>
                             <div class="next-div button-row-group">
                                 <button class="btn btn-primary" color="accent" (click)="nextClicked(otherFormGroup)"
-                                    [disabled]="personalFormGroup.invalid || hospitalFormGroup.invalid || wardFormGroup. invalid || otherFormGroup.invalid">
+                                    [disabled]="personalFormGroup.invalid || hospitalFormGroup.invalid || wardFormGroup.invalid || otherFormGroup.invalid">
                                     <span>Save</span>
                                 </button>
                                 <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>

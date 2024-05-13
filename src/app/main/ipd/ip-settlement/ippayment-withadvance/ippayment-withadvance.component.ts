@@ -32,6 +32,12 @@ export class IPpaymentWithadvanceComponent implements OnInit {
 
   BillDate: any;
   PatientName: any;
+  RegID: any;
+  OPD_IPD_Id: any;
+  PBillNo: any;
+  BillTime: any;
+
+
   paymentForm: FormGroup;
   advanceData: any;
   now: Date;
@@ -103,6 +109,13 @@ private _onDestroy = new Subject<void>();
   ) {
     this.advanceData = data;
     console.log('this.advanceData===', this.advanceData);
+    this.BillDate= this.advanceData.advanceObj.BillDate;
+    this.RegID= this.advanceData.advanceObj.RegID;
+    this.OPD_IPD_Id= this.advanceData.advanceObj.OPD_IPD_Id;
+    this.PBillNo= this.advanceData.advanceObj.PBillNo;
+    this.BillTime= this.advanceData.advanceObj.BillTime;
+
+
     if (this.advanceData.FromName == "IP-Bill") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       // this.cashAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
