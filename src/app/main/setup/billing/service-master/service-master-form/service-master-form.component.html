@@ -16,9 +16,10 @@
     <br />
     <br />
     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master">
-        <mat-form-field appearance="outline" fxFlex >
+        <mat-form-field appearance="outline" fxFlex>
             <mat-label>Group Name</mat-label>
-            <mat-select formControlName="GroupId" placeholder="Bank" #singleSelect disableOptionCentering="true" required >
+            <mat-select formControlName="GroupId" placeholder="Bank" #singleSelect disableOptionCentering="true"
+                required>
                 <mat-option>
                     <ngx-mat-select-search [formControl]="groupnameFilterCtrl" [placeholderLabel]="'Search'"
                         [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
@@ -45,11 +46,13 @@
 
 
     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-       
+
         <mat-form-field appearance="outline" fxFlex>
             <mat-label>ServiceName</mat-label>
-            <input name="ServiceName" placeholder="Select ServiceName" formControlName="ServiceName"  [ngClass]="{ 'is-invalid': submitted && f.Price.errors }" matInput required>
-            <span class="error" *ngIf="f.ServiceName.invalid && f.ServiceName.touched">Please enter the service name</span>
+            <input name="ServiceName" placeholder="Select ServiceName" formControlName="ServiceName"
+                [ngClass]="{ 'is-invalid': submitted && f.Price.errors }" matInput required>
+            <span class="error" *ngIf="f.ServiceName.invalid && f.ServiceName.touched">Please enter the service
+                name</span>
         </mat-form-field>&nbsp;&nbsp;
 
         <mat-form-field appearance="outline" fxFlex>
@@ -59,7 +62,7 @@
             <span class="error" *ngIf="f.Price.invalid && f.Price.touched">Pricerequired only Digits</span>
         </mat-form-field>&nbsp;&nbsp;
 
-        <mat-form-field appearance="outline"fxFlex>
+        <mat-form-field appearance="outline" fxFlex>
             <mat-label>PrintOrder</mat-label>
             <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="PrintOrder" matInput required
                 [ngClass]="{ 'is-invalid': submitted && f.PrintOrder.errors }" min="0" maxlength="5">
@@ -78,17 +81,16 @@
 
 
     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-        
-           <mat-form-field appearance="outline" fxFlex>
+
+        <mat-form-field appearance="outline" fxFlex>
             <mat-label>Tariff Name</mat-label>
-            <mat-select formControlName="TariffId" placeholder="Bank" #singleSelect 
-            disableOptionCentering="true">
-             <mat-option>
-                 <ngx-mat-select-search [formControl]="tariffFilterCtrl" [placeholderLabel]="'Search'"
-                           [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-             </mat-option>
-             <mat-option *ngFor="let element of filteredTariff | async" [value]="element.TariffId">
-               {{element.TariffName}}
+            <mat-select formControlName="TariffId" placeholder="Bank" #singleSelect disableOptionCentering="true">
+                <mat-option>
+                    <ngx-mat-select-search [formControl]="tariffFilterCtrl" [placeholderLabel]="'Search'"
+                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let element of filteredTariff | async" [value]="element.TariffId">
+                    {{element.TariffName}}
                 </mat-option>
             </mat-select>
         </mat-form-field>&nbsp;&nbsp;
@@ -151,7 +153,7 @@
                                 </tr>
 
                             </table>
-                            
+
                         </div>
                     </div>
 
@@ -181,8 +183,8 @@
                         &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                         <section class="example-section">
                             <mat-checkbox class="example-margin" name="IsPackage" formControlName="IsPackage"
-                            value='false'>
-                            IsPackage</mat-checkbox>
+                                value='false'>
+                                IsPackage</mat-checkbox>
                         </section>
                         &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -200,15 +202,17 @@
 
                         <section class="example-section">
                             <mat-checkbox class="example-margin" name="CreditedtoDoctor"
-                                formControlName="CreditedtoDoctor" value='false' [(ngModel)]="showDoctor" style="padding: 25px;">
+                                formControlName="CreditedtoDoctor" value='false' [(ngModel)]="showDoctor"
+                                style="padding: 25px;">
                                 CreditedtoDoctor</mat-checkbox>
 
 
                             <div *ngIf="showDoctor" class="emg-amt-input">
                                 <mat-form-field appearance="outline" fxFlex style="width: 24vw !important;">
                                     <mat-label>Doctor Name</mat-label>
-                                    <mat-select placeholder="Select Doctor Name" name="DoctorId" formControlName="DoctorId" >
-                        
+                                    <mat-select placeholder="Select Doctor Name" name="DoctorId"
+                                        formControlName="DoctorId">
+
                                         <mat-option *ngFor="let M of DoctorcmbList" [value]="M.DoctorID">
                                             {{ M.DoctorName }}
                                         </mat-option>
@@ -216,7 +220,7 @@
                                     <mat-error>Please Select Doctor Name </mat-error>
                                 </mat-form-field>
 
-                               
+
                             </div>
 
                         </section>
@@ -230,19 +234,20 @@
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xsf="column" class="checklist">
                         <!-- &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; -->
                         <section class="example-section">
-                            <mat-checkbox class="example-margin" name="IsActive" formControlName="IsActive" value='true'>
+                            <mat-checkbox class="example-margin" name="IsActive" formControlName="IsActive"
+                                value='true'>
                                 IsActive</mat-checkbox>
                         </section>
                         &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                         <section class="example-section">
-                            <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg" value = "true"
-                                formControlName="IsEmergency" (change)="emg_amt=''; emg_per=''"  style="padding: 25px;">
+                            <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg" value="true"
+                                formControlName="IsEmergency" (change)="emg_amt=''; emg_per=''" style="padding: 25px;">
                                 IsEmergency</mat-checkbox>
 
                             <div *ngIf="showEmg" class="emg-amt-input">
                                 <mat-form-field appearance="outline" fxFlex>
                                     <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="emg_amt"
-                                        formControlName="EmgAmt" matInput >
+                                        formControlName="EmgAmt" matInput>
                                     <span class="error" *ngIf="f.EmgAmt.invalid && f.EmgAmt.touched">EmgAmt required
                                         only Digits</span>
                                 </mat-form-field>&nbsp;
@@ -260,12 +265,12 @@
             </div>
         </div>
     </div>
-    
+
     <hr>
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
         <div class="button-row">
-            <button mat-raised-button color="accent" type="submit" (click)="onSubmit()" style="border-radius: 16px;color: aliceblue;"
-    >Save</button>
+            <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
+                style="border-radius: 16px;color: aliceblue;">Save</button>
             <button mat-raised-button color="warn" (click)="onClear()" style="border-radius: 16px;">Clear</button>
         </div>
     </div>
