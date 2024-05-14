@@ -35,6 +35,10 @@ export class IpBillingReportComponent implements OnInit {
 
   FlagUserSelected: boolean = false;
   FlagDoctorSelected: boolean = false;
+  FlagAdvanceDetailIDSelected: boolean = false;
+  FlagBillSelected: boolean = false;
+  FlagRefundIdSelected: boolean = false;
+
 
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
@@ -52,6 +56,8 @@ export class IpBillingReportComponent implements OnInit {
   searchDoctorList: any = [];
   optionsSearchDoc: any[] = [];
 
+
+  
 
   displayedColumns = [
     'ReportName'
@@ -102,20 +108,68 @@ var data={
   ReportSelection(el) {
     this.ReportName = el.ReportName;
     this.ReportID = el.ReportId;
+  
 
-   if (this.ReportName == 'IP DAILY COLLECTION') {
+   if (this.ReportName == 'Advance Report') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceDetailIDSelected=true;
+      this.FlagBillSelected=false;
+      this.FlagRefundIdSelected=false;
+
+    } else if (this.ReportName == 'IP Bill Report') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceDetailIDSelected=false;
+      this.FlagBillSelected=true;
+      this.FlagRefundIdSelected=false;
+    }else if (this.ReportName == 'OP IP Bill Summary') {
+      this.FlagUserSelected = true;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceDetailIDSelected=false;
+      this.FlagBillSelected=false;
+      this.FlagRefundIdSelected=false;
+
+    }  else if (this.ReportName == 'Bill Summary Report') {
+      this.FlagUserSelected = true;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceDetailIDSelected=false;
+      this.FlagBillSelected=false;
+
+    } 
+    if (this.ReportName == 'Credit Report') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceDetailIDSelected=false;
+      this.FlagBillSelected=false;
+      this.FlagRefundIdSelected=false;
+
+    } else if (this.ReportName == 'Refund of Advance Report') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagRefundIdSelected=true;
+
+    } else if (this.ReportName == 'Refund of Bill Report') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagRefundIdSelected=true;
+    } 
+    if (this.ReportName == 'IP DAILY COLLECTION') {
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
 
-    } else if (this.ReportName == 'OP IP COMMAN COLLECTION') {
+    } else if (this.ReportName == 'OP IP Common Collection') {
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = true;
 
-    } else if (this.ReportName == 'OP IP BILL SUMMARY') {
+    } else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
 
     } 
+
+
+
     // else if (this.ReportName == 'Sales Return Summary Report') {
     //   this.FlagDoctorSelected = false;
     //   this.FlagUserSelected = false;
@@ -199,29 +253,35 @@ var data={
 
   }
   getPrint() {
-   if (this.ReportName == 'IP DAILY COLLECTION') {
-      this.viewIPDailyCollectionPdf();
-    } else if (this.ReportName == 'OP IP COMMAN COLLECTION') {
-      this.viewgetOPIPCommanReportPdf();
-    } else if (this.ReportName == 'OP IP BILL SUMMARY') {
-      this.viewgetOPIPBillSummaryReportPdf();
+     if (this.ReportName == 'Advance Report') {
+      this.viewgetAdvanceReportPdf();
+    } 
+    else if (this.ReportName == 'IP Bill Report') {
+      this.viewgetBillReportPdf();
+    } else if (this.ReportName == 'Bill Summary Report') {
+      this.viewgetBillSummaryReportPdf();
     }
-    //  else if (this.ReportName == 'Sales Return Summary Report') {
-    //   this.viewgetSalesReturnReportPdf();
-    // } 
-    // else if (this.ReportName == 'Sales Return PatientWise Report') {
-    //   this.viewgetSalesReturnPatientwiseReportPdf();
-    // } else if (this.ReportName == 'Sales Credit Report') {
-    //   this.viewgetSalesCreditReportPdf();
-    // } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
-    //   this.viewgetPharCollsummDayuserwiseReportPdf();
-    // }
-    // else if (this.ReportName == 'Sales Cash Book Report') {
-    //   this.viewgetSalesCashBookReportPdf();
-    // }
-    // else if (this.ReportName == 'Purchase Order') {
-    //   this.viewgetPurchaseorderReportPdf();
-    // }
+    else if (this.ReportName == 'OP IP Bill Summary') {
+      this.viewgetBillSummaryReportPdf();
+    }
+    
+    else if (this.ReportName == 'Credit Report') {
+      this.viewgetCreditReportPdf();
+    }
+    else if (this.ReportName == 'Refund of Advance Report') {
+      this.viewgetRefundofadvanceReportPdf();
+    }
+    else if (this.ReportName == 'Refund of Bill Report') {
+      this.viewgetRefundofbillReportPdf();
+    }
+   if (this.ReportName == 'OP IP Common Collection') {
+      this.viewIPDailyCollectionPdf();
+    } else if (this.ReportName == 'IP Discharge & Bill Generation Pending report') {
+      this.viewgetDiscbillgeneratingpendingReportPdf();
+    } else if (this.ReportName == 'IP Bill Generation Payment Due Report') {
+      this.viewgetBillgenepaymentdueReportPdf();
+    }
+   
   }
 
 
@@ -339,6 +399,164 @@ var data={
 
     }, 100);
   }
+
+  viewgetCreditReportPdf(){
+   
+  this._IPBillingService.getCreditReceipt(
+    this.datePipe.transform(this._IPBillingService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._IPBillingService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+       
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Ip Credit  Viewer"
+        }
+      });
+  });
+  }
+
+viewgetAdvanceReportPdf() {
+let AdvanceDetailID=this._IPBillingService.userForm.get('AdvanceDetailID').value || 0;
+  this._IPBillingService.getViewAdvanceReceipt(
+    AdvanceDetailID
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Advance Viewer"
+        }
+      });
+  });
+}
+
+
+viewgetBillReportPdf() {
+let BillNo=this._IPBillingService.userForm.get('BillNo').value || 0;
+  this._IPBillingService.getIpFinalBillReceipt(
+    BillNo
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Ip Bill  Viewer"
+        }
+      });
+  });
+}
+
+
+
+
+viewgetBillSummaryReportPdf(){
+
+let AddUserId = 0;
+if (this._IPBillingService.userForm.get('UserId').value)
+  AddUserId = this._IPBillingService.userForm.get('UserId').value.UserId
+
+setTimeout(() => {
+  this.sIsLoading = 'loading-data';
+  this.AdList = true;
+ 
+  this._IPBillingService.getOPIPBillSummary(
+    this.datePipe.transform(this._IPBillingService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    this.datePipe.transform(this._IPBillingService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+   
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "OPIP Bill Summary Viewer"
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.AdList = false;
+      this.sIsLoading = '';
+    });
+  });
+
+}, 100);
+}
+
+
+viewgetRefundofadvanceReportPdf() {
+  setTimeout(() => {
+    let RefundId=this._IPBillingService.userForm.get('RefundId').value || 0;
+    this.sIsLoading = 'loading-data';
+    //  this.AdList=true;
+    this._IPBillingService.getRefundofAdvanceview(
+      RefundId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Refund Of Advance  Viewer"
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = '';
+        // this.SpinLoading = false;
+      });
+
+    });
+
+  }, 100);
+}
+
+viewgetRefundofbillReportPdf(){
+  setTimeout(() => {
+   let RefundId=this._IPBillingService.userForm.get('RefundId').value || 0;
+    this.sIsLoading = 'loading-data';
+  //  this.AdList=true;
+  this._IPBillingService.getRefundofbillview(
+    RefundId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Refund Of Bill  Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = '';
+        // this.SpinLoading = false;
+      });
+    
+  });
+ 
+  },100);
+}
+
+
+
+viewgetDiscbillgeneratingpendingReportPdf(){}
+viewgetBillgenepaymentdueReportPdf(){}
  
   userChk(option) {
     this.UserId = option.UserID || 0;

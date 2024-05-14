@@ -144,7 +144,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     }
 
     this.getRefundofAdvanceListRegIdwise();
-    // this.getReturndetails();
+    this.getReturndetails();
   }
 
   createSearchForm() {
@@ -210,6 +210,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
 
   getReturndetails() {
+    debugger
     var m_data = {
       "AdmissionId": this.vOPIPId
     }
@@ -246,6 +247,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   RefundAmt: any;
   getCellCalculation(contact, RefundAmt) {
+    debugger
     console.log(RefundAmt)
     if (RefundAmt > contact.BalanceAmount) {
       Swal.fire("Enter Refund Amount Less than Balance Amount ");
@@ -420,7 +422,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "Refund Of Bill  Viewer"
+              title: "Refund Of Advance  Viewer"
             }
           });
         dialogRef.afterClosed().subscribe(result => {

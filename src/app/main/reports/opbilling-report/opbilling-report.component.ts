@@ -25,7 +25,8 @@ export class OPBillingReportComponent implements OnInit {
   DoctorList: any = [];
   sIsLoading: string = '';
   currentDate = new Date();
- 
+  FlagPaymentIdSelected: boolean = false;
+  FlagRefundIdSelected: boolean = false;
     ReportID: any;
  
   filteredOptionsUser: Observable<string[]>;
@@ -101,21 +102,41 @@ var data={
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-
+   
+   
+ 
   ReportSelection(el) {
     this.ReportName = el.ReportName;
     this.ReportID = el.ReportId;
 
-    if (this.ReportName == 'OP DAILY COLLECTION') {
-      this.FlagUserSelected = true;
-      this.FlagDoctorSelected = true;
-      this.FlagBillNoSelected=false;
-    }
-     else if (this.ReportName == 'OP Bill Receipt') {
+  
+     if (this.ReportName == 'OP Bill Receipt') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
 
+    }
+    else if (this.ReportName == 'OP IP BILL SUMMARY') {
+      this.FlagUserSelected = true;
+    //  this.FlagPaymentSelected = false;
+
+    } 
+    else if (this.ReportName == 'Credit Reports') {
+      // this.FlagPaymentSelected = false;
+      // this.FlagUserSelected = false;
+
+    } 
+     
+    else if (this.ReportName == 'OP RefundofBill') {
+      this.FlagUserSelected = false;
+      this.FlagPaymentIdSelected=false
+      this.FlagRefundIdSelected = true;
+
+    } 
+    else if (this.ReportName == 'OP DAILY COLLECTION') {
+      this.FlagUserSelected = true;
+      this.FlagDoctorSelected = true;
+      this.FlagBillNoSelected=false;
     }
      else if (this.ReportName == 'OP DAILY COLLECTION USERWISE') {
       this.FlagBillNoSelected = true;
@@ -124,19 +145,9 @@ var data={
 
     }
     
-    // else if (this.ReportName == 'OP IP BILL SUMMARY') {
-    //   this.FlagUserSelected = true;
-    //   this.FlagPaymentSelected = false;
-
-    // } 
-    // else if (this.ReportName == 'Sales Return Summary Report') {
-    //   this.FlagPaymentSelected = false;
-    //   this.FlagUserSelected = false;
-
-    // } else if (this.ReportName == 'Sales Return PatientWise Report') {
-    //   this.FlagPaymentSelected = false;
-    //   this.FlagUserSelected = false;
-    // } else if (this.ReportName == 'Sales Credit Report') {
+  
+  
+    //  else if (this.ReportName == 'Sales Credit Report') {
     //   this.FlagPaymentSelected = false;
     //   this.FlagUserSelected = false;
 
@@ -222,12 +233,15 @@ var data={
      else if (this.ReportName == 'OP Daily COLLECTION UserWise') {
       this.viewOpDailyCollectionUserwisePdf();
     } 
-    // else if (this.ReportName == 'OP IP BILL SUMMARY') {
-    //   this.viewgetOPIPBillSummaryReportPdf();
-    // }
-    //  else if (this.ReportName == 'Sales Return Summary Report') {
-    //   this.viewgetSalesReturnReportPdf();
-    // } 
+    else if (this.ReportName == 'OP IP BILL SUMMARY') {
+      this.viewgetOPBillSummaryReportPdf();
+    }
+     else if (this.ReportName == 'Credit Reports') {
+      this.viewgetCreditReportPdf();
+    } 
+    else if (this.ReportName == 'OP RefundofBill') {
+      this.viewgetOPRefundofBillPdf();
+    }
     // else if (this.ReportName == 'Sales Return PatientWise Report') {
     //   this.viewgetSalesReturnPatientwiseReportPdf();
     // } else if (this.ReportName == 'Sales Credit Report') {
@@ -321,41 +335,70 @@ var data={
     }, 100);
   }
 
-  // viewIPDailyCollectionPdf() {
-  //   let AddUserId = 0;
-  //   if (this._OPReportsService.userForm.get('UserId').value)
+  viewgetCreditReportPdf() {
+    let AddUserId = 0;
+    if (this._OPReportsService.userForm.get('UserId').value)
       
-  //   AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
+    AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
 
-  //   setTimeout(() => {
-  //     this.sIsLoading = 'loading-data';
-  //     this.AdList = true;
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this.AdList = true;
      
-  //     this._OPReportsService.getIPDailyCollection(
-  //       this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //       this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //       AddUserId
+      this._OPReportsService.getOPcreditBill(0
+        // this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        // this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        // AddUserId
         
-  //     ).subscribe(res => {
-  //       const dialogRef = this._matDialog.open(PdfviewerComponent,
-  //         {
-  //           maxWidth: "85vw",
-  //           height: '750px',
-  //           width: '100%',
-  //           data: {
-  //             base64: res["base64"] as string,
-  //             title: "Pharma Daily Collection Summary Viewer"
-  //           }
-  //         });
-  //       dialogRef.afterClosed().subscribe(result => {
-  //         this.AdList = false;
-  //         this.sIsLoading = '';
-  //       });
-  //     });
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "OP Credit Bill  Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
 
-  //   }, 100);
-  // }
+    }, 100);
+  }
 
+  viewgetOPRefundofBillPdf() {
+    // this.sIsLoading = 'loading-data';
+    let RefundId=this._OPReportsService.userForm.get('RefundId').value ||0;
+    setTimeout(() => {
+    
+    this._OPReportsService.getOpRefundview(
+      RefundId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Op Refund Of Bill Receipt Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+         
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          
+          this.sIsLoading = '';
+        });
+    });
+   
+    },100);
+  }
   // viewgetOPIPCommanReportPdf() {
   //   let AddUserId = 0;
 
@@ -399,39 +442,39 @@ var data={
   //   }, 100);
   // }
 
-  // viewgetOPIPBillSummaryReportPdf() {
+  viewgetOPBillSummaryReportPdf() {
 
-  //   let AddUserId = 0;
-  //   if (this._OPReportsService.userForm.get('UserId').value)
-  //     AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
+    let AddUserId = 0;
+    if (this._OPReportsService.userForm.get('UserId').value)
+      AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
 
-  //   setTimeout(() => {
-  //     this.sIsLoading = 'loading-data';
-  //     this.AdList = true;
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this.AdList = true;
      
-  //     this._OPReportsService.getOPIPBillSummary(
-  //       this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //       this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      this._OPReportsService.getOPIPBillSummary(0
+        // this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        // this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
        
-  //     ).subscribe(res => {
-  //       const dialogRef = this._matDialog.open(PdfviewerComponent,
-  //         {
-  //           maxWidth: "85vw",
-  //           height: '750px',
-  //           width: '100%',
-  //           data: {
-  //             base64: res["base64"] as string,
-  //             title: "OPIP Bill Summary Viewer"
-  //           }
-  //         });
-  //       dialogRef.afterClosed().subscribe(result => {
-  //         this.AdList = false;
-  //         this.sIsLoading = '';
-  //       });
-  //     });
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "OPIP Bill Summary Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
 
-  //   }, 100);
-  // }
+    }, 100);
+  }
  
 
   viewgetOPBillReportPdf() {

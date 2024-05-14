@@ -1999,6 +1999,7 @@ debugger
 
       });
     } else if (m == "Update Referred Doctor") {
+      debugger
       var m_data3 = {
         RegId: contact.RegID,
         PatientName: contact.PatientName,
@@ -2006,6 +2007,7 @@ debugger
         OPD_IPD_Id: contact.AdmissionID,
         RefDoctorId: contact.RefDocId,
         RefDocName: contact.RefDocName,
+        VisitId: contact.VisitId,
       };
       this._registrationService.populateFormpersonal(m_data3);
       const dialogRef = this._matDialog.open(EditRefraneDoctorComponent, {
