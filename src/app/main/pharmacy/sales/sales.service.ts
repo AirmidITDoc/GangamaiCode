@@ -9,6 +9,7 @@ export class SalesService {
 
   userFormGroup: FormGroup;
   IndentSearchGroup :FormGroup;
+  PrescriptionFrom:FormGroup;
 
 
   constructor(
@@ -17,6 +18,7 @@ export class SalesService {
   ) { 
     this.userFormGroup = this.IndentID();
     this.IndentSearchGroup= this.IndentSearchFrom();
+    this.PrescriptionFrom = this.CreatePrescriptionFrom();
   }
 
   IndentSearchFrom() {
@@ -54,6 +56,18 @@ export class SalesService {
       AdmDate:'',
       Date:'',
       StoreName:'',
+      PreNo:'',
+      IsActive: '',
+      
+    });
+  }
+  CreatePrescriptionFrom() {
+    return this._formBuilder.group({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      StoreId:'',
+      RegNo:'',
+      Status:'0',
       PreNo:'',
       IsActive: '',
       
@@ -149,5 +163,7 @@ export class SalesService {
   public getGenericNameList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemGenericName",Param);
   }
-  
+  public getPrescriptionList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PrescriptionListforSales",Param);
+  }
 }

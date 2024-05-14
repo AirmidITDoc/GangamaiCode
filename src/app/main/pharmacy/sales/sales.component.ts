@@ -37,6 +37,7 @@ import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.serv
 import { ConcessionReasonMasterModule } from 'app/main/setup/billing/concession-reason-master/concession-reason-master.module';
 import { SubstitutesComponent } from './substitutes/substitutes.component';
 import { D } from '@angular/cdk/keycodes';
+import { PrescriptionComponent } from './prescription/prescription.component';
 
 @Component({
   selector: 'app-sales',
@@ -2404,6 +2405,8 @@ export class SalesComponent implements OnInit {
                 this.getWhatsappshareSales(response, vMobileNo)
                 this.Itemchargeslist = [];
                 this._matDialog.closeAll();
+                this.ItemFormreset();
+                this.Formreset();
               }
             } else {
               this.toastr.error('API Error!', 'Error !', {
@@ -3383,11 +3386,12 @@ getSearchListIP() {
   }
 
   getSelectedObjOP(obj) {
+    console.log(obj)
     // this.dataSource.data = [];
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;
     this.RegId = obj.RegId;
-    // this.City = obj.City;
+    this.OP_IP_Id  = obj.VisitId;
     // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
     // this.CompanyName = obj.CompanyName;
     // this.Tarrifname = obj.TariffName;
@@ -3620,6 +3624,19 @@ getSearchListIP() {
 
     this.vBarcode = 0;
     this.vBarcodeflag = false;
+  }
+
+  getPRESCRIPTION(){ 
+    const dialogRef = this._matDialog.open(PrescriptionComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%', 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      
+    }); 
   }
 }
 
