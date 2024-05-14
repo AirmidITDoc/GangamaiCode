@@ -1011,7 +1011,7 @@ export class IssueToDepartmentComponent implements OnInit {
             });
             return;
         }
-        const isChecked = this.ToStoreList.some(item => item.StoreName === this.vTostoreId);
+        const isChecked = this.ToStoreList.some(item => item.StoreName ===this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreName);
         if (isChecked) {
             this.savebtn = true;
             let insertheaderObj = {};
