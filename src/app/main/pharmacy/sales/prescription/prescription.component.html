@@ -98,11 +98,11 @@
 
                         <div fxlayout="row" class="pb-8">
                             <div style="width: 100%;" class="table-wrapper">
-                                <div matColumnDef="loading"
+                                <!-- <div matColumnDef="loading"
                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur" style="height: 100%;">
                                     <div class="spinner-border text-danger"></div>
-                                </div>
+                                </div> -->
                                 <mat-table #table matSort class="table1" [dataSource]="dsPrescriptionList"
                                     [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;"> 
 
