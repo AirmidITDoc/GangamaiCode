@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener } from "@angular/core";
 import { ServiceMasterComponent, Servicedetail } from "../service-master.component";
 import { fuseAnimations } from "@fuse/animations";
 import { MatTableDataSource } from "@angular/material/table";
@@ -19,12 +19,13 @@ import { NONE_TYPE } from "@angular/compiler";
     styleUrls: ["./service-master-form.component.scss"],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
-})
-export class ServiceMasterFormComponent implements OnInit {
-
-
-  showDivs: boolean = false;
-
+  })
+  
+  export class ServiceMasterFormComponent implements OnInit {
+   
+  isEditMode: boolean = false;
+  showEmg: boolean = false;
+  showDoctor: boolean = false;
   submitted = false;
   GroupcmbList:any=[];
   DoctorcmbList:any=[];
@@ -55,7 +56,7 @@ private _onDestroy = new Subject<void>();
 
   constructor(public _serviceMasterService: ServiceMasterService,
     public toastr : ToastrService,
-    
+
     public dialogRef: MatDialogRef<ServiceMasterComponent>,
     ) { }
 
@@ -70,16 +71,19 @@ private _onDestroy = new Subject<void>();
     ];
     
   ngOnInit(): void {
-   
+
    this.getGroupNameCombobox();
    this.getDoctorNameCombobox();
    this.getSubgroupNameCombobox();
    this.getClassList();
    this.getTariffNameCombobox();
    this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
+   this._serviceMasterService.myform.get('IsDocEditable').setValue(false);
+   this._serviceMasterService.myform.get('IsPathology').setValue(false);
+   this._serviceMasterService.myform.get('IsRadiology').setValue(false);
+   this._serviceMasterService.myform.get('IsPackage').setValue(false);
 
 
-    
    this.groupnameFilterCtrl.valueChanges
    .pipe(takeUntil(this._onDestroy))
    .subscribe(() => {
@@ -101,6 +105,26 @@ private _onDestroy = new Subject<void>();
    });
 
   }
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    const focusedElement = document.activeElement as HTMLElement;
+    if (event.key === 'Enter' || event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+        if (focusedElement.classList.contains('inputs')) {
+            let nextElement: HTMLElement | null = null;
+            if (event.key === 'ArrowRight' || event.key==='Enter') {
+                nextElement = focusedElement.closest('td')?.nextElementSibling as HTMLElement | null;
+            } else if (event.key === 'ArrowLeft') {
+                nextElement = focusedElement.closest('td')?.previousElementSibling as HTMLElement | null;
+            }
+            if (nextElement) {
+                const nextInputs = nextElement.querySelectorAll('.inputs');
+                if (nextInputs.length > 0) {
+                    (nextInputs[0] as HTMLInputElement).focus();
+                }
+            }
+        }
+    }
+}
+
 
   private filterGroupname() {
     // debugger;
@@ -184,7 +208,9 @@ private _onDestroy = new Subject<void>();
     this._serviceMasterService.getTariffMasterCombo().subscribe(data => {
       this.TariffcmbList = data;
       this.filteredTariff.next(this.TariffcmbList.slice());     
-      this._serviceMasterService.myform.get('TariffId').setValue(this._serviceMasterService.edit_data['TariffId']);      
+     if(this.isEditMode)this._serviceMasterService.myform.get('TariffId').setValue(this._serviceMasterService.edit_data['TariffId']);      
+      else this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
+
     });
   }
   
@@ -214,7 +240,8 @@ private _onDestroy = new Subject<void>();
   }
 
   onSubmit() {
-    if (this.showDivs) {
+    debugger;
+    if (this.showEmg) {
       this._serviceMasterService.myform.get('EmgAmt').setValidators([Validators.required,Validators.min(0)]);
       this._serviceMasterService.myform.get('EmgPer').setValidators([Validators.required,Validators.min(0)]);
       
@@ -324,11 +351,17 @@ private _onDestroy = new Subject<void>();
      });       
       }
       this.onClose();
+      window.location.reload();
+
     }
+  
+
+    
   }
   
   
   onEdit(row) {
+    this.isEditMode = true;
     var m_data = {
     "ServiceId":row.ServiceId,
     "ServiceShortDesc":row.ServiceShortDesc.trim(),
@@ -353,8 +386,20 @@ private _onDestroy = new Subject<void>();
   }
 
   onClear() {
-    this._serviceMasterService.myform.reset();
-  }
+    this.DSServicedetailList.data = this.DSServicedetailList.data.map(element => {
+      return { ...element, ClassRate: 0 }; // Create a new object with updated ClassRate
+  });
+  this.DSServicedetailList._updateChangeSubscription(); // Manually trigger change detection for MatTableDataSource
+  this._serviceMasterService.myform.reset();
+  this._serviceMasterService.myform.get('IsEditable').setValue(true);
+  this._serviceMasterService.myform.get('IsActive').setValue(true);
+  this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
+  this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0].TariffId);
+
+
+
+}
+
   onClose() {
     this._serviceMasterService.myform.reset();
     this._serviceMasterService.myform.get('CreditedtoDoctor').setValue(true);
@@ -386,6 +431,9 @@ private _onDestroy = new Subject<void>();
     }
     
   }
+ 
+
+
 }
 export class NewServicedetail {
   ClassName: any;
