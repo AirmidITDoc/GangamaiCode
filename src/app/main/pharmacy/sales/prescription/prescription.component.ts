@@ -68,13 +68,14 @@ export class PrescriptionComponent implements OnInit {
 
   getPrescriptionList(){
     var Param = {
-      "StoreId": this._loggedService.currentUserValue.user.storeId, 
+      "StoreId": 10035 ,//this._loggedService.currentUserValue.user.storeId, 
       "FromDate": this.datePipe.transform(this._SalesService.PrescriptionFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._SalesService.PrescriptionFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "IsStatus": this._SalesService.PrescriptionFrom.get("Status").value || 0,
       "Reg_No": this._SalesService.PrescriptionFrom.get('RegNo').value || 0,
       "IPPreId":0
     }
+    console.log(Param)
     this._SalesService.getPrescriptionList(Param).subscribe(data => {
       this.dsPrescriptionList.data = data as PriscriptionList[];
       console.log(this.dsPrescriptionList.data)
@@ -89,10 +90,10 @@ export class PrescriptionComponent implements OnInit {
 
   getItemDetailList(param){
     var Param = {
-      "OP_IP_Id": param ,
-      "OP_IP_Type":param
+      "OP_IP_Id": param.OP_IP_ID ,
+      "OP_IP_Type":0
     }
-    this._SalesService.getPrescriptionList(Param).subscribe(data => {
+    this._SalesService.getItemDetailList(Param).subscribe(data => {
       this.dsItemDetList.data = data as ItemNameList[];
       console.log(this.dsItemDetList.data)
       this.dsItemDetList.sort = this.sort;

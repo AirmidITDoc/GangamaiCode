@@ -166,4 +166,7 @@ export class SalesService {
   public getPrescriptionList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PrescriptionListforSales",Param);
   }
+  public getItemDetailList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet",Param);
+  }
 }

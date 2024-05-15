@@ -13,11 +13,7 @@
                 </span>
                 <span style="font-weight: 400;font-size: medium;margin-right: 10px !important;"> {{StoreName}}</span>
             </div>
-            <div fxLayout="row" fxLayoutAlign="end" class="left-icon" style="margin-left: 1050px;" >
-                <button mat-raised-button (click)="getPRESCRIPTION()" fxLayoutAlign="center center" class="py-8">
-                    <span>PRESCRIPTION</span>
-                </button>
-            </div>
+         
         </div>
         <!-- / APP TITLE -->
         <!-- SEARCH -->
@@ -859,6 +855,10 @@
                                                         </mat-form-field>&nbsp;
 
                                                         <div class="sales-footer-buttons gap-8" fxLayout="row">
+                                                           
+                                                            <button mat-raised-button (click)="getPRESCRIPTION()" class="btn btn-primary-outline">
+                                                             GET PRESCRIPTION </button>
+                                                           
                                                             <button class="btn btn-primary " (click)="onSave($event)"
                                                                 [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save(F9)</button>
                                                             <button class="btn btn-primary-outline"

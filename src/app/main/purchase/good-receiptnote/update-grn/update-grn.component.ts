@@ -570,6 +570,7 @@ export class UpdateGRNComponent implements OnInit {
       return '';
     return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
   }
+  
   getCellCalculation(contact, ReceiveQty) {
     if (contact.PurchaseId > 0) {
       if (contact.ReceiveQty > contact.POQty) {
@@ -579,13 +580,14 @@ export class UpdateGRNComponent implements OnInit {
       }
     }
 
-    
+  
+    let freeqty = contact.FreeQty || 0;
     if (contact.ReceiveQty > 0 && contact.Rate > 0) {
       let IGSTPer =contact.IGSTPer ||  0;
       contact.IGSTPer = IGSTPer;
       if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
-
-        contact.TotalQty = ((parseFloat(contact.ReceiveQty) + parseFloat(contact.FreeQty)) * parseFloat(contact.ConversionFactor));
+       
+        contact.TotalQty = ((parseFloat(contact.ReceiveQty) + parseFloat(freeqty)) * parseFloat(contact.ConversionFactor));
         //total amt
         contact.TotalAmount = (contact.ReceiveQty * contact.Rate);
         //disc
@@ -602,7 +604,7 @@ export class UpdateGRNComponent implements OnInit {
 
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == 'GST Before Disc') {
-        contact.TotalQty = ((parseFloat(contact.FreeQty) + parseFloat(contact.ReceiveQty)) * parseFloat(contact.ConversionFactor));
+        contact.TotalQty = ((parseFloat(freeqty) + parseFloat(contact.ReceiveQty)) * parseFloat(contact.ConversionFactor));
 
         //total amt
         contact.TotalAmount = parseFloat(contact.ReceiveQty) * parseFloat(contact.Rate);
@@ -627,7 +629,7 @@ export class UpdateGRNComponent implements OnInit {
 
       }
       else if (this._GRNList.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
-        contact.TotalQty = ((parseFloat(contact.FreeQty) + parseFloat(contact.ReceiveQty)) * parseFloat(contact.ConversionFactor));
+        contact.TotalQty = ((parseFloat(freeqty) + parseFloat(contact.ReceiveQty)) * parseFloat(contact.ConversionFactor));
         //total amt
         contact.TotalAmount = parseFloat(contact.ReceiveQty) * parseFloat(contact.Rate);
         //disc 1
@@ -711,7 +713,7 @@ export class UpdateGRNComponent implements OnInit {
   }
   calculateTotalamt() {
     let Qty = this._GRNList.userFormGroup.get('Qty').value;
-    let freeqty = this._GRNList.userFormGroup.get('FreeQty').value;
+    let freeqty = this._GRNList.userFormGroup.get('FreeQty').value || 0;
     this.FinalTotalQty = ((parseInt(Qty) + parseInt(freeqty)) * parseInt(this.vConversionFactor));
 
     if (Qty > 0 && this.vRate > 0) {
