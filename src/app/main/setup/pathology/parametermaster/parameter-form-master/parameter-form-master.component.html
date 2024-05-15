@@ -82,17 +82,17 @@
                                             <mat-radio-button fxFlex (click)="toggle1()" value="'2" style="margin-left: 20px;">IsDescriptive</mat-radio-button>
                                           </mat-radio-group>
 
-                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'
+                                        <!-- <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'
                                         style="margin-top: 20px; margin-left: 20px;">
                                         <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
                                         </mat-radio-group>
-                                        
+                                         -->
                                         <div style="margin-top: 20px; margin-left: 20px;">
                                             <section class="example-section">
                                                 <mat-checkbox class="example-margin" formControlName="IsPrintDisSummary"
                                                   [checked]="false"  name="IsPrintDisSummary">IsPrintDisSummary</mat-checkbox>
                                             </section>
-                                            </div>
+                                        </div>
                                         <mat-form-field appearance="outline" fxFlex="35%" style="padding-right: 10px;">
                                             <mat-select placeholder="Select unitName " name="UnitId"
                                                 formControlName="UnitId" required>
@@ -123,8 +123,8 @@
                                 <div fxFlex.gt-sm="100%" fxFlex *ngIf="show">
                                     <ng-container *ngIf="show">
                                         <mat-card class="example-card" name="m1" style="padding: 0%;">
-                                            <mat-card-content fxLayout="row" fxLayoutAlign="center center">
-                                                <mat-card-title>IsNumeric Info</mat-card-title>
+                                            <mat-card-content fxLayout="row" fxLayoutAlign="center center" style="margin-bottom:5px !important;">
+                                                <mat-card-title>Numeric Info</mat-card-title>
                                               </mat-card-content>
             
                                             <mat-card-content>
@@ -159,29 +159,33 @@
                                                                 [(ngModel)]="vMaxAge" formControlName="MaxAge" matInput
                                                                 required>
                                                         </mat-form-field>
-                                                        <mat-form-field appearance="outline" class="mr-sm-12">
-                                                            <mat-select placeholder="Select Options" 
-                                                                formControlName="">
-                                                                <mat-option>-select-</mat-option>
-                                                                <mat-option>
-                                                                   Days
-                                                                </mat-option>
-                                                                <mat-option>
-                                                                   Months
-                                                                </mat-option>
-                                                                <mat-option>
-                                                                   Years
+                                                        <!-- <mat-form-field appearance="outline" class="mr-sm-12"
+                                                        fxFlex="20%">
+                                                        <mat-label>Age Type</mat-label>
+                                                        <mat-select placeholder="Select Age Type" required>
+                                                            <mat-option >Days</mat-option>
+                                                            <mat-option >Months</mat-option>
+                                                            <mat-option >Years</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field> -->
+                                                    <mat-form-field appearance="outline" class="mr-sm-12"
+                                                            fxFlex="20%">
+                                                            <mat-label>Age Type</mat-label>
+                                                            <mat-select placeholder="Select Age Type" 
+                                                                 required formControlName="AgeType" name="AgeType">
+                                                                <mat-option *ngFor=" let i of ageType "
+                                                                    [value]="i">
+                                                                    {{ i }}
                                                                 </mat-option>
                                                             </mat-select>
-                                                            <mat-error>Please Select </mat-error>
-                                                        </mat-form-field> 
+                                                    </mat-form-field>
 
                                                         <mat-form-field appearance="outline" class="mr-sm-12"
                                                             fxFlex="10%">
                                                             <mat-label>Min Value</mat-label>
                                                             <input name="MinValue" placeholder="MinValue"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                                [(ngModel)]="vMinValue" formControlName="MinValue"
+                                                                 [(ngModel)]="vMinValue" formControlName="MinValue"
                                                                 matInput required>
                                                         </mat-form-field>
 
@@ -198,11 +202,10 @@
                                                             <button mat-raised-button 
                                                            class="custom_add_button"
                                                                 (click)="onAdd($event)"
-                                                                [disabled]="_ParameterService.myform.invalid">
+                                                                >
                                                                 Add  <mat-icon> add_to_photos </mat-icon>
                                                             </button>
                                                         </div>
-
 
                                                     </div>
                                                     <div>
@@ -212,7 +215,7 @@
 
                                                             <ng-container matColumnDef="GenderName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>GenderName
+                                                                    fxHide fxShow.gt-sm>Gender Name
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                     {{element.GenderName}}
@@ -235,11 +238,19 @@
                                                                     {{element.MaxAge}}
                                                                 </mat-cell>
                                                             </ng-container>
-
-
+                                                          
+<!--                                                                                                       
                                                             <ng-container matColumnDef="MinValue">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>MinValue
+                                                                fxHide fxShow.gt-sm>Age Type
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                    {{element.AgeType}} </mat-cell>
+                                                            </ng-container>
+                                                             -->
+                                                            <ng-container matColumnDef="MinValue">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxHide fxShow.gt-sm>Min Value
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                     {{element.MinValue}} </mat-cell>
@@ -252,6 +263,7 @@
                                                                     {{element.Maxvalue}}
                                                                 </mat-cell>
                                                             </ng-container>
+                                                           
 
                                                             <ng-container matColumnDef="loading">
                                                                 <mat-header-cell *matFooterCellDef colspan="6"
@@ -290,7 +302,7 @@
 
                                         <mat-card class="example-card" name="m1" style="padding: 0%;">
                                             <mat-card-content fxLayout="row" fxLayoutAlign="center center">
-                                                  <mat-card-title>IsDescriptive Info</mat-card-title>
+                                                  <mat-card-title>Descriptive Info</mat-card-title>
                                                 </mat-card-content>
                                               
                                             <mat-card-content>
@@ -298,24 +310,12 @@
                                                 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
                                                     <div flex="100%">
                                                      
-                                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                                <textarea name="DefaultValue" matInput rows="2" cols="15"
-                                                                    placeholder="Enter Default Value"
-                                                                    formControlName="DefaultValue"
-                                                                     
-                                                                    matInput
-                                                                    [ngClass]="{ 'is-invalid': submitted && f.DefaultValue.errors }">
-                                                        </textarea>
-                                                                <span class="error"
-                                                                    *ngIf="f.DefaultValue.invalid && f.DefaultValue.touched">DefaultValue
-                                                                    required Enter only Alphabets</span>
-                                                            </mat-form-field>
-                                                        
+                                                          
                                                         <input type="text" #txt style="border-radius: 5px;
                                                         border: 1px solid #bfbfbf;
                                                         height: 65px;
                                                         "
-                                                            name="ParaId" formControlName="ParaId" name="text1" multiple
+                                                            name="ParaId" placeholder="Enter value to add" formControlName="ParaId" name="text1" multiple
                                                             matinput>
                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                         <!-- <button mat-raised-button color="accent"
@@ -328,25 +328,38 @@
 >                                                                   Add  <mat-icon> add_to_photos </mat-icon>
                                                                 </button>
                                                             </div>
+                                                            <mat-form-field appearance="outline" class="mr-sm-12" [style.width.px]=327 style="margin-left: 5px;" fxFlex>
+                                                                <textarea name="DefaultValue" matInput rows="2" cols="15"
+                                                                    placeholder="Enter Default Value"
+                                                                    formControlName="DefaultValue"
+                                                                     
+                                                                    matInput
+                                                                    [ngClass]="{ 'is-invalid': submitted && f.DefaultValue.errors }">
+                                                        </textarea>
+                                                                <span class="error"
+                                                                    *ngIf="f.DefaultValue.invalid && f.DefaultValue.touched">DefaultValue
+                                                                    required Enter only Alphabets</span>
+                                                            </mat-form-field>
+                                                        
                                                     </div>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                                                    
                                                 </div>
                                                 <br />
-                                                <div   style="display:block !important; width:100%;">
-                                                     <div flex="100%">
+                                                <div style="display:block !important; width:100%;">
+                                                     <div flex="100%" style="overflow: auto; max-height: 24vh;">
 
                                                         <mat-list style="background: cornflowerblue;"
                                                             formControlName="parameterValues">
                                                             <div mat-subheader
-                                                                style="font-style: italic;font-weight: bold; background: #5e35b1;
+                                                                style="font-weight: bold; background: #5e35b1;
                                                                 padding: 8px;
                                                                 color: #fff;
                                                                 border-top-left-radius: 4px;
                                                                 border-top-right-radius: 4px;
                                                             ">
-                                                                ParameterValues</div>
+                                                                Parameter Values List</div>
                                                             <mat-list-item placeholder="" #txt
                                                                 *ngFor="let item of selectedItems"
                                                                 [ngValue]="parameterValue"
@@ -400,13 +413,12 @@
 
                     </div>
 
-
-                  
-
-
-
                     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
                         <div class="button-row">
+                            <!-- <section class="example-section"> -->
+                                <mat-checkbox class="example-margin" formControlName="IsDeleted"
+                                  [checked]="true" value="true" style = "padding:10px" name="IsDeleted">IsActive </mat-checkbox>
+                            <!-- </section> -->
                             <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
                                 style="border-radius: 16px;color: aliceblue;"
                                 [disabled]="_ParameterService.myform.invalid">Save</button>

@@ -95,7 +95,16 @@ export class TestFormMasterComponent implements OnInit {
                 this.filterTemplate();
             });
     }
-
+    onSearchClear() {
+        this._TestService.myformSearch.reset({
+            TestNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+        this.getParameterNameCombobox();
+    }
+    onSearch() {
+        this.getParameterNameCombobox();
+    }
     // parameter filter
     private filterParametername() {
         if (!this.Parametercmb) {

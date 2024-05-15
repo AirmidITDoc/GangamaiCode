@@ -21,12 +21,15 @@ import { ParametermasterComponent } from "../parametermaster.component";
     animations: fuseAnimations,
 })
 export class ParameterFormMasterComponent implements OnInit {
+    ageType: string[] = ["Days","Months","Years"];
+    
     displayedColumns: string[] = [
         "GenderName",
         "MinAge",
         "MaxAge",
+        // "AgeType",
         "MinValue",
-        "Maxvalue",
+        "Maxvalue",       
     ];
     submitted = false;
     isLoading = true;
@@ -136,20 +139,20 @@ export class ParameterFormMasterComponent implements OnInit {
     }
 
     onAdd(event) {
-        this.dsParameterAgeList.data = [];
-        this.chargeslist = this.dsParameterAgeList.data;
-        this.chargeslist.push(
-            {
-                GenderName: this._ParameterService.myform.get('SexID').value.GenderName || "",
-                MinAge: this.vMinAge || 0,
-                MaxAge: this.vMaxAge || 0,
-                MinValue: this.vMinValue || 0,
-                Maxvalue: this.vMaxvalue || 0,
-
-            });
-        this.dsParameterAgeList.data = this.chargeslist
-        console.log(this.chargeslist);
+        const newRow:any = {
+            GenderName: this._ParameterService.myform.get('SexID').value.GenderName || "",
+            MinAge: this.vMinAge || 0,
+            MaxAge: this.vMaxAge || 0,
+            MinValue: this.vMinValue || 0,
+            Maxvalue: this.vMaxvalue || 0,
+            AgeType:  this._ParameterService.myform.get('AgeType').value || "",
+        };
+        debugger;
+        this.dsParameterAgeList.data.push(newRow);
+        this.dsParameterAgeList.data = [...this.dsParameterAgeList.data]; // Trigger change detection
+        console.log(this.dsParameterAgeList.data);
     }
+    
 
     // unitname filter
     // private filterUnitname() {
@@ -446,10 +449,11 @@ export class PathParaRangeAgeMaster {
     PathparaRangeId: any;
     ParaId: any;
     GenderName: any;
-    MinValue: any;
+    MinValue: any;   
     Maxvalue: any;
+    AgeType:any;
     MinAge: any;
-    MaxAge: any;
+    MaxAge: any;    
     /**
      * Constructor
      *
@@ -460,10 +464,12 @@ export class PathParaRangeAgeMaster {
             this.PathparaRangeId = PathParaRangeAgeMaster.PathparaRangeId || 0;
             this.ParaId = PathParaRangeAgeMaster.ParaId || 0;
             this.GenderName = PathParaRangeAgeMaster.GenderName || "";
+            this.AgeType = PathParaRangeAgeMaster.AgeType || 0;
             this.MinValue = PathParaRangeAgeMaster.MinValue || 0;
             this.Maxvalue = PathParaRangeAgeMaster.Maxvalue || 0;
             this.MinAge = PathParaRangeAgeMaster.MinAge || 0;
             this.MaxAge = PathParaRangeAgeMaster.MaxAge || 0;
+            
         }
     }
 }
