@@ -90,9 +90,10 @@ export class PrescriptionComponent implements OnInit {
 
   getItemDetailList(param){
     var Param = {
-      "OP_IP_Id": param.OP_IP_ID ,
+      "OP_IP_Id": 174168 ,//param.OP_IP_ID ,
       "OP_IP_Type":0
     }
+    console.log(Param)
     this._SalesService.getItemDetailList(Param).subscribe(data => {
       this.dsItemDetList.data = data as ItemNameList[];
       console.log(this.dsItemDetList.data)
