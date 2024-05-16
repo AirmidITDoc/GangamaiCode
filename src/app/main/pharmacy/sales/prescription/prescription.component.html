@@ -202,12 +202,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
                                     <!-- Min width is required for fit content in cell. -->
-                                    <mat-header-row class="accent min-width-1450"
+                                    <mat-header-row class="accent min-width-1250"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                        class="contact min-width-1450" [@animate]="{value:'*',params:{y:'100%'}}"
+                                        class="contact min-width-1250" [@animate]="{value:'*',params:{y:'100%'}}"
                                         (click)="getItemDetailList(contact)"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>
@@ -240,7 +240,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Qty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.Qty}}
+                                            {{contact.TotalQty}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -253,13 +253,13 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="DrugType">
+                                    <!-- <ng-container matColumnDef="DrugType">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             DrugType</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.DrugType}}
                                         </mat-cell>
-                                    </ng-container>      
+                                    </ng-container>       -->
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6"

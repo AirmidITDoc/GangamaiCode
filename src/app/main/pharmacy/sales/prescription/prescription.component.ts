@@ -34,7 +34,7 @@ export class PrescriptionComponent implements OnInit {
     "ItemName",
     "Qty",
     "TotalQty",
-    "DrugType"
+    // "DrugType"
   ];
 
   dateTimeObj:any;
@@ -68,7 +68,7 @@ export class PrescriptionComponent implements OnInit {
 
   getPrescriptionList(){
     var Param = {
-      "StoreId": 10035 ,//this._loggedService.currentUserValue.user.storeId, 
+      "StoreId": this._loggedService.currentUserValue.user.storeId, 
       "FromDate": this.datePipe.transform(this._SalesService.PrescriptionFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._SalesService.PrescriptionFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "IsStatus": this._SalesService.PrescriptionFrom.get("Status").value || 0,
@@ -88,10 +88,10 @@ export class PrescriptionComponent implements OnInit {
       });
   } 
 
-  getItemDetailList(param){
+  getItemDetailList(contact){
     var Param = {
-      "OP_IP_Id": 174168 ,//param.OP_IP_ID ,
-      "OP_IP_Type":0
+      "OP_IP_Id": contact.OP_IP_ID ,
+      "OP_IP_Type":contact.PatientType
     }
     console.log(Param)
     this._SalesService.getItemDetailList(Param).subscribe(data => {
