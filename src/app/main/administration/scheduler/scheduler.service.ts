@@ -15,6 +15,9 @@ export class SchdulerService {
   public getSchedulers() {
     return this._httpClient.get("Schedule/get-schedulers");
   }
+  public saveScheduler(Param) {
+    return this._httpClient.post("Schedule/save", Param);
+}
   
  createuserForm(): FormGroup {
   return this._formBuilder.group({
