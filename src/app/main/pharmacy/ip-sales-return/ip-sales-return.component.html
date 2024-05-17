@@ -132,12 +132,14 @@
                                 <mat-form-field appearance="outline" fxFlex="10%">
                                     <mat-label>Return Qty</mat-label>
                                     <input name="ReturnQty" formControlName="ReturnQty" matInput required 
-                                    type="text" OnlyNumber [(ngModel)]="vReturnQty" #ReturnQty (keyup)="calculation()"> 
+                                    type="text" OnlyNumber [(ngModel)]="vReturnQty" #ReturnQty (keyup)="calculation()"
+                                    (keypress)="keyPressAlphanumeric($event)"   (keydown)="onEnterReturnQty($event)"> 
                                 </mat-form-field>&nbsp;&nbsp; 
 
 
                                 <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
-                                    <button class="btn btn-primary" (click)="OnAdd()">
+                                    <button class="btn btn-primary" (click)="OnAdd()" [disabled]="_IpSalesRetService.userFormGroup.invalid"
+                                        #addbutton>
                                         <mat-icon>add</mat-icon>
                                     </button>
                                 </div>
@@ -342,24 +344,24 @@
 
                 <div>
                     <form [formGroup]="_IpSalesRetService.IPFinalform" style="padding: 10px 10px 5px 10px;">
-                        <div fxlayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
-                            <div fxLayout="row" class="gap-4">
+                         
+                        <div fxlayout="row" fxLayoutGap="8px"  fxLayoutAlign="end">
+                            <div fxLayout="row" class="gap-4" style="padding-top: 15px;">
                                 <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No Of
                                     Item:
                                 </span>&nbsp;
                                 <span class="net-amt-value"
-                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{dsIpSaleItemList.data.length}}</span>&nbsp;&nbsp;&nbsp;
+                                    style="margin-left:10px;font-weight:bolder;color: blue;margin-right: 100px;">{{dsIpSaleItemList.data.length}}</span>&nbsp;&nbsp;&nbsp;
                 
                                 <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Retrun
                                     Amount:
                                 </span>&nbsp;
                                 <span class="net-amt-value text-primary"
-                                    style="margin-left:10px;font-weight:bolder;">{{getTotalAmt(dsIpSaleItemList.data)
+                                    style="margin-left:10px;font-weight:bolder;margin-right: 100px;">{{getTotalAmt(dsIpSaleItemList.data)
                                     |
                                     currency:'INR' }}</span>
                             </div>
-
-                           
+                      
                             <mat-form-field appearance="outline" fxFlex="10%">
                                 <mat-label>Total Amount</mat-label>
                                 <input matInput formControlName="FinalTotalAmt" [(ngModel)]="vFinalTotalAmt" readonly>
@@ -379,12 +381,12 @@
                                 <mat-label>Net Amount</mat-label>
                                 <input matInput formControlName="FinalNetAmount" [(ngModel)]="vFinalNetAmount" readonly>
                             </mat-form-field>&nbsp;&nbsp;&nbsp; 
+    
+                            <div class="sales-footer-buttons gap-8 " fxLayout="row" style="padding: 0px 50px 0px 120px;">
+                                <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                                <button class="btn btn-primary " (click)="onSave()">Save</button>
+                            </div>
                             
-                
-                            <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                            <button class="btn btn-primary " (click)="onSave()" [disabled]="savebtn">Save</button>
-                 
-                
                         </div>
                     </form>
                 </div>

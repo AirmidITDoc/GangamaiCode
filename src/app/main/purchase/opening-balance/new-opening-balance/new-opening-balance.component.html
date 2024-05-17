@@ -205,17 +205,21 @@
                                     <mat-paginator #paginator [pageSizeOptions]="[15, 24, 35, 100]" [pageSize]="15" showFirstLastButtons>
                                     </mat-paginator>
                                 </div>
-                            </div>
-
-                            
-                            <div class="modal-footer">
-                                
-                                <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
-                                     <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                                    <button class="btn btn-primary " (click)="OnSave()"  >Save</button>
-                                  
+                            </div> 
+                           
+                            <div fxLayoutAlign="end">
+                      
+                                <mat-form-field appearance="outline" fxFlex="60%">
+                                    <mat-label>Remark</mat-label>
+                                    <textarea rows="1" name="Remark" formControlName="Remark"  matInput></textarea>
+                                </mat-form-field>
+        
+                                <div class="sales-footer-buttons gap-8 " fxLayout="row" style="margin: 0px 40px 0px 410px;">
+                                    <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                                    <button class="btn btn-primary " (click)="OnSave()">Save</button>
                                 </div>
-                            </div>  
+                                
+                            </div>
                         </div>
                     </form>
                 </div>

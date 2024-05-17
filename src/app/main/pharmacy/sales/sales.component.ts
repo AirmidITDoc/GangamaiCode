@@ -428,6 +428,7 @@ export class SalesComponent implements OnInit {
     this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
 
     if (this.vPharExtOpt == true) {
+      this.paymethod = false;
       this.vSelectedOption = 'External'; 
     }else{
       this.vPharOPOpt = true
@@ -435,6 +436,7 @@ export class SalesComponent implements OnInit {
 
     if (this.vPharIPOpt == true) { 
       if (this.vPharOPOpt == false) {
+        this.paymethod = true;
         this.vSelectedOption = 'IP'; 
       }
     }else{
@@ -443,6 +445,7 @@ export class SalesComponent implements OnInit {
 
     if (this.vPharOPOpt == true) {
       if (this.vPharExtOpt == false) { 
+        this.paymethod = true;
         this.vSelectedOption = 'OP'; 
       }
     } else{
@@ -2869,6 +2872,7 @@ export class SalesComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
+      this.isLoading123=false;
       this.sIsLoading = '';
     }, error => {
 
@@ -3315,7 +3319,8 @@ export class SalesComponent implements OnInit {
   onClose() {
     this.Itemchargeslist = [];
     this.ItemFormreset();
-    this.patientDetailsFormGrp.reset();
+   // this.patientDetailsFormGrp.reset();
+    this.ItemSubform.reset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.PatientName = '';

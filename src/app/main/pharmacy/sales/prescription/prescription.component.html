@@ -202,12 +202,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
                                     <!-- Min width is required for fit content in cell. -->
-                                    <mat-header-row class="accent min-width-1250"
+                                    <mat-header-row class="accent min-width-1150"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                        class="contact min-width-1250" [@animate]="{value:'*',params:{y:'100%'}}"
+                                        class="contact min-width-1150" [@animate]="{value:'*',params:{y:'100%'}}"
                                         (click)="getItemDetailList(contact)"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>
@@ -264,31 +264,25 @@
                                     </mat-footer-cell>
                                 </ng-container>
                                 <!-- Min width is required for fit content in cell. -->
-                                <mat-header-row class="accent min-width-1250"
+                                <mat-header-row class="accent "
                                     *matHeaderRowDef="displayedColumns1; sticky: true">
                                 </mat-header-row>
 
                                 <mat-row *matRowDef="let contact; columns: displayedColumns1;"
-                                    class="contact min-width-1250" [@animate]="{value:'*',params:{y:'100%'}}"
-                                    ></mat-row>
+                                      [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                 <mat-footer-row *matFooterRowDef="['loading']"
                                     [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>
                                 <mat-footer-row *matFooterRowDef="['noData']"
                                     [ngClass]="{'hide':!(dsItemDetList!=null && dsItemDetList.data.length==0)}"></mat-footer-row>
-                            </mat-table>
-                              
-                               
-                               
+                            </mat-table> 
                                 <mat-paginator #Secondpaginator [pageSizeOptions]="[15, 24, 35, 100]"
                                     [pageSize]="15" showFirstLastButtons>
-                                </mat-paginator>
-
-
+                                </mat-paginator>  
                             </div>
                            
                         </div> 
                      
-                        <div class="modal-footer">
+                        <div class="modal-footer" style="padding: 12px;">
                                 
                             <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
                               

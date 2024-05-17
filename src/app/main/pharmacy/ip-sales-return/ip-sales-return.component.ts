@@ -274,7 +274,7 @@ calculation(){
     this.TotalAmt = (parseFloat(this.vUnitMRP) * parseFloat(this.vReturnQty)).toFixed(2);
     this.GSTAmt =  ((parseFloat(this.vVatPer) * parseFloat(this.TotalAmt))/100).toFixed(2) || 0;
     this.DiscAmt =  ((parseFloat(this.vDiscPer) * parseFloat(this.TotalAmt))/100).toFixed(2) || 0;
-    this.NetAmt = ((parseFloat(this.TotalAmt) +  parseFloat(this.GSTAmt)) - parseFloat(this.DiscAmt)).toFixed(2);
+    this.NetAmt = (parseFloat(this.TotalAmt) - parseFloat(this.DiscAmt)).toFixed(2);
     this.vPurTotAmt = (parseFloat(this.vPurRateWf) * parseFloat(this.vReturnQty)).toFixed(2);
     this.vTotalLandedAmount = (parseFloat(this.vLandedPrice) * parseFloat(this.vReturnQty)).toFixed(2);
   }
@@ -296,7 +296,7 @@ getCellCalculation(contact, ReturnQty) {
     contact.TotalAmount = (parseFloat(contact.MRP) * parseFloat(contact.ReturnQty)).toFixed(2);
     contact.GSTAmt=  ((parseFloat(contact.GST) * parseFloat(contact.TotalAmount))/100).toFixed(2) || 0;
     contact.DiscAmt=  ((parseFloat(contact.Disc) * parseFloat(contact.TotalAmount))/100).toFixed(2) || 0;
-    contact.NetAmount = ((parseFloat(contact.TotalAmount) +  parseFloat(contact.GSTAmt)) - parseFloat(contact.DiscAmt)).toFixed(2);
+    contact.NetAmount = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmt)).toFixed(2);
     contact.PurTotAmt = (parseFloat(contact.PurRateWf) * parseFloat(contact.ReturnQty)).toFixed(2);
     contact.TotalLandedAmount = (parseFloat(contact.LandedPrice) * parseFloat(contact.ReturnQty)).toFixed(2);
   }
@@ -678,10 +678,16 @@ keyPressAlphanumeric(event) {
   }
   @ViewChild('itemname') itemname: ElementRef;
   @ViewChild('ReturnQty') ReturnQty: ElementRef; 
+  @ViewChild('addbutton') addbutton: ElementRef;
  
   public onEnteritemName(event): void {
     if (event.which === 13) {
       this.ReturnQty.nativeElement.focus();
+    }
+  }
+  public onEnterReturnQty(event): void {
+    if (event.which === 13) {
+      this.addbutton.nativeElement.focus();
     }
   }
 } 
