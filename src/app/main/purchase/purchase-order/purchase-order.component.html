@@ -381,7 +381,7 @@
                                                                             DiscPer </mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"
                                                                             fxShow.gt-sm>
-                                                                            {{contact.DiscPer}}
+                                                                            {{contact.DiscPer | number:'1.2-2'}}
                                                                         </mat-cell>
                                                                     </ng-container>
 

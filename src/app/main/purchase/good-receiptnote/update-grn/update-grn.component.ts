@@ -1179,7 +1179,15 @@ export class UpdateGRNComponent implements OnInit {
       return false;
     }
   } 
-
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
   OnSave() {
     console.log(this.vPurchaseId)
     debugger
