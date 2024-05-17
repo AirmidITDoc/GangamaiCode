@@ -90,7 +90,7 @@ export class PrescriptionComponent implements OnInit {
 
   getItemDetailList(contact){
     var Param = {
-      "OP_IP_Id": contact.OP_IP_ID ,
+      "OP_IP_Id": contact.IPMedID ,
       "OP_IP_Type":contact.PatientType
     }
     console.log(Param)
