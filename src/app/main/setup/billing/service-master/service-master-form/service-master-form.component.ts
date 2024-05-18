@@ -289,7 +289,7 @@ private _onDestroy = new Subject<void>();
         
         "groupId": parseInt(this._serviceMasterService.myform.get("GroupId").value || 0),
         "subgroupId": parseInt(this._serviceMasterService.myform.get("SubGroupId").value || 0),
-        "doctorId": this._serviceMasterService.myform.get("DoctorId").value ||"0",        
+        "doctorId": this._serviceMasterService.myform.get("DoctorId").value ||0,        
      
         "serviceId":parseInt(this._serviceMasterService.myform.get("ServiceId").value || 0),                 
       }
@@ -324,6 +324,7 @@ private _onDestroy = new Subject<void>();
        
       }
       else {
+        debugger;
         var m_dataUpdate = {        
             "serviceMasterUpdate": serviceMasterdata,
             "serviceDetailInsert" :clas_d, 
@@ -350,9 +351,7 @@ private _onDestroy = new Subject<void>();
        });
      });       
       }
-      this.onClose();
-      window.location.reload();
-
+      this.ngOnInit();
     }
   
 

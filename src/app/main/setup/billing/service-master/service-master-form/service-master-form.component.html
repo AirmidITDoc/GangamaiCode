@@ -207,7 +207,7 @@
                             <div *ngIf="showDoctor" class="emg-amt-input">
                                 <mat-form-field appearance="outline" fxFlex style="width: 24vw !important;">
                                     <mat-label>Doctor Name</mat-label>
-                                    <mat-select placeholder="Select Doctor Name" name="DoctorId" formControlName="DoctorId" required >
+                                    <mat-select placeholder="Select Doctor Name" name="DoctorId" formControlName="DoctorId" >
                         
                                         <mat-option *ngFor="let M of DoctorcmbList" [value]="M.DoctorID">
                                             {{ M.DoctorName }}
