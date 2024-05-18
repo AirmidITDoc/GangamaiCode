@@ -6,52 +6,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   providedIn: 'root'
 })
 export class SchdulerService {
-  createuserform: FormGroup;
   myformSearch: FormGroup;
-  constructor(private _httpClient: HttpClient,private _formBuilder: FormBuilder) {
-     this.createuserform=this.createuserForm();
-      this.myformSearch=this.createSearchForm();
+  constructor(private _httpClient: HttpClient, private _formBuilder: FormBuilder) {
   }
-  public getSchedulers() {
-    return this._httpClient.get("Schedule/get-schedulers");
+  public getSchedulers(ScheduleName) {
+    return this._httpClient.get("Schedule/get-schedulers?ScheduleName="+ScheduleName);
   }
   public saveScheduler(Param) {
     return this._httpClient.post("Schedule/save", Param);
-}
-  
- createuserForm(): FormGroup {
-  return this._formBuilder.group({
-    UserId:[''],
-    FirstName:['', [
-      Validators.required,
-      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-    ]],
-    LastName:['', [
-      Validators.required,
-      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-    ]],
-    LoginName:[''],
-    Password:[''],
-    RoleId:['', [Validators.minLength(6),Validators.maxLength(6)]],
-    RoleName:[''],
-    IsDoctor:[''],
-    DoctorId:[''],
-    DoctorName:[''],
-    StoreId:[''],
-    StoreName:[''],
-    MailId:[''],
-    MailDomain:[''],
-    Status:[''],
-    
-  });
-}
+  }
+  public deleteScheduler(id) {
+    return this._httpClient.delete("Schedule/remove-scheduler?Id="+id);
+  }
 
-createSearchForm(): FormGroup {
-  return this._formBuilder.group({
-    DoctorNameSearch: [''],
-    IsDeletedSearch: ['2'],
-
-    UserName:[''],
-  });
-}
+ 
 }

@@ -36,13 +36,15 @@
                             </mat-form-field>
                             <mat-form-field appearance="outline">
                                 <input matInput [matDatepicker]="validStartPicker" formControllName="StartDate" #bday
-                                    (dateChange)="onChangeStartDate($event.value)" placeholder="mm/dd/yyyy">
+                                    [value]="StartDate" (dateChange)="onChangeStartDate($event.value)"
+                                    placeholder="mm/dd/yyyy">
                                 <mat-datepicker-toggle matSuffix [for]="validStartPicker"></mat-datepicker-toggle>
                                 <mat-datepicker #validStartPicker></mat-datepicker>
                             </mat-form-field>
                             <mat-form-field appearance="outline">
                                 <input matInput [matDatepicker]="validEndPicker" formControllName="EndDate" #bday1
-                                    (dateChange)="onChangeEndDate($event.value)" placeholder="mm/dd/yyyy">
+                                    [value]="EndDate" (dateChange)="onChangeEndDate($event.value)"
+                                    placeholder="mm/dd/yyyy">
                                 <mat-datepicker-toggle matSuffix [for]="validEndPicker"></mat-datepicker-toggle>
                                 <mat-datepicker #validEndPicker></mat-datepicker>
                             </mat-form-field>
@@ -56,17 +58,17 @@
                                 <label style="padding: 20px;">Scheduler Type: </label>
                                 <mat-radio-group aria-label="Select an option" [(ngModel)]="ScheduleType"
                                     formControlName="ScheduleType" name="ScheduleType">
-                                    <mat-radio-button value="1">Daily</mat-radio-button>
-                                    <mat-radio-button value="2">Weekly</mat-radio-button>
-                                    <mat-radio-button value="3">Monthly</mat-radio-button>
-                                    <mat-radio-button value="4">Custom</mat-radio-button>
+                                    <mat-radio-button value="1" [checked]="ScheduleType==1">Daily</mat-radio-button>
+                                    <mat-radio-button value="2" [checked]="ScheduleType==2">Weekly</mat-radio-button>
+                                    <mat-radio-button value="3" [checked]="ScheduleType==3">Monthly</mat-radio-button>
+                                    <mat-radio-button value="4" [checked]="ScheduleType==4">Custom</mat-radio-button>
                                 </mat-radio-group>
                             </div>
                         </div>
                         <div fxLayout="column" fxLayout.gt-sm="row" style="margin-left: 20px;margin-top: 20px;">
                             <section class="example-section" *ngIf="ScheduleType==2">
-                                <mat-checkbox formControlName="Days" (change)="getValue($event,week)"
-                                    style="margin-right: 10px;" *ngFor="let week of Weeks">{{week.Text}}</mat-checkbox>
+                                <mat-checkbox (change)="getValue($event,week)"
+                                    style="margin-right: 10px;" *ngFor="let week of Weeks" value="week.Checked" [checked]="week.Checked">{{week.Text}}</mat-checkbox>
                             </section>
 
                             <mat-form-field appearance="outline" *ngIf="ScheduleType==3">
@@ -90,9 +92,11 @@
                                 <input name="Hours" formControlName="Hours" placeholder="Hours" matInput required
                                     type="text">
                             </mat-form-field>
-                            <ul *ngFor="let week of CustomDates">
-                                <li>{{week}}</li>
-                            </ul>
+                            <div *ngIf="ScheduleType==4">
+                                <ul *ngFor="let week of CustomDates">
+                                    <li>{{week}}</li>
+                                </ul>
+                            </div>
                         </div>
                         <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start"
                             fxLayoutAlign.gt-sm="space-between center" class="appointment-header gap-12"

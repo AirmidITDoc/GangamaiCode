@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { ManageschedulerComponent } from './managescheduler/managescheduler.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-scheduler',
@@ -19,21 +20,20 @@ import { ManageschedulerComponent } from './managescheduler/managescheduler.comp
   animations: fuseAnimations,
 })
 export class SchdulerComponent implements OnInit {
- 
+  myformSearch: FormGroup;
   constructor(private formBuilder: FormBuilder,
     private _ActRoute: Router,
     public _matDialog: MatDialog,
-    public _UserService:CreateUserService,
-    private _SchdulerService :SchdulerService,
+    public _UserService: CreateUserService,
+    private _SchdulerService: SchdulerService,
     private dialogRef: MatDialogRef<SchdulerComponent>) { }
 
   ngOnInit(): void {
-    //this.searchFormGroup = this.createSearchForm();
-    // this.highlightCurrentWeekday();
+    this.myformSearch = this.createSearchForm();
     this.getSchedulerList();
   }
   sIsLoading: string = '';
-  dataSource1 =  new MatTableDataSource<ScheduleMaster>();
+  dataSource1 = new MatTableDataSource<ScheduleMaster>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   hasSelectedContacts: boolean;
@@ -44,9 +44,10 @@ export class SchdulerComponent implements OnInit {
     "EndDate",
     "action"
   ]
+  ScheduleName: string = "";
   getSchedulerList() {
     this.sIsLoading = 'loading-data';
-    this._SchdulerService.getSchedulers().subscribe(Visit => {
+    this._SchdulerService.getSchedulers(this.ScheduleName).subscribe(Visit => {
       this.dataSource1.data = Visit as unknown as ScheduleMaster[];
       this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator;
@@ -57,7 +58,7 @@ export class SchdulerComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
-  addUserDetails() {
+  addScheduler() {
     const dialogRef = this._matDialog.open(ManageschedulerComponent,
       {
         maxWidth: "85vw",
@@ -65,24 +66,67 @@ export class SchdulerComponent implements OnInit {
         width: '100%',
       });
     dialogRef.afterClosed().subscribe(result => {
-       this.getSchedulerList();
+      this.getSchedulerList();
+    });
+  }
+  editScheduler(data) {
+    const dialogRef = this._matDialog.open(ManageschedulerComponent,
+      {
+        maxWidth: "85vw",
+        height: "auto",
+        width: '100%',
+        data: data
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getSchedulerList();
     });
   }
 
-  onClear(){
-
+  onDelete(id) {
+    Swal.fire({
+      title: "Are you sure to remove this scheduler?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._SchdulerService.deleteScheduler(id).subscribe((ddata) => {
+          debugger
+          Swal.fire({
+            title: "Deleted!",
+            text: "Scheduler has been deleted.",
+            icon: "success"
+          });
+          this.getSchedulerList();
+        });
+      }
+    });
   }
 
-  onShow(){
-    
+  onClear() {
+    this.myformSearch.get("ScheduleName").setValue('');
+  }
+
+  onShow() {
+    debugger
+    this.ScheduleName=this.myformSearch.get("ScheduleName").value;
+    this.getSchedulerList();
+  }
+  createSearchForm(): FormGroup {
+    return this.formBuilder.group({
+      ScheduleName: ['']
+    });
   }
 }
 export class ScheduleMaster {
   Id: number;
   ScheduleName: string;
-  StartDate:string;
-  EndDate:string;
-  Hours:string;
+  StartDate: string;
+  EndDate: string;
+  Hours: string;
   constructor(RoleMaster) {
     {
       this.Id = RoleMaster.RoleId || 0;

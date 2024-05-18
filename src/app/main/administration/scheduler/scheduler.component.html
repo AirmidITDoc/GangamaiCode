@@ -18,7 +18,7 @@
             </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
-            <button mat-raised-button (click)="addUserDetails()" fxLayoutAlign="center center"
+            <button mat-raised-button (click)="addScheduler()" fxLayoutAlign="center center"
                 class="btn btn-with-icon py-4">
                 <span class="btn-icon">
                     <mat-icon color="warn">how_to_reg</mat-icon>
@@ -60,23 +60,22 @@
                         <!-- SIDEBAR CONTENT -->
 
                         <div class="nav material2">
-                            <!-- <form [formGroup]="_UserService.myformSearch">
+                            <form [formGroup]="myformSearch">
                                 <div fxLayout="column" fxLayoutAlign="start none">
                                     <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Scheduler Name</mat-label>
-                                        <input name="SchedulerName" formControlName="SchedulerName" matInput>
+                                        <mat-label>Scheduler Name - {{SchedulerName}}</mat-label>
+                                        <input name="SchedulerName" [(ngModel)]="SchedulerName" [value]="SchedulerName" formControlName="SchedulerName" matInput>
                                     </mat-form-field>
 
                                     <div class="action-buttons">
                                          <button mat-raised-button (click)="onClear()" class="clearbutton">
                                             <mat-icon class="cleariconbutton">close</mat-icon></button>
-                                        <button mat-raised-button class="searchButton" (click)="onShow($event)"
-                                            [disabled]="click">
+                                        <button mat-raised-button class="searchButton" (click)="onShow()">
                                             <mat-icon class="searchiconbutton">search</mat-icon>
                                         </button> 
                                     </div>
                                 </div>
-                            </form> -->
+                            </form>
                         </div>
 
                     </div>
@@ -137,8 +136,11 @@
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-md> Action </mat-header-cell>
                                         <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button>
+                                            <button mat-icon-button (click)="editScheduler(row)">
                                                 <mat-icon>edit</mat-icon>
+                                            </button>
+                                            <button mat-icon-button (click)="onDelete(row.id)" color="warn">
+                                                <mat-icon>delete_outline</mat-icon>
                                             </button>
                                         </mat-cell>
                                     </ng-container>
@@ -158,7 +160,6 @@
                                     <mat-header-row class="accent"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        (click)="onresultentry($event,contact)"
                                         [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 

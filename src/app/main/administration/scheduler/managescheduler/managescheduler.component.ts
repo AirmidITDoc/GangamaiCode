@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SchdulerComponent } from '../scheduler.component';
 import Swal from 'sweetalert2';
 import { SchdulerService } from '../scheduler.service';
@@ -11,7 +11,7 @@ import { SchdulerService } from '../scheduler.service';
   styleUrls: ['./managescheduler.component.scss']
 })
 export class ManageschedulerComponent implements OnInit {
-
+  Id:number=0;
   ScheduleType: number = 1;
   CustomDates: string[] = [];
   StartDate: Date;
@@ -71,7 +71,7 @@ export class ManageschedulerComponent implements OnInit {
     }
     let data = {};
     if (this.ScheduleType == 1) {
-      data = { ScheduleType: 1, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
+      data = { ScheduleType: 1,Id:this.Id, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
     }
     else if (this.ScheduleType == 2) {
       var weekdays = this.Weeks.filter(x => x.Checked).map(x => x.Value).join(',');
@@ -79,14 +79,14 @@ export class ManageschedulerComponent implements OnInit {
         Swal.fire('Error !', 'Select at least 1 Day.', 'error');
         return;
       }
-      data = { ScheduleType: 2, Days: weekdays, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
+      data = { ScheduleType: 2,Id:this.Id, Days: weekdays, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
     }
     else if (this.ScheduleType == 3) {
       if ((this.searchFormGroup.get("Monthdate").value ?? "").length <= 0) {
         Swal.fire('Error !', 'Enter date(s).', 'error');
         return;
       }
-      data = { ScheduleType: 3, Dates: this.searchFormGroup.get("Monthdate").value, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
+      data = { ScheduleType: 3,Id:this.Id, Dates: this.searchFormGroup.get("Monthdate").value, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
     }
     else if (this.ScheduleType == 4) {
       var customdates = this.CustomDates.join(',')
@@ -94,11 +94,10 @@ export class ManageschedulerComponent implements OnInit {
         Swal.fire('Error !', 'Select custom date(s).', 'error');
         return;
       }
-      data = { ScheduleType: 4, Custom: customdates, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
+      data = { ScheduleType: 4,Id:this.Id, Custom: customdates, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
     }
     this._SchdulerService.saveScheduler(data).subscribe((data) => {
-      debugger
-      if(data.id>0){
+      if(data["id"]>0){
         Swal.fire('Succsess !', 'Schedule Added successfully.', 'success');
         this.dialogRef.close();
       }
@@ -108,10 +107,26 @@ export class ManageschedulerComponent implements OnInit {
   searchFormGroup: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private _SchdulerService: SchdulerService,
-    private dialogRef: MatDialogRef<SchdulerComponent>) { }
+    private dialogRef: MatDialogRef<SchdulerComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,) { }
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
+    if(this.data){
+      this.CustomDates=this.data.custom.split(',');
+      this.EndDate=new Date(this.data.endDate);
+      this.ScheduleType=this.data.scheduleType;
+      this.StartDate=new Date(this.data.startDate);
+      this.Id=this.data.id;
+      this.searchFormGroup.get("ScheduleName").setValue(this.data.scheduleName);
+      this.searchFormGroup.get("Hours").setValue(this.data.hours);
+      this.searchFormGroup.get("ScheduleType").setValue(this.data.scheduleType);
+      this.searchFormGroup.get("Monthdate").setValue(this.data.dates);
+      this.searchFormGroup.get("Query").setValue(this.data.query);
+      (this.data.days.split(',')??[]).forEach(element => {
+        this.Weeks.find(x=>x.Value==element).Checked=true;
+      });
+    }
   }
   createSearchForm() {
     return this.formBuilder.group({
@@ -124,8 +139,8 @@ export class ManageschedulerComponent implements OnInit {
       Customdate: [''],
       CustomHours: [''],
       Query: [''],
-      StartDate: [''],
-      EndDate: [''],
+      StartDate: [{ value: this.StartDate }],
+      EndDate: [{ value: this.EndDate }],
       ScheduleName: ['']
     });
   }
