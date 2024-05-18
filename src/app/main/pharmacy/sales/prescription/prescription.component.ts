@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { SalesService } from '../sales.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
@@ -54,6 +54,7 @@ export class PrescriptionComponent implements OnInit {
     private _loggedService: AuthenticationService, 
     public toastr: ToastrService,
     private _fuseSidebarService: FuseSidebarService,
+    public _dialogRef: MatDialogRef<PrescriptionComponent>,
   ) { }
 
   ngOnInit(): void {
@@ -65,7 +66,12 @@ export class PrescriptionComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   } 
-
+PatienName:any;
+WardId:any;
+BedNo:any;
+RegNo:any;
+AddmissionId:any;
+RegId:any;
   getPrescriptionList(){
     var Param = {
       "StoreId": this._loggedService.currentUserValue.user.storeId, 
@@ -78,7 +84,7 @@ export class PrescriptionComponent implements OnInit {
     console.log(Param)
     this._SalesService.getPrescriptionList(Param).subscribe(data => {
       this.dsPrescriptionList.data = data as PriscriptionList[];
-      console.log(this.dsPrescriptionList.data)
+      console.log(this.dsPrescriptionList.data) 
       this.dsPrescriptionList.sort = this.sort;
       this.dsPrescriptionList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -87,8 +93,17 @@ export class PrescriptionComponent implements OnInit {
         this.sIsLoading = '';
       });
   } 
-
+  IPMedID:any;
   getItemDetailList(contact){
+    console.log(contact)
+    this.IPMedID = contact.IPMedID;
+    this.PatienName = contact.PatientName;
+    this.BedNo =  contact.bedId;
+    this.WardId = contact.WardId;
+    this.AddmissionId = contact.OP_IP_ID;
+    this.RegNo =  contact.RegNo;
+    this.RegId = contact.RegId;
+    this.IPMedID = contact.IPMedID;
     var Param = {
       "OP_IP_Id": contact.IPMedID ,
       "OP_IP_Type":contact.PatientType
@@ -105,7 +120,39 @@ export class PrescriptionComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
+ 
+  chargelist:any=[];
+  Patientlist:any=[];
+
+  GetPrescrpList() { 
+    let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired,ItemName from GeT_IP_PrescriptionItemDet where IPMedID=" + this.IPMedID + " Order by ItemName "
+    this._SalesService.getchargesList(strSql).subscribe(data => {
+      this.chargelist = data as any;
+   
+    });  
+    this.chargelist.forEach((element) => { 
+      this.Patientlist.push(
+        {
+          ItemId :element.ItemId,
+          QtyPerDay :element.QtyPerDay,
+          BalQty :element.BalQty,
+          IsBatchRequired :element.IsBatchRequired,
+          PatientName :this.PatienName,
+          RegNo :this.RegNo,
+          WardId :this.WardId,
+          BedId :  this.BedNo,
+          AdmissionID :this.AddmissionId,
+          RegId :this.RegId,
+          IPMedID:this.IPMedID
+        });
+    console.log(this.Patientlist);
+    this._dialogRef.close(this.Patientlist);
+    }); 
   
+   
+  }
+
+
   onClear(){
     this._SalesService.PrescriptionFrom.reset();
   }
@@ -124,6 +171,9 @@ export class PriscriptionList {
   Type: any; 
   No: number;
   Time:any;
+  OP_IP_ID:any;
+  bedId: number;
+  WardId:any; 
 
   constructor(PriscriptionList) {
     {

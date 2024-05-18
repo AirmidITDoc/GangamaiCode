@@ -435,7 +435,7 @@ export class SalesComponent implements OnInit {
     }
 
     if (this.vPharIPOpt == true) { 
-      if (this.vPharOPOpt == false) {
+       if (this.vPharOPOpt == false) {
         this.paymethod = true;
         this.vSelectedOption = 'IP'; 
       }
@@ -450,7 +450,7 @@ export class SalesComponent implements OnInit {
       }
     } else{
       this.vCondition = true
-    } 
+    }  
   }
 
   // createForm() {
@@ -3384,13 +3384,20 @@ getSearchListIP() {
     }
    this.saleSelectedDatasource.data = [];
   }
-
+  RegNo:any;
+  AdmissionID:any;
+  WardId:any;
+  BedId:any;
   getSelectedObjRegIP(obj) {
-    //console.log(obj)
+    console.log(obj)
     this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.LastName;
     this.RegId = obj.RegID;
     this.OP_IP_Id = this.registerObj.AdmissionID;
+    this.AdmissionID = obj.AdmissionID;
+    this.RegNo =obj.RegNo;
+    this.WardId = obj.WardId;
+    this.BedId =obj.BedId
     // if (this.ItemSubform.get('PatientType').value == 'IP'){
     //   this.OP_IP_Id = this.registerObj.AdmissionID;
     // }else  if (this.ItemSubform.get('PatientType').value == 'OP'){
@@ -3406,6 +3413,7 @@ getSearchListIP() {
     this.PatientName = obj.FirstName + " " + obj.LastName;
     this.RegId = obj.RegId;
     this.OP_IP_Id  = obj.VisitId;
+    this.RegNo =obj.RegNo;
     // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
     // this.CompanyName = obj.CompanyName;
     // this.Tarrifname = obj.TariffName;
@@ -3639,19 +3647,73 @@ getSearchListIP() {
     this.vBarcode = 0;
     this.vBarcodeflag = false;
   }
-
-  getPRESCRIPTION(){ 
+  dsItemNameList1 = new MatTableDataSource<IndentList>();
+  IPMedID:any;
+  getPRESCRIPTION() {
     const dialogRef = this._matDialog.open(PrescriptionComponent,
       {
         maxWidth: "100%",
         height: '95%',
-        width: '95%', 
+        width: '95%',
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      
-    }); 
+      console.log(result) 
+      this.registerObj = result;
+      console.log(this.registerObj)
+      this.PatientName = result[0].PatientName;
+      this.RegId = result[0].RegId;
+      this.OP_IP_Id = result[0].AdmissionID;
+      this.ItemSubform.get('RegID').setValue(result[0].RegId);
+      this.AdmissionID =result[0].AdmissionID;
+      this.RegNo = result[0].RegNo;
+      this.WardId = result[0].WardId;
+      this.BedId = result[0].BedId;
+      this.IPMedID = result[0].IPMedID;
+      if(this.IPMedID > 0){
+        this.paymethod = true;
+        this.vSelectedOption = 'IP'; 
+      }
+
+
+      this.dsItemNameList1.data = result;
+      this.dsItemNameList1.data.forEach((contact) => {
+        var m_data = {
+          "ItemId": contact.ItemId,
+          "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+        }
+        this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
+          console.log(draftdata)
+          this.Itemchargeslist1 = draftdata as any;
+          if (this.Itemchargeslist1.length == 0) {
+            Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
+          }
+          else if (this.Itemchargeslist1.length > 0) {
+            let ItemID;
+            this.Itemchargeslist1.forEach((element) => {
+              // console.log(element)
+              if (ItemID != element.ItemId) {
+                this.QtyBalchk = 0;
+              }
+              if (this.QtyBalchk != 1) {
+                if (contact.QtyPerDay <= element.BalanceQty) {
+                  this.QtyBalchk = 1;
+                  this.getFinalCalculation(element, contact.QtyPerDay);
+                  ItemID = element.ItemId;
+                }
+                else {
+                  Swal.fire("Balance Qty is :", element.BalanceQty)
+                  this.QtyBalchk = 0;
+                  Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
+                }
+              }
+            });
+          } 
+        }); 
+      }); 
+    });
   }
+ 
 }
 
 

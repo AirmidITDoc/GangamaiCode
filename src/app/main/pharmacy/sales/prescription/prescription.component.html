@@ -39,9 +39,9 @@
                                 <mat-form-field appearance="outline" style="margin-left: 2%;">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date"
-                                          (dateChange)="getPrescriptionList()" >
-                                        <input matEndDate formControlName="end" placeholder="End date">
+                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matEndDate formControlName="end" placeholder="End date"
+                                        (dateChange)="getPrescriptionList()" >
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-date-range-picker #picker></mat-date-range-picker>
@@ -287,7 +287,7 @@
                             <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
                               
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary ">Ok</button>
+                                <button class="btn btn-primary" (click)="GetPrescrpList()">Ok</button>
                               
                             </div>
                         </div>
