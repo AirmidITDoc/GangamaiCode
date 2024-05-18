@@ -14,6 +14,9 @@ export class ManageschedulerComponent implements OnInit {
 
   ScheduleType: number = 1;
   CustomDates: string[] = [];
+  StartDate: Date;
+  EndDate: Date;
+  CustomDate: Date;
   Weeks = [
     { Text: "Sunday", Value: 0, Checked: false },
     { Text: "Monday", Value: 1, Checked: false },
@@ -28,18 +31,34 @@ export class ManageschedulerComponent implements OnInit {
     data.Checked = $event.checked;
   }
   onAddCustomDate() {
-    this.CustomDates.push(this.searchFormGroup.get("Customdate").value);
+    if(!this.CustomDate){
+      Swal.fire('Error !', 'Select Custom Date.', 'error');
+      return;
+    }
+    this.CustomDates.push(this.CustomDate.toISOString().split('T')[0]);
     this.searchFormGroup.get("Customdate").setValue("");
   }
-
+  onChangeStartDate(startDate) {
+    this.StartDate = startDate;
+  }
+  onChangeEndDate(endDate) {
+    this.EndDate = endDate;
+  }
+  onChangeCustomDate(customDate) {
+    this.CustomDate = customDate;
+  }
   onSubmit() {
     this.ScheduleType = Number(this.searchFormGroup.get("ScheduleType").value ?? "0");
     if (this.ScheduleType <= 0) {
       Swal.fire('Error !', 'Select Schedule Type.', 'error');
       return;
     }
-    else if ((this.searchFormGroup.get("StartDate").value ?? "").length <= 0) {
+    else if (!this.StartDate) {
       Swal.fire('Error !', 'Select start date.', 'error');
+      return;
+    }
+    else if (!this.EndDate) {
+      Swal.fire('Error !', 'Select end date.', 'error');
       return;
     }
     else if ((this.searchFormGroup.get("Hours").value ?? "").length <= 0) {
@@ -52,7 +71,7 @@ export class ManageschedulerComponent implements OnInit {
     }
     let data = {};
     if (this.ScheduleType == 1) {
-      data = { ScheduleType: 1, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.searchFormGroup.get('StartDate').value, EndDate: this.searchFormGroup.get('StartDate').value, ScheduleName: this.searchFormGroup.get("ScheduleName").value };
+      data = { ScheduleType: 1, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
     }
     else if (this.ScheduleType == 2) {
       var weekdays = this.Weeks.filter(x => x.Checked).map(x => x.Value).join(',');
@@ -60,25 +79,29 @@ export class ManageschedulerComponent implements OnInit {
         Swal.fire('Error !', 'Select at least 1 Day.', 'error');
         return;
       }
-      data = { ScheduleType: 2, Days: weekdays, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.searchFormGroup.get('StartDate').value, EndDate: this.searchFormGroup.get('StartDate').value, ScheduleName: this.searchFormGroup.get("ScheduleName").value };
+      data = { ScheduleType: 2, Days: weekdays, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
     }
     else if (this.ScheduleType == 3) {
       if ((this.searchFormGroup.get("Monthdate").value ?? "").length <= 0) {
         Swal.fire('Error !', 'Enter date(s).', 'error');
         return;
       }
-      data = { ScheduleType: 3, Dates: this.searchFormGroup.get("Monthdate").value, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.searchFormGroup.get('StartDate').value, EndDate: this.searchFormGroup.get('StartDate').value, ScheduleName: this.searchFormGroup.get("ScheduleName").value };
+      data = { ScheduleType: 3, Dates: this.searchFormGroup.get("Monthdate").value, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
     }
     else if (this.ScheduleType == 4) {
       var customdates = this.CustomDates.join(',')
-      if (weekdays.length <= 0) {
+      if (customdates.length <= 0) {
         Swal.fire('Error !', 'Select custom date(s).', 'error');
         return;
       }
-      data = { ScheduleType: 4, Custom: customdates, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.searchFormGroup.get('StartDate').value, EndDate: this.searchFormGroup.get('StartDate').value, ScheduleName: this.searchFormGroup.get("ScheduleName").value };
+      data = { ScheduleType: 4, Custom: customdates, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
     }
     this._SchdulerService.saveScheduler(data).subscribe((data) => {
       debugger
+      if(data.id>0){
+        Swal.fire('Succsess !', 'Schedule Added successfully.', 'success');
+        this.dialogRef.close();
+      }
     });
   }
 
@@ -103,7 +126,7 @@ export class ManageschedulerComponent implements OnInit {
       Query: [''],
       StartDate: [''],
       EndDate: [''],
-      ScheduleName:['']
+      ScheduleName: ['']
     });
   }
 

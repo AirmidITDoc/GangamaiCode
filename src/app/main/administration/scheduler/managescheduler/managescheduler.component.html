@@ -6,8 +6,7 @@
                 <div class="modal-header-title">
                     <div class="title-icon">
                         <span>
-                            <mat-icon class="logo-icon"
-                                [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+                            <mat-icon class="logo-icon">account_box
                             </mat-icon>
                         </span>
                     </div>
@@ -32,18 +31,20 @@
 
                             <mat-form-field appearance="outline">
                                 <mat-label>Scheduler Name</mat-label>
-                                <input name="ScheduleName" formControlName="ScheduleName" placeholder="Scheduler Name" matInput
-                                    required type="text">
+                                <input name="ScheduleName" formControlName="ScheduleName" placeholder="Scheduler Name"
+                                    matInput required type="text">
                             </mat-form-field>
                             <mat-form-field appearance="outline">
-                                <mat-label>Start Date</mat-label>
-                                <input name="StartDate" formControlName="StartDate" placeholder="Dates" matInput
-                                    required type="text">
+                                <input matInput [matDatepicker]="validStartPicker" formControllName="StartDate" #bday
+                                    (dateChange)="onChangeStartDate($event.value)" placeholder="mm/dd/yyyy">
+                                <mat-datepicker-toggle matSuffix [for]="validStartPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #validStartPicker></mat-datepicker>
                             </mat-form-field>
                             <mat-form-field appearance="outline">
-                                <mat-label>End Date</mat-label>
-                                <input name="EndDate" formControlName="EndDate" placeholder="Dates" matInput required
-                                    type="text">
+                                <input matInput [matDatepicker]="validEndPicker" formControllName="EndDate" #bday1
+                                    (dateChange)="onChangeEndDate($event.value)" placeholder="mm/dd/yyyy">
+                                <mat-datepicker-toggle matSuffix [for]="validEndPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #validEndPicker></mat-datepicker>
                             </mat-form-field>
                         </div>
                         <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start"
@@ -75,12 +76,10 @@
                             </mat-form-field>
                             <mat-form-field appearance="outline" *ngIf="ScheduleType==4">
                                 <mat-label>Date(s)</mat-label>
-                                <input name="Customdate" formControlName="Customdate" placeholder="Customdate" matInput
-                                    required>
-                                <!-- <input matInput [matDatepicker]="validFromPicker" formControllName="Customdate"
-                                name="Customdate" id="Customdate" placeholder="mm/dd/yyyy">
-                                <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #validFromPicker></mat-datepicker> -->
+                                <input matInput [matDatepicker]="validCustomPicker" formControllName="CustomDate" #bday2
+                                    (dateChange)="onChangeCustomDate($event.value)" placeholder="mm/dd/yyyy">
+                                <mat-datepicker-toggle matSuffix [for]="validCustomPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #validCustomPicker></mat-datepicker>
                             </mat-form-field>
                             <button class="btn btn btn-secondary-outline" *ngIf="ScheduleType==4"
                                 style="margin-left: 15px; margin-right: 15px;;" (click)="onAddCustomDate()">

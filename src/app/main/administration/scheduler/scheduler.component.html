@@ -60,7 +60,7 @@
                         <!-- SIDEBAR CONTENT -->
 
                         <div class="nav material2">
-                            <form [formGroup]="_UserService.myformSearch">
+                            <!-- <form [formGroup]="_UserService.myformSearch">
                                 <div fxLayout="column" fxLayoutAlign="start none">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Scheduler Name</mat-label>
@@ -68,15 +68,15 @@
                                     </mat-form-field>
 
                                     <div class="action-buttons">
-                                        <!-- <button mat-raised-button (click)="onClear()" class="clearbutton">
+                                         <button mat-raised-button (click)="onClear()" class="clearbutton">
                                             <mat-icon class="cleariconbutton">close</mat-icon></button>
                                         <button mat-raised-button class="searchButton" (click)="onShow($event)"
                                             [disabled]="click">
                                             <mat-icon class="searchiconbutton">search</mat-icon>
-                                        </button> -->
+                                        </button> 
                                     </div>
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
 
                     </div>
@@ -101,66 +101,37 @@
                                         <div class="spinner-border text-danger"></div>
                                     </div>
                                 </div>
-                                <!-- <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
+                                <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 
-                                    <ng-container matColumnDef="UserName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> User
+                                    <ng-container matColumnDef="SchedulerName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Scheduler
                                             Name</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.UserName}}
+                                            {{contact.scheduleName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="UserLoginName">
+                                    <ng-container matColumnDef="Hours">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header
-                                            fxShow.gt-sm>LoginName</mat-header-cell>
+                                            fxShow.gt-sm>Hours</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.UserLoginName}}
+                                            {{contact.hours}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="RoleName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Role
-                                            Name</mat-header-cell>
+                                    <ng-container matColumnDef="StartDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Start
+                                            Date</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            {{contact.RoleName}}
+                                            <span> {{contact.startDate | date:ShortDate}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="StoreName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Store
-                                            Name</mat-header-cell>
+                                    <ng-container matColumnDef="EndDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>End
+                                            Date</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            {{contact.StoreName}}
-                                        </mat-cell>
-                                    </ng-container>
-
-
-                                    <ng-container matColumnDef="DoctorName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Doctor
-                                            Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            {{contact.DoctorName}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="IsDateIntervalDays">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                            fxShow.gt-md>Days</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            {{contact.IsDateIntervalDays}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="IsActive">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                            IsActive
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            <mat-icon *ngIf="contact.IsActive"
-                                                class="active-icon green-600 s-16">check_circle</mat-icon>
-                                            <mat-icon *ngIf="!contact.IsActive"
-                                                class="active-icon red-500 s-16">close</mat-icon>
+                                            <span> {{contact.endDate | date:ShortDate}}</span>
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="action" stickyEnd>
@@ -191,18 +162,14 @@
                                         [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
-                                    <mat-row 
-                                        *matRowDef="let contact; columns: displayedColumns;" 
-                                        class="contact"
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
                                         [@animate]="{value:'*',params:{y:'100%'}}"
-                                        (click)="onresultentry($event,contact)"></mat-row> 
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dataSource1!=null}">
-                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" 
+                                        (click)="onresultentry($event,contact)"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
                                     </mat-footer-row>
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}"></mat-footer-row>
-                                </mat-table> -->
+                                </mat-table>
 
                                 <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
                                     showFirstLastButtons>

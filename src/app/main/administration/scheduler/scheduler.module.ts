@@ -1,5 +1,5 @@
 
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA,NgModule } from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -87,6 +87,9 @@ const routes: Routes = [
     MatListModule,
     ScrollingModule,
     MatDialogModule
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [
     SchdulerService,

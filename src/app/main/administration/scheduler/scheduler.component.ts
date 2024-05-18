@@ -7,7 +7,6 @@ import { fuseAnimations } from '@fuse/animations';
 import { SchdulerService } from './scheduler.service';
 import { CreateUserService } from '../create-user/create-user.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { UserList } from '../create-user/create-user.component';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { ManageschedulerComponent } from './managescheduler/managescheduler.component';
@@ -34,14 +33,21 @@ export class SchdulerComponent implements OnInit {
     this.getSchedulerList();
   }
   sIsLoading: string = '';
-  dataSource1 = new MatTableDataSource<UserList>();
+  dataSource1 =  new MatTableDataSource<ScheduleMaster>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   hasSelectedContacts: boolean;
+  displayedColumns: string[] = [
+    "SchedulerName",
+    "Hours",
+    "StartDate",
+    "EndDate",
+    "action"
+  ]
   getSchedulerList() {
     this.sIsLoading = 'loading-data';
     this._SchdulerService.getSchedulers().subscribe(Visit => {
-      this.dataSource1.data = Visit as any[];
+      this.dataSource1.data = Visit as unknown as ScheduleMaster[];
       this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator;
       this.sIsLoading = '';
@@ -59,8 +65,7 @@ export class SchdulerComponent implements OnInit {
         width: '100%',
       });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      // this.getAdmittedPatientList();
+       this.getSchedulerList();
     });
   }
 
@@ -71,4 +76,21 @@ export class SchdulerComponent implements OnInit {
   onShow(){
     
   }
+}
+export class ScheduleMaster {
+  Id: number;
+  ScheduleName: string;
+  StartDate:string;
+  EndDate:string;
+  Hours:string;
+  constructor(RoleMaster) {
+    {
+      this.Id = RoleMaster.RoleId || 0;
+      this.ScheduleName = RoleMaster.RoleName || "";
+      this.StartDate = RoleMaster.StartDate || "";
+      this.EndDate = RoleMaster.EndDate || "";
+      this.Hours = RoleMaster.Hours || "";
+    }
+  }
+
 }
