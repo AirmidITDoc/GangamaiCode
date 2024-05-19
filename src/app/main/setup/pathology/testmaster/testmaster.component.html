@@ -163,7 +163,7 @@
                                             <mat-header-cell *matHeaderCellDef class="table-actions"> Action
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let row">
-                                                <button mat-icon-button (click)="openTab(row, tabGroup)"><mat-icon
+                                                <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                         title="Edit Menu">edit</mat-icon></button>
                                                 <button mat-icon-button (click)="onDeactive(row.TestId)"
                                                     color="warn"><mat-icon>delete_outline</mat-icon></button>

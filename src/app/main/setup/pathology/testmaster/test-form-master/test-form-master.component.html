@@ -42,6 +42,7 @@
                                                     placeholder="Select PrintTestName" matInput required>
                                                 <mat-error>Please enter PrintTestName </mat-error>
                                             </mat-form-field>
+
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Service Name</mat-label>
                                                 <mat-select formControlName="ServiceID" placeholder="Bank" #singleSelect required>
@@ -49,11 +50,11 @@
                                                         <ngx-mat-select-search [formControl]="serviceFilterCtrl" [placeholderLabel]="'Search'"
                                                             [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
                                                     </mat-option>
-                                                    <mat-option *ngFor="let element of filteredService | async" [value]="element">
+                                                    <mat-option *ngFor="let element of filteredService | async" [value]="element.ServiceID">
                                                         {{element.ServiceName}}
                                                     </mat-option>
                                                 </mat-select>
-                                            </mat-form-field>
+                                            </mat-form-field> 
                                         </div>
                                         <div fxLayout="row">
                                            
@@ -67,7 +68,7 @@
                                                             [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
                                                     </mat-option>
                                                     <mat-option *ngFor="let element of filteredCategory | async"
-                                                        [value]="element">
+                                                        [value]="element.CategoryId">
                                                         {{element.CategoryName}}
                                                     </mat-option>
                                                 </mat-select>
@@ -93,8 +94,8 @@
                                             </section>
 
                                         </div>
-                                        <div fxLayout="row"> 
-                                            <mat-form-field class="mr-sm-12" fxFlex>
+                                        <div fxLayout="row" style="max-width: 63%;"> 
+                                            <mat-form-field class="mr-sm-12" fxFlex >
                                                 <input matInput placeholder="Search" autocomplete="off"
                                                     name="ParameterNameSearch" formControlName="ParameterNameSearch" />
                                                 <button mat-button matSuffix mat-icon-button aria-label="Clear"
@@ -196,16 +197,15 @@
                                             <div fxLayout="column" fxFlex="50%">
                                                 <mat-card style="height:400px;width: 100%;">
                                                     <mat-table #table class="table1" matSort
-                                                        [dataSource]="Parametercmb" [@animateStagger]="{value:'50'}"
+                                                        [dataSource]="paramterList" [@animateStagger]="{value:'50'}"
                                                         style="overflow:auto; width: 100%;">
 
                                                         <ng-container matColumnDef="ParameterName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                Parameter Name
-                                                                
+                                                                Parameter Values List                                                                
                                                             </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  (click) ="OnAdd(element)">
-                                                                {{element.ParameterName}}                                                             
+                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  (click) ="onAdd(element)">
+                                                                {{element.ParameterName}} 
                                                             </mat-cell>      
 
                                                        </ng-container>
@@ -250,7 +250,7 @@
                                             </div>
                                             <mat-divider vertical style="margin: 0px;padding: 5px;"></mat-divider>
                                             <div fxLayout="column" fxFlex="50%">
-                                                <mat-card style="height:400px;width: 1005;">
+                                                <mat-card style="height:400px;width: 100%;">
                                                     <mat-table #table class="table1" matSort
                                                         [dataSource]="DSTestList" [@animateStagger]="{value:'50'}"
                                                         style="overflow:auto; width: 100%;">

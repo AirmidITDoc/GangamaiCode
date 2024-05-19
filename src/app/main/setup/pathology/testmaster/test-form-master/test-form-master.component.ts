@@ -32,6 +32,9 @@ export class TestFormMasterComponent implements OnInit {
     registerObj: any;
     DSTestList = new MatTableDataSource<TestList>();
     dsTemparoryList = new MatTableDataSource<TestList>();
+
+    paramterList:any = new MatTableDataSource<TestList>();
+
     vCategoryId: any;
     //parametername filter
     public parameternameFilterCtrl: FormControl = new FormControl();
@@ -127,7 +130,10 @@ export class TestFormMasterComponent implements OnInit {
     }
     getParameterNameCombobox() {
         this._TestService.getParameterMasterCombo()
-            .subscribe((data) => (this.Parametercmb = data));
+            .subscribe((data) => {
+               this.paramterList.data = data;
+               this.Parametercmb = data;                
+        });
         // console.log(this.Parametercmb);
     }
 
@@ -161,6 +167,7 @@ export class TestFormMasterComponent implements OnInit {
                 const selectedCategory = this.CategorycmbList.filter(c => c.CategoryName == this.registerObj.CategoryName);
                 this._TestService.myform.get('CategoryId').setValue(selectedCategory);
                 console.log(selectedCategory)
+                
                 console.log(this.registerObj.CategoryName)
             }
         });
@@ -168,6 +175,7 @@ export class TestFormMasterComponent implements OnInit {
 
     // Service name filter
     private filterServicename() {
+        debugger;
         if (!this.ServicecmbList) {
             return;
         }
@@ -191,7 +199,7 @@ export class TestFormMasterComponent implements OnInit {
             this.ServicecmbList = data;
             this._TestService.myform.get("ServiceID").setValue(this.ServicecmbList[0]);
             if (this.data) {
-                const selectedService = this.ServicecmbList.filter(c => c.ServiceID == this.registerObj.TestName);
+                const selectedService = this.ServicecmbList.filter(c => c.ServiceName == this.registerObj.ServiceName);
                 this._TestService.myform.get('ServiceID').setValue(selectedService);
                 console.log(selectedService)
                 console.log(this.registerObj.TestName)
@@ -230,17 +238,23 @@ export class TestFormMasterComponent implements OnInit {
             console.log(this.DSTestList)
         });
     }
-    OnAdd(event) {
+
+    onAdd(event) {
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
         this.ChargeList.push(
             {
                 ParameterName: event.ParameterName || "",
             });
-        this.DSTestList.data = this.ChargeList
+        this.DSTestList.data = this.ChargeList;
+
+        let temp = this.paramterList.data;
+        this.paramterList.data = []
+        temp.splice(temp.findIndex(item => item.ParameterName === event.ParameterName), 1);
+        this.paramterList.data = temp;
         // console.log(this.ChargeList);
         // this._TestService.AddParameterFrom.get('ParameterName').setValue("");
-        this._TestService.AddParameterFrom.reset();
+        // this._TestService.AddParameterFrom.reset();
     }
 
     onSubmit() {

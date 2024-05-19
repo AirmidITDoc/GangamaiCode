@@ -134,7 +134,7 @@
                                                             fxFlex="20%">
                                                             <mat-label>Gender</mat-label>
                                                             <mat-select placeholder="Select Gender Name" name="SexID"
-                                                                formControlName="SexID" required>
+                                                                formControlName="SexID">
                                                                 <mat-option *ngFor=" let M of GendercmbList "
                                                                     [value]="M">
                                                                     {{ M.GenderName }}
@@ -148,7 +148,7 @@
                                                             <input name="MinAge" placeholder="MinAge"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                                                 [(ngModel)]="vMinAge" formControlName="MinAge" matInput
-                                                                required>
+                                                                >
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" class="mr-sm-12"
@@ -157,7 +157,7 @@
                                                             <input name="MaxAge" placeholder="MaxAge"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                                                 [(ngModel)]="vMaxAge" formControlName="MaxAge" matInput
-                                                                required>
+                                                                >
                                                         </mat-form-field>
                                                         <!-- <mat-form-field appearance="outline" class="mr-sm-12"
                                                         fxFlex="20%">
@@ -172,7 +172,7 @@
                                                             fxFlex="20%">
                                                             <mat-label>Age Type</mat-label>
                                                             <mat-select placeholder="Select Age Type" 
-                                                                 required formControlName="AgeType" name="AgeType">
+                                                                  formControlName="AgeType" name="AgeType">
                                                                 <mat-option *ngFor=" let i of ageType "
                                                                     [value]="i">
                                                                     {{ i }}
@@ -186,7 +186,7 @@
                                                             <input name="MinValue" placeholder="MinValue"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                                                  [(ngModel)]="vMinValue" formControlName="MinValue"
-                                                                matInput required>
+                                                                matInput >
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" class="mr-sm-12"
@@ -195,7 +195,7 @@
                                                             <input name="Maxvalue" placeholder="Maxvalue"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                                                 [(ngModel)]="vMaxvalue" formControlName="Maxvalue"
-                                                                matInput required>
+                                                                matInput>
                                                         </mat-form-field>
 
                                                         <div matTooltip="Select All Value to enable this button!!">

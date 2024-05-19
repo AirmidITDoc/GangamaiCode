@@ -563,6 +563,43 @@ export class TestmasterComponent implements OnInit {
         //     this.getTestMasterList();
         // });
     // }
+    onEdit(row) {
+        debugger;
+        var m_data = {
+            TestId: row.TestId,
+            TestName: row.TestName == undefined ? '' :row.TestName.trim(),
+            PrintTestName: row.PrintTestName== undefined ? '' :row.PrintTestName.trim(),
+            CategoryId: row.CategoryId,
+            IsSubTest: JSON.stringify(row.IsSubTest),
+            TechniqueName: row.TechniqueName== undefined ? '' :row.TechniqueName.trim(),
+            MachineName: row.MachineName== undefined ? '' :row.MachineName.trim(),
+            SuggestionNote: row.SuggestionNote== undefined ? '' :row.SuggestionNote.trim(),
+            FootNote: row.FootNote== undefined ? '' :row.FootNote.trim(),
+            ServiceName: row.ServiceName== undefined ? '' :row.ServiceName.trim(),
+            IsTemplateTest: row.IsTemplateTest,
+            IsCategoryPrint: JSON.stringify(row.IsCategoryPrint),
+            IsPrintTestName: JSON.stringify(row.IsPrintTestName),
+            IsDeleted: JSON.stringify(row.IsDeleted),
+            UpdatedBy: row.UpdatedBy,
+            CategoryName: row.CategoryName,
+            ServiceID:row.ServiceID
+
+
+        };
+
+        this._TestService.populateForm(m_data);
+        const dialogRef = this._matDialog.open(TestFormMasterComponent, {
+            maxWidth: "70vw",
+            maxHeight: "90vh",
+            width: "100%",
+            height: "100%",
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            this.getTestMasterList();
+        });
+    }
+
     onAdd() {
         const dialogRef = this._matDialog.open(TestFormMasterComponent, {
             maxWidth: "70vw",

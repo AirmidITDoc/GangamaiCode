@@ -203,7 +203,7 @@ export class ParameterFormMasterComponent implements OnInit {
         debugger;
         if (this._ParameterService.myform.valid) {
             if (!this._ParameterService.myform.get("ParameterID").value) {
-                if (this._ParameterService.myform.get("IsNumeric").value == 2) {
+                if (this._ParameterService.myform.get("IsNumeric").value == "'2") {
                     var data2 = [];
                     for (var val of this._ParameterService.myform.get(
                         "parameterValues"
@@ -243,7 +243,7 @@ export class ParameterFormMasterComponent implements OnInit {
                             1,
                         isNumeric:
                             this._ParameterService.myform.get("IsNumeric")
-                                .value,
+                                .value||1,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._ParameterService.myform.get("IsDeleted")
