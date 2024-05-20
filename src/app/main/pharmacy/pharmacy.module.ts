@@ -23,6 +23,7 @@ const appRoutes: Routes = [
   {
     path:"matrialreceivedfrommainstore",
     loadChildren : () =>import("./brows-sales-return-bill/brows-sales-return-bill.module").then((m)=>m.BrowsSalesReturnBillModule),
+    //loadChildren : () =>import("./material-received-from-department/material-received-from-department.module").then((m)=>m.MaterialReceivedFromDepartmentModule),
   },
   {
     path:"ippharmacyadvance",
@@ -66,7 +67,7 @@ const appRoutes: Routes = [
 
 
 @NgModule({
-  declarations: [PharAdvanceComponent],
+  declarations: [ ],
   imports: [
     RouterModule.forChild(appRoutes)
   ]

@@ -168,9 +168,9 @@ export class OpPaymentNewComponent implements OnInit {
       this.IsCreditflag = true;
     }
     if (this.PatientHeaderObj.FromName == "SalesSETTLEMENT") {
-      this.netPayAmt = parseInt(this.advanceData.TotalAmount);
-      this.cashAmt = parseInt(this.advanceData.TotalAmount);
-      this.paidAmt = parseInt(this.advanceData.TotalAmount);
+      this.netPayAmt = parseInt(this.advanceData.NetAmount);
+      this.cashAmt = parseInt(this.advanceData.NetAmount);
+      this.paidAmt = parseInt(this.advanceData.NetAmount);
       this.billNo = parseInt(this.advanceData.SalesId);
       this.PatientName = this.advanceData.PatientName;
       this.BillDate = this.advanceData.Date;
@@ -218,7 +218,7 @@ export class OpPaymentNewComponent implements OnInit {
 
   ngOnInit(): void {
     this.patientDetailsFormGrp = this.createForm();
-    
+    debugger
     if (this.PatientHeaderObj.FromName == "SalesSETTLEMENT") {
       this.PatientHeaderObj = this.data.vPatientHeaderObj;
       this.advanceData = this.data.vPatientHeaderObj;
@@ -232,13 +232,13 @@ export class OpPaymentNewComponent implements OnInit {
       this.onPaymentChange(1, 'cash');
       this.paidAmt = this.netPayAmt;
 
-      this.netPayAmt = parseInt(this.advanceData.TotalAmount);
-      this.cashAmt = parseInt(this.advanceData.TotalAmount);
-      this.paidAmt = parseInt(this.advanceData.TotalAmount);
+      this.netPayAmt = parseInt(this.advanceData.NetAmount);
+      this.cashAmt = parseInt(this.advanceData.NetAmount);
+      this.paidAmt = parseInt(this.advanceData.NetAmount);
       this.billNo = parseInt(this.advanceData.SalesId);
       this.PatientName = "SAS",//this.advanceData.PatientName;
         this.BillDate = this.advanceData.Date;
-      this.amount1 = parseInt(this.advanceData.TotalAmount);
+      this.amount1 = parseInt(this.advanceData.NetAmount);
       this.getBalanceAmt();
       this.Paymentobj['TransactionType'] = 4;
     }
@@ -355,25 +355,25 @@ export class OpPaymentNewComponent implements OnInit {
       case 'upi':
         this.amount2 = this.netPayAmt - this.amount1;
         this.getBalanceAmt();
-        this.setThirdRowValidators(paymentOption);
+        this.setThirdRowValidators(paymentOption); 
         break;
 
       case 'net banking':
         this.amount5 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3) + parseInt(this.amount4));
         this.getBalanceAmt();
-        this.setThirdRowValidators(paymentOption);
+        this.setThirdRowValidators(paymentOption); 
         break;
 
       case 'cheque':
         this.amount3 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2));
         this.getBalanceAmt();
-        this.setFourthRowValidators(paymentOption);
+        this.setFourthRowValidators(paymentOption); 
         break;
 
       case 'card':
         this.amount4 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3));
         this.getBalanceAmt();
-        this.setFifthRowValidators(paymentOption);
+        this.setFifthRowValidators(paymentOption); 
         break;
 
       default:
@@ -1099,7 +1099,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getNeftObj(type: string) {
-    
+    debugger
     console.log(this.patientDetailsFormGrp.get("paymentType1").value)
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['NEFTPayAmount'] = this.amount1;
@@ -1270,7 +1270,7 @@ export class OpPaymentNewComponent implements OnInit {
     this.dialogRef.close(IsSubmit);
   }
 
-  getBalanceAmt() {
+  getBalanceAmt() { 
     let totalAmountAdded: any = ((this.amount1 ? parseFloat(this.amount1) : 0)
       + (this.amount2 ? parseFloat(this.amount2) : 0)
       + (this.amount3 ? parseFloat(this.amount3) : 0)
@@ -1278,8 +1278,8 @@ export class OpPaymentNewComponent implements OnInit {
       + (this.amount5 ? parseFloat(this.amount5) : 0));
     if ((this.netPayAmt - totalAmountAdded) < 0) {
       // this.snackBarService.showErrorSnackBar('Amout should be less than Balance amount', 'Done');
-      Swal.fire('Amout should be less than Balance amount', 'Done');
-      this.isSaveDisabled = true;
+      Swal.fire('Amout should be less than Balance amount', 'Done'); 
+      this.isSaveDisabled = true;  
       return;
     }
 

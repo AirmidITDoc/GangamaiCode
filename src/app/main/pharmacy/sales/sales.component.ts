@@ -1772,9 +1772,11 @@ export class SalesComponent implements OnInit {
       // this.addbutton.focus();
     }
   }
+  checkdisc1:boolean=false;
   getDiscPer() {
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
+      this.ItemSubform.get('FinalDiscPer').disable();
       this.chkdiscper = true;
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
       this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
@@ -2019,14 +2021,17 @@ export class SalesComponent implements OnInit {
 
   onSave(event) {
     event.srcElement.setAttribute('disabled', true);
-
-    if (this.PatientName == "" || this.MobileNo == "" || this.DoctorName == "") {
-      this.toastr.warning('Please select Customer Detail', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      event.srcElement.removeAttribute('disabled');
-      return;
+    let patientTypeValue1 = this.ItemSubform.get('PatientType').value;
+    if(this.ItemSubform.get('PatientType').value == 'External'){
+      if (this.PatientName == "" || this.MobileNo == "" || this.DoctorName == "") {
+        this.toastr.warning('Please select Customer Detail', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        event.srcElement.removeAttribute('disabled');
+        return;
+      }
     }
+   
     if (this.FinalTotalAmt == 0 || this.FinalNetAmount == 0) {
       this.toastr.warning('Please check Sales total Amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -2453,11 +2458,11 @@ export class SalesComponent implements OnInit {
         if (this.vPatientType == 'External') {
           // Swal.fire("Plz Chk Payment Data !");
         } else {
-          Swal.fire('Do You Want to generate Credit Bill ?').then((result) => {
-            if (result.isConfirmed) {
-              this.onCreditpaySave();
-            }
-          });
+          // Swal.fire('Do You Want to generate Credit Bill ?').then((result) => {
+          //   if (result.isConfirmed) {
+          //     this.onCreditpaySave();
+          //   }
+          // });
 
 
         }

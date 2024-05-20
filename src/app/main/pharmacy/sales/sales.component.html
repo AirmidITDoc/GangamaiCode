@@ -49,15 +49,14 @@
                                                     fxLayoutAlign="space-between" class="gap-8">
                                                     <div class="radio-group-left gap-8" fxLayout="row"
                                                         fxLayoutAlign="start center">
-
                                                         <mat-radio-group aria-label="Select an option"
                                                             formControlName="PatientType" [(ngModel)]="vSelectedOption"
                                                             name="paymode" (change)="onChangePatientType($event)"
                                                             (blur)="onChangePatientType($event)" fxLayout="row">
-                                                            <mat-radio-button value="OP"
+                                                            <!-- <mat-radio-button value="OP"
                                                                 [disabled]="vCondition">OP</mat-radio-button>
                                                             <mat-radio-button value="IP"
-                                                                [disabled]="vConditionIP">IP</mat-radio-button>
+                                                                [disabled]="vConditionIP">IP</mat-radio-button> -->
                                                             <mat-radio-button value="External"
                                                                 [disabled]="vConditionExt">External</mat-radio-button>
                                                         </mat-radio-group>
@@ -775,9 +774,9 @@
                                                             <mat-label>Discount %</mat-label>
                                                             <input matInput [(ngModel)]="FinalDiscPer"
                                                                 name="FinalDiscPer" formControlName="FinalDiscPer"
-                                                                (blur)="getFinalDiscperAmt()" type="number">
+                                                                (blur)="getFinalDiscperAmt()" type="text" OnlyNumber
+                                                                (keypress)="keyPressCharater($event)">
                                                         </mat-form-field>
-
 
                                                         <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label>Discount Amount</mat-label>
@@ -815,8 +814,10 @@
                                                         <mat-form-field appearance="outline" fxFlex="7%">
                                                             <mat-label>Balance Amount</mat-label>
                                                             <input matInput name="BalanceAmt"
-                                                                formControlName="BalanceAmt" type="number"
-                                                                [(ngModel)]="BalAmount" placeholder="0" type="number">
+                                                                formControlName="BalanceAmt"
+                                                                (keypress)="keyPressCharater($event)"
+                                                                [(ngModel)]="BalAmount" placeholder="0" type="text"
+                                                                OnlyNumber>
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="8%">
@@ -843,13 +844,16 @@
                                                     <div class="sales-radio-buttons gap-8" fxLayout="row"
                                                         fxLayoutAlign="space-between center">
 
-                                                        <mat-radio-group aria-label="Select an option" formControlName="CashPay" 
-                                                        (change)="onChangePaymentMode($event)">
-                                                        
-                                                            <mat-radio-button value="Credit" *ngIf="paymethod">Credit</mat-radio-button>
+                                                        <mat-radio-group aria-label="Select an option"
+                                                            formControlName="CashPay"
+                                                            (change)="onChangePaymentMode($event)">
+
+                                                            <mat-radio-button value="Credit"
+                                                                *ngIf="paymethod">Credit</mat-radio-button>
                                                             <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                                             <mat-radio-button value="Online">Online</mat-radio-button>
-                                                            <mat-radio-button value="PayOption">PayOption</mat-radio-button>
+                                                            <mat-radio-button
+                                                                value="PayOption">PayOption</mat-radio-button>
                                                             <!-- <mat-radio-button value="Other">Multiple Pay</mat-radio-button> -->
                                                         </mat-radio-group>
 
