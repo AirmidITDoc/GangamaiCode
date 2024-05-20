@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PharmItemSummaryComponent } from './pharm-item-summary/pharm-item-summary.component';
 import { PharmaAdvanceComponent } from './pharma-advance/pharma-advance.component';
+import { PharAdvanceComponent } from './phar-advance/phar-advance.component';
 
 
 
@@ -51,10 +52,10 @@ const appRoutes: Routes = [
     path:"reorderlevelsummary",
     loadChildren: () => import("./reorderlevelsummary/reorderlevelsummary.module").then((m)=>m.ReorderlevelsummaryModule),
   },
-  // {
-  //   path:"pharmacyadvance",
-  //   loadChildren: () => import("./pharma-advance/pharma-advance.module").then((m)=>m.PharmaAdvanceModule),
-  // },
+  {
+    path:"pharmaceadvance",
+    loadChildren: () => import("./phar-advance/phar-advance.module").then((m)=>m.PharAdvanceModule),
+  },
   
   // {
   //   path:"pharmacyitemwisesupplierList",
@@ -65,7 +66,7 @@ const appRoutes: Routes = [
 
 
 @NgModule({
-  declarations: [],
+  declarations: [PharAdvanceComponent],
   imports: [
     RouterModule.forChild(appRoutes)
   ]

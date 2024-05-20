@@ -48,6 +48,7 @@ export class ManageschedulerComponent implements OnInit {
     this.CustomDate = customDate;
   }
   onSubmit() {
+    
     this.ScheduleType = Number(this.searchFormGroup.get("ScheduleType").value ?? "0");
     if (this.ScheduleType <= 0) {
       Swal.fire('Error !', 'Select Schedule Type.', 'error');
@@ -69,6 +70,7 @@ export class ManageschedulerComponent implements OnInit {
       Swal.fire('Error !', 'Enter Scheduler Name.', 'error');
       return;
     }
+
     let data = {};
     if (this.ScheduleType == 1) {
       data = { ScheduleType: 1,Id:this.Id, Hours: this.searchFormGroup.get("Hours").value, Query: this.searchFormGroup.get("Query").value, StartDate: this.StartDate.toISOString().split('T')[0], EndDate: this.EndDate.toISOString().split('T')[0], ScheduleName: this.searchFormGroup.get("ScheduleName").value };
