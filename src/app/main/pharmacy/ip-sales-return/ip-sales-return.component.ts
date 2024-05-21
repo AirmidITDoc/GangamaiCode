@@ -34,6 +34,40 @@ export class IpSalesReturnComponent implements OnInit {
   screenFromString = 'admission-form';
   chargeslist: any = []; 
   dateTimeObj: any;
+  vRegNo:any;
+  vPatienName:any;
+  vMobileNo:any;
+  vAdmissionDate:any;
+  vReturnQty:any;
+  vItemName:any;
+  vRegId:any;
+  vAdmissionID:any;
+  vTotalQty:any;
+  vSalesNo:any;
+  vBatchNo:any;
+  vBatchExpDate:any;
+  vUnitMRP:any;
+  vVatPer:any;
+  vDiscPer:any; 
+  vFinalGSTAmt:any;
+  vFinalDiscAmount:any;
+  vSalesID:any;
+  vOP_IP_Id:any;
+  vOP_IP_Type:any;
+  vLandedPrice:any;
+  vTotalLandedAmount:any;
+  vPurRateWf:any;
+  vPurTotAmt:any;
+  vSalesDetId:any;
+  vStkID:any;
+  vItemId:any;
+  TotalAmt:any;
+  GSTAmt:any;
+  DiscAmt:any; 
+  NetAmt:any;
+  vFinalNetAmount:any;
+  vFinalTotalAmt:any
+  vRegID:any;
  ;
  dsIpSaleItemList = new MatTableDataSource<IPSalesItemList>();
   SelectedList = new MatTableDataSource<IndentList>();
@@ -103,33 +137,7 @@ export class IpSalesReturnComponent implements OnInit {
     if (!option) return '';
     return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
   }
-  vRegNo:any;
-  vPatienName:any;
-  vMobileNo:any;
-  vAdmissionDate:any;
-  vReturnQty:any;
-  vItemName:any;
-  vRegId:any;
-  vAdmissionID:any;
-  vTotalQty:any;
-  vSalesNo:any;
-  vBatchNo:any;
-  vBatchExpDate:any;
-  vUnitMRP:any;
-  vVatPer:any;
-  vDiscPer:any; 
-  vFinalGSTAmt:any;
-  vFinalDiscAmount:any;
-  vSalesID:any;
-  vOP_IP_Id:any;
-  vOP_IP_Type:any;
-  vLandedPrice:any;
-  vTotalLandedAmount:any;
-  vPurRateWf:any;
-  vPurTotAmt:any;
-  vSalesDetId:any;
-  vStkID:any;
-  vItemId:any;
+
   getSelectedObj(obj){
     console.log(obj)
    this.vRegNo = obj.RegNo;
@@ -256,14 +264,7 @@ this.vItemName = '';
 this.vReturnQty = 0 ;
 this.vTotalQty = 0 ;
  }
- TotalAmt:any;
- GSTAmt:any;
- DiscAmt:any; 
- NetAmt:any;
 
- vFinalNetAmount:any;
- vFinalTotalAmt:any
- vRegID:any;
 calculation(){
   if(parseInt(this.vReturnQty) > parseInt(this.vTotalQty)){
     this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
