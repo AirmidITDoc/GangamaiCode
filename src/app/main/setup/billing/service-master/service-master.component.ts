@@ -74,27 +74,22 @@ export class ServiceMasterComponent implements OnInit {
     get f() {
         return this._serviceMasterService.myform.controls;
     }
-    resultsLength = 0;
+
     getServiceMasterList() {
         var param = {
             ServiceName:
                 this._serviceMasterService.myformSearch
                     .get("ServiceNameSearch")
                     .value.trim() + "%" || "%",
-            TariffId: 0,
-            GroupId: 0,
-            Start:(this.paginator?.pageIndex??1),
-            Length:(this.paginator?.pageSize??20),
+            TariffId: 1,
+            GroupId: 1,
         };
-        this._serviceMasterService.getServiceMasterList_Pagn(param).subscribe(
-            (data) => {
-                this.DSServiceMasterList.data = data["Table1"]??[] as ServiceMaster[];
-                //this.DSServiceMasterList.data = Menu as ServiceMaster[];
+        this._serviceMasterService.getServiceMasterList(param).subscribe(
+            (Menu) => {
+                this.DSServiceMasterList.data = Menu as ServiceMaster[];
                 this.isLoading = false;
                 this.DSServiceMasterList.sort = this.sort;
-                this.DSServiceMasterList.sort = this.sort;
-                this.resultsLength= data["Table"][0]["total_row"];
-                // --this.DSServiceMasterList.paginator = this.paginator;
+                this.DSServiceMasterList.paginator = this.paginator;
                // console.log(this.DSServiceMasterList);
             },
             (error) => (this.isLoading = false)
@@ -106,119 +101,119 @@ export class ServiceMasterComponent implements OnInit {
         this._serviceMasterService.initializeFormGroup();
     }
 
-    // onSubmit() {
-    //     if (this._serviceMasterService.myform.valid) {
-    //         if (!this._serviceMasterService.myform.get("ServiceId").value) {
-    //             var m_data = {
-    //                 serviceMasterInsert: {
-    //                     groupId: 1,
-    //                     serviceShortDesc:
-    //                         this._serviceMasterService.myform.get(
-    //                             "ServiceShortDesc"
-    //                         ).value,
-    //                     serviceName: this._serviceMasterService.myform
-    //                         .get("ServiceName")
-    //                         .value.trim(),
-    //                     price:
-    //                         this._serviceMasterService.myform.get("Price")
-    //                             .value || "0",
-    //                     isEditable: Boolean(
-    //                         JSON.parse(
-    //                             this._serviceMasterService.myform.get(
-    //                                 "IsEditable"
-    //                             ).value
-    //                         )
-    //                     ),
-    //                     creditedtoDoctor: Boolean(
-    //                         JSON.parse(
-    //                             this._serviceMasterService.myform.get(
-    //                                 "CreditedtoDoctor"
-    //                             ).value
-    //                         )
-    //                     ),
-    //                     isPathology:
-    //                         this._serviceMasterService.myform.get("IsPathology")
-    //                             .value,
-    //                     isRadiology:
-    //                         this._serviceMasterService.myform.get("IsRadiology")
-    //                             .value,
-    //                     isActive:
-    //                         this._serviceMasterService.myform.get("IsDeleted")
-    //                             .value,
-    //                     printOrder:
-    //                         this._serviceMasterService.myform.get("PrintOrder")
-    //                             .value || "0",
-    //                     isPackage:
-    //                         this._serviceMasterService.myform.get("IsPackage")
-    //                             .value,
-    //                     subgroupId:
-    //                         this._serviceMasterService.myform.get("SubGroupId")
-    //                             .value,
-    //                     doctorId:
-    //                         this._serviceMasterService.myform.get("DoctorId]")
-    //                             .value,
-    //                     isEmergency:
-    //                         Boolean(
-    //                             JSON.parse(
-    //                                 this._serviceMasterService.myform.get(
-    //                                     "IsEmergency"
-    //                                 ).value
-    //                             )
-    //                         ) || "0",
-    //                     emgAmt:
-    //                         this._serviceMasterService.myform.get("EmgAmt")
-    //                             .value || "0",
-    //                     emgPer:
-    //                         this._serviceMasterService.myform.get("EmgPer")
-    //                             .value || "0",
-    //                     isDocEditable:
-    //                         Boolean(
-    //                             JSON.parse(
-    //                                 this._serviceMasterService.myform.get(
-    //                                     "IsDocEditable"
-    //                                 ).value
-    //                             )
-    //                         ) || "0",
-    //                     serviceId:
-    //                         this._serviceMasterService.myform.get("ServiceId")
-    //                             .value,
-    //                 },
-    //             };
-    //             this._serviceMasterService
-    //                 .serviceMasterInsert(m_data)
-    //                 .subscribe((data) => {
-    //                     this.msg = data;
-    //                     if (data) {
-    //                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //                             toastClass: 'tostr-tost custom-toast-success',
-    //                           });
-    //                           this.getServiceMasterList();
-    //                         // Swal.fire(
-    //                         //     "Saved !",
-    //                         //     "Record saved Successfully !",
-    //                         //     "success"
-    //                         // ).then((result) => {
-    //                         //     if (result.isConfirmed) {
-    //                         //         this.getGroupMasterList();
-    //                         //     }
-    //                         // });
-    //                     } else {
-    //                         this.toastr.error('Service Master Data not saved !, Please check API error..', 'Error !', {
-    //                             toastClass: 'tostr-tost custom-toast-error',
-    //                           });
-    //                     }
-    //                     this.getServiceMasterList();
-    //                 },error => {
-    //                     this.toastr.error('Service Data not saved !, Please check API error..', 'Error !', {
-    //                      toastClass: 'tostr-tost custom-toast-error',
-    //                    });
-    //                  });
-    //                     this.getServiceMasterList();
+    onSubmit() {
+        if (this._serviceMasterService.myform.valid) {
+            if (!this._serviceMasterService.myform.get("ServiceId").value) {
+                var m_data = {
+                    serviceMasterInsert: {
+                        groupId: 1,
+                        serviceShortDesc:
+                            this._serviceMasterService.myform.get(
+                                "ServiceShortDesc"
+                            ).value,
+                        serviceName: this._serviceMasterService.myform
+                            .get("ServiceName")
+                            .value.trim(),
+                        price:
+                            this._serviceMasterService.myform.get("Price")
+                                .value || "0",
+                        isEditable: Boolean(
+                            JSON.parse(
+                                this._serviceMasterService.myform.get(
+                                    "IsEditable"
+                                ).value
+                            )
+                        ),
+                        creditedtoDoctor: Boolean(
+                            JSON.parse(
+                                this._serviceMasterService.myform.get(
+                                    "CreditedtoDoctor"
+                                ).value
+                            )
+                        ),
+                        isPathology:
+                            this._serviceMasterService.myform.get("IsPathology")
+                                .value,
+                        isRadiology:
+                            this._serviceMasterService.myform.get("IsRadiology")
+                                .value,
+                        isActive:
+                            this._serviceMasterService.myform.get("IsDeleted")
+                                .value,
+                        printOrder:
+                            this._serviceMasterService.myform.get("PrintOrder")
+                                .value || "0",
+                        isPackage:
+                            this._serviceMasterService.myform.get("IsPackage")
+                                .value,
+                        subgroupId:
+                            this._serviceMasterService.myform.get("SubGroupId")
+                                .value,
+                        doctorId:
+                            this._serviceMasterService.myform.get("DoctorId]")
+                                .value,
+                        isEmergency:
+                            Boolean(
+                                JSON.parse(
+                                    this._serviceMasterService.myform.get(
+                                        "IsEmergency"
+                                    ).value
+                                )
+                            ) || "0",
+                        emgAmt:
+                            this._serviceMasterService.myform.get("EmgAmt")
+                                .value || "0",
+                        emgPer:
+                            this._serviceMasterService.myform.get("EmgPer")
+                                .value || "0",
+                        isDocEditable:
+                            Boolean(
+                                JSON.parse(
+                                    this._serviceMasterService.myform.get(
+                                        "IsDocEditable"
+                                    ).value
+                                )
+                            ) || "0",
+                        serviceId:
+                            this._serviceMasterService.myform.get("ServiceId")
+                                .value,
+                    },
+                };
+                this._serviceMasterService
+                    .serviceMasterInsert(m_data)
+                    .subscribe((data) => {
+                        this.msg = data;
+                        if (data) {
+                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                                toastClass: 'tostr-tost custom-toast-success',
+                              });
+                              this.getServiceMasterList();
+                            // Swal.fire(
+                            //     "Saved !",
+                            //     "Record saved Successfully !",
+                            //     "success"
+                            // ).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         this.getGroupMasterList();
+                            //     }
+                            // });
+                        } else {
+                            this.toastr.error('Service Master Data not saved !, Please check API error..', 'Error !', {
+                                toastClass: 'tostr-tost custom-toast-error',
+                              });
+                        }
+                        this.getServiceMasterList();
+                    },error => {
+                        this.toastr.error('Service Data not saved !, Please check API error..', 'Error !', {
+                         toastClass: 'tostr-tost custom-toast-error',
+                       });
+                     });
+                        this.getServiceMasterList();
                     
-    //         } else {
-    //             var m_dataUpdate = {
-    //                 serviceMasterUpdate: {
-    //                     groupId: 1,
+            } else {
+                var m_dataUpdate = {
+                    serviceMasterUpdate: {
+                        groupId: 1,
 
                         serviceShortDesc:
                             this._serviceMasterService.myform.get(
@@ -356,8 +351,8 @@ export class ServiceMasterComponent implements OnInit {
             TariffName: row.TariffName
         };
 
-    //     console.log(m_data);
-    //     this._serviceMasterService.populateForm(m_data);
+        console.log(m_data);
+        this._serviceMasterService.populateForm(m_data);
 
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent, {
             maxWidth: "80vw",
@@ -366,11 +361,11 @@ export class ServiceMasterComponent implements OnInit {
             // height: "100%",
         });
 
-    //     dialogRef.afterClosed().subscribe((result) => {
-    //         console.log("The dialog was closed - Insert Action", result);
-    //         this.getServiceMasterList();
-    //     });
-    // }
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            this.getServiceMasterList();
+        });
+    }
 
     onAdd() {
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent, {
