@@ -66,6 +66,10 @@ export class ServiceMasterService {
         );
     }
 
+    public getServiceMasterList_Pagn(Param) {
+        return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_ServiceList_Pagn", Param);
+      }
+
     public getGroupMasterCombo() {
         return this._httpClient.post(
             "Generic/GetByProc?procName=Retrieve_GroupMasterForCombo",
