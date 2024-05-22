@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar dynamicTableHeight>
     <!-- HEADER -->
     <mat-toolbar class="top-header accent ">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -230,13 +230,13 @@
                                     [ngClass]="{'hide':!(DSServiceMasterList!=null && DSServiceMasterList.data.length==0)}"></mat-footer-row>
 
                             </mat-table>
-
-
-
-
                         </div>
-                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-                            showFirstLastButtons></mat-paginator>
+                        <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12" [length]="resultsLength"
+                        showFirstLastButtons (page)="getServiceMasterList()">
+                    </mat-paginator>
+
+                        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                            showFirstLastButtons></mat-paginator> -->
                     </div>
 
 
