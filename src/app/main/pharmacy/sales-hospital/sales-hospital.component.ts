@@ -1,7 +1,6 @@
 import { ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, HostListener, Inject, Injector, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations';
-import { SalesService } from './sales.service';
+import { fuseAnimations } from '@fuse/animations'; 
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
@@ -9,8 +8,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
 import { difference, forEach, parseInt } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
-import { SalePopupComponent } from './sale-popup/sale-popup.component';
+import Swal from 'sweetalert2'; 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { ConditionalExpr } from '@angular/compiler';
@@ -34,20 +32,22 @@ import { OnlinePaymentService } from 'app/main/shared/services/online-payment.se
 import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { MatDrawer } from '@angular/material/sidenav';
 import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
-import { ConcessionReasonMasterModule } from 'app/main/setup/billing/concession-reason-master/concession-reason-master.module';
-import { SubstitutesComponent } from './substitutes/substitutes.component';
-import { D } from '@angular/cdk/keycodes';
-import { PrescriptionComponent } from './prescription/prescription.component';
+import { ConcessionReasonMasterModule } from 'app/main/setup/billing/concession-reason-master/concession-reason-master.module'; 
+import { D } from '@angular/cdk/keycodes'; 
+import { SubstitutesComponent } from '../sales/substitutes/substitutes.component';
+import { SalesHospitalService } from './sales-hospital.service';
+import { PrescriptionComponent } from '../sales/prescription/prescription.component';
+import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
 
 @Component({
-  selector: 'app-sales',
-  templateUrl: './sales.component.html',
-  styleUrls: ['./sales.component.scss'],
+  selector: 'app-sales-hospital',
+  templateUrl: './sales-hospital.component.html',
+  styleUrls: ['./sales-hospital.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 
 })
-export class SalesComponent implements OnInit {
+export class SalesHospitalComponent implements OnInit {
 
   @ViewChild('Quantity') Quantity: ElementRef;
   @ViewChild('discAmount') discAmount: ElementRef;
@@ -341,7 +341,7 @@ export class SalesComponent implements OnInit {
 
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
-    public _salesService: SalesService,
+    public _salesService: SalesHospitalService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
@@ -4071,4 +4071,5 @@ export class Printsal {
 function Consructur() {
   throw new Error('Function not implemented.');
 }
+
 

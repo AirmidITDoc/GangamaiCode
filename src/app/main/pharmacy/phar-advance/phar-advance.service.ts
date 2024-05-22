@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -45,14 +45,21 @@ export class PharAdvanceService {
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
       RegNo: [''],
-      F_Name: [''],
-      L_Name: [''],
+      F_Name: ['',[
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      L_Name: ['',[
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
       AdvanceNo: ['']
     });
    }
    CreaterNewRefundForm(){
     return this._formbuilder.group({
-
+      RegID: [''],
+      Op_ip_id: ['1'],
+      advanceAmt:[''],
+      comment:['']
     });
    }
 

@@ -729,7 +729,8 @@
                             <ng-container *ngIf="selectedPaymnet1 != 'cash'">
                                 <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label>Reference Number</mat-label>
-                                    <input matInput formControlName="referenceNo1" required>
+                                    <input matInput formControlName="referenceNo1" required #Reference
+                                    (keypress)="keyPressCharater($event)">
                                 </mat-form-field>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex="16%" *ngIf="UpiFlag1">

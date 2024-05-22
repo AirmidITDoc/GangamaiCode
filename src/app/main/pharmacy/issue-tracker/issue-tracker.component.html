@@ -1,5 +1,4 @@
-<p>PharmacyClearance works</p>
-<!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
 
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -84,7 +83,16 @@
                                 </div>
 
                                  <mat-table #table class="table1" matSort [dataSource]="dsIssueTracker"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;"> 
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                    <!-- <ng-container matColumnDef="IssueTrackerId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Issue Id
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IssueTrackerId}}
+                                        </mat-cell>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="IssueRaisedDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -128,7 +136,15 @@
                                             {{contact.UploadImagePath}}
                                            
                                         </mat-cell>
-                                    </ng-container> 
+                                    </ng-container>
+
+                                    <!-- <ng-container matColumnDef="ImageName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Image Name </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ImageName}}
+                                        </mat-cell>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="IssueStatus">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -203,24 +219,12 @@
                                     showFirstLastButtons>
                                 </mat-paginator> 
                             </div>
-                        </div>
-
-
-
-
+                        </div> 
                     </div>
-                </div>
-
-
+                </div> 
             </div>
-        </div>
-
-
+        </div> 
     </div>
 </div>
 
-
-
-
-
-  -->
+ 

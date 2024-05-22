@@ -1,0 +1,58 @@
+
+.footer-navigation-container {
+    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    float: right;
+  }
+  .footer-btn {
+    width: 80px;
+    font-size: 16px;
+    font-weight: 700px;
+    padding: 10px;
+    color:  rgb(247, 97, 97);
+    border-radius: 16px;
+    background-color:white;
+    border: 1px solid rgb(247, 97, 97);
+    cursor: pointer;
+  }
+  .footer-btn:hover{
+    background-color: rgb(247, 97, 97);
+    color: white;
+   
+  }
+  .custom-input .mat-input-element {
+    height: 150px;
+  }  
+  .inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.file-lable {
+    cursor: pointer;
+    background-color: #6e91f0;
+    padding: 10px;
+    color: white;
+    // border-radius: 5px;
+    height: 38px;
+    
+}
+.file-lable {
+    cursor: pointer;
+    background-color: #6e91f0;
+    padding: 10px;
+    color: white;
+    // border-radius: 5px;
+    height: 38px;
+}
+  
+  .img-container {
+      display: flex;
+      flex-direction: row;
+  
+  }
+  

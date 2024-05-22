@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OPSearhlistService } from '../op-searhlist.service';
@@ -259,25 +259,25 @@ export class OpPaymentNewComponent implements OnInit {
     return this.formBuilder.group({
       paymentType1: [],
       amount1: [this.netPayAmt],
-      referenceNo1: [],
+      referenceNo1: ['', [Validators.pattern('^[0-9]{12}$')]],
       bankName1: [],
       regDate1: [(new Date()).toISOString()],
 
       paymentType2: [],
       amount2: [],
-      referenceNo2: [],
+      referenceNo2: ['', [Validators.pattern('^[0-9]{12}$')]],
       bankName2: [],
       regDate2: [(new Date()).toISOString()],
 
       paymentType3: [],
       amount3: [],
       bankName3: [],
-      referenceNo3: [],
+      referenceNo3: ['', [Validators.pattern('^[0-9]{12}$')]],
       regDate3: [(new Date()).toISOString()],
 
       paymentType4: [],
       amount4: [],
-      referenceNo4: [],
+      referenceNo4: ['', [Validators.pattern('^[0-9]{12}$')]],
       bankName4: [],
       regDate4: [(new Date()).toISOString()],
 
@@ -285,7 +285,7 @@ export class OpPaymentNewComponent implements OnInit {
       amount5: [],
       bankName5: [],
       regDate5: [(new Date()).toISOString()],
-      referenceNo5: [],
+      referenceNo5: ['', [Validators.pattern('^[0-9]{12}$')]],
 
       paidAmountController: [],
       balanceAmountController: []
@@ -297,7 +297,17 @@ export class OpPaymentNewComponent implements OnInit {
       // referenceNo6: []
     });
   }
-
+  @ViewChild('Reference') Reference: ElementRef;
+ 
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d{0,12}$/.test(inp)) {
+      return true;
+    } else {
+     this.patientDetailsFormGrp.get('referenceNo1').setValue('')
+      return false;
+    }
+  }
   onChangePaymnt(event: any) {
     
     let value = event.value;
