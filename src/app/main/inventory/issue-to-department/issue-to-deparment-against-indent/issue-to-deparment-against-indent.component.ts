@@ -21,6 +21,7 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   displayedColumns: string[] = [
+   // 'CheckBox',
     'IndentNo',
     'IndentDate',
     'FromStoreName',

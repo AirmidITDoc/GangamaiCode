@@ -13,8 +13,8 @@
                         OPD BILLING
                     </span>
 
-                    <span  style="margin-left:600px;" hidden><app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>  
-                    <span class="material-icons" style="cursor: pointer; margin-left: 1424px; color: #fff;" (click)="onClose()">
+                    <!-- <span  style="margin-left:400px;" hidden><app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>   -->
+                    <span class="material-icons" style="cursor: pointer; margin-left: 1100px; color: #fff;" (click)="onClose()">
                         close
                     </span>
                 </div>
@@ -86,27 +86,27 @@
                                                         <span
                                                             class="patient-col-value">{{PatientName}}</span>
                                                     </div>
-                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                        <span class="patient-col-key">Patient Category</span>
+                                                    <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="15%">
+                                                        <span class="patient-col-key">RegId</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">Staff</span>
+                                                        <span class="patient-col-value">{{RegId}}</span>
                                                     </div>
-                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
                                                         <span class="patient-col-key">OPDNo</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vOPDNo}}</span>
+                                                        <span class="patient-col-value">{{vOPIPId}}</span>
                                                     </div>
-                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
                                                         <span class="patient-col-key">Tariff</span>
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{Tarrifname}}</span>
                                                     </div>
-                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                                         <span class="patient-col-key ">Age</span>
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{AgeYear}}</span>
-                                                    </div>
-                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    </div> -->
+                                                    <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
                                                         <span class="patient-col-key">Company</span>
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{CompanyName}}</span>
@@ -116,7 +116,7 @@
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{PatientType}}</span>
                                                     </div> -->
-                                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                    <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
                                                         <span class="patient-col-key">Doctor</span>
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{Doctorname}}</span>
@@ -182,7 +182,7 @@
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Qty</mat-label>
-                                                <input matInput [(ngModel)]="b_qty" name="bQty" #qty
+                                                <input matInput [(ngModel)]="b_qty" name="bQty" #qty   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                                     (keyup)="calculateTotalAmt()" formControlName="qty" required
                                                     (keydown)="onEnterqty($event)">
                                                 <mat-error
@@ -223,7 +223,7 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <mat-form-field appearance="outline">
+                                            <!-- <mat-form-field appearance="outline">
                                                 <mat-label>Disc %</mat-label>
                                                 <input matInput [(ngModel)]="v_ChargeDiscPer" name="v_ChargeDiscPer"
                                                     #disper (keyup)="calculatePersc()" formControlName="ChargeDiscPer"
@@ -231,7 +231,19 @@
                                                 <mat-error
                                                     *ngIf="registeredForm.get('ChargeDiscPer').invalid && registeredForm.get('ChargeDiscPer').touched">
                                                     Percentage is Number</mat-error>
+                                            </mat-form-field> -->
+
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Disc %</mat-label>
+                                                <input matInput placeholder="Percentage" formControlName="ChargeDiscPer"
+                                                    [ngModel]="v_ChargeDiscPer" autocomplete="off"  #disper 
+                                                    (keydown)="onEnterdiscper($event)" (keyup)="calculatePersc()" onlyNumber
+                                                    maxlength="3"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                    (keypress)="keyPressAlphanumeric($event)">
                                             </mat-form-field>
+
+
 
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Disc Amt</mat-label>
@@ -457,7 +469,7 @@
                                                 FinalAmt is required</mat-error>
                                         </mat-form-field>
 
-                                        <mat-form-field class="Consession-field" appearance="outline" fxFlex>
+                                        <!-- <mat-form-field class="Consession-field" appearance="outline" fxFlex>
                                             <mat-label>Disc(%)</mat-label>
                                             <input matInput [(ngModel)]="b_concessionDiscPer"
                                                 formControlName="concesDiscPer" name="b_concessionDiscPer"
@@ -465,7 +477,19 @@
                                             <mat-error
                                                 *ngIf="BillingForm.get('concesDiscPer').invalid && BillingForm.get('concesDiscPer').touched">
                                                 Percentage is Number</mat-error>
+                                        </mat-form-field> -->
+
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Disc %</mat-label>
+                                            <input matInput placeholder="Percentage" formControlName="concesDiscPer"
+                                                [ngModel]="b_concessionDiscPer" autocomplete="off"  #disper 
+                                                 (keyup)="calcDiscPersonTotal()" onlyNumber
+                                                maxlength="3"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                (keypress)="keyPressAlphanumeric($event)">
                                         </mat-form-field>
+
 
                                         <mat-form-field class="Consession-field" appearance="outline" fxFlex>
                                             <mat-label>Disc Amt</mat-label>

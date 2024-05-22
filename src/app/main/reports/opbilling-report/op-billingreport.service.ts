@@ -44,6 +44,18 @@ export class OpBillingreportService {
     return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
   }
   
+  public getOpRefundview(RefundId){
+    return this._httpClient.get("OutPatient/view-OPRefundofBill?RefundId=" + RefundId);
+  }
 
+  public getOPIPBillSummary(BillNo){
+    return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
+  }
+  public getOPcreditBill(BillNo){
+    return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
+  }
+
+  
+  
  
   }

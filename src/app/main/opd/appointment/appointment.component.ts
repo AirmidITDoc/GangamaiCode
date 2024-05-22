@@ -46,6 +46,7 @@ import { ThisReceiver } from "@angular/compiler";
 import { ToastrService } from "ngx-toastr";
 import { NewOPBillingComponent } from "../OPBilling/new-opbilling/new-opbilling.component";
 import { Table } from "jspdf-autotable";
+import { invalid } from "moment";
 
 export class DocData {
   doc: any;
@@ -233,10 +234,30 @@ export class AppointmentComponent implements OnInit {
   vPhoneFlage = 0;
   vPhoneAppId: any = 0;
   vOPDNo: any = 0;
-  vTariffId=3;
+  vTariffId=0;
 
   VisitFlagDisp: boolean = false;
   DoctorId: any;
+  AdList: boolean = false;
+  chkprint: boolean = false;
+
+
+  vPrefixID: any = 0;
+  vMaritalStatusId: any = 0;
+  vReligionId: any = 0;
+  vAreaId: any = 0;
+  vCityId: any = 0;
+
+  vPatientTypeID: any = 0;
+  vTariff: any = 0;
+  vDoctorId: any = 0;
+  vDoctorID: any = 0;
+  vDepartmentid: any = 0;
+  vCompanyId: any = 0;
+  vSubCompanyId: any = 0;
+  vadmittedDoctor1: any = 0;
+ 
+
   @ViewChild('attachments') attachment: any;
 
   imageForm = new FormGroup({
@@ -400,7 +421,7 @@ export class AppointmentComponent implements OnInit {
 
     const dialogRef = this._matDialog.open(CrossConsultationComponent,
       {
-        maxWidth: '85vw',
+        maxWidth: '75vw',
         height: '400px', width: '100%',
         data: contact,
 
@@ -674,7 +695,9 @@ export class AppointmentComponent implements OnInit {
       PrefixID: '',
       FirstName: ['', [
         Validators.required,
-        Validators.pattern("^[a-zA-Z._ -]+$"),
+        Validators.maxLength(50),
+        // Validators.pattern("^[a-zA-Z._ -]*$"),
+        Validators.pattern('^[a-zA-Z () ]*$')
       ]],
       MiddleName: ['', [
       ]],
@@ -698,7 +721,9 @@ export class AppointmentComponent implements OnInit {
       Validators.minLength(10),
       Validators.maxLength(10),]],
       AadharCardNo: [''],
-      PanCardNo: ["", Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")],
+      PanCardNo: ["", [Validators.pattern("/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/"),
+      Validators.minLength(10),
+      Validators.maxLength(10)]],
       MaritalStatusId: '',
       ReligionId: '',
       AreaId: '',
@@ -714,33 +739,37 @@ export class AppointmentComponent implements OnInit {
     return this.formBuilder.group({
       HospitalID: '',
       UnitId: '',
-      PatientTypeID: '',
-      PatientTypeId: '',
+      PatientTypeID: ['', [
+        Validators.required]],
+      // PatientTypeId: '',
       PatientType: '',
-      TariffId: '',
+      TariffId: ['', [
+        Validators.required]],
       CompanyId: '',
       SubCompanyId: '',
-      DoctorId: '',
-      DoctorID: '',
-      DepartmentId: '',
-      Departmentid: '',
+      // DoctorId: '',
+      DoctorID:  ['', [
+        Validators.required]],
+      // DepartmentId: '',
+      Departmentid: ['', [
+        Validators.required]],
       DoctorIdOne: '',
       DoctorIdTwo: '',
       VisitId: '',
-      PrefixId: '',
-      RegNoWithPrefix: '',
-      PatientName: '',
+      // PrefixId: '',
+      // RegNoWithPrefix: '',
+      // PatientName: '',
       VisitDate: '',
       VisitTime: '',
       HospitalId: '',
       HospitalName: '',
       OPDNo: '',
-      TariffName: '',
-      ConsultantDocId: '',
+      // TariffName: '',
+      // ConsultantDocId: '',
       RefDocId: '',
-      Doctorname: '',
-      RefDocName: '',
-      ClassId: '',
+      // Doctorname: '',
+      // RefDocName: '',
+      // ClassId: '',
       PurposeId: ''
     });
   }
@@ -894,7 +923,7 @@ export class AppointmentComponent implements OnInit {
 
   }
   onEdit(row) {
-    debugger
+    
     console.log(row)
     let Query = "Select * from Registration where  RegId=" + row.RegId + " ";
     this._AppointmentSreviceService.getRegIdDetail(Query).subscribe(data => {
@@ -902,20 +931,32 @@ export class AppointmentComponent implements OnInit {
       console.log(this.registerObj);
     });
 
-    console.log(row)
+    
     debugger
+   this.registerObj["VisitId"]=row.VisitId;
+   console.log(this.registerObj)
+    this.EditRegistration();
+  }
+
+  EditRegistration(){
+    this.advanceDataStored.storage = new AdvanceDetailObj(this.registerObj);
+    console.log(this.registerObj)
+    this._registrationService.populateFormpersonal(this.registerObj);
+
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "85vw",
-        height: "550px",
+        height: "450px",
         width: "100%",
         data: {
           registerObj: this.registerObj,
-          Submitflag:true
+          Submitflag:false
         },
       }
     );
-    // this.getSelectedObj(row);
+    console.log(this.registerObj)
+    this.getVisitList1();
+    // this.viewgetPatientAppointmentReportPdf(this.registerObj, true);
   }
 
   AppointmentCancle(contact){
@@ -1505,8 +1546,7 @@ export class AppointmentComponent implements OnInit {
     this.registerObj = obj;
     this.PatientName = obj.PatientName;
     this.RegId = obj.RegId;
-    console.log(obj.AgeDay )
-    console.log(obj.AgeMonth )
+   
     this.onChangeDateofBirth(this.registerObj.DateofBirth)
     this.setDropdownObjs();
 
@@ -1547,6 +1587,8 @@ export class AppointmentComponent implements OnInit {
 
   onSave() {
     //
+
+
     if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
 
       if (this.searchFormGroup.get('regRadio').value == "registration") {
@@ -1560,9 +1602,9 @@ export class AppointmentComponent implements OnInit {
       }
 
     }
-
-
   }
+
+  
 
 
 
@@ -1923,6 +1965,7 @@ debugger
           width: "70%",
           data: {
             registerObj: m_data2,
+            FormName:"Appointment"
           },
         }
       );
@@ -1945,6 +1988,7 @@ debugger
         width: "70%",
         data: {
           registerObj: m_data3,
+          FormName:"Appointment"
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
@@ -2069,8 +2113,7 @@ debugger
   }
 
 
-  AdList: boolean = false;
-  chkprint: boolean = false;
+ 
   viewgetPatientAppointmentReportPdf(obj, Pflag) {
     this.chkprint = true;
     let VisitId;
@@ -2481,9 +2524,11 @@ debugger
 
   Billpayment(contact) {
     let xx = {
-      RegNo: contact.RegId,
-      // RegId: contact.RegId,
-      AdmissionID: contact.VisitId,
+      RegId: contact.RegId,
+      OPD_IPD_ID: contact.OPD_IPD_ID,
+      
+      RegNo:contact.RegNo,
+      VisitId: contact.VisitId,
       PatientName: contact.PatientName,
       Doctorname: contact.Doctorname,
       AdmDateTime: contact.AdmDateTime,
@@ -2571,11 +2616,22 @@ debugger
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
 
 
-
-  public onEnterprefix(event): void {
+  public onEnterprefix(event, value): void {
+    debugger
     if (event.which === 13) {
-      this.fname.nativeElement.focus();
+
+      console.log(value)
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Valid Prefix.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else {
+        this.fname.nativeElement.focus();
+      }
     }
+
+
   }
   public onEnterfname(event): void {
     if (event.which === 13) {
@@ -2677,12 +2733,19 @@ debugger
     }
   }
 
-  public onEntercity(event): void {
+  public onEntercity(event,value): void {
     if (event.which === 13) {
-      // if (this.hname) this.hname.focus();
-
+        
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid City.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
       this.mstatus.nativeElement.focus();
+
     }
+  }
   }
 
   public onEnterhname(event): void {
@@ -2693,32 +2756,59 @@ debugger
   }
 
 
-  public onEnterptype(event): void {
+  public onEnterptype(event,value): void {
     if (event.which === 13) {
-     this.tariff.nativeElement.focus()
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid PType.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
+      this.tariff.nativeElement.focus()
 
     }
   }
+  }
 
-  public onEnterptariff(event): void {
+  public onEnterptariff(event,value): void {
     if (event.which === 13) {
-      // if(this.dept) this.dept.focus();
-      this.dept.nativeElement.focus();
+   
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Valid Tariff.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else {
+        this.dept.nativeElement.focus();
 
+      }
     }
   }
 
-  public onEnterdept(event): void {
+  public onEnterdept(event,value): void {
     if (event.which === 13) {
-      // if(this.deptdoc) this.deptdoc.focus();
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
       this.deptdoc.nativeElement.focus();
     }
   }
-  public onEnterdeptdoc(event): void {
+  }
+  public onEnterdeptdoc(event,value): void {
     if (event.which === 13) {
-      // if(this.refdoc) this.refdoc.focus();
+   
+    if (value == undefined) {
+      this.toastr.warning('Please Enter Valid Doctor.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } else {
       this.refdoc.nativeElement.focus();
     }
+  }
   }
 
   public onEnterrefdoc(event): void {
@@ -2940,6 +3030,7 @@ export class RegInsert {
   PanCardNo: string;
   currentDate = new Date();
   AdmissionID: any;
+  VisitId: any;
   WardId: any;
   /**
    * Constructor
@@ -2983,6 +3074,7 @@ export class RegInsert {
       this.AadharCardNo = RegInsert.AadharCardNo || "";
       this.PanCardNo = RegInsert.PanCardNo || '';
       this.AdmissionID = RegInsert.AdmissionID || 0;
+      this.VisitId = RegInsert.VisitId || 0;
       this.WardId = RegInsert.WardId || 0;
     }
   }

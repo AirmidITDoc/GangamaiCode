@@ -40,9 +40,9 @@ constructor(public _httpClient:HttpClient,
       RoomName: '',
       PatientType:'',
       patientstatus:'',
-      start: [''],
-      end: [''],
-      
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+
     });
   }
   
@@ -459,7 +459,10 @@ public getOPPatient(employee) {
   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
 }
 
+public getMLCCombo() {
 
+  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_MLCType", {})
+}
 
 public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
   
@@ -472,8 +475,10 @@ public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
     return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
   }
 
-
   
+  public getRegIdDetailforAdmission(data){
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
 }
 
 

@@ -74,7 +74,19 @@ const appRoutes: Routes = [
          path: "ip-addCharges", 
          loadChildren: () =>
          import("./ip-settlement/ip-settlement.module").then((m) => m.IPSettlementModule),
-        }
+        },
+        {
+            path: "browserefundofbill",
+            loadChildren: () =>
+            import("./Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.module").then((m) => m.IPBrowseRefundofBillModule),
+               
+        },
+        {
+            path: "browserefundofadvance",
+            loadChildren: () =>
+            import("./Refund/ip-refund/ip-browse-refundof-advance/ip-browse-refundof-advance.module").then((m) => m.IPBrowseRefundofAdvanceModule),
+               
+        },
 
 //     {
 //         path: "viewpathologyreport", 

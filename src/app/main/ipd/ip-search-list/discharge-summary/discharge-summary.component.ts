@@ -59,6 +59,7 @@ export class DischargeSummaryComponent implements OnInit {
 
   menuActions: Array<string> = [];
   vAdmissionId:any=0;
+  vDischargeId:any=0;
 
   constructor(public _IpSearchListService: IPSearchListService,
     public _matDialog: MatDialog,
@@ -88,10 +89,20 @@ export class DischargeSummaryComponent implements OnInit {
     this.getDoctorList1();
     this.getDoctorList2();
     this.getDoctorList3();
-
+    this.getdischargeIdbyadmission();
     
   }
+  getdischargeIdbyadmission(){
+    let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
+    this._IpSearchListService.getDischargeId(Query).subscribe(data => {
+      this.registerObj = data[0];
+      console.log(this.registerObj);
+      this.vDischargeId=this.registerObj.DischargeId
 
+
+    });
+
+  }
 
   // showDischargeSummaryForm(): FormGroup {
   //   return this._formBuilder.group({
@@ -324,7 +335,7 @@ export class DischargeSummaryComponent implements OnInit {
       var m_data = {
         "updateIPDDischargSummary": {
           "DischargesummaryId":this.DischargesumForm.get("DischargesummaryId").value || "0",
-          "DischargeId": this.DischargesumForm.get("DischargeId").value || "0",
+          "DischargeId": this.vDischargeId,
           "History": this.DischargesumForm.get("History").value || "",
           "Diagnosis": this.DischargesumForm.get("Diagnosis").value || "",
           "Investigation": this.DischargesumForm.get("Investigation").value || "",
@@ -354,7 +365,7 @@ export class DischargeSummaryComponent implements OnInit {
             Swal.fire('Congratulations !', 'Discharge Summary updated Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 this._matDialog.closeAll();
-                this.viewgetDischargesummaryPdf(response);
+                this.viewgetDischargesummaryPdf(this.vAdmissionId,);
               }
             });
           } else {
@@ -369,7 +380,7 @@ export class DischargeSummaryComponent implements OnInit {
         "insertIPDDischargSummary": {
           "DischargesummaryId": 0,// this.DischargesumForm.get("DischargesummaryId").value || "0",
           "AdmissionId":this.vAdmissionId,// this.DischargesumForm.get("AdmissionId").value || "0",
-          "DischargeId": this.DischargesumForm.get("DischargeId").value || "0",
+          "DischargeId": this.vDischargeId,
           "History": this.DischargesumForm.get("History").value || "",
           "Diagnosis": this.DischargesumForm.get("Diagnosis").value || "",
           "Investigation": this.DischargesumForm.get("Investigation").value || "",
@@ -399,7 +410,7 @@ export class DischargeSummaryComponent implements OnInit {
             Swal.fire('Congratulations !', 'Discharge Summary Save Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 this._matDialog.closeAll();
-                this.viewgetDischargesummaryPdf(response);
+                this.viewgetDischargesummaryPdf(this.vAdmissionId,);
               }
             });
           }
@@ -482,6 +493,8 @@ export class DischargeSummary{
   IsNormalOrDeath:any;  
   DischargesummaryId:any;  
   Pathology:any;
+  
+  
   constructor(DischargeSummary){
     this.DischargesummaryId=DischargeSummary.DischargesummaryId || 0,
     this.AdmissionId=DischargeSummary.AdmissionId || 0,

@@ -53,6 +53,13 @@ public getIPsettlementPrint(PaymentId){
   public getAdmittedpatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
+
+  public getBankMasterCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
+}
+
+
+
 fieldValidations() {
   return [
     {

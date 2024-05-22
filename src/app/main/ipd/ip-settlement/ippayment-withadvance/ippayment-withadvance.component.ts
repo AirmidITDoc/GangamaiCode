@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -7,13 +7,18 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { IPBrowseBillService } from '../../ip-bill-browse-list/ip-browse-bill.service';
 import { IPSettlementService } from '../ip-settlement.service';
 import { InvalidDataValidator } from 'app/main/shared/validators/invalide-validators';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { fuseAnimations } from '@fuse/animations';
 // import { InvalidDataValidator } from 'app/shared/validators/invalide-validators';
 
 
 @Component({
   selector: 'app-ippayment-withadvance',
   templateUrl: './ippayment-withadvance.component.html',
-  styleUrls: ['./ippayment-withadvance.component.scss']
+  styleUrls: ['./ippayment-withadvance.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class IPpaymentWithadvanceComponent implements OnInit {
 
@@ -30,6 +35,12 @@ export class IPpaymentWithadvanceComponent implements OnInit {
 
   BillDate: any;
   PatientName: any;
+  RegID: any;
+  OPD_IPD_Id: any;
+  PBillNo: any;
+  BillTime: any;
+
+
   paymentForm: FormGroup;
   advanceData: any;
   now: Date;
@@ -60,6 +71,28 @@ export class IPpaymentWithadvanceComponent implements OnInit {
   isLoading: string = '';
   dateTimeObj: any;
   AdvanceId: any;
+
+  BankNameList: any = [];
+  BankNameList1: any = [];
+  BankNameList2: any = [];
+
+//bANK filter
+public bankFilterCtrl: FormControl = new FormControl();
+public filteredBank: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+
+//cheque filter
+public chequebankFilterCtrl: FormControl = new FormControl();
+public filteredChequebank: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+
+//Card filter
+public cardbankFilterCtrl: FormControl = new FormControl();
+public filteredCardbank: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+private _onDestroy = new Subject<void>();
+
+
   displayedColumns = [
     'Date',
     'AdvanceNo',
@@ -79,10 +112,18 @@ export class IPpaymentWithadvanceComponent implements OnInit {
   ) {
     this.advanceData = data;
     console.log('this.advanceData===', this.advanceData);
+    this.BillDate= this.advanceData.advanceObj.BillDate;
+    this.RegID= this.advanceData.advanceObj.RegID;
+    this.OPD_IPD_Id= this.advanceData.advanceObj.OPD_IPD_Id;
+    this.PBillNo= this.advanceData.advanceObj.PBillNo;
+    this.BillTime= this.advanceData.advanceObj.BillTime;
+
+
     if (this.advanceData.FromName == "IP-Bill") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       // this.cashAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       this.paidAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
+      this.PatientName = this.advanceData.advanceObj.PatientName;
       this.getBalanceAmt();
     }
     debugger;
@@ -105,6 +146,30 @@ export class IPpaymentWithadvanceComponent implements OnInit {
     this.createForm();
     this.getAdvcanceDetails(false);
     console.log(this.authServie.currentUserValue);
+
+
+    this.getBankNameList();
+    this.getBankNameList1();
+    this.getBankNameList2();
+
+    
+    this.bankFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterBank();
+      });
+
+    this.chequebankFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filtercardbank();
+      });
+
+    this.cardbankFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterchequebank();
+      });
   }
 
   createForm() {
@@ -140,9 +205,103 @@ export class IPpaymentWithadvanceComponent implements OnInit {
     });
   }
 
+
+  // bank filter code
+  private filterBank() {
+
+    if (!this.BankNameList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.bankFilterCtrl.value;
+    if (!search) {
+      this.filteredBank.next(this.BankNameList.slice());
+      return;
+    }
+    else {
+      search = search.toLowerCase();
+    }
+    // filter
+    this.filteredBank.next(
+      this.BankNameList.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+
+  // bank filter code
+  private filtercardbank() {
+
+    if (!this.BankNameList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.chequebankFilterCtrl.value;
+    if (!search) {
+      this.filteredChequebank.next(this.BankNameList2.slice());
+      return;
+    }
+    else {
+      search = search.toLowerCase();
+    }
+    // filter
+    this.filteredChequebank.next(
+      this.BankNameList2.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+
+  // bank filter code
+  private filterchequebank() {
+
+    if (!this.BankNameList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.cardbankFilterCtrl.value;
+    if (!search) {
+      this.filteredCardbank.next(this.BankNameList1.slice());
+      return;
+    }
+    else {
+      search = search.toLowerCase();
+    }
+    // filter
+    this.filteredCardbank.next(
+      this.BankNameList1.filter(bank => bank.BankName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+
+
+  getBankNameList() {
+    this.ipSearchService.getBankMasterCombo().subscribe(data => {
+      this.BankNameList = data;
+      this.filteredBank.next(this.BankNameList.slice());
+
+
+    });
+  }
+
+  getBankNameList1() {
+    this.ipSearchService.getBankMasterCombo().subscribe(data => {
+      this.BankNameList1 = data;
+      this.filteredCardbank.next(this.BankNameList1.slice());
+    });
+  }
+
+
+  getBankNameList2() {
+    this.ipSearchService.getBankMasterCombo().subscribe(data => {
+      this.BankNameList2 = data;
+      this.filteredChequebank.next(this.BankNameList2.slice());
+    });
+  }
+
+
   getAdvcanceDetails(isReset?: any) {
     debugger
-    this.advanceData.advanceObj.OPD_IPD_Id=4;
+    // checking 
+            this.advanceData.advanceObj.OPD_IPD_Id;//=4;
     this.dataSource.data = [];
     this.isLoading = 'loading';
     let Query = "select AdvanceDetailID,convert(Char(10),Date,103)as Date,AdvanceId,OPD_IPD_Id,AdvanceAmount,UsedAmount,BalanceAmount,RefundAmount from AdvanceDetail where OPD_IPD_Id=" + this.advanceData.advanceObj.OPD_IPD_Id + ""
@@ -374,11 +533,11 @@ export class IPpaymentWithadvanceComponent implements OnInit {
     Paymentobj['CashPayAmount'] = this.cashAmt;
     Paymentobj['ChequePayAmount'] = this.chequeAmt;
     Paymentobj['ChequeNo'] = this.chequeNo;
-    Paymentobj['BankName'] = this.chequeBankName;
+    Paymentobj['BankName'] =this.paymentForm.get('chequeBankNameController').value.BankName || '';// this.chequeBankName;
     Paymentobj['ChequeDate'] = this.dateTimeObj.date;
     Paymentobj['CardPayAmount'] = this.cardAmt;
     Paymentobj['CardNo'] = this.cardNo;
-    Paymentobj['CardBankName'] = this.cardBankName;
+    Paymentobj['CardBankName'] = this.paymentForm.get('cardBankNameController').value.BankName || '';//this.cardBankName;
     Paymentobj['CardDate'] = this.dateTimeObj.date;
     Paymentobj['AdvanceUsedAmount'] = this.advanceAmt;
     Paymentobj['AdvanceId'] = this.AdvanceId,
@@ -395,7 +554,7 @@ export class IPpaymentWithadvanceComponent implements OnInit {
     Paymentobj['CompanyId'] = '0';
     Paymentobj['NEFTPayAmount'] = this.neftAmt;
     Paymentobj['NEFTNo'] = this.neftNo;
-    Paymentobj['NEFTBankMaster'] = this.neftBankName;
+    Paymentobj['NEFTBankMaster'] = this.paymentForm.get('neftBankNameController').value.BankName || '';//this.neftBankName;
     Paymentobj['NEFTDate'] = this.dateTimeObj.date;
     Paymentobj['PayTMAmount'] = this.paytmAmt;
     Paymentobj['PayTMTranNo'] = this.paytmTransNo;
@@ -427,8 +586,8 @@ export class IPpaymentWithadvanceComponent implements OnInit {
     let IsSubmit = {
       "submitDataPay": submitDataPay,
       "submitDataAdvancePay": Advancesarr,
-      "PaidAmt":this.paymentForm.get('paidAmountController').value,
-      "BalAmt" :this.paymentForm.get('balanceAmountController').value,
+      "PaidAmt": this.paymentForm.get('paidAmountController').value,
+      "BalAmt" : this.paymentForm.get('balanceAmountController').value,
       "IsSubmitFlag": true,
       "Iscredited": this.paymentForm.get('Iscredited').value
     }
@@ -482,13 +641,33 @@ export class IPpaymentWithadvanceComponent implements OnInit {
       Paymentobj['BalanceAmt'] = ''//this.paymentForm.get('balanceAmountController').value;
 
     const ipPaymentInsert = new IpPaymentInsert(Paymentobj);
+
+    let Advancesarr = [];
+
+    this.dataSource.data.forEach((element) => {
+      let Advanceobj = {};
+      console.log(element);
+      Advanceobj['AdvanceNo'] = this.dataSource.data[0].AdvanceId;
+      Advanceobj['AdvanceDetailID'] = this.dataSource.data[0].AdvanceDetailID;
+      Advanceobj['AdvanceAmount'] = this.dataSource.data[0].AdvanceAmount;
+      Advanceobj['UsedAmount'] = this.dataSource.data[0].UsedAmount;
+      Advanceobj['Date'] = this.dataSource.data[0].Date;
+      Advanceobj['BalanceAmount'] = this.dataSource.data[0].BalanceAmount;
+      Advanceobj['RefundAmount'] = this.dataSource.data[0].RefundAmount;
+      Advancesarr.push(Advanceobj);
+    });
+
+
     let submitDataPay1 = {
       ipPaymentInsert,
     };
     let IsSubmit = {
 
       "submitDataPay": submitDataPay1,
-      "IsSubmitFlag": false
+      "IsSubmitFlag": false,
+      "PaidAmt":0,// this.paymentForm.get('paidAmountController').value,
+      "BalAmt" : this.netPayAmt,//this.paymentForm.get('balanceAmountController').value,
+      "submitDataAdvancePay": Advancesarr,
     }
     this.dialogRef.close(IsSubmit);
   }

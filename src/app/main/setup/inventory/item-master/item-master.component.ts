@@ -1,13 +1,15 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { ItemFormMasterComponent } from "./item-form-master/item-form-master.component";
 import { ItemMasterService } from "./item-master.service";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatAccordion } from "@angular/material/expansion";
 import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { ToastrService } from "ngx-toastr";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
     selector: "app-item-master",
@@ -64,7 +66,8 @@ export class ItemMasterComponent implements OnInit {
     constructor(
         public _itemService: ItemMasterService,
         private _loggedService: AuthenticationService,
-        public _matDialog: MatDialog
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,
     ) { }
 
     ngOnInit(): void {
@@ -87,7 +90,7 @@ export class ItemMasterComponent implements OnInit {
     onSearch() {
         this.getItemMasterList();
     }
-
+    chargeslist:any=[];
     getItemMasterList() {
         var m_data = {
             ItemName:this._itemService.myformSearch.get("ItemNameSearch").value + "%" || "%",
@@ -95,9 +98,9 @@ export class ItemMasterComponent implements OnInit {
         };
         console.log(m_data)
         this._itemService.getItemMasterList(m_data).subscribe((data) => {
-                this.DSItemMasterList.data = data as ItemMaster[]; 
+                this.DSItemMasterList.data = data as ItemMaster[];  
                 this.DSItemMasterList.sort = this.sort;
-                this.DSItemMasterList.paginator = this.paginator;
+                this.DSItemMasterList.paginator = this.paginator; 
                 console.log(this.DSItemMasterList.data)
             },
             (error) => (this.isLoading = false)
@@ -159,6 +162,31 @@ export class ItemMasterComponent implements OnInit {
             this.getItemMasterList();
         });
     }
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
+    onDeactive(ItemID) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                let Query =
+                    "Update M_ItemMaster set Isdeleted=0 where ItemID=" +
+                    ItemID;
+                console.log(Query);
+                this._itemService
+                    .deactivateTheStatus(Query)
+                    .subscribe((data) => (this.msg = data));
+                this.getItemMasterList();
+            }
+            this.confirmDialogRef = null;
+        });
+    }
 
     onAdd() {
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
@@ -215,6 +243,7 @@ export class ItemMaster {
     DrugType :any;
     DrugTypeName :any;
     ItemCompnayId:any;
+    position:any;
     
     /**
      * Constructor

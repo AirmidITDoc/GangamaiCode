@@ -403,14 +403,12 @@
                                             showFirstLastButtons>
                                      </mat-paginator>
                                 </div>
-                            </div>
-                            <hr>
-                            <div matTooltip="Select Check Box  to enable this button!!"
-                              fxFlexAlign="start end">
-                                <button class="next-btn"  (click)="OnAddgrn()">OK</button>
-                                <button class="footer-btn" style="width: 100px;" (click)="onClose()"> PO Close</button>
-                            </div>
-                            
+                            </div> 
+                            <div class="sales-footer-buttons gap-8 " fxLayout="row" style="padding: 10px 50px 0px 120px;"
+                            matTooltip="Select Check Box  to enable this button!!" fxLayoutAlign="end">
+                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                <button class="btn btn-primary " (click)="OnAddgrn()">OK</button>
+                            </div> 
                         </div>
                        </form>
 

@@ -21,11 +21,14 @@
                     <div class="nav material2">
                         <div fxLayout="row" fxLayoutAlign="start none">
                             <div *ngFor="let item of QrData" fxLayout="column">
-                                <ngx-qrcode elementType="url" [value]="item.QrCodeData" [width]="250"
+                                <ngx-qrcode elementType="url" [value]="item.QrCodeData" [width]="80"
                                     errorCorrectionLevel="L" [alt]="item.QrCodeData">
                                 </ngx-qrcode>
-                                <div style="text-align: center;margin-top: -25px;font-size: 15px;margin-bottom: 10px">
+                                <div
+                                    style="text-align: center;font-size: 15px;margin-bottom: 10px;">
                                     ||{{item.QrCodeData}}||</div>
+                                <ngx-barcode [bc-value]="item.QrCodeData" [bc-display-value]="true"
+                                    width="100" height="60"></ngx-barcode>
                                 <div fxLayout="row">
                                     <mat-form-field appearance="outline">
                                         <mat-label>Qty</mat-label>
@@ -43,8 +46,8 @@
                                 <div fxLayout="row">
                                     <mat-form-field appearance="outline">
                                         <mat-label>Between Space (Space between 2 qr code in mm) </mat-label>
-                                        <input [(ngModel)]="item.Between" value="{{item.Between}}" matInput type="number"
-                                            autocomplete="off" required>
+                                        <input [(ngModel)]="item.Between" value="{{item.Between}}" matInput
+                                            type="number" autocomplete="off" required>
                                     </mat-form-field>
                                 </div>
                                 <div fxLayout="row">
@@ -55,20 +58,33 @@
                                     </mat-form-field>
                                 </div>
                             </div>
-                            <div fxLayout="row">
-                                <button class="next-btn" style="border-radius: 14px;height:45px" 
-                                    printSectionId="dvPrint" ngxPrint>Print</button>
-                            </div>
+                        </div>
+                        <div fxLayout="row">
+                            <button class="next-btn" style="border-radius: 14px;height:45px;width:125px;"
+                                printSectionId="dvPrint" ngxPrint>Print Qr Code</button>
+                            <br>
+                            <button class="next-btn" style="border-radius: 14px;height:45px;width:125px;"
+                                printSectionId="dvPrint1" ngxPrint>Print Barcode</button>
                         </div>
                         <div id="dvPrint" style="display: none;">
                             <div *ngFor="let obj of QrData" style="display: block;width: 100mm;">
-                                <div *ngFor="let item of [].constructor(obj.Qty); let i = index" style="display: inline-block;width: {{obj.Width}}mm;height: {{obj.Width}}mm;margin-left: {{obj.Between}}mm;margin-bottom: {{obj.Margin+1}}mm;">
+                                <div *ngFor="let item of [].constructor(obj.Qty); let i = index"
+                                    style="display: inline-block;width: {{obj.Width}}mm;height: {{obj.Width}}mm;margin-left: {{obj.Between}}mm;margin-bottom: {{obj.Margin+1}}mm;">
                                     <ngx-qrcode elementType="url" [value]="obj.QrCodeData"
                                         width="{{(obj.Width*3.78).toFixed(0)}}" errorCorrectionLevel="L">
                                     </ngx-qrcode>
                                     <!-- <div
                                         style="text-align: left;margin-left: 2mm;font-size: 10px;margin-bottom: {{obj.Margin}}mm;">
                                         ||{{obj.QrCodeData}}||</div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div id="dvPrint1" style="display: none;">
+                            <div *ngFor="let obj of QrData" style="display: block;width: 100mm;">
+                                <div *ngFor="let item of [].constructor(obj.Qty); let i = index"
+                                    style="display: inline-block;margin-left: {{obj.Between}}mm;margin-bottom: {{obj.Margin+1}}mm;">
+                                    <ngx-barcode [bc-value]="obj.QrCodeData" [bc-display-value]="true"
+                                        width="{{(obj.Width*3.78).toFixed(0)}}"></ngx-barcode>
                                 </div>
                             </div>
                         </div>

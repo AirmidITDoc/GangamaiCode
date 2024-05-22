@@ -116,7 +116,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="35%">
                                 <mat-label>ItemName</mat-label>
-                                <input type="text" name="ItemName" formControlName="ItemName" #itemid
+                                <input type="text" name="ItemName" formControlName="ItemName" #itemid [(ngModel)]="vItemName"
                                 placeholder="Item Name" matInput  (keydown)="onEnterItemName($event)" required>
                             </mat-form-field>
 
@@ -142,7 +142,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="5%">
                                 <mat-label>Disc %</mat-label>
-                                <input name="Disc" formControlName="Disc" matInput [(ngModel)]="vDis" name="Dis" #disc required 
+                                <input name="Disc" formControlName="Disc" matInput [(ngModel)]="vDis" name="Dis" #disc  
                                     (keydown)="onEnterDis($event)" type="text" OnlyNumber (keyup)="calculateDiscperAmount()">
                             </mat-form-field>
 
@@ -154,7 +154,7 @@
 
                             <mat-form-field appearance="outline" fxFlex="5%">
                                 <mat-label>GST%</mat-label>
-                                <input name="GST" formControlName="GST" matInput [(ngModel)]="vGST" name="GST" #gst readonly
+                                <input name="GST" formControlName="GST" matInput [(ngModel)]="vGST" name="GST" #gst  required
                                     (keydown)="onEnterGST($event)" type="text" OnlyNumber (keyup)="calculateDiscperAmount()">
                             </mat-form-field>
 

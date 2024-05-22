@@ -1,9 +1,14 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { OpeningBalanceService } from './opening-balance.service';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { NewOpeningBalanceComponent } from './new-opening-balance/new-opening-balance.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-opening-balance',
@@ -18,57 +23,49 @@ export class OpeningBalanceComponent {
     'No',
     'Date',
     'StoreName',
-    'AddedByName' 
+    'AddedByName' ,
+    'action'
   ];
   displayedColumns1:string[] = [
-    'action',
     'ItemName',
     'BatchNo',
     'ExpDate',
     'Qty',
     'PurRate',
     'MRP',
-    'GSTPer' 
-  ];
-  displayedColumnsNew :string[] = [
-    'action',
-    'Code',
-    'ItemName',
-    'BatchNo',
-    'ExpDate',
-    'BalQty',
-    'UnitRate',
-    'UnitMRP',
-    'GST' 
-  ];
+    'GSTPer'
+  ]; 
 
   sIsLoading: string = '';
   isLoading = true;
-  StoreList:any=[];
-  screenFromString = 'admission-form';
+  StoreList:any=[]; 
+  dateTimeObj: any;
 
-  dsOpeningBalnce=new MatTableDataSource<OpeningBalanceList>();
-  dsOpeningBalnce1=new MatTableDataSource<OpeningBalanceList1>();
+  dsOpeningBalnceList=new MatTableDataSource<OpeningBalanceList>();
+  dsOpeningBalItemDetList=new MatTableDataSource<OpeningBalanceItemList>();
 
-  dsOpeningBalNewList=new MatTableDataSource<NewOprningBal>();
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+  @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
   
   constructor(
     public _OpeningBalanceService:OpeningBalanceService,
     private _fuseSidebarService: FuseSidebarService,
-    private _loggedService: AuthenticationService,
+    private _loggedService: AuthenticationService, 
+    public _matDialog: MatDialog,
+    public datePipe: DatePipe,
   )
    {}
 
   ngOnInit(): void {
     this.gePharStoreList();
+    this.getOpeningBalList();
   }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-  dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
   gePharStoreList() {
@@ -80,10 +77,52 @@ export class OpeningBalanceComponent {
       this.StoreList = data;
       // console.log(this.StoreList);
       this._OpeningBalanceService.UseFormGroup.get('StoreId').setValue(this.StoreList[0]);
-      this._OpeningBalanceService.NewUseForm.get('StoreID').setValue(this.StoreList[0]);
     });
   }
-  
+  getOpeningBalList(){ 
+    var vdata={
+      'StoreId':this._loggedService.currentUserValue.user.storeId,
+      'From_Dt':this.datePipe.transform(this._OpeningBalanceService.UseFormGroup.get('startdate').value ,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      'To_Dt':this.datePipe.transform(this._OpeningBalanceService.UseFormGroup.get('enddate').value ,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    }
+    this._OpeningBalanceService.getOpeningBalList(vdata).subscribe(data =>{
+      this.dsOpeningBalnceList.data = data as OpeningBalanceList[];
+      console.log(this.dsOpeningBalnceList.data)
+      this.dsOpeningBalnceList.sort =this.sort;
+      this.dsOpeningBalnceList.paginator = this.paginator;
+      this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+  getOpeningBalItemDetList(Param){ 
+    var vdata={
+      'OpeningHId':Param.OpeningHId
+     }
+    this._OpeningBalanceService.getOpeningBalItemDetList(vdata).subscribe(data =>{
+      this.dsOpeningBalItemDetList.data = data as OpeningBalanceItemList[];
+      console.log(this.dsOpeningBalItemDetList.data)
+      this.dsOpeningBalItemDetList.sort =this.sort;
+      this.dsOpeningBalItemDetList.paginator = this.SecondPaginator;
+      this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+  NewOpeningBal() {
+    const dialogRef = this._matDialog.open(NewOpeningBalanceComponent,
+      {
+        maxWidth: "100%",
+        height: '90%',
+        width: '95%' 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+    //this.getGRNLit();
+  }
 }
 export class OpeningBalanceList{
   No:number;
@@ -100,7 +139,7 @@ export class OpeningBalanceList{
     }
   }
 }
-export class OpeningBalanceList1{
+export class OpeningBalanceItemList{
   ItemName:string;
   BatchNo:number;
   ExpDate:number;
@@ -109,42 +148,16 @@ export class OpeningBalanceList1{
   MRP:any;
   GSTPer:any;
 
-  constructor(OpeningBalanceList1){
+  constructor(OpeningBalanceItemList){
     {
-      this.BatchNo=OpeningBalanceList1.BatchNo || 0;
-      this.ExpDate=OpeningBalanceList1.ExpDate || 0;
-      this.Qty=OpeningBalanceList1.Qty || 0;
-      this.ItemName=OpeningBalanceList1.ItemName || "";
-      this.PurRate=OpeningBalanceList1.PurRate || 0;
-      this.MRP=OpeningBalanceList1.MRP || 0;
-      this.GSTPer=OpeningBalanceList1.GSTPer || 0;
+      this.BatchNo=OpeningBalanceItemList.BatchNo || 0;
+      this.ExpDate=OpeningBalanceItemList.ExpDate || 0;
+      this.Qty=OpeningBalanceItemList.Qty || 0;
+      this.ItemName=OpeningBalanceItemList.ItemName || "";
+      this.PurRate=OpeningBalanceItemList.PurRate || 0;
+      this.MRP=OpeningBalanceItemList.MRP || 0;
+      this.GSTPer=OpeningBalanceItemList.GSTPer || 0;
     }
   }
 }
-
-export class NewOprningBal{
-  ItemName:string;
-  Code:number;
-  ExpDate:number;
-  BatchNo:any;
-  BalQty:any;
-  UnitRate:any;
-  UnitMRP:any;
-  PurRate:any;
-  GST:any;
-
-  constructor(NewOprningBal){
-    {
-      this.Code=NewOprningBal.Code || 0;
-      this.ExpDate=NewOprningBal.ExpDate || 0;
-      this.BatchNo=NewOprningBal.BatchNo || 0;
-      this.ItemName=NewOprningBal.ItemName || "";
-      this.BalQty=NewOprningBal.BalQty || 0;
-      this.UnitRate=NewOprningBal.UnitRate || 0;
-      this.UnitMRP=NewOprningBal.UnitMRP || 0;
-      this.GST=NewOprningBal.GST || 0;
-      this.PurRate=NewOprningBal.PurRate || 0;
-     
-    }
-  }
-}
+ 

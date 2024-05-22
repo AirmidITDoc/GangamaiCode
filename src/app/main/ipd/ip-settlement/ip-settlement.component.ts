@@ -24,6 +24,7 @@ import * as converter from 'number-to-words';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
+import { IpPaymentwithAdvanceComponent } from '../ip-search-list/ip-paymentwith-advance/ip-paymentwith-advance.component';
 
 
 @Component({
@@ -39,14 +40,14 @@ export class IPSettlementComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   sIsLoading: string = '';
   selectedAdvanceObj: AdvanceDetailObj;
-  regId:any;
+  regId: any;
   screenFromString = 'OP-billing';
   reportPrintObj: ReportPrintObj;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   reportPrintObjList: IpBillBrowseList[] = [];
   currentDate = new Date();
-  FinalAmt:any;
+  FinalAmt: any;
   balanceamt: any;
   reportPrintbillObj: ReportPrintObj;
   reportPrintbillObjList: ReportPrintObj[] = [];
@@ -57,12 +58,12 @@ export class IPSettlementComponent implements OnInit {
   noOptionFound: boolean = false;
   isRegSearchDisabled: boolean = true;
   Regdisplay: boolean = false;
-  PatientName:any;
-  RegId:any;
+  PatientName: any;
+  RegId: any;
   isRegIdSelected: boolean = false;
-  vAdmissionID:any;
-  vCompanyName:any;
-  vTariif:any;
+  vAdmissionID: any;
+  vCompanyName: any;
+  vTariif: any;
 
   PatientHeaderObj: AdvanceDetailObj;
 
@@ -91,14 +92,14 @@ export class IPSettlementComponent implements OnInit {
     'BalanceAmt',
     'BillDate',
     'action',
-   
+
   ];
 
   hasSelectedContacts: boolean;
   constructor(public _IpSearchListService: IPSettlementService,
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    // @Inject(MAT_DIALOG_DATA) public data: any,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder,
@@ -111,20 +112,37 @@ export class IPSettlementComponent implements OnInit {
     this.searchFormGroup.get('RegId').enable();
     this.isRegSearchDisabled = false;
 
-    if (this.data) {
-      this.PatientHeaderObj = this.data.registerObj;
+    // if (this.data) {
+    // //  need to chk
+
+    //   this.PatientHeaderObj = this.advanceDataStored;
+    //   console.log(this.PatientHeaderObj);
+    //   this.vAdmissionID = this.PatientHeaderObj.OPD_IPD_Id;
+    //   this.RegId = this.PatientHeaderObj.RegID;
+    //   this.PatientName = this.PatientHeaderObj.PatientName;
+    //   //  this.Doctorname= this.PatientHeaderObj.Doctorname;
+    //   this.vCompanyName= this.PatientHeaderObj.CompanyName;
+    //   this.vTariif= this.PatientHeaderObj.TariffName;
+
+    //   }
+
+    if (this.advanceDataStored.storage) {
+
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj)
+
+      this.PatientHeaderObj = this.selectedAdvanceObj;
       console.log(this.PatientHeaderObj);
       this.vAdmissionID = this.PatientHeaderObj.OPD_IPD_Id;
       this.RegId = this.PatientHeaderObj.RegID;
       this.PatientName = this.PatientHeaderObj.PatientName;
       //  this.Doctorname= this.PatientHeaderObj.Doctorname;
-      this.vCompanyName= this.PatientHeaderObj.CompanyName;
-      this.vTariif= this.PatientHeaderObj.TariffName;
-     
-      }
+      this.vCompanyName = this.PatientHeaderObj.CompanyName;
+      this.vTariif = this.PatientHeaderObj.TariffName;
+    }
 
-      this.getPaidBillDetails();
-      this.getCreditBillDetails();
+    this.getPaidBillDetails();
+    this.getCreditBillDetails();
 
   }
 
@@ -132,35 +150,38 @@ export class IPSettlementComponent implements OnInit {
     return this.formBuilder.group({
       regRadio: ['registration'],
       RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
-     
+
     });
   }
 
 
   createForm() {
     this.paymentFormGroup = this.formBuilder.group({
-    
+
       IsCompany: [0]
 
-      });
-    }
-  
-  
+    });
+  }
 
-    getSelectedObj(obj) {
-      
-      this.registerObj = obj;
-      // this.PatientName = obj.FirstName + '' + obj.LastName;
-      this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' +obj.PatientName;
-      this.RegId= obj.RegID;
-      this.vAdmissionID= obj.AdmissionID
-     
-      console.log(obj);
-    }
+
+  // 9902666262
+  getSelectedObj(obj) {
+    console.log(obj)
+    this.registerObj = obj;
+    // this.PatientName = obj.FirstName + '' + obj.LastName;
+    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+    this.RegId = obj.RegID; //81985//
+    this.vAdmissionID = obj.AdmissionID
+
+    console.log(obj);
+    this.getPaidBillDetails();
+    this.getCreditBillDetails();
+
+  }
 
 
   getSearchList() {
-    
+
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
@@ -177,21 +198,21 @@ export class IPSettlementComponent implements OnInit {
 
   }
 
-  
+
   getOptionText(option) {
     if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
-   
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegID + ')';
+
   }
 
 
   onChangeReg(event) {
     if (event.value == 'registration') {
-    //   this.personalFormGroup.get('RegId').reset();
-    //   this.personalFormGroup.get('RegId').disable();
+      //   this.personalFormGroup.get('RegId').reset();
+      //   this.personalFormGroup.get('RegId').disable();
       this.isRegSearchDisabled = true;
       this.registerObj = new AdmissionPersonlModel({});
-  
+
 
     } else {
       this.Regdisplay = true;
@@ -199,41 +220,38 @@ export class IPSettlementComponent implements OnInit {
       this.searchFormGroup.get('RegId').enable();
       this.isRegSearchDisabled = false;
 
-   
+
     }
 
-   
+
   }
 
-  SpinLoading:boolean=false;
+  SpinLoading: boolean = false;
 
-
-
-  
-  viewgetSettlementReportPdf(contact,flag) {
+  viewgetSettlementReportPdf(contact, flag) {
     console.log(contact)
     let PaymentId
-    if(flag){
-      PaymentId=contact
-    }else{
-      PaymentId=contact.PaymentId
+    if (flag) {
+      PaymentId = contact
+    } else {
+      PaymentId = contact.PaymentId
     }
     setTimeout(() => {
-      this.SpinLoading =true;
-    //  this.AdList=true;
-    this._IpSearchListService.getSettlementview(
-      PaymentId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Settlement Viewer"
-          }
-        });
+      this.SpinLoading = true;
+      //  this.AdList=true;
+      this._IpSearchListService.getSettlementview(
+        PaymentId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Settlement Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
           // this.AdList=false;
           this.SpinLoading = false;
@@ -242,87 +260,95 @@ export class IPSettlementComponent implements OnInit {
           // this.AdList=false;
           this.SpinLoading = false;
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
   getPaidBillDetails() {
 
     this.sIsLoading = 'loading-data';
 
-    this.regId=this.RegId;
-  
-    let query ="Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
-  
+    this.regId = this.RegId;
+
+    let query = "Select * from lvwBillIPD  where RegID=" + this.regId + " and BalanceAmt=0";
+
     this._IpSearchListService.getPaidBillList(query).subscribe(Visit => {
-     this.dataSource.data = Visit as PaidBilldetail[];
-     this.dataSource.sort =this.sort;
-    this.dataSource.paginator=this.paginator;
-    
-   this.sIsLoading = '';
-      
-  },
-  error => {
-    this.sIsLoading = '';
-  });
+      this.dataSource.data = Visit as PaidBilldetail[];
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+
+      this.sIsLoading = '';
+
+    },
+      error => {
+        this.sIsLoading = '';
+      });
 
   }
 
-// 106549
-  getCreditBillDetails(){
-    
+  // 106549
+  getCreditBillDetails() {
+debugger
     this.sIsLoading = 'loading-data';
-    this.regId= 80541//this.RegId;
-    
+    this.regId = this.RegId;
+
     let query = "Select * from lvwBillIPD  where TransactionType =0 and companyId = 0 and RegID= " + this.regId + " and BalanceAmt>0";
     console.log(query);
     this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
-     this.dataSource1.data = Visit as CreditBilldetail[];
-     this.dataSource1.sort =this.sort;
-    this.dataSource1.paginator=this.paginator;
-   
-   this.sIsLoading = '';
-      
-  },
-  error => {
-    this.sIsLoading = '';
-  });
+      this.dataSource1.data = Visit as CreditBilldetail[];
+      this.dataSource1.sort = this.sort;
+      this.dataSource1.paginator = this.paginator;
+
+      this.sIsLoading = '';
+
+    },
+      error => {
+        this.sIsLoading = '';
+      });
   }
 
-  getCompanyCreditBillDetails(event){
-    
-    this.dataSource1.data =[];
+  getCompanyCreditBillDetails(event) {
+
+    this.dataSource1.data = [];
     this.sIsLoading = 'loading-data';
-  if(event == true){
-    let query = "Select * from lvwBill where companyId != 0  and BalanceAmt>0";
-    console.log(query);
-    this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
-     this.dataSource1.data = Visit as CreditBilldetail[];
-     this.dataSource1.sort =this.sort;
-    this.dataSource1.paginator=this.paginator;
-   //  console.log(this.dataSource.data);
-   this.sIsLoading = '';
-      
-  },
-  error => {
-    this.sIsLoading = '';
-  });
-}
+    if (event == true) {
+      let query = "Select * from lvwBill where companyId != 0  and BalanceAmt>0";
+      console.log(query);
+      this._IpSearchListService.getCreditBillList(query).subscribe(Visit => {
+        this.dataSource1.data = Visit as CreditBilldetail[];
+        this.dataSource1.sort = this.sort;
+        this.dataSource1.paginator = this.paginator;
+        //  console.log(this.dataSource.data);
+        this.sIsLoading = '';
+
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }
   }
-  
+
   addpayment(contact) {
-   
+console.log(contact)
     this.FinalAmt = contact.NetPayableAmt;
-   
+
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.RegId;
-    PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;//this.FinalAmt; //this.netPaybleAmt1; //this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
+    PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt;
 
-    const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+    PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+    PatientHeaderObj['PBillNo'] = contact.PBillNo;
+    PatientHeaderObj['BillTime'] = contact.BillTime;
+    PatientHeaderObj['RegID'] = contact.RegID;
+
+    
+    
+    
+    const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
       {
         maxWidth: "95vw",
         height: '640px',
@@ -334,24 +360,25 @@ export class IPSettlementComponent implements OnInit {
       });
 
     dialogRef.afterClosed().subscribe(result => {
+console.log(result)
       let BillUpdateObj = {};
 
       BillUpdateObj['BillNo'] = contact.BillNo;
       BillUpdateObj['BillBalAmount'] = result.BalAmt;
 
-        console.log("Procced with Payment Option");
-        let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
-        this.flagSubmit = result.IsSubmitFlag
+      console.log("Procced with Payment Option");
+      let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+      this.flagSubmit = result.IsSubmitFlag
 
-        if (this.flagSubmit) {
+      if (this.flagSubmit) {
         console.log(result);
-        result.submitDataPay.ipPaymentInsert.TransactionType=0;
+        result.submitDataPay.ipPaymentInsert.TransactionType = 0;
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
         console.log(UpdateAdvanceDetailarr1);
-         
 
+debugger
         let UpdateAdvanceDetailarr = [];
-        if (result.submitDataAdvancePay > 0) {
+        if (result.submitDataAdvancePay.length > 0) {
           result.submitDataAdvancePay.forEach((element) => {
             let UpdateAdvanceDetailObj = {};
             UpdateAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
@@ -359,7 +386,7 @@ export class IPSettlementComponent implements OnInit {
             UpdateAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
             UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
           });
-          
+
         }
         else {
           let UpdateAdvanceDetailObj = {};
@@ -370,7 +397,7 @@ export class IPSettlementComponent implements OnInit {
         }
 
         let UpdateAdvanceHeaderObj = {};
-        if (result.submitDataAdvancePay > 0) {
+        if (result.submitDataAdvancePay.length > 0) {
           UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceNo'],
             UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UpdateAdvanceDetailarr1[0]['AdvanceAmount'],
             UpdateAdvanceHeaderObj['BalanceAmount'] = UpdateAdvanceDetailarr1[0]['BalanceAmount']
@@ -383,63 +410,62 @@ export class IPSettlementComponent implements OnInit {
         }
         let submitData = {
           "ipPaymentCreditUpdate": result.submitDataPay.ipPaymentInsert,
-           "updateIpBill": BillUpdateObj,
-           "iPsettlementAdvanceDetailUpdate": UpdateAdvanceDetailarr,
-           "iPsettlementAdvanceHeaderUpdate": UpdateAdvanceHeaderObj
-          
+          "updateIpBill": BillUpdateObj,
+          "iPsettlementAdvanceDetailUpdate": UpdateAdvanceDetailarr,
+          "iPsettlementAdvanceHeaderUpdate": UpdateAdvanceHeaderObj
+
         };
-         console.log(submitData);
+        console.log(submitData);
         this._IpSearchListService.InsertIPSettlementPayment(submitData).subscribe(response => {
           if (response) {
             Swal.fire('Payment Done  !', 'Ip Settlemet Done Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
-               
-                this.viewgetSettlementReportPdf(response,true);
+
+                this.viewgetSettlementReportPdf(response, true);
                 this._matDialog.closeAll();
               }
             });
           } else {
             Swal.fire('Error !', 'IP Settlement data not saved', 'error');
           }
-         
+
         });
       }
     });
   }
 
 
-  getViewbill(contact)
-{
-  console.log(contact);
+  getViewbill(contact) {
+    console.log(contact);
     let xx = {
       AddedBy: 1,
       AdvBalanceAmount: contact.AdvBalanceAmount,
-      AdvanceAmount:contact.AdvanceAmount,
-      AdvanceUsedAmount:contact.AdvanceUsedAmount,
-      BalanceAmt:contact.BalanceAmt,
-      BillDate:contact.BillDate,
-      BillNo:contact.BillNo,
+      AdvanceAmount: contact.AdvanceAmount,
+      AdvanceUsedAmount: contact.AdvanceUsedAmount,
+      BalanceAmt: contact.BalanceAmt,
+      BillDate: contact.BillDate,
+      BillNo: contact.BillNo,
       BillTime: contact.BillTime,
-      CashCounterId:contact.CashCounterId,
-      CompanyId:contact.CompanyId,
-      ConcessionAmt:contact.ConcessionAmt,
-      IsCancelled:contact.IsCancelled,
-      NetPayableAmt:contact.NetPayableAmt,
+      CashCounterId: contact.CashCounterId,
+      CompanyId: contact.CompanyId,
+      ConcessionAmt: contact.ConcessionAmt,
+      IsCancelled: contact.IsCancelled,
+      NetPayableAmt: contact.NetPayableAmt,
       OPD_IPD_ID: contact.OPD_IPD_ID,
       OPD_IPD_Type: contact.OPD_IPD_Type,
       PBillNo: contact.PBillNo,
       PaidAmount: contact.PaidAmount,
-      PaymentBillNo:contact.PaymentBillNo,
-      RegID:contact.RegID,
+      PaymentBillNo: contact.PaymentBillNo,
+      RegID: contact.RegID,
       RegNo: contact.RegNo,
-      TotalAmt:contact.TotalAmt,
-      TransactionType:contact.TransactionType,
-   
-     
+      TotalAmt: contact.TotalAmt,
+      TransactionType: contact.TransactionType,
+
+
     };
 
     this.advanceDataStored.storage = new BrowseOpdPaymentReceipt(xx);
-   
+
     //   const dialogRef = this._matDialog.open(PaymentViewComponent, 
     //    {  maxWidth: "95vw",
     //       maxHeight: "130vh", width: '100%', height: "100%"
@@ -450,46 +476,46 @@ export class IPSettlementComponent implements OnInit {
     //  });
   }
 
-  getViewbill1(contact)
-{
-  console.log(contact);
+  getViewbill1(contact) {
+    console.log(contact);
     let xx = {
       AddedBy: 1,
       AdvBalanceAmount: contact.AdvBalanceAmount,
-      AdvanceAmount:contact.AdvanceAmount,
-      AdvanceUsedAmount:contact.AdvanceUsedAmount,
-      BalanceAmt:contact.BalanceAmt,
-      BillDate:contact.BillDate,
-      BillNo:contact.BillNo,
+      AdvanceAmount: contact.AdvanceAmount,
+      AdvanceUsedAmount: contact.AdvanceUsedAmount,
+      BalanceAmt: contact.BalanceAmt,
+      BillDate: contact.BillDate,
+      BillNo: contact.BillNo,
       BillTime: contact.BillTime,
-      CashCounterId:contact.CashCounterId,
-      CompanyId:contact.CompanyId,
-      ConcessionAmt:contact.ConcessionAmt,
-      IsCancelled:contact.IsCancelled,
-      NetPayableAmt:contact.NetPayableAmt,
+      CashCounterId: contact.CashCounterId,
+      CompanyId: contact.CompanyId,
+      ConcessionAmt: contact.ConcessionAmt,
+      IsCancelled: contact.IsCancelled,
+      NetPayableAmt: contact.NetPayableAmt,
       OPD_IPD_ID: contact.OPD_IPD_ID,
       OPD_IPD_Type: contact.OPD_IPD_Type,
       PBillNo: contact.PBillNo,
       PaidAmount: contact.PaidAmount,
-      PaymentBillNo:contact.PaymentBillNo,
-      RegID:contact.RegID,
+      PaymentBillNo: contact.PaymentBillNo,
+      RegID: contact.RegID,
       RegNo: contact.RegNo,
-      TotalAmt:contact.TotalAmt,
-      TransactionType:contact.TransactionType,
-   
-     
+      TotalAmt: contact.TotalAmt,
+      TransactionType: contact.TransactionType,
+
+
     };
 
     this.advanceDataStored.storage = new BrowseOpdPaymentReceipt(xx);
-   
-      const dialogRef = this._matDialog.open(IPSettlementViewComponent, 
-       {  maxWidth: "95vw",
-          maxHeight: "130vh", width: '100%', height: "100%"
-     });
-     dialogRef.afterClosed().subscribe(result => {
+
+    const dialogRef = this._matDialog.open(IPSettlementViewComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: "130vh", width: '100%', height: "100%"
+      });
+    dialogRef.afterClosed().subscribe(result => {
       //  console.log('The dialog was closed - Insert Action', result);
       //  this.getRadiologytemplateMasterList();
-     });
+    });
   }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -504,7 +530,7 @@ export class IPSettlementComponent implements OnInit {
 
 
 export class PaidBilldetail {
-  
+
   BillNo: any;
   TotalAmt: number;
   ConcessionAmt: number;
@@ -521,12 +547,12 @@ export class PaidBilldetail {
     this.NetPayableAmt = PaidBilldetail.NetPayableAmt || 0;
     this.PaidAmount = PaidBilldetail.PaidAmount || 0;
     this.BalanceAmt = PaidBilldetail.BalanceAmt || '';
-  
+
   }
 }
 
 export class CreditBilldetail {
-  
+
   BillNo: any;
   TotalAmt: number;
   ConcessionAmt: number;
@@ -543,7 +569,7 @@ export class CreditBilldetail {
     this.NetPayableAmt = CreditBilldetail.NetPayableAmt || 0;
     this.PaidAmount = CreditBilldetail.PaidAmount || 0;
     this.BalanceAmt = CreditBilldetail.BalanceAmt || '';
-  
+
   }
 
 }

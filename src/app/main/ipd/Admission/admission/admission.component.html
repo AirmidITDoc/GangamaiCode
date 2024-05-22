@@ -140,6 +140,33 @@
 
                                             <div fxlayout="row">
                                                 <div style="width: 100%;">
+                                                    
+                                                    <div class="info-badge-top pb-2 border-bottom">
+                                                        <!-- "pill" class is used for rounded border -->
+                                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                                                            <!-- <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                                                <span class="blue-600-fg">New Admissions : {{VNewcount}}</span>
+                                                            </div> -->
+                                                            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                                                <span class="green-600-fg"> Total Admissions  : {{VAdmissioncount}}</span>
+                                                            </div>
+                                                            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                                                <span class="green-600-fg"> Total BillGenerated  : {{VBillcount}}</span>
+                                                            </div>
+                                                            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                                                <span class="orange-600-fg">Today's Discharges  :{{vIsDischarg}}</span>
+                                                            </div>
+                                                            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                                                                <span class="red-600-fg">OPTOIPConvert : {{VOPtoIPcount}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                     <div matColumnDef="loading"
                                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                                         class="backgroundBlur" style="height: 100%;">
@@ -155,10 +182,22 @@
                                                                 style="color: white;">IsMLC
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" class="w-80">
-                                                                <mat-icon *ngIf="contact.IsMLC=='1'; else noMLC "
+                                                                <!-- <mat-icon *ngIf="contact.IsMLC==1; else noMLC "
                                                                     matTooltip="IsNotMLC" class="pill green-600 s-16"
-                                                                    (click)="NewMLc(contact)">Yes
+                                                                    (click)="NewMLc(contact)">edit
                                                                 </mat-icon>
+                                                                <mat-icon *ngIf="contact.IsMLC==1; else noMLC "
+                                                                matTooltip="IsNotMLC" class="pill green-600 s-16"
+                                                                (click)="NewMLc(contact)">print
+                                                                </mat-icon> -->
+
+                                                                <button mat-icon-button *ngIf="contact.IsMLC==1; else noMLC " matTooltip="IsMLC" (click)="NewMLc(contact)">
+                                                                    <mat-icon>edit</mat-icon>
+                                                                </button>
+                                                                <button mat-icon-button *ngIf="contact.IsMLC==1; else noMLC " matTooltip="Print MLC paper">
+                                                                    <mat-icon>print</mat-icon>
+                                                                </button>
+
                                                                 <ng-template #noMLC>
                                                                     <span>--</span>
                                                                 </ng-template>
@@ -189,18 +228,18 @@
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                 fxShow.gt-md>Date</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                                                <span> {{contact.DOA}}</span>
+                                                                <span> {{contact.DOA}} - {{contact.DOT}} </span>
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="DOT">
+                                                        <!-- <ng-container matColumnDef="DOT">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-md>Time
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                                 <span> {{contact.DOT}}</span>
                                                             </mat-cell>
-                                                        </ng-container>
+                                                        </ng-container> -->
 
                                                         <ng-container matColumnDef="Doctorname">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -287,6 +326,15 @@
                                                                 <span> {{contact.RelativeName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
+                                                        <!-- <ng-container matColumnDef="IsMLC">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-md>IsMLC
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                                <span> {{contact.IsMLC}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                         -->
 
                                                         <ng-container matColumnDef="buttons" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef
@@ -295,7 +343,7 @@
                                                                 <div fxLayout="row">
                                                                     <button mat-icon-button
                                                                         (click)="EditRegistration(contact)"
-                                                                        matTooltip="Bill">
+                                                                        matTooltip="edit Registration">
                                                                         <mat-icon
                                                                             style="color: black;">edit</mat-icon>
                                                                     </button>
@@ -385,10 +433,11 @@
                                     </mat-radio-group>
                                 </div>
                                 <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
+                                    <!-- getSelectedObj -->
                                     <mat-form-field appearance="outline" *ngIf="Regflag">
                                         <input type="text" name="RegId" formControlName="RegId"
-                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                                            [matAutocomplete]="auto" (input)="getSearchList()">
+                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput #regno
+                                            [matAutocomplete]="auto" (input)="getSearchList()" >
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
                                                 (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
@@ -396,7 +445,7 @@
                                                 (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                                            (optionSelected)='getSelectedObj($event.option.value)'>
+                                            (optionSelected)='chekAdmittedpatient($event.option.value)'>
                                             <mat-option *ngFor="let option of filteredOptions" [value]="option">
                                                 {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
                                                 {{option.RegNo}} |
@@ -443,7 +492,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Prefix</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Prefix"
-                                        matInput (keydown)="onEnterprefix($event)" formControlName="PrefixID"
+                                        matInput (keydown)="onEnterprefix($event,vPrefixID.PrefixID)" formControlName="PrefixID" [(ngModel)]="vPrefixID"
                                         [matAutocomplete]="autoPrefix" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -521,7 +570,7 @@
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Marital Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Area"
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select MaritalStatusId" [(ngModel)]="vMaritalStatusId"
                                         matInput #mstatus (keydown)="onEntermstatus($event)"
                                         formControlName="MaritalStatusId" [matAutocomplete]="autoMarital">
                                     <span matSuffix style="display: flex;">
@@ -541,7 +590,7 @@
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Religion Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Religion"
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Religion" [(ngModel)]="vReligionId"
                                         matInput #religion (keydown)="onEnterreligion($event)"
                                         formControlName="ReligionId" [matAutocomplete]="autoReligion">
                                     <span matSuffix style="display: flex;">
@@ -562,7 +611,7 @@
                                 <!-- </div> -->
 
                                 <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"> -->
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Birth date</mat-label>
                                     <input name="DateOfBirth" matInput [matDatepicker]="picker1"
                                         formControllName="DateOfBirth" #bday (keydown)="onEnterbday($event)"
@@ -571,8 +620,13 @@
                                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                     <mat-datepicker #picker1></mat-datepicker>
 
+                                </mat-form-field> -->
+                                <mat-form-field appearance="outline">
+                                    <input matInput [matDatepicker]="validFromPicker" formControllName="DateOfBirth" #bday [value]="registerObj.DateofBirth" (keydown)="onEnterbday($event)" 
+                                    (dateChange)="onChangeDateofBirth($event.value)" placeholder="mm/dd/yyyy">
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker></mat-datepicker>
                                 </mat-form-field>
-
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Age (Y)</mat-label>
@@ -620,10 +674,10 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Pan Card No</mat-label>
                                     <input name="Pancardno" formControlName="Pancardno" placeholder="PanCardNo Number"
-                                        matInput [(ngModel)]="registerObj.Pancardno" #pan
+                                        matInput [(ngModel)]="registerObj.Pancardno" #pan maxlength="10"
                                         (keydown)="onEnterpan($event)">
                                     <mat-error class="error"
-                                        *ngIf="personalFormGroup.get('Pancardno').invalid && personalFormGroup.get('Pancardno').touched">12
+                                        *ngIf="personalFormGroup.get('Pancardno').invalid && personalFormGroup.get('Pancardno').touched">10
                                         digits Pan Card No is required</mat-error>
                                 </mat-form-field>
 
@@ -632,7 +686,7 @@
                                     <mat-label>AadharCard Number</mat-label>
                                     <input name="AadharCardNo" formControlName="AadharCardNo"
                                         placeholder="AadharCard Number" matInput [(ngModel)]="registerObj.AadharCardNo"
-                                        type="number" #AadharCardNo (keydown)="onEnterAadharCardNo($event)"
+                                        #AadharCardNo (keydown)="onEnterAadharCardNo($event)"
                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
                                     <mat-error class="error"
                                         *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">Aadhar
@@ -646,7 +700,7 @@
                                         matInput required #mobile (keydown)="onEntermobile($event)"
                                         [(ngModel)]="registerObj.MobileNo"
                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                        required="required" type="number" value="9876658688">
+                                        required="required"  value="9876658688">
                                     <mat-error class="error"
                                         *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
                                         digits Mobile number is
@@ -667,7 +721,7 @@
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Area Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Area"
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Area" [(ngModel)]="vAreaId"
                                         matInput #area (keydown)="onEnterarea($event)" formControlName="AreaId"
                                         [matAutocomplete]="autoArea">
                                     <span matSuffix style="display: flex;">
@@ -686,7 +740,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>City</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select City"
-                                        matInput #city (keydown)="onEntercity($event)" formControlName="CityId"
+                                        matInput #city (keydown)="onEntercity($event,vCityId.CityId)" formControlName="CityId" [(ngModel)]="vCityId"
                                         [matAutocomplete]="autoCity" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -739,7 +793,7 @@
                         </div>
                         <mat-card>
                             <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
-                                <mat-form-field appearance="outline" fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Patient Type</mat-label>
                                     <mat-select formControlName="PatientTypeID"
                                         (selectionChange)="onChangePatient($event.value)" #ptype
@@ -748,21 +802,52 @@
                                             {{Doc.PatientType}}
                                         </mat-option>
                                     </mat-select>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Patient Type</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Patient Type" matInput #ptype
+                                     (keydown)="onEnterptype($event,vPatientTypeID.PatientTypeId)" formControlName="PatientTypeID" [(ngModel)]="vPatientTypeID"
+                                     [matAutocomplete]="autoPatientTypeID">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('PatientTypeID').setValue(''); ispatienttypeSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('PatientTypeID').setValue(''); ispatienttypeSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoPatientTypeID="matAutocomplete" [displayWith]="getOptionTextpatienttype">
+                                        <mat-option *ngFor="let option of filteredOptionsPatientType | async" [value]="option" (onSelectionChange)="onChangePatient(option)">
+                                            {{option.PatientType}}
+                                        </mat-option>
+                                    </mat-autocomplete>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Tariff Name</mat-label>
                                     <mat-select formControlName="TariffId" #tariff (keydown)="onEnterptariff($event)">
                                         <mat-option *ngFor="let Doc of TariffList" [value]="Doc">
                                             {{Doc.TariffName}}
                                         </mat-option>
                                     </mat-select>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Tariff Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Patient Type" matInput 
+                                    #tariff (keydown)="onEnterptariff($event,vTariffId.TariffId)" formControlName="TariffId" [matAutocomplete]="autoTariffId" [(ngModel)]="vTariffId">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('TariffId').setValue(''); isTariffIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close" (click)="hospitalFormGroup.get('TariffId').setValue(''); isTariffIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoTariffId="matAutocomplete" [displayWith]="getOptionTextTariff">
+                                        <mat-option *ngFor="let option of filteredOptionsTarrif | async" [value]="option">
+                                            {{option.TariffName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Department</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Department"
-                                        matInput #dept (keydown)="onEnterdept($event)" formControlName="Departmentid"
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Department" [(ngModel)]="vDepartmentid"
+                                        matInput #dept (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" formControlName="Departmentid"
                                         [matAutocomplete]="autoDep" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -781,7 +866,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name"
-                                        matInput #deptdoc (keydown)="onEnterdeptdoc($event)" formControlName="DoctorId"
+                                        matInput #deptdoc (keydown)="onEnterdeptdoc($event,vDoctorId.DoctorId)" formControlName="DoctorId" [(ngModel)]="vDoctorId"
                                         [matAutocomplete]="autoDoctor" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -803,7 +888,7 @@
                                     <mat-label>Admitted Doctor 1</mat-label>
                                     <input matAutocompletePosition="below" type="text"
                                         placeholder="Select Admitted Doctor 1" matInput #admitdoc1
-                                        (keydown)="onEnteradmitdoc1($event)" formControlName="admittedDoctor1"
+                                        (keydown)="onEnteradmitdoc1($event)" formControlName="admittedDoctor1" [(ngModel)]="vadmittedDoctor1"
                                         [matAutocomplete]="autoRefdoc">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -823,7 +908,7 @@
                                     <mat-label>Admitted Doctor 2</mat-label>
                                     <input matAutocompletePosition="below" type="text"
                                         placeholder="Select Admitted Doctor 2 " matInput
-                                        formControlName="admittedDoctor2" [matAutocomplete]="autodoc2" #admitdoc2
+                                        formControlName="admittedDoctor2" [matAutocomplete]="autodoc2" #admitdoc2 [(ngModel)]="vadmittedDoctor2"
                                         (keydown)="onEnteradmitdoc2($event)">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -841,7 +926,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Ref Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor "
-                                        matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="refDoctorId"
+                                        matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="refDoctorId" [(ngModel)]="vrefDoctorId"
                                         [matAutocomplete]="autodoc2">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -859,7 +944,7 @@
                                 <ng-container *ngIf="isCompanySelected">
                                     <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-label>Company Name </mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Company"
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Company" [(ngModel)]="vCompanyId"
                                             matInput formControlName="CompanyId" [matAutocomplete]="autoCompany">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
@@ -919,7 +1004,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Ward Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Ward"
-                                        matInput #ward (keydown)="onEnterward($event)" formControlName="RoomId"
+                                        matInput #ward (keydown)="onEnterward($event,vRoomId.RoomId)" formControlName="RoomId" [(ngModel)]="vRoomId"
                                         [matAutocomplete]="autoWard" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -938,7 +1023,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Bed Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Bed" matInput
-                                        #bed (keydown)="onEnterbed($event)" formControlName="BedId"
+                                        #bed (keydown)="onEnterbed($event,vBedId.BedId)" formControlName="BedId" [(ngModel)]="vBedId"
                                         [matAutocomplete]="autoBed" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -1027,7 +1112,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Relationship Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Relationship"
-                                        matInput #relation formControlName="RelationshipId" 
+                                        matInput #relation formControlName="RelationshipId" [(ngModel)]="vRelationshipId"
                                         [matAutocomplete]="autoRelation">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -1052,13 +1137,29 @@
                                 <mat-checkbox aria-label="Remember Me" formControlName="IsMLC">
                                     ISMLC
                                 </mat-checkbox>
+
                                 <mat-checkbox aria-label="Op TO Ip Change" formControlName="OPIPChange" style="margin-left:30px;">
                                     OP TO IP Convert
                                 </mat-checkbox>
+                                
+                                <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsCharity" style="margin-left:30px;">
+                                    IsCharity
+                                </mat-checkbox>
+                                <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsSenior" style="margin-left:30px;">
+                                    IsSenior
+                                </mat-checkbox>
+                                <mat-checkbox aria-label="Op TO Ip Change" formControlName="Citizen" style="margin-left:30px;">
+                                    Citizen
+                                </mat-checkbox>
+                                <mat-checkbox aria-label="Op TO Ip Change" formControlName="Emergancy" style="margin-left:30px;">
+                                    Emergancy
+                                </mat-checkbox>
+                               
+                                
                             </div>
                             <div class="next-div button-row-group">
                                 <button class="btn btn-primary" color="accent" (click)="nextClicked(otherFormGroup)"
-                                    [disabled]="personalFormGroup.invalid || hospitalFormGroup.invalid || wardFormGroup. invalid || otherFormGroup.invalid">
+                                    [disabled]="personalFormGroup.invalid || hospitalFormGroup.invalid || wardFormGroup.invalid || otherFormGroup.invalid">
                                     <span>Save</span>
                                 </button>
                                 <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>

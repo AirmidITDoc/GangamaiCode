@@ -8,8 +8,7 @@
             <div class="modal-header-right">
                 <div class="comman-date-container">
                     <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </div>
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
@@ -32,8 +31,7 @@
                 <div fxLayout="column" class="gap-8 pb-3 border-bottom">
                     <!-- style="width: 100%;" -->
                     <div fxlayout="row">
-                        <form [formGroup]="_IpSearchListService.myShowDischargeSummaryForm" fusePerfectScrollbar
-                            style="width: 100%;">
+                        <form [formGroup]="_IpSearchListService.myShowDischargeSummaryForm" fusePerfectScrollbar style="width: 100%;">
                             <!-- ================================ LABEL HEADER  -->
                             <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                 <div class="patient-info-container">
@@ -42,44 +40,43 @@
                                             <span class="h1">Patient Information</span>
                                         </div>
                                         <div class="patient-info-box my-8">
-                                            <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <div class="patient-info-row ">
+                                                <div class="patient-col">
                                                     <span class="patient-col-key ">Patient Name</span>
                                                     <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <div class="patient-col">
                                                     <span class="patient-col-key">Patient Category</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">Staff</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <div class="patient-col">
                                                     <span class="patient-col-key">IPDNo</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <div class="patient-col">
                                                     <span class="patient-col-key">Tariff</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <div class="patient-col">
                                                     <span class="patient-col-key ">Age</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <div class="patient-col">
                                                     <span class="patient-col-key">Company</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <div class="patient-col">
                                                     <span class="patient-col-key">Patient Source</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                                <div class="patient-col">
                                                     <span class="patient-col-key">Doctor</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
@@ -212,15 +209,11 @@
                             </ng-container>
 
 
-                            <mat-header-row class="accent min-width-1400"
-                                *matHeaderRowDef="displayedColumns; sticky: true">
+                            <mat-header-row class="accent min-width-1400" *matHeaderRowDef="displayedColumns; sticky: true">
                             </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1400"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                                [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1400" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                         </mat-table>
 
                         <mat-paginator [pageSizeOptions]="[ 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
@@ -251,26 +244,21 @@
                         <!-- ================================ LABEL HEADER  -->
 
                         <form [formGroup]="AdvFormGroup" class="mat-error-fix">
-                            <div class="bill-amts" fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
-                                fxLayoutAlign="space-between start">
+                            <div class="bill-amts" fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between start">
                                 <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                                     <mat-form-field appearance="outline" style="width:200px ;">
                                         <mat-label>Advance Amount</mat-label>
-                                        <input matInput [(ngModel)]="advanceAmount" formControlName="advanceAmt"
-                                            name="advanceAmt" required type="number">
-                                        <mat-error class="error"
-                                            *ngIf="AdvFormGroup.get('advanceAmt').hasError('required') && AdvFormGroup.get('advanceAmt').touched">
+                                        <input matInput [(ngModel)]="advanceAmount" formControlName="advanceAmt" name="advanceAmt" required type="number">
+                                        <mat-error class="error" *ngIf="AdvFormGroup.get('advanceAmt').hasError('required') && AdvFormGroup.get('advanceAmt').touched">
                                             Advance Amount is required</mat-error>
-                                        <mat-error class="error"
-                                            *ngIf="AdvFormGroup.get('advanceAmt').hasError('pattern') && AdvFormGroup.get('advanceAmt').touched">
+                                        <mat-error class="error" *ngIf="AdvFormGroup.get('advanceAmt').hasError('pattern') && AdvFormGroup.get('advanceAmt').touched">
                                             Please enter valid Amount</mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" style="width: 400px;">
                                         <mat-label>Reason Of Advacne</mat-label>
                                         <input matInput formControlName="comment" name="comment">
-                                        <mat-error class="error"
-                                            *ngIf="AdvFormGroup.get('comment').invalid && AdvFormGroup.get('comment').touched">
+                                        <mat-error class="error" *ngIf="AdvFormGroup.get('comment').invalid && AdvFormGroup.get('comment').touched">
                                             Advance Amount is required</mat-error>
                                     </mat-form-field>
                                     <!-- <mat-checkbox aria-label="Cash Payment" formControlName="cashpay" (checked)=true
@@ -294,12 +282,11 @@
     <!-- / CONTENT-->
     <div class="modal-footer">
         <div class="footer-navigation-container">
-           
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button class="btn btn-primary" (click)="onSave()" [disabled]="AdvFormGroup.invalid">Save</button>
             </div>
         </div>
-       
+
     </div>
 </div>

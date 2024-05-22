@@ -23,6 +23,9 @@ import * as XLSX from 'xlsx';
 const jsPDF = require('jspdf');
 // require('jspdf-autotable');
 import autoTable from 'jspdf-autotable'
+import { Admission } from 'app/main/ipd/Admission/admission/admission.component';
+import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -120,11 +123,31 @@ export class BrowsSalesBillComponent implements OnInit {
     'SGST',
     'IGST'
   ]
+
+  
+  displayedColumnsplist = [
+    // 'IsMLC',
+    'RegNo',
+    'PatientName',
+    'DOA',
+    // 'DOT',
+    'Doctorname',
+    'RefDocName',
+    'IPNo',
+    'PatientType',
+    'WardName',
+    'TariffName',
+    'ClassName',
+    // 'CompanyName',
+    // 'RelativeName',
+    'buttons'
+  ];
+
   StoreList: any = [];
   Store1List: any = [];
   hasSelectedContacts: boolean;
 
-
+  dataSource = new MatTableDataSource<Admission>();
   dssaleList1 = new MatTableDataSource<SaleList>();
   dssalesList2 = new MatTableDataSource<SalesDetList>();
 
@@ -137,23 +160,91 @@ export class BrowsSalesBillComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    public _AdmissionService: AdmissionService,
     public _BrowsSalesBillService: BrowsSalesBillService,
     public _BrowsSalesService: SalesService,
     public _AppointmentSreviceService: AppointmentSreviceService,
     private _loggedService: AuthenticationService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe,
-
+    public datePipe: DatePipe, 
+    public toastr: ToastrService,
 
   ) { }
 
   ngOnInit(): void {
+    this.getAdmittedPatientList_1();
     this.getSalesList();
     this.getSalesReturnList()
     this.gePharStoreList();
     this.gePharStoreList1();
   }
+
+
+  resultsLength = 0;
+  getAdmittedPatientList_1() {
+    var Param = {
+      "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
+      "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
+      "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || "0",
+      "Doctor_Id": this._AdmissionService.myFilterform.get("searchDoctorId").value.DoctorID || "0",
+      "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      "Admtd_Dschrgd_All": 0,
+      "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
+      "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '0',
+      Start:(this.paginator?.pageIndex??1),
+      Length:(this.paginator?.pageSize??10),
+    }
+    console.log(Param);
+    this._AdmissionService.getAdmittedPatientList_1(Param).subscribe(data => {
+      this.dataSource.data = data["Table1"]??[] as Admission[];
+      if (this.dataSource.data.length > 0) {
+        this.Admissiondetail( this.dataSource.data);
+      }
+      this.dataSource.sort = this.sort;
+      this.resultsLength= data["Table"][0]["total_row"];
+      this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+
+  Admissiondetail(data) {
+    // this.Vtotalcount = 0;
+    // this.VNewcount = 0;
+    // this.VFollowupcount = 0;
+    // this.VBillcount = 0;
+    // this.vIsDischarg=0;
+    // console.log(data)
+    // this.Vtotalcount;
+    // debugger
+    // for (var i=0;i< data.length;i++){
+    //   if(data[i].PatientOldNew==1){
+    //       this.VNewcount=this.VNewcount+1;
+    //     }
+    //     else if(data[i].PatientOldNew==2){
+    //       this.VFollowupcount=this.VFollowupcount+1;
+    //     }
+    //     else if(data[i].AdmissionID !==0){
+    //       this.VAdmissioncount=data.length;
+    //     }
+    //      else if(data[i].IsBillGenerated ==1){
+    //       this.VBillcount= this.VBillcount+1;
+    //     }
+    //     else if(data[i].IsOpToIPConv ==1){
+          
+    //       this.VOPtoIPcount=this.VOPtoIPcount + 1;
+    //     }else if(data[i].IsDischarged ==1){
+    //       this.vIsDischarg= this.vIsDischarg +1;
+    //     }
+    //     this.Vtotalcount= this.Vtotalcount+1;
+    // }
+  
+  }
+
+
   gePharStoreList() {
     var vdata = {
       Id: this._loggedService.currentUserValue.user.storeId
@@ -224,10 +315,12 @@ export class BrowsSalesBillComponent implements OnInit {
       });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
 
       if (result.IsSubmitFlag == true) {
 
         let updateBillobj = {};
+        updateBillobj['salesID'] = SelectedValue.SalesId;
         updateBillobj['BillNo'] = SelectedValue.SalesId;
         updateBillobj['BillBalAmount'] = 0// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
 
@@ -257,10 +350,10 @@ export class BrowsSalesBillComponent implements OnInit {
         CreditPaymentobj['IsCancelledBy'] = 0;
         CreditPaymentobj['IsCancelledDate'] = "01/01/1900";
         CreditPaymentobj['opD_IPD_Type'] = 3;
-        CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
-        CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
-        CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
-        CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
+        CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.NEFTPayAmount) || 0;
+        CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.NEFTNo || '';
+        CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster || '';
+        CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.NEFTDate || '01/01/1900';
         CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
         CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
         CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
@@ -277,18 +370,25 @@ export class BrowsSalesBillComponent implements OnInit {
           console.log(response)
           if (response) {
             console.log(response)
-            Swal.fire('Sales Credit Settlement!', 'Sales Credit Payment Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                // let m = response;
-                // this.getpaymentPrint(response);
-                this._matDialog.closeAll();
-              }
+            // Swal.fire('Sales Credit Settlement!', 'Sales Credit Payment Successfully !', 'success').then((result) => {
+            //   if (result.isConfirmed) {
+            //     // let m = response;
+            //     // this.getpaymentPrint(response);
+            //     this._matDialog.closeAll();
+            //   }
+            // });
+            this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+            this._matDialog.closeAll();
+            this.getSalesList();
+          } 
+          else {
+            // Swal.fire('Error !', 'Sales  Payment not saved', 'error');
+            this.toastr.error('Sales Credit Payment  not saved !', 'error', {
+              toastClass: 'tostr-tost custom-toast-error',
             });
           }
-          else {
-            Swal.fire('Error !', 'Sales  Payment not saved', 'error');
-          }
-
         });
 
       }

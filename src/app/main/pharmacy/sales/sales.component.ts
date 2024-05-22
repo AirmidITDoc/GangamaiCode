@@ -37,6 +37,7 @@ import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.serv
 import { ConcessionReasonMasterModule } from 'app/main/setup/billing/concession-reason-master/concession-reason-master.module';
 import { SubstitutesComponent } from './substitutes/substitutes.component';
 import { D } from '@angular/cdk/keycodes';
+import { PrescriptionComponent } from './prescription/prescription.component';
 
 @Component({
   selector: 'app-sales',
@@ -257,6 +258,9 @@ export class SalesComponent implements OnInit {
   vStockId: any = 0;
   Itemflag: boolean = false;
 
+  opflag:Boolean=false;
+  ipflag:Boolean=false;
+  externalflag:Boolean=false;
 
   displayedColumns = [
     'FromStoreId',
@@ -304,7 +308,16 @@ export class SalesComponent implements OnInit {
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp)) {
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  } 
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
       event.preventDefault();
@@ -315,17 +328,16 @@ export class SalesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   data: any;
-  PatientListfilteredOptions: any;
+  PatientListfilteredOptionsOP: any;
+  PatientListfilteredOptionsIP: any;
   registerObj = new RegInsert({});
   RegId: any = '';
   vAdmissionID: any;
   isPaymentSuccess: boolean = false;
   newDateTimeObj: any = {};
   vextAddress: any = '';
-
-  vPharExtOpt: any = 0;
-  vPharOPOpt: any = 0;
-  vPharIPOpt: any = 0;
+  Patienttype:any;
+ 
 
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
@@ -348,99 +360,153 @@ export class SalesComponent implements OnInit {
   ) {
     this.nowDate = new Date();
     this.PatientHeaderObj = this.data;
-    this.netPayAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
-    this.cashAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount);
-    this.paidAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount);
-    this.billNo = this.FinalNetAmount;//  parseInt(this.advanceData.BillId);
-    this.PatientName = this.advanceData.PatientName;
-    this.BillDate = this.advanceData.Date;
-    this.getBalanceAmt();
-    // this.Paymentobj['TransactionType'] = 0;
-    this.IsCreditflag = false
-    this.showTable = false;
+    // this.netPayAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
+    // this.cashAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount);
+    // this.paidAmt = this.FinalNetAmount;// parseInt(this.advanceData.NetPayAmount);
+    // this.billNo = this.FinalNetAmount;//  parseInt(this.advanceData.BillId);
+    // this.PatientName = this.advanceData.PatientName;
+    // this.BillDate = this.advanceData.Date;
+    // // this.getBalanceAmt();
+    // // this.Paymentobj['TransactionType'] = 0;
+    // this.IsCreditflag = false
+    // this.showTable = false;
+    
+
+    // console.log(this._loggedService.currentUserValue.user);
+    // this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
+    // this.vPharOPOpt=this._loggedService.currentUserValue.user.pharOPOpt;
+    // this.vPharIPOpt=this._loggedService.currentUserValue.user.pharIPOpt;
+    // if (this.vPharOPOpt == true){
+    //   this.vCondition = 'OP'
+    //   this.vSelectedOption = this.vCondition;
+    // }else if (this.vPharIPOpt == true){
+    //   this.vCondition = 'IP'
+    //   // this.vCondition = true;
+    //   this.vSelectedOption = this.vCondition;
+    // }else if (this.vPharExtOpt == true){
+    //   this.vCondition = 'External'
+    //   // this.vCondition = true;
+    //   this.vSelectedOption = this.vCondition;
+    // }
+      
+    
   }
+  vPharExtOpt:any ;
+  vPharOPOpt: any ;
+  vPharIPOpt: any ; 
+  vSelectedOption: any= '';
+
+  vCondition:boolean=false;
+  vConditionExt:boolean=false;
+  vConditionIP:boolean=false;
 
   ngOnInit(): void {
-    this.patientDetailsFormGrp = this.createForm();
+    // this.patientDetailsFormGrp = this.createForm();
     this.gePharStoreList();
     this.getItemSubform();
     this.getConcessionReasonList();
 
     // pament Code
-    this.patientDetailsFormGrp = this.createForm();
+    // this.patientDetailsFormGrp = this.createForm();
     this.selectedPaymnet1 = this.paymentArr1[0].value;
     this.amount1 = this.FinalNetAmount// this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
-    this.getBalanceAmt();
-    this.paymentRowObj["cash"] = true;
-    this.onPaymentChange(1, 'cash');
+    // this.getBalanceAmt();
+    // this.paymentRowObj["cash"] = true;
+    // this.onPaymentChange(1, 'cash');
     this.paidAmt = 0;
-    this.onAddClick('cash');
-    this.getBankNameList2();
-    this.getBankNameList3();
-    this.getBankNameList4();
+    // this.onAddClick('cash');
+    // this.getBankNameList2();
+    // this.getBankNameList3();
+    // this.getBankNameList4();
     this.getDraftorderList();
 
+
+    // onChangePatientType('OP');
+
     this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
-    this.vPharOPOpt=this._loggedService.currentUserValue.user.pharOPOpt;
-    this.vPharIPOpt=this._loggedService.currentUserValue.user.pharIPOpt;
+    this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
+    this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
 
+    if (this.vPharExtOpt == true) {
+      this.paymethod = false;
+      this.vSelectedOption = 'External'; 
+    }else{
+      this.vPharOPOpt = true
+    }
+
+    if (this.vPharIPOpt == true) { 
+       if (this.vPharOPOpt == false) {
+        this.paymethod = true;
+        this.vSelectedOption = 'IP'; 
+      }
+    }else{
+      this.vConditionIP = true
+    }
+
+    if (this.vPharOPOpt == true) {
+      if (this.vPharExtOpt == false) { 
+        this.paymethod = true;
+        this.vSelectedOption = 'OP'; 
+      }
+    } else{
+      this.vCondition = true
+    }  
   }
 
+  // createForm() {
+  //   return this.formBuilder.group({
+  //     paymentType1: [],
+  //     amount1: [this.netPayAmt],
+  //     referenceNumber1: [],
+  //     bankName1: [],
+  //     regDate1: [(new Date()).toISOString()],
 
-  createForm() {
-    return this.formBuilder.group({
-      paymentType1: [],
-      amount1: [this.netPayAmt],
-      referenceNumber1: [],
-      bankName1: [],
-      regDate1: [(new Date()).toISOString()],
+  //     paymentType2: [],
+  //     amount2: [],
+  //     referenceNo2: [],
+  //     bankName2: [],
+  //     regDate2: [(new Date()).toISOString()],
 
-      paymentType2: [],
-      amount2: [],
-      referenceNo2: [],
-      bankName2: [],
-      regDate2: [(new Date()).toISOString()],
+  //     paymentType3: [],
+  //     amount3: [],
+  //     bankName3: [],
+  //     referenceNo3: [],
+  //     regDate3: [(new Date()).toISOString()],
 
-      paymentType3: [],
-      amount3: [],
-      bankName3: [],
-      referenceNo3: [],
-      regDate3: [(new Date()).toISOString()],
+  //     paymentType4: [],
+  //     amount4: [],
+  //     referenceNo4: [],
+  //     bankName4: [],
+  //     regDate4: [(new Date()).toISOString()],
 
-      paymentType4: [],
-      amount4: [],
-      referenceNo4: [],
-      bankName4: [],
-      regDate4: [(new Date()).toISOString()],
+  //     paymentType5: [],
+  //     amount5: [],
+  //     bankName5: [],
+  //     regDate5: [(new Date()).toISOString()],
+  //     referenceNo5: [],
 
-      paymentType5: [],
-      amount5: [],
-      bankName5: [],
-      regDate5: [(new Date()).toISOString()],
-      referenceNo5: [],
+  //     paidAmountController: [],
+  //     balanceAmountController: [],
+  //     // roundoffAmt: ''
+  //     // paymentType6: [],
+  //     // amount6: [],
+  //     // bankName6: [],
+  //     // regDate6: [(new Date()).toISOString()],
+  //     // referenceNo6: []
+  //   });
+  // }
 
-      paidAmountController: [],
-      balanceAmountController: [],
-      // roundoffAmt: ''
-      // paymentType6: [],
-      // amount6: [],
-      // bankName6: [],
-      // regDate6: [(new Date()).toISOString()],
-      // referenceNo6: []
-    });
-  }
+  // OtherPayment() {
+  //   // 
+  //   this.amount1 = this.FinalNetAmount;
+  //   this.paidAmt = this.FinalNetAmount;
+  //   this.isPaymentSelected = true;
+  //   this.netPayAmt = this.FinalNetAmount;
+  //   this.getBalanceAmt();
+  //   this.paymentRowObj["cash"] = true;
+  //   this.onPaymentChange(1, 'cash');
 
-  OtherPayment() {
-    // 
-    this.amount1 = this.FinalNetAmount;
-    this.paidAmt = this.FinalNetAmount;
-    this.isPaymentSelected = true;
-    this.netPayAmt = this.FinalNetAmount;
-    this.getBalanceAmt();
-    this.paymentRowObj["cash"] = true;
-    this.onPaymentChange(1, 'cash');
-
-  }
+  // }
 
   getBalanceAmt() {
     // 
@@ -451,310 +517,310 @@ export class SalesComponent implements OnInit {
       + (this.amount5 ? parseInt(this.amount5) : 0));
   }
 
-  onAddClick(paymentOption: string) {
-    this.paymentRowObj[paymentOption] = true;
-    switch (paymentOption) {
-      case 'cash':
-        this.setSecRowValidators(paymentOption);
-        break;
+  // onAddClick(paymentOption: string) {
+  //   this.paymentRowObj[paymentOption] = true;
+  //   switch (paymentOption) {
+  //     case 'cash':
+  //       this.setSecRowValidators(paymentOption);
+  //       break;
 
-      case 'upi':
-        this.amount2 = this.netPayAmt - this.amount1;
-        this.getBalanceAmt();
-        this.setThirdRowValidators(paymentOption);
-        break;
+  //     case 'upi':
+  //       this.amount2 = this.netPayAmt - this.amount1;
+  //       this.getBalanceAmt();
+  //       this.setThirdRowValidators(paymentOption);
+  //       break;
 
-      case 'neft':
-        this.amount5 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3) + parseInt(this.amount4));
-        this.getBalanceAmt();
-        this.setThirdRowValidators(paymentOption);
-        break;
+  //     case 'neft':
+  //       this.amount5 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3) + parseInt(this.amount4));
+  //       this.getBalanceAmt();
+  //       this.setThirdRowValidators(paymentOption);
+  //       break;
 
-      case 'cheque':
-        this.amount3 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2));
-        this.getBalanceAmt();
-        this.setFourthRowValidators(paymentOption);
-        break;
+  //     case 'cheque':
+  //       this.amount3 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2));
+  //       this.getBalanceAmt();
+  //       this.setFourthRowValidators(paymentOption);
+  //       break;
 
-      case 'card':
-        this.amount4 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3));
-        this.getBalanceAmt();
-        this.setFifthRowValidators(paymentOption);
-        break;
+  //     case 'card':
+  //       this.amount4 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3));
+  //       this.getBalanceAmt();
+  //       this.setFifthRowValidators(paymentOption);
+  //       break;
 
-      default:
-        break;
-    }
+  //     default:
+  //       break;
+  //   }
 
-    // if (paymentOption && paymentOption == 'upi') {
+  //   // if (paymentOption && paymentOption == 'upi') {
 
-    // }
-  }
+  //   // }
+  // }
 
-  onPaymentChange(rowId: number, value: string) {
-    // 
-    switch (rowId) {
-      case 1:
-        this.paymentArr2 = this.opService.getPaymentArr();
-        let element = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet1);
-        this.paymentArr2.splice(element, 1);
+  // onPaymentChange(rowId: number, value: string) {
+  //   // 
+  //   switch (rowId) {
+  //     case 1:
+  //       this.paymentArr2 = this.opService.getPaymentArr();
+  //       let element = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet1);
+  //       this.paymentArr2.splice(element, 1);
 
-        this.paymentArr3 = this.opService.getPaymentArr();
-        let element1 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet1);
-        this.paymentArr3.splice(element1, 1);
+  //       this.paymentArr3 = this.opService.getPaymentArr();
+  //       let element1 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet1);
+  //       this.paymentArr3.splice(element1, 1);
 
-        this.paymentArr4 = this.opService.getPaymentArr();
-        let element2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet1);
-        this.paymentArr4.splice(element2, 1);
+  //       this.paymentArr4 = this.opService.getPaymentArr();
+  //       let element2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet1);
+  //       this.paymentArr4.splice(element2, 1);
 
-        this.paymentArr5 = this.opService.getPaymentArr();
-        let element3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet1);
-        this.paymentArr5.splice(element3, 1);
-        break;
+  //       this.paymentArr5 = this.opService.getPaymentArr();
+  //       let element3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet1);
+  //       this.paymentArr5.splice(element3, 1);
+  //       break;
 
-      case 2:
-        this.paymentArr1 = this.opService.getPaymentArr();
-        let ele = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet2);
-        this.paymentArr1.splice(ele, 1);
+  //     case 2:
+  //       this.paymentArr1 = this.opService.getPaymentArr();
+  //       let ele = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet2);
+  //       this.paymentArr1.splice(ele, 1);
 
-        this.paymentArr3 = this.opService.getPaymentArr();
-        let ele1 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet2);
-        this.paymentArr3.splice(ele1, 1);
+  //       this.paymentArr3 = this.opService.getPaymentArr();
+  //       let ele1 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet2);
+  //       this.paymentArr3.splice(ele1, 1);
 
-        this.paymentArr4 = this.opService.getPaymentArr();
-        let ele2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet2);
-        this.paymentArr4.splice(ele2, 1);
+  //       this.paymentArr4 = this.opService.getPaymentArr();
+  //       let ele2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet2);
+  //       this.paymentArr4.splice(ele2, 1);
 
-        this.paymentArr5 = this.opService.getPaymentArr();
-        let ele3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet2);
-        this.paymentArr5.splice(ele3, 1);
-        this.setSecRowValidators(value);
-        this.patientDetailsFormGrp.updateValueAndValidity();
-        break;
+  //       this.paymentArr5 = this.opService.getPaymentArr();
+  //       let ele3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet2);
+  //       this.paymentArr5.splice(ele3, 1);
+  //       this.setSecRowValidators(value);
+  //       this.patientDetailsFormGrp.updateValueAndValidity();
+  //       break;
 
-      case 3:
-        this.paymentArr1 = this.opService.getPaymentArr();
-        let elem = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet3);
-        this.paymentArr1.splice(elem, 1);
+  //     case 3:
+  //       this.paymentArr1 = this.opService.getPaymentArr();
+  //       let elem = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet3);
+  //       this.paymentArr1.splice(elem, 1);
 
-        this.paymentArr2 = this.opService.getPaymentArr();
-        let elem1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet3);
-        this.paymentArr2.splice(elem1, 1);
+  //       this.paymentArr2 = this.opService.getPaymentArr();
+  //       let elem1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet3);
+  //       this.paymentArr2.splice(elem1, 1);
 
-        this.paymentArr4 = this.opService.getPaymentArr();
-        let elem2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet3);
-        this.paymentArr4.splice(elem2, 1);
+  //       this.paymentArr4 = this.opService.getPaymentArr();
+  //       let elem2 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet3);
+  //       this.paymentArr4.splice(elem2, 1);
 
-        this.paymentArr5 = this.opService.getPaymentArr();
-        let elem3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet3);
-        this.paymentArr5.splice(elem3, 1);
-        this.setThirdRowValidators(value);
-        this.patientDetailsFormGrp.updateValueAndValidity();
-        break;
+  //       this.paymentArr5 = this.opService.getPaymentArr();
+  //       let elem3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet3);
+  //       this.paymentArr5.splice(elem3, 1);
+  //       this.setThirdRowValidators(value);
+  //       this.patientDetailsFormGrp.updateValueAndValidity();
+  //       break;
 
-      case 4:
-        this.paymentArr1 = this.opService.getPaymentArr();
-        let elemen = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet4);
-        this.paymentArr1.splice(elemen, 1);
+  //     case 4:
+  //       this.paymentArr1 = this.opService.getPaymentArr();
+  //       let elemen = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet4);
+  //       this.paymentArr1.splice(elemen, 1);
 
-        this.paymentArr2 = this.opService.getPaymentArr();
-        let elemen1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet4);
-        this.paymentArr2.splice(elemen1, 1);
+  //       this.paymentArr2 = this.opService.getPaymentArr();
+  //       let elemen1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet4);
+  //       this.paymentArr2.splice(elemen1, 1);
 
-        this.paymentArr3 = this.opService.getPaymentArr();
-        let elemen2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet4);
-        this.paymentArr3.splice(elemen2, 1);
+  //       this.paymentArr3 = this.opService.getPaymentArr();
+  //       let elemen2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet4);
+  //       this.paymentArr3.splice(elemen2, 1);
 
-        this.paymentArr5 = this.opService.getPaymentArr();
-        let elemen3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet4);
-        this.paymentArr5.splice(elemen3, 1);
-        this.setFourthRowValidators(value);
-        this.patientDetailsFormGrp.updateValueAndValidity();
-        break;
+  //       this.paymentArr5 = this.opService.getPaymentArr();
+  //       let elemen3 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet4);
+  //       this.paymentArr5.splice(elemen3, 1);
+  //       this.setFourthRowValidators(value);
+  //       this.patientDetailsFormGrp.updateValueAndValidity();
+  //       break;
 
-      case 5:
-        this.paymentArr1 = this.opService.getPaymentArr();
-        let elemnt = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet5);
-        this.paymentArr1.splice(elemnt, 1);
+  //     case 5:
+  //       this.paymentArr1 = this.opService.getPaymentArr();
+  //       let elemnt = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet5);
+  //       this.paymentArr1.splice(elemnt, 1);
 
-        this.paymentArr2 = this.opService.getPaymentArr();
-        let elemnt1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet5);
-        this.paymentArr2.splice(elemnt1, 1);
+  //       this.paymentArr2 = this.opService.getPaymentArr();
+  //       let elemnt1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet5);
+  //       this.paymentArr2.splice(elemnt1, 1);
 
-        this.paymentArr3 = this.opService.getPaymentArr();
-        let elemnt2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet5);
-        this.paymentArr3.splice(elemnt2, 1);
+  //       this.paymentArr3 = this.opService.getPaymentArr();
+  //       let elemnt2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet5);
+  //       this.paymentArr3.splice(elemnt2, 1);
 
-        this.paymentArr4 = this.opService.getPaymentArr();
-        let elemnt3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet5);
-        this.paymentArr4.splice(elemnt3, 1);
-        this.setFifthRowValidators(value);
-        this.patientDetailsFormGrp.updateValueAndValidity();
-        break;
+  //       this.paymentArr4 = this.opService.getPaymentArr();
+  //       let elemnt3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet5);
+  //       this.paymentArr4.splice(elemnt3, 1);
+  //       this.setFifthRowValidators(value);
+  //       this.patientDetailsFormGrp.updateValueAndValidity();
+  //       break;
 
-      // case 6:
-      //   this.paymentArr1 = this.opService.getPaymentArr();
-      //   let elemnt = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet5);
-      //   this.paymentArr1.splice(elemnt, 1);
+  //     // case 6:
+  //     //   this.paymentArr1 = this.opService.getPaymentArr();
+  //     //   let elemnt = this.paymentArr1.findIndex(ele => ele.value == this.selectedPaymnet5);
+  //     //   this.paymentArr1.splice(elemnt, 1);
 
-      //   this.paymentArr2 = this.opService.getPaymentArr();
-      //   let elemnt1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet5);
-      //   this.paymentArr2.splice(elemnt1, 1);
+  //     //   this.paymentArr2 = this.opService.getPaymentArr();
+  //     //   let elemnt1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet5);
+  //     //   this.paymentArr2.splice(elemnt1, 1);
 
-      //   this.paymentArr3 = this.opService.getPaymentArr();
-      //   let elemnt2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet5);
-      //   this.paymentArr3.splice(elemnt2, 1);
+  //     //   this.paymentArr3 = this.opService.getPaymentArr();
+  //     //   let elemnt2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet5);
+  //     //   this.paymentArr3.splice(elemnt2, 1);
 
-      //   this.paymentArr4 = this.opService.getPaymentArr();
-      //   let elemnt3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet5);
-      //   this.paymentArr4.splice(elemnt3, 1);
-      //   this.setFifthRowValidators(value);
-      //   this.patientDetailsFormGrp.updateValueAndValidity();
-      //   break;
+  //     //   this.paymentArr4 = this.opService.getPaymentArr();
+  //     //   let elemnt3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet5);
+  //     //   this.paymentArr4.splice(elemnt3, 1);
+  //     //   this.setFifthRowValidators(value);
+  //     //   this.patientDetailsFormGrp.updateValueAndValidity();
+  //     //   break;
 
-      default:
-        break;
-    }
-  }
+  //     default:
+  //       break;
+  //   }
+  // }
 
-  setPaymentOption() {
-    if (this.selectedPaymnet1) {
-      let element1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet1);
-      this.paymentArr2.splice(element1, 1);
+  // setPaymentOption() {
+  //   if (this.selectedPaymnet1) {
+  //     let element1 = this.paymentArr2.findIndex(ele => ele.value == this.selectedPaymnet1);
+  //     this.paymentArr2.splice(element1, 1);
 
-      let element2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet1);
-      this.paymentArr3.splice(element2, 1);
+  //     let element2 = this.paymentArr3.findIndex(ele => ele.value == this.selectedPaymnet1);
+  //     this.paymentArr3.splice(element2, 1);
 
-      let element3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet1);
-      this.paymentArr4.splice(element3, 1);
+  //     let element3 = this.paymentArr4.findIndex(ele => ele.value == this.selectedPaymnet1);
+  //     this.paymentArr4.splice(element3, 1);
 
-      let element4 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet1);
-      this.paymentArr5.splice(element4, 1);
-    }
-  }
+  //     let element4 = this.paymentArr5.findIndex(ele => ele.value == this.selectedPaymnet1);
+  //     this.paymentArr5.splice(element4, 1);
+  //   }
+  // }
 
-  setSecRowValidators(paymentOption: any) {
-    if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo2').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName2').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate2').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.updateValueAndValidity();
-    } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo2').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('bankName2').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('regDate2').clearAsyncValidators();
-      this.patientDetailsFormGrp.updateValueAndValidity();
-    }
-  }
+  // setSecRowValidators(paymentOption: any) {
+  //   if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
+  //     this.patientDetailsFormGrp.get('referenceNo2').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.get('bankName2').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.get('regDate2').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.updateValueAndValidity();
+  //   } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
+  //     this.patientDetailsFormGrp.get('referenceNo2').clearAsyncValidators();
+  //     this.patientDetailsFormGrp.get('bankName2').clearAsyncValidators();
+  //     this.patientDetailsFormGrp.get('regDate2').clearAsyncValidators();
+  //     this.patientDetailsFormGrp.updateValueAndValidity();
+  //   }
+  // }
 
-  setThirdRowValidators(paymentOption: any) {
-    if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
-      this.patientDetailsFormGrp.get('amount3').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('referenceNo3').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName3').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate3').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.updateValueAndValidity();
-    } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
-      this.removeThirdValidators();
-    }
-  }
+  // setThirdRowValidators(paymentOption: any) {
+  //   if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
+  //     this.patientDetailsFormGrp.get('amount3').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.get('referenceNo3').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.get('bankName3').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.get('regDate3').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.updateValueAndValidity();
+  //   } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
+  //     this.removeThirdValidators();
+  //   }
+  // }
 
-  setFourthRowValidators(paymentOption: any) {
-    if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo4').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName4').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate4').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.updateValueAndValidity();
-    } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo4').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('bankName4').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('regDate4').clearAsyncValidators();
-      this.patientDetailsFormGrp.updateValueAndValidity();
-    }
-  }
+  // setFourthRowValidators(paymentOption: any) {
+  //   if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
+  //     this.patientDetailsFormGrp.get('referenceNo4').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.get('bankName4').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.get('regDate4').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.updateValueAndValidity();
+  //   } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
+  //     this.patientDetailsFormGrp.get('referenceNo4').clearAsyncValidators();
+  //     this.patientDetailsFormGrp.get('bankName4').clearAsyncValidators();
+  //     this.patientDetailsFormGrp.get('regDate4').clearAsyncValidators();
+  //     this.patientDetailsFormGrp.updateValueAndValidity();
+  //   }
+  // }
 
-  setFifthRowValidators(paymentOption: any) {
-    if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo5').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('bankName5').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate5').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.updateValueAndValidity();
-    } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
-      this.patientDetailsFormGrp.get('referenceNo5').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('bankName5').clearAsyncValidators();
-      this.patientDetailsFormGrp.get('regDate5').clearAsyncValidators();
-      this.patientDetailsFormGrp.updateValueAndValidity();
-    }
-  }
+  // setFifthRowValidators(paymentOption: any) {
+  //   if (this.selectedPaymnet2 && this.selectedPaymnet2 != 'cash') {
+  //     this.patientDetailsFormGrp.get('referenceNo5').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.get('bankName5').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.get('regDate5').setValidators([Validators.required]);
+  //     this.patientDetailsFormGrp.updateValueAndValidity();
+  //   } else if (this.selectedPaymnet2 && this.selectedPaymnet2 == 'cash') {
+  //     this.patientDetailsFormGrp.get('referenceNo5').clearAsyncValidators();
+  //     this.patientDetailsFormGrp.get('bankName5').clearAsyncValidators();
+  //     this.patientDetailsFormGrp.get('regDate5').clearAsyncValidators();
+  //     this.patientDetailsFormGrp.updateValueAndValidity();
+  //   }
+  // }
 
-  removeThirdValidators() {
-    this.patientDetailsFormGrp.get('amount3').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('referenceNo3').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('bankName3').clearAsyncValidators();
-    this.patientDetailsFormGrp.get('regDate3').clearAsyncValidators();
-    this.patientDetailsFormGrp.updateValueAndValidity();
-  }
+  // removeThirdValidators() {
+  //   this.patientDetailsFormGrp.get('amount3').clearAsyncValidators();
+  //   this.patientDetailsFormGrp.get('referenceNo3').clearAsyncValidators();
+  //   this.patientDetailsFormGrp.get('bankName3').clearAsyncValidators();
+  //   this.patientDetailsFormGrp.get('regDate3').clearAsyncValidators();
+  //   this.patientDetailsFormGrp.updateValueAndValidity();
+  // }
 
-  private _filterBank2(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
-      return this.optionsBank2.filter(option => option.BankName.toLowerCase().includes(filterValue));
-    }
+  // private _filterBank2(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
+  //     return this.optionsBank2.filter(option => option.BankName.toLowerCase().includes(filterValue));
+  //   }
 
-  }
-
-
-  private _filterBank3(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
-      return this.optionsBank3.filter(option => option.BankName.toLowerCase().includes(filterValue));
-    }
-
-  }
+  // }
 
 
-  private _filterBank4(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
-      return this.optionsBank4.filter(option => option.BankName.toLowerCase().includes(filterValue));
-    }
+  // private _filterBank3(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
+  //     return this.optionsBank3.filter(option => option.BankName.toLowerCase().includes(filterValue));
+  //   }
 
-  }
-  getBankNameList2() {
-    this.opService.getBankMasterCombo().subscribe(data => {
-      this.BankNameList2 = data;
-      this.optionsBank2 = this.BankNameList2.slice();
-      this.filteredOptionsBank2 = this.patientDetailsFormGrp.get('bankName2').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterBank2(value) : this.BankNameList2.slice()),
-      );
+  // }
 
-    });
-  }
 
-  getBankNameList3() {
-    this.opService.getBankMasterCombo().subscribe(data => {
-      this.BankNameList3 = data;
-      this.optionsBank3 = this.BankNameList3.slice();
-      this.filteredOptionsBank3 = this.patientDetailsFormGrp.get('bankName3').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterBank3(value) : this.BankNameList3.slice()),
-      );
+  // private _filterBank4(value: any): string[] {
+  //   if (value) {
+  //     const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
+  //     return this.optionsBank4.filter(option => option.BankName.toLowerCase().includes(filterValue));
+  //   }
 
-    });
-  }
+  // }
+  // getBankNameList2() {
+  //   this.opService.getBankMasterCombo().subscribe(data => {
+  //     this.BankNameList2 = data;
+  //     this.optionsBank2 = this.BankNameList2.slice();
+  //     this.filteredOptionsBank2 = this.patientDetailsFormGrp.get('bankName2').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterBank2(value) : this.BankNameList2.slice()),
+  //     );
 
-  getBankNameList4() {
-    this.opService.getBankMasterCombo().subscribe(data => {
-      this.BankNameList4 = data;
-      this.optionsBank4 = this.BankNameList4.slice();
-      this.filteredOptionsBank4 = this.patientDetailsFormGrp.get('bankName4').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterBank4(value) : this.BankNameList4.slice()),
-      );
+  //   });
+  // }
 
-    });
-  }
+  // getBankNameList3() {
+  //   this.opService.getBankMasterCombo().subscribe(data => {
+  //     this.BankNameList3 = data;
+  //     this.optionsBank3 = this.BankNameList3.slice();
+  //     this.filteredOptionsBank3 = this.patientDetailsFormGrp.get('bankName3').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterBank3(value) : this.BankNameList3.slice()),
+  //     );
+
+  //   });
+  // }
+
+  // getBankNameList4() {
+  //   this.opService.getBankMasterCombo().subscribe(data => {
+  //     this.BankNameList4 = data;
+  //     this.optionsBank4 = this.BankNameList4.slice();
+  //     this.filteredOptionsBank4 = this.patientDetailsFormGrp.get('bankName4').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterBank4(value) : this.BankNameList4.slice()),
+  //     );
+
+  //   });
+  // }
 
 
   getOptionTextBank2(option) {
@@ -783,206 +849,206 @@ export class SalesComponent implements OnInit {
     }
   }
 
-  onRemoveClick(caseId: string) {
-    this.paymentRowObj[caseId] = false;
-    switch (caseId) {
-      case 'upi':
-        this.removeThirdValidators();
-        break;
+  // onRemoveClick(caseId: string) {
+  //   this.paymentRowObj[caseId] = false;
+  //   switch (caseId) {
+  //     case 'upi':
+  //       this.removeThirdValidators();
+  //       break;
 
-      default:
-        break;
-    }
-  }
+  //     default:
+  //       break;
+  //   }
+  // }
 
-  getCashObj(type: string) {
+  // getCashObj(type: string) {
 
-    if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
-      this.Paymentobj['CashPayAmount'] = parseInt(this.amount1.toString());
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
-      this.Paymentobj['CashPayAmount'] = parseInt(this.amount2.toString());
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
-      this.Paymentobj['CashPayAmount'] = parseInt(this.amount3.toString());
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
-      this.Paymentobj['CashPayAmount'] = parseInt(this.amount4.toString());
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
-      this.Paymentobj['CashPayAmount'] = parseInt(this.amount5.toString());
-      return;
-    }
-    // 
-    // console.log(this.Paymentobj)
-    return;
-  }
+  //   if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
+  //     this.Paymentobj['CashPayAmount'] = parseInt(this.amount1.toString());
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
+  //     this.Paymentobj['CashPayAmount'] = parseInt(this.amount2.toString());
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
+  //     this.Paymentobj['CashPayAmount'] = parseInt(this.amount3.toString());
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
+  //     this.Paymentobj['CashPayAmount'] = parseInt(this.amount4.toString());
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
+  //     this.Paymentobj['CashPayAmount'] = parseInt(this.amount5.toString());
+  //     return;
+  //   }
+  //   // 
+  //   // console.log(this.Paymentobj)
+  //   return;
+  // }
 
-  getChequeObj(type: string) {
-    // 
-    if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
-      this.Paymentobj['ChequePayAmount'] = this.amount1;
-      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
-      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName1").value.BankName;
-      this.Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
-      this.Paymentobj['ChequePayAmount'] = this.amount2;
-      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
-      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName2").value.BankName;
-      this.Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
-      this.Paymentobj['ChequePayAmount'] = this.amount3;
-      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
-      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName3").value.BankName;
-      this.Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
-      this.Paymentobj['ChequePayAmount'] = this.amount4;
-      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
-      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName4").value.BankName;
-      this.Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
-      this.Paymentobj['ChequePayAmount'] = this.amount5;
-      this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
-      this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName5").value.BankName;
-      this.Paymentobj['ChequeDate'] = this.dateTimeObj.date;
-      return;
-    }
-    // console.log(this.Paymentobj)
-    return;
+  // getChequeObj(type: string) {
+  //   // 
+  //   if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
+  //     this.Paymentobj['ChequePayAmount'] = this.amount1;
+  //     this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
+  //     this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName1").value.BankName;
+  //     this.Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
+  //     this.Paymentobj['ChequePayAmount'] = this.amount2;
+  //     this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
+  //     this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName2").value.BankName;
+  //     this.Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
+  //     this.Paymentobj['ChequePayAmount'] = this.amount3;
+  //     this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
+  //     this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName3").value.BankName;
+  //     this.Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
+  //     this.Paymentobj['ChequePayAmount'] = this.amount4;
+  //     this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
+  //     this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName4").value.BankName;
+  //     this.Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
+  //     this.Paymentobj['ChequePayAmount'] = this.amount5;
+  //     this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
+  //     this.Paymentobj['BankName'] = this.patientDetailsFormGrp.get("bankName5").value.BankName;
+  //     this.Paymentobj['ChequeDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   // console.log(this.Paymentobj)
+  //   return;
 
-  }
+  // }
 
-  getCardObj(type: string) {
-    if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
-      this.Paymentobj['CardPayAmount'] = this.amount1;
-      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName1").value;
-      this.Paymentobj['CardDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
-      this.Paymentobj['CardPayAmount'] = this.amount2;
-      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName2").value.BankName;
-      this.Paymentobj['CardDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
-      this.Paymentobj['CardPayAmount'] = this.amount3;
-      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName3").value.BankName;
-      this.Paymentobj['CardDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
-      this.Paymentobj['CardPayAmount'] = this.amount4;
-      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName4").value.BankName;
-      this.Paymentobj['CardDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
-      this.Paymentobj['CardPayAmount'] = this.amount5;
-      this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
-      this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName5").value.BankName;
-      this.Paymentobj['CardDate'] = this.dateTimeObj.date;
-      return;
-    }
-    // console.log(this.Paymentobj)
-    return;
-  }
+  // getCardObj(type: string) {
+  //   if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
+  //     this.Paymentobj['CardPayAmount'] = this.amount1;
+  //     this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
+  //     this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName1").value;
+  //     this.Paymentobj['CardDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
+  //     this.Paymentobj['CardPayAmount'] = this.amount2;
+  //     this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
+  //     this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName2").value.BankName;
+  //     this.Paymentobj['CardDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
+  //     this.Paymentobj['CardPayAmount'] = this.amount3;
+  //     this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
+  //     this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName3").value.BankName;
+  //     this.Paymentobj['CardDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
+  //     this.Paymentobj['CardPayAmount'] = this.amount4;
+  //     this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
+  //     this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName4").value.BankName;
+  //     this.Paymentobj['CardDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
+  //     this.Paymentobj['CardPayAmount'] = this.amount5;
+  //     this.Paymentobj['CardNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
+  //     this.Paymentobj['CardBankName'] = this.patientDetailsFormGrp.get("bankName5").value.BankName;
+  //     this.Paymentobj['CardDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   // console.log(this.Paymentobj)
+  //   return;
+  // }
 
-  getNeftObj(type: string) {
-    if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
-      this.Paymentobj['NEFTPayAmount'] = this.amount1;
-      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName1").value;
-      this.Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
-      this.Paymentobj['NEFTPayAmount'] = this.amount2;
-      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName2").value.BankName;
-      this.Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
-      this.Paymentobj['NEFTPayAmount'] = this.amount3;
-      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName3").value.BankName;
-      this.Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
-      this.Paymentobj['NEFTPayAmount'] = this.amount4;
-      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName4").value.BankName;
-      this.Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
-      this.Paymentobj['NEFTPayAmount'] = this.amount5;
-      this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
-      this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName5").value;
-      this.Paymentobj['NEFTDate'] = this.dateTimeObj.date;
-      return;
-    }
-    // console.log(this.Paymentobj)
-    return;
-  }
+  // getNeftObj(type: string) {
+  //   if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
+  //     this.Paymentobj['NEFTPayAmount'] = this.amount1;
+  //     this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
+  //     this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName1").value;
+  //     this.Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
+  //     this.Paymentobj['NEFTPayAmount'] = this.amount2;
+  //     this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
+  //     this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName2").value.BankName;
+  //     this.Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
+  //     this.Paymentobj['NEFTPayAmount'] = this.amount3;
+  //     this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
+  //     this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName3").value.BankName;
+  //     this.Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
+  //     this.Paymentobj['NEFTPayAmount'] = this.amount4;
+  //     this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
+  //     this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName4").value.BankName;
+  //     this.Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
+  //     this.Paymentobj['NEFTPayAmount'] = this.amount5;
+  //     this.Paymentobj['NEFTNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
+  //     this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName5").value;
+  //     this.Paymentobj['NEFTDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   // console.log(this.Paymentobj)
+  //   return;
+  // }
 
-  getUpiObj(type: string) {
-    if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
-      this.Paymentobj['PayTMAmount'] = this.amount1;
-      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
-      // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName1").value;
-      this.Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
-      this.Paymentobj['PayTMAmount'] = this.amount2;
-      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
-      // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName2").value;
-      this.Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
-      this.Paymentobj['PayTMAmount'] = this.amount3;
-      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
-      // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName3").value;
-      this.Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
-      this.Paymentobj['PayTMAmount'] = this.amount4;
-      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
-      // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName4").value;
-      this.Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-      return;
-    }
-    if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
-      this.Paymentobj['PayTMAmount'] = this.amount5;
-      this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
-      // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName5").value;
-      this.Paymentobj['PayTMDate'] = this.dateTimeObj.date;
-      return;
-    }
-    // console.log(this.Paymentobj)
-    return;
-  }
+  // getUpiObj(type: string) {
+  //   if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
+  //     this.Paymentobj['PayTMAmount'] = this.amount1;
+  //     this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo1").value;
+  //     // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName1").value;
+  //     this.Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType2").value == type) {
+  //     this.Paymentobj['PayTMAmount'] = this.amount2;
+  //     this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo2").value;
+  //     // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName2").value;
+  //     this.Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType3").value == type) {
+  //     this.Paymentobj['PayTMAmount'] = this.amount3;
+  //     this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo3").value;
+  //     // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName3").value;
+  //     this.Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType4").value == type) {
+  //     this.Paymentobj['PayTMAmount'] = this.amount4;
+  //     this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo4").value;
+  //     // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName4").value;
+  //     this.Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   if (this.patientDetailsFormGrp.get("paymentType5").value == type) {
+  //     this.Paymentobj['PayTMAmount'] = this.amount5;
+  //     this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo5").value;
+  //     // this.Paymentobj['NEFTBankMaster'] = this.patientDetailsFormGrp.get("bankName5").value;
+  //     this.Paymentobj['PayTMDate'] = this.dateTimeObj.date;
+  //     return;
+  //   }
+  //   // console.log(this.Paymentobj)
+  //   return;
+  // }
 
   // Payment code Over
 
@@ -998,7 +1064,8 @@ export class SalesComponent implements OnInit {
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
-      PatientType: ['External', [Validators.required]],
+      PatientType: ['OP'],
+      // paymode: ['cashpay'],
       // OP_IP_ID: [0,[Validators.required]],
       TotalAmt: '',
       GSTPer: '',
@@ -1017,6 +1084,7 @@ export class SalesComponent implements OnInit {
       CashPay: ['CashPay'],
       referanceNo: '',
       RegID: '',
+      RegID1: '',
       PaidbyPatient: '',
       PaidbacktoPatient: '',
       roundoffAmt: '0'
@@ -1246,7 +1314,7 @@ export class SalesComponent implements OnInit {
   calculateTotalAmt() {
 
 
-    debugger
+   // debugger
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
@@ -1546,7 +1614,7 @@ export class SalesComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result1 => {
-      debugger
+     // debugger
       let result = result1.selectedData
       let vescflag = result1.vEscflag
       console.log(result);
@@ -1704,9 +1772,11 @@ export class SalesComponent implements OnInit {
       // this.addbutton.focus();
     }
   }
+  checkdisc1:boolean=false;
   getDiscPer() {
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
+      this.ItemSubform.get('FinalDiscPer').disable();
       this.chkdiscper = true;
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
       this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
@@ -1813,7 +1883,7 @@ export class SalesComponent implements OnInit {
       this.netPayAmt = this.FinalNetAmount;
       this.getBalanceAmt();
       this.paymentRowObj["cash"] = true;
-      this.onPaymentChange(1, 'cash');
+      //this.onPaymentChange(1, 'cash');
 
       this.IsOnlineRefNo = false;
       this.ItemSubform.get('referanceNo').clearValidators();
@@ -1951,14 +2021,17 @@ export class SalesComponent implements OnInit {
 
   onSave(event) {
     event.srcElement.setAttribute('disabled', true);
-
-    if (this.PatientName == "" || this.MobileNo == "" || this.DoctorName == "") {
-      this.toastr.warning('Please select Customer Detail', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      event.srcElement.removeAttribute('disabled');
-      return;
+    let patientTypeValue1 = this.ItemSubform.get('PatientType').value;
+    if(this.ItemSubform.get('PatientType').value == 'External'){
+      if (this.PatientName == "" || this.MobileNo == "" || this.DoctorName == "") {
+        this.toastr.warning('Please select Customer Detail', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        event.srcElement.removeAttribute('disabled');
+        return;
+      }
     }
+   
     if (this.FinalTotalAmt == 0 || this.FinalNetAmount == 0) {
       this.toastr.warning('Please check Sales total Amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1968,7 +2041,7 @@ export class SalesComponent implements OnInit {
     }
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     if ((patientTypeValue == 'OP' || patientTypeValue == 'IP')
-      && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
+      && (this.registerObj.RegNo == '' || this.registerObj.RegNo == null || this.registerObj.RegNo == undefined)) {
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -1979,14 +2052,15 @@ export class SalesComponent implements OnInit {
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashOnlinePaySave()
     }
-    // else if (this.ItemSubform.get('CashPay').value == 'Credit') {
-    //   this.onCreditpaySave()
-    // }
+    else if (this.ItemSubform.get('CashPay').value == 'Credit') {
+      this.onCreditpaySave()
+    }
     else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
       this.onSavePayOption()
     }
+   
     this.getDraftorderList();
-    this.mobileno.nativeElement.focus();
+    //this.mobileno.nativeElement.focus();
     event.srcElement.removeAttribute('disabled');
   }
   isLoading123 = false;
@@ -2160,7 +2234,8 @@ export class SalesComponent implements OnInit {
           this.Itemchargeslist = [];
           this._matDialog.closeAll();
           this.ItemFormreset();
-          this.patientDetailsFormGrp.reset();
+         // this.patientDetailsFormGrp.reset();
+         this.ItemSubform.reset();
           this.Formreset();
           this.ItemSubform.get('ConcessionId').reset();
           // this.PatientName = '';
@@ -2347,6 +2422,8 @@ export class SalesComponent implements OnInit {
                 this.getWhatsappshareSales(response, vMobileNo)
                 this.Itemchargeslist = [];
                 this._matDialog.closeAll();
+                this.ItemFormreset();
+                this.Formreset();
               }
             } else {
               this.toastr.error('API Error!', 'Error !', {
@@ -2366,8 +2443,8 @@ export class SalesComponent implements OnInit {
           this.patientDetailsFormGrp.reset();
           this.Formreset();
           this.ItemSubform.get('ConcessionId').reset();
-          this.PatientName = '';
-          this.MobileNo = '';
+          // this.PatientName = '';
+          // this.MobileNo = '';
           this.saleSelectedDatasource.data = [];
         }
         else {
@@ -2381,11 +2458,11 @@ export class SalesComponent implements OnInit {
         if (this.vPatientType == 'External') {
           // Swal.fire("Plz Chk Payment Data !");
         } else {
-          Swal.fire('Do You Want to generate Credit Bill ?').then((result) => {
-            if (result.isConfirmed) {
-              this.onCreditpaySave();
-            }
-          });
+          // Swal.fire('Do You Want to generate Credit Bill ?').then((result) => {
+          //   if (result.isConfirmed) {
+          //     this.onCreditpaySave();
+          //   }
+          // });
 
 
         }
@@ -2393,7 +2470,7 @@ export class SalesComponent implements OnInit {
     })
 
   }
-
+ 
 
   getPrint3(el) {
     var D_data = {
@@ -2617,17 +2694,17 @@ export class SalesComponent implements OnInit {
       contact.GSTAmount = 0;
       contact.TotalMRP = 0
       contact.DiscAmt = 0,
-        contact.NetAmt = 0;
+      contact.NetAmt = 0;
       contact.RoundNetAmt = 0;
       contact.StockId = this.StockId,
-        contact.VatAmount = 0;
+      contact.VatAmount = 0;
       contact.LandedRateandedTotal = 0;
       contact.CGSTAmt = 0;
       contact.SGSTAmt = 0;
       contact.IGSTAmt = 0;
       contact.PurchaseRate = this.PurchaseRate,
-        contact.PurTotAmt = this.PurTotAmt,
-        contact.MarginAmt = 0
+      contact.PurTotAmt = this.PurTotAmt,
+      contact.MarginAmt = 0
     }
 
 
@@ -2723,7 +2800,7 @@ export class SalesComponent implements OnInit {
     salesInsertCredit['salesHeadName'] = ""
     salesInsertCredit['salesTypeId'] = 0;
     salesInsertCredit['salesId'] = 0;
-    salesInsertCredit['extMobileNo'] = this.MobileNo;
+    salesInsertCredit['extMobileNo'] = this.MobileNo || 0;
     salesInsertCredit['extAddress'] = this.vextAddress || '';
 
     let salesDetailInsertCreditarr = [];
@@ -2782,6 +2859,7 @@ export class SalesComponent implements OnInit {
       "cal_DiscAmount_SalesCredit": cal_DiscAmount_SalesCredit,
       "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
     };
+    console.log(submitData)
     let vMobileNo = this.mobileno;
     this._salesService.InsertCreditSales(submitData).subscribe(response => {
       if (response) {
@@ -2799,6 +2877,7 @@ export class SalesComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
+      this.isLoading123=false;
       this.sIsLoading = '';
     }, error => {
 
@@ -2810,7 +2889,7 @@ export class SalesComponent implements OnInit {
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.getConcessionReasonList();
-    this.PatientName = '';
+    //this.PatientName = '';
     // this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
     this.saleSelectedDatasource.data = [];
@@ -3245,7 +3324,8 @@ export class SalesComponent implements OnInit {
   onClose() {
     this.Itemchargeslist = [];
     this.ItemFormreset();
-    this.patientDetailsFormGrp.reset();
+   // this.patientDetailsFormGrp.reset();
+    this.ItemSubform.reset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.PatientName = '';
@@ -3259,40 +3339,96 @@ export class SalesComponent implements OnInit {
   }
 
 
+  // Patient Search;
+  getSearchListOp() {
+  var m_data = {
+    "Keyword": `${this.ItemSubform.get('RegID1').value}%`
+  }
+  this._RequestforlabtestService.getPatientVisitedListSearch(m_data).subscribe(data => {
+    this.PatientListfilteredOptionsOP = data;
+    console.log(this.PatientListfilteredOptionsOP)
+    if (this.PatientListfilteredOptionsOP.length == 0) {
+      this.noOptionFound = true;
+    } else {
+      this.noOptionFound = false;
+    }
+  });
 
-  getSearchList() {
+}
+ 
+getSearchListIP() {
     var m_data = {
       "Keyword": `${this.ItemSubform.get('RegID').value}%`
     }
-    if (this.ItemSubform.get('RegID').value.length >= 1) {
-      this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        // console.log(resData);
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-
-      });
+    if (this.ItemSubform.get('PatientType').value == 'OP'){
+      if (this.ItemSubform.get('RegID').value.length >= 1) {
+        this._RequestforlabtestService.getPatientVisitedListSearch(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          this.PatientListfilteredOptionsOP = resData;
+           console.log(resData);
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          } 
+        });
+      }
+    }else if (this.ItemSubform.get('PatientType').value == 'IP') {
+      if (this.ItemSubform.get('RegID').value.length >= 1) {
+        this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          // console.log(resData);
+          this.PatientListfilteredOptionsIP = resData;
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          }
+        });
+      }
     }
-
-    this.saleSelectedDatasource.data = [];
+   this.saleSelectedDatasource.data = [];
   }
-
-  getSelectedObjReg(obj) {
-
+  RegNo:any;
+  AdmissionID:any;
+  WardId:any;
+  BedId:any;
+  getSelectedObjRegIP(obj) {
+    console.log(obj)
     this.registerObj = obj;
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+    this.PatientName = obj.FirstName + ' ' + obj.LastName;
     this.RegId = obj.RegID;
-    // console.log(this.registerObj)
     this.OP_IP_Id = this.registerObj.AdmissionID;
-
-
+    this.AdmissionID = obj.AdmissionID;
+    this.RegNo =obj.RegNo;
+    this.WardId = obj.WardId;
+    this.BedId =obj.BedId
+    // if (this.ItemSubform.get('PatientType').value == 'IP'){
+    //   this.OP_IP_Id = this.registerObj.AdmissionID;
+    // }else  if (this.ItemSubform.get('PatientType').value == 'OP'){
+    //   this.OP_IP_Id = this.registerObj.VisitId;
+    // }
     // this.getDraftorderList(obj);
   }
 
+  getSelectedObjOP(obj) {
+    console.log(obj)
+    // this.dataSource.data = [];
+    this.registerObj = obj;
+    this.PatientName = obj.FirstName + " " + obj.LastName;
+    this.RegId = obj.RegId;
+    this.OP_IP_Id  = obj.VisitId;
+    this.RegNo =obj.RegNo;
+    // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    // this.CompanyName = obj.CompanyName;
+    // this.Tarrifname = obj.TariffName;
+    // this.Doctorname = obj.DoctorName;
+    // this.vOPIPId = obj.VisitId;
+    // this.vOPDNo = obj.OPDNo;
+    // this.vTariffId = obj.TariffId;
+    // this.vClassId = obj.ClassId;
+    // this.AgeYear=obj.AgeYear;
+  }
   CalPaidbackAmt() {
     this.v_PaidbacktoPatient = (parseFloat(this.roundoffAmt) - parseFloat(this.v_PaidbyPatient)).toFixed(2);
   }
@@ -3351,7 +3487,7 @@ export class SalesComponent implements OnInit {
   chargeslistBarcode: any = [];
   onAddBarcodeItemList(contact, DraftQty) {
     console.log(contact)
-    debugger
+   // debugger
     this.vBarcodeflag = true;
     let i = 0;
 
@@ -3365,7 +3501,7 @@ export class SalesComponent implements OnInit {
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-          debugger
+         // debugger
 
 
           if (contact.IssueQty != null) {
@@ -3516,6 +3652,73 @@ export class SalesComponent implements OnInit {
     this.vBarcode = 0;
     this.vBarcodeflag = false;
   }
+  dsItemNameList1 = new MatTableDataSource<IndentList>();
+  IPMedID:any;
+  getPRESCRIPTION() {
+    const dialogRef = this._matDialog.open(PrescriptionComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      console.log(result) 
+      this.registerObj = result;
+      console.log(this.registerObj)
+      this.PatientName = result[0].PatientName;
+      this.RegId = result[0].RegId;
+      this.OP_IP_Id = result[0].AdmissionID;
+      this.ItemSubform.get('RegID').setValue(result[0].RegId);
+      this.AdmissionID =result[0].AdmissionID;
+      this.RegNo = result[0].RegNo;
+      this.WardId = result[0].WardId;
+      this.BedId = result[0].BedId;
+      this.IPMedID = result[0].IPMedID;
+      if(this.IPMedID > 0){
+        this.paymethod = true;
+        this.vSelectedOption = 'IP'; 
+      }
+
+
+      this.dsItemNameList1.data = result;
+      this.dsItemNameList1.data.forEach((contact) => {
+        var m_data = {
+          "ItemId": contact.ItemId,
+          "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+        }
+        this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
+          console.log(draftdata)
+          this.Itemchargeslist1 = draftdata as any;
+          if (this.Itemchargeslist1.length == 0) {
+            Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
+          }
+          else if (this.Itemchargeslist1.length > 0) {
+            let ItemID;
+            this.Itemchargeslist1.forEach((element) => {
+              // console.log(element)
+              if (ItemID != element.ItemId) {
+                this.QtyBalchk = 0;
+              }
+              if (this.QtyBalchk != 1) {
+                if (contact.QtyPerDay <= element.BalanceQty) {
+                  this.QtyBalchk = 1;
+                  this.getFinalCalculation(element, contact.QtyPerDay);
+                  ItemID = element.ItemId;
+                }
+                else {
+                  Swal.fire("Balance Qty is :", element.BalanceQty)
+                  this.QtyBalchk = 0;
+                  Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
+                }
+              }
+            });
+          } 
+        }); 
+      }); 
+    });
+  }
+ 
 }
 
 

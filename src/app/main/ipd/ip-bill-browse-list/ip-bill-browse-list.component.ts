@@ -149,7 +149,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
   getRecord(contact, m): void {
     if (m == "Print Final Bill") {
-    if(contact.InterimOrFinal)
+    if(!contact.InterimOrFinal)
     this.viewgetBillReportPdf(contact.BillNo)
    else
    this.viewgetInterimBillReportPdf(contact.BillNo)

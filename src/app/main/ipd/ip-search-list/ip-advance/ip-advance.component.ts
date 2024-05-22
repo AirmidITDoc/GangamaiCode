@@ -205,6 +205,7 @@ export class IPAdvanceComponent implements OnInit {
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
       PatientHeaderObj['NetPayAmount'] = this.advanceAmount;
+      PatientHeaderObj['BillId'] = 0;
 
       // const advanceHeaderInsert = new AdvanceHeader(advanceHeaderObj);
       // const advanceDetailInsert = new AdvanceDetails(AdvanceDetObj);
@@ -213,8 +214,8 @@ export class IPAdvanceComponent implements OnInit {
       // if (this.AdvFormGroup.get('cashpay').value != 1) {
         const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
           {
-            maxWidth: "100vw",
-            height: '740px',
+            maxWidth: "90vw",
+            height: '640px',
             width: '100%',
 
             data: {

@@ -88,17 +88,16 @@
                                 </mat-autocomplete>
                             </mat-form-field>
 
-                            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-                                <button mat-raised-button (click)="getPhoneAppointList()" class="searchButton"
+                          
+                            <div style="margin-top: 10px;">
+                                <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                    matTooltip="close">
+                                    <mat-icon class="cleariconbutton">close</mat-icon>
+                                </button>&nbsp;
+                                <button mat-raised-button class="searchButton" (click)="getPhoneAppointList()"
                                     matTooltip="search">
-                                    <!-- <mat-icon class="cleariconbutton">close</mat-icon></button>&nbsp; -->
-                                    Search
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
                                 </button>
-                                <button mat-raised-button class="clearbutton" (click)="onClear()" matTooltip="close">
-                                    <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
-                                    Close
-                                </button>
-
                             </div>
                         </div>
 
