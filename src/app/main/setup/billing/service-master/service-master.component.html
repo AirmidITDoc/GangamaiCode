@@ -1,4 +1,5 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar dynamicTableHeight>
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
+    dynamicTableHeight>
     <!-- HEADER -->
     <mat-toolbar class="top-header accent ">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -79,22 +80,22 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="ServiceName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Service Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ServiceName}}
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> Service Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.ServiceName}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="ServiceShortDesc">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>ServiceShortDesc
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">ServiceShortDesc
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ServiceShortDesc}}
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.ServiceShortDesc}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="GroupName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>GroupName
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">GroupName
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.GroupName}}
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200"> {{element.GroupName}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -232,8 +233,8 @@
                             </mat-table>
                         </div>
                         <mat-paginator [pageSizeOptions]="[12, 24, 35, 100]" [pageSize]="12" [length]="resultsLength"
-                        showFirstLastButtons (page)="getServiceMasterList()">
-                    </mat-paginator>
+                            showFirstLastButtons (page)="getServiceMasterList()">
+                        </mat-paginator>
 
                         <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
                             showFirstLastButtons></mat-paginator> -->

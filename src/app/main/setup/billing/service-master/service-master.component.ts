@@ -83,7 +83,7 @@ export class ServiceMasterComponent implements OnInit {
             TariffId: 0,
             GroupId: 0,
             Start:(this.paginator?.pageIndex??1),
-            Length:(this.paginator?.pageSize??10),
+            Length:(this.paginator?.pageSize??20),
         };
         this._serviceMasterService.getServiceMasterList_Pagn(param).subscribe(
             (data) => {
