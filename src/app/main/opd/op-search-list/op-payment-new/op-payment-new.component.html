@@ -727,11 +727,25 @@
                                     [(ngModel)]="amount1" required>
                             </mat-form-field>
                             <ng-container *ngIf="selectedPaymnet1 != 'cash'">
-                                <mat-form-field appearance="outline" fxFlex="16%">
+
+                                <!-- <mat-form-field appearance="outline" fxFlex="16%">
                                     <mat-label>Reference Number</mat-label>
                                     <input matInput formControlName="referenceNo1" required #Reference
                                     (keypress)="keyPressCharater($event)">
-                                </mat-form-field>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline" fxFlex="16%">
+                                <mat-label>Reference Number</mat-label>
+                                <input name="referenceNo1" formControlName="referenceNo1"
+                                     matInput required  max="999999999999" min="100000000000"
+                                    autocomplete="off" maxlength="12"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                    required="required" value="987665868877">
+                                <mat-error class="error"
+                                    *ngIf="patientDetailsFormGrp.get('referenceNo1').invalid && patientDetailsFormGrp.get('MobileNo').touched">12
+                                    digits Reference number is
+                                    required</mat-error>
+                            </mat-form-field>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex="16%" *ngIf="UpiFlag1">
                                     <mat-label >Bank Name</mat-label>

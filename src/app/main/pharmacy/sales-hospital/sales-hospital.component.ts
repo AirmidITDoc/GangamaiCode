@@ -423,26 +423,27 @@ export class SalesHospitalComponent implements OnInit {
 
     // onChangePatientType('OP');
 
+   
     this.vPharExtOpt = this._loggedService.currentUserValue.user.pharExtOpt;
     this.vPharOPOpt = this._loggedService.currentUserValue.user.pharOPOpt;
     this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
 
-    if (this.vPharExtOpt == true) {
-      this.paymethod = false;
-      this.vSelectedOption = 'External'; 
+   
+    if (this.vPharExtOpt == true) { 
+        this.paymethod = false;
+        this.vSelectedOption = 'External'; 
     }else{
       this.vPharOPOpt = true
     }
 
     if (this.vPharIPOpt == true) { 
-       if (this.vPharOPOpt == false) {
+      if(this.vPharOPOpt == false){
         this.paymethod = true;
         this.vSelectedOption = 'IP'; 
-      }
+      }  
     }else{
       this.vConditionIP = true
-    }
-
+    } 
     if (this.vPharOPOpt == true) {
       if (this.vPharExtOpt == false) { 
         this.paymethod = true;
@@ -2041,7 +2042,7 @@ export class SalesHospitalComponent implements OnInit {
     }
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     if ((patientTypeValue == 'OP' || patientTypeValue == 'IP')
-      && (this.registerObj.RegNo == '' || this.registerObj.RegNo == null || this.registerObj.RegNo == undefined)) {
+      && (this.RegNo == '' || this.RegNo == null || this.RegNo == undefined)) {
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -2105,7 +2106,7 @@ export class SalesHospitalComponent implements OnInit {
     SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
-    SalesInsert['isPrescription'] = 0;
+    SalesInsert['isPrescription'] = this.IPMedID || 0;
     SalesInsert['creditReason'] = '';
     SalesInsert['creditReasonID'] = 0;
     SalesInsert['wardId'] = 0;
@@ -2331,7 +2332,7 @@ export class SalesHospitalComponent implements OnInit {
           SalesInsert['externalPatientName'] = this.PatientName || '';
           SalesInsert['doctorName'] = this.DoctorName || '';
           SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
-          SalesInsert['isPrescription'] = 0;
+          SalesInsert['isPrescription'] =this.IPMedID || 0;
           SalesInsert['creditReason'] = '';
           SalesInsert['creditReasonID'] = 0;
           SalesInsert['wardId'] = 0;
@@ -2789,7 +2790,7 @@ export class SalesHospitalComponent implements OnInit {
       salesInsertCredit['externalPatientName'] = this.PatientName;
     salesInsertCredit['doctorName'] = "";
     salesInsertCredit['storeId'] = this._loggedService.currentUserValue.user.storeId,
-      salesInsertCredit['isPrescription'] = 0;
+      salesInsertCredit['isPrescription'] = this.IPMedID || 0;
     salesInsertCredit['creditReason'] = '';
     salesInsertCredit['creditReasonID'] = 0;
     salesInsertCredit['wardId'] = 0;
@@ -3130,7 +3131,7 @@ export class SalesHospitalComponent implements OnInit {
       SalesInsert['externalPatientName'] = this.PatientName || '';
     SalesInsert['doctorName'] = this.DoctorName || '';
     SalesInsert['storeId'] = this._salesService.IndentSearchGroup.get('StoreId').value.storeid;
-    SalesInsert['isPrescription'] = 0;
+    SalesInsert['isPrescription'] =this.IPMedID || 0;
     SalesInsert['creditReason'] = '';
     SalesInsert['creditReasonID'] = 0;
     SalesInsert['wardId'] = 0;
@@ -3662,69 +3663,79 @@ getSearchListIP() {
   dsItemNameList1 = new MatTableDataSource<IndentList>();
   IPMedID:any;
   getPRESCRIPTION() {
-    const dialogRef = this._matDialog.open(PrescriptionComponent,
-      {
-        maxWidth: "100%",
-        height: '95%',
-        width: '95%',
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      console.log(result) 
-      this.registerObj = result;
-      console.log(this.registerObj)
-      this.PatientName = result[0].PatientName;
-      this.RegId = result[0].RegId;
-      this.OP_IP_Id = result[0].AdmissionID;
-      this.ItemSubform.get('RegID').setValue(result[0].RegId);
-      this.IPDNo =result[0].IPDNo;
-      this.RegNo = result[0].RegNo;
-      this.DoctorName = result[0].DoctorName;
-      this.TariffName = result[0].TariffName;
-      this.IPMedID = result[0].IPMedID;
-      this.CompanyName = result[0].CompanyName
-      if(this.IPMedID > 0){
-        this.paymethod = true;
-        this.vSelectedOption = 'IP'; 
-      }
-
-    
-      this.dsItemNameList1.data = result;
-      this.dsItemNameList1.data.forEach((contact) => {
-        var m_data = {
-          "ItemId": contact.ItemId,
-          "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+    if (this.ItemSubform.get('PatientType').value == 'IP') {
+      const dialogRef = this._matDialog.open(PrescriptionComponent,
+        {
+          maxWidth: "100%",
+          height: '95%',
+          width: '95%',
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        console.log(result)
+        this.DoctorNamecheck = true;
+        this.IPDNocheck = true;
+        this.OPDNoCheck = false;
+        this.registerObj = result;
+        console.log(this.registerObj)
+        this.PatientName = result[0].PatientName;
+        this.RegId = result[0].RegId;
+        this.OP_IP_Id = result[0].AdmissionID;
+        this.ItemSubform.get('RegID').setValue(result[0].RegId);
+        this.IPDNo = result[0].IPDNo;
+        this.RegNo = result[0].RegNo;
+        this.DoctorName = result[0].DoctorName;
+        this.TariffName = result[0].TariffName;
+        this.IPMedID = result[0].IPMedID;
+        this.CompanyName = result[0].CompanyName;
+        this.IPDNo = result[0].IPDNo;
+        if (this.IPMedID > 0) {
+          this.paymethod = true;
+          this.vSelectedOption = 'IP';
         }
-        this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
-          console.log(draftdata)
-          this.Itemchargeslist1 = draftdata as any;
-          if (this.Itemchargeslist1.length == 0) {
-            Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
+
+
+        this.dsItemNameList1.data = result;
+        this.dsItemNameList1.data.forEach((contact) => {
+          var m_data = {
+            "ItemId": contact.ItemId,
+            "StoreId": this._loggedService.currentUserValue.user.storeId || 0
           }
-          else if (this.Itemchargeslist1.length > 0) {
-            let ItemID;
-            this.Itemchargeslist1.forEach((element) => {
-              // console.log(element)
-              if (ItemID != element.ItemId) {
-                this.QtyBalchk = 0;
-              }
-              if (this.QtyBalchk != 1) {
-                if (contact.QtyPerDay <= element.BalanceQty) {
-                  this.QtyBalchk = 1;
-                  this.getFinalCalculation(element, contact.QtyPerDay);
-                  ItemID = element.ItemId;
-                }
-                else {
-                  Swal.fire("Balance Qty is :", element.BalanceQty)
+          this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
+            console.log(draftdata)
+            this.Itemchargeslist1 = draftdata as any;
+            if (this.Itemchargeslist1.length == 0) {
+              Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
+            }
+            else if (this.Itemchargeslist1.length > 0) {
+              let ItemID;
+              this.Itemchargeslist1.forEach((element) => {
+                // console.log(element)
+                if (ItemID != element.ItemId) {
                   this.QtyBalchk = 0;
-                  Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
                 }
-              }
-            });
-          } 
-        }); 
-      }); 
-    });
+                if (this.QtyBalchk != 1) {
+                  if (contact.QtyPerDay <= element.BalanceQty) {
+                    this.QtyBalchk = 1;
+                    this.getFinalCalculation(element, contact.QtyPerDay);
+                    ItemID = element.ItemId;
+                  }
+                  else {
+                    Swal.fire("Balance Qty is :", element.BalanceQty)
+                    this.QtyBalchk = 0;
+                    Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
+                  }
+                }
+              });
+            }
+          });
+        });
+      });
+    } else {
+      this.toastr.warning('Please Select PatientType IP.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+    }
   }
  
 }

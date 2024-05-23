@@ -94,6 +94,8 @@ RegId:any;
       });
   } 
   IPMedID:any;
+  DoctorName:any;
+  IPDNo:any;
   getItemDetailList(contact){
     console.log(contact)
     this.IPMedID = contact.IPMedID;
@@ -104,6 +106,8 @@ RegId:any;
     this.RegNo =  contact.RegNo;
     this.RegId = contact.RegId;
     this.IPMedID = contact.IPMedID;
+    this.DoctorName = contact.DoctorName;
+    this.IPDNo = contact.IPDNo;
     var Param = {
       "OP_IP_Id": contact.IPMedID ,
       "OP_IP_Type":contact.PatientType
@@ -143,7 +147,9 @@ RegId:any;
           BedId :  this.BedNo,
           AdmissionID :this.AddmissionId,
           RegId :this.RegId,
-          IPMedID:this.IPMedID
+          IPMedID:this.IPMedID,
+          DoctorName: this.DoctorName,
+          IPDNo : this.IPDNo
         });
     console.log(this.Patientlist);
     this._dialogRef.close(this.Patientlist);

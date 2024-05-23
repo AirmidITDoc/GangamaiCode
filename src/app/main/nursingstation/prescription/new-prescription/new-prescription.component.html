@@ -67,14 +67,14 @@
                                                 <span class="patient-col-value">{{PatientName}}</span>
                                             </div>
                                             <div class="patient-col">
-                                                <span class="patient-col-key">OPIPNo</span>
+                                                <span class="patient-col-key">IPDNo</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{vOPDNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">DoctorName</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{DoctorName}}</span>
+                                                <span class="patient-col-value">Dr.{{Doctorname}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">CompanyName</span>
@@ -153,21 +153,16 @@
                         
                                     <mat-form-field appearance="outline" fxFlex="1 1 auto">
                                         <mat-label>Qty</mat-label>
-                                        <input type="text" [(ngModel)]="vQty" name="Qty" (keydown)="onEnterqty($event)" formControlName="Qty"
-                                            matInput required #qty
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
-                                        <!-- <mat-error class="error" *ngIf="myForm.get('Qty').invalid && myForm.get('Qty').touched">
-                                                                Qty is required and Numbers Only
-                                                            </mat-error> -->
+                                        <input type="text" OnlyNumber [(ngModel)]="vQty" name="Qty" (keydown)="onEnterqty($event)" formControlName="Qty" matInput
+                                            required #qty (keypress)="keyPressAlphanumeric($event)"> 
                                     </mat-form-field>
+
+
                                     <!-- (keydown)="onEnterremark($event)" -->
                                     <mat-form-field appearance="outline" fxFlex="10 1 auto">
                                         <mat-label>Remark</mat-label>
                                         <input type="text" name="Remark" [(ngModel)]="vRemark" formControlName="Remark" matInput #remark
-                                            (keydown)="addData()">
-                                        <!-- <mat-error *ngIf="myForm.get('Remark').touched">
-                                                                Remark is required Alphabets
-                                                            </mat-error> -->
+                                            (keydown)="onEnterremark($event)"> 
                                     </mat-form-field>
                         
                                     <div class="input-add-button">
@@ -222,7 +217,7 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact">
                                                 <ng-container class="actions">
-                                                    <mat-icon (click)="deleteTableRow($event ,contact)">
+                                                    <mat-icon (click)="deleteTableRow($event ,contact)" color="warn">
                                                         delete
                                                     </mat-icon>
                                                 </ng-container>

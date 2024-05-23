@@ -320,6 +320,7 @@ export class NewAdvanceComponent implements OnInit {
   }
   onClose(){
     this._matDialog.closeAll();
+    this.OnReset();
   }
   OnReset(){
     this._PharAdvanceService.NewAdvanceForm.reset();

@@ -37,7 +37,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
   sIsLoading: string = '';
   isLoading = true;
   isRegIdSelected: boolean = false;
-  PatientListfilteredOptions: any;
+  PatientListfilteredOptionsref: any;
   noOptionFound: any;
   filteredOptions: any;
 
@@ -70,15 +70,15 @@ export class NewIPRefundAdvanceComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  getSearchList() {
+  getRefSearchList() {
     var m_data = {
-      "Keyword": `${this._PharAdvanceService.NewAdvanceForm.get('RegID').value}%`
+      "Keyword": `${this._PharAdvanceService.NewRefundForm.get('RegID').value}%`
     }
-    if (this._PharAdvanceService.NewAdvanceForm.get('RegID').value.length >= 1) {
+    if (this._PharAdvanceService.NewRefundForm.get('RegID').value.length >= 1) {
       this._PharAdvanceService.getAdmittedpatientlist(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         console.log(resData)
-        this.PatientListfilteredOptions = resData;
+        this.PatientListfilteredOptionsref = resData;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
@@ -87,7 +87,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
       });
     }
   }
-  getOptionText(option) {
+  getOptionTextref(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
   }
@@ -98,18 +98,30 @@ export class NewIPRefundAdvanceComponent implements OnInit {
     this.vAdmissionDate = obj.AdmissionDate;
     this.vMobileNo = obj.MobileNo;
     this.vAdmissionID = obj.AdmissionID;
-    this.vIPDNo = obj.IPDNo
-    this.getAdvanceList(obj);
+    this.vIPDNo = obj.IPDNo 
+    this.getAdvanceOldList(obj);
   }
+  getAdvanceOldList(obj) { 
+    let strSql = "select AdmissionId,DOA,IPDNo,AdmittedDr from lvwAdmissionListWithRegNoForPhar where RegNo = " + this.vRegNo + " order by AdmissionId desc"
+    this._PharAdvanceService.getAdvanceOldList(strSql).subscribe(data => {
+      this.dsRefIpItemList.data = data as any;
+      console.log(this.dsRefIpItemList.data)
+      this.dsRefIpItemList.sort = this.sort;
+      this.dsRefIpItemList.paginator = this.Secondpaginator;
+    });   
+  }
+  
   getAdvanceList(obj) {
     this.sIsLoading = 'loading';
     var m_data = {
-      "AdmissionID": obj.AdmissionID
+      "AdmissionId": obj.AdmissionId
     }
+    console.log(m_data)
     setTimeout(() => {
       this.sIsLoading = 'loading';
       this._PharAdvanceService.getAdvanceList(m_data).subscribe(Visit => {
         this.dsIpItemList.data = Visit as IpItemList[];
+        console.log(this.dsIpItemList.data)
         if (this.dsIpItemList.data.length > 0) {
           this.dsIpItemList.sort = this.sort;
           this.dsIpItemList.paginator = this.Secondpaginator;
@@ -322,6 +334,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
   }
   onClose() {
     this._matDialog.closeAll();
+    this.OnReset();
   }
   OnReset() {
     this._PharAdvanceService.NewAdvanceForm.reset();

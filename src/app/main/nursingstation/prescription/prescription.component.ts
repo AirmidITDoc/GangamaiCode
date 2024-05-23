@@ -30,18 +30,14 @@ export class PrescriptionComponent implements OnInit {
   hasSelectedContacts: boolean;
   SpinLoading:boolean=false;
   PType:any;
-  displayedColumns: string[] = [
-    'action',
+  displayedColumns: string[] = [ 
     'RegNo',
     'PatientName',
-    // 'DoctorName',
+    'Vst_Adm_Date',
     'Date',
-    'OPD_IPD_Type',
-    'PTime',
-    'CompanyName',
-    // 'WardName'
-    'AddedBy'
-    
+    'StoreName',
+    'CompanyName', 
+    'action',
   ]
 
   dscPrescriptionDetList:string[] = [
@@ -78,13 +74,47 @@ export class PrescriptionComponent implements OnInit {
       this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-  //window
-  OpenNewPrescription(){
-    this.dialog.open(NewPrescriptionComponent,{
-      height: '90vh',
-      width: '70vw'
-      //height: '695px !important',
+  getPrescriptionList(){
+    var vdata={
+      FromDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
+      ToDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
+      Reg_No: this._PrescriptionService.mysearchform.get('RegNo').value || 0,
+   
+    }
+     console.log(vdata);
+    this._PrescriptionService.getPrecriptionlistmain(vdata).subscribe(data =>{
+        this.dsprescritionList.data = data as PrescriptionList[];
+        this.dsprescritionList.sort = this.sort;
+        this.dsprescritionList.paginator = this.paginator;
+        console.log(this.dsprescritionList.data);
     })
+  }
+ 
+  getPrescriptiondetList(Param){
+    debugger
+    var vdata={
+      IPMedID: Param.IPMedID
+
+    }
+    this._PrescriptionService.getPrecriptiondetlist(vdata).subscribe(data =>{
+      this.dsprescriptiondetList.data = data as PrescriptiondetList[];
+      this.dsprescriptiondetList.sort = this.sort;
+      this.dsprescriptiondetList.paginator = this.paginator;
+       console.log(this.dsprescriptiondetList.data);
+    })
+  }
+
+  //window
+  OpenNewPrescription(){ 
+    const dialogRef = this._matDialog.open(NewPrescriptionComponent,
+      {
+        height: '90vh',
+        width: '70vw'
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getPrescriptionList();
+    });
   }
 
 
@@ -99,35 +129,6 @@ export class PrescriptionComponent implements OnInit {
     }
   }
 
-  getPrescriptionList(){
-    var vdata={
-      FromDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
-      ToDate: this.datePipe.transform(this._PrescriptionService.mysearchform.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
-      Reg_No: this._PrescriptionService.mysearchform.get('RegNo').value || 0,
-      Type:this.PType || 0
-    }
-    // console.log(vdata);
-    this._PrescriptionService.getPrecriptionlistmain(vdata).subscribe(data =>{
-        this.dsprescritionList.data = data as PrescriptionList[];
-        this.dsprescritionList.sort = this.sort;
-        this.dsprescritionList.paginator = this.paginator;
-        console.log(this.dsprescritionList.data);
-    })
-  }
-
-  getPrescriptiondetList(Param){
-    debugger
-    var vdata={
-      IPMedID: Param
-
-    }
-    this._PrescriptionService.getPrecriptiondetlist(vdata).subscribe(data =>{
-      this.dsprescriptiondetList.data = data as PrescriptiondetList[];
-      this.dsprescriptiondetList.sort = this.sort;
-      this.dsprescriptiondetList.paginator = this.paginator;
-       console.log(this.dsprescriptiondetList.data);
-    })
-  }
 
   
   PresItemlist:any =[];
@@ -150,10 +151,7 @@ export class PrescriptionComponent implements OnInit {
     }
   }
 
-  onSelect(Parama){
-     console.log(Parama.IPMedID);
-    this.getPrescriptiondetList(Parama.IPMedID)
-  }
+
 
   reportPrintObjList: PrescriptionList[] = [];
   printTemplate: any;

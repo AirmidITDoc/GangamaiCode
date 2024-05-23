@@ -1,17 +1,13 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core'; 
+import { DatePipe } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { fuseAnimations } from '@fuse/animations';
-import { PharmacyClearenceService } from './pharmacy-clearence.service';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component';
-import { CustomerInformationComponent } from 'app/main/Customer/customer-information/customer-information.component';
-import { CustomerBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/customer-bill-raise.component';
-import { NewCustomerComponent } from 'app/main/Customer/customer-information/new-customer/new-customer.component';
-import { NewBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/new-bill-raise/new-bill-raise.component';
+import { PharmacyClearenceService } from './pharmacy-clearence.service';
 
 @Component({
   selector: 'app-pharmacy-clearence',
@@ -21,218 +17,217 @@ import { NewBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/new
   animations: fuseAnimations,
   
 })
-export class PharmacyClearenceComponent implements OnInit {
-  displayedColumns = [
-   // 'IssueTrackerId',
-    'IssueRaisedDate',
-    'IssueRaisedTime',
-    'IssueSummary',
-    'IssueDescription',
-    'UploadImagePath',
-   // 'ImageName',
-    'IssueStatus',
-    'IssueAssigned',
-    'AddedBy',
-    'AddedDatetime',
-    'Action'
+export class PharmacyClearenceComponent implements OnInit {  
+
+  displayedColumnsRef = [
+    'SalesDate',
+    'SalseNo',
+    'NetPayAmt',
+    'PaidAmt',
+    'BalAmount',
+    'RefundAmt',
+    'CashPay',
+    'CardPay',
+    'ChequePay',
+    'AdvPay'
   ];
-  
+  displayedColumns = [
+    'SalesDate',
+    'SalseNo',
+    'NetPayAmt',
+    'PaidAmt',
+    'BalAmount',
+    'RefundAmt',
+    'CashPay',
+    'CardPay',
+    'ChequePay',
+    'AdvPay'
+  ];
+
+  dateTimeObj: any;
   sIsLoading: string = '';
   isLoading = true;
-  Store1List:any=[];
-  screenFromString = 'admission-form';
-  ConstanyTypeList:any=[];
-  ConstanyAssignedList:any=[];
-  
-  dsIssueTracker = new MatTableDataSource<IssueTrackerList>();
+  isRegIdSelected: boolean = false;
+  PatientListfilteredOptionsref: any;
+  noOptionFound: any;
+  filteredOptions: any;
+
+  vRegNo: any;
+  vPatienName: any;
+  vMobileNo: any;
+  vAdmissionDate: any;
+  vAdmissionID: any;
+  vIPDNo: any;
+
+  dsIpItemList = new MatTableDataSource<IpItemList>();
+  dsTable1IpItemList = new MatTableDataSource<IpRefItemList>();
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+  @ViewChild('Secondpaginator', { static: true }) public Secondpaginator: MatPaginator;
 
   constructor(
-    public _IssueTracker: PharmacyClearenceService,
+    public _PharmacyClearenceService: PharmacyClearenceService,
+    private _loggedService: AuthenticationService,
     public _matDialog: MatDialog,
-    private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
+    public toastr: ToastrService, 
   ) { }
 
   ngOnInit(): void {
-    this.getIssuTrackerList();
-    this.getIssueStatusList();
-    this.getIssueAssignedList();
   }
-  
-  
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
- 
-  dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-
-  getIssuTrackerList() {
-// let vstatus=this._IssueTracker.MyFrom.get('IssueStatus').value.Value || '%';
-// let vassigned=this._IssueTracker.MyFrom.get('IssueAssigned').value.Value || '%';
-// console.log(vassigned)
-// console.log(vstatus)
-    var vdata={
-      'IssueStatus':this._IssueTracker.MyFrom.get('IssueStatus').value.Value || '%',
-      'IssueAssigned':this._IssueTracker.MyFrom.get('IssueAssigned').value.Value || '%'
+  getRefSearchList() {
+    var m_data = {
+      "Keyword": `${this._PharmacyClearenceService.userFormGroup.get('RegID').value}%`
     }
-console.log(vdata)
-    this.sIsLoading = 'loading-data';
-     this._IssueTracker.getIssuTrackerList(vdata).subscribe(data => {
-     this.dsIssueTracker.data = data as IssueTrackerList[];
-     console.log(this.dsIssueTracker.data)
-     this.dsIssueTracker.sort = this.sort;
-     this.dsIssueTracker.paginator = this.paginator;
-     this.sIsLoading = '';
-   },
-     error => {
-       this.sIsLoading = '';
-     });
- }
- getIssueStatusList(){
-  var vdata={
-    'ConstanyType':'ISSUE_STATUS',
-  }
-   this._IssueTracker.getConstantsList(vdata).subscribe(data => {
-   this.ConstanyTypeList=data
-   console.log(this.ConstanyTypeList)
- });
- }
- getIssueAssignedList(){
-  var vdata={
-    'ConstanyType':'ISSUE_ASSIGNED',
-  }
-   this._IssueTracker.getConstantsList(vdata).subscribe(data => {
-   this.ConstanyAssignedList=data
-   console.log(this.ConstanyAssignedList)
- });
- }
- 
-
- 
- 
-  OpenPopUp(){
-    const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
-      {
-        maxWidth: "75vw",
-        height: '72%',
-        width: '100%',
-        
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getIssuTrackerList();
-    });
-  }
-  CustomerList(){
-    const dialogRef = this._matDialog.open(CustomerInformationComponent,
-      {
-        maxWidth: "85vw",
-        height: '85%',
-        width: '100%',
-        
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      //this.getIssuTrackerList();
-    });
-  }
-  NewCustomer(){
-    const dialogRef = this._matDialog.open(NewCustomerComponent,
-      {
-        maxWidth: "85vw",
-        height: '60%',
-        width: '100%',
-        
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-    });
-  }
-  NewCustomerBill(){
-    const dialogRef = this._matDialog.open(NewBillRaiseComponent,
-      {
-        maxWidth: "85vw",
-        height: '60%',
-        width: '100%',
-        
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-    });
-  }
-  CustomerbillList(){
-    const dialogRef = this._matDialog.open(CustomerBillRaiseComponent,
-      {
-        maxWidth: "85vw",
-        height: '85%',
-        width: '100%',
-        
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      //this.getIssuTrackerList();
-    });
-  }
-  onEdit(contact) {
-    const dialogRef = this._matDialog.open(NewIssueTrackerComponent,
-      {
-        maxWidth: "75vw",
-        height: '72%',
-        width: '100%',
-        data: {
-          Obj: contact,
-         
+    if (this._PharmacyClearenceService.userFormGroup.get('RegID').value.length >= 1) {
+      this._PharmacyClearenceService.getAdmittedpatientlist(m_data).subscribe(resData => {
+        this.filteredOptions = resData;
+        console.log(resData)
+        this.PatientListfilteredOptionsref = resData;
+        if (this.filteredOptions.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
         }
       });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getIssuTrackerList();
-    });
-  }
-  
-
-}
-
-export class IssueTrackerList {
- // IssueTrackerId: Number;
-  IssueRaisedDate: number;
-  IssueRaisedTime:number;
-  IssueSummary:string;
-  IssueDescription:string;
-  UploadImagePath: any;
-  ImageName:any;
-  IssueStatus:any;
-  IssueAssigned: any
-  AddedBy:any;
-  AddedDatetime:any;
-  IssueRaised:any;
-  IssueTrackerId:any
-  IssueStatusId:any;
-  constructor(IssueTrackerList) {
-    {
-      //this.IssueTrackerId = _IssueTrackerList.IssueTrackerId || 0;
-      this.IssueRaisedDate = IssueTrackerList.IssueRaisedDate || 0;
-      this.IssueRaisedTime = IssueTrackerList.IssueRaisedTime || 0;
-      this.IssueSummary = IssueTrackerList.IssueSummary || "";
-      this.IssueDescription = IssueTrackerList.IssueDescription || "";
-      this.UploadImagePath = IssueTrackerList.UploadImagePath || "";
-      this.ImageName = IssueTrackerList.ImageName || "";
-      this.IssueStatus = IssueTrackerList.IssueStatus || "";
-      this.IssueAssigned = IssueTrackerList.IssueAssigned || "";
-      this.AddedBy = IssueTrackerList.AddedBy || 0;
-      this.AddedDatetime = IssueTrackerList.AddedDatetime || 0;
-      this.IssueRaised = IssueTrackerList.IssueRaised || '';
-      this.IssueTrackerId = IssueTrackerList.IssueTrackerId || 0;
-      this.IssueStatusId = IssueTrackerList.IssueStatusId || 0;
     }
   }
+  getOptionTextref(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
+  }
+  getSelectedObj(obj) {
+    console.log(obj)
+    this.vRegNo = obj.RegNo;
+    this.vPatienName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+    this.vAdmissionDate = obj.AdmissionDate;
+    this.vMobileNo = obj.MobileNo;
+    this.vAdmissionID = obj.AdmissionID;
+    this.vIPDNo = obj.IPDNo  
+  } 
+  
+  getAdvanceList(obj) {
+    // this.sIsLoading = 'loading';
+    // var m_data = {
+    //   "AdmissionId": obj.AdmissionId
+    // }
+    // console.log(m_data)
+    // setTimeout(() => {
+    //   this.sIsLoading = 'loading';
+    //   this._PharmacyClearenceService.getAdvanceList(m_data).subscribe(Visit => {
+    //     this.dsIpItemList.data = Visit as IpItemList[];
+    //     console.log(this.dsIpItemList.data)
+    //     if (this.dsIpItemList.data.length > 0) {
+    //       this.dsIpItemList.sort = this.sort;
+    //       this.dsIpItemList.paginator = this.Secondpaginator;
+    //     }
+    //     else {
+    //       this.sIsLoading = this.dsIpItemList.data.length == 0 ? 'no-data' : '';
+    //     }
+    //   },
+    //     error => {
+    //       this.sIsLoading = this.dsIpItemList.data.length == 0 ? 'no-data' : '';
+    //     });
+    // }, 500);
+
+  }
+  TotalAdvamt: any;
+  Advavilableamt: any;
+  vadvanceAmount: any;
+  vPatientType: any;
+  getAdvancetotal(element) {
+    let netAmt;
+    netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
+    this.TotalAdvamt = netAmt;
+    return netAmt;
+  }
+
+  getAdvavilable(element) {
+    let netAmt;
+    netAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
+    this.Advavilableamt = netAmt;
+    return netAmt;
+  }
+  keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  onSave() {
+    
+  }
+  onClose() {
+    this._matDialog.closeAll();
+    this.OnReset();
+  }
+  OnReset() {
+    this._PharmacyClearenceService.userFormGroup.reset();
+    this._PharmacyClearenceService.userFormGroup.get('Op_ip_id').setValue(1);
+    this.dsIpItemList.data = [];
+  }
 }
+  export class IpItemList {
+  
+    SalesDate: number;
+    SalseNo: number;
+    NetPayAmt: number;
+    PaidAmt: any;
+    BalAmount: any;
+    RefundAmt: any;
+    CashPay: number;
+    CardPay: number;
+    ChequePay: any;
+    AdvPay:any;
+  
+    constructor(IpItemList) {
+      { 
+        this.SalesDate = IpItemList.SalesDate || 0;
+        this.SalseNo = IpItemList.SalseNo || 0;
+        this.NetPayAmt = IpItemList.NetPayAmt || 0;
+        this.PaidAmt = IpItemList.PaidAmt || 0;
+        this.BalAmount = IpItemList.BalAmount || 0;
+        this.RefundAmt = IpItemList.RefundAmt || 0;
+        this.CashPay = IpItemList.CashPay || 0;
+        this.CardPay = IpItemList.CardPay || 0;
+        this.ChequePay = IpItemList.ChequePay || 0; 
+        this.AdvPay = IpItemList.AdvPay || 0;
+      }
+    }
+  }
+  export class IpRefItemList {
+  
+    SalesDate: number;
+    SalseNo: number;
+    NetPayAmt: number;
+    PaidAmt: any;
+    BalAmount: any;
+    RefundAmt: any;
+    CashPay: number;
+    CardPay: number;
+    ChequePay: any;
+    AdvPay:any;
+  
+    constructor(IpItemList) {
+      { 
+        this.SalesDate = IpItemList.SalesDate || 0;
+        this.SalseNo = IpItemList.SalseNo || 0;
+        this.NetPayAmt = IpItemList.NetPayAmt || 0;
+        this.PaidAmt = IpItemList.PaidAmt || 0;
+        this.BalAmount = IpItemList.BalAmount || 0;
+        this.RefundAmt = IpItemList.RefundAmt || 0;
+        this.CashPay = IpItemList.CashPay || 0;
+        this.CardPay = IpItemList.CardPay || 0;
+        this.ChequePay = IpItemList.ChequePay || 0; 
+        this.AdvPay = IpItemList.AdvPay || 0;
+      }
+    }
+  }
 

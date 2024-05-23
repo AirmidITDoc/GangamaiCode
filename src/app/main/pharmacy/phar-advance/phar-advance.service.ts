@@ -74,6 +74,9 @@ export class PharAdvanceService {
   }
   public getAdvanceList(employee)
   {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_T_AdvanceList",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Phar_AdvanceList",employee)
+  }
+  public getAdvanceOldList(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
 }

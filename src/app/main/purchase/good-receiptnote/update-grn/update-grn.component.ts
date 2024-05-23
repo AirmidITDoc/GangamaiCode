@@ -1736,7 +1736,7 @@ export class UpdateGRNComponent implements OnInit {
     updateGRNHeaderObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
     updateGRNHeaderObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
     updateGRNHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
-      updateGRNHeaderObj['invDate'] = this.dateTimeObj.date;
+    updateGRNHeaderObj['invDate'] = this.datePipe.transform(this._GRNList.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd");
     updateGRNHeaderObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
     updateGRNHeaderObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
     updateGRNHeaderObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;

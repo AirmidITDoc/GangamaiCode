@@ -386,11 +386,11 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent"
+                                        <mat-header-row class="accent min-width-1800"
                                             *matHeaderRowDef="displayedColumns1; sticky: true">
                                         </mat-header-row>
 
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact min-width-1800"
                                             [@animate]="{value:'*',params:{y:'100%'}}"
                                             ></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"

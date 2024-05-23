@@ -14,23 +14,16 @@ export class PharmacyClearenceService {
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.CreateNewIssueFrom();
+    this.userFormGroup = this.CreateUseFrom();
     this.MyFrom = this.createmyFrom(); 
   }
 
-  CreateNewIssueFrom() {
+  CreateUseFrom() {
     return this._formBuilder.group({
-      IssueSummary:'',
-      IssueDescription:'',
-      IssueStatus:'',
-      ImageName:'',
-      ImagePath:'',
-      imageFile:'',
-      IssueRaised:'',
-      IssueAssigned:'',
-
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      RegID: [''],
+      Op_ip_id: ['1'],
+      advanceAmt:[''],
+      comment:['']
     });
   }
 
@@ -41,17 +34,9 @@ export class PharmacyClearenceService {
 
     });
   }
-  public getIssuTrackerList(Params){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IssueTrackerInformation",Params);
-  }
-  public InsertIssueTracker(Param){
-    return this._httpClient.post("InventoryTransaction/IssueTrackerSave", Param)
-  }
-  public UpdateIssueTracker(Param){
-    return this._httpClient.post("InventoryTransaction/IssueTrackerUpdate", Param)
-  }
-  public getConstantsList(Params){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Constants",Params);
+  
+  public getAdmittedpatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
  
   
