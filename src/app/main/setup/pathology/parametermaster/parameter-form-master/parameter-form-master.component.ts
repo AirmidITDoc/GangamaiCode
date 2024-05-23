@@ -244,7 +244,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 }
 
                 var m_data = {
-                    insertParameterMaster: {
+                    pathParameterMasterInsert: {
                         parameterShortName:
                             this._ParameterService.myform
                                 .get("ParameterShortName")
@@ -266,7 +266,7 @@ export class ParameterFormMasterComponent implements OnInit {
                             1,
                         isNumeric:
                             this._ParameterService.myform.get("IsNumeric")
-                                .value,
+                                .value!=2 ? true : false ,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._ParameterService.myform.get("IsDeleted")
@@ -285,7 +285,7 @@ export class ParameterFormMasterComponent implements OnInit {
                         // paraMultipleRange: " ", // this._ParameterService.myform.get("ParaMultipleRange").value,
                         parameterID: 0, // this._ParameterService.myform.get("ParameterID").value,
                     },
-                    insertParameterMasterRangeWise: {
+                    parameterDescriptiveMasterInsert: {
                         paraId:
                             "0" ||
                             this._ParameterService.myform.get("ParameterID")
@@ -301,6 +301,13 @@ export class ParameterFormMasterComponent implements OnInit {
                                 .value.trim() || "%",
                         // isDeleted: 0, // Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
                         addedby: 218, // this.accountService.currentUserValue.user.id ,
+                        ageType: this._ParameterService.myform.get("AgeType").value.trim()||"%",
+                        minAge:
+                            this._ParameterService.myform.get("MinAge")
+                                .value,
+                        maxAge:
+                            this._ParameterService.myform.get("MaxAge")
+                                .value,
                     },
                     // insertAssignParameterToDescriptives: data2,
                 };
