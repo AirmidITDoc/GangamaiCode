@@ -42,7 +42,7 @@
                             <form [formGroup]="_serviceMasterService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Service Name" autocomplete="off"
+                                        <input matInput placeholder="Search --> Service Name"  (keyup.enter)="onSearch()" autocomplete="off"
                                             name="ServiceNameSearch" formControlName="ServiceNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">

@@ -200,10 +200,21 @@
                                 IsPathology</mat-checkbox>
                         </section>
 
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-card">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                <div flex="100%">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xsf="column" class="checklist">
+                        <!-- &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; -->
+        
                         <section class="example-section">
                             <mat-checkbox class="example-margin" name="CreditedtoDoctor"
                                 formControlName="CreditedtoDoctor" value='false' [(ngModel)]="showDoctor"
-                                style="padding: 25px;">
+                                style="padding: 25px 0px">
                                 CreditedtoDoctor</mat-checkbox>
 
 
@@ -233,15 +244,10 @@
                 <div flex="100%">
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xsf="column" class="checklist">
                         <!-- &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; -->
-                        <section class="example-section">
-                            <mat-checkbox class="example-margin" name="IsActive" formControlName="IsActive"
-                                value='true'>
-                                IsActive</mat-checkbox>
-                        </section>
-                        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        
                         <section class="example-section">
                             <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg" value="true"
-                                formControlName="IsEmergency" (change)="emg_amt=''; emg_per=''" style="padding: 25px;">
+                                formControlName="IsEmergency" (change)="emg_amt=''; emg_per=''" style="padding: 25px 0px;">
                                 IsEmergency</mat-checkbox>
 
                             <div *ngIf="showEmg" class="emg-amt-input">
@@ -267,7 +273,13 @@
     </div>
 
     <hr>
-    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between">
+        <section class="example-section">
+            <mat-checkbox class="example-margin" name="IsActive" formControlName="IsActive"
+                value='true'>
+                IsActive</mat-checkbox>
+        </section>
+        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
         <div class="button-row">
             <button mat-raised-button color="accent" type="submit" (click)="onSubmit()"
                 style="border-radius: 16px;color: aliceblue;">Save</button>

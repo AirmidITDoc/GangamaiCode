@@ -78,10 +78,7 @@ private _onDestroy = new Subject<void>();
    this.getClassList();
    this.getTariffNameCombobox();
    this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
-   this._serviceMasterService.myform.get('IsDocEditable').setValue(false);
-   this._serviceMasterService.myform.get('IsPathology').setValue(false);
-   this._serviceMasterService.myform.get('IsRadiology').setValue(false);
-   this._serviceMasterService.myform.get('IsPackage').setValue(false);
+
 
 
    this.groupnameFilterCtrl.valueChanges
@@ -401,13 +398,7 @@ private _onDestroy = new Subject<void>();
 
   onClose() {
     this._serviceMasterService.myform.reset();
-    this._serviceMasterService.myform.get('CreditedtoDoctor').setValue(true);
-    this._serviceMasterService.myform.get('IsPathology').setValue(true);
-    this._serviceMasterService.myform.get('IsRadiology').setValue(true);
-    this._serviceMasterService.myform.get('IsEditable').setValue(true);
-    this._serviceMasterService.myform.get('IsActive').setValue(true);
-    this._serviceMasterService.myform.get('IsDocEditable').setValue(true);
-    this._serviceMasterService.myform.get('IsPackage').setValue(true);
+
   
     this.dialogRef.close();
   }
