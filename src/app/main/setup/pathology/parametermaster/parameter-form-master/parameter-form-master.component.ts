@@ -20,16 +20,20 @@ import { ParametermasterComponent } from "../parametermaster.component";
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
+
 export class ParameterFormMasterComponent implements OnInit {
-    ageType: string[] = ["Days","Months","Years"];
-    
+    isPrintDisSummaryChecked: boolean = false;
+
+    ageType: string[] = ["Days", "Months", "Years"];
+
     displayedColumns: string[] = [
         "GenderName",
         "MinAge",
         "MaxAge",
-        // "AgeType",
         "MinValue",
-        "Maxvalue",       
+        "Maxvalue",
+        "AgeType",
+        "Action"
     ];
     submitted = false;
     isLoading = true;
@@ -129,6 +133,8 @@ export class ParameterFormMasterComponent implements OnInit {
             this.show = true;
         }
         this.show1 = false;
+        this._ParameterService.myform.reset();
+        this.dsParameterAgeList.data = []
     }
 
     toggle1() {
@@ -136,23 +142,36 @@ export class ParameterFormMasterComponent implements OnInit {
             this.show1 = true;
         }
         this.show = false;
+        this._ParameterService.myform.reset();
+        this.selectedItems = []
     }
 
     onAdd(event) {
-        const newRow:any = {
+        let isNewRowUnique = true;
+
+        const newRow: any = {
             GenderName: this._ParameterService.myform.get('SexID').value.GenderName || "",
             MinAge: this.vMinAge || 0,
             MaxAge: this.vMaxAge || 0,
             MinValue: this.vMinValue || 0,
             Maxvalue: this.vMaxvalue || 0,
-            AgeType:  this._ParameterService.myform.get('AgeType').value || "",
+            AgeType: this._ParameterService.myform.get('AgeType').value || "",
         };
         debugger;
-        this.dsParameterAgeList.data.push(newRow);
-        this.dsParameterAgeList.data = [...this.dsParameterAgeList.data]; // Trigger change detection
-        console.log(this.dsParameterAgeList.data);
+        for (const row of this.dsParameterAgeList.data) {
+            if (JSON.stringify(row) === JSON.stringify(newRow)) {
+                isNewRowUnique = false;
+                break;
+            }
+        }
+
+        if (isNewRowUnique) {
+            this.dsParameterAgeList.data.push(newRow);
+            this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
+            console.log(this.dsParameterAgeList.data);
+        }
     }
-    
+
 
     // unitname filter
     // private filterUnitname() {
@@ -238,12 +257,16 @@ export class ParameterFormMasterComponent implements OnInit {
                             this._ParameterService.myform
                                 .get("PrintParameterName")
                                 .value.trim() || "%",
+                        methodName:
+                            this._ParameterService.myform
+                                .get("MethodName")
+                                .value.trim() || "%",
                         unitId:
                             this._ParameterService.myform.get("UnitId").value ||
                             1,
                         isNumeric:
                             this._ParameterService.myform.get("IsNumeric")
-                                .value||1,
+                                .value,
                         isDeleted: Boolean(
                             JSON.parse(
                                 this._ParameterService.myform.get("IsDeleted")
@@ -279,7 +302,7 @@ export class ParameterFormMasterComponent implements OnInit {
                         // isDeleted: 0, // Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
                         addedby: 218, // this.accountService.currentUserValue.user.id ,
                     },
-                    insertAssignParameterToDescriptives: data2,
+                    // insertAssignParameterToDescriptives: data2,
                 };
 
                 this._ParameterService
@@ -410,7 +433,6 @@ export class ParameterFormMasterComponent implements OnInit {
             this.onClear();
         }
     }
-
     onEdit(row) {
         var m_data = {
             ParameterID: row.ParameterID,
@@ -426,6 +448,18 @@ export class ParameterFormMasterComponent implements OnInit {
             ParaMultipleRange: row.ParaMultipleRange,
         };
     }
+    onDeleteRow(row: PathParaRangeAgeMaster) {
+        const index = this.dsParameterAgeList.data.indexOf(row);
+        if (index > -1) {
+            this.dsParameterAgeList.data.splice(index, 1);
+            this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
+
+        }
+    }
+    removeItem(index: number) {
+        this.selectedItems.splice(index, 1); 
+      }
+
 
 
 
@@ -438,22 +472,27 @@ export class ParameterFormMasterComponent implements OnInit {
     selectedToAdd: any;
     groupsArray: any = [];
     selectedItems: any = [];
+    isTxtUnique = true;
 
     AddData(txt) {
-        console.log(txt);
-        this.selectedItems = this.selectedItems.concat(txt);
-        this.selectedToAdd = [];
+        if (txt.replace(/\s/g, '').length !== 0) {
+
+            if (!this.selectedItems.includes(txt)) {
+                this.selectedItems = this.selectedItems.concat(txt);
+                this.selectedToAdd = [];
+            }
+        }
     }
 }
 export class PathParaRangeAgeMaster {
     PathparaRangeId: any;
     ParaId: any;
     GenderName: any;
-    MinValue: any;   
+    MinValue: any;
     Maxvalue: any;
-    AgeType:any;
+    AgeType: any;
     MinAge: any;
-    MaxAge: any;    
+    MaxAge: any;
     /**
      * Constructor
      *
@@ -469,7 +508,7 @@ export class PathParaRangeAgeMaster {
             this.Maxvalue = PathParaRangeAgeMaster.Maxvalue || 0;
             this.MinAge = PathParaRangeAgeMaster.MinAge || 0;
             this.MaxAge = PathParaRangeAgeMaster.MaxAge || 0;
-            
+
         }
     }
 }
