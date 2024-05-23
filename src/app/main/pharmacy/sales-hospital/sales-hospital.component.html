@@ -439,7 +439,7 @@
                                                     style="width:60% !important;margin-left:20px;">
                                                     <input type="text" name="ItemId" formControlName="ItemId" #itemid
                                                         placeholder="Item Name (enter 2 char) " matInput
-                                                        [matAutocomplete]="auto" (input)="getPharItemList()"
+                                                        [matAutocomplete]="autoItem" (input)="getPharItemList()"
                                                         (keydown)="Colorchange()">
                                                     <span matSuffix style="display: flex;">
                                                         <mat-icon class="mat-icon-close"
@@ -447,7 +447,7 @@
                                                         <mat-icon class="mat-icon-close"
                                                             (click)="_salesService.IndentSearchGroup.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                                     </span>
-                                                    <mat-autocomplete #auto="matAutocomplete"
+                                                    <mat-autocomplete #autoItem="matAutocomplete"
                                                         [displayWith]="getOptionText" class="sale-auto-complete"
                                                         (optionSelected)='getSelectedObj($event.option.value)'>
                                                         <mat-option *ngFor="let option of filteredOptions"

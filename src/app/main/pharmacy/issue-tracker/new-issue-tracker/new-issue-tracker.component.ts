@@ -1,15 +1,15 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { PharmacyClearenceService } from '../pharmacy-clearence.service';
+import { ToastrService } from 'ngx-toastr'; 
 import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IssueTrackerList } from '../pharmacy-clearence.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms'; 
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
-import { ImageCroppedEvent } from "ngx-image-cropper"; 
+import { ImageCroppedEvent } from "ngx-image-cropper";
+import { IssueTrackerService } from '../issue-tracker.service';
+import { IssueTrackerList } from '../issue-tracker.component';
 
 @Component({
   selector: 'app-new-issue-tracker',
@@ -26,9 +26,9 @@ export class NewIssueTrackerComponent implements OnInit {
   isLoading = true;
   images: any[] = [];
   sanitizeImagePreview;
-  ConstanyTypeList:any=[];
-  IssueAssignedList:any=[];
-  IssueRaisedList:any=[];
+  ConstanyTypeList: any = [];
+  IssueAssignedList: any = [];
+  IssueRaisedList: any = [];
 
   @ViewChild('attachments') attachment: any;
   imageForm = new FormGroup({
@@ -43,22 +43,22 @@ export class NewIssueTrackerComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewIssueTrackerComponent>, 
     public toastr: ToastrService,
-    public _IssueTracker: PharmacyClearenceService,
+    public _IssueTracker: IssueTrackerService,
     private _loggedService: AuthenticationService,
 
   ) { }
 
   ngOnInit(): void {
 
-      this.getIssueStatusList();
-      this.getIssueAssignedList();
-      this.getIssueRaisedList();
+    this.getIssueStatusList();
+    this.getIssueAssignedList();
+    this.getIssueRaisedList();
 
-      if (this.data.Obj){
-        this.registerObj = this.data.Obj;
-        this.setDropdownObjs();
-        console.log(this.registerObj)
-      }
+    if (this.data.Obj) {
+      this.registerObj = this.data.Obj;
+      this.setDropdownObjs();
+      console.log(this.registerObj)
+    }
   }
 
   setDropdownObjs() {
@@ -85,49 +85,49 @@ export class NewIssueTrackerComponent implements OnInit {
     this._IssueTracker.userFormGroup.reset();
   }
 
-  getIssueStatusList(){
-    var vdata={
-      'ConstanyType':'ISSUE_STATUS',
+  getIssueStatusList() {
+    var vdata = {
+      'ConstanyType': 'ISSUE_STATUS',
     }
-     this._IssueTracker.getConstantsList(vdata).subscribe(data => {
-     this.ConstanyTypeList = data;
-     console.log(this.ConstanyTypeList);
-     if(this.data){
-      const toSelectIssueStatus = this.ConstanyTypeList.find(c => c.Name == this.registerObj.IssueStatus);
-      this._IssueTracker.userFormGroup.get('IssueStatus').setValue(toSelectIssueStatus);
-      console.log(this.registerObj.IssueStatus);
-     }
-   });
-   }
+    this._IssueTracker.getConstantsList(vdata).subscribe(data => {
+      this.ConstanyTypeList = data;
+      console.log(this.ConstanyTypeList);
+      if (this.data) {
+        const toSelectIssueStatus = this.ConstanyTypeList.find(c => c.Name == this.registerObj.IssueStatus);
+        this._IssueTracker.userFormGroup.get('IssueStatus').setValue(toSelectIssueStatus);
+        console.log(this.registerObj.IssueStatus);
+      }
+    });
+  }
 
-   getIssueAssignedList(){
-    var vdata={
-      'ConstanyType':'ISSUE_ASSIGNED',
+  getIssueAssignedList() {
+    var vdata = {
+      'ConstanyType': 'ISSUE_ASSIGNED',
     }
-     this._IssueTracker.getConstantsList(vdata).subscribe(data => {
-     this.IssueAssignedList = data;
-     console.log(this.IssueAssignedList);
-      if(this.data){
+    this._IssueTracker.getConstantsList(vdata).subscribe(data => {
+      this.IssueAssignedList = data;
+      console.log(this.IssueAssignedList);
+      if (this.data) {
         const toSelectIssueAssigned = this.IssueAssignedList.find(c => c.Name == this.registerObj.IssueAssigned);
         this._IssueTracker.userFormGroup.get('IssueAssigned').setValue(toSelectIssueAssigned);
         console.log(this.registerObj.IssueAssigned);
-     }
-   });
-   }
-   getIssueRaisedList(){
-    var vdata={
-      'ConstanyType':'ISSUE_RAISED',
+      }
+    });
+  }
+  getIssueRaisedList() {
+    var vdata = {
+      'ConstanyType': 'ISSUE_RAISED',
     }
-     this._IssueTracker.getConstantsList(vdata).subscribe(data => {
-     this.IssueRaisedList = data;
-     console.log(this.IssueRaisedList);
-     if(this.data){
-      const toSelectIssueRaised = this.IssueRaisedList.find(c => c.Name == this.registerObj.IssueRaised);
-    this._IssueTracker.userFormGroup.get('IssueRaised').setValue(toSelectIssueRaised);
-    console.log(this.registerObj.IssueRaised);
-   }
-   });
-   }
+    this._IssueTracker.getConstantsList(vdata).subscribe(data => {
+      this.IssueRaisedList = data;
+      console.log(this.IssueRaisedList);
+      if (this.data) {
+        const toSelectIssueRaised = this.IssueRaisedList.find(c => c.Name == this.registerObj.IssueRaised);
+        this._IssueTracker.userFormGroup.get('IssueRaised').setValue(toSelectIssueRaised);
+        console.log(this.registerObj.IssueRaised);
+      }
+    });
+  }
 
   onImageChange(event) {
     let Imgflag = "";
@@ -243,25 +243,25 @@ export class NewIssueTrackerComponent implements OnInit {
       updateIssueTracker['issueRaised'] = this._IssueTracker.userFormGroup.get('IssueRaised').value.Name || '';
       updateIssueTracker['issueAssigned'] = this._IssueTracker.userFormGroup.get('IssueAssigned').value.Name || '';
       updateIssueTracker['updatedBy'] = this._loggedService.currentUserValue.user.id || 0;
-  
+
       let submitData = {
         "updateIssueTracker": updateIssueTracker
       };
-  
+
       console.log(submitData);
       this._IssueTracker.UpdateIssueTracker(submitData).subscribe(response => {
         if (response) {
           this.toastr.success('Record Updated Successfully.', 'Updated !', {
             toastClass: 'tostr-tost custom-toast-success',
           }); this._matDialog.closeAll();
-  
+
         }
         else {
           this.toastr.error('New Issue Tracker Data not Updated !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
           });
         }
-  
+
       }, error => {
         this.toastr.error('New Issue Tracker Data not Updated !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -317,3 +317,4 @@ export class NewIssueTrackerComponent implements OnInit {
     }
   }
 }
+  

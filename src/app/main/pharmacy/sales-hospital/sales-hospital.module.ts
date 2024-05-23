@@ -33,23 +33,24 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
-import { MatChipsModule } from '@angular/material/chips';
-import { PharmaAdvanceComponent } from './pharma-advance.component';
+import { MatChipsModule } from '@angular/material/chips'; 
+import { MatSidenavModule } from '@angular/material/sidenav'; 
+import { SalesHospitalComponent } from './sales-hospital.component';
 
 
 const routes: Routes = [
   { 
       path: '**', 
-      component: PharmaAdvanceComponent 
+      component: SalesHospitalComponent 
   },
 ];
 
 @NgModule({
   declarations: [
-    PharmaAdvanceComponent,
-    
-    
-    
+    SalesHospitalComponent,
+    // SalePopupComponent,
+    // SubstitutesComponent,
+    // PrescriptionComponent,
   ],
   imports: [
     CommonModule,
@@ -80,7 +81,6 @@ const routes: Routes = [
     FuseConfirmDialogModule,
     FuseSidebarModule,
     ReactiveFormsModule,
-    MatSnackBarModule,
     MatStepperModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
@@ -89,18 +89,15 @@ const routes: Routes = [
     MatBadgeModule,
     MatSelectModule,
     MatSelectModule,
+    MatSidenavModule,
     MatChipsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule,
-    
-        
+    MatTooltipModule
   ],
   providers: [
-    
-    DatePipe,
+    DatePipe
 ],
 entryComponents: [
-  PharmaAdvanceComponent,
+  SalesHospitalComponent,
 ]
 })
-export class PharmaAdvanceModule { }
+export class SalesHospitalModule { }

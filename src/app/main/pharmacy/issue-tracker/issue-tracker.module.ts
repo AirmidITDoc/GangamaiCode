@@ -34,21 +34,28 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
-import { IpPharmacyAdvanceComponent } from './ip-pharmacy-advance.component';
+import { CustomerBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/customer-bill-raise.component';
+import { CustomerInformationComponent } from 'app/main/Customer/customer-information/customer-information.component';
+import { NewCustomerComponent } from 'app/main/Customer/customer-information/new-customer/new-customer.component';
+import { NewBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/new-bill-raise/new-bill-raise.component';
+import { IssueTrackerComponent } from './issue-tracker.component';
+import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component';
 
 const routes: Routes = [
   { 
       path: '**', 
-      component: IpPharmacyAdvanceComponent 
+      component: IssueTrackerComponent 
   },
 ];
 
 @NgModule({
   declarations: [
-    IpPharmacyAdvanceComponent,
-    
-    
-    
+    IssueTrackerComponent,
+    CustomerInformationComponent,
+    CustomerBillRaiseComponent,
+    NewCustomerComponent,
+    NewBillRaiseComponent,
+    NewIssueTrackerComponent
   ],
   imports: [
     CommonModule,
@@ -98,7 +105,8 @@ const routes: Routes = [
     DatePipe,
 ],
 entryComponents: [
-  IpPharmacyAdvanceComponent,
+  IssueTrackerComponent,
 ]
 })
-export class IpPharmacyAdvanceModule { }
+export class IssueTrackerModule { }
+
