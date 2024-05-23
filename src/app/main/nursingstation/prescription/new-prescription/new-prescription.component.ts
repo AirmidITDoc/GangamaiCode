@@ -32,7 +32,7 @@ export class NewPrescriptionComponent implements OnInit {
   ItemForm: FormGroup;
   screenFromString = 'admission-form';
   ItemId: any;
-  vOpIpId:any;
+  vOpIpId: any;
   displayedVisitColumns: string[] = [
     'Date',
     'Time'
@@ -82,11 +82,11 @@ export class NewPrescriptionComponent implements OnInit {
   CompanyName: any;
   Tarrifname: any;
   Doctorname: any;
- Paymentdata: any;
- vOPIPId:any =0;
- vOPDNo:any=0;
- vTariffId:any=0;
- vClassId:any=0;
+  Paymentdata: any;
+  vOPIPId: any = 0;
+  vOPDNo: any = 0;
+  vTariffId: any = 0;
+  vClassId: any = 0;
 
   dsPresList = new MatTableDataSource<PrecriptionItemList>();
   dsPrePresList = new MatTableDataSource<PrescriptionList>();
@@ -202,7 +202,7 @@ export class NewPrescriptionComponent implements OnInit {
     this.Tarrifname = obj.TariffName;
     this.Doctorname = obj.DocName;
     this.vOpIpId = obj.AdmissionID;
-    this.vOPDNo=obj.OPDNo;
+    this.vOPDNo = obj.OPDNo;
     console.log(obj);
   }
 
@@ -249,39 +249,38 @@ export class NewPrescriptionComponent implements OnInit {
   getSearchItemList() {
     // debugger
     var m_data = {
-      "ItemName": `${this.ItemForm.get('ItemId').value}%`
-      // "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+      "ItemName": `${this.ItemForm.get('ItemId').value}%`,
+      "StoreId": this.myForm.get('StoreId').value.StoreId
     }
-    if (this.ItemForm.get('ItemId').value.length >= 2) {
-      this._PrescriptionService.getItemlist(m_data).subscribe(data => {
-        this.filteredOptionsItem = data;
-        // console.log(this.data);
-        this.filteredOptionsItem = data;
-        if (this.filteredOptionsItem.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }
+    console.log(m_data);
+    // if (this.ItemForm.get('ItemId').value.length >= 2) {
+    this._PrescriptionService.getItemlist(m_data).subscribe(data => {
+      this.filteredOptionsItem = data;
+      // console.log(this.data);
+      this.filteredOptionsItem = data;
+      if (this.filteredOptionsItem.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+    // }
   }
 
   getOptionItemText(option) {
-    this.ItemId = option.ItemId;
+    this.ItemId = option.ItemID;
     if (!option) return '';
-    return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
+    return option.ItemName;
   }
 
 
   getSelectedObjItem(obj) {
-// debugger
     if (this.dsPresList.data.length > 0) {
       this.dsPresList.data.forEach((element) => {
         if (obj.ItemID == element.ItemID) {
           Swal.fire('Selected Item already added in the list ');
           this.ItemForm.reset();
         }
-
       });
       this.ItemName = obj.ItemName;
       this.ItemId = obj.ItemID;
@@ -326,17 +325,17 @@ export class NewPrescriptionComponent implements OnInit {
     }, 100);
   }
 
-  onAdd(event) {
-
+  onAdd() {
     this.dsPresList.data = [];
     this.PresItemlist.push(
       {
-        ItemID: this.ItemForm.get('ItemId').value.ItemID,
-        ItemName: this.ItemForm.get('ItemId').value.ItemName,
+        ItemID: this.ItemId,
+        ItemName: this.ItemName,
         Qty: this.vQty,
-        Remark: this.vRemark || ''
+        Remark: this.vRemark || '' //Remark
       });
     this.dsPresList.data = this.PresItemlist
+    console.log(this.dsPresList.data);
     // this.myForm.reset();
     this.ItemForm.get('ItemId').reset('');
     this.ItemForm.get('Qty').reset('');
@@ -357,27 +356,6 @@ export class NewPrescriptionComponent implements OnInit {
 
     // }
   }
-
-  // getItemList(){
-  //   var vdata={
-  //     ItemName:"s%",
-  //     StoreId:2
-  //   }
-  //   this._PrescriptionService.getItemlist(vdata).subscribe( data => {
-  //       this.Itemlist = data 
-  //       console.log(this.Itemlist)
-  //   })
-  // }
-
-  // gePharStoreList() {
-  //   var vdata = {
-  //     Id: this._loggedService.currentUserValue.user.storeId
-  //   }
-  //   this._PrescriptionService.getLoggedStoreList(vdata).subscribe(data => {
-  //     this.StoreList = data;
-  //     //this._PrescriptionService.IndentSearchGroup.get('StoreId').setValue(this.Store1List[0]);
-  //   });
-  // }
   private _filterStore(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
@@ -386,10 +364,7 @@ export class NewPrescriptionComponent implements OnInit {
 
   }
   gePharStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
-    }
-    this._PrescriptionService.getLoggedStoreList(vdata).subscribe(data => {
+    this._PrescriptionService.getPharmacyStoreList().subscribe(data => {
       this.StoreList = data;
       this.optionsStore = this.StoreList.slice();
       this.filteredOptionsStore = this.myForm.get('StoreId').valueChanges.pipe(
@@ -445,7 +420,7 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   public onEnterqty(event): void {
-    
+
     if (event.which === 13) {
       this.remark.nativeElement.focus();
 
@@ -453,7 +428,7 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   public onEnterremark(event): void {
-    
+
     if (event.which === 13) {
       // this.add = true;
       // this.addbutton.focus();
@@ -461,9 +436,9 @@ export class NewPrescriptionComponent implements OnInit {
 
   }
 
-  addData(){
+  addData() {
     this.add = true;
-      this.addbutton.focus();
+    this.addbutton.focus();
   }
   // public onEnteradd(event): void {
   //   // debugger
@@ -512,23 +487,21 @@ export class NewPrescriptionComponent implements OnInit {
       insertIP_Prescription['opD_IPD_Type'] = 1;
       insertIP_Prescription['pDate'] = this.dateTimeObj.date;
       insertIP_Prescription['pTime'] = this.dateTimeObj.time;
-      insertIP_Prescription['classID'] = 1;
-      insertIP_Prescription['genericId'] = 2;
+      insertIP_Prescription['classID'] = 0;
+      insertIP_Prescription['genericId'] = 0;
       insertIP_Prescription['drugId'] = element.ItemId;
-      insertIP_Prescription['doseId'] = 10;
-      insertIP_Prescription['days'] = 2;
-      insertIP_Prescription['qtyPerDay'] = 20;
+      insertIP_Prescription['doseId'] = 0;
+      insertIP_Prescription['days'] = 0;
+      insertIP_Prescription['qtyPerDay'] = 0;
       insertIP_Prescription['totalQty'] = element.Qty;
       insertIP_Prescription['remark'] = element.Remark || '';
       insertIP_Prescription['isClosed'] = false;
       insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
       insertIP_Prescription['storeId'] = this._loggedService.currentUserValue.user.storeId;
-      // debugger
       insertIP_Prescription['wardID'] = this.WardId// this.myForm.get('WardName').value.RoomId || 0;
       insertIP_Prescriptionarray.push(insertIP_Prescription);
     });
     submissionObj['insertIP_Prescription'] = insertIP_Prescriptionarray;
-    // debugger
     console.log(submissionObj);
 
     this._PrescriptionService.presciptionSave(submissionObj).subscribe(response => {

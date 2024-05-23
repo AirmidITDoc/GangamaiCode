@@ -23,10 +23,6 @@ export class PrescriptionService {
       enddate: [(new Date()).toISOString()],
       PrescriptionStatus:['Pending'],
       RegNo:''
-     
-      
-
-      
     })  
   }
   public getPrintPrecriptionlist(Param){
@@ -43,7 +39,12 @@ export class PrescriptionService {
 
 
   public getItemlist(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPDrugName",Param)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPDrugName",Param)
+  }
+
+  
+  public getPharmacyStoreList(){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_PharStoreList",{});
   }
 
   public getLoggedStoreList(Param){
