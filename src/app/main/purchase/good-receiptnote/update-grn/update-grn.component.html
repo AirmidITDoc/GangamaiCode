@@ -503,7 +503,8 @@
                                                     <input matInput #inputField
                                                         (keyup)="CellcalculateLastDay(contact,inputField.value)"
                                                         [(ngModel)]="contact.BatchExpDate" placeholder="mmyyyy"
-                                                        [disabled]="contact.IsVerifiedUserId > 0">
+                                                        [disabled]="contact.IsVerifiedUserId > 0"
+                                                        (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>

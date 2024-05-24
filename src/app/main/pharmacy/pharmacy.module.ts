@@ -53,6 +53,12 @@ const appRoutes: Routes = [
     loadChildren:() => import("./pharmacy-clearence/pharmacy-clearence.module").then((m)=>m.PharmacyClearenceModule),
     
   },
+  {
+    path:"discountaftersalesbill",
+    loadChildren: () => import("./discount-after-sales-bill/discount-after-sales-bill.module").then((m)=>m.DiscountAfterSalesBillModule),
+  },
+
+
 
 
   // {
@@ -73,7 +79,7 @@ const appRoutes: Routes = [
 
 
 @NgModule({
-  declarations: [ ],
+  declarations: [  ],
   imports: [
     RouterModule.forChild(appRoutes)
   ]

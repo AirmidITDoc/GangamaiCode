@@ -167,13 +167,13 @@ export class NewPrescriptionComponent implements OnInit {
  
   getOptionText(option) {
     if (!option) return '';
-    return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
+    return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegID + ')';
   }
   getSelectedObj(obj) {
     this.registerObj = obj;
     // this.PatientName = obj.FirstName + '' + obj.LastName;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-    // this.vOpIpId = obj.oP_IP_ID;
+    this.RegNo = obj.RegNo;
     this.vAdmissionID = obj.AdmissionID
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
@@ -185,23 +185,31 @@ export class NewPrescriptionComponent implements OnInit {
 
  
   getSearchItemList() {
-    // debugger
-    var m_data = {
-      "ItemName": `${this.ItemForm.get('ItemId').value}%`,
-      "StoreId": this.myForm.get('StoreId').value.StoreId
-    }
-    console.log(m_data);
-    // if (this.ItemForm.get('ItemId').value.length >= 2) {
-    this._PrescriptionService.getItemlist(m_data).subscribe(data => {
-      this.filteredOptionsItem = data;
-      // console.log(this.data);
-      this.filteredOptionsItem = data;
-      if (this.filteredOptionsItem.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
+     debugger
+    let b=this.myForm.get('StoreId').value.StoreId
+    if(this.myForm.get('StoreId').value.StoreId > 0){ 
+      var m_data = {
+        "ItemName": `${this.ItemForm.get('ItemId').value}%`,
+        "StoreId": this.myForm.get('StoreId').value.StoreId
       }
-    }); 
+      console.log(m_data);
+      // if (this.ItemForm.get('ItemId').value.length >= 2) {
+      this._PrescriptionService.getItemlist(m_data).subscribe(data => {
+        this.filteredOptionsItem = data;
+        // console.log(this.data);
+        this.filteredOptionsItem = data;
+        if (this.filteredOptionsItem.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    }else{
+      this.toastr.warning('Please enter a Store', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      }); 
+    }
+    
   } 
   getOptionItemText(option) {
     this.ItemId = option.ItemID;

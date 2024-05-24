@@ -110,29 +110,24 @@ export class PharmacyClearenceComponent implements OnInit {
     this.vIPDNo = obj.IPDNo  
   } 
   
-  getAdvanceList(obj) {
-    // this.sIsLoading = 'loading';
-    // var m_data = {
-    //   "AdmissionId": obj.AdmissionId
-    // }
-    // console.log(m_data)
-    // setTimeout(() => {
-    //   this.sIsLoading = 'loading';
-    //   this._PharmacyClearenceService.getAdvanceList(m_data).subscribe(Visit => {
-    //     this.dsIpItemList.data = Visit as IpItemList[];
-    //     console.log(this.dsIpItemList.data)
-    //     if (this.dsIpItemList.data.length > 0) {
-    //       this.dsIpItemList.sort = this.sort;
-    //       this.dsIpItemList.paginator = this.Secondpaginator;
-    //     }
-    //     else {
-    //       this.sIsLoading = this.dsIpItemList.data.length == 0 ? 'no-data' : '';
-    //     }
-    //   },
-    //     error => {
-    //       this.sIsLoading = this.dsIpItemList.data.length == 0 ? 'no-data' : '';
-    //     });
-    // }, 500);
+  getSalesList(obj) {
+    this.sIsLoading = 'loading';
+    var m_data = {
+      "AdmissionId": obj.AdmissionId
+    }
+    console.log(m_data)
+    setTimeout(() => {
+      this.sIsLoading = 'loading';
+      this._PharmacyClearenceService.getSalesList(m_data).subscribe(Visit => {
+        this.dsIpItemList.data = Visit as IpItemList[];
+        console.log(this.dsIpItemList.data)
+        this.dsIpItemList.sort = this.sort;
+        this.dsIpItemList.paginator = this.Secondpaginator; 
+      },
+        error => {
+          this.sIsLoading = this.dsIpItemList.data.length == 0 ? 'no-data' : '';
+        });
+    }, 500);
 
   }
   TotalAdvamt: any;

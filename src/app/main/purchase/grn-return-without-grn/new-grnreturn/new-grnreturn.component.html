@@ -349,11 +349,11 @@
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent min-width-1200"
+                            <mat-header-row class="accent min-width-1400"
                                 *matHeaderRowDef="displayedColumns2; sticky: true">
                             </mat-header-row>
                             <mat-row *matRowDef="let contact; columns: displayedColumns2; let i= index"
-                                [ngClass]="{'highlight': selectedRowIndex == i}" 
+                                [ngClass]="{'highlight': selectedRowIndex == i}" class="contact min-width-1400"
                                  [@animate]="{value:'*',params:{y:'100%'}}"  appHighlight></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -370,7 +370,7 @@
 
                     <form [formGroup]="_GRNReturnService.ReturnFinalForm">
                         <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
-                                <div fxLayout="column" fxLayoutGap="6px">
+                                <div fxLayout="column" fxLayoutGap="6px" style="margin-top: 15px;">
                                     <div fxLayout="row" class="gap-4">
                                         <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No
                                             Of

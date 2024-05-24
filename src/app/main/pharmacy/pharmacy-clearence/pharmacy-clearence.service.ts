@@ -38,6 +38,11 @@ export class PharmacyClearenceService {
   public getAdmittedpatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
- 
+  public getSalesList(Param){ 
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PrescriptionListforSales",Param);
+  }
+  public getItemDetailList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet",Param);
+  }
   
 }

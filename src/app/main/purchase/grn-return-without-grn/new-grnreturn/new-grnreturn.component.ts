@@ -390,8 +390,10 @@ export class NewGRNReturnComponent implements OnInit {
     let grnReturnUpateReturnQtyarray = [];
     this.dsItemList.data.forEach((element) => {
       let grnReturnUpateReturnQty = {};
+      
+      let issueqty = element.BalQty - element.Qty
       grnReturnUpateReturnQty['grnDetID'] = 0;
-      grnReturnUpateReturnQty['returnQty'] = element.Qty || 0;
+      grnReturnUpateReturnQty['returnQty'] = issueqty || 0;
       grnReturnUpateReturnQtyarray.push(grnReturnUpateReturnQty);
     });
   
