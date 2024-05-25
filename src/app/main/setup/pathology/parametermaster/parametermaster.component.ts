@@ -120,6 +120,7 @@ export class ParametermasterComponent implements OnInit {
     }
 
     onEdit(row) {
+       
         var m_data = {
             ParameterID: row.ParameterID,
             ParameterShortName: row.ParameterShortName.trim(),
@@ -133,8 +134,7 @@ export class ParametermasterComponent implements OnInit {
             MethodName: row.MethodName,
             ParaMultipleRange: row.ParaMultipleRange,
         };
-        console.log(row)
-        
+        console.log(row)        
 
         this._ParameterService.populateForm(m_data);
 

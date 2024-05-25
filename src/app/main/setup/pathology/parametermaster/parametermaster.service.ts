@@ -19,8 +19,7 @@ export class ParametermasterService {
 
     createParameterForm(): FormGroup {
         return this._formBuilder.group({
-            ParameterID: ["",
-            [Validators.pattern("^[A-Za-z ]*$")]],
+            ParameterID: [""],
             ParameterName: [
                 "",
                 [Validators.pattern("^[A-Za-z ]*$")],
@@ -153,6 +152,8 @@ export class ParametermasterService {
     }
 
     populateForm(param) {
+        debugger;
+        this.myform.value.isPrintDisSummary = true?param.IsPrintDisSummary=='true':false;
         this.myform.patchValue(param);
     }
 }
