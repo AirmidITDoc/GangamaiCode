@@ -170,23 +170,34 @@ export class NewPrescriptionComponent implements OnInit {
     return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegID + ')';
   }
   getSelectedObj(obj) {
-    this.registerObj = obj;
-    // this.PatientName = obj.FirstName + '' + obj.LastName;
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-    this.RegNo = obj.RegNo;
-    this.vAdmissionID = obj.AdmissionID
-    this.CompanyName = obj.CompanyName;
-    this.Tarrifname = obj.TariffName;
-    this.Doctorname = obj.DoctorName;
-    // this.vOpIpId = obj.AdmissionID;
-    this.vOPDNo = obj.IPDNo;
-    console.log(obj);
+    if(obj.IsDischarged == 1){
+      Swal.fire('Selected Patient is already discharged');
+      this.PatientName = ''  
+      this.vAdmissionID =  ''
+      this.RegNo = ''
+      this.Doctorname =  ''
+      this.Tarrifname = ''
+      this.CompanyName =''
+      this.vOPDNo = ''
+    }
+    else{
+      this.registerObj = obj;
+      // this.PatientName = obj.FirstName + '' + obj.LastName;
+      this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+      this.RegNo = obj.RegNo;
+      this.vAdmissionID = obj.AdmissionID
+      this.CompanyName = obj.CompanyName;
+      this.Tarrifname = obj.TariffName;
+      this.Doctorname = obj.DoctorName;
+      // this.vOpIpId = obj.AdmissionID;
+      this.vOPDNo = obj.IPDNo;
+      console.log(obj);
+    }
+   
   }
 
  
-  getSearchItemList() {
-     debugger
-    let b=this.myForm.get('StoreId').value.StoreId
+  getSearchItemList() {  
     if(this.myForm.get('StoreId').value.StoreId > 0){ 
       var m_data = {
         "ItemName": `${this.ItemForm.get('ItemId').value}%`,
@@ -395,7 +406,14 @@ export class NewPrescriptionComponent implements OnInit {
   
   //api integrate
   OnSavePrescription() {
-    // console.log(this.myForm.get('WardName').value.RoomId)
+    if (( this.RegNo== '' || this.RegNo == null || this.RegNo == undefined)) {
+      this.toastr.warning('Please select patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  
+
     this.isLoading = 'submit'; 
     let insertIP_Prescriptionarray = [];
     let insertIP_MedicalRecordArray = {}; 

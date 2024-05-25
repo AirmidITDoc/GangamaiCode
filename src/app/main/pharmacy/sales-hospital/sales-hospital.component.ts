@@ -3396,37 +3396,44 @@ getSearchListIP() {
   TariffName:any;
   CompanyName:any;
   getSelectedObjRegIP(obj) {
-    console.log(obj)
-    this.DoctorNamecheck = true;
-    this.IPDNocheck = true;
-    this.OPDNoCheck = false;
-    this.registerObj = obj;
-    this.PatientName = obj.FirstName + ' ' + obj.LastName;
-    this.RegId = obj.RegID;
-    this.OP_IP_Id = this.registerObj.AdmissionID;
-    this.IPDNo = obj.IPDNo;
-    this.RegNo =obj.RegNo;
-    this.DoctorName = obj.DoctorName;
-    this.TariffName =obj.TariffName
-    this.CompanyName = obj.CompanyName 
+    if(obj.IsDischarged == 1){
+      Swal.fire('Selected Patient is already discharged');
+      //this.PatientInformRest();
+      this.RegId = ''
+    }
+    else{
+      console.log(obj)
+      this.DoctorNamecheck = true;
+      this.IPDNocheck = true;
+      this.OPDNoCheck = false;
+      this.registerObj = obj;
+      this.PatientName = obj.FirstName + ' ' + obj.LastName;
+      this.RegId = obj.RegID;
+      this.OP_IP_Id = this.registerObj.AdmissionID;
+      this.IPDNo = obj.IPDNo;
+      this.RegNo =obj.RegNo;
+      this.DoctorName = obj.DoctorName;
+      this.TariffName =obj.TariffName
+      this.CompanyName = obj.CompanyName;
+    } 
   }
   OPDNo:any;
   DoctorNamecheck:boolean=false;
   IPDNocheck:boolean=false;
   OPDNoCheck:boolean=false;
-  getSelectedObjOP(obj) {
-    console.log(obj)
-    this.OPDNoCheck = true;
-    this.DoctorNamecheck = false;
-    this.IPDNocheck = false;
-    this.registerObj = obj;
-    this.PatientName = obj.FirstName + " " + obj.LastName;
-    this.RegId = obj.RegId;
-    this.OP_IP_Id  = obj.VisitId;
-    this.RegNo =obj.RegNo; 
-    this.OPDNo = obj.OPDNo;
-    this.CompanyName = obj.CompanyName;
-    this.TariffName = obj.TariffName; 
+  getSelectedObjOP(obj) { 
+      console.log(obj)
+      this.OPDNoCheck = true;
+      this.DoctorNamecheck = false;
+      this.IPDNocheck = false;
+      this.registerObj = obj;
+      this.PatientName = obj.FirstName + " " + obj.LastName;
+      this.RegId = obj.RegId;
+      this.OP_IP_Id  = obj.VisitId;
+      this.RegNo =obj.RegNo; 
+      this.OPDNo = obj.OPDNo;
+      this.CompanyName = obj.CompanyName;
+      this.TariffName = obj.TariffName; 
   }
   PatientInformRest(){
     this.PatientName = ''  

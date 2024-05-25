@@ -138,7 +138,7 @@
                                                 [@animateStagger]="{value:'50'}">
                                                 <ng-container matColumnDef="action">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                        style="color: white;">
+                                                        style="color: white;"   >
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
                                                         <button mat-icon-button matTooltip="Print2"
@@ -155,9 +155,13 @@
                                                                 src="assets/images/logos/WhatsApp.png">
                                                         </button>
                                                         <button mat-icon-button matTooltip="Credit Bill"
-                                                            *ngIf="contact.PaidType=='Credit'"
+                                                            *ngIf="contact.PaidType=='Credit' && contact.IsRefundFlag==false"
                                                             (click)="OnPayment(contact)">
                                                             <mat-icon>payment</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button matTooltip="Bill Return"
+                                                            *ngIf="contact.IsRefundFlag==true">
+                                                            <mat-icon>replay</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
@@ -208,10 +212,10 @@
 
                                                 <ng-container matColumnDef="PatientName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                        class="w-180">
+                                                       >
                                                         Patient Name
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
                                                         {{contact.PatientName}}
                                                     </mat-cell>
                                                 </ng-container>
@@ -264,10 +268,10 @@
                                                 </ng-container>
 
 
-                                                <mat-header-row class="accent"
+                                                <mat-header-row class="accent min-width-1350"
                                                     *matHeaderRowDef="displayedColumns;"></mat-header-row>
                                                 <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                    class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                    class="contact min-width-1350" [@animate]="{value:'*',params:{y:'100%'}}"
                                                     (click)="onSelect(contact)">
                                                 </mat-row>
                                                 <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
