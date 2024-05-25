@@ -79,8 +79,8 @@
                                     <div fxLayoutAlign="space-between">
                                         <mat-radio-group name="IsNumeric" formControlName="IsNumeric"
                                             aria-label="Select an option" style="margin-top: 20px; margin-left: 20px;">
-                                            <mat-radio-button fxFlex (click)="toggle(1)"  value="1" [checked]='true'>IsNumeric</mat-radio-button>
-                                            <mat-radio-button fxFlex (click)="toggle(2)"  value="2" style="margin-left: 20px;">IsDescriptive</mat-radio-button>
+                                            <mat-radio-button fxFlex (click)="toggle(1)"  value="1" [checked]='_ParameterService.is_numeric'>IsNumeric</mat-radio-button>
+                                            <mat-radio-button fxFlex (click)="toggle(2)"  value="2" [checked]='!_ParameterService.is_numeric' style="margin-left: 20px;">IsDescriptive</mat-radio-button>
                                         </mat-radio-group>
 
                                          <!-- <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'

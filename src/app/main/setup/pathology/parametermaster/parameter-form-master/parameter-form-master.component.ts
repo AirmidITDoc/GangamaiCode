@@ -141,15 +141,15 @@ export class ParameterFormMasterComponent implements OnInit {
  
     }
 
-    public numeric_data: boolean = true; //numeric
+    // public _ParameterService.is_numeric: boolean = true; //numeric
 
 
     toggle(val: any) {
         if (val == 1) {
-            this.numeric_data = true;
+            this._ParameterService.is_numeric = true;
             this.dsParameterAgeList.data = []
         } else {
-            this.numeric_data = false;
+            this._ParameterService.is_numeric = false;
             this.selectedItems = []
         }
     }
@@ -247,7 +247,7 @@ export class ParameterFormMasterComponent implements OnInit {
         if (this._ParameterService.myform.valid) {                                       
             var numeric_info = [];
             var data2 = [];
-            if (!this.numeric_data) {
+            if (!this._ParameterService.is_numeric) {
                 
                 for (var val of this.selectedItems) {
                     var data = {
@@ -312,7 +312,7 @@ export class ParameterFormMasterComponent implements OnInit {
 
             }
             
-            if(this.numeric_data){
+            if(this._ParameterService.is_numeric){
                 m_data['parameterRangeWithAgeMasterInsert']= numeric_info;
                 m_data['parameterRangeWithAgeMasterDelete']= {parameterId: this._ParameterService.myform.get("ParameterID").value || 0,};
             }else{

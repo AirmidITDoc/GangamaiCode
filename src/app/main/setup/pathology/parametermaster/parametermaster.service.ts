@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 export class ParametermasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
+    is_numeric : Boolean = true;
 
     constructor(
         private _httpClient: HttpClient,
@@ -153,7 +154,9 @@ export class ParametermasterService {
 
     populateForm(param) {
         debugger;
-        this.myform.value.isPrintDisSummary = true?param.IsPrintDisSummary=='true':false;
         this.myform.patchValue(param);
+        this.myform.get("IsPrintDisSummary").setValue(param.IsPrintDisSummary == "false" ? false : true);
+        this.myform.get("IsNumeric").setValue(param.IsNumeric == 1? 1: 2);
+        this.is_numeric = param.IsNumeric == 1? true : false;
     }
 }
