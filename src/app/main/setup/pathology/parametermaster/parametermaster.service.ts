@@ -19,21 +19,22 @@ export class ParametermasterService {
 
     createParameterForm(): FormGroup {
         return this._formBuilder.group({
-            ParameterID: [""],
+            ParameterID: ["",
+            [Validators.pattern("^[A-Za-z ]*$")]],
             ParameterName: [
                 "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-                ],
+                [Validators.pattern("^[A-Za-z ]*$")],
             ],
             ParameterShortName: [
                 "",
-                [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+                [Validators.pattern("^[A-Za-z ]*$")],
             ],
             PrintParameterName: [
                 "",
-                [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+                [Validators.pattern("^[A-Za-z ]*$")],
+            ],
+            MethodName: ["",
+             [Validators.pattern("^[A-Za-z ]*$")],
             ],
             UnitId: [""],
             UnitName: [""],
@@ -41,8 +42,7 @@ export class ParametermasterService {
             IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            IsPrintDisSummary: ["false"],
-            MethodName: ["", Validators.pattern("[a-zA-Z]+$")],
+            IsPrintDisSummary: [],
             ParaMultipleRange: [""],
             PathparaRangeId: [""],
             ParaId: [""],
@@ -92,10 +92,6 @@ export class ParametermasterService {
         return this._httpClient.post(
             "Generic/ExecByQueryStatement?query=" + m_data, {});
     }
-
-
-
-   
 
     public insertParameterMaster(param) {
         return this._httpClient.post("PathologyMaster/ParameterAgeWiseMasterSave", param);
