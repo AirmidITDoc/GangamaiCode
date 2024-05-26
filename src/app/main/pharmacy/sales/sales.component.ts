@@ -38,6 +38,7 @@ import { ConcessionReasonMasterModule } from 'app/main/setup/billing/concession-
 import { SubstitutesComponent } from './substitutes/substitutes.component';
 import { D } from '@angular/cdk/keycodes';
 import { PrescriptionComponent } from './prescription/prescription.component';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-new-vimal/op-payment-vimal.component';
 
 @Component({
   selector: 'app-sales',
@@ -2063,6 +2064,28 @@ export class SalesComponent implements OnInit {
     //this.mobileno.nativeElement.focus();
     event.srcElement.removeAttribute('disabled');
   }
+  openPaymentpopup(){
+    let PatientHeaderObj = {};
+    PatientHeaderObj['Date'] = this.dateTimeObj.date;
+    PatientHeaderObj['PatientName'] = this.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
+    PatientHeaderObj['NetPayAmount'] = 123; //this.ItemSubform.get('FinalNetAmount').value;
+    this.isLoading123=false;
+    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+      {
+        data: {
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "Phar-SalesPay"
+        }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
+
+
+
   isLoading123 = false;
   onCashOnlinePaySave() {
     let nowDate = new Date();
