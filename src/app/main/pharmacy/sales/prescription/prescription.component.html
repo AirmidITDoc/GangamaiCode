@@ -202,12 +202,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
                                     <!-- Min width is required for fit content in cell. -->
-                                    <mat-header-row class="accent min-width-1150"
+                                    <mat-header-row class="accent min-width-1350"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                        class="contact min-width-1150" [@animate]="{value:'*',params:{y:'100%'}}"
+                                        class="contact min-width-1350" [@animate]="{value:'*',params:{y:'100%'}}"
                                         (click)="getItemDetailList(contact)"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':!(sIsLoading == 'loading-data')}"></mat-footer-row>

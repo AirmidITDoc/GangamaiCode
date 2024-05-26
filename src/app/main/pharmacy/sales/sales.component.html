@@ -53,10 +53,10 @@
                                                             formControlName="PatientType" [(ngModel)]="vSelectedOption"
                                                             name="paymode" (change)="onChangePatientType($event)"
                                                             (blur)="onChangePatientType($event)" fxLayout="row">
-                                                            <mat-radio-button value="OP"
+                                                            <!-- <mat-radio-button value="OP"
                                                                 [disabled]="vCondition">OP</mat-radio-button>
                                                             <mat-radio-button value="IP"
-                                                                [disabled]="vConditionIP">IP</mat-radio-button>
+                                                                [disabled]="vConditionIP">IP</mat-radio-button> -->
                                                             <mat-radio-button value="External"
                                                                 [disabled]="vConditionExt">External</mat-radio-button>
                                                         </mat-radio-group>
