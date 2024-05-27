@@ -296,51 +296,76 @@ export class ParameterFormMasterComponent implements OnInit {
             }           
             
             var m_data ={}
-            
-            if (!this._ParameterService.myform.get("ParameterID").value) {
-                PathParameterMasterInsert['addedby'] = this.accountService.currentUserValue.user.id || 1;
-                m_data = {
-                    pathParameterMasterInsert: PathParameterMasterInsert
-                };               
-            }else{
-                PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.user.id || 1;
-                m_data = {
-                    pathParameterMasterUpdate: PathParameterMasterInsert
-                }              
 
-            }
-            
             if(this._ParameterService.is_numeric){
                 m_data['parameterRangeWithAgeMasterInsert']= numeric_info;
                 m_data['parameterRangeWithAgeMasterDelete']= {parameterId: this._ParameterService.myform.get("ParameterID").value || 0,};
             }else{
                 m_data['parameterDescriptiveMasterInsert']= data2;   
                 m_data['parameterDescriptiveMasterDelete']= {parameterId: this._ParameterService.myform.get("ParameterID").value || 0,}                           
-            }                
-
+            }   
+            
+            if (!this._ParameterService.myform.get("ParameterID").value) {
+                PathParameterMasterInsert['addedby'] = this.accountService.currentUserValue.user.id || 1;
+               m_data['pathParameterMasterInsert'] = PathParameterMasterInsert;
+         
+                
             this._ParameterService
-                .insertParameterMaster(m_data)
-                .subscribe((data) => {
-                    this.msg = data;
-                    if (data) {                       
-                        this._ParameterService.myform.reset();
-                        this._ParameterService.myform.get("IsDeleted").setValue(true);
-                        this.selectedItems = [];
-                        this.dsParameterAgeList.data = [];
+            .insertParameterMaster(m_data)
+            .subscribe((data) => {
+                this.msg = data;
+                if (data) {                       
+                    this._ParameterService.myform.reset();
+                    this._ParameterService.myform.get("IsDeleted").setValue(true);
+                    this.selectedItems = [];
+                    this.dsParameterAgeList.data = [];
 
-                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                        });
-                    } else {
-                        this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                        });
-                    }
-                }, error => {
-                    this.toastr.error('Parameter-Form not saved !, Please check API error..', 'Error !', {
+                    this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });
+                } else {
+                    this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
                         toastClass: 'tostr-tost custom-toast-error',
                     });
+                }
+            }, error => {
+                this.toastr.error('Parameter-Form not saved !, Please check API error..', 'Error !', {
+                    toastClass: 'tostr-tost custom-toast-error',
                 });
+            });    
+            }else{
+                PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.user.id || 1;
+                m_data['pathParameterMasterUpdate'] = PathParameterMasterInsert;
+
+                
+            this._ParameterService
+            .updateParameterMaster(m_data)
+            .subscribe((data) => {
+                this.msg = data;
+                if (data) {                       
+                    this._ParameterService.myform.reset();
+                    this._ParameterService.myform.get("IsDeleted").setValue(true);
+                    this.selectedItems = [];
+                    this.dsParameterAgeList.data = [];
+
+                    this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });   
+                } else {
+                    this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                }
+            }, error => {
+                this.toastr.error('Parameter-Form not saved !, Please check API error..', 'Error !', {
+                    toastClass: 'tostr-tost custom-toast-error',
+                });
+            });              
+
+            }
+            
+                         
+
         
             this.onClear();
         }
@@ -396,6 +421,7 @@ export class ParameterFormMasterComponent implements OnInit {
             if (!this.selectedItems.includes(txt)) {
                 this.selectedItems = this.selectedItems.concat(txt);
                 this.selectedToAdd = [];
+                
             }
             else {
                 Swal.fire({

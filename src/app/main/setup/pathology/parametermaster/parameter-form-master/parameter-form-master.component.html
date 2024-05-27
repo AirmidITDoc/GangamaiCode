@@ -327,7 +327,7 @@
                                                             <div matTooltip="Select All Value to enable this button!!">
                                                                 <button mat-raised-button class="custom_add_button"
                                                                     [disabled]="!txt.value"
-                                                                    (click)="AddData(txt.value)"> Add <mat-icon>
+                                                                    (click)="AddData(txt.value); txt.value = ''"> Add <mat-icon>
                                                                         add_to_photos </mat-icon>
                                                                 </button>
                                                             </div>

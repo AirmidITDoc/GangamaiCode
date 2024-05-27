@@ -10,6 +10,8 @@ import Swal from "sweetalert2";
 import { MatTableDataSource } from "@angular/material/table";
 import { element } from "protractor";
 import { ToastrService } from "ngx-toastr";
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 
 @Component({
     selector: "app-test-form-master",
@@ -53,6 +55,7 @@ export class TestFormMasterComponent implements OnInit {
     public filteredTemplate: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     private _onDestroy = new Subject<void>();
+  
 
     constructor(
         public _TestService: TestmasterService,
@@ -98,6 +101,13 @@ export class TestFormMasterComponent implements OnInit {
                 this.filterTemplate();
             });
     }
+    drop(event: CdkDragDrop<string[]>) {
+        this.DSTestList.data = [];
+        this.ChargeList = this.dsTemparoryList.data;
+        moveItemInArray(this.ChargeList, event.previousIndex, event.currentIndex);     
+        this.DSTestList.data = this.ChargeList;
+    }
+
     onSearchClear() {
         this._TestService.myformSearch.reset({
             TestNameSearch: "",
