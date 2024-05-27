@@ -213,14 +213,15 @@
                                                 <mat-label>Qty</mat-label>
                                                 <input matInput [(ngModel)]="vQty" name="Qty" #qty required type="text" OnlyNumber 
                                                     (keyup)="calculateTotalAmt()" (keydown)="onEnterQty($event)"
-                                                    formControlName="Qty" id="Qty" required>
+                                                    formControlName="Qty" id="Qty" required  (keypress)="keyPressAlphanumeric($event)">
 
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>MRP</mat-label>
                                                 <input matInput [(ngModel)]="vMRP" name="MRP" #mrp required
-                                                    (keydown)="onEnterMRP($event)" formControlName="MRP" OnlyNumber>
+                                                    (keydown)="onEnterMRP($event)" formControlName="MRP" OnlyNumber
+                                                    (keypress)="keyPressCharater($event)">
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="5%">
@@ -228,7 +229,7 @@
                                                 <input matInput [(ngModel)]="vRate" name="Rate"
                                                     (keydown)="onEnterRate($event)" #rate OnlyNumber
                                                     (keyup)="OnchekPurchaserateValidation()" formControlName="Rate"
-                                                    required id="Rate">
+                                                    required id="Rate"  (keypress)="keyPressCharater($event)">
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="6%">
@@ -241,7 +242,8 @@
                                                 <mat-label>Dis %</mat-label>
                                                 <input matInput [(ngModel)]="vDis" name="Dis" #dis required
                                                     (keydown)="onEnterDis($event)" type="text" OnlyNumber 
-                                                    (keyup)="calculateDiscperAmount()" formControlName="Dis">
+                                                    (keyup)="calculateDiscperAmount()" formControlName="Dis"
+                                                    (keypress)="keyPressCharater($event)">
                                             </mat-form-field>&nbsp;
 
                                             <mat-form-field appearance="outline" fxFlex="5%">
@@ -337,7 +339,8 @@
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput   [(ngModel)]="contact.Qty"
                                                             step="0.1" type="text" OnlyNumber autocomplete="off"
-                                                            (keyup)="getCellCalculation(contact,contact.Qty)">
+                                                            (keyup)="getCellCalculation(contact,contact.Qty)"
+                                                            (keypress)="keyPressAlphanumeric($event)">
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -357,7 +360,8 @@
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput   [(ngModel)]="contact.Rate"
                                                             step="0.1" type="text" OnlyNumber autocomplete="off"
-                                                            (keyup)="getCellCalculation(contact,contact.Rate)">
+                                                            (keyup)="getCellCalculation(contact,contact.Rate)"
+                                                            (keypress)="keyPressCharater($event)">
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -385,7 +389,8 @@
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput  [(ngModel)]="contact.DiscPer"
                                                             step="0.1" type="text" OnlyNumber autocomplete="off"
-                                                            (keyup)="getCellCalculation(contact,contact.DiscPer)">
+                                                            (keyup)="getCellCalculation(contact,contact.DiscPer)"
+                                                            (keypress)="keyPressCharater($event)">
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -405,7 +410,8 @@
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput   [(ngModel)]="contact.CGSTPer"
                                                             step="0.1" type="text" OnlyNumber autocomplete="off"
-                                                            (keyup)="getCellCalculation(contact,contact.CGSTPer)">
+                                                            (keyup)="getCellCalculation(contact,contact.CGSTPer)"
+                                                            (keypress)="keyPressCharater($event)">
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -425,7 +431,8 @@
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput   [(ngModel)]="contact.SGSTPer"
                                                             step="0.1" type="text" OnlyNumber autocomplete="off"
-                                                            (keyup)="getCellCalculation(contact,contact.SGSTPer)">
+                                                            (keyup)="getCellCalculation(contact,contact.SGSTPer)"
+                                                            (keypress)="keyPressCharater($event)">
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
@@ -468,8 +475,10 @@
                                                 <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                                     <mat-form-field appearance="legacy">
                                                         <input matInput   [(ngModel)]="contact.MRP"
-                                                            step="0.1" type="number" autocomplete="off"
-                                                            (keyup)="getCellCalculation(contact,contact.MRP)">
+                                                            step="0.1" type="text" autocomplete="off"
+                                                            (keyup)="getCellCalculation(contact,contact.MRP)"
+                                                            (keypress)="keyPressCharater($event)">
+                                                            
                                                     </mat-form-field>
                                                 </mat-cell>
                                                 <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm>

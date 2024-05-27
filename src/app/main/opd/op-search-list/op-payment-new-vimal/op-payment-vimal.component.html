@@ -1,0 +1,285 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span>Bill Information</span>
+            </div>
+            <div class="modal-header-icon">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <span class="modal-icon">
+                                <mat-icon>close</mat-icon>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="bill-info-container">
+            <form [formGroup]="patientDetailsFormGrp" class="mat-form-field-auto mat-error-fix">
+                <div fxLayout="column" class="gap-20">
+                    <div class="patient-info-container patient-info">
+                        <mat-card>
+                            <div class="patient-info-box">
+                                <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h2">Patient Information</span>
+                                </div>
+                                <div class="patient-info-box my-8">
+                                    <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key ">Patient Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{advanceData.PatientName}}</span>
+                                        </div>
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key">Gender / Age</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">Male / 44</span>
+                                        </div>
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key">Gender</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">Male</span>
+                                        </div>
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key">Patient Source</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">Hospital</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div class="patient-info-container payment-bill-info">
+                        <mat-card>
+                            <div class="patient-info-box">
+                                <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h2">Patient Bill Information</span>
+                                </div>
+                                <div class="patient-info-box my-8">
+                                    <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key ">Bill Amount</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value gap-4" fxLayout="row">
+                                                ₹ {{netPayAmt}}
+                                            </span>
+                                        </div>
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key">Net Amount</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value gap-4" fxLayout="row">
+                                                ₹ {{netPayAmt}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div class="patient-info-container payment-detail">
+                        <mat-card>
+                            <div class="patient-info-box">
+                                <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h2">Payment Details</span>
+                                </div>
+                                <div class="patient-info-box my-8">
+                                    <div fxLayout="column" class="patient-details" fxLayoutGap="15px">
+
+                                        <div fxLayout.gt-sm="row" fxLayout="column" class="payment-container gap-8"
+                                            fxLayoutALign="start start">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Payment Type</mat-label>
+                                                <mat-select formControlName="paymentType1" (selectionChange)="onChangePaymentType()"
+                                                    [(ngModel)]="selectedPaymnet1" required>
+                                                    <mat-option *ngFor="let ele of paymentArr1" [value]="ele.value">
+                                                        {{ele.viewValue}}
+                                                    </mat-option>
+                                                </mat-select>
+                                                <div *ngIf="submitted && f.paymentType1.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.paymentType1.errors.required">Payment type is required</div>
+                                                </div>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Amount</mat-label>
+                                                <input matInput formControlName="amount1" (keyup)="GetBalanceAmt()"
+                                                    [(ngModel)]="amount1" required>
+                                                <div *ngIf="submitted && f.amount1.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.amount1.errors.required">Amount is required</div>
+                                                </div>
+                                            </mat-form-field>
+
+                                            <ng-container *ngIf="selectedPaymnet1 != 'cash'">
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Reference Number</mat-label>
+                                                    <input matInput formControlName="referenceNo1" required>
+                                                    <div *ngIf="submitted && f.referenceNo1.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.referenceNo1.errors.required">Reference Number is required</div>
+                                                    </div>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex
+                                                    *ngIf="selectedPaymnet1=='upi'">
+                                                    <mat-label>Bank Name</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Select BankName" matInput
+                                                        formControlName="bankName1" [matAutocomplete]="autoBank1"
+                                                        required>
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="patientDetailsFormGrp.get('bankName1').setValue(''); isBank1elected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="patientDetailsFormGrp.get('bankName1').setValue(''); isBank1elected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoBank1="matAutocomplete"
+                                                        [displayWith]="getOptionTextBank1">
+                                                        <mat-option *ngFor="let option of filteredOptionsBank1 | async"
+                                                            [value]="option">
+                                                            {{option.BankName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                    <div *ngIf="submitted && f.bankName1.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.bankName1.errors.required">Bank is required</div>
+                                                    </div>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Registration Date</mat-label>
+                                                    <input matInput [matDatepicker]="datepickerReg"
+                                                        formControlName="regDate1" (click)="datepickerReg.open()"
+                                                        [max]="nowDate">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="datepickerReg"></mat-datepicker-toggle>
+                                                    <mat-datepicker #datepickerReg>
+                                                    </mat-datepicker>
+                                                    <div *ngIf="submitted && f.regDate1.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.regDate1.errors.required">Registration Date is required</div>
+                                                    </div>
+                                                </mat-form-field>
+                                            </ng-container>
+                                            <div class="btn-container">
+                                                <div class="add-icon-btn" *ngIf="IsAllowAdd()">
+                                                    <button class="btn btn-primary"
+                                                        [ngClass]="{'btn-disabled': ((netPayAmt-paidAmt) < amount1)}"
+                                                        (click)="onAddPayment()">
+                                                        <!-- <mat-icon > add </mat-icon> -->
+                                                        +
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-table class="sales-table" #table matSort *ngIf="Payments.data.length>0"
+                                            [dataSource]="Payments" [@animateStagger]="{value:'50'}"
+                                            style="overflow:auto;">
+                                            <ng-container matColumnDef="PaymentType">
+                                                <mat-header-cell *matHeaderCellDef class="w-180" mat-sort-header>Payment
+                                                    Type</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" class="w-180">
+                                                    <span>{{contact.PaymentType}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Amount">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Amount
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.Amount}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="BankName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Bank
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.BankName}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="RefNo">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                    class="w-80">Ref
+                                                </mat-header-cell>
+                                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.RefNo}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="RegDate">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reg Date
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.RegDate| date:ShortDate}}
+                                                </mat-cell>
+                                            </ng-container>
+                                            <ng-container matColumnDef="buttons" stickyEnd>
+                                                <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact">
+                                                    <ng-container class="actions">
+                                                        <!-- <span class="material-icons" (click)="editTableRow(contact)" style="cursor: pointer;color: #5b5858;">
+                                                            edit
+                                                        </span> -->
+                                                        <span class="material-icons"
+                                                            style="cursor: pointer;color: #5b5858;"
+                                                            (click)="deletePayment(contact)">
+                                                            delete
+                                                        </span>
+                                                    </ng-container>
+                                                </mat-cell>
+                                            </ng-container>
+                                            <mat-header-row class="accent"
+                                                *matHeaderRowDef="selectedSaleDisplayedCol; sticky: true">
+                                            </mat-header-row>
+                                            <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol;"
+                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        </mat-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div class="patient-info-container paid-amount">
+                        <mat-card>
+                            <div class="patient-info-box">
+                                <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h2">Paid Amount</span>
+                                </div>
+                                <div class="patient-info-box my-8">
+                                    <div fxLayout.gt-sm="row" fxLayout="column" class="gap-8">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Paid Amount</mat-label>
+                                            <input matInput formControlName="paidAmountController" [(ngModel)]="paidAmt"
+                                                readonly>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Balance Amount</mat-label>
+                                            <input matInput formControlName="balanceAmountController"
+                                                [(ngModel)]="balanceAmt" readonly>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline " (click)="onClose1()">Close</button>
+                <button class="btn btn-primary" [disabled]="balanceAmt>0" (click)="onSubmit()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

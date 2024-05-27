@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { PharmItemSummaryComponent } from './pharm-item-summary/pharm-item-summary.component';
-import { PharmaAdvanceComponent } from './pharma-advance/pharma-advance.component';
-
-
+import { RouterModule, Routes } from '@angular/router'; 
 
 const appRoutes: Routes = [
     {
@@ -12,36 +8,21 @@ const appRoutes: Routes = [
     loadChildren: () => import("./sales/sales.module").then((m) =>m.SalesModule),
   },
   {
-    path: "salesreturn",
-    loadChildren: () => import("./sales-return/sales-return.module").then((m) =>m.SalesReturnModule),
-  },
-  {
     path: "browsesalesbill",
     loadChildren : () =>import("./brows-sales-bill/brows-sales-bill.module").then((m)=>m.BrowsSalesBillModule),
   },
   {
-    path:"matrialreceivedfrommainstore",
-    loadChildren : () =>import("./brows-sales-return-bill/brows-sales-return-bill.module").then((m)=>m.BrowsSalesReturnBillModule),
-  },
-  {
-    path:"ippharmacyadvance",
-    loadChildren :() =>import("./ip-pharmacy-advance/ip-pharmacy-advance.module").then ((m)=>m.IpPharmacyAdvanceModule),
-  },
-  {
-    path:"ippharmacyadvancereturn",
-    loadChildren: () => import("./pharm-item-summary/pharmaitemsummary.module").then((m)=>m.PharmaitemsummaryModule),
+    path: "salesreturn",
+    loadChildren: () => import("./sales-return/sales-return.module").then((m) =>m.SalesReturnModule),
   },
   {
     path:"ipsalesreturn",
     loadChildren:() => import("./ip-sales-return/ip-sales-return.module").then((m)=>m.IpSalesReturnModule),
   },
-  //  {
-  //    path:"pharmacyclearence",
-  //    loadChildren:() => import("./pharmacy-clearence/pharmacy-clearence.module").then((m)=>m.PharmacyClearenceModule),
-  //  },
-   {
-    path:"pharmacyclearence",
-    loadChildren: () => import("./pharma-advance/pharma-advance.module").then((m)=>m.PharmaAdvanceModule),
+  {
+    path:"matrialreceivedfrommainstore",
+    //loadChildren : () =>import("./brows-sales-return-bill/brows-sales-return-bill.module").then((m)=>m.BrowsSalesReturnBillModule),
+    loadChildren : () =>import("./material-received-from-department/material-received-from-department.module").then((m)=>m.MaterialReceivedFromDepartmentModule),
   },
   {
     path:"salesbillsettlement",
@@ -51,11 +32,44 @@ const appRoutes: Routes = [
     path:"reorderlevelsummary",
     loadChildren: () => import("./reorderlevelsummary/reorderlevelsummary.module").then((m)=>m.ReorderlevelsummaryModule),
   },
+  {
+    path:"pharmaceadvance",
+    loadChildren: () => import("./phar-advance/phar-advance.module").then((m)=>m.PharAdvanceModule),
+  },
+  {
+    path:"saleshospital", 
+    loadChildren :() =>import("./sales-hospital/sales-hospital.module").then ((m)=>m.SalesHospitalModule),
+  },
+  {
+    path:"issuetracker",
+    loadChildren: () => import("./issue-tracker/issue-tracker.module").then((m)=>m.IssueTrackerModule),
+  },
+  {
+    path:"pharmaitemsummery",
+    loadChildren: () => import("./pharm-item-summary/pharmaitemsummary.module").then((m)=>m.PharmaitemsummaryModule),
+  },
+  {
+    path:"pharmacyclearence",
+    loadChildren:() => import("./pharmacy-clearence/pharmacy-clearence.module").then((m)=>m.PharmacyClearenceModule),
+    
+  },
+  {
+    path:"discountaftersalesbill",
+    loadChildren: () => import("./discount-after-sales-bill/discount-after-sales-bill.module").then((m)=>m.DiscountAfterSalesBillModule),
+  },
+
+
+
+
   // {
-  //   path:"pharmacyadvance",
-  //   loadChildren: () => import("./pharma-advance/pharma-advance.module").then((m)=>m.PharmaAdvanceModule),
+  //   path:"ippharmacyadvance",
+    
   // },
-  
+  // {
+  //   path:"ippharmacyadvancereturn",
+  //   loadChildren: () => import("./pharm-item-summary/pharmaitemsummary.module").then((m)=>m.PharmaitemsummaryModule),
+  // },
+
   // {
   //   path:"pharmacyitemwisesupplierList",
   //   loadChildren:() => import("./pharmacy-item-wise-supplier-list/pharmacy-item-wise-supplier-list.module").then((m)=>m.PharmacyItemWiseSupplierListModule),
@@ -65,7 +79,7 @@ const appRoutes: Routes = [
 
 
 @NgModule({
-  declarations: [],
+  declarations: [  ],
   imports: [
     RouterModule.forChild(appRoutes)
   ]

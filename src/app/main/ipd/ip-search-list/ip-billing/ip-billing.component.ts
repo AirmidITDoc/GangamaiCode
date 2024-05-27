@@ -30,6 +30,7 @@ import { ToastrService } from 'ngx-toastr';
 import { forEach } from 'lodash';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { IpPaymentwithAdvanceComponent } from '../ip-paymentwith-advance/ip-paymentwith-advance.component';
+import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 
 
 @Component({
@@ -183,7 +184,7 @@ export class IPBillingComponent implements OnInit {
   vfDiscountAmount: any = 0;
   vpaidBalanceAmt: any = 0;
   vConcessionId: any = 0;
-  vPercentage: any;
+  vPercentage: any = 0;
   vserviceDiscflag: boolean = false;
 
   isClasselected: boolean = false;
@@ -453,7 +454,7 @@ export class IPBillingComponent implements OnInit {
 
 
   getBillingClasslist() {
-
+    debugger
     var m_data = {
       'ClassName': '%' //`${this.vClassName}%`
     }
@@ -511,11 +512,6 @@ export class IPBillingComponent implements OnInit {
   }
 
 
-  getSelectedObjDoctorName(obj) {
-    console.log(obj)
-    // this.doct = obj.doctorId;
-    // this.b_price = obj.doctorName;
-  }
 
   add: Boolean = false;
 
@@ -527,6 +523,8 @@ export class IPBillingComponent implements OnInit {
   @ViewChild('qty') qty: ElementRef;
   @ViewChild('Netamt') Netamt: ElementRef;
   @ViewChild('price') price: ElementRef;
+  @ViewChild('finaldisc') finaldisc: ElementRef;
+
   @ViewChild('addbutton') addbutton: ElementRef;
 
   onEnterservice(event): void {
@@ -563,8 +561,8 @@ export class IPBillingComponent implements OnInit {
   }
 
   public onEnterdoctor(event, value): void {
-    console.log(value)
-    
+    // console.log(value)
+
     if (event.which === 13) {
 
       if (this.isDoctor) {
@@ -582,11 +580,23 @@ export class IPBillingComponent implements OnInit {
     }
   }
 
-  public onEnterdiscper(event): void {
+  public onEnterdiscper(event, value): void {
+    debugger
     if (event.which === 13) {
-      this.discamt.nativeElement.focus();
+      if (!(value < 0) && !(value > 100)) {
+        // this.calculatePersc();
+        this.discamt.nativeElement.focus();
+      } else if (event.which === 13 && (parseInt(value) < 0 && parseInt(value) > 100)) {
+        this.toastr.warning('Please Enter disc % less than 101 and Greater than 0  ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+        this.calculatePersc();
+        this.disc.nativeElement.focus();
+      }
     }
   }
+
 
   public onEnterdiscamt(event): void {
     if (event.which === 13) {
@@ -608,7 +618,8 @@ export class IPBillingComponent implements OnInit {
 
 
   getSelectedObj(obj) {
-
+    debugger
+    console.log(obj)
     this.SrvcName = obj.ServiceName;
     this.b_price = obj.Price;
     this.b_totalAmount = obj.Price;
@@ -679,7 +690,7 @@ export class IPBillingComponent implements OnInit {
       this.sIsLoading = 'loading-data';
       this._IpSearchListService.getpreviousbilldetail(D_data).subscribe(Visit => {
         this.prevbilldatasource.data = Visit as Bill[];
-        console.log(this.prevbilldatasource.data)
+        // console.log(this.prevbilldatasource.data)
       },
         error => {
           this.sIsLoading = '';
@@ -689,7 +700,7 @@ export class IPBillingComponent implements OnInit {
 
   chkdiscstatus() {
 
-        if (this.vDiscountAmount == 0) {
+    if (this.vDiscountAmount == 0) {
       this.admin = true;
       // this.ConShow = true;
 
@@ -711,6 +722,8 @@ export class IPBillingComponent implements OnInit {
   }
 
   getAdvanceDetList() {
+
+    debugger
     var D_data = {
       "AdmissionID": this.selectedAdvanceObj.AdmissionID
     }
@@ -726,7 +739,7 @@ export class IPBillingComponent implements OnInit {
     }, 5);
   }
   getDatewiseChargesList(param) {
-    console.log(param);
+    // console.log(param);
     this.chargeslist = [];
     this.dataSource.data = [];
 
@@ -848,11 +861,11 @@ export class IPBillingComponent implements OnInit {
     this.vDiscountAmount = netAmt;
     this.vfDiscountAmount = this.vDiscountAmount;
     // this.Ipbillform.get("concessionAmt").setValue(this.vDiscountAmount)
-    
-    console.log(this.vfDiscountAmount )
+
+    // console.log(this.vfDiscountAmount )
     if (this.vDiscountAmount > 0) {
       this.admin = false;
-      this.ConShow=true;
+      this.ConShow = true;
     }
     return netAmt;
   }
@@ -869,15 +882,12 @@ export class IPBillingComponent implements OnInit {
     netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
     this.vAdvTotalAmount = netAmt;
     // this.vNetBillAmount = this.vTotalBillAmount;
+
+    // console.log(this.vAdvTotalAmount )
     if (this.vNetBillAmount > this.vAdvTotalAmount) {
       this.vBalanceAmt = 0;
       this.vpaidBalanceAmt = parseInt(this.vNetBillAmount) - parseInt(this.vAdvTotalAmount)
-      // if( this.vpaidBalanceAmt >0){
-      // this.toastr.warning('Advance Less than  Bill Amount', 'Warning !', {
-      //   toastClass: 'tostr-tost custom-toast-warning',
-      // });
-      // return;
-      // }
+
     }
     return netAmt;
   }
@@ -927,9 +937,9 @@ export class IPBillingComponent implements OnInit {
 
 
   CalAdmincharge() {
-
+    debugger
     let Percentage = this.Ipbillform.get('Percentage').value;
-    if (this.Ipbillform.get('Percentage').value > 0) {
+    if (this.Ipbillform.get('Percentage').value > 0 && Percentage < 101) {
       this.vfDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100);
       this.vNetBillAmount = Math.round(this.vTotalBillAmount - this.vfDiscountAmount);
       this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
@@ -943,11 +953,13 @@ export class IPBillingComponent implements OnInit {
 
       this.vNetBillAmount = this.vTotalBillAmount;
       this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-      this.ConShow = false
-      this.Ipbillform.get('ConcessionId').reset();
-      this.Ipbillform.get('ConcessionId').clearValidators();
-      this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+      // this.ConShow = false
+      // this.Ipbillform.get('ConcessionId').reset();
+      // this.Ipbillform.get('ConcessionId').clearValidators();
+      // this.Ipbillform.get('ConcessionId').updateValueAndValidity();
       this.vfDiscountAmount = 0;
+      this.vNetBillAmount = this.vTotalBillAmount;
+      this.finaldisc.nativeElement.focus();
       this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
       this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -964,12 +976,12 @@ export class IPBillingComponent implements OnInit {
       this.ConShow = false
 
     }
-    if (Percentage == 0 || Percentage == null || Percentage == ' ') {
-      this.vfDiscountAmount = 0;
-      this.vNetBillAmount = this.vTotalBillAmount;
-      this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
-      this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
-    }
+    // if (Percentage == 0 || Percentage == null || Percentage == ' ') {
+    //   this.vfDiscountAmount = 0;
+    //   this.vNetBillAmount = this.vTotalBillAmount;
+    //   this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
+    //   this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+    // }
     if (this.vDiscountAmount > 0) {
 
       this.Ipbillform.get('ConcessionId').reset();
@@ -1017,14 +1029,14 @@ export class IPBillingComponent implements OnInit {
         IsBillGenerated: this.selectedAdvanceObj.IsBillGenerated,
         UnitId: this.selectedAdvanceObj.UnitId
       };
-      console.log(xx)
+      // console.log(xx)
       this.advanceDataStored.storage = new Bill(xx);
       console.log('this.interimArray==', this.interimArray);
       this._matDialog.open(InterimBillComponent,
         {
           maxWidth: "85vw",
           //maxHeight: "65vh",
-          width: '100%', 
+          width: '100%',
           height: "500px",
           data: this.interimArray
         });
@@ -1052,11 +1064,18 @@ export class IPBillingComponent implements OnInit {
       // PatientHeaderObj['AdvanceAmount'] = 0;
       PatientHeaderObj['AdvanceAmount'] = this.Ipbillform.get('FinalAmount').value;
       PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
+      PatientHeaderObj['Date'] = this.dateTimeObj.date;
+      PatientHeaderObj['PBillNo'] = 0;
+      PatientHeaderObj['BillTime'] = this.dateTimeObj.date;
+      PatientHeaderObj['RegID'] = this.selectedAdvanceObj.RegID,
 
-      console.log('============================== Save IP Billing ===========');
+
+
+        console.log('============================== Save IP Billing ===========');
       //==============-======--==============Payment======================
       // IPAdvancePaymentComponent
-      const dialogRef = this._matDialog.open(IpPaymentwithAdvanceComponent,
+      this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj);
+      const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
         {
           maxWidth: "85vw",
           height: '840px',
@@ -1071,7 +1090,7 @@ export class IPBillingComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         // console.log('============================== Save IP Billing ===========');
         console.log(result);
-
+        debugger
         // this.paidamt = result.PaidAmt;
         this.flagSubmit = result.IsSubmitFlag
 
@@ -1085,23 +1104,7 @@ export class IPBillingComponent implements OnInit {
           this.balanceamt = result.BalAmt;
         }
 
-        // if (this.concessionAmtOfNetAmt > 0) {
-        //   this.balanceamt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-        // } else {
-
-        //   this.balanceamt = result.BalAmt;
-        //   // this.balanceamt = this.totalAmtOfNetAmt;
-        // }
-        // if (result.submitDataAdvancePay) {
-        //   this.balanceamt = result.submitDataAdvancePay.BalanceAmount;
-        // }
-        // else {
-        //   this.balanceamt = result.BalAmt;
-        // }
-
-        // this.CompDisamount = this.AdminDiscamt + this.concessionAmtOfNetAmt;
-
-        this.flagSubmit = result.IsSubmitFlag
+        // this.flagSubmit = result.IsSubmitFlag
         //
         let InsertBillUpdateBillNoObj = {};
         InsertBillUpdateBillNoObj['BillNo'] = 0;
@@ -1152,6 +1155,7 @@ export class IPBillingComponent implements OnInit {
         const Cal_DiscAmount_IPBill = new Cal_DiscAmount(Cal_DiscAmount_IPBillObj);
         const AdmissionIPBillingUpdate = new AdmissionIPBilling(AdmissionIPBillingUpdateObj);
         //
+        debugger
         let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
         // console.log(UpdateAdvanceDetailarr1);
@@ -1163,7 +1167,7 @@ export class IPBillingComponent implements OnInit {
 
 
         let UpdateAdvanceDetailarr = [];
-        if (result.submitDataAdvancePay > 0) {
+        if (result.submitDataAdvancePay.length > 0) {
           result.submitDataAdvancePay.forEach((element) => {
             let UpdateAdvanceDetailObj = {};
             UpdateAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
@@ -1182,7 +1186,7 @@ export class IPBillingComponent implements OnInit {
         }
 
         let UpdateAdvanceHeaderObj = {};
-        if (result.submitDataAdvancePay > 0) {
+        if (result.submitDataAdvancePay.length > 0) {
           UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceNo'],
             UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UpdateAdvanceDetailarr1[0]['AdvanceAmount'],
             UpdateAdvanceHeaderObj['BalanceAmount'] = UpdateAdvanceDetailarr1[0]['BalanceAmount']
@@ -1224,16 +1228,17 @@ export class IPBillingComponent implements OnInit {
           });
         }
         else {
-
+          debugger
+          console.log(result)
           this.balanceamt = result.BalAmt;
-          if (this.concessionAmtOfNetAmt > 0) {
-            this.balanceamt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-            this.ConcessionId = this.Ipbillform.get('ConcessionId').value.ConcessionId;
+          // if (this.concessionAmtOfNetAmt > 0) {
+          //   this.balanceamt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
+          //   this.ConcessionId = this.Ipbillform.get('ConcessionId').value.ConcessionId;
 
-          } else {
-            // this.balanceamt = this.totalAmtOfNetAmt;
-            this.ConcessionId = 0;
-          }
+          // } else {
+          //   // this.balanceamt = this.totalAmtOfNetAmt;
+          //   this.ConcessionId = 0;
+          // }
 
           let InsertBillUpdateBillNoObj = {};
           InsertBillUpdateBillNoObj['BillNo'] = 0;
@@ -1380,7 +1385,7 @@ export class IPBillingComponent implements OnInit {
     }
     this.isLoading = 'save';
 
-    if (this.SrvcName && (parseInt(this.b_price) > 0 || this.b_price == '0') && this.b_qty) {
+    if ((this.SrvcName && (parseInt(this.b_price) > 0 || this.b_price == '0') && this.b_qty) && (parseFloat(this.b_netAmount) > 0)) {
 
       var m_data = {
         "chargeID": 0,
@@ -1431,6 +1436,9 @@ export class IPBillingComponent implements OnInit {
       this.isLoading = '';
       this.b_disAmount = 0;
     }
+    else {
+      Swal.fire("Enter Proper Values !")
+    }
 
     this.itemid.nativeElement.focus();
     this.add = false;
@@ -1438,7 +1446,7 @@ export class IPBillingComponent implements OnInit {
       this.vserviceDiscflag = true;
       this.admin = false;
     }
-
+    this.isDoctor = false;
   }
   onClearServiceAddList() {
     this.Serviceform.get('SrvcName').reset();
@@ -1465,22 +1473,28 @@ export class IPBillingComponent implements OnInit {
     this.b_disAmount = 0;
     this.formDiscPersc = this.Serviceform.get('discPer').value;
     let netAmt = parseInt(this.b_price) * parseInt(this.b_qty);
-    if (this.formDiscPersc > 0 || this.formDiscPersc < 100) {
+    if (this.formDiscPersc > 0 || this.formDiscPersc < 101) {
       let discAmt = Math.round((netAmt * parseInt(this.formDiscPersc)) / 100);
       this.b_disAmount = discAmt;
       this.b_netAmount = (netAmt - discAmt).toString();
+      // this.discamt.nativeElement.focus();
     }
+    debugger
     if (this.formDiscPersc > 100 || this.formDiscPersc < 0) {
       this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
+      this.formDiscPersc = 0;
+      this.b_disAmount = 0;
+      this.b_netAmount = (parseInt(this.b_price) * parseInt(this.b_qty)).toString();
+      this.disc.nativeElement.focus();
     }
     if (this.formDiscPersc == 0 || this.formDiscPersc == '' || this.formDiscPersc == null) {
       this.b_disAmount = 0;
       this.b_netAmount = (netAmt).toString();
     }
-    console.log(this.b_netAmount)
+    // console.log(this.b_netAmount)
   }
 
 
@@ -1523,7 +1537,7 @@ export class IPBillingComponent implements OnInit {
         this.b_netAmount = (parseInt(this.b_price) * parseInt(this.b_qty)).toString();
       }
       // return;
-      console.log(this.b_netAmount)
+      // console.log(this.b_netAmount)
     }
 
     this.add = false;
@@ -1549,7 +1563,7 @@ export class IPBillingComponent implements OnInit {
       this.dataSource.data = this.chargeslist;
     }
 
-    console.log(this.dataSource.data)
+    // console.log(this.dataSource.data)
     Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
   }
 
@@ -1680,102 +1694,52 @@ export class IPBillingComponent implements OnInit {
   }
 
   onSave() {
+    debugger
+    if (!(this.vPercentage > 101)) {
+      if (this.dataSource.data.length > 0) {
+        if (this.Ipbillform.get('GenerateBill').value) {
+          Swal.fire({
+            title: 'Do you want to save the Final Bill ',
 
-    // if (this.ConShow = true) {
-    // if (this.vConcessionId == 0) {
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
 
-    //   this.toastr.warning('Enter  Concession Reason', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+              this.SaveBill();
+            }
+          })
 
-    // else {
+        }
+        else {
 
-    //   if (this.dataSource.data.length > 0) {
-    //     if (this.Ipbillform.get('GenerateBill').value) {
-    //       Swal.fire({
-    //         title: 'Do you want to save the Final Bill ',
+          Swal.fire({
+            title: 'Do you want to save the Draft Bill ',
 
-    //         showCancelButton: true,
-    //         confirmButtonText: 'OK',
-    //       }).then((result) => {
-    //         /* Read more about isConfirmed, isDenied below */
-    //         if (result.isConfirmed) {
+            showCancelButton: true,
+            confirmButtonText: 'OK',
 
-    //           this.SaveBill();
-    //         }
-    //       })
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
 
-    //     }
-    //     else {
+              this.onSaveDraft();
+            }
 
-    //       Swal.fire({
-    //         title: 'Do you want to save the Draft Bill ',
+          })
 
-    //         showCancelButton: true,
-    //         confirmButtonText: 'OK',
-
-    //       }).then((result) => {
-    //         /* Read more about isConfirmed, isDenied below */
-    //         if (result.isConfirmed) {
-
-    //           this.onSaveDraft();
-    //         }
-
-    //       })
-
-    //     }
-    //   } else {
-    //     Swal.fire("Select Data For Save")
-    //   }
-    // }
-    // } else {
-
-    if (this.dataSource.data.length > 0) {
-      if (this.Ipbillform.get('GenerateBill').value) {
-        Swal.fire({
-          title: 'Do you want to save the Final Bill ',
-
-          showCancelButton: true,
-          confirmButtonText: 'OK',
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-
-            this.SaveBill();
-          }
-        })
-
+        }
+      } else {
+        Swal.fire("Select Data For Save")
       }
-      else {
-
-        Swal.fire({
-          title: 'Do you want to save the Draft Bill ',
-
-          showCancelButton: true,
-          confirmButtonText: 'OK',
-
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-
-            this.onSaveDraft();
-          }
-
-        })
-
-      }
-    } else {
-      Swal.fire("Select Data For Save")
     }
-    // }
 
     this.Ipbillform.get('GenerateBill').setValue(false);
   }
 
   tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
-    debugger
+
     // console.log('tabChangeEvent => ', tabChangeEvent); 
     // console.log('index => ', tabChangeEvent.index); 
     if (tabChangeEvent.index == 1) {

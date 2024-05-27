@@ -131,9 +131,9 @@
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>AadharCard Number</mat-label>
                                             <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="AadharCard Number" matInput [(ngModel)]="registerObj.AadharCardNo" type="number" #AadharCardNo (keydown)="onEnterAadharCardNo($event)" type="number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
-                                            <mat-error class="error" *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">Aadhar
+                                            <!-- <mat-error class="error" *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">Aadhar
                                                 number is required
-                                            </mat-error>
+                                            </mat-error> -->
                                         </mat-form-field>
                                     </div>
 
@@ -223,18 +223,28 @@
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Mobile Number</mat-label>
-                                                <input name="MobileNo" formControlName="MobileNo" #mobile placeholder="Mobile Number" matInput required [(ngModel)]="registerObj.MobileNo" max="9999999999" min="1000000000" autocomplete="off" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" required="required" value="9876658688" (keydown.enter)="onEntermobile($event)" (blur)="onEntermobile($event)">
+                                                <input name="MobileNo" formControlName="MobileNo" #mobile placeholder="Mobile Number" matInput required [(ngModel)]="registerObj.MobileNo" max="9999999999" min="1000000000"
+                                                 autocomplete="off" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" required="required" value="9876658688" 
+                                                 (keydown.enter)="onEntermobile($event)" (blur)="onEntermobile($event)">
                                                 <mat-error class="error" *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
                                                     digits Mobile number is
                                                     required</mat-error>
                                             </mat-form-field>
 
-
-
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Phone Number</mat-label>
-                                                <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput #phone (keydown)="onEnterphone($event)" [(ngModel)]="registerObj.PhoneNo" minlength="10" maxlength="10" type="number" value="9876658688">
+                                                <input name="PhoneNo" formControlName="MobileNo" #mobile placeholder="Phone Number" matInput  [(ngModel)]="registerObj.PhoneNo" max="9999999999" min="1000000000" 
+                                                autocomplete="off" maxlength="10"  #phone oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" required="required" value="9876658688" (keydown.enter)="onEnterphone($event)" (blur)="onEntermobile($event)">
+                                                <!-- <mat-error class="error" *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">10
+                                                    digits Mobile number is
+                                                    required</mat-error> -->
                                             </mat-form-field>
+
+
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Phone Number</mat-label>
+                                                <input name="PhoneNo" formControlName="PhoneNo" placeholder="Phone Number" matInput #phone (keydown)="onEnterphone($event)" [(ngModel)]="registerObj.PhoneNo" minlength="10" maxlength="10" type="number" value="9876658688">
+                                            </mat-form-field> -->
                                         </div>
                                     </div>
 

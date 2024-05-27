@@ -386,11 +386,11 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent"
+                                        <mat-header-row class="accent min-width-1800"
                                             *matHeaderRowDef="displayedColumns1; sticky: true">
                                         </mat-header-row>
 
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact min-width-1800"
                                             [@animate]="{value:'*',params:{y:'100%'}}"
                                             ></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
@@ -403,14 +403,12 @@
                                             showFirstLastButtons>
                                      </mat-paginator>
                                 </div>
-                            </div>
-                            <hr>
-                            <div matTooltip="Select Check Box  to enable this button!!"
-                              fxFlexAlign="start end">
-                                <button class="next-btn"  (click)="OnAddgrn()">OK</button>
-                                <button class="footer-btn" style="width: 100px;" (click)="onClose()"> PO Close</button>
-                            </div>
-                            
+                            </div> 
+                            <div class="sales-footer-buttons gap-8 " fxLayout="row" style="padding: 10px 50px 0px 120px;"
+                            matTooltip="Select Check Box  to enable this button!!" fxLayoutAlign="end">
+                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                <button class="btn btn-primary " (click)="OnAddgrn()">OK</button>
+                            </div> 
                         </div>
                        </form>
 

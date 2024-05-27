@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OPSearhlistService } from '../op-searhlist.service';
@@ -107,14 +107,14 @@ export class OpPaymentNewComponent implements OnInit {
     // private snackBarService: SnackBarService
   ) {
     this.nowDate = new Date();
-    
+
     if (data) {
       this.PatientHeaderObj = data;
       this.advanceData = this.data.vPatientHeaderObj;
       console.log(data)
     }
     if (this.data.FromName == "Advance") {
-      
+
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
       this.amount1 = parseInt(this.advanceData.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.NetPayAmount);
@@ -136,8 +136,8 @@ export class OpPaymentNewComponent implements OnInit {
       this.getBalanceAmt();
       this.Paymentobj['TransactionType'] = 0;
       this.IsCreditflag = false
-    } 
-    
+    }
+
     if (this.data.FromName == "OP_SETTLEMENT") {
       this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
       this.amount1 = this.cashAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
@@ -152,8 +152,8 @@ export class OpPaymentNewComponent implements OnInit {
       this.onPaymentChange(1, 'cash');
       this.paidAmt = this.netPayAmt;
       this.getBalanceAmt();
-      
-    } 
+
+    }
 
     if (this.PatientHeaderObj.FromName == "SETTLEMENT") {
       this.netPayAmt = parseInt(this.advanceData.NetPayableAmt) || this.advanceData.NetPayAmount;
@@ -168,9 +168,9 @@ export class OpPaymentNewComponent implements OnInit {
       this.IsCreditflag = true;
     }
     if (this.PatientHeaderObj.FromName == "SalesSETTLEMENT") {
-      this.netPayAmt = parseInt(this.advanceData.TotalAmount);
-      this.cashAmt = parseInt(this.advanceData.TotalAmount);
-      this.paidAmt = parseInt(this.advanceData.TotalAmount);
+      this.netPayAmt = parseInt(this.advanceData.NetAmount);
+      this.cashAmt = parseInt(this.advanceData.NetAmount);
+      this.paidAmt = parseInt(this.advanceData.NetAmount);
       this.billNo = parseInt(this.advanceData.SalesId);
       this.PatientName = this.advanceData.PatientName;
       this.BillDate = this.advanceData.Date;
@@ -218,7 +218,7 @@ export class OpPaymentNewComponent implements OnInit {
 
   ngOnInit(): void {
     this.patientDetailsFormGrp = this.createForm();
-    
+    debugger
     if (this.PatientHeaderObj.FromName == "SalesSETTLEMENT") {
       this.PatientHeaderObj = this.data.vPatientHeaderObj;
       this.advanceData = this.data.vPatientHeaderObj;
@@ -228,17 +228,17 @@ export class OpPaymentNewComponent implements OnInit {
       this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.getBalanceAmt();
       this.paymentRowObj["cash"] = true;
-      
+
       this.onPaymentChange(1, 'cash');
       this.paidAmt = this.netPayAmt;
 
-      this.netPayAmt = parseInt(this.advanceData.TotalAmount);
-      this.cashAmt = parseInt(this.advanceData.TotalAmount);
-      this.paidAmt = parseInt(this.advanceData.TotalAmount);
+      this.netPayAmt = parseInt(this.advanceData.NetAmount);
+      this.cashAmt = parseInt(this.advanceData.NetAmount);
+      this.paidAmt = parseInt(this.advanceData.NetAmount);
       this.billNo = parseInt(this.advanceData.SalesId);
       this.PatientName = "SAS",//this.advanceData.PatientName;
         this.BillDate = this.advanceData.Date;
-      this.amount1 = parseInt(this.advanceData.TotalAmount);
+      this.amount1 = parseInt(this.advanceData.NetAmount);
       this.getBalanceAmt();
       this.Paymentobj['TransactionType'] = 4;
     }
@@ -259,25 +259,25 @@ export class OpPaymentNewComponent implements OnInit {
     return this.formBuilder.group({
       paymentType1: [],
       amount1: [this.netPayAmt],
-      referenceNo1: [],
+      referenceNo1: ['', [Validators.pattern('^[0-9]{12}$')]],
       bankName1: [],
       regDate1: [(new Date()).toISOString()],
 
       paymentType2: [],
       amount2: [],
-      referenceNo2: [],
+      referenceNo2: ['', [Validators.pattern('^[0-9]{12}$')]],
       bankName2: [],
       regDate2: [(new Date()).toISOString()],
 
       paymentType3: [],
       amount3: [],
       bankName3: [],
-      referenceNo3: [],
+      referenceNo3: ['', [Validators.pattern('^[0-9]{12}$')]],
       regDate3: [(new Date()).toISOString()],
 
       paymentType4: [],
       amount4: [],
-      referenceNo4: [],
+      referenceNo4: ['', [Validators.pattern('^[0-9]{12}$')]],
       bankName4: [],
       regDate4: [(new Date()).toISOString()],
 
@@ -285,7 +285,7 @@ export class OpPaymentNewComponent implements OnInit {
       amount5: [],
       bankName5: [],
       regDate5: [(new Date()).toISOString()],
-      referenceNo5: [],
+      referenceNo5: ['', [Validators.pattern('^[0-9]{12}$')]],
 
       paidAmountController: [],
       balanceAmountController: []
@@ -297,9 +297,19 @@ export class OpPaymentNewComponent implements OnInit {
       // referenceNo6: []
     });
   }
+  @ViewChild('Reference') Reference: ElementRef;
 
+  keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d{0,12}$/.test(inp)) {
+      return true;
+    } else {
+      this.patientDetailsFormGrp.get('referenceNo1').setValue('')
+      return false;
+    }
+  }
   onChangePaymnt(event: any) {
-    
+
     let value = event.value;
     if (value != 'cash') {
       this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
@@ -345,7 +355,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onAddClick(paymentOption: string) {
-    
+
     this.paymentRowObj[paymentOption] = true;
     switch (paymentOption) {
       case 'cash':
@@ -535,7 +545,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onPaymentChange(rowId: number, value: string) {
-    
+
 
     if (value == 'upi') {
 
@@ -1016,7 +1026,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getChequeObj(type: string) {
-    
+
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['ChequePayAmount'] = this.amount1;
       this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
@@ -1099,7 +1109,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getNeftObj(type: string) {
-    
+    debugger
     console.log(this.patientDetailsFormGrp.get("paymentType1").value)
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['NEFTPayAmount'] = this.amount1;
@@ -1141,7 +1151,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getUpiObj(type: string) {
-    
+
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['PayTMAmount'] = this.amount1;
       this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
@@ -1262,7 +1272,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onClose1() {
-    
+
     let IsSubmit = {
       "IsSubmitFlag": false,
       "BalAmt": this.netPayAmt

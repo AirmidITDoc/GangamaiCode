@@ -175,6 +175,7 @@ export class NewGRNReturnComponent implements OnInit {
             NetAmount: 0,
             StkID: element.StkID || 0 ,
             GRNID:element.GRNID || 0,
+            GRNDetID:element.GRNDetID || 0,
             TotalQty:0
           });
          // console.log(this.chargeslist)
@@ -288,7 +289,14 @@ OnSave(){
   grnReturnSave['totalOtherTaxAmount'] =0;
   grnReturnSave['totalOctroiAmount'] = 0;
   grnReturnSave['netAmount'] = this.vFinalNetAmount || 0;
-  grnReturnSave['cash_Credit'] = this._GRNReturnService.NewGRNReturnFrom.get('CashType').value;
+  let checkcashtype
+  if(this.CashCredittype == false){
+    checkcashtype = false; 
+  }else{
+    checkcashtype = true;
+  }
+
+  grnReturnSave['cash_Credit'] = checkcashtype;
   grnReturnSave['remark'] = this._GRNReturnService.NewGRNRetFinalFrom.get('Remark').value
   grnReturnSave['isVerified'] = false;
   grnReturnSave['isClosed'] = false;
@@ -335,18 +343,20 @@ OnSave(){
   let grnReturnUpdateCurrentStockarray = [];
   this.interimArray.forEach((element) => {
     let grnReturnUpdateCurrentStockObj = {};
+    let issueqty = element.BalanceQty - element.ReturnQty
     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
-    grnReturnUpdateCurrentStockObj['issueQty'] = element.ReturnQty || 0;
+    grnReturnUpdateCurrentStockObj['issueQty'] =element.ReturnQty || 0;
     grnReturnUpdateCurrentStockObj['stkId'] = element.StkID || 0;
     grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.user.storeId || 0;
     grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);
   });
 
   let grnReturnUpateReturnQtyarray = [];
-  this.interimArray.forEach((element) => {
+  this.interimArray.forEach((element) => { 
     let grnReturnUpateReturnQty = {};
-    grnReturnUpateReturnQty['grnDetID'] = element.GRNDetID || 0;
-    grnReturnUpateReturnQty['returnQty'] = element.ReturnQty || 0;
+    let issueqty = element.BalanceQty - element.ReturnQty
+    grnReturnUpateReturnQty['grnDetID'] = element.GRNDetID || 0
+    grnReturnUpateReturnQty['returnQty'] =element.issueqty || 0;
     grnReturnUpateReturnQtyarray.push(grnReturnUpateReturnQty);
   });
 
@@ -364,6 +374,7 @@ OnSave(){
       });
       this.OnReset();
       this.Savebtn = true;
+      this.isChecked = false;
     } else {
       this.toastr.error('New GRN Return Data not saved !, Please check validation error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
@@ -384,6 +395,7 @@ OnReset() {
 }
  
   vGRNID:any=0;
+  CashCredittype:any;
   getGRNList() {  
     this.dsGrnItemList.data = [];
     this.chargeslist.data = [];
@@ -400,9 +412,15 @@ OnReset() {
       this.VsupplierId = this.dsNewGRNReturnItemList.data[0]['SupplierId']
       this.VsupplierName = this.dsNewGRNReturnItemList.data[0]['SupplierName']
       this.vGRNID = this.dsNewGRNReturnItemList.data[0].GRNID
+      this.CashCredittype = this.dsNewGRNReturnItemList.data[0].Cash_CreditType
       this.getSupplierSearchCombo(); 
-   
+  
       this.getGrnItemDetailList(this.dsNewGRNReturnItemList.data[0]) 
+      if(this.dsNewGRNReturnItemList.data[0].Cash_CreditType == false){
+        this.isChecked = true;
+      }else{
+        this.isChecked = false;
+      }
     });
   }
 }

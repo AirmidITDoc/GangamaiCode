@@ -13,6 +13,7 @@
                 </span>
                 <span style="font-weight: 400;font-size: medium;margin-right: 10px !important;"> {{StoreName}}</span>
             </div>
+
         </div>
         <!-- / APP TITLE -->
         <!-- SEARCH -->
@@ -48,13 +49,17 @@
                                                     fxLayoutAlign="space-between" class="gap-8">
                                                     <div class="radio-group-left gap-8" fxLayout="row"
                                                         fxLayoutAlign="start center">
-
-                                                            <mat-radio-group aria-label="Select an option" formControlName="PatientType" [(ngModel)]="vSelectedOption"
-                                                                name="paymode" (change)="onChangePatientType($event)" (blur)="onChangePatientType($event)"  fxLayout="row">
-                                                                <mat-radio-button value="OP" [disabled]="vCondition">OP</mat-radio-button>
-                                                                <mat-radio-button value="IP" [disabled]="vConditionIP">IP</mat-radio-button>
-                                                                <mat-radio-button value="External" [disabled]="vConditionExt">External</mat-radio-button>
-                                                            </mat-radio-group>   
+                                                        <mat-radio-group aria-label="Select an option"
+                                                            formControlName="PatientType" [(ngModel)]="vSelectedOption"
+                                                            name="paymode" (change)="onChangePatientType($event)"
+                                                            (blur)="onChangePatientType($event)" fxLayout="row">
+                                                            <!-- <mat-radio-button value="OP"
+                                                                [disabled]="vCondition">OP</mat-radio-button>
+                                                            <mat-radio-button value="IP"
+                                                                [disabled]="vConditionIP">IP</mat-radio-button> -->
+                                                            <mat-radio-button value="External"
+                                                                [disabled]="vConditionExt">External</mat-radio-button>
+                                                        </mat-radio-group>
 
                                                         <!-- <mat-radio-group aria-label="Select an option" 
                                                             formControlName="PatientType" [(ngModel)]="vSelectedOption"
@@ -71,17 +76,17 @@
                                                          -->
 
 
-                                                        <!-- <mat-form-field appearance="outline"
-                                                            *ngIf="ItemSubform.get('PatientType').value != 'IP' && ItemSubform.get('PatientType').value != 'External'"  >
-                                                            <input type="text" name="RegID" formControlName="RegID1"
+                                                        <mat-form-field appearance="outline"
+                                                            *ngIf="ItemSubform.get('PatientType').value != 'IP' && ItemSubform.get('PatientType').value != 'External'">
+                                                            <input type="text" name="RegID" formControlName="RegID"
                                                                 placeholder="OP-RegNo / First Name / Last Name / Mobile No"
                                                                 matInput [matAutocomplete]="auto1"
-                                                                (input)="getSearchListOp()">
+                                                                (input)="getSearchListIP()">
                                                             <span matSuffix style="display: flex;">
                                                                 <mat-icon class="mat-icon-close"
-                                                                    (click)="ItemSubform.get('RegID1').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                                    (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
                                                                 <mat-icon class="mat-icon-close"
-                                                                    (click)="ItemSubform.get('RegID1').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                                                    (click)="ItemSubform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                                             </span>
                                                             <mat-autocomplete #auto1="matAutocomplete"
                                                                 [displayWith]="getSelectedObjOP"
@@ -94,14 +99,16 @@
                                                                     {{option.MobileNo}}
                                                                 </mat-option>
                                                             </mat-autocomplete>
-                                                            <mat-error
+                                                            <!-- <mat-error
                                                                 *ngIf="ItemSubform.get('RegID').hasError('required')  && ItemSubform.get('RegID').touched">
                                                                 Required field cannot be left blank
-                                                            </mat-error>
-                                                        </mat-form-field>   -->
+                                                            </mat-error> -->
+                                                        </mat-form-field>
 
 
-                                                        <mat-form-field appearance="outline" *ngIf="ItemSubform.get('PatientType').value != 'External'"  fxFlex="50%">
+                                                        <mat-form-field appearance="outline"
+                                                            *ngIf="ItemSubform.get('PatientType').value != 'OP' && ItemSubform.get('PatientType').value != 'External'"
+                                                            fxFlex="50%">
                                                             <input type="text" name="RegID" formControlName="RegID"
                                                                 placeholder="RegNo / First Name / Last Name / Mobile No"
                                                                 matInput [matAutocomplete]="auto2"
@@ -205,35 +212,49 @@
                                                                                     fxLayoutAlign="space-between center">
                                                                                     <div class="patient-col">
                                                                                         <span
-                                                                                            class="patient-col-key">Reg
+                                                                                            class="patient-col-key">PatientName/Reg
                                                                                             No</span>
                                                                                         <span>:</span>
                                                                                         <span
-                                                                                            class="patient-col-value">{{registerObj.RegNo}}</span>
+                                                                                            class="patient-col-value">{{PatientName}}/{{RegNo}}</span>
+                                                                                    </div>
+                                                                                    <div class="patient-col" *ngIf="IPDNocheck">
+                                                                                        <span
+                                                                                            class="patient-col-key">IPDNo</span>
+                                                                                        <span>:</span>
+                                                                                        <span
+                                                                                            class="patient-col-value">{{IPDNo}}</span>
+                                                                                    </div>
+                                                                                    <div class="patient-col" *ngIf="OPDNoCheck" >
+                                                                                        <span
+                                                                                            class="patient-col-key">OPDNo</span>
+                                                                                        <span>:</span>
+                                                                                        <span
+                                                                                            class="patient-col-value">{{OPDNo}}</span>
+                                                                                    </div>
+                                                                                    <div class="patient-col" *ngIf="DoctorNamecheck">
+                                                                                        <span
+                                                                                            class="patient-col-key">DoctorName
+                                                                                            </span>
+                                                                                        <span>:</span>
+                                                                                        <span
+                                                                                            class="patient-col-value">Dr.{{DoctorName}}</span>
                                                                                     </div>
                                                                                     <div class="patient-col">
                                                                                         <span
-                                                                                            class="patient-col-key">Patient
-                                                                                            Name</span>
+                                                                                            class="patient-col-key">TariffName
+                                                                                          </span>
                                                                                         <span>:</span>
                                                                                         <span
-                                                                                            class="patient-col-value">{{PatientName}}</span>
+                                                                                            class="patient-col-value">{{TariffName}}</span>
                                                                                     </div>
                                                                                     <div class="patient-col">
                                                                                         <span
-                                                                                            class="patient-col-key">Ward
-                                                                                            / Bed</span>
+                                                                                            class="patient-col-key">CompanyName
+                                                                                          </span>
                                                                                         <span>:</span>
                                                                                         <span
-                                                                                            class="patient-col-value">{{registerObj.WardId}}/{{registerObj.BedId}}</span>
-                                                                                    </div>
-                                                                                    <div class="patient-col">
-                                                                                        <span
-                                                                                            class="patient-col-key">Admission
-                                                                                            Id</span>
-                                                                                        <span>:</span>
-                                                                                        <span
-                                                                                            class="patient-col-value">{{registerObj.AdmissionID}}</span>
+                                                                                            class="patient-col-value">{{CompanyName}}</span>
                                                                                     </div>
                                                                                     <!-- ------------------------------------ -->
 
@@ -491,7 +512,7 @@
                                                         autocomplete="off" #disper [(ngModel)]="DiscPer"
                                                         (keyup)="getDiscPer()" (keydown)="onEnterdiscper($event)"
                                                         (blur)="onEnterdiscper($event)" onlyNumber
-                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                        (keypress)="keyPressCharater($event)">
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="5%">
@@ -500,7 +521,8 @@
                                                         autocomplete="off" [disabled]="chkdiscper" #discamount
                                                         [(ngModel)]="DiscAmt" (keyup)="calculateDiscAmt()"
                                                         (keydown)="onEnterdiscAmount($event)"
-                                                        (blur)="onEnterdiscAmount($event)">
+                                                        (blur)="onEnterdiscAmount($event)"
+                                                        (keypress)="keyPressCharater($event)">
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="8%">
@@ -766,9 +788,9 @@
                                                             <mat-label>Discount %</mat-label>
                                                             <input matInput [(ngModel)]="FinalDiscPer"
                                                                 name="FinalDiscPer" formControlName="FinalDiscPer"
-                                                                (blur)="getFinalDiscperAmt()" type="number">
+                                                                (blur)="getFinalDiscperAmt()" type="text" OnlyNumber
+                                                                (keypress)="keyPressCharater($event)">
                                                         </mat-form-field>
-
 
                                                         <mat-form-field appearance="outline" fxFlex="8%">
                                                             <mat-label>Discount Amount</mat-label>
@@ -806,8 +828,10 @@
                                                         <mat-form-field appearance="outline" fxFlex="7%">
                                                             <mat-label>Balance Amount</mat-label>
                                                             <input matInput name="BalanceAmt"
-                                                                formControlName="BalanceAmt" type="number"
-                                                                [(ngModel)]="BalAmount" placeholder="0" type="number">
+                                                                formControlName="BalanceAmt"
+                                                                (keypress)="keyPressCharater($event)"
+                                                                [(ngModel)]="BalAmount" placeholder="0" type="text"
+                                                                OnlyNumber>
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="8%">
@@ -833,9 +857,11 @@
                                                     </div>
                                                     <div class="sales-radio-buttons gap-8" fxLayout="row"
                                                         fxLayoutAlign="space-between center">
+
                                                         <mat-radio-group aria-label="Select an option"
                                                             formControlName="CashPay"
                                                             (change)="onChangePaymentMode($event)">
+
                                                             <mat-radio-button value="Credit"
                                                                 *ngIf="paymethod">Credit</mat-radio-button>
                                                             <mat-radio-button value="CashPay">Cash</mat-radio-button>
@@ -845,6 +871,8 @@
                                                             <!-- <mat-radio-button value="Other">Multiple Pay</mat-radio-button> -->
                                                         </mat-radio-group>
 
+
+
                                                         <mat-form-field appearance="outline" fxFlex="15%"
                                                             *ngIf="isPaymentSuccess">
                                                             <mat-label>Referance no</mat-label>
@@ -853,6 +881,13 @@
                                                         </mat-form-field>&nbsp;
 
                                                         <div class="sales-footer-buttons gap-8" fxLayout="row">
+
+                                                            <button mat-raised-button (click)="getPRESCRIPTION()"
+                                                                class="btn btn-primary-outline ">
+                                                                GET PRESCRIPTION </button>
+                                                                <button class="btn btn-primary-outline"
+                                                                (click)="openPaymentpopup()">Open Payment Popup By Vimal</button>
+                                                            
                                                             <button class="btn btn-primary " (click)="onSave($event)"
                                                                 [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save(F9)</button>
                                                             <button class="btn btn-primary-outline"

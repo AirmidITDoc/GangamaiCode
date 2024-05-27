@@ -25,6 +25,7 @@ const jsPDF = require('jspdf');
 import autoTable from 'jspdf-autotable'
 import { Admission } from 'app/main/ipd/Admission/admission/admission.component';
 import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -166,8 +167,8 @@ export class BrowsSalesBillComponent implements OnInit {
     private _loggedService: AuthenticationService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe,
-
+    public datePipe: DatePipe, 
+    public toastr: ToastrService,
 
   ) { }
 
@@ -314,10 +315,12 @@ export class BrowsSalesBillComponent implements OnInit {
       });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
 
       if (result.IsSubmitFlag == true) {
 
         let updateBillobj = {};
+        updateBillobj['salesID'] = SelectedValue.SalesId;
         updateBillobj['BillNo'] = SelectedValue.SalesId;
         updateBillobj['BillBalAmount'] = 0// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
 
@@ -347,10 +350,10 @@ export class BrowsSalesBillComponent implements OnInit {
         CreditPaymentobj['IsCancelledBy'] = 0;
         CreditPaymentobj['IsCancelledDate'] = "01/01/1900";
         CreditPaymentobj['opD_IPD_Type'] = 3;
-        CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.neftPayAmount) || 0;
-        CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.neftNo || '';
-        CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.neftBankMaster || '';
-        CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.neftDate || '01/01/1900';
+        CreditPaymentobj['neftPayAmount'] = parseInt(result.submitDataPay.ipPaymentInsert.NEFTPayAmount) || 0;
+        CreditPaymentobj['neftNo'] = result.submitDataPay.ipPaymentInsert.NEFTNo || '';
+        CreditPaymentobj['neftBankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster || '';
+        CreditPaymentobj['neftDate'] = result.submitDataPay.ipPaymentInsert.NEFTDate || '01/01/1900';
         CreditPaymentobj['PayTMAmount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount || 0;
         CreditPaymentobj['PayTMTranNo'] = result.submitDataPay.ipPaymentInsert.paytmTransNo || '';
         CreditPaymentobj['PayTMDate'] = result.submitDataPay.ipPaymentInsert.PayTMDate || '01/01/1900'
@@ -367,18 +370,25 @@ export class BrowsSalesBillComponent implements OnInit {
           console.log(response)
           if (response) {
             console.log(response)
-            Swal.fire('Sales Credit Settlement!', 'Sales Credit Payment Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                // let m = response;
-                // this.getpaymentPrint(response);
-                this._matDialog.closeAll();
-              }
+            // Swal.fire('Sales Credit Settlement!', 'Sales Credit Payment Successfully !', 'success').then((result) => {
+            //   if (result.isConfirmed) {
+            //     // let m = response;
+            //     // this.getpaymentPrint(response);
+            //     this._matDialog.closeAll();
+            //   }
+            // });
+            this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+            this._matDialog.closeAll();
+            this.getSalesList();
+          } 
+          else {
+            // Swal.fire('Error !', 'Sales  Payment not saved', 'error');
+            this.toastr.error('Sales Credit Payment  not saved !', 'error', {
+              toastClass: 'tostr-tost custom-toast-error',
             });
           }
-          else {
-            Swal.fire('Error !', 'Sales  Payment not saved', 'error');
-          }
-
         });
 
       }

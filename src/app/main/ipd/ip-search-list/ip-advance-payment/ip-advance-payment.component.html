@@ -26,60 +26,10 @@
 
     </div>
 
-  
-    <div class="header-container" style="display: flex; padding: 5px;">
-        <div fxFlex.gt-sm="100%" fxFlex>
-            <div fxlayout="row" style="background-color: white; ">
-                <!-- ================================ LABEL HEADER  -->
-                <mat-card fxFlex.gt-sm="100%" fxFlex
-                    style="padding: 0 9px; height: fit-content;height: 50px;width: 100%;">
-                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                       
-                    </div> -->
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="align-items: baseline;"
-                        fxLayoutAlign="space-between center ">
-                        <h3 style="font-weight: bold; font-size: 16px; margin-top: 10px;margin-right: 20px;">Patient
-                            Information &nbsp;:
-                        </h3>
 
-                        <span class="label" style="margin-right: 10px;">OPD/IPD No &nbsp;:</span>
-                        <span class="data_input" style="margin-right:30px;">{{advanceData.advanceObj.OPD_IPD_Id}}</span>
+    
+    <hr />
 
-                        <span class="label" style="margin-right: 10px;"> Patient Name &nbsp; : </span>
-                        <span class="data_input"
-                            style="margin-right:30px;">{{advanceData.advanceObj.PatientName}}</span>
-
-                        <span class="label" style="margin-right: 10px;">Date &nbsp; :</span>
-                        <span class="data_input" style="margin-right: 5px;">{{advanceData.advanceObj.Date}}</span>
-
-                        <div style="border-style:double;border-color: blue;text-align: right;">
-                            <span class="label" style="font-weight:bolder;font-size:large;font-style: italic;">Net Pay
-                                Amount &nbsp; :</span>
-                            <span class="data_input"
-                                style="font-weight: bolder;font-size: large;color: blue;font-style: italic;">{{netPayAmt}}</span>
-                        </div>
-
-                    </div>
-                </mat-card>
-                <!-- ================================ LABEL HEADER  -->
-            </div>
-        </div>
-
-
-        <!-- //end first part -->
-
-    </div>
-
-    <!-- <div class="net-pay" style="margin-left: 10px;">
-        <div style="width:100px; margin-bottom: 25px;">
-            <span>NetPay Amt</span>
-        </div>
-        <div>
-            <mat-form-field appearance="outline" class="form-fields">
-                <input matInput readonly [(ngModel)]="netPayAmt" style="font-weight: bold;font-size: 18px;">
-            </mat-form-field>
-        </div>
-    </div> -->
     <div class="payment-container">
         <form [formGroup]="paymentForm">
             <div class="chips-container" style="margin-bottom: 20px;">
@@ -161,7 +111,7 @@
                                         {{element.BankName}}
                                     </mat-option>
                                 </mat-select>
-                               
+
                             </mat-form-field>
 
 
@@ -364,9 +314,8 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>Trans ID/Mobile No</mat-label>
                                 <input name="UPI No" formControlName="paytmMobileNoController" #mobile
-                                    placeholder="UPI Number" matInput required
-                                    [(ngModel)]="paytmTransNo" max="9999999999"
-                                    min="1000000000" autocomplete="off" maxlength="10"
+                                    placeholder="UPI Number" matInput required [(ngModel)]="paytmTransNo"
+                                    max="9999999999" min="1000000000" autocomplete="off" maxlength="10"
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                     required="required" value="9876658688">
                                 <mat-error class="error"
@@ -463,8 +412,8 @@
 
                     <div class="action-btns gap-8" fxLayout="row">
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                        <button class="btn btn-primary" (click)="saveClicked()"   [disabled]="isLoading=='submit' || paymentForm.invalid || checkAmt(netPayAmt,cashAmt,cardAmt,neftAmt,paytmAmt,wrfAmt)"
-                            >Save</button>
+                        <button class="btn btn-primary" (click)="saveClicked()"
+                            [disabled]="isLoading=='submit' || paymentForm.invalid || checkAmt(netPayAmt,cashAmt,cardAmt,neftAmt,paytmAmt,wrfAmt)">Save</button>
                     </div>
                 </div>
             </div>

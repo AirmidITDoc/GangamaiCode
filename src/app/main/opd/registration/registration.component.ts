@@ -12,6 +12,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
 import { EditRegistrationComponent } from './edit-registration/edit-registration.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -134,6 +135,7 @@ onEdit(row){
           width: '100%',
            data : {
           registerObj : row,
+          Submitflag:true
         }
     });
     
@@ -144,8 +146,36 @@ onEdit(row){
     });
   }
 
- 
+  getAdmittedPatientCasepaperview(contact) {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+    //   this.SpinLoading =true;
+    //  this.AdList=true;
+    this._registrationService.getAdmittedPatientCasepaaperView(
+      contact.AdmissionId
+      ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Admission Paper  Viewer"
+          }
+        });
+
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+    });
+   
+    },100);
+
+  }
 }
+
 
 export class RegInsert
 {
@@ -187,6 +217,7 @@ export class RegInsert
     PanCardNo : string;
     currentDate = new Date();
     AdmissionID:any;
+    VisitId:any;
     /**
      * Constructor
      *
@@ -232,6 +263,7 @@ export class RegInsert
             this.AadharCardNo= RegInsert.AadharCardNo || '';
             this.PanCardNo = RegInsert.PanCardNo || '';
             this.AdmissionID = RegInsert.AdmissionID || '';
+            this.VisitId=RegInsert.VisitId ||''
         }
     }
 }

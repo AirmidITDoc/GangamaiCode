@@ -12,6 +12,7 @@ import { PhoneAppointListService } from '../phone-appoint-list.service';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-phone-appointment',
@@ -74,7 +75,10 @@ export class NewPhoneAppointmentComponent implements OnInit {
   isDepartmentSelected:boolean=false;
   isDoctorSelected:boolean=false;
 
-  
+  vDepartmentid:any='';
+  vDoctorId:any='';
+
+
   optionsDep: any[] = [];
   optionsDoc: any[] = [];
 
@@ -99,6 +103,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     public _phoneAppointListService: PhoneAppointListService,
     public formBuilder: FormBuilder,
     public _matDialog: MatDialog,
+    public toastr: ToastrService,
     private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<NewPhoneAppointmentComponent>,
     public datePipe: DatePipe) {
@@ -150,9 +155,11 @@ export class NewPhoneAppointmentComponent implements OnInit {
       AppDate: '',
       AppTime: '',
       seqNo: '',
-      FirstName: ['', [
+      FirstName:  ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+        Validators.maxLength(50),
+        // Validators.pattern("^[a-zA-Z._ -]*$"),
+        Validators.pattern('^[a-zA-Z () ]*$')
       ]],
       MiddleName: ['', [
 
@@ -185,7 +192,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
   }
 
   getOptionTextDep(option) {
-    return option.departmentName;
+    
+    return option && option.departmentName ? option.departmentName : '';
   }
 
   getOptionTextDoc(option) {
@@ -294,6 +302,10 @@ export class NewPhoneAppointmentComponent implements OnInit {
   }
 
   OnSubmit() {
+debugger
+    if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
+
+    
     console.log(this.personalFormGroup.get('AppointmentDate').value.Date);
     var m_data = {
       "phoneAppointmentInsert": {
@@ -327,11 +339,17 @@ export class NewPhoneAppointmentComponent implements OnInit {
       }
       // this.isLoading = '';
     });
+  }else{
+    this.toastr.warning('Please Enter Valid Department & Doctor', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
   }
+}
 
   onClose() {
-    this.personalFormGroup.reset();
-    this.dialogRef.close();
+    // this.personalFormGroup.reset();
+    // this.dialogRef.close();
   }
 
 
@@ -370,6 +388,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   @ViewChild('docname') docname: ElementRef;
 
   public onEnterfname(event): void {
+    debugger
     if (event.which === 13) {
       this.mname.nativeElement.focus();
     }
@@ -398,16 +417,32 @@ if(event.which===13){
 this.dept.nativeElement.focus();
 }
   }
-  public onEnterdept(event): void {
+  public onEnterdept(event,value): void {
+   
     if (event.which === 13) {
-      this.docname.nativeElement.focus();
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else {
+        this.docname.nativeElement.focus();
+      }
     }
   }
-  // public onEnterlname(event): void {
-  //   if (event.which === 13) {
-  //     this.Address.nativeElement.focus();
-  //   }
-  // }
+  public onEnterdeptdoc(event,value): void {
+   
+    if (event.which === 13) {
+      if (value == undefined) {
+        this.toastr.warning('Please Enter Valid Department Dosctor', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } else {
+        // this.button.nativeElement.focus();
+      }
+    }
+  }
   
 
 

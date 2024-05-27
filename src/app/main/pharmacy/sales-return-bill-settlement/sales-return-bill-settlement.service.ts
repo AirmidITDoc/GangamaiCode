@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -8,54 +8,52 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class SalesReturnBillSettlementService {
 
   userFormGroup: FormGroup;
-  IndentSearchGroup :FormGroup;
-
+ ItemSubform: FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.userFormGroup = this.IndentID();
-    this.IndentSearchGroup= this.IndentSearchFrom();
+    this.userFormGroup = this.CreateUseFrom();
+    this.ItemSubform = this.getItemSubform(); 
   }
 
-  IndentSearchFrom() {
+  CreateUseFrom() {
     return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:'',
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      RegID: [''],
+      Op_ip_id: ['1'],
+      advanceAmt:[''],
+      comment:['']
+    });
+  }
+
+  getItemSubform() {
+    return this._formBuilder.group({
+      RegID:'',
+      PatientName: '',
+      DoctorName: '',
+      extAddress: '',
+      MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
+      Validators.minLength(10),
+      Validators.maxLength(10),]],
+      PatientType: ['OP'], 
     });
   }
   
-    IndentID() {
-    return this._formBuilder.group({
-      RoleId: '',
-      RoleName: '',
-      AdmDate:'',
-      Date:'',
-      StoreName:'',
-      PreNo:'',
-      IsActive: '',
-      
-    });
+  public getAdmittedpatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
- 
-  public getIndentID(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+  public getSalesList(Param){ 
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PrescriptionListforSales",Param);
+  }
+  public getItemDetailList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet",Param);
+  }
+  public getAdmittedPatientList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
   }
 
-
-  public getIndentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
+  public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
-
-  public getStoreFromList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
-  }
-
-  public getToList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
-  }
-  
 }

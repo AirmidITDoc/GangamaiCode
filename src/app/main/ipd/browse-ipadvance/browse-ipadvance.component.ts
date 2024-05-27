@@ -44,6 +44,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
     'CashPayAmount',
     'ChequePayAmount',
     'CardPayAmount',
+    'PayTMAmount',
     'UserName',
     'buttons'
   ];

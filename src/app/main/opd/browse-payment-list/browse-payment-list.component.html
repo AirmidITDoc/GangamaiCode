@@ -1,23 +1,16 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
-    <!-- HEADER -->
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')"
-                style="color: white;">
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight fusePerfectScrollbar>
+    <div class="top-header">
+        <div class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
                 <mat-icon>menu</mat-icon>
             </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Browse OPD Payment Receipt
-            </span>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>Browse OP Payment List </span>
+            </div>
         </div>
-
-
-
-    </mat-toolbar>
-    <!-- / HEADER -->
+    </div>
 
     <!-- SELECTED BAR -->
     <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
@@ -116,27 +109,25 @@
         <!-- / SIDEBAR -->
 
         <!-- CENTER -->
-        <div class="center p-12 pb-56">
-
-            <!-- CONTENT -->
-            <div class="content-card" style="border-radius:4px;">
-                <div style="width: 100%;">
+        <div class="center p-12">
+            <div class="content-card" >
+                <div >
                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                        class="backgroundBlur"  style="height: 100%;">
+                        class="backgroundBlur">
                         <div class="spinner-border text-danger"></div>
-
                     </div>
                     <mat-table #table matSort table="table1" [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                        style="overflow: auto;width: 100%;">
+                        style="overflow: auto;">
+
                         <ng-container matColumnDef="RegNo">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm style="margin-top: 8px;">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                 RegNo</mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                 {{contact.RegNo}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="PatientName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm style="margin-top: 8px;">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                 Patient Name</mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                 {{contact.PatientName}}
@@ -306,7 +297,3 @@
     </div>
     <!-- / CONTENT-->
 </div>
-
-//
-
-TempDesign

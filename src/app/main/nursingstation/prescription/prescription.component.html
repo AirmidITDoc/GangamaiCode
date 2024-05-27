@@ -96,11 +96,7 @@
                                         <mat-cell *matCellDef="let row">
                                             <button mat-icon-button matTooltip="print" (click)="viewgetIpprescriptionReportPdf(row)">
                                                 <mat-icon>print</mat-icon>
-                                            </button>
-
-                                            <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
-                                                <mat-icon>delete_outline</mat-icon>
-                                            </button>
+                                            </button> 
                                         </mat-cell>
                                     </ng-container>
 
@@ -120,27 +116,27 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Date">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Pres .Date
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                            <span> {{contact.Date | date:'shortDate'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="OPD_IPD_Type">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Type
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                            <span> {{contact.OPD_IPD_Type}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="PTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Prec.Time
+                                    <ng-container matColumnDef="Vst_Adm_Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Vst_Adm_Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.PTime | date:'HH:mm:ss'}}</span>
+                                            <span> {{contact.Vst_Adm_Date}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Pres.Date
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            <span> {{contact.Date}}</span>
+                                        </mat-cell>
+                                    </ng-container>  
+
+                                    <ng-container matColumnDef="StoreName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>StoreName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.StoreName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -150,15 +146,7 @@
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <span> {{contact.CompanyName}}</span>
                                         </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="AddedBy">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedBy
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.AddedBy}}</span>
-                                        </mat-cell>
-                                    </ng-container>
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -173,12 +161,15 @@
 
                                     <mat-header-row class="accent min-width-900" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
-
-                                    <mat-row class="min-width-900" *matRowDef="let contact; columns: displayedColumns;" [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''" [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect(contact)">
+                                    
+                                    <mat-row class="min-width-900" *matRowDef="let contact; columns: displayedColumns;"
+                                        [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''" [@animate]="{value:'*',params:{y:'100%'}}"
+                                        (click)="getPrescriptiondetList(contact)">
                                     </mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsprescritionList!=null && dsprescritionList.data.length==0)}">
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsprescritionList!=null && dsprescritionList.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
 

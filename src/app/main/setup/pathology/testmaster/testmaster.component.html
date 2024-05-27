@@ -1,4 +1,5 @@
-<mat-tab-group style="width: 100%;" #tabGroup>
+<mat-tab-group style="width: 100%;" #tabGroup fusePerfectScrollbar
+dynamicTableHeight>
     <mat-tab label="Pathology Test List">
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
@@ -81,16 +82,16 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="TestName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> TestName
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> TestName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.TestName}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.TestName}}
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="PrintTestName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> PrintTestName
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> PrintTestName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.PrintTestName}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.PrintTestName}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -120,16 +121,16 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="SuggestionNote">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> SuggestionNote
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> SuggestionNote
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.SuggestionNote}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.SuggestionNote}}
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="FootNote">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> FootNote
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> FootNote
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.FootNote}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.FootNote}}
                                             </mat-cell>
                                         </ng-container>
 

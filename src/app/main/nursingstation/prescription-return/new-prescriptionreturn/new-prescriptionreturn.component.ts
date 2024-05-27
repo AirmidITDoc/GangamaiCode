@@ -27,7 +27,8 @@ export class NewPrescriptionreturnComponent implements OnInit {
   SpinLoading:boolean=false;
   PresItemlist: any = [];
   Store1List: any = [];
-  filteredOptions: any;
+  filteredOptionsItem: any;
+  filteredOptions:any;
   noOptionFound: boolean = false;
   isItemIdSelected: boolean = false;
   ItemSubform: FormGroup;
@@ -105,28 +106,47 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
 
-  getPharItemList() {
-    // debugger
-    var m_data = {
-
-      "ItemName": `${this.ItemSubform.get('ItemId').value}%` || '%',
-      "StoreId": 10016,//this._loggedService.currentUserValue.user.storeId || 0,
-      "IPAdmID ": 32549
-    }
-
-    this._PrescriptionReturnService.getItemList(m_data).subscribe(data => {
-      this.filteredOptions = data;
-      console.log(this.filteredOptions);
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
+  getSearchItemList() {  
+      var m_data = {
+        "ItemName": `${this.ItemSubform.get('ItemId').value}%`,
+        "StoreId": this._loggedService.currentUserValue.user.storeId
       }
-    });
-
+      console.log(m_data);
+      // if (this.ItemForm.get('ItemId').value.length >= 2) {
+      this._PrescriptionReturnService.getItemlist(m_data).subscribe(data => {
+        this.filteredOptionsItem = data;
+        // console.log(this.data);
+        this.filteredOptionsItem = data;
+        if (this.filteredOptionsItem.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });  
+  } 
+  getOptionItemText(option) {
+    this.ItemId = option.ItemID;
+    if (!option) return '';
+    return option.ItemName;
+  } 
+  getSelectedObjItem(obj) {
+    // if (this.saleSelectedDatasource.data.length > 0) {
+    //   this.saleSelectedDatasource.data.forEach((element) => {
+    //     if (obj.ItemID == element.ItemID) {
+    //       Swal.fire('Selected Item already added in the list ');
+    //       this.ItemForm.reset();
+    //     }
+    //   });
+    //   this.ItemName = obj.ItemName;
+    //   this.ItemId = obj.ItemID;
+    //   this.BalanceQty = obj.BalanceQty;
+    // }
+    // else {
+    //   this.ItemName = obj.ItemName;
+    //   this.ItemId = obj.ItemID;
+    //   this.BalanceQty = obj.BalanceQty;
+    // }
   }
-
-
   getBatch() {
     this.qty.nativeElement.focus();
     

@@ -1,0 +1,187 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll create-user-section"
+    dynamicTableHeight>
+    <!-- HEADER -->
+    <mat-toolbar class="top-header accent" style="justify-content: space-between;width: 100%;" fusePerfectScrollbar>
+        <div class="top-header-info gap-8" fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-icon-button class="user-icon">
+                <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+            </button>
+            <div class="top-header-title">
+                <span class="logo-text" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Create Scheduler
+                </span>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+            <button mat-raised-button (click)="addScheduler()" fxLayoutAlign="center center"
+                class="btn btn-with-icon py-4">
+                <span class="btn-icon">
+                    <mat-icon color="warn">how_to_reg</mat-icon>
+                </span>
+                <span>New Schedule</span>
+            </button>
+        </div>
+    </mat-toolbar>
+
+
+    <!-- / HEADER -->
+
+    <!-- SELECTED BAR -->
+    <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
+    <!-- / SELECTED BAR -->
+
+    <!-- CONTENT -->
+    <div class="content ">
+
+        <!-- SIDEBAR -->
+        <fuse-sidebar class="fuse-search-sidebar sidebar" name="app-main" position="left" lockedOpen="gt-sm"
+            style=" background-color: white;">
+
+            <!-- SIDEBAR CONTENT -->
+            <div class="content">
+                <div class="sidebar-content">
+
+                    <div class="card" style="height: 100%;">
+
+                        <!-- SIDEBAR HEADER -->
+                        <div class="sidebar-header accent header" fxLayout="row" fxLayoutAlign="start center">
+                            <!-- USER -->
+                            <!-- <img [src]="user.avatar" class="avatar mr-16" [alt]="user.name" /> -->
+                            <span class="search-title">Search Scheduler</span>
+                            <!-- / USER -->
+                        </div>
+                        <!-- / SIDEBAR HEADER -->
+
+                        <!-- SIDEBAR CONTENT -->
+
+                        <div class="nav material2">
+                            <form [formGroup]="myformSearch">
+                                <div fxLayout="column" fxLayoutAlign="start none">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Scheduler Name - {{ScheduleName}}</mat-label>
+                                        <input name="SchedulerName" formControlName="ScheduleName" matInput>
+                                    </mat-form-field>
+
+                                    <div class="action-buttons">
+                                         <button mat-raised-button (click)="onClear()" class="clearbutton">
+                                            <mat-icon class="cleariconbutton">close</mat-icon></button>
+                                        <button mat-raised-button class="searchButton" (click)="onShow()">
+                                            <mat-icon class="searchiconbutton">search</mat-icon>
+                                        </button> 
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- / SIDEBAR CONTENT -->
+            </div>
+            <!-- / SIDEBAR CONTENT -->
+
+        </fuse-sidebar>
+        <!-- / SIDEBAR -->
+
+        <!-- CENTER -->
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+            <div class="content-card" style="border-radius:4px; ">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                                <div class="table-spinner">
+                                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                        class="backgroundBlur">
+                                        <div class="spinner-border text-danger"></div>
+                                    </div>
+                                </div>
+                                <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
+
+                                    <ng-container matColumnDef="SchedulerName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Scheduler
+                                            Name</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.scheduleName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Hours">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                            fxShow.gt-sm>Hours</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.hours}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="StartDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Start
+                                            Date</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                            <span> {{contact.startDate | date:ShortDate}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="EndDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>End
+                                            Date</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                            <span> {{contact.endDate | date:ShortDate}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-md> Action </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button (click)="editScheduler(row)">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            <button mat-icon-button (click)="onDelete(row.id)" color="warn">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}">
+                                    </mat-row>
+
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"
+                                        (click)="onresultentry($event,contact)"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}"></mat-footer-row>
+                                </mat-table>
+
+                                <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                    showFirstLastButtons>
+                                </mat-paginator> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / CENTER -->
+    </div>
+    <!-- / CONTENT-->
+</div>

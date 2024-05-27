@@ -1,0 +1,367 @@
+
+
+app-sales {
+    
+    #spinner {
+        -webkit-animation: frames 1s infinite linear;
+        animation: frames 1s infinite linear;
+        background: transparent;
+        border: 1.75vw solid #FFF;
+        border-radius: 100%;
+        border-top-color: #DF691A;
+        width:10vw;
+        height: 10vw;
+        opacity: .6;
+        padding: 0;
+        position: absolute;
+        z-index: 999;
+        margin-top: 20%;
+        margin-left: 40%;
+    }
+    @keyframes frames {
+      0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+      }
+    }
+    
+    #pause {
+        display: block;
+        background:
+            rgba(0, 0, 0, 0.66)
+            no-repeat
+            0 0;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+    }
+    
+        // .mat-row, .mat-footer-row {
+        //   min-height: 35px;
+        //   height: 35px;
+        // }
+    
+        // .mat-header-row {
+        //     // width:200;
+        //     // min-width: 1000px;
+        //     // height: 10px;
+        //     // background-color: blue;
+        // }
+    
+        // .mat-row {
+        //     // width: 100%;
+        //     // //max-width: 1600px;
+        //     // min-width: 1000px;
+        //     // min-height: 20px;
+        // }
+        .mat-column-ItemId {
+            width: 200px;
+            max-width: 200px;
+            min-width: 200px;
+            text-align: left;
+        }
+    
+        .mat-column-ItemName {
+            // width: 250px;
+            // max-width: 250px;
+            // min-width: 250px;
+            text-align: left;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            overflow: hidden !important;
+            // display: inline-block;
+            justify-content: left;
+        }
+    
+        .mat-column-BatchNo {
+            width: 90px;
+            max-width: 90px;
+            min-width: 90px;
+            text-align: left;
+            white-space: nowrap;
+        }
+    
+        .mat-column-BatchExpDate {
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px;
+            text-align: left;
+        }
+    
+        .mat-column-Qty {
+            width: 50px;
+            max-width: 50px;
+            min-width: 50px;
+            text-align: left;
+        }
+    
+        .mat-column-UnitMRP {
+            width: 90px;
+            max-width: 90px;
+            min-width: 90px;
+            text-align: left;
+        }
+    
+        .mat-column-GSTPer {
+            width: 70px;
+            max-width: 70px;
+            min-width: 70px;
+            text-align: left;
+        }
+    
+        .mat-column-GSTAmount {
+            width: 90px;
+            max-width: 90px;
+            min-width: 90px;
+            text-align: left;
+        }
+    
+        .mat-column-TotalMRP {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            text-align: left;
+        }
+    
+        .mat-column-DiscPer {
+            width: 80px;
+            max-width: 80px;
+            min-width: 80px;
+            text-align: left;
+        }
+    
+        .mat-column-DiscAmt {
+            width: 120px;
+            max-width: 120px;
+            min-width: 120px;
+            text-align: left;
+        }
+    
+        .mat-column-NetAmt {
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px;
+            text-align: center;
+        }
+    
+        .mat-column-MarginAmt {
+            width: 110px;
+            max-width: 110px;
+            min-width: 110px;
+            text-align: center;
+        }
+    
+        .mat-column-action {
+            width: 60px;
+            max-width: 60px;
+            min-width: 60px;
+            text-align: center;
+            justify-content: center;
+        }
+    
+        .mat-column-buttons {
+            width: 70px;
+            max-width: 70px;
+            min-width: 70px;
+            text-align: left;
+            justify-content: left;
+        }
+    }
+    
+    .mat-draftsaletable {
+        .mat-header-row {
+            // width:200;
+            min-width: 200px;
+            height: 10px;
+            background-color: blue;
+        }
+    
+        .mat-row {
+            width: 100%;
+            //max-width: 1600px;
+            min-width: 200px;
+            min-height: 20px;
+        }
+    
+        .mat-column-DSalesId {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            text-align: left;
+        }
+    
+        .mat-column-RegID {
+            width: 200px;
+            max-width: 200px;
+            min-width: 200px;
+            text-align: 200px;
+        }
+    }
+    
+    .patient-details mat-error {
+        margin-top: 10px;
+        font-size: 14px;
+    }
+    
+    .patient-bill-info {
+        display: flex;
+    }
+    .labels-h3 {
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .labels-h6 {
+        font-size: 18px;
+    }
+    .form-field-labels {
+        font-size: 16px;
+    }
+    
+    fieldset {
+        border-color: #039be5; // #fff9f9;
+    }
+    .fieldset-div {
+        background-color: #191a1c21;
+    }
+    legend {
+        padding: 10px;
+        font-size: 20px;
+    }
+    
+    // .payment-container {
+    //     width: 50% !important;
+    //     min-width: 50% !important;
+    //     max-width: 50% !important;
+    // }
+    
+    .flex-item,
+    .patient-sub {
+        flex-basis: 100%;
+    }
+    .flex-item-middle {
+        width: 5px;
+        margin-right: 8px;
+    }
+    .item-header {
+        width: 200px;
+    }
+    .field-row {
+        align-items: center;
+    }
+    .add-icon {
+        width: 30px;
+        height: 30px;
+        border: 4px solid #3f94a6;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+    }
+    .enable-1-add {
+        cursor: pointer;
+        pointer-events: visible;
+    }
+    .disable-1-add {
+        pointer-events: none;
+        // cursor: ar;
+    }
+    .remove-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 40px;
+        border: 4px solid #a64f3f;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+    }
+    
+    // button:disabled {
+    //     // color: white;
+    //     // background-color: #7bd3ff !important;
+    
+    //     // border-radius: 16px;
+    //     // border: 1px solid #b7e6fd;
+    // }
+    // .add-btn {
+    //     // background-color: blue !important;
+    //     // color: white !important;
+    //     // font-size: 16px;
+    // }
+    .patient-info-sales {
+        font-size: medium;
+        background-color: rgb(203, 214, 214);
+        padding: 15px;
+    }
+    
+    .payment-dialog {
+        max-width: 800px;
+        min-width: 800px;
+        width: 800px;
+        @media (min-width: 100px) and (max-width: 320px) {
+            max-width: 300px;
+            min-width: 300px;
+            width: 300px;
+        }
+        @media (min-width: 375px) and (max-width: 425px) {
+            max-width: 400px;
+            min-width: 400px;
+            width: 400px;
+        }
+    
+        .itemclass {
+            .mat-option-text:hover {
+                background: rgb(156, 33, 149);
+                // color:black;
+            }
+    
+            .mat-option.mat-active {
+                background: cyan;
+                color: rgb(215 4 4 / 87%);
+            }
+        }
+    }
+    
+    .sale-auto-complete {
+        min-width: 470px !important;
+        max-width: 470px !important;
+    }
+    // By nikunj
+    // ---------------------------
+    .sales-section {
+        .comman-date {
+            form,
+            .padding-div {
+                padding: 0;
+            }
+        }
+        .nav {
+            form {
+                padding-inline: 0;
+            }
+        }
+        .footer-container {
+            .table-footer {
+                .net-amt {
+                    .net-amt-group {
+                        font-size: 15px;
+                        .net-amt-label {
+                            font-weight: 600;
+                        }
+                        // .net-amt-value {
+                        // }
+                    }
+                }
+            }
+        }
+    }
+    // ------------------------------
+    

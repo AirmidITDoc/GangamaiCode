@@ -174,4 +174,9 @@ public getPatientTypeCombo() {
   
     return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
   }
+  public getRegisteredPatientCasepaaperView(VisitId){
+  
+    return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
+  }
+  
 }

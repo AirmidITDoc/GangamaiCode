@@ -249,7 +249,13 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>CompanyName
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
+
                                     <span> {{contact.CompanyName || '--'}}</span>
+                                    
+                                    <button mat-icon-button *ngIf="!contact.CompanyName==''">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
                                 </mat-cell>
                             </ng-container>
 

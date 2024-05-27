@@ -37,6 +37,8 @@ import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.serv
 import { ConcessionReasonMasterModule } from 'app/main/setup/billing/concession-reason-master/concession-reason-master.module';
 import { SubstitutesComponent } from './substitutes/substitutes.component';
 import { D } from '@angular/cdk/keycodes';
+import { PrescriptionComponent } from './prescription/prescription.component';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-new-vimal/op-payment-vimal.component';
 
 @Component({
   selector: 'app-sales',
@@ -307,7 +309,16 @@ export class SalesComponent implements OnInit {
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp)) {
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  } 
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
       event.preventDefault();
@@ -418,13 +429,15 @@ export class SalesComponent implements OnInit {
     this.vPharIPOpt = this._loggedService.currentUserValue.user.pharIPOpt;
 
     if (this.vPharExtOpt == true) {
+      this.paymethod = false;
       this.vSelectedOption = 'External'; 
     }else{
       this.vPharOPOpt = true
     }
 
     if (this.vPharIPOpt == true) { 
-      if (this.vPharOPOpt == false) {
+       if (this.vPharOPOpt == false) {
+        this.paymethod = true;
         this.vSelectedOption = 'IP'; 
       }
     }else{
@@ -433,11 +446,12 @@ export class SalesComponent implements OnInit {
 
     if (this.vPharOPOpt == true) {
       if (this.vPharExtOpt == false) { 
+        this.paymethod = true;
         this.vSelectedOption = 'OP'; 
       }
     } else{
       this.vCondition = true
-    } 
+    }  
   }
 
   // createForm() {
@@ -1759,9 +1773,11 @@ export class SalesComponent implements OnInit {
       // this.addbutton.focus();
     }
   }
+  checkdisc1:boolean=false;
   getDiscPer() {
     let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
     if (this.DiscPer > 0) {
+      this.ItemSubform.get('FinalDiscPer').disable();
       this.chkdiscper = true;
       this.DiscAmt = ((this.TotalMRP * (this.DiscPer)) / 100).toFixed(2);
       this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
@@ -2006,14 +2022,17 @@ export class SalesComponent implements OnInit {
 
   onSave(event) {
     event.srcElement.setAttribute('disabled', true);
-
-    if (this.PatientName == "" || this.MobileNo == "" || this.DoctorName == "") {
-      this.toastr.warning('Please select Customer Detail', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      event.srcElement.removeAttribute('disabled');
-      return;
+    let patientTypeValue1 = this.ItemSubform.get('PatientType').value;
+    if(this.ItemSubform.get('PatientType').value == 'External'){
+      if (this.PatientName == "" || this.MobileNo == "" || this.DoctorName == "") {
+        this.toastr.warning('Please select Customer Detail', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        event.srcElement.removeAttribute('disabled');
+        return;
+      }
     }
+   
     if (this.FinalTotalAmt == 0 || this.FinalNetAmount == 0) {
       this.toastr.warning('Please check Sales total Amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -2023,7 +2042,7 @@ export class SalesComponent implements OnInit {
     }
     let patientTypeValue = this.ItemSubform.get('PatientType').value;
     if ((patientTypeValue == 'OP' || patientTypeValue == 'IP')
-      && (this.registerObj.AdmissionID == '' || this.registerObj.AdmissionID == null || this.registerObj.AdmissionID == undefined)) {
+      && (this.registerObj.RegNo == '' || this.registerObj.RegNo == null || this.registerObj.RegNo == undefined)) {
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -2034,16 +2053,39 @@ export class SalesComponent implements OnInit {
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
       this.onCashOnlinePaySave()
     }
-    // else if (this.ItemSubform.get('CashPay').value == 'Credit') {
-    //   this.onCreditpaySave()
-    // }
+    else if (this.ItemSubform.get('CashPay').value == 'Credit') {
+      this.onCreditpaySave()
+    }
     else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
       this.onSavePayOption()
     }
+   
     this.getDraftorderList();
-    this.mobileno.nativeElement.focus();
+    //this.mobileno.nativeElement.focus();
     event.srcElement.removeAttribute('disabled');
   }
+  openPaymentpopup(){
+    let PatientHeaderObj = {};
+    PatientHeaderObj['Date'] = this.dateTimeObj.date;
+    PatientHeaderObj['PatientName'] = this.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
+    PatientHeaderObj['NetPayAmount'] = 123; //this.ItemSubform.get('FinalNetAmount').value;
+    this.isLoading123=false;
+    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+      {
+        data: {
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "Phar-SalesPay"
+        }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
+
+
+
   isLoading123 = false;
   onCashOnlinePaySave() {
     let nowDate = new Date();
@@ -2215,7 +2257,8 @@ export class SalesComponent implements OnInit {
           this.Itemchargeslist = [];
           this._matDialog.closeAll();
           this.ItemFormreset();
-          this.patientDetailsFormGrp.reset();
+         // this.patientDetailsFormGrp.reset();
+         this.ItemSubform.reset();
           this.Formreset();
           this.ItemSubform.get('ConcessionId').reset();
           // this.PatientName = '';
@@ -2402,6 +2445,8 @@ export class SalesComponent implements OnInit {
                 this.getWhatsappshareSales(response, vMobileNo)
                 this.Itemchargeslist = [];
                 this._matDialog.closeAll();
+                this.ItemFormreset();
+                this.Formreset();
               }
             } else {
               this.toastr.error('API Error!', 'Error !', {
@@ -2421,8 +2466,8 @@ export class SalesComponent implements OnInit {
           this.patientDetailsFormGrp.reset();
           this.Formreset();
           this.ItemSubform.get('ConcessionId').reset();
-          this.PatientName = '';
-          this.MobileNo = '';
+          // this.PatientName = '';
+          // this.MobileNo = '';
           this.saleSelectedDatasource.data = [];
         }
         else {
@@ -2436,11 +2481,11 @@ export class SalesComponent implements OnInit {
         if (this.vPatientType == 'External') {
           // Swal.fire("Plz Chk Payment Data !");
         } else {
-          Swal.fire('Do You Want to generate Credit Bill ?').then((result) => {
-            if (result.isConfirmed) {
-              this.onCreditpaySave();
-            }
-          });
+          // Swal.fire('Do You Want to generate Credit Bill ?').then((result) => {
+          //   if (result.isConfirmed) {
+          //     this.onCreditpaySave();
+          //   }
+          // });
 
 
         }
@@ -2448,7 +2493,7 @@ export class SalesComponent implements OnInit {
     })
 
   }
-
+ 
 
   getPrint3(el) {
     var D_data = {
@@ -2778,7 +2823,7 @@ export class SalesComponent implements OnInit {
     salesInsertCredit['salesHeadName'] = ""
     salesInsertCredit['salesTypeId'] = 0;
     salesInsertCredit['salesId'] = 0;
-    salesInsertCredit['extMobileNo'] = this.MobileNo;
+    salesInsertCredit['extMobileNo'] = this.MobileNo || 0;
     salesInsertCredit['extAddress'] = this.vextAddress || '';
 
     let salesDetailInsertCreditarr = [];
@@ -2837,6 +2882,7 @@ export class SalesComponent implements OnInit {
       "cal_DiscAmount_SalesCredit": cal_DiscAmount_SalesCredit,
       "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
     };
+    console.log(submitData)
     let vMobileNo = this.mobileno;
     this._salesService.InsertCreditSales(submitData).subscribe(response => {
       if (response) {
@@ -2854,6 +2900,7 @@ export class SalesComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
+      this.isLoading123=false;
       this.sIsLoading = '';
     }, error => {
 
@@ -2865,7 +2912,7 @@ export class SalesComponent implements OnInit {
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.getConcessionReasonList();
-    this.PatientName = '';
+    //this.PatientName = '';
     // this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
     this.saleSelectedDatasource.data = [];
@@ -3300,7 +3347,8 @@ export class SalesComponent implements OnInit {
   onClose() {
     this.Itemchargeslist = [];
     this.ItemFormreset();
-    this.patientDetailsFormGrp.reset();
+   // this.patientDetailsFormGrp.reset();
+    this.ItemSubform.reset();
     this.Formreset();
     this.ItemSubform.get('ConcessionId').reset();
     this.PatientName = '';
@@ -3315,20 +3363,22 @@ export class SalesComponent implements OnInit {
 
 
   // Patient Search;
-  getSearchListOp() {
-  var m_data = {
-    "Keyword": `${this.ItemSubform.get('RegID1').value}%`
-  }
-  this._RequestforlabtestService.getPatientVisitedListSearch(m_data).subscribe(data => {
-    this.PatientListfilteredOptionsOP = data;
-    if (this.PatientListfilteredOptionsOP.length == 0) {
-      this.noOptionFound = true;
-    } else {
-      this.noOptionFound = false;
-    }
-  });
+//   getSearchListOp() {
+//   var m_data = {
+//     "Keyword": `${this.ItemSubform.get('RegID1').value}%`
+//   }
+//   this._RequestforlabtestService.getPatientVisitedListSearch(m_data).subscribe(data => {
+//     this.PatientListfilteredOptionsOP = data;
+//     console.log(this.PatientListfilteredOptionsOP)
+//     if (this.PatientListfilteredOptionsOP.length == 0) {
+//       this.noOptionFound = true;
+//     } else {
+//       this.noOptionFound = false;
+//     }
+//   });
 
-}
+// }
+ 
 getSearchListIP() {
     var m_data = {
       "Keyword": `${this.ItemSubform.get('RegID').value}%`
@@ -3337,13 +3387,13 @@ getSearchListIP() {
       if (this.ItemSubform.get('RegID').value.length >= 1) {
         this._RequestforlabtestService.getPatientVisitedListSearch(m_data).subscribe(resData => {
           this.filteredOptions = resData;
-          this.PatientListfilteredOptionsIP = resData;
+          this.PatientListfilteredOptionsOP = resData;
+           console.log(resData);
           if (this.filteredOptions.length == 0) {
             this.noOptionFound = true;
           } else {
             this.noOptionFound = false;
-          }
-  
+          } 
         });
       }
     }else if (this.ItemSubform.get('PatientType').value == 'IP') {
@@ -3361,36 +3411,53 @@ getSearchListIP() {
       }
     }
    this.saleSelectedDatasource.data = [];
+   this.PatientInformRest();
   }
-
+  RegNo:any;
+  IPDNo:any; 
+  TariffName:any;
+  CompanyName:any;
   getSelectedObjRegIP(obj) {
+    console.log(obj)
+    this.DoctorNamecheck = true;
+    this.IPDNocheck = true;
+    this.OPDNoCheck = false;
     this.registerObj = obj;
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+    this.PatientName = obj.FirstName + ' ' + obj.LastName;
     this.RegId = obj.RegID;
     this.OP_IP_Id = this.registerObj.AdmissionID;
-    // if (this.ItemSubform.get('PatientType').value == 'IP'){
-    //   this.OP_IP_Id = this.registerObj.AdmissionID;
-    // }else  if (this.ItemSubform.get('PatientType').value == 'OP'){
-    //   this.OP_IP_Id = this.registerObj.VisitId;
-    // }
-    // this.getDraftorderList(obj);
+    this.IPDNo = obj.IPDNo;
+    this.RegNo =obj.RegNo;
+    this.DoctorName = obj.DoctorName;
+    this.TariffName =obj.TariffName
+    this.CompanyName = obj.CompanyName 
   }
-
+  OPDNo:any;
+  DoctorNamecheck:boolean=false;
+  IPDNocheck:boolean=false;
+  OPDNoCheck:boolean=false;
   getSelectedObjOP(obj) {
-    // this.dataSource.data = [];
+    console.log(obj)
+    this.OPDNoCheck = true;
+    this.DoctorNamecheck = false;
+    this.IPDNocheck = false;
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;
     this.RegId = obj.RegId;
-    // this.City = obj.City;
-    // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
-    // this.CompanyName = obj.CompanyName;
-    // this.Tarrifname = obj.TariffName;
-    // this.Doctorname = obj.DoctorName;
-    // this.vOPIPId = obj.VisitId;
-    // this.vOPDNo = obj.OPDNo;
-    // this.vTariffId = obj.TariffId;
-    // this.vClassId = obj.ClassId;
-    // this.AgeYear=obj.AgeYear;
+    this.OP_IP_Id  = obj.VisitId;
+    this.RegNo =obj.RegNo; 
+    this.OPDNo = obj.OPDNo;
+    this.CompanyName = obj.CompanyName;
+    this.TariffName = obj.TariffName; 
+  }
+  PatientInformRest(){
+    this.PatientName = ''  
+    this.IPDNo =  ''
+    this.RegNo = ''
+    this.DoctorName =  ''
+    this.TariffName = ''
+    this.CompanyName =''
+    this.OPDNo = ''
   }
   CalPaidbackAmt() {
     this.v_PaidbacktoPatient = (parseFloat(this.roundoffAmt) - parseFloat(this.v_PaidbyPatient)).toFixed(2);
@@ -3615,6 +3682,74 @@ getSearchListIP() {
     this.vBarcode = 0;
     this.vBarcodeflag = false;
   }
+  dsItemNameList1 = new MatTableDataSource<IndentList>();
+  IPMedID:any;
+  getPRESCRIPTION() {
+    const dialogRef = this._matDialog.open(PrescriptionComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      console.log(result) 
+      this.registerObj = result;
+      console.log(this.registerObj)
+      this.PatientName = result[0].PatientName;
+      this.RegId = result[0].RegId;
+      this.OP_IP_Id = result[0].AdmissionID;
+      this.ItemSubform.get('RegID').setValue(result[0].RegId);
+      this.IPDNo =result[0].IPDNo;
+      this.RegNo = result[0].RegNo;
+      this.DoctorName = result[0].DoctorName;
+      this.TariffName = result[0].TariffName;
+      this.IPMedID = result[0].IPMedID;
+      this.CompanyName = result[0].CompanyName
+      if(this.IPMedID > 0){
+        this.paymethod = true;
+        this.vSelectedOption = 'IP'; 
+      }
+
+    
+      this.dsItemNameList1.data = result;
+      this.dsItemNameList1.data.forEach((contact) => {
+        var m_data = {
+          "ItemId": contact.ItemId,
+          "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+        }
+        this._salesService.getDraftBillItem(m_data).subscribe(draftdata => {
+          console.log(draftdata)
+          this.Itemchargeslist1 = draftdata as any;
+          if (this.Itemchargeslist1.length == 0) {
+            Swal.fire(contact.ItemId + " : " + "Item Stock is Not Avilable:")
+          }
+          else if (this.Itemchargeslist1.length > 0) {
+            let ItemID;
+            this.Itemchargeslist1.forEach((element) => {
+              // console.log(element)
+              if (ItemID != element.ItemId) {
+                this.QtyBalchk = 0;
+              }
+              if (this.QtyBalchk != 1) {
+                if (contact.QtyPerDay <= element.BalanceQty) {
+                  this.QtyBalchk = 1;
+                  this.getFinalCalculation(element, contact.QtyPerDay);
+                  ItemID = element.ItemId;
+                }
+                else {
+                  Swal.fire("Balance Qty is :", element.BalanceQty)
+                  this.QtyBalchk = 0;
+                  Swal.fire("Balance Qty is Less than Selected Item Qty for Item :" + element.ItemId + "Balance Qty:", element.BalanceQty)
+                }
+              }
+            });
+          } 
+        }); 
+      }); 
+    });
+  }
+ 
 }
 
 

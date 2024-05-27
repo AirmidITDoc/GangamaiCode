@@ -658,13 +658,13 @@ export class IssueToDepartmentComponent implements OnInit {
     // }
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp)) {
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
           return true;
         } else {
           event.preventDefault();
           return false;
         }
-      }
+      } 
     Indentid:any;
     indentdetid:any;
     IsClosed:any;
@@ -1011,7 +1011,7 @@ export class IssueToDepartmentComponent implements OnInit {
             });
             return;
         }
-        const isChecked = this.ToStoreList.some(item => item.StoreName === this.vTostoreId);
+        const isChecked = this.ToStoreList.some(item => item.StoreName ===this._IssueToDep.NewIssueGroup.get('ToStoreId').value.StoreName);
         if (isChecked) {
             this.savebtn = true;
             let insertheaderObj = {};

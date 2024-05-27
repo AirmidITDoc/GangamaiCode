@@ -144,10 +144,10 @@
                                                     <div class="info-badge-top pb-2 border-bottom">
                                                         <!-- "pill" class is used for rounded border -->
                                                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                                                            <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                            <!-- <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                                                 <mat-icon class="pill blue-600 s-16">circle</mat-icon>
                                                                 <span class="blue-600-fg">New Admissions : {{VNewcount}}</span>
-                                                            </div>
+                                                            </div> -->
                                                             <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                                                 <mat-icon class="pill green-600 s-16">circle</mat-icon>
                                                                 <span class="green-600-fg"> Total Admissions  : {{VAdmissioncount}}</span>
@@ -326,6 +326,15 @@
                                                                 <span> {{contact.RelativeName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
+                                                        <!-- <ng-container matColumnDef="IsMLC">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-md>IsMLC
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                                <span> {{contact.IsMLC}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                         -->
 
                                                         <ng-container matColumnDef="buttons" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef
@@ -427,7 +436,7 @@
                                     <!-- getSelectedObj -->
                                     <mat-form-field appearance="outline" *ngIf="Regflag">
                                         <input type="text" name="RegId" formControlName="RegId"
-                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput #regno
                                             [matAutocomplete]="auto" (input)="getSearchList()" >
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
@@ -677,7 +686,7 @@
                                     <mat-label>AadharCard Number</mat-label>
                                     <input name="AadharCardNo" formControlName="AadharCardNo"
                                         placeholder="AadharCard Number" matInput [(ngModel)]="registerObj.AadharCardNo"
-                                        type="number" #AadharCardNo (keydown)="onEnterAadharCardNo($event)"
+                                        #AadharCardNo (keydown)="onEnterAadharCardNo($event)"
                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
                                     <mat-error class="error"
                                         *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">Aadhar
@@ -691,7 +700,7 @@
                                         matInput required #mobile (keydown)="onEntermobile($event)"
                                         [(ngModel)]="registerObj.MobileNo"
                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                        required="required" type="number" value="9876658688">
+                                        required="required"  value="9876658688">
                                     <mat-error class="error"
                                         *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
                                         digits Mobile number is
@@ -1150,7 +1159,7 @@
                             </div>
                             <div class="next-div button-row-group">
                                 <button class="btn btn-primary" color="accent" (click)="nextClicked(otherFormGroup)"
-                                    [disabled]="personalFormGroup.invalid || hospitalFormGroup.invalid || wardFormGroup. invalid || otherFormGroup.invalid">
+                                    [disabled]="personalFormGroup.invalid || hospitalFormGroup.invalid || wardFormGroup.invalid || otherFormGroup.invalid">
                                     <span>Save</span>
                                 </button>
                                 <button class="btn btn-danger-outline" (click)="onReset()">Reset</button>

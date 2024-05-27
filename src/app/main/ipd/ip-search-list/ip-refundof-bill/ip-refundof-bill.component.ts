@@ -354,7 +354,7 @@ createSearchForm() {
   getRefundofBillIPDList() {
     debugger
         var m_data = {
-      "RegId ": 12//this.vOPIPId
+      "RegId ": this.vOPIPId
       
     }
     // this.isLoadingStr = 'loading';

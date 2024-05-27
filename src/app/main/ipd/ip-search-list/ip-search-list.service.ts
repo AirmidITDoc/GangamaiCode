@@ -947,12 +947,9 @@ public getRefundofBillDetailList(employee){
 
  
 public getprescriptionList(employee) {
-  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IP_Prescriptio_Det", employee)
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IP_Prescriptio_Det", employee)
    
 }
-
-
-
 public getViewAdvanceReceipt(AdvanceDetailID){
   return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
 }
@@ -974,7 +971,7 @@ public getpreviousbilldetail(Id){
 }
 
 public getAdvancedetail(Id){
-  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPAdvanceDetails",Id);
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPAdvanceDetails",Id);
 }
 
 public getRefundofAdvanceview(RefundId){

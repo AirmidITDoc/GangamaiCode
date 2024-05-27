@@ -17,9 +17,9 @@ export class IPBillingService {
         enddate: [(new Date()).toISOString()],
         UserId:'',
         DoctorId:'',
-        // FirstName:'',
-        // LastName:'',
-        // BillNo:'',
+        AdvanceDetailID:'',
+        RefundId:'',
+        BillNo:'',
         // Radio:['1']
 
       })
@@ -49,6 +49,23 @@ export class IPBillingService {
     return this._httpClient.get("IPReport/view-OPIPBILLSummaryReport?FromDate=" + FromDate + "&ToDate="+ToDate);
   }
 
-  
+  public getIpFinalBillReceipt(BillNo){
+    return this._httpClient.get("InPatient/view-IP-BillReceipt?BillNo=" + BillNo);
+  }
+  public getViewAdvanceReceipt(AdvanceDetailID){
+    return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
+  }
 
+  public getRefundofAdvanceview(RefundId){
+    return this._httpClient.get("InPatient/view-IP-ReturnOfAdvanceReceipt?RefundId=" + RefundId);
+  }
+
+  public getRefundofbillview(RefundId){
+    return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
+  }
+  public getCreditReceipt(FromDate,ToDate){
+    return this._httpClient.get("IPReport/view-IPCreditReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+  }
+
+  
 }

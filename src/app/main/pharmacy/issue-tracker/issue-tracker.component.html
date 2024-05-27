@@ -1,0 +1,230 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
+
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Issue tracker
+            </span>
+        </div>
+        <button mat-raised-button style="background-color: white;color: brown;margin-left:400px !important" (click)="CustomerList()">
+            Customer Info List
+        </button>
+
+        <button mat-raised-button (click)="NewCustomer()" fxLayoutAlign="center center" class="py-8">
+            <mat-icon>add</mat-icon>New Customer
+        </button>
+
+        <button mat-raised-button style="background-color: white;color: brown;" (click)="CustomerbillList()">
+            Customer Bill List
+        </button>
+
+        <button mat-raised-button style="background-color: white;color: brown;" (click)="NewCustomerBill()">
+            New Bill
+        </button>
+
+        <button mat-raised-button style="background-color: white;color: brown;" (click)="OpenPopUp()">
+            New Issue tracker
+        </button>
+    </mat-toolbar>
+
+
+    
+    
+    <div class="content">
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px; ">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row">
+                            <form [formGroup]="_IssueTracker.MyFrom">
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                                <div fxFlex.gt-sm="100%" fxFlex style="margin-left: 8px;">
+
+                                    <mat-form-field appearance="outline" fxFlex="20%" style="margin-left: 8px;">
+                                        <mat-label>Issue Status</mat-label>
+                                        <mat-select formControlName="IssueStatus" name="IssueStatus" required>
+                                            <mat-option></mat-option>
+                                            <mat-option *ngFor="let m of ConstanyTypeList" [value]="m">
+                                                {{m.Name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>&nbsp;&nbsp;
+
+                                    <mat-form-field appearance="outline" fxFlex="20%">
+                                        <mat-label>Issue Assigned</mat-label>
+                                        <mat-select formControlName="IssueAssigned" name="IssueAssigned" required>
+                                            <mat-option></mat-option>
+                                            <mat-option *ngFor="let m of ConstanyAssignedList" [value]="m">
+                                                {{m.Name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>&nbsp;&nbsp;
+                                    <button mat-raised-button style="margin-top: 10px;" (click)="getIssuTrackerList()"><mat-icon>search</mat-icon> Search</button>
+                                </div>
+                            </div>
+                        </form>
+                        </div>
+
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                                
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                    class="backgroundBlur">
+                                    <div class="spinner-border text-danger" style="margin-left: 100px;"></div>
+                                </div>
+
+                                 <mat-table #table class="table1" matSort [dataSource]="dsIssueTracker"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                    <!-- <ng-container matColumnDef="IssueTrackerId">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            Issue Id
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IssueTrackerId}}
+                                        </mat-cell>
+                                    </ng-container> -->
+
+                                    <ng-container matColumnDef="IssueRaisedDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            IssueRaised Date</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IssueRaisedDate | date: 'dd/MM/yyyy'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="IssueRaisedTime">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            IssueRaised Time</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IssueRaisedTime | date:'shortTime'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IssueSummary">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Issue Summary</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IssueSummary}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IssueDescription">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Issue Description </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IssueDescription}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="UploadImagePath">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Upload ImagePath </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-icon>visibility</mat-icon>
+                                            {{contact.ImageName}}
+                                            {{contact.UploadImagePath}}
+                                           
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- <ng-container matColumnDef="ImageName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Image Name </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ImageName}}
+                                        </mat-cell>
+                                    </ng-container> -->
+
+                                    <ng-container matColumnDef="IssueStatus">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Issue Status </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IssueStatus}}
+                                        </mat-cell>
+                                    </ng-container>
+ 
+ 
+                                    <ng-container matColumnDef="IssueAssigned">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Issue Assigned </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.IssueAssigned}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="AddedBy">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            AddedBy </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.AddedBy}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="AddedDatetime">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            AddedDate </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.AddedDatetime | date: 'dd/MM/yyyy'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Action">
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                            style="color: white;">Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <button mat-icon-button (click)="onEdit(contact)" matTooltip="Edit"> 
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"   appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsIssueTracker!=null && dsIssueTracker.data.length==0)}">
+                                    </mat-footer-row>
+
+                                </mat-table>
+
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                    showFirstLastButtons>
+                                </mat-paginator> 
+                            </div>
+                        </div> 
+                    </div>
+                </div> 
+            </div>
+        </div> 
+    </div>
+</div>
+
+ 

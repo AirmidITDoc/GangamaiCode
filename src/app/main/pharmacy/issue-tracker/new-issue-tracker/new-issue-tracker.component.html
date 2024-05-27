@@ -1,0 +1,167 @@
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+    style="background-color:whitesmoke;">
+
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                New Issue
+            </span>
+            <button mat-icon-button (click)="onClose()" aria-label="Close dialog" style="margin-left: 1010px;">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px; ">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <div fxlayout="row">
+                            <form [formGroup]="_IssueTracker.userFormGroup">
+
+
+                                <mat-card style="width: 100%;height: 330px;padding: 8px;background-color: white;">
+                                    <app-common-date [screenFrom]="screenFromString"
+                                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+
+                                    <div fxlayout="row">
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Issue Summary</mat-label>
+                                            <input name="IssueSummary" formControlName="IssueSummary" matInput required
+                                                [(ngModel)]="registerObj.IssueSummary"
+                                                (keydown)="onEnterIssueSummary($event)">
+
+                                        </mat-form-field>&nbsp;&nbsp;&nbsp;
+
+
+                                    </div>
+
+                                    <div fxlayout="row">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Issue Description</mat-label>
+                                            <textarea name="IssueDescription" formControlName="IssueDescription"
+                                                matInput [(ngModel)]="registerObj.IssueDescription"
+                                                (keydown)="onEnterIssueStatus($event)" style="height: 145px;"
+                                                required></textarea>
+
+                                        </mat-form-field>
+                                    </div>
+                                </mat-card>
+                                <mat-card
+                                    style="width: 100%;height:140px;padding: 8px;background-color: white; margin-top: 10px;">
+                                    <div fxlayout="row">
+                                        <mat-form-field appearance="outline" fxFlex="30%">
+                                            <mat-label>Issue Status</mat-label>
+                                            <mat-select formControlName="IssueStatus" name="IssueStatus" required >
+                                                <mat-option></mat-option>
+                                                <mat-option *ngFor="let m of ConstanyTypeList" [value]="m">
+                                                    {{m.Name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>&nbsp;&nbsp;
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Issue Raised</mat-label>
+                                            <mat-select formControlName="IssueRaised" name="IssueRaised" required >
+                                                <mat-option></mat-option>
+                                                <mat-option *ngFor="let m of IssueRaisedList" [value]="m">
+                                                    {{m.Name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>&nbsp;&nbsp;
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Issue Assigned</mat-label>
+                                            <mat-select formControlName="IssueAssigned" name="IssueAssigned" required >
+                                                <mat-option></mat-option>
+                                                <mat-option *ngFor="let m of IssueAssignedList" [value]="m">
+                                                    {{m.Name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>&nbsp;&nbsp;
+
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Issue Assigned</mat-label>
+                                            <input name="IssueAssigned" formControlName="IssueAssigned" matInput
+                                                [(ngModel)]="registerObj.IssueAssigned"
+                                                (keydown)="onEnterIssueAssigned($event)" required>
+
+                                        </mat-form-field> -->
+                                    </div>
+
+                                    <div fxlayout="row">
+
+                                        <!-- <mat-form-field appearance="outline" fxFlex="30%">
+                                            <mat-label>Image Name</mat-label>
+                                            <input name="ImageName" formControlName="ImageName" matInput
+                                                [(ngModel)]="registerObj.ImageName"
+                                                (keydown)="onEnterImageName($event)">
+
+                                        </mat-form-field>&nbsp;&nbsp; -->
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Document Path</mat-label>
+                                            <input name="ImagePath" formControlName="ImagePath" matInput
+                                                [(ngModel)]="registerObj.UploadImagePath"
+                                                (keydown)="onEnterImagePath($event)">
+
+                                        </mat-form-field>&nbsp;&nbsp;
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Image Upload</mat-label>
+                                       
+                                    </mat-form-field> -->
+                                        <!-- <div appearance="outline" style="margin-top: 15px;">
+                                    <input type="file" (change)="handleImageUpload($event)" >
+                                   </div> -->
+
+
+                                        <div class="img-container">
+                                            <input formControlName="imageFile" type="file" #attachments accept="image/*"
+                                                multiple name="file" id="file" class="inputfile"
+                                                (change)="onImageChange($event)" style="margin-right: 10px;" />
+
+                                            <label class="file-lable1" for="file">
+                                                <mat-icon
+                                                    style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
+                                                Browse
+                                            </label>
+                                        </div>
+
+                                      
+
+                                    </div>
+
+
+                                </mat-card>
+                                <div class="footer-navigation-container" fxLayout.gt-xs="row">
+
+                                    <div style="margin-top: 10px; margin-right: 10px; ">
+                                        <button class="next-btn" color="accent"
+                                            style="border-radius: 16px; width: 80px;"
+                                            [disabled]="_IssueTracker.userFormGroup.invalid"
+                                            (click)="OnSave()">Save</button>
+                                        <button class="footer-btn" id="btncancel" (click)="onClose()">Close</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</div>

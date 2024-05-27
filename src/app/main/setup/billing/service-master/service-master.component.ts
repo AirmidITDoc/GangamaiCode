@@ -16,6 +16,7 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class ServiceMasterComponent implements OnInit {
+    showDivs:boolean = false;
     submitted = false;
 
     RadiologytemplateMasterList: any;
@@ -74,22 +75,30 @@ export class ServiceMasterComponent implements OnInit {
         return this._serviceMasterService.myform.controls;
     }
 
+    resultsLength = 0;
     getServiceMasterList() {
         var param = {
             ServiceName:
                 this._serviceMasterService.myformSearch
                     .get("ServiceNameSearch")
                     .value.trim() + "%" || "%",
-            TariffId: 1,
-            GroupId: 1,
+            TariffId: 0,
+            GroupId: 0,
+            Start:(this.paginator?.pageIndex??1),
+            Length:(this.paginator?.pageSize??20),
         };
-        this._serviceMasterService.getServiceMasterList(param).subscribe(
-            (Menu) => {
-                this.DSServiceMasterList.data = Menu as ServiceMaster[];
+        this._serviceMasterService.getServiceMasterList_Pagn(param).subscribe(
+            (data) => {
+                this.DSServiceMasterList.data = data["Table1"]??[] as ServiceMaster[];
+                console.log("BE data" +data)
+                //this.DSServiceMasterList.data = Menu as ServiceMaster[];
                 this.isLoading = false;
                 this.DSServiceMasterList.sort = this.sort;
-                this.DSServiceMasterList.paginator = this.paginator;
-               // console.log(this.DSServiceMasterList);
+                this.DSServiceMasterList.sort = this.sort;
+                this.resultsLength= data["Table"][0]["total_row"];
+                // --this.DSServiceMasterList.paginator = this.paginator;
+               console.log(this.DSServiceMasterList.data);
+               debugger;
             },
             (error) => (this.isLoading = false)
         );
@@ -324,6 +333,8 @@ export class ServiceMasterComponent implements OnInit {
         }
     }
     onEdit(row) {
+        console.log(row);
+        debugger
         var m_data = {
             ServiceId: row.ServiceId,
             ServiceShortDesc: row.ServiceShortDesc.trim(),
@@ -343,6 +354,11 @@ export class ServiceMasterComponent implements OnInit {
             EmgPer: row.EmgPer,
             IsDocEditable: JSON.stringify(row.IsDocEditable),
             UpdatedBy: row.UpdatedBy,
+            GroupId: row.GroupId,
+            GroupName:row.GroupName,
+            IsActive: row.IsActive,
+            TariffId: row.TariffId,
+            TariffName: row.TariffName
         };
 
         console.log(m_data);
@@ -352,7 +368,7 @@ export class ServiceMasterComponent implements OnInit {
             maxWidth: "80vw",
             maxHeight: "95vh",
             width: "100%",
-            height: "100%",
+            // height: "100%",
         });
 
         dialogRef.afterClosed().subscribe((result) => {
@@ -366,7 +382,7 @@ export class ServiceMasterComponent implements OnInit {
             maxWidth: "80vw",
             maxHeight: "100vh",
             width: "100%",
-            height: "100%",
+            // height: "100%",
         });
         dialogRef.afterClosed().subscribe((result) => {
             this.getServiceMasterList();
