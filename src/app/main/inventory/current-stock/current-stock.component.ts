@@ -261,6 +261,7 @@ getOptionTextPurchaseItemList(option) {
       "ItemName": this._CurrentStockService.SearchGroup.get('ItemCategory').value.ItemName || '%',
       "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
     }
+    console.log(vdata)
       this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
       this.dsCurrentStock.data = data as CurrentStockList[];
       this.dsCurrentStock.sort = this.sort;

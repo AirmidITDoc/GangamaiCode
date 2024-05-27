@@ -18,6 +18,7 @@ import { request } from 'http';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
 import { MRPAdjustmentComponent } from './mrpadjustment/mrpadjustment.component';
+import { GSTAdjustmentComponent } from './gstadjustment/gstadjustment.component';
 
 @Component({
   selector: 'app-stock-adjustment',
@@ -39,6 +40,7 @@ export class StockAdjustmentComponent implements OnInit {
     'BalQty',
     'Addition',
     'Deduction',
+    'GST',
     'ConversionFactor'
   ];
 
@@ -127,7 +129,7 @@ export class StockAdjustmentComponent implements OnInit {
     //console.log(Param)
     this._StockAdjustment.getStockList(Param).subscribe(data => {
       this.dsStockAdjList.data = data as StockAdjList[];
-     // console.log(this.dsStockAdjList)
+     console.log(this.dsStockAdjList)
       this.dsStockAdjList.sort = this.sort;
       this.dsStockAdjList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -384,13 +386,29 @@ export class StockAdjustmentComponent implements OnInit {
         this.getStockList();
       });
     }
+    EditGST(contact){
+      console.log(contact)
+      const dialogRef = this._matDialog.open(GSTAdjustmentComponent,
+        {
+          maxWidth: "100%",
+          height: '45%',
+          width: '50%',
+          data: {
+            Obj: contact,
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getStockList();
+      });
+    }
   Addeditable: boolean = false;
   Dedueditable: boolean = false;
   Expeditable: boolean = false;
   Batcheditable: boolean = false;
   Rateeditable: boolean = false;
-  Landededitable: boolean = false;
-
+  Landededitable: boolean = false; 
+ 
   enableEditing(row: StockAdjList) {
     row.Addeditable = true;
   }
@@ -447,6 +465,7 @@ export class StockAdjList {
   Batcheditable: boolean = false;
   Expeditable: boolean = false;
   Landededitable: boolean = false;
+  GSTeditable:boolean=false;
 
   constructor(StockAdjList) {
     {

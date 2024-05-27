@@ -79,8 +79,8 @@ export class CurrentStockService {
     });
   }
 
-  public getCurrentStockList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_Storewise_CurrentStock",Param);
+  public getCurrentStockList(Param){//Retrieve_Storewise_CurrentStock
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_Storewise_CurrentStock",Param);
   }
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);

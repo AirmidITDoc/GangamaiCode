@@ -97,7 +97,43 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       this.tempItemlist.push(contact);
       console.log(this.tempItemlist);
     }
+    else if(this.masterSelected){
+      if (contact.selected == false) {
+        let index = this.tempItemlist.indexOf(contact);
+        if (index >= 0) {
+          this.checklist.splice(index, 1);
+          this.tempItemlist = [];
+          this.tempItemlist = this.checklist;
+          console.log(this.tempItemlist);
+        }
+      }
+      this.masterSelected = false;
+    }  
+  } 
+  checklist: any[] = [];  
+  // Assuming this array contains the data for the checkboxes
+  masterSelected:any;
+  // Function to handle the top header checkbox change event
+  checkUncheckAll() {
+    if(this.masterSelected == true){
+      this.dsItemList.data.forEach(contact => {
+        contact.selected = true;
+      });
+      this.checklist = this.dsItemList.data;
+      this.tempItemlist = this.checklist;
+      console.log(this.checklist)
+      console.log(this.tempItemlist)
+    }else{
+      this.dsItemList.data.forEach(contact => {
+        contact.selected = false;
+        this.checklist = [];
+        this.tempItemlist = [];
+        console.log(this.checklist) 
+      });
+    }
+  
   }
+  savebtn:boolean=false;
   onSubmit() {
     if ((!this.dsItemList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -105,7 +141,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       });
       return;
     }
-
+    this.savebtn =true;
     if(this.dsItemList.data.length == this.tempItemlist.length){
       this.Acceptedchk = 1;  
     }else{
@@ -151,6 +187,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-success',
         });
         this._matDialog.closeAll();
+        this.savebtn =false;
       } else {
         this.toastr.error('New Accept material Data not saved !, Please check  error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',

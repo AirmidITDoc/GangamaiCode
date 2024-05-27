@@ -36,6 +36,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { StockAdjustmentComponent } from './stock-adjustment.component';
 import { MRPAdjustmentComponent } from './mrpadjustment/mrpadjustment.component';
+import { GSTAdjustmentComponent } from './gstadjustment/gstadjustment.component';
 
 const routes: Routes = [
   { 
@@ -48,6 +49,7 @@ const routes: Routes = [
   declarations: [
     StockAdjustmentComponent,
     MRPAdjustmentComponent,
+    GSTAdjustmentComponent,
     
   ],
   imports: [

@@ -227,6 +227,18 @@
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="GST">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    GST %</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.GSTPer}}%
+                                    <ng-container>
+                                        <button mat-icon-button (click)="EditGST(contact)">
+                                            <mat-icon>edit</mat-icon></button>
+                                    </ng-container>
+                                </mat-cell>
+                            </ng-container> 
+                           
                             <ng-container matColumnDef="loading">
                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                 </mat-header-cell>
