@@ -107,14 +107,14 @@ export class OpPaymentNewComponent implements OnInit {
     // private snackBarService: SnackBarService
   ) {
     this.nowDate = new Date();
-    
+
     if (data) {
       this.PatientHeaderObj = data;
       this.advanceData = this.data.vPatientHeaderObj;
       console.log(data)
     }
     if (this.data.FromName == "Advance") {
-      
+
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
       this.amount1 = parseInt(this.advanceData.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.NetPayAmount);
@@ -136,8 +136,8 @@ export class OpPaymentNewComponent implements OnInit {
       this.getBalanceAmt();
       this.Paymentobj['TransactionType'] = 0;
       this.IsCreditflag = false
-    } 
-    
+    }
+
     if (this.data.FromName == "OP_SETTLEMENT") {
       this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
       this.amount1 = this.cashAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
@@ -152,8 +152,8 @@ export class OpPaymentNewComponent implements OnInit {
       this.onPaymentChange(1, 'cash');
       this.paidAmt = this.netPayAmt;
       this.getBalanceAmt();
-      
-    } 
+
+    }
 
     if (this.PatientHeaderObj.FromName == "SETTLEMENT") {
       this.netPayAmt = parseInt(this.advanceData.NetPayableAmt) || this.advanceData.NetPayAmount;
@@ -228,7 +228,7 @@ export class OpPaymentNewComponent implements OnInit {
       this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.getBalanceAmt();
       this.paymentRowObj["cash"] = true;
-      
+
       this.onPaymentChange(1, 'cash');
       this.paidAmt = this.netPayAmt;
 
@@ -298,18 +298,18 @@ export class OpPaymentNewComponent implements OnInit {
     });
   }
   @ViewChild('Reference') Reference: ElementRef;
- 
-  keyPressCharater(event){
+
+  keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d{0,12}$/.test(inp)) {
       return true;
     } else {
-     this.patientDetailsFormGrp.get('referenceNo1').setValue('')
+      this.patientDetailsFormGrp.get('referenceNo1').setValue('')
       return false;
     }
   }
   onChangePaymnt(event: any) {
-    
+
     let value = event.value;
     if (value != 'cash') {
       this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
@@ -355,7 +355,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onAddClick(paymentOption: string) {
-    
+
     this.paymentRowObj[paymentOption] = true;
     switch (paymentOption) {
       case 'cash':
@@ -365,25 +365,25 @@ export class OpPaymentNewComponent implements OnInit {
       case 'upi':
         this.amount2 = this.netPayAmt - this.amount1;
         this.getBalanceAmt();
-        this.setThirdRowValidators(paymentOption); 
+        this.setThirdRowValidators(paymentOption);
         break;
 
       case 'net banking':
         this.amount5 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3) + parseInt(this.amount4));
         this.getBalanceAmt();
-        this.setThirdRowValidators(paymentOption); 
+        this.setThirdRowValidators(paymentOption);
         break;
 
       case 'cheque':
         this.amount3 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2));
         this.getBalanceAmt();
-        this.setFourthRowValidators(paymentOption); 
+        this.setFourthRowValidators(paymentOption);
         break;
 
       case 'card':
         this.amount4 = this.netPayAmt - (parseInt(this.amount1) + parseInt(this.amount2) + parseInt(this.amount3));
         this.getBalanceAmt();
-        this.setFifthRowValidators(paymentOption); 
+        this.setFifthRowValidators(paymentOption);
         break;
 
       default:
@@ -545,7 +545,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onPaymentChange(rowId: number, value: string) {
-    
+
 
     if (value == 'upi') {
 
@@ -1026,7 +1026,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getChequeObj(type: string) {
-    
+
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['ChequePayAmount'] = this.amount1;
       this.Paymentobj['ChequeNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
@@ -1151,7 +1151,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   getUpiObj(type: string) {
-    
+
     if (this.patientDetailsFormGrp.get("paymentType1").value == type) {
       this.Paymentobj['PayTMAmount'] = this.amount1;
       this.Paymentobj['PayTMTranNo'] = this.patientDetailsFormGrp.get("referenceNo1").value || 0;
@@ -1272,7 +1272,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
 
   onClose1() {
-    
+
     let IsSubmit = {
       "IsSubmitFlag": false,
       "BalAmt": this.netPayAmt
@@ -1280,7 +1280,7 @@ export class OpPaymentNewComponent implements OnInit {
     this.dialogRef.close(IsSubmit);
   }
 
-  getBalanceAmt() { 
+  getBalanceAmt() {
     let totalAmountAdded: any = ((this.amount1 ? parseFloat(this.amount1) : 0)
       + (this.amount2 ? parseFloat(this.amount2) : 0)
       + (this.amount3 ? parseFloat(this.amount3) : 0)
@@ -1288,8 +1288,8 @@ export class OpPaymentNewComponent implements OnInit {
       + (this.amount5 ? parseFloat(this.amount5) : 0));
     if ((this.netPayAmt - totalAmountAdded) < 0) {
       // this.snackBarService.showErrorSnackBar('Amout should be less than Balance amount', 'Done');
-      Swal.fire('Amout should be less than Balance amount', 'Done'); 
-      this.isSaveDisabled = true;  
+      Swal.fire('Amout should be less than Balance amount', 'Done');
+      this.isSaveDisabled = true;
       return;
     }
 

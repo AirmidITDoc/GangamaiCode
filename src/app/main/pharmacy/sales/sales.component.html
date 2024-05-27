@@ -885,7 +885,9 @@
                                                             <button mat-raised-button (click)="getPRESCRIPTION()"
                                                                 class="btn btn-primary-outline ">
                                                                 GET PRESCRIPTION </button>
-
+                                                                <button class="btn btn-primary-outline"
+                                                                (click)="openPaymentpopup()">Open Payment Popup By Vimal</button>
+                                                            
                                                             <button class="btn btn-primary " (click)="onSave($event)"
                                                                 [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0">Save(F9)</button>
                                                             <button class="btn btn-primary-outline"
