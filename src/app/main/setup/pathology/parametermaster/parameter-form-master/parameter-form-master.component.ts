@@ -141,8 +141,6 @@ export class ParameterFormMasterComponent implements OnInit {
  
     }
 
-    // public _ParameterService.is_numeric: boolean = true; //numeric
-
 
     toggle(val: any) {
         if (val == 1) {

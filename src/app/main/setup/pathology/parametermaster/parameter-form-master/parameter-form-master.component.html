@@ -123,8 +123,8 @@
 
                             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="5px">
 
-                                <div fxFlex.gt-sm="100%" fxFlex *ngIf="numeric_data">
-                                    <ng-container *ngIf="numeric_data">
+                                <div fxFlex.gt-sm="100%" fxFlex *ngIf="_ParameterService.is_numeric">
+                                    <ng-container *ngIf="_ParameterService.is_numeric">
                                         <mat-card class="example-card" name="m1" style="padding: 0%;">
                                             <mat-card-content fxLayout="row" fxLayoutAlign="center center"
                                                 style="margin-bottom:5px !important;">
@@ -305,8 +305,8 @@
                                     </ng-container>
                                 </div>
 
-                                <div fxFlex.gt-sm="100%" fxFlex *ngIf="!numeric_data">
-                                    <ng-container *ngIf="!numeric_data">
+                                <div fxFlex.gt-sm="100%" fxFlex *ngIf="!_ParameterService.is_numeric">
+                                    <ng-container *ngIf="!_ParameterService.is_numeric">
                                         <div fxFlex.gt-sm="100%" fxFlex>
 
                                             <mat-card class="example-card" name="m1" style="padding: 0%;">
