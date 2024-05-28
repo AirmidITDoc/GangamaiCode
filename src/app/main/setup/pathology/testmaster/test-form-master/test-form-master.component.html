@@ -24,26 +24,26 @@
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row" style=" background-color: white;
                              padding: 5px 10px 5px 10px;">
                             <form [formGroup]="_TestService.myform">
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
-                                        <div fxLayout="row">
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="30">
+                                        <div fxLayout="row" fxLayoutGap="5px">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                                 <input name="TestName" formControlName="TestName"
                                                     placeholder="Select Test Name" matInput required>
                                                 <mat-error>Please enter TestName </mat-error>
                                             </mat-form-field>
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="30">
+                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                                 <input name="PrintTestName" formControlName="PrintTestName"
                                                     placeholder="Select PrintTestName" matInput required>
                                                 <mat-error>Please enter PrintTestName </mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                                 <mat-label>Service Name</mat-label>
                                                 <mat-select formControlName="ServiceID" placeholder="Bank" #singleSelect required>
                                                     <mat-option>
@@ -55,10 +55,7 @@
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field> 
-                                        </div>
-                                        <div fxLayout="row">
-                                           
-                                            <mat-form-field appearance="outline" fxFlex="30">
+                                            <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Category Name</mat-label> 
                                                 <mat-select formControlName="CategoryId" placeholder="Bank"
                                                     #singleSelect required>
@@ -74,62 +71,70 @@
                                                 </mat-select>
                                             </mat-form-field>
                                           
-                                            <section class="example-section" style="padding: 20px;">
-
-                                                <!-- <mat-checkbox formControlName="IsSubTest" class="example-margin"
-                                                    style="margin-left: 15px;" value="true"> IsSubTest </mat-checkbox>
-
-                                                <mat-checkbox formControlName="IsTemplateTest" value='false'
-                                                    class="example-margin" style="margin-left: 35px;">Template
-                                                    Formate</mat-checkbox> -->
-
-                                                <mat-radio-group name="Status" formControlName="Status" fxFlex="20%" value="0"
-                                                    style="padding: 12px;" fxLayout="row">
-                                                    <mat-radio-button value="1" class="mr-sm-12" formControlName="IsSubTest">IsSubTest
-                                                    </mat-radio-button>
-                                                    <mat-radio-button value="0" class="mr-sm-12"formControlName="IsTemplateTest">Template
-                                                        Formate
-                                                    </mat-radio-button>
-                                                </mat-radio-group>    
-                                            </section>
-
                                         </div>
-                                        <div fxLayout="row" style="max-width: 63%;"> 
-                                            <mat-form-field class="mr-sm-12" fxFlex >
-                                                <input matInput placeholder="Search" autocomplete="off"
-                                                    name="ParameterNameSearch" formControlName="ParameterNameSearch" />
-                                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                                    (click)="onSearchClear()" (keyup)="onSearch()">
-                                                    <mat-icon>close</mat-icon>
-                                                </button>
-                                            </mat-form-field>
+                                        
+
+                                        <div fxLayout="row" style="padding-top:10px"> 
+                                            <mat-form-field style="width: 22rem">
+                                            <input matInput placeholder="Search" autocomplete="off"
+                                            name="ParameterNameSearch" formControlName="ParameterNameSearch" />
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="onSearchClear()" (keyup)="onSearch()">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
                                             <mat-checkbox formControlName="NewIsSubTest" name="IsSubTest" value="true"
                                             style="margin-left: 50px;"  > IsSubTest
                                         </mat-checkbox>
-                                    </div>
-                                        <mat-divider inset style="margin: 0px;padding: 5px;"></mat-divider>
+                                        
+                                        <section class="example-section" style="margin-left: 23rem ;">
+                                            <mat-radio-group name="Status" formControlName="Status"  value="0"
+                                                fxLayout="row">
+                                                <mat-radio-button value="1" class="mr-sm-12" formControlName="IsSubTest">IsSubTest
+                                                </mat-radio-button>
+                                                <mat-radio-button value="0" class="mr-sm-12"formControlName="IsTemplateTest">Template
+                                                    Formate
+                                                </mat-radio-button>
+                                            </mat-radio-group>    
+                                        </section>
 
-
-
+                                
+                                           
+                                            </div>
                                     <div fxLayout="row" fxFlex="100%" fxLayoutAlign="6px">
-                                            
-                                  
-                                            <div fxLayout="column" fxFlex="50%">
-                                                <mat-card style="height:400px;width: 100%;">
-                                                    <mat-table #table class="table1" matSort
+                                         <div fxLayout="column" fxFlex="30%">
+                                            <mat-card style="height:267px;width: 100%;">
+                                                
+                                               
+                                                 <mat-table #table class="table1" matSort
                                                         [dataSource]="paramterList" [@animateStagger]="{value:'50'}"
                                                         style="overflow:auto; width: 100%;">
-
+                                                       
                                                         <ng-container matColumnDef="ParameterName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                Parameter Values List                                                                
+                                                                Parameter Values        
+
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxShow.gt-sm  (click) ="onAdd(element)">
                                                                 {{element.ParameterName}} 
                                                             </mat-cell>      
 
                                                        </ng-container>
-                                                       <ng-container matColumnDef="ParameterAction">
+                                                        
+
+                                                       <ng-container matColumnDef="Add">
+                                                        <mat-header-cell *matHeaderCellDef >
+                                                            Add
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxShow.gt-sm style="padding-left:2rem;">
+                                                            
+                                                                <mat-icon (click) ="onAdd(element)" style="cursor:pointer"> add </mat-icon> 
+                                                        </mat-cell>    
+
+                                                    </ng-container>
+                                                    
+                                                        
+                                                       <!-- <ng-container matColumnDef="ParameterAction">
                                                             <mat-header-cell *matHeaderCellDef >
                                                                 Add
                                                             </mat-header-cell>
@@ -140,7 +145,9 @@
                                                                   </button>
                                                             </mat-cell>    
 
-                                                        </ng-container> 
+                                                        </ng-container>  -->
+                                                         
+                                             
 
                                                         <ng-container matColumnDef="loading">
                                                             <mat-footer-cell *matFooterCellDef colspan="6">
@@ -169,52 +176,83 @@
                                                 </mat-card>
                                             </div>
                                             <mat-divider vertical style="margin: 0px;padding: 5px;"></mat-divider>
-                                            <div fxLayout="column" fxFlex="50%">
-                                                <mat-card style="height:400px;width: 100%;">
-                                                    <mat-table #table class="table1" matSort [dataSource]="DSTestList" cdkDropList (cdkDropListDropped)="drop($event)">                                                        
+                                            <div fxLayout="column" fxFlex="70%">
+                                                <mat-card style="height:267px;width: 100%;">
+                                                    <mat-table #table class="table1" matSort [dataSource]="DSTestList" cdkDropList (cdkDropListDropped)="drop($event)">
 
-                                                        <ng-container matColumnDef="ParameterName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                Parameter Name
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                {{element.ParameterName}}
+                                                        <!-- Header Column Definitions -->
+                                                        <ng-container matColumnDef="Reorder">
+                                                            <mat-header-cell
+                                                                *matHeaderCellDef>#</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element">
+                                                                <mat-icon style="cursor: pointer;">reorder</mat-icon>
+
                                                             </mat-cell>
                                                         </ng-container>
-
-
+                                                        <ng-container matColumnDef="ParameterName">
+                                                          <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                            Parameter
+                                                          </mat-header-cell>
+                                                          <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                            {{element.ParameterName}}
+                                                          </mat-cell>
+                                                        </ng-container>
+                                                      
+                                                        <ng-container matColumnDef="UnitName">
+                                                          <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                            Unit
+                                                          </mat-header-cell>
+                                                          <mat-cell *matCellDef="let element">
+                                                            Unit
+                                                           </mat-cell>
+                                                        </ng-container> 
+                                                      
+                                                        <ng-container matColumnDef="Range">
+                                                          <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                            Range
+                                                          </mat-header-cell>
+                                                          <mat-cell *matCellDef="let element">
+                                                             Range
+                                                           </mat-cell>
+                                                        </ng-container> 
+                                                      
+                                                        <ng-container matColumnDef="Action">
+                                                            <mat-header-cell
+                                                                *matHeaderCellDef>Action</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element">
+                                                                <button mat-icon-button color="warn"
+                                                                    (click)="onDeleteRow(element)">
+                                                                    <mat-icon>delete</mat-icon>
+                                                                </button>
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                      
+                                                        <!-- Footer Rows -->
                                                         <ng-container matColumnDef="loading">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-
-                                                            </mat-footer-cell>
+                                                          <mat-footer-cell *matFooterCellDef colspan="6">
+                                                          </mat-footer-cell>
                                                         </ng-container>
-
+                                                      
                                                         <ng-container matColumnDef="noData">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                Select Parameters...
-                                                            </mat-footer-cell>
+                                                          <mat-footer-cell *matFooterCellDef colspan="6">
+                                                            Select Parameters...
+                                                          </mat-footer-cell>
                                                         </ng-container>
-
-
-                                                        <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag></mat-row>
-
-                                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                                            [ngClass]="{'hide':DSTestList!=null}"></mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row>
-
-                                                    </mat-table>
+                                                      
+                                                        <!-- Header and Footer Row Definitions -->
+                                                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2; sticky: true"></mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedColumns2;" class="element" [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag></mat-row>
+                                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':DSTestList!=null}"></mat-footer-row>
+                                                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row>
+                                                      </mat-table>
+                                                      
                                                 </mat-card>
                                             </div>
 
                                       </div>
                                       <hr>
-                                      <div fxLayout="row">
-                                                <mat-form-field appearance="outline" fxFlex style="padding-right:5px">
+                                      <div fxLayout="row"  fxLayoutGap="5px">
+                                                <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Technique Name</mat-label>
                                                     <input name="TechniqueName" formControlName="TechniqueName"
                                                         placeholder="Technique Name" matInput>
@@ -227,12 +265,11 @@
                                                         placeholder="Machine Name" matInput>
                                                     <mat-error>Please enter MachineName </mat-error>
                                                 </mat-form-field>
-                                        </div>
-                                      <div fxLayout="row">
-                                      <mat-form-field appearance="outline" fxFlex style="padding-right:5px">
+                                        
+                                      <mat-form-field appearance="outline" fxFlex >
                                         <mat-label>Foot Note</mat-label>
                                         <textarea name="FootNote" formControlName="FootNote"
-                                            style="height: 50px;" placeholder="Foot Note"
+                                            style="height: 10px;" placeholder="Foot Note"
                                             matInput></textarea>
                                         <mat-error>Please enter FootNote </mat-error>
                                     </mat-form-field>
@@ -240,7 +277,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Suggestion Note</mat-label>
                                         <textarea name="SuggestionNote" formControlName="SuggestionNote"
-                                            style="height: 50px;" placeholder="Suggestion Note"
+                                            style="height: 10px;" placeholder="Suggestion Note"
                                             matInput></textarea>
                                         <mat-error>Please enter Suggestion Note </mat-error>
                                     </mat-form-field>

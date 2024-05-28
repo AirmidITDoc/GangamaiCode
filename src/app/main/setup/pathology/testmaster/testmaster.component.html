@@ -208,7 +208,7 @@ dynamicTableHeight>
             </div>
         </div>
     </mat-tab>
-    <mat-tab label="Add New Test">
+    <!-- <mat-tab label="Add New Test">
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
             <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
@@ -223,13 +223,13 @@ dynamicTableHeight>
                     <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                         {{_TestService.myform.controls.TestId.value?"Modify Test Master":"New
                         Test Master"}}
-                    </span>
+                    </span> -->
                     <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
                     style="margin-left: 1300px;">
                     <mat-icon>close</mat-icon>
                 </button> -->
 
-                </div>
+                <!-- </div>
             </mat-toolbar>
 
             <div class="content">
@@ -297,9 +297,9 @@ dynamicTableHeight>
                                                         <form [formGroup]="_TestService.AddParameterFrom">
                                                             <div fxLayout="row">
 
-                                                                <ng-container *ngIf="showDropdown1; else dropdown2">
+                                                                <ng-container *ngIf="showDropdown1; else dropdown2"> -->
                                                                     <!-- Dropdown 1 content goes here -->
-                                                                    <mat-form-field appearance="outline" fxFlex="50%">
+                                                                    <!-- <mat-form-field appearance="outline" fxFlex="50%">
                                                                         <mat-label>Subtest Name</mat-label>
                                                                         <mat-select formControlName="ParameterName"
                                                                             placeholder="Bank" #singleSelect required>
@@ -439,9 +439,9 @@ dynamicTableHeight>
                                                                 formControlName="SuggestionNote" style="height: 50px;"
                                                                 placeholder="Suggestion Note" matInput></textarea>
                                                             <mat-error>Please enter Suggestion Note </mat-error>
-                                                        </mat-form-field>
+                                                        </mat-form-field> -->
 
-
+<!-- 
 
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Service Name</mat-label>
@@ -504,4 +504,4 @@ dynamicTableHeight>
 
 
 
-    </mat-tab>
+    </mat-tab> -->

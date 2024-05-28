@@ -11,6 +11,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { element } from "protractor";
 import { ToastrService } from "ngx-toastr";
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { PainAssesList } from "app/main/nursingstation/clinical-care-chart/clinical-care-chart.component";
 
 
 @Component({
@@ -21,9 +22,9 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
     animations: fuseAnimations,
 })
 export class TestFormMasterComponent implements OnInit {
-    displayedColumns: string[] = [
-        "ParameterName"
-    ];
+    displayedColumns: string[] = ['ParameterName','Add'];
+    displayedColumns2: string[] = ['Reorder','ParameterName','UnitName','Range', 'Action'];
+
     Parametercmb: any = [];
     paraselect: any = ["new"];
     CategorycmbList: any = [];
@@ -38,6 +39,8 @@ export class TestFormMasterComponent implements OnInit {
     paramterList:any = new MatTableDataSource<TestList>();
 
     vCategoryId: any;
+    isSingleClick:boolean = false;
+
     //parametername filter
     public parameternameFilterCtrl: FormControl = new FormControl();
     public filteredParametername: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -138,11 +141,13 @@ export class TestFormMasterComponent implements OnInit {
             )
         );
     }
+
     getParameterNameCombobox() {
         this._TestService.getParameterMasterCombo()
-            .subscribe((data) => {
-               this.paramterList.data = data;
-               this.Parametercmb = data;                
+        .subscribe((data) => {
+            this.paramterList.data = data;
+            debugger;
+            this.Parametercmb = data;                
         });
         // console.log(this.Parametercmb);
     }
@@ -248,8 +253,24 @@ export class TestFormMasterComponent implements OnInit {
             console.log(this.DSTestList)
         });
     }
+        onDeleteRow(event) {
+            let temp = this.paramterList.data;
+        temp.push( {
+            ParameterName: event.ParameterName || "",
+        })
+        this.paramterList.data = temp;
+
+
+        temp = this.DSTestList.data;
+        this.DSTestList.data = []
+        temp.splice(temp.findIndex(item => item.ParameterName === event.ParameterName), 1);
+        this.DSTestList.data = temp;
+    }
 
     onAdd(event) {
+        console.log("evnet"+event)
+        if(!this.isSingleClick) this.isSingleClick = true;
+        else{
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
         this.ChargeList.push(
@@ -262,9 +283,8 @@ export class TestFormMasterComponent implements OnInit {
         this.paramterList.data = []
         temp.splice(temp.findIndex(item => item.ParameterName === event.ParameterName), 1);
         this.paramterList.data = temp;
-        // console.log(this.ChargeList);
-        // this._TestService.AddParameterFrom.get('ParameterName').setValue("");
-        // this._TestService.AddParameterFrom.reset();
+        this.isSingleClick = false;
+        }
     }
 
     onSubmit() {
