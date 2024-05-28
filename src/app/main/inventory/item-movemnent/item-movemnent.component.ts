@@ -35,7 +35,8 @@ export class ItemMovemnentComponent implements OnInit {
     'BatchNO',
     'RQty',
     'IQty',
-    'BalQty'
+    'BalQty',
+    'ReturnQty'
   ]
 
   hasSelectedContacts: boolean;
@@ -173,7 +174,7 @@ noOptionFound:boolean=false;
   }
   exportItemMovementExcel(){
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['TranDate','DocumentNo', 'ItemName','BatchNo', 'ReceiptQty', 'IssueQty', 'BalQty'];
+    let exportHeaders = ['MovementNo','TransactionDate','TransactionType','DocumentNo', 'ItemName','BatchNo', 'ReceiptQty', 'IssueQty', 'BalQty','ReturnQty'];
     this.reportDownloadService.getExportJsonData(this.dsItemMovement.data, exportHeaders, 'ItemMovement');
     this.dsItemMovement.data=[];
     this.sIsLoading = '';

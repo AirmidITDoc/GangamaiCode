@@ -173,24 +173,37 @@ export class NewRequestforlabComponent implements OnInit {
     this.registerObj = row;
     this.getSelectedObj(row);
   }
+  WardName:any;
+  RegNo:any; 
+  BedNo:any;
   getSelectedObj(obj) {
-    // debugger
-    this.registerObj = obj;
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' +obj.PatientName;
-    this.RegId = obj.RegId;
-    this.vAdmissionID = obj.AdmissionID;
-    this.DoctorName = obj.DoctorName;
-    this.vAge=obj.Age;
-    this.CompanyName = obj.CompanyName;
-    this.Tarrifname = obj.TariffName;
-    this.Doctorname = obj.DocName;
-    this.vOPIPId = obj.AdmissionID;
-    this.vOPDNo=obj.OPDNo;
-    this.vTariffId=obj.TariffId;
-    this.vClassId=obj.classId  
-   // console.log( this.PatientName)
-    // this.setDropdownObjs();
-
+    if(obj.IsDischarged == 1){
+      Swal.fire('Selected Patient is already discharged');
+      this.PatientName = ''  
+      this.vAdmissionID =  ''
+      this.RegNo = ''
+      this.Doctorname =  ''
+      this.Tarrifname = ''
+      this.CompanyName =''
+      this.vOPDNo = ''
+      this.WardName =''
+      this.BedNo = ''
+    }
+    else{
+      this.registerObj = obj;
+      // this.PatientName = obj.FirstName + '' + obj.LastName;
+      this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+      this.RegNo = obj.RegNo;
+      this.vAdmissionID = obj.AdmissionID
+      this.CompanyName = obj.CompanyName;
+      this.Tarrifname = obj.TariffName;
+      this.Doctorname = obj.DoctorName;
+      // this.vOpIpId = obj.AdmissionID;
+      this.vOPDNo = obj.IPDNo;
+      this.WardName = obj.RoomName;
+      this.BedNo = obj.BedName;
+      console.log(obj);
+    } 
     if(this.vAge > 100){
       Swal.fire("Age is Above 100 can't Generate Request !");
     }
