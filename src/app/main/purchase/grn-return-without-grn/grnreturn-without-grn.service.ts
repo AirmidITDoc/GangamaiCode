@@ -91,4 +91,8 @@ export class GRNReturnWithoutGRNService {
   public getVerifyGRNReturn(Param) {
     return this._httpClient.post("Pharmacy/VerifyGRNReturn", Param)
   }
+  public getGRNreturnreportview(GRNReturnId) {
+    return this._httpClient.get("Pharmacy/view-GRNReturnReport?GRNReturnId=" + GRNReturnId);
+  }
+  
 }

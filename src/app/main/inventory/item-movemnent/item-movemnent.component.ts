@@ -14,6 +14,7 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-item-movemnent',
@@ -45,7 +46,7 @@ export class ItemMovemnentComponent implements OnInit {
   isLoading = true;
   isItemSelected:boolean=false;
   isBatchNoSelected:boolean=false;
-
+  SpinLoading: boolean = false;
 
  
   dsItemMovement = new MatTableDataSource<ItemMovementList>();
@@ -177,7 +178,39 @@ noOptionFound:boolean=false;
     this.dsItemMovement.data=[];
     this.sIsLoading = '';
   } 
-  
+ 
+
+  viewgetItemmovementReportPdf() {
+    let ItemId=0;
+    let Fromdate = this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    let Todate = this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+
+    let FromStoreId = this._ItemMovemnentService.ItemSearchGroup.get("StoreId").value.StoreId || 0
+
+    let ToStoreId = this._ItemMovemnentService.ItemSearchGroup.get("ToStoreId").value.StoreId || 0
+
+    this.sIsLoading == 'loading-data'
+
+    setTimeout(() => {
+        this.SpinLoading = true;
+      debugger
+        this._ItemMovemnentService.getItemmovementview(Fromdate, Todate,ItemId, FromStoreId, ToStoreId).subscribe(res => {
+            const dialogRef = this._matDialog.open(PdfviewerComponent,
+                {
+                    maxWidth: "95vw",
+                    height: '850px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Itm Movement List Report Viewer"
+                    }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                this.sIsLoading = '';
+            });
+        });
+    }, 1000);
+}
 }
 
 

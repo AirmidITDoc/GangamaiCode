@@ -154,11 +154,17 @@
                                                             <img width="100" height="20px"
                                                                 src="assets/images/logos/WhatsApp.png">
                                                         </button>
+                                                        <!-- need to chk -->
                                                         <button mat-icon-button matTooltip="Credit Bill"
                                                             *ngIf="contact.PaidType=='Credit' && contact.IsRefundFlag==false"
                                                             (click)="OnPayment(contact)">
                                                             <mat-icon>payment</mat-icon>
                                                         </button>
+
+                                                        <!-- <button mat-icon-button matTooltip="Credit Bill"
+                                                            *ngIf="contact.BalanceAmount > 0" (click)="OnPayment(contact)">
+                                                            <mat-icon>payment</mat-icon>
+                                                        </button> -->
                                                         <button mat-icon-button matTooltip="Bill Return"
                                                             *ngIf="contact.IsRefundFlag==true">
                                                             <mat-icon>replay</mat-icon>
@@ -1198,7 +1204,7 @@
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <span style="font-size: 9px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
             Trust)</span>
-        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice
+        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">{{type}}Tax Invoice
         </h2>
     </div>
 
@@ -1252,7 +1258,7 @@
                     <div style="display:flex;align-items:center;margin-bottom: 5px;">
                         <span style="width:100px;display:inline-block;">Bill Date & Time</span>
                         <span style="margin:0 5px">:</span>
-                        <span>{{reportPrintObjList[0]?.Date | date: 'medium'}}</span>
+                        <span>{{reportPrintObjList[0]?.Time | date:"dd/MM/yyyy hh:mm"}}</span>
                     </div>
                     <div style="display:flex;align-items:center;margin-bottom: 5px;">
                         <span style="width:100px;display:inline-block;">Bill type</span>
@@ -1454,7 +1460,7 @@
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
             Trust)</span>
-        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice
+        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">{{type}} &nbsp; Tax Invoice
         </h4>
     </div>
 
@@ -1510,7 +1516,7 @@
                         <!-- <tr> -->
                         <td style="vertical-align: top;padding:0 10px 10px">
                             Bill No: {{reportPrintObjList[0]?.SalesNo}} <span style="margin-left: 10px;">Bill
-                                Date:{{reportPrintObjList[0]?.Date}}</span><br>
+                                Date:{{reportPrintObjList[0]?.Time | date:'short'}}</span><br>
                             Mode of Payment : {{reportPrintObjList[0]?.PayMode}} <br>
                         </td>
                         <!-- </tr> -->
@@ -1616,10 +1622,16 @@
                         <span style="margin:0 5px">:</span>
                         <span>₹ {{reportPrintObjList[0]?.RoundOff}}</span>
                     </div>
-                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
+                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold" *ngIf="!Creditflag">
                         <span style="display:inline-block;">Grand Total</span>
                         <span style="margin:0 5px">:</span>
                         <span>₹ {{reportPrintObjList[0]?.PaidAmount}}</span>
+                    </div>
+
+                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold" *ngIf="Creditflag">
+                        <span style="display:inline-block;">Balance Amount</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
                     </div>
                 </td>
             </tr>
@@ -1835,6 +1847,12 @@
                     </div>
                     <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
                         <span style="display:inline-block;">Grand Total</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
+                    </div>
+
+                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
+                        <span style="display:inline-block;">Balance Amount</span>
                         <span style="margin:0 5px">:</span>
                         <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
                     </div>

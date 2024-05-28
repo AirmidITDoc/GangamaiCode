@@ -3932,7 +3932,7 @@ export class Printsal {
   DoctorName: any;
   SalesNo: any;
   Date: Date;
-  Time: any;
+  Time: Date;
   ItemName: any;
   OP_IP_Type: any;
   GenderName: any;

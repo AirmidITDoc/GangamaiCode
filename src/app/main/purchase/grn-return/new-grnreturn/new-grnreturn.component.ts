@@ -13,6 +13,7 @@ import { GrnListComponent } from './grn-list/grn-list.component';
 import { ItemNameList } from '../grn-return.component';
 import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-grnreturn',
@@ -48,7 +49,7 @@ export class NewGRNReturnComponent implements OnInit {
     // "IsVerifiedUserId"
   ];
 
-  
+  SpinLoading: boolean = false;
   ToStoreList: any = [];
   VReQty:number = 0;
   VsupplierName:any;
@@ -373,6 +374,7 @@ OnSave(){
         toastClass: 'tostr-tost custom-toast-success',
       });
       this.OnReset();
+      this.viewgetGRNreturnReportPdf(response);
       this.Savebtn = true;
       this.isChecked = false;
     } else {
@@ -385,6 +387,39 @@ OnSave(){
       toastClass: 'tostr-tost custom-toast-error',
     });
   }); 
+}
+
+
+
+
+viewgetGRNreturnReportPdf(GRNReturnId) {
+  debugger
+  setTimeout(() => {
+    this.SpinLoading = true;
+    this._GRNReturnService.getGRNreturnreportview(
+      GRNReturnId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "GRN RETURN REPORT Viewer"
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+    });
+
+  }, 100);
 }
 OnReset() { 
   this._GRNReturnService.NewGRNReturnFrom.reset();

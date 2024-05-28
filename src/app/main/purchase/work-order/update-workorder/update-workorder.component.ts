@@ -12,6 +12,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatSelect } from '@angular/material/select';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-update-workorder',
@@ -473,6 +474,8 @@ getTotalAmt(element) {
         this.OnReset();
         this._matDialog.closeAll();
         this.Savebtn=false;
+        debugger
+        this.viewgetWorkorderReportPdf(response);
       } else {
         this.toastr.error('New WorkOrder Data not Saved !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -547,7 +550,35 @@ getTotalAmt(element) {
 
 
   
- 
+  
+  viewgetWorkorderReportPdf(WOId) {
+    debugger
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      
+   this._WorkOrderService.getWorkorderreportview(
+    WOId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Work ORDER Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = ' ';
+        });
+       
+    });
+   
+    },100);
+  }
+
 
   onClose(){
     this._matDialog.closeAll();

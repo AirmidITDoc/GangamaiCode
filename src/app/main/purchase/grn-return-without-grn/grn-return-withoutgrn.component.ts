@@ -10,6 +10,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { DatePipe } from '@angular/common';
 import { NewGRNReturnComponent } from './new-grnreturn/new-grnreturn.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-grn-return-withoutgrn',
@@ -58,6 +59,7 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
   vsupplierName:any;
   filteredOptionssupplier:any;
   noOptionFoundsupplier:any;
+  SpinLoading: boolean = false;
 
   dsGRNReturnWithoutList = new MatTableDataSource<GRNReturnList>();
   dsGRNReturnItemDetList = new MatTableDataSource<ItemNameList>();
@@ -149,6 +151,36 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
   }
   onClear(){
 
+  }
+
+  viewgetgrnreturnReportPdf(row) {
+    debugger
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._GRNReturnService.getGRNreturnreportview(
+        row.GRNReturnId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "GRN RETURN REPORT Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
   }
   newGRNRetunr(){
     const dialogRef = this._matDialog.open(NewGRNReturnComponent,

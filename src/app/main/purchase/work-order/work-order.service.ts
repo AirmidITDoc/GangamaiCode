@@ -103,7 +103,7 @@ public getWorkOrderPrint(Param){
 
 
 public getWorkorderreportview(WOID){
-  return this._httpClient.get("Pharmacy/view-Workeorder?WOID=" + WOID);
+  return this._httpClient.get("Pharmacy/view-Workorder?WOID="+WOID);
  }
   
 

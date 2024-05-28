@@ -53,4 +53,7 @@ export class ItemMovemnentService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
   
+  public getItemmovementview(Fromdate, Todate,ItemId, FromStoreId, ToStoreId){
+    return this._httpClient.get("InventoryTransaction/view-InvItemmovement?Fromdate=" + Fromdate+"&ToDate="+Todate+"&ItemId="+ItemId+"&FromStoreId="+FromStoreId+"&ToStoreId="+ToStoreId);
+  }
 }

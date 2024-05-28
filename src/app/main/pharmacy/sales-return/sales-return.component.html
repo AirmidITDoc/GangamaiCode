@@ -805,8 +805,7 @@
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
             Trust)</span>
-        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice
-            (SALES RETURN)
+        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice (SALES RETURN)
         </h4>
     </div>
 
@@ -861,7 +860,7 @@
                         <!-- <tr> -->
                         <td style="vertical-align: top;padding:0 10px 10px">
                             SR No: {{reportPrintObjList[0]?.SalesReturnNo}} <span style="margin-left: 10px;">Bill
-                                Date:{{reportPrintObjList[0]?.Date}}</span><br>
+                                Date:{{reportPrintObjList[0]?.Time | date:"short"}}</span><br>
                             Mode of Payment : {{reportPrintObjList[0]?.PayMode}} <br>
                         </td>
                         <!-- </tr> -->

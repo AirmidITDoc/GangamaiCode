@@ -171,7 +171,9 @@ export class SalesComponent implements OnInit {
   DiffNetRoundAmt: any = 0;
   roundoffAmt: any;
   Functionflag = 0;
+  type = " ";
 
+  Creditflag: boolean = false;
  
 
   patientDetailsFormGrp: FormGroup;
@@ -2496,6 +2498,8 @@ export class SalesComponent implements OnInit {
  
 
   getPrint3(el) {
+
+    
     var D_data = {
       "SalesID": el,// 
       "OP_IP_Type": this.OP_IPType
@@ -2505,6 +2509,7 @@ export class SalesComponent implements OnInit {
       this._salesService.getSalesPrint(D_data).subscribe(res => {
         this.reportPrintObjList = res as Printsal[];
         this.reportPrintObj = res[0] as Printsal;
+        console.log(this.reportPrintObj)
         setTimeout(() => {
           this.print3();
         }, 1000);
@@ -3937,7 +3942,7 @@ export class Printsal {
   DoctorName: any;
   SalesNo: any;
   Date: Date;
-  Time: any;
+  Time: Date;
   ItemName: any;
   OP_IP_Type: any;
   GenderName: any;
