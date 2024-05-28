@@ -69,7 +69,7 @@
                                             <div class="patient-col">
                                                 <span class="patient-col-key">IPDNo</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{vOPDNo}}</span>
+                                                <span class="patient-col-value" style="width: 150px;">{{vOPDNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">DoctorName</span>
@@ -80,12 +80,18 @@
                                                 <span class="patient-col-key">CompanyName</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{CompanyName}}</span>
-                                            </div>
+                                            </div> 
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">WardName/BedNo</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value" style="width: 250px;">{{WardName}}/{{BedNo}}</span>
+                                            </div> 
                                             <div class="patient-col">
                                                 <span class="patient-col-key ">TarrifName</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{Tarrifname}}</span>
                                             </div>
+                                           
                                         </div>
                                     </div>
                                 </div>
@@ -143,7 +149,7 @@
                                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
                                             (optionSelected)='getSelectedObjItem($event.option.value)'>
                                             <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
-                                                {{option.ItemID}} | {{option.ItemName}} |{{option.BalanceQty}}
+                                                {{option.ItemID}} | {{option.ItemName}} |{{option.BalQty}}
                                             </mat-option>
                                         </mat-autocomplete>
                                         <mat-error class="error" *ngIf="ItemForm.get('ItemId').invalid && ItemForm.get('ItemId').touched">

@@ -453,8 +453,9 @@ getOptionTextPurchaseItemList(option) {
 
   exportCurrentStockReportExcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['StoreName', 'ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty'];
+    let exportHeaders = ['ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty','ReturnQty'];
     this.reportDownloadService.getExportJsonData(this.dsCurrentStock.data, exportHeaders, 'CurrentStock');
+    console.log(this.dsCurrentStock.data)
     this.dsCurrentStock.data=[];
     this.sIsLoading = '';
   }

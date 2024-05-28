@@ -129,6 +129,7 @@ RegId:any;
   Patientlist:any=[];
 
   GetPrescrpList() { 
+    if(this.dsItemDetList.data.length > 0){
     let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired,ItemName from GeT_IP_PrescriptionItemDet where IPMedID=" + this.IPMedID + " Order by ItemName "
     this._SalesService.getchargesList(strSql).subscribe(data => {
       this.chargelist = data as any;
@@ -154,6 +155,12 @@ RegId:any;
     console.log(this.Patientlist);
     this._dialogRef.close(this.Patientlist);
     }); 
+  }
+  else{
+    this.toastr.error('Product not in list Please select Product!', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    }); 
+  }
   
    
   }
