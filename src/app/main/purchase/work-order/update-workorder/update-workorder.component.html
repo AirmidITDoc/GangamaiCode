@@ -124,26 +124,29 @@
                             <mat-form-field appearance="outline" fxFlex="5%">
                                 <mat-label>Qty</mat-label>
                                 <input name="Qty" formControlName="Qty" matInput #qty required type="text" OnlyNumber
-                                    (keyup)="calculateTotalAmount()" [(ngModel)]="vQty" (keydown)="onEnterQty($event)">
+                                    (keyup)="calculateTotalAmount()" [(ngModel)]="vQty" (keydown)="onEnterQty($event)"
+                                    (keypress)="keyPressAlphanumeric($event)">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="6%">
                                 <mat-label>Rate</mat-label>
                                 <input name="UnitRate" formControlName="UnitRate" matInput #rate type="text" OnlyNumber
                                     [(ngModel)]="vRate" (keyup)="calculateTotalAmount()" (keydown)="onEnterRate($event)"
-                                    required>
+                                    required  (keypress)="keyPressCharater($event)">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="8%">
                                 <mat-label>Total Amount</mat-label>
                                 <input name="TotalAmount" formControlName="TotalAmount" matInput type="text" OnlyNumber
-                                    [(ngModel)]="vTotalAmount" name="TotalAmount" readonly required>
+                                    [(ngModel)]="vTotalAmount" name="TotalAmount" readonly required
+                                    >
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="5%">
                                 <mat-label>Disc %</mat-label>
                                 <input name="Disc" formControlName="Disc" matInput [(ngModel)]="vDis" name="Dis" #disc  
-                                    (keydown)="onEnterDis($event)" type="text" OnlyNumber (keyup)="calculateDiscperAmount()">
+                                    (keydown)="onEnterDis($event)" type="text" OnlyNumber (keyup)="calculateDiscperAmount()"
+                                    (keypress)="keyPressCharater($event)">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="6%">
@@ -155,7 +158,8 @@
                             <mat-form-field appearance="outline" fxFlex="5%">
                                 <mat-label>GST%</mat-label>
                                 <input name="GST" formControlName="GST" matInput [(ngModel)]="vGST" name="GST" #gst  required
-                                    (keydown)="onEnterGST($event)" type="text" OnlyNumber (keyup)="calculateDiscperAmount()">
+                                    (keydown)="onEnterGST($event)" type="text" OnlyNumber (keyup)="calculateDiscperAmount()"
+                                    (keypress)="keyPressCharater($event)">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="6%">
@@ -242,7 +246,7 @@
                                         
                                         <input matInput [(ngModel)]="contact.Rate" 
                                             (keyup)="getCellCalculation(contact,contact.Rate)"
-                                            (keypress)="keyPressAlphanumeric($event)"
+                                            (keypress)="keyPressCharater($event)"
                                             step="0.1" type="text" OnlyNumber autocomplete="off">
                                     </mat-form-field>
                                 </mat-cell>
@@ -278,7 +282,7 @@
                                         
                                         <input matInput [(ngModel)]="contact.DiscPer"
                                             (keyup)="getCellCalculation(contact,contact.DiscPer)"
-                                            (keypress)="keyPressAlphanumeric($event)" 
+                                            (keypress)="keyPressCharater($event)"
                                             step="0.1" type="text" OnlyNumber autocomplete="off">
                                     </mat-form-field>
                                 </mat-cell>
@@ -307,7 +311,7 @@
                                         
                                         <input matInput [(ngModel)]="contact.VATPer"   
                                             (keyup)="getCellCalculation(contact,contact.VATPer)"
-                                            (keypress)="keyPressAlphanumeric($event)"
+                                            (keypress)="keyPressCharater($event)"
                                             step="0.1" type="text" OnlyNumber autocomplete="off">
                                     </mat-form-field>
                                 </mat-cell>

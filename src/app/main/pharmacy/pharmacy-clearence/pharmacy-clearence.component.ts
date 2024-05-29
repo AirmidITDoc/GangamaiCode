@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { PharmacyClearenceService } from './pharmacy-clearence.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-pharmacy-clearence',
@@ -52,12 +53,7 @@ export class PharmacyClearenceComponent implements OnInit {
   noOptionFound: any;
   filteredOptions: any;
 
-  vRegNo: any;
-  vPatienName: any;
-  vMobileNo: any;
-  vAdmissionDate: any;
-  vAdmissionID: any;
-  vIPDNo: any;
+ 
 
   dsIpItemList = new MatTableDataSource<IpItemList>();
   dsTable1IpItemList = new MatTableDataSource<IpRefItemList>();
@@ -98,16 +94,35 @@ export class PharmacyClearenceComponent implements OnInit {
   }
   getOptionTextref(option) {
     if (!option) return '';
-    return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegID + ')';
   }
+  vRegNo: any;
+  vRegId: any;
+  vPatienName: any;
+  vTariffName: any;
+  vDoctorName: any;
+  vAdmissionID: any;
+  vIPDNo: any;
+  vCompanyName:any;
+  CheckPatienInfo:boolean=false;
   getSelectedObj(obj) {
-    console.log(obj)
-    this.vRegNo = obj.RegNo;
-    this.vPatienName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-    this.vAdmissionDate = obj.AdmissionDate;
-    this.vMobileNo = obj.MobileNo;
-    this.vAdmissionID = obj.AdmissionID;
-    this.vIPDNo = obj.IPDNo  
+    if(obj.IsDischarged == 1){
+      Swal.fire('Selected Patient is already discharged');
+      //this.PatientInformRest();
+      this.vRegId = ''
+    }
+    else{
+      this.CheckPatienInfo=true;
+      console.log(obj)  
+      this.vPatienName = obj.FirstName + ' ' + obj.LastName;
+      this.vRegId = obj.RegID;
+      this.vAdmissionID = obj.AdmissionID;
+      this.vIPDNo = obj.IPDNo;
+      this.vRegNo =obj.RegNo;
+      this.vDoctorName = obj.DoctorName;
+      this.vTariffName =obj.TariffName
+      this.vCompanyName = obj.CompanyName;
+    } 
   } 
   
   getSalesList(obj) {

@@ -98,7 +98,7 @@ export class SupplierMasterService {
 
     public getSupplierMasterList(m_data) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_SupplierMasterList_by_Name",
+            "Generic/GetByProc?procName=m_Rtrv_SupplierMasterList_by_Name",
             m_data
         );
     }

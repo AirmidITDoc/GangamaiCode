@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OpeningBalanceService } from '../opening-balance.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-new-opening-balance',
@@ -95,6 +96,40 @@ export class NewOpeningBalanceComponent implements OnInit {
       return '';
     return option.ItemName;  // + ' ' + option.Price ; //+ ' (' + option.TariffId + ')';
   }
+  vlastDay: string = '';
+  lastDay2: string = '';
+  calculateLastDay(inputDate: string) {
+    // debugger
+    if (inputDate && inputDate.length === 6) {
+      const month = +inputDate.substring(0, 2);
+      const year = +inputDate.substring(2, 6);
+
+      if (month >= 1 && month <= 12) {
+        const lastDay = this.getLastDayOfMonth(month, year);
+        this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+        // console.log(this.vlastDay)
+
+        this._OpeningBalanceService.NewUseForm.get('ExpDatess').setValue(this.vlastDay)
+        this.BalanceQty.nativeElement.focus() 
+      } else {
+        this.vlastDay = 'Invalid month';
+      }
+    } else {
+      this.vlastDay = '';
+    }
+
+  }
+  CheckValidation(){
+    
+  }
+  getLastDayOfMonth(month: number, year: number): number {
+    return new Date(year, month, 0).getDate();
+  }
+  pad(n: number): string {
+    return n < 10 ? '0' + n : n.toString();
+  }
+  lastDay1: any;
   Onadd(){
     if ((this.vBatchNo == '' || this.vBatchNo == null || this.vBatchNo == undefined)) {
       this.toastr.warning('Please enter a Batch No', 'Warning !', {
@@ -131,7 +166,7 @@ export class NewOpeningBalanceComponent implements OnInit {
           ItemId: this._OpeningBalanceService.NewUseForm.get('ItemName').value.ItemID || 0,
           ItemName: this._OpeningBalanceService.NewUseForm.get('ItemName').value.ItemName || '',
           BatchNo: this.vBatchNo,
-          ExpDate: this.vExpDate, 
+          ExpDate: this.vlastDay, 
           BalQty: this.vBalQty|| 0,
           PerRate: this.vRatePerUnit || 0,
           UnitMRP: this.vMRP || 0,
@@ -149,7 +184,7 @@ export class NewOpeningBalanceComponent implements OnInit {
 ItemFromReset(){
   this._OpeningBalanceService.NewUseForm.get('ItemName').setValue('');
   this.vBatchNo = '';
-  this.vExpDate = '';
+  this.vlastDay = '';
   this.vBalQty = 0;
   this.vRatePerUnit = 0;
   this.vMRP = 0;
@@ -166,11 +201,74 @@ deleteTableRow(element) {
       toastClass: 'tostr-tost custom-toast-success',
     }); 
 }
-  OnSave(){
+Savebtn:boolean=false;
+vItemName:any;
+vItemId:any; 
+  OnSave() {
+    //debugger
+    if ((!this.dsItemNameList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    this.dsItemNameList.data.forEach((element) => {
 
+      this.vItemId = element.ItemID; 
+      this.vItemName = element.ItemName  
+      this.vBatchNo =  element.BatchNo
+      this.vExpDate =   element.ExpDate
+      this.vBalQty =   element.BalQty
+      this.vRatePerUnit =  element.PerRate  
+      this.vMRP =  element.UnitMRP 
+      this.vGST = element.GST  
+
+    });
+      this.Savebtn=true;
+    let openingBalanceParamInsertObj = {};
+    openingBalanceParamInsertObj['openingDate'] = this.dateTimeObj.date;
+    openingBalanceParamInsertObj['openingTime'] = this.dateTimeObj.time;
+    openingBalanceParamInsertObj['storeId'] = this._loggedService.currentUserValue.user.storeId;
+    openingBalanceParamInsertObj['openingDocNo'] = this._OpeningBalanceService.NewUseForm.get('SupplierName').value.SupplierId || 0;
+    openingBalanceParamInsertObj['itemId'] = this._OpeningBalanceService.NewUseForm.get('ItemName').value.ItemID || 0,
+    openingBalanceParamInsertObj['batchNo'] =  this.vBatchNo || ''
+    openingBalanceParamInsertObj['batchExpDate'] =   this.vExpDate
+    openingBalanceParamInsertObj['perUnitPurRate'] =  this.vRatePerUnit || 0
+    openingBalanceParamInsertObj['perUnitMrp'] =  this.vMRP || 0
+    openingBalanceParamInsertObj['vatPer'] = this.vGST || 0
+    openingBalanceParamInsertObj['balQty'] =  this.vBalQty || 0
+    openingBalanceParamInsertObj['addedby'] =this._loggedService.currentUserValue.user.id,
+    openingBalanceParamInsertObj['openingId'] = 0; 
+  
+    let submitData = {
+      "openingBalanceParamInsert": openingBalanceParamInsertObj 
+    };
+    console.log(submitData);
+    this._OpeningBalanceService.InsertOpeningBalSave(submitData).subscribe(response => {
+      if (response) {
+        this.toastr.success('Record Opening Balance Data Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.OnReset();
+        this._matDialog.closeAll();
+        this.Savebtn=false; 
+      } else {
+        this.toastr.error(' Opening Balance Data not Saved !, Please check error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    }, error => {
+      this.toastr.error(' Opening Balance Data not Saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }); 
   }
-  OnReset(){
 
+  OnReset() {
+    this._OpeningBalanceService.NewUseForm.reset();
+    this.dsItemNameList.data = [];
+    this.dsTempItemNameList.data = [];
+    this.chargeslist = [];
   }
   onClose(){
     this._matDialog.closeAll();
@@ -181,9 +279,10 @@ deleteTableRow(element) {
   @ViewChild('BalanceQty') BalanceQty: ElementRef;
   @ViewChild('GST') GST: ElementRef;
   @ViewChild('MRP') MRP: ElementRef;
-  @ViewChild('RatePerUnit') RatePerUnit: ElementRef; 
+  @ViewChild('RatePerUnit') RatePerUnit: ElementRef;  
+  @ViewChild('addbutton') addbutton: ElementRef; 
 
-  public onEnteritemid(event): void {
+  public onEnterItemName(event): void {
     if (event.which === 13) {
       this.BatchNo.nativeElement.focus()
     }
@@ -216,7 +315,28 @@ deleteTableRow(element) {
   }
   public onEnterRatePerUnit(event): void {
     if (event.which === 13) {
-      //this.RatePerUnit.nativeElement.focus()
+      this.addbutton.nativeElement.focus()
+    }
+  }
+
+
+  
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  } 
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
   }
 }

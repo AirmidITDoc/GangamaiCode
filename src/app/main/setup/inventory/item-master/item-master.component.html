@@ -1,7 +1,7 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
     <!-- HEADER -->
 
-    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;"  >
         <div fxLayout="row" fxLayoutAlign="start center">
 
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
@@ -106,9 +106,9 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="ItemGenericName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ItemGeneric
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-230"> ItemGeneric
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ItemGenericName}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-230"> {{element.ItemGenericName}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="ItemClassName">
@@ -267,9 +267,9 @@
 
 
 
-                                    <mat-header-row class="accent"
+                                    <mat-header-row class="accent min-width-2800"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-2800"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':DSItemMasterList!=null}"></mat-footer-row>
                             <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(DSItemMasterList!=null && DSItemMasterList.data.length==0)}"></mat-footer-row>

@@ -520,6 +520,50 @@ var m = {
     //     return;
     // }
     // else {
+      if ((this.vSupplierName == undefined || this.vSupplierName == undefined || this.vSupplierName == undefined)) {
+        this.toastr.warning('Please enter SupplierName.', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+    }
+    if ((this.vAddress == undefined || this.vAddress == undefined || this.vAddress == undefined)) {
+        this.toastr.warning('Please enter Address.', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+    }
+    if ((this.vMobile == undefined || this.vMobile == undefined || this.vMobile == undefined)) {
+        this.toastr.warning('Please enter Mobile..', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+    }
+    if (( this._supplierService.myform.get("CityId").value.CityId == undefined ||
+     this._supplierService.myform.get("CityId").value.CityId == undefined ||
+       this._supplierService.myform.get("CityId").value.CityId == undefined)) {
+        this.toastr.warning('Please select  City.', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+    }
+    if ((this.vEmail == undefined || this.vEmail == undefined || this.vEmail == undefined)) {
+      this.toastr.warning('Please enter Email..', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+  }
+  if ((this.vModeofpay == undefined || this.vModeofpay == undefined || this.vModeofpay == undefined)) {
+      this.toastr.warning('Please select Modeofpay.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+  }
+  if ((this.vStoreId == undefined || this.vStoreId == undefined || this.vStoreId == undefined)) {
+    this.toastr.warning('Please select Store.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+}
 
     let termsofPayment = 0;
     if (this._supplierService.myform.get("TermOfPayment").value)
@@ -545,7 +589,7 @@ var m = {
                 //     .value) {
                   debugger
                     var data = {
-                        storeId: this._loggedService.currentUserValue.user.storeId  || this._supplierService.myform.get("StoreId").value.storeId,// val,
+                        storeId: this._supplierService.myform.get("StoreId").value.storeId, 
                         supplierId: 0,
                     };
                     data2.push(data);
@@ -553,41 +597,42 @@ var m = {
                 console.log(data2);
                 debugger
                 var m_data = {
+                 
                     insertSupplierMaster: {
-                        supplierName: this._supplierService.myform.get("SupplierName").value,
-                        contactPerson:this._supplierService.myform.get("ContactPerson").value || "%",
-                        address:this._supplierService.myform.get("Address").value || "%",
-                        cityId: this._supplierService.myform.get("CityId").value.CityId,
-                        stateId:this._supplierService.myform.get("StateId").value.StateId,
-                        countryId:this._supplierService.myform.get("CountryId").value.CountryId,
-                        creditPeriod:this._supplierService.myform.get("CreditPeriod").value || "0",
-                        mobile:this._supplierService.myform.get("Mobile").value || "0",
-                        phone:this._supplierService.myform.get("Phone").value || "0",
-                        fax:this._supplierService.myform.get("Fax").value || "0",
-                        email:this._supplierService.myform.get("Email").value || "%",
-                        modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
-                        termsofPayment:termsofPayment || "0",
-                        currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
-                        octroi:0,
-                        freight:this._supplierService.myform.get("Freight").value ||"0",
-                        isDeleted: Boolean(JSON.parse(this._supplierService.myform.get("IsDeleted").value)),
-                        addedBy: 1,
-                        gstNo: this._supplierService.myform.get("GSTNo").value,
-                        supplierId:this._supplierService.myform.get("SupplierId").value || "0",
-                        PanNo: this._supplierService.myform.get("PanNo").value,
-                        pinCode:this._supplierService.myform.get("Pincode").value || "0",
-                        taluka:this._supplierService.myform.get("Taluka").value || "0",
-                        licNo:this._supplierService.myform.get("LicNo").value || "0",
-                        expDate: this.registerObj.ExpDate,//this._supplierService.myform.get("ExpDate").value.ExpDate || "",
-                        dlNo:this._supplierService.myform.get("DlNo").value || "0",
-                        BankId:BankId || "0",
-                        bankname:bankname|| " ",
-                        branch:this._supplierService.myform.get("BankBranch").value || "0",
-                        bankNo:this._supplierService.myform.get("BankNo").value || "0",
-                        ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
-                        venderTypeId:venderTypeId || "0",
-                        openingBalance:this._supplierService.myform.get("OpeningBal").value || "0",
-                        TaxNature:this._supplierService.myform.get("TaxNature").value || "0",
+                      supplierName: this._supplierService.myform.get("SupplierName").value,
+                      contactPerson:this._supplierService.myform.get("ContactPerson").value || "%",
+                      address:this._supplierService.myform.get("Address").value || "%",
+                      cityId: this._supplierService.myform.get("CityId").value.CityId,
+                      stateId:this._supplierService.myform.get("StateId").value.StateId,
+                      countryId:this._supplierService.myform.get("CountryId").value.CountryId,
+                      creditPeriod:this._supplierService.myform.get("CreditPeriod").value || "0",
+                      mobile:this._supplierService.myform.get("Mobile").value || "0",
+                      phone:this._supplierService.myform.get("Phone").value || "0",
+                      fax:this._supplierService.myform.get("Fax").value || "0",
+                      email:this._supplierService.myform.get("Email").value || "%",
+                      modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
+                      termsofPayment:termsofPayment || "0",
+                      currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
+                      octroi:0,
+                      freight:this._supplierService.myform.get("Freight").value ||"0",
+                      isDeleted: Boolean(JSON.parse(this._supplierService.myform.get("IsDeleted").value)),
+                      addedby:this._loggedService.currentUserValue.user.id || 0,
+                      gstNo: this._supplierService.myform.get("GSTNo").value || 0,
+                      supplierId:this._supplierService.myform.get("SupplierId").value || 0,
+                      panNo: this._supplierService.myform.get("PanNo").value || 0
+                        // pinCode:this._supplierService.myform.get("Pincode").value || "0",
+                        // taluka:this._supplierService.myform.get("Taluka").value || "0",
+                        // licNo:this._supplierService.myform.get("LicNo").value || "0",
+                        // expDate: this.registerObj.ExpDate,//this._supplierService.myform.get("ExpDate").value.ExpDate || "",
+                        // dlNo:this._supplierService.myform.get("DlNo").value || "0",
+                        // BankId:BankId || "0",
+                        // bankname:bankname|| " ",
+                        // branch:this._supplierService.myform.get("BankBranch").value || "0",
+                        // bankNo:this._supplierService.myform.get("BankNo").value || "0",
+                        // ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
+                        // venderTypeId:venderTypeId || "0",
+                        // openingBalance:this._supplierService.myform.get("OpeningBal").value || "0",
+                        // TaxNature:this._supplierService.myform.get("TaxNature").value || "0",
                     },
                     insertAssignSupplierToStore: data2,
                 };
@@ -617,20 +662,20 @@ var m = {
                 // for (var val of this._supplierService.myform.get("StoreId")
                 //     .value) {
                     var data4 = {
-                      storeId: this._loggedService.currentUserValue.user.storeId  || this._supplierService.myform.get("StoreId").value.storeId,// val,
-                        supplierId: this._supplierService.myform.get("SupplierId").value,
+                      storeId:  this._supplierService.myform.get("StoreId").value.storeId, 
+                      supplierId: this._supplierService.myform.get("SupplierId").value || 0,
                     };
                     data3.push(data4);
                 // }
                 console.log(data3);
                 var m_dataUpdate = {
                     updateSupplierMaster: {
-                        supplierId:this._supplierService.myform.get("SupplierId").value,
+                        supplierID:this._supplierService.myform.get("SupplierId").value || 0,
                         supplierName: this._supplierService.myform.get("SupplierName").value,
                         contactPerson:this._supplierService.myform.get("ContactPerson").value || "%",
                         address:this._supplierService.myform.get("Address").value || "%",
                         cityId: this._supplierService.myform.get("CityId").value.CityId,
-                        stateId:this._supplierService.myform.get("StateId").value.StateId,
+                        stateID:this._supplierService.myform.get("StateId").value.StateId,
                         countryId:this._supplierService.myform.get("CountryId").value.CountryId,
                         creditPeriod:this._supplierService.myform.get("CreditPeriod").value || "0",
                         mobile:this._supplierService.myform.get("Mobile").value || "0",
@@ -639,26 +684,25 @@ var m = {
                         email:this._supplierService.myform.get("Email").value || "%",
                         modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
                         termsofPayment:termsofPayment || "0",
-                        taxNature:this._supplierService.myform.get("TaxNature").value || "0",
                         currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
                         octroi:0,
                         freight:this._supplierService.myform.get("Freight").value ||"0",
                         isDeleted: Boolean(JSON.parse(this._supplierService.myform.get("IsDeleted").value)),
-                        updatedBy: 1,
-                        gstNo: this._supplierService.myform.get("GSTNo").value,
-                        panNo: this._supplierService.myform.get("PanNo").value,
-                        pinCode:this._supplierService.myform.get("Pincode").value || "0",
-                        taluka:this._supplierService.myform.get("Taluka").value || "0",
-                        licNo:this._supplierService.myform.get("LicNo").value || "0",
-                        expDate:this._supplierService.myform.get("ExpDate").value || "0",
-                        dlNo:this._supplierService.myform.get("DlNo").value || "0",
-                        BankId:BankId || "0",
-                        bankname:bankname|| " ",
-                        branch:this._supplierService.myform.get("BankBranch").value || "0",
-                        bankNo:this._supplierService.myform.get("BankNo").value || "0",
-                        ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
-                        venderTypeId:venderTypeId || "0",
-                        openingBalance:this._supplierService.myform.get("OpeningBal").value || "0"
+                        updatedBy:this._loggedService.currentUserValue.user.id || 0,
+                        gstNo: this._supplierService.myform.get("GSTNo").value || 0, 
+                        panNo: this._supplierService.myform.get("PanNo").value || 0
+                        // pinCode:this._supplierService.myform.get("Pincode").value || "0",
+                        // taluka:this._supplierService.myform.get("Taluka").value || "0",
+                        // licNo:this._supplierService.myform.get("LicNo").value || "0",
+                        // expDate:this._supplierService.myform.get("ExpDate").value || "0",
+                        // dlNo:this._supplierService.myform.get("DlNo").value || "0",
+                        // BankId:BankId || "0",
+                        // bankname:bankname|| " ",
+                        // branch:this._supplierService.myform.get("BankBranch").value || "0",
+                        // bankNo:this._supplierService.myform.get("BankNo").value || "0",
+                        // ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
+                        // venderTypeId:venderTypeId || "0",
+                        // openingBalance:this._supplierService.myform.get("OpeningBal").value || "0"
                     },
                     deleteAssignSupplierToStore: {
                         supplierId:
