@@ -42,13 +42,90 @@ public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
   
   return this._httpClient.get("InPatient/view-Admitted_PatientList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
 }
+  
+public getAdmittedPatientListCompanywiseView(FromDate,ToDate,DoctorId,WardId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
+}
+
+
+public getCurrAdmitwardwisechargesView(FromDate,ToDate,DoctorId,WardId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
+}
+  
+public getAdmittedPatientListCompanywisesummaryView(FromDate,ToDate,DoctorId,WardId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
+}
 
 public getAdmittedPatientCasepaaperView(AdmissionId){
   
   return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
 }
 
+public getDischargedetailView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
+public getDischargedetailwithmarkView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
+public getDischargedetailwithbillsummaryView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
+public getOptoIPconwithserviceavailedView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
+public getIpcurrAdmitwardwisedischargeView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
+public getDischargetypecompanywiseView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
 
+
+
+
+
+
+
+
+
+
+public getDeptwisecountsummaryView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
+public getRefdocwiseView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
+
+public getDischargetypewisecompanycountView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
+
+
+public getDischargetypewiseView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
+
+public getCurrRefDoctAdmitlistView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
+public getDoctwisecountsummaryView(AdmissionId){
+  
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+}
 public getViewAdvanceReceipt(AdvanceDetailID){
  return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
 }

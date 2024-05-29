@@ -186,7 +186,7 @@ noOptionFound:boolean=false;
     let Fromdate = this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
     let Todate = this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
 
-    let FromStoreId = this._ItemMovemnentService.ItemSearchGroup.get("StoreId").value.StoreId || 0
+    let FromStoreId = this._ItemMovemnentService.ItemSearchGroup.get("StoreId").value.storeid || 0
 
     let ToStoreId = this._ItemMovemnentService.ItemSearchGroup.get("ToStoreId").value.StoreId || 0
 

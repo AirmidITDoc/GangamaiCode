@@ -555,8 +555,66 @@ viewgetRefundofbillReportPdf(){
 
 
 
-viewgetDiscbillgeneratingpendingReportPdf(){}
-viewgetBillgenepaymentdueReportPdf(){}
+viewgetDiscbillgeneratingpendingReportPdf(){
+  setTimeout(() => {
+   
+    this.sIsLoading = 'loading-data';
+  //  this.AdList=true;
+  this._IPBillingService.getDischargeBillgeneratependingview(
+   this.datePipe.transform(this._IPBillingService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+   this.datePipe.transform(this._IPBillingService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+  
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Discharge Bill Generate Pending Report View"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = '';
+        // this.SpinLoading = false;
+      });
+    
+  });
+ 
+  },100);
+}
+viewgetBillgenepaymentdueReportPdf(){
+  setTimeout(() => {
+   
+     this.sIsLoading = 'loading-data';
+   //  this.AdList=true;
+   this._IPBillingService.getBillgeneratepaymentdueview(
+    this.datePipe.transform(this._IPBillingService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    this.datePipe.transform(this._IPBillingService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+   
+   ).subscribe(res => {
+     const dialogRef = this._matDialog.open(PdfviewerComponent,
+       {
+         maxWidth: "85vw",
+         height: '750px',
+         width: '100%',
+         data: {
+           base64: res["base64"] as string,
+           title: "Bill Generated Payment Due Report View"
+         }
+       });
+       dialogRef.afterClosed().subscribe(result => {
+         // this.AdList=false;
+         this.sIsLoading = '';
+         // this.SpinLoading = false;
+       });
+     
+   });
+  
+   },100);
+}
  
   userChk(option) {
     this.UserId = option.UserID || 0;

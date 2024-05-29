@@ -66,6 +66,14 @@ export class IPBillingService {
   public getCreditReceipt(FromDate,ToDate){
     return this._httpClient.get("IPReport/view-IPCreditReport?FromDate=" + FromDate + "&ToDate="+ToDate);
   }
+  
+  public getBillgeneratepaymentdueview(FromDate,ToDate){
+    return this._httpClient.get("IPReport/view-IPCreditReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+  }
+
+  public getDischargeBillgeneratependingview(FromDate,ToDate){
+    return this._httpClient.get("IPReport/view-IPCreditReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+  }
 
   
 }
