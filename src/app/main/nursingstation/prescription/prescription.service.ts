@@ -39,7 +39,7 @@ export class PrescriptionService {
 
 
   public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN",Param)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPDrugName",Param)
   }
 
   

@@ -298,7 +298,7 @@ OnSave(){
   }
 
   grnReturnSave['cash_Credit'] = checkcashtype;
-  grnReturnSave['remark'] = this._GRNReturnService.NewGRNRetFinalFrom.get('Remark').value
+  grnReturnSave['remark'] = this._GRNReturnService.NewGRNRetFinalFrom.get('Remark').value || '';
   grnReturnSave['isVerified'] = false;
   grnReturnSave['isClosed'] = false;
   grnReturnSave['addedby'] =this._loggedService.currentUserValue.user.id || 0;

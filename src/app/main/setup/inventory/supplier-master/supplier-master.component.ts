@@ -121,6 +121,7 @@ export class SupplierMasterComponent implements OnInit {
     }
 
     onEdit(row) {
+        console.log(row)
         if(row.Fax){
             row.Fax=row.Fax.trim()
         }else{
@@ -129,6 +130,7 @@ export class SupplierMasterComponent implements OnInit {
         var m_data = {
             SupplierId: row.SupplierId,
             SupplierName: row.SupplierName,
+            SupplierType : row.SupplierType,
             ContactPerson: row.ContactPerson,
             Address: row.Address,
             CityId: row.CityId,
