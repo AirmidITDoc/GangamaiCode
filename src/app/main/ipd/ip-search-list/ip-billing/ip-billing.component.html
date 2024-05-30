@@ -93,13 +93,22 @@
                                         </mat-form-field>
                                     </div>
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                        <mat-form-field appearance="outline">
+                                        <!-- <mat-form-field appearance="outline">
                                             <mat-label>Qty</mat-label>
                                             <input matInput [(ngModel)]="b_qty" name="bQty" #qty
                                                 (keyup)="calculateTotalAmt()" formControlName="qty" required
                                                 type="number" id="qty" (keydown)="onEnterqty($event)">
                                             <mat-error
                                                 *ngIf="Serviceform.get('qty').invalid && Serviceform.get('qty').touched">
+                                                Qty is required</mat-error>
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Qty</mat-label>
+                                            <input matInput [(ngModel)]="b_qty" name="bQty" #qty required type="text" OnlyNumber 
+                                                (keyup)="calculateTotalAmt()" (keydown)="onEnterqty($event)"
+                                                formControlName="qty" id="qty" required  (keypress)="keyPressAlphanumeric($event)">
+                                                <mat-error *ngIf="Serviceform.get('qty').invalid && Serviceform.get('qty').touched">
                                                 Qty is required</mat-error>
                                         </mat-form-field>
                                     </div>

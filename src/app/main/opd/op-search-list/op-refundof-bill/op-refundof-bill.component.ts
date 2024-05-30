@@ -377,6 +377,7 @@ export class OPRefundofBillComponent implements OnInit {
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
     PatientHeaderObj['RefundAmount'] =   this.TotalRefundAmount;
     PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+    PatientHeaderObj['BillId'] =  parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
    
     const insertRefund = new InsertRefund(InsertRefundObj);
    

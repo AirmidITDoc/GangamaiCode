@@ -139,14 +139,16 @@ export class BrowseOPBillComponent implements OnInit {
   vpaidamt: any = 0;
   vbalanceamt: any = 0;
   NewBillpayment(contact) {
-
+debugger
+console.log(contact)
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
     PatientHeaderObj['PatientName'] = contact.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = contact.vOPIPId;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.VisitId;
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
-    PatientHeaderObj['BillId'] = contact.BillNo;
+    PatientHeaderObj['BillId'] = contact.BillNo
+    ;
 
     const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {
@@ -291,6 +293,7 @@ export class BrowseOPBillComponent implements OnInit {
     }
     setTimeout(() => {
       this.isLoadingStr = 'loading';
+      debugger
       this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
         this.dataSource.data = Visit as BrowseOPDBill[];
         this.dataSource.data = Visit["Table1"]??[] as BrowseOPDBill[];
