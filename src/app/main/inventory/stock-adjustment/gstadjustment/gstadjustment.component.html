@@ -1,0 +1,105 @@
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                GST Adjustment
+            </span>
+        </div>
+        <button mat-icon-button (click)="onClose()" aria-label="Close dialog" style="margin-left: 510px;color: white;">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-24 pb-56" >
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <form [formGroup]="_StockAdjustment.GSTAdjustment" >
+                            <div fxLayout="row">
+                                <label style="margin-bottom: 15px;">ItemName :</label>
+                                <span style="padding: 0px 15px 15px 15px;">{{itemname}}</span>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutGap="4px">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>CGSTPer</mat-label>
+                                    <input name="CGSTPer" formControlName="CGSTPer" matInput required readonly
+                                    (keyup.enter)="focusNext('SGSTPer')" [(ngModel)]="vCGSTPer" type="text" OnlyNUmber
+                                    >
+                                </mat-form-field>
+                                
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>SGSTPer</mat-label>
+                                    <input name="SGSTPer" formControlName="SGSTPer" matInput required type="text" OnlyNUmber
+                                    (keyup.enter)="focusNext('IGSTPer')" id="SGSTPer" [(ngModel)]="vSGSTPer" readonly
+                                     >
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>IGSTPer</mat-label>
+                                    <input name="IGSTPer" formControlName="IGSTPer" matInput required type="text" OnlyNUmber
+                                    (keyup.enter)="focusNext('NewCGSTPer')" id="IGSTPer" [(ngModel)]="vIGSTPer" readonly
+                                    >
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="4px">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>New CGSTPer</mat-label>
+                                    <input name="NewCGSTPer" formControlName="NewCGSTPer" type="text" OnlyNUmber
+                                      matInput required (keyup.enter)="focusNext('NewSGSTPer')"
+                                        id="NewCGSTPer" [(ngModel)]="vNewCGSTPer"   (keyup)="calculationAmt()" 
+                                        (keypress)="keyPressCharater($event)" >
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>New SGSTPer</mat-label>
+                                    <input name="NewSGSTPer" formControlName="NewSGSTPer" matInput required type="text" OnlyNUmber
+                                     id="NewSGSTPer" [(ngModel)]="vNewSGSTPer" 
+                                    (keyup)="calculationAmt()"   (keyup.enter)="focusNext('NewIGSTPer')"
+                                    (keypress)="keyPressCharater($event)">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>New IGSTPer</mat-label>
+                                    <input name="NewIGSTPer" formControlName="NewIGSTPer" matInput required type="text" OnlyNUmber
+                                     [(ngModel)]="vNewIGSTPer"  id="NewIGSTPer"   (keyup)="calculationAmt()"
+                                     (keypress)="keyPressCharater($event)">
+                                </mat-form-field>
+
+                            </div>
+
+                            <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 20px;">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Old GSTPer</mat-label>
+                                    <input name="OldTotalGSTPer" formControlName="OldTotalGSTPer" matInput required type="text" OnlyNUmber
+                                     [(ngModel)]="vOldTotalGSTPer"  id="OldTotalGSTPer" >
+                                </mat-form-field>
+    
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>New GSTPer</mat-label>
+                                    <input name="TotalGSTPer" formControlName="TotalGSTPer" matInput required type="text" OnlyNUmber
+                                     [(ngModel)]="vTotalGSTPer"  id="TotalGSTPer" >
+                                </mat-form-field>
+    
+                                <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                                <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn">Save</button>
+                            </div>
+                        </form>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

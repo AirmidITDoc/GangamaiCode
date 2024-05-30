@@ -35,16 +35,14 @@ CreateStorForm() {
   }
 
   createNewUseForm(){
-    return this._formbuilder.group({
-      startdate: [(new Date()).toISOString()],
-      enddate: [(new Date()).toISOString()],
+    return this._formbuilder.group({ 
       ItemName:'',
+      BatchNo:'',
+      ExpDate:'',
       BalanceQty:'',
       GST:'',
-      RatePerUnit:'',
       MRP:'',
-      BatchNo:'',
-      ExpDate:'', 
+      RatePerUnit:'', 
 
 
     })
@@ -61,5 +59,9 @@ CreateStorForm() {
   }
   public getOpeningBalItemDetList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OpeningItemDet", Param);
+  }
+  
+  public InsertOpeningBalSave(Param){
+    return this._httpClient.post("Inventory/Invopeningbalance", Param)
   }
 }

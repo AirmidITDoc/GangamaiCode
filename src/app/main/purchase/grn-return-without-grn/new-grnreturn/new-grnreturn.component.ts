@@ -9,6 +9,7 @@ import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popu
 import { MatTableDataSource } from '@angular/material/table';
 import { ItemList } from 'app/main/pharmacy/brows-sales-return-bill/brows-sales-return-bill.component';
 import { ItemNameList } from '../grn-return-withoutgrn.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-grnreturn',
@@ -63,6 +64,7 @@ export class NewGRNReturnComponent implements OnInit {
   chargeslist:any=[];
   vGSTType:any;
   screenFromString:'GrnReturn-Form'
+  SpinLoading: boolean = false;
 
  dsItemList = new MatTableDataSource<ItemNameList>();
  dsTempItemNameList = new MatTableDataSource<ItemNameList>();
@@ -410,6 +412,7 @@ export class NewGRNReturnComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-success',
         });
         this.OnReset();
+        this.viewgetgrnreturnReportPdf(response);
         this.Savebtn = true;
       } else {
         this.toastr.error('New GRN Return Data not saved !, Please check validation error..', 'Error !', {
@@ -435,6 +438,37 @@ export class NewGRNReturnComponent implements OnInit {
   }
   public setFocus(nextElementId): void {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+  }
+
+
+  viewgetgrnreturnReportPdf(GRNReturnId) {
+    debugger
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._GRNReturnService.getGRNreturnreportview(
+        GRNReturnId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "GRN RETURN REPORT Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
   }
 }
 

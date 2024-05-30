@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
     <!-- HEADER -->
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -66,7 +66,7 @@
                         <div fxlayout="row">
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSSupplierMaster"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height: 100%;">
 
                                     <ng-container matColumnDef="SupplierId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
@@ -76,22 +76,22 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="ContactPerson">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ContactPerson
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header  > ContactPerson
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ContactPerson}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm  > {{element.ContactPerson}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="SupplierName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Supplier </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.SupplierName}}
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header  > Supplier </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm  > {{element.SupplierName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="Address">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Address
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm  >Address
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.Address}}
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm > {{element.Address}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -106,7 +106,7 @@
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Mobile}} </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="Phone">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Phone </mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header > Phone </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Phone}} </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="Fax">
@@ -115,12 +115,12 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="Email">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header > Email </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Email}} </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="GSTNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> GSTNo </mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header  > GSTNo </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.GSTNo}} </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="PanNo">
@@ -173,9 +173,9 @@
 
 
 
-                                    <mat-header-row class="accent"
+                                    <mat-header-row class="accent min-width-2400"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-2400"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':DSSupplierMaster!=null}"></mat-footer-row>

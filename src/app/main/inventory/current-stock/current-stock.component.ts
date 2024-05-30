@@ -261,6 +261,7 @@ getOptionTextPurchaseItemList(option) {
       "ItemName": this._CurrentStockService.SearchGroup.get('ItemCategory').value.ItemName || '%',
       "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
     }
+    console.log(vdata)
       this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
       this.dsCurrentStock.data = data as CurrentStockList[];
       this.dsCurrentStock.sort = this.sort;
@@ -452,8 +453,9 @@ getOptionTextPurchaseItemList(option) {
 
   exportCurrentStockReportExcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['StoreName', 'ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty'];
+    let exportHeaders = ['ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty','ReturnQty'];
     this.reportDownloadService.getExportJsonData(this.dsCurrentStock.data, exportHeaders, 'CurrentStock');
+    console.log(this.dsCurrentStock.data)
     this.dsCurrentStock.data=[];
     this.sIsLoading = '';
   }

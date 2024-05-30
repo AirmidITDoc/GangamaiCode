@@ -109,7 +109,7 @@
                                 <mat-icon class="searchiconbutton">search</mat-icon>
                             </button> 
 
-                            <button  
+                            <button   (click)="viewgetItemmovementReportPdf()"
                                 matTooltip="Pdf" style="width: 45px;border-color: white;">
                                 <img width="32" height="10px" src="assets/images/logos/pdfimage.png">
                             </button> 
@@ -213,7 +213,7 @@
 
                                     <ng-container matColumnDef="RQty">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            R Qty </mat-header-cell>
+                                            ReceivedQty </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.ReceiptQty }}
                                         </mat-cell>
@@ -232,6 +232,14 @@
                                             Bal Qty </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.BalQty}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ReturnQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            ReturnQty </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ReturnQty}}
                                         </mat-cell>
                                     </ng-container>
 

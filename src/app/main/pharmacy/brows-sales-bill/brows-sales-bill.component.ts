@@ -64,9 +64,11 @@ export class BrowsSalesBillComponent implements OnInit {
   UTRNO: any;
   rowid: any = [];
   TotalAmt: any = 0;
-  sIsLoading:any='';
-  AdList:boolean=false;
+  sIsLoading: any = '';
+  AdList: boolean = false;
+  type = " ";
 
+  Creditflag: boolean = false;
 
   displayedColumns: string[] = [
     'action',
@@ -124,7 +126,7 @@ export class BrowsSalesBillComponent implements OnInit {
     'IGST'
   ]
 
-  
+
   displayedColumnsplist = [
     // 'IsMLC',
     'RegNo',
@@ -167,7 +169,7 @@ export class BrowsSalesBillComponent implements OnInit {
     private _loggedService: AuthenticationService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe, 
+    public datePipe: DatePipe,
     public toastr: ToastrService,
 
   ) { }
@@ -193,17 +195,17 @@ export class BrowsSalesBillComponent implements OnInit {
       "Admtd_Dschrgd_All": 0,
       "M_Name": this._AdmissionService.myFilterform.get("MiddleName").value + '%' || "%",
       "IPNo": this._AdmissionService.myFilterform.get("IPDNo").value || '0',
-      Start:(this.paginator?.pageIndex??1),
-      Length:(this.paginator?.pageSize??10),
+      Start: (this.paginator?.pageIndex ?? 1),
+      Length: (this.paginator?.pageSize ?? 10),
     }
     console.log(Param);
     this._AdmissionService.getAdmittedPatientList_1(Param).subscribe(data => {
-      this.dataSource.data = data["Table1"]??[] as Admission[];
+      this.dataSource.data = data["Table1"] ?? [] as Admission[];
       if (this.dataSource.data.length > 0) {
-        this.Admissiondetail( this.dataSource.data);
+        this.Admissiondetail(this.dataSource.data);
       }
       this.dataSource.sort = this.sort;
-      this.resultsLength= data["Table"][0]["total_row"];
+      this.resultsLength = data["Table"][0]["total_row"];
       this.sIsLoading = '';
     },
       error => {
@@ -234,14 +236,14 @@ export class BrowsSalesBillComponent implements OnInit {
     //       this.VBillcount= this.VBillcount+1;
     //     }
     //     else if(data[i].IsOpToIPConv ==1){
-          
+
     //       this.VOPtoIPcount=this.VOPtoIPcount + 1;
     //     }else if(data[i].IsDischarged ==1){
     //       this.vIsDischarg= this.vIsDischarg +1;
     //     }
     //     this.Vtotalcount= this.Vtotalcount+1;
     // }
-  
+
   }
 
 
@@ -382,7 +384,7 @@ export class BrowsSalesBillComponent implements OnInit {
             });
             this._matDialog.closeAll();
             this.getSalesList();
-          } 
+          }
           else {
             // Swal.fire('Error !', 'Sales  Payment not saved', 'error');
             this.toastr.error('Sales Credit Payment  not saved !', 'error', {
@@ -501,11 +503,18 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   getPrint2(el) {
-
-    var D_data = {
-      "SalesID": el.SalesId,// 
-      "OP_IP_Type": el.OP_IP_Type
+    debugger
+    if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
+      this.type = "Credit"
+      this.Creditflag = true;
+    } else if(!(el.PaidType=='Credit' && el.IsRefundFlag==false)){
+      this.type=" "
+      this.Creditflag = false;
     }
+    var D_data = {
+        "SalesID": el.SalesId,// 
+        "OP_IP_Type": el.OP_IP_Type
+      }
 
     let printContents;
     this.subscriptionArr.push(
@@ -538,50 +547,50 @@ export class BrowsSalesBillComponent implements OnInit {
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       // this.SpinLoading =true;
-     this.AdList=true;
-    this._BrowsSalesBillService.getPdfSales(el.SalesId, el.OP_IP_Type).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pharma sales bill viewer"
-          }
-        });
+      this.AdList = true;
+      this._BrowsSalesBillService.getPdfSales(el.SalesId, el.OP_IP_Type).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharma sales bill viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.sIsLoading = '';
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
   ViewSalesRetPdf(el) {
-    this.sIsLoading =true;
+    this.sIsLoading = true;
     setTimeout(() => {
-     
-     this.AdList=true;
-    this._BrowsSalesBillService.getSalesReturnPdf(el.SalesReturnId, el.OP_IP_Type).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pharma sales bill viewer"
-          }
-        });
+
+      this.AdList = true;
+      this._BrowsSalesBillService.getSalesReturnPdf(el.SalesReturnId, el.OP_IP_Type).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharma sales bill viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.sIsLoading = ' ';
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
   getPrint3(el) {
@@ -666,7 +675,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
 
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
@@ -738,7 +747,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
 
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
@@ -811,7 +820,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
 
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
@@ -884,7 +893,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
-      this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
+      // this.printTemplate = this.printTemplate.replace('StrBillDate', this.transform2(objPrintWordInfo.Time));
       this.printTemplate = this.printTemplate.replace('SetMultipleRowsDesign', strrowslist);
 
       this.printTemplate = this.printTemplate.replace(/{{.*}}/g, '');
@@ -1109,7 +1118,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   loadingarry: any = [];
   getWhatsappshareSales(el) {
-    
+
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": el.RegNo,
@@ -1119,7 +1128,7 @@ export class BrowsSalesBillComponent implements OnInit {
         "smsFlag": 0,
         "smsDate": this.currentDate,
         "tranNo": el.SalesId,
-        "PatientType":2,//el.PatientType,
+        "PatientType": 2,//el.PatientType,
         "templateId": 0,
         "smSurl": "info@gmail.com",
         "filePath": this.Filepath || '',
@@ -1211,16 +1220,16 @@ export class BrowsSalesBillComponent implements OnInit {
     //   this.expPrint(el);
     // }, 1000);
     this.reportPrintObjList = reportPrintObjList;
-    
+
     let columnList = [];
     if (this.reportPrintObjList.length == 0) {
     }
     else {
       var excelData = [];
       // let str = {
-      
+
       //   "Sales Final BILL": "\\n"
-        
+
       // };
       // excelData.push(str);
 
@@ -1244,20 +1253,20 @@ export class BrowsSalesBillComponent implements OnInit {
           "Qty": this.reportPrintObjList[i]["Qty"] ? this.reportPrintObjList[i]["Qty"] : "N/A",
           "UnitMRP": this.reportPrintObjList[i]["UnitMRP"] ? this.reportPrintObjList[i]["UnitMRP"] : "N/A",
           "TotalAmount": this.reportPrintObjList[i]["TotalAmount"] ? this.reportPrintObjList[i]["TotalAmount"] : "N/A"
-         
+
         };
         excelData.push(singleEntry);
       }
       excelData.concat('/n');
 
       let singleEntry1 = {
-        
+
         "": this.TotalAmt ? this.TotalAmt : "N/A"
 
       };
       excelData.push(singleEntry1);
 
-      var fileName = "Sales Bill " + el.SalesId +".xlsx";
+      var fileName = "Sales Bill " + el.SalesId + ".xlsx";
       if (exprtType == "Excel") {
         const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(excelData);
         var wscols = [];
@@ -1286,7 +1295,7 @@ export class BrowsSalesBillComponent implements OnInit {
         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
         XLSX.writeFile(wb, fileName);
       }
-       else {
+      else {
         let doc = new jsPDF('p', 'pt', 'a4');
         doc.page = 0;
         var col = [];
@@ -1303,11 +1312,11 @@ export class BrowsSalesBillComponent implements OnInit {
         });
 
         doc.autoTable(col, rows, {
-          margin: { left: 20, right:20, top:50 },
+          margin: { left: 20, right: 20, top: 50 },
           theme: "grid",
           styles: { fillColor: [205, 110, 210] },
           columnStyles: { 0: { halign: 'center', fillColor: [0, 255, 0] } }, // Cells in first column centered and green
-          
+
           // styles: {
           //   fontSize: 3,
           //   textColor:20

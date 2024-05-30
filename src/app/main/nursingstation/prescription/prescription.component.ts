@@ -170,7 +170,8 @@ export class PrescriptionComponent implements OnInit {
       this.SpinLoading =true;
     //  this.AdList=true;
     this._PrescriptionService.getIpPrescriptionview(
-      row.OP_IP_ID,1
+      row.OP_IP_ID,row.OPD_IPD_Type
+      
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {

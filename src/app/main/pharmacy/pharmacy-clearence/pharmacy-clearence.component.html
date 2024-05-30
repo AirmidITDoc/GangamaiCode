@@ -59,8 +59,79 @@
                                         </mat-autocomplete>
                                     </mat-form-field>
                                 </div>
+                                <div
+                                *ngIf="CheckPatienInfo">
+                                <div class="content-card">
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                        fxLayoutGap="5px"  >
+                                        <div fxFlex.gt-sm="100%" fxFlex>
+                                            <div fxlayout="row" style="background-color: #191a1c21;padding: 5px;"> 
+                                                <div class="patient-info-sales my-8"> 
+                                                    <div class="sales-patient-info-title">
+                                                        <span style="font-weight: 700;">
+                                                            Patient Information
+                                                        </span>
+                                                    </div>
+                                                    <div class="sales-patient-info" fxFlexFill
+                                                        fxLayout="row"
+                                                        fxLayoutAlign="space-between center"
+                                                        class="patient-info">
+                                                        <div class="patient-sub">
+                                                            <div class="patient-info-row patient-info-1-111 pt-8"
+                                                                fxLayout="row"
+                                                                fxLayoutAlign="space-between center">
+                                                                <div class="patient-col">
+                                                                    <span
+                                                                        class="patient-col-key">PatientName/Reg
+                                                                        No</span>
+                                                                    <span>:</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vPatienName}}/{{vRegNo}}</span>
+                                                                </div>
+                                                                <div class="patient-col" >
+                                                                    <span
+                                                                        class="patient-col-key">IPDNo</span>
+                                                                    <span>:</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vIPDNo}}</span>
+                                                                </div>
+                                                               
+                                                                <div class="patient-col"  >
+                                                                    <span
+                                                                        class="patient-col-key">DoctorName
+                                                                        </span>
+                                                                    <span>:</span>
+                                                                    <span
+                                                                        class="patient-col-value">Dr.{{vDoctorName}}</span>
+                                                                </div>
+                                                                <div class="patient-col">
+                                                                    <span
+                                                                        class="patient-col-key">TariffName
+                                                                      </span>
+                                                                    <span>:</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vTariffName}}</span>
+                                                                </div>
+                                                                <div class="patient-col">
+                                                                    <span
+                                                                        class="patient-col-key">CompanyName
+                                                                      </span>
+                                                                    <span>:</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vCompanyName}}</span>
+                                                                </div>
+                                                                
+                                                            </div> 
+                                                        </div> 
+                                                    </div> 
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
     
-                                <div>
+                                <!-- <div>
                                     <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                         <div class="patient-info-container">
                                             <div class="patient-info-box">
@@ -94,7 +165,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </form>
     

@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { IpReportComponent } from './ip-report/ip-report.component';
 import { IpBillingReportComponent } from './ip-billing-report/ip-billing-report.component';
 import { OPBillingReportComponent } from './opbilling-report/opbilling-report.component';
+import { OPMISReportsComponent } from './op-mis-reports/op-mis-reports.component';
+import { CommonReportComponent } from './common-report/common-report.component';
 
 
 
@@ -39,11 +41,25 @@ const appRoutes: Routes = [
                 (m) => m.IpbillingModule
             ),
     },
+    // {
+    //     path: "opreports",
+    //     loadChildren: () =>
+    //         import("./op-reports/opreports.module").then(
+    //             (m) => m.OPReportsModule
+    //         ),
+    // }
     {
         path: "opreports",
         loadChildren: () =>
-            import("./op-reports/opreports.module").then(
-                (m) => m.OPReportsModule
+            import("./op-mis-reports/op-mis-report.module").then(
+                (m) => m.OPMisReportModule
+            ),
+    },
+    {
+        path: "commanreport",
+        loadChildren: () =>
+            import("./common-report/common-report.module").then(
+                (m) => m.CommonReportModule
             ),
     }
 ];

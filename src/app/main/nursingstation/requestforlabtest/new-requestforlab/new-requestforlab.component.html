@@ -39,7 +39,8 @@
                                         </span>
                                         <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText" (optionSelected)='getSelectedObj($event.option.value)'>
                                             <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
+                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                                {{option.RegNo}} |
                                                 {{option.MobileNo}}
                                             </mat-option>
                                         </mat-autocomplete>
@@ -60,32 +61,38 @@
                                     <span class="h2">Patient Information</span>
                                 </div>
                                 <div class="patient-info-box my-8">
-                                    <div class="patient-info-row row-gap-4">
+                                    <div class="patient-info-row">
                                         <div class="patient-col">
-                                            <span class="patient-col-key ">Patient Name</span>
+                                            <span class="patient-col-key "  style="width: 130px;">Patient Name(RegNo)</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{PatientName}}</span>
+                                            <span class="patient-col-value" style="width: 200px;">{{PatientName}}({{RegNo}})</span>
                                         </div>
                                         <div class="patient-col">
-                                            <span class="patient-col-key">OPIPNo</span>
+                                            <span class="patient-col-key">IPDNo</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{vOPDNo}}</span>
+                                            <span class="patient-col-value" style="width: 150px;">{{vOPDNo}}</span>
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">DoctorName</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{DoctorName}}</span>
+                                            <span class="patient-col-value">Dr.{{Doctorname}}</span>
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">CompanyName</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{CompanyName}}</span>
-                                        </div>
+                                        </div> 
+                                        <div class="patient-col">
+                                            <span class="patient-col-key ">WardName/BedNo</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value" style="width: 250px;">{{WardName}}/{{BedNo}}</span>
+                                        </div> 
                                         <div class="patient-col">
                                             <span class="patient-col-key ">TarrifName</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{Tarrifname}}</span>
                                         </div>
+                                       
                                     </div>
                                 </div>
                             </div>

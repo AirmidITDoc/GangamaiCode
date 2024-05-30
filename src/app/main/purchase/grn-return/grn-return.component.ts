@@ -19,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 import { GrnItemList } from '../good-receiptnote/good-receiptnote.component';
 import { FormBuilder } from '@angular/forms';
 import { NewGRNReturnComponent } from './new-grnreturn/new-grnreturn.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-grn-return',
@@ -61,7 +62,7 @@ export class GRNReturnComponent implements OnInit {
   ];
 
 
-
+  SpinLoading: boolean = false;
   ToStoreList: any = [];
   SupplierList: any;
   optionsToStore: any;
@@ -237,6 +238,37 @@ getNewGRNRet(){
     console.log('The dialog was closed - Insert Action', result);
    this.getGRNReturnList();
   });
+}
+
+
+viewgetGRNreturnReportPdf(row) {
+  debugger
+  setTimeout(() => {
+    this.SpinLoading = true;
+    this._GRNReturnService.getGRNreturnreportview(
+      row.GRNReturnId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "GRN RETURN REPORT Viewer"
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+    });
+
+  }, 100);
 }
 }
 

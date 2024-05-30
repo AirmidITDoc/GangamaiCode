@@ -821,8 +821,8 @@ export class SalesReturnComponent implements OnInit {
 
   getSalesRetPrint(el){
     var D_data = {
-      "SalesID": el,
-      "OP_IP_Type": this.OP_IP_Type,
+      "SalesID":10666,// el,
+      "OP_IP_Type": 1//this.OP_IP_Type,
     }
     let printContents;
     this.subscriptionArr.push(
@@ -830,7 +830,7 @@ export class SalesReturnComponent implements OnInit {
         this.reportPrintObjList = res as Printsal[];
         // console.log(this.reportPrintObjList);
         this.reportPrintObj = res[0] as Printsal;
-        // console.log(this.reportPrintObj);
+        console.log(this.reportPrintObj);
         setTimeout(() => {
           this.print3();
        }, 1000);

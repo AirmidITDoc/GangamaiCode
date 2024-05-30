@@ -10,6 +10,7 @@ export class StockAdjustmentService {
   userFormGroup: FormGroup;
   StoreFrom:FormGroup;
   MRPAdjform:FormGroup;
+  GSTAdjustment : FormGroup;
 
   constructor(
     public _httpClient: HttpClient,
@@ -18,6 +19,7 @@ export class StockAdjustmentService {
     this.StoreFrom = this.CreateStoreFrom();
     this.userFormGroup = this.createUserForm();
     this.MRPAdjform = this.createMRPAdjForm();
+    this.GSTAdjustment = this.createGSTForm();
   }
   CreateStoreFrom(){
     return this._formBuilder.group({
@@ -41,6 +43,18 @@ export class StockAdjustmentService {
       newLandedRate:[''],
       NewPurchaseRate:[''],
      // AddedDate:[new Date()],
+    });
+  }
+  createGSTForm() {
+    return this._formBuilder.group({
+      CGSTPer:[''],
+      SGSTPer:[''],
+      IGSTPer:[''],
+      NewCGSTPer:[''],
+      NewSGSTPer:[''],
+      NewIGSTPer:[''],
+      TotalGSTPer:[''],
+      OldTotalGSTPer:['']
     });
   }
    

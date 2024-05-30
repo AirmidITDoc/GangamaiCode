@@ -14,6 +14,7 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <mat-label>Supplier Name</mat-label>
                     <input name="SupplierName" placeholder="EnterSupplierName" formControlName="SupplierName" matInput
                         required (keydown)="onEnterSuppliername($event)" #suppliername [(ngModel)]="vSupplierName">
                     <!-- <span class="error" *ngIf="f.SupplierName.invalid && f.SupplierName.touched">SupplierName is required only
@@ -43,6 +44,7 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <mat-label>Address</mat-label>
                     <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput
                         (keydown)="onEnterAddress($event)" #Address required [(ngModel)]="vAddress">
                     <mat-error>Please enter Address </mat-error>
@@ -52,6 +54,7 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <mat-label>Pincode</mat-label>
                     <input name="Pincode" placeholder="Enter Pincode No." (keydown)="onEnterPincode($event)" #Pincode
                          formControlName="Pincode" matInput  [(ngModel)]="vPincode" > 
                 </mat-form-field>
@@ -59,6 +62,7 @@
 
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex style="margin-right:10px;">
+                    <mat-label>ContactPerson</mat-label>
                     <input name="ContactPerson" placeholder="Enter ContactPerson" formControlName="ContactPerson"
                         matInput (keydown)="onEnterContactperson($event)" #Contactperson > 
                 </mat-form-field> 
@@ -88,6 +92,7 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <mat-label>Taluka</mat-label>
                     <input name="Taluka" placeholder="Enter Taluka" formControlName="Taluka" matInput
                         (keydown)="onEnterTaluka($event)" #Taluka> 
                 </mat-form-field>
@@ -135,17 +140,20 @@
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <mat-label>Fax</mat-label>
                     <input name="Fax" placeholder="Select Fax" formControlName="Fax" matInput
                         (keydown)="onEnterfax($event)" #Fax > 
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <mat-label>Email</mat-label>
                     <input name="Email" placeholder="Enter Email" formControlName="Email" matInput  
                         (keydown)="onEnterEmail($event)" #Email [(ngModel)]="vEmail">
                     <span class="error" *ngIf="f.Email.invalid && f.Email.touched">Email required in Format</span>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <mat-label>Freight</mat-label>
                     <input name="Freight" placeholder="Enter Freight"  formControlName="Freight" matInput
                         (keydown)="onEnterFright($event)" #Fright [(ngModel)]="vFreight"> 
                 </mat-form-field> 
@@ -315,21 +323,16 @@
                             {{option.StoreName}}
                         </mat-option>
                     </mat-autocomplete>
-                </mat-form-field>
+                </mat-form-field> 
 
-
-                
-<!-- 
-                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                     <mat-select placeholder="Select Vender Type" #txt formControlName="VenderTypeId" 
                         (keydown)="onEnterVender($event)" #VenderTypeId>
                         <mat-option *ngFor="let M of VendercmbList" [value]="M.VenderTypeId">
                             {{M.VenderTypeName}}
                         </mat-option>
                     </mat-select>
-                </mat-form-field>
- -->
-
+                </mat-form-field> --> 
                 
               
                 <mat-form-field appearance="outline" fxFlex="50%" style="margin-right: 10px;">
@@ -378,20 +381,25 @@
                 <mat-checkbox aria-label="Mode" formControlName="IsDeleted"  [(ngModel)]="vchkactive"
                 style="font-weight: bold;margin-right: 20px;">ISActive
                 </mat-checkbox>
-            </div>
-            <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true (change)="onChangeMode($event)"
-            style="font-weight: bold;margin-right: 20px;">Create / Approval
-          </mat-checkbox>
+
+                <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true (change)="onChangeMode($event)"
+                style="font-weight: bold;margin-right: 20px;">Create / Approval
+                </mat-checkbox>
+            </div> 
         </form>
+
+        <div class="modal-footer p-24">
+                                
+            <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end"> 
+                <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+                <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn">Save</button> 
+            </div>
+        </div> 
     </div>
 
-    <!-- [disabled]="_supplierService.myform.invalid" -->
-
-    <div class="modal-footer" style="padding: 20px;"> 
-        <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end"> 
-            <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
-            <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn">Save</button> 
-        </div>
-     </div> 
+    <!-- [disabled]="_supplierService.myform.invalid" --> 
+   
+      
+       
     <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar></div>
 </div>

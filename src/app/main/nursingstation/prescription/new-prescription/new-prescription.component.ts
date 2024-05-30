@@ -142,6 +142,8 @@ export class NewPrescriptionComponent implements OnInit {
 
   }
   dateTimeObj: any;
+  WardName:any;
+  BedNo:any;
   getDateTime(dateTimeObj) { 
     this.dateTimeObj = dateTimeObj;
   }
@@ -170,6 +172,7 @@ export class NewPrescriptionComponent implements OnInit {
     return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegID + ')';
   }
   getSelectedObj(obj) {
+    debugger
     if(obj.IsDischarged == 1){
       Swal.fire('Selected Patient is already discharged');
       this.PatientName = ''  
@@ -179,24 +182,25 @@ export class NewPrescriptionComponent implements OnInit {
       this.Tarrifname = ''
       this.CompanyName =''
       this.vOPDNo = ''
+      this.WardName =''
+      this.BedNo = ''
     }
     else{
       this.registerObj = obj;
       // this.PatientName = obj.FirstName + '' + obj.LastName;
       this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
       this.RegNo = obj.RegNo;
-      this.vAdmissionID = obj.AdmissionID
+      this.vAdmissionID = obj.AdmissionID;
       this.CompanyName = obj.CompanyName;
       this.Tarrifname = obj.TariffName;
       this.Doctorname = obj.DoctorName;
       // this.vOpIpId = obj.AdmissionID;
       this.vOPDNo = obj.IPDNo;
+      this.WardName = obj.RoomName;
+      this.BedNo = obj.BedName;
       console.log(obj);
-    }
-   
-  }
-
- 
+    } 
+  } 
   getSearchItemList() {  
     if(this.myForm.get('StoreId').value.StoreId > 0){ 
       var m_data = {
@@ -228,6 +232,7 @@ export class NewPrescriptionComponent implements OnInit {
     return option.ItemName;
   } 
   getSelectedObjItem(obj) {
+    console.log(obj)
     if (this.dsPresList.data.length > 0) {
       this.dsPresList.data.forEach((element) => {
         if (obj.ItemID == element.ItemID) {
@@ -442,7 +447,7 @@ export class NewPrescriptionComponent implements OnInit {
       insertIP_Prescription['remark'] = element.Remark || '';
       insertIP_Prescription['isClosed'] = false;
       insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
-      insertIP_Prescription['storeId'] = this._loggedService.currentUserValue.user.storeId;
+      insertIP_Prescription['storeId'] =  this.myForm.get('StoreId').value.StoreId
       insertIP_Prescription['wardID'] = this.WardId// this.myForm.get('WardName').value.RoomId || 0;
       insertIP_Prescriptionarray.push(insertIP_Prescription);
     });
