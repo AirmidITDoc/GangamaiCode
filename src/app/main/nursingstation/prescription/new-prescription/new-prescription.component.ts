@@ -172,6 +172,7 @@ export class NewPrescriptionComponent implements OnInit {
     return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegID + ')';
   }
   getSelectedObj(obj) {
+    debugger
     if(obj.IsDischarged == 1){
       Swal.fire('Selected Patient is already discharged');
       this.PatientName = ''  
@@ -189,7 +190,7 @@ export class NewPrescriptionComponent implements OnInit {
       // this.PatientName = obj.FirstName + '' + obj.LastName;
       this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
       this.RegNo = obj.RegNo;
-      this.vAdmissionID = obj.AdmissionID
+      this.vAdmissionID = obj.AdmissionID;
       this.CompanyName = obj.CompanyName;
       this.Tarrifname = obj.TariffName;
       this.Doctorname = obj.DoctorName;
