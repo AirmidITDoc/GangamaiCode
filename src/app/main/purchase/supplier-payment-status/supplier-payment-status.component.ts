@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { SupplierPaymentListComponent } from './supplier-payment-list/supplier-payment-list.component';
+import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 
 @Component({
   selector: 'app-supplier-payment-status',
@@ -19,6 +21,7 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class SupplierPaymentStatusComponent implements OnInit {
   displayedColumns = [
+    'CheckBox',
     'GRNReturnNo',
     'GRNReturnDate',
     'SupplierName',
@@ -27,7 +30,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
     'PaidAmount',
     'BalAmount',
     'InvDate',
-    'action',
+   // 'action',
   ];
   
   isSupplierSelected:boolean=false;
@@ -52,10 +55,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStoreList();
-  }
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
+  } 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -106,9 +106,70 @@ export class SupplierPaymentStatusComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
+  SelectedArray: any = [];
+  tableElementChecked(event, element) {
+    if (event.checked) {
+      console.log(element) 
+      this.vNetAmount += element.NetAmount
+      this.vPaidAmount += element.PaidAmount
+      this.vBalanceAmount += element.BalAmount
+      // this.SelectedArray.push(element);
+    }
+    else{
+      this.vNetAmount -= element.NetAmount
+      this.vPaidAmount -= element.PaidAmount
+      this.vBalanceAmount -= element.BalAmount
+    }
+    //console.log(this.SelectedArray) 
+  }
+  vNetAmount:any=0;
+  vPaidAmount:any=0;
+  vBalanceAmount:any=0;
+  OnSave(){
+    if ((this.vBalanceAmount < 0)) {
+      this.toastr.warning('Please select Check Box', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    let SupplierPayDetailsObj = {};
+    SupplierPayDetailsObj['NetAmount'] = this.vNetAmount;
+    SupplierPayDetailsObj['PaidAmount'] = this.vPaidAmount;
+    SupplierPayDetailsObj['BalAmount'] = this.vBalanceAmount; 
+    // this.isLoading123=false;
+    const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+      {
+        data: {
+          vPatientHeaderObj: SupplierPayDetailsObj,
+          FromName: "Phar-SupplierPay"
+        }
+      });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+  });
+}
   onClear(){
 
+  }
+  OnReset(){
+    this.getSupplierList();
+    this.vNetAmount = 0;
+    this.vPaidAmount = 0;
+    this.vBalanceAmount = 0;
+  }
+  getSupplierPaymentList() {  
+    this.dsSupplierpayList.data = []; 
+    const dialogRef = this._matDialog.open(SupplierPaymentListComponent,
+      {
+        maxWidth: "100%",
+        height: '95%',
+        width: '95%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+       //console.log(result)  
+    });
   }
 }
 

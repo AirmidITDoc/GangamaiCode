@@ -207,6 +207,21 @@ export class OpPaymentNewComponent implements OnInit {
       this.paidAmt = this.netPayAmt;
       this.getBalanceAmt();
     }
+    else if (this.PatientHeaderObj.FromName == "Phar-SupplierPay") {
+      this.netPayAmt = this.advanceData.BalAmount; // parseInt(this.advanceData.NetPayAmount);
+      this.amount1 = this.cashAmt = this.advanceData.BalAmount; // parseInt(this.advanceData.NetPayAmount);
+      this.paidAmt = this.advanceData.BalAmount; // parseInt(this.advanceData.NetPayAmount);
+      this.billNo = parseInt(this.advanceData.SalesId);
+      this.PatientName = this.advanceData.PatientName;
+      this.selectedPaymnet1 = 'cash';
+      this.BillDate = this.advanceData.Date;
+      this.Paymentobj['TransactionType'] = 2;
+      this.IsCreditflag = true;
+      this.paymentRowObj["cash"] = true;
+      this.onPaymentChange(1, 'cash');
+      this.paidAmt = this.netPayAmt;
+      this.getBalanceAmt();
+    }
     // else {
     //   this.netPayAmt = parseInt(this.advanceData.NetPayAmount);
     //   this.cashAmt = parseInt(this.advanceData.NetPayAmount);
@@ -239,6 +254,29 @@ export class OpPaymentNewComponent implements OnInit {
       this.PatientName = "SAS",//this.advanceData.PatientName;
         this.BillDate = this.advanceData.Date;
       this.amount1 = parseInt(this.advanceData.NetAmount);
+      this.getBalanceAmt();
+      this.Paymentobj['TransactionType'] = 4;
+    }
+    if (this.PatientHeaderObj.FromName == "Phar-SupplierPay") {
+      this.PatientHeaderObj = this.data.vPatientHeaderObj;
+      this.advanceData = this.data.vPatientHeaderObj;
+      console.log(this.PatientHeaderObj)
+
+      this.selectedPaymnet1 = this.paymentArr1[0].value;
+      this.amount1 = this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
+      this.getBalanceAmt();
+      this.paymentRowObj["cash"] = true;
+
+      this.onPaymentChange(1, 'cash');
+      this.paidAmt = this.netPayAmt;
+
+      this.netPayAmt = parseInt(this.advanceData.BalAmount);
+      this.cashAmt = parseInt(this.advanceData.BalAmount);
+      this.paidAmt = parseInt(this.advanceData.BalAmount);
+      this.billNo = parseInt(this.advanceData.SalesId);
+      this.PatientName = "SAS",//this.advanceData.PatientName;
+        this.BillDate = this.advanceData.Date;
+      this.amount1 = parseInt(this.advanceData.BalAmount);
       this.getBalanceAmt();
       this.Paymentobj['TransactionType'] = 4;
     }

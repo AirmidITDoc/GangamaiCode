@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { SupplierPaymentStatusComponent } from '../supplier-payment-status/supplier-payment-status.component';
+import { SupplierPaymentListComponent } from './supplier-payment-list/supplier-payment-list.component';
 
 
 const routes: Routes = [
@@ -45,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [SupplierPaymentStatusComponent],
+  declarations: [SupplierPaymentStatusComponent, SupplierPaymentListComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
