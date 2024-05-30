@@ -141,7 +141,7 @@ export class TestmasterComponent implements OnInit {
         };
         this._TestService.getTestMasterList(m_data).subscribe((Menu) => {
             this.DSTestMasterList.data = Menu as TestMaster[];
-           console.log(this.DSTestMasterList)
+           console.log("This is data" + this.DSTestMasterList)
             this.sIsLoading = '';
             this.DSTestMasterList.sort = this.sort;
             this.DSTestMasterList.paginator = this.paginator;

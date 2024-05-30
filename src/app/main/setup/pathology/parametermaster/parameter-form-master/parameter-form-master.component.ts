@@ -369,6 +369,8 @@ export class ParameterFormMasterComponent implements OnInit {
         
             this.onClear();
         }
+    
+    this.onClose()
     }
 
 

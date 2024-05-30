@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { takeUntil } from "rxjs/operators";
-import { TestmasterComponent } from "../testmaster.component";
+import { TestMaster, TestmasterComponent } from "../testmaster.component";
 import { TestmasterService } from "../testmaster.service";
 import { ReplaySubject, Subject } from "rxjs";
 import { FormControl } from "@angular/forms";
@@ -12,6 +12,8 @@ import { element } from "protractor";
 import { ToastrService } from "ngx-toastr";
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { PainAssesList } from "app/main/nursingstation/clinical-care-chart/clinical-care-chart.component";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
 
 
 @Component({
@@ -24,7 +26,6 @@ import { PainAssesList } from "app/main/nursingstation/clinical-care-chart/clini
 export class TestFormMasterComponent implements OnInit {
     displayedColumns: string[] = ['ParameterName','Add'];
     displayedColumns2: string[] = ['Reorder','ParameterName','UnitName','Range', 'Action'];
-
     Parametercmb: any = [];
     paraselect: any = ["new"];
     CategorycmbList: any = [];
@@ -35,6 +36,8 @@ export class TestFormMasterComponent implements OnInit {
     registerObj: any;
     DSTestList = new MatTableDataSource<TestList>();
     dsTemparoryList = new MatTableDataSource<TestList>();
+    DSTestMasterList = new MatTableDataSource<TestMaster>();
+
 
     paramterList:any = new MatTableDataSource<TestList>();
 
@@ -58,6 +61,11 @@ export class TestFormMasterComponent implements OnInit {
     public filteredTemplate: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     private _onDestroy = new Subject<void>();
+    sIsLoading: string;
+    isChecked = false;
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
   
 
     constructor(
@@ -110,7 +118,13 @@ export class TestFormMasterComponent implements OnInit {
         moveItemInArray(this.ChargeList, event.previousIndex, event.currentIndex);     
         this.DSTestList.data = this.ChargeList;
     }
-
+    toggle(val: any) {
+        if (val == "1") {
+            this._TestService.is_subtest = true;
+        } else {
+            this._TestService.is_subtest = false;
+        }
+    }
     onSearchClear() {
         this._TestService.myformSearch.reset({
             TestNameSearch: "",
@@ -248,11 +262,12 @@ export class TestFormMasterComponent implements OnInit {
     // }
 
     getSubTestMasterList() {
-        this._TestService.getNewSubTestMasterList().subscribe((Menu) => {
+        this._TestService.getNewSubTestList().subscribe((Menu) => {
             this.DSTestList.data = Menu as TestList[];
             console.log(this.DSTestList)
         });
     }
+    
         onDeleteRow(event) {
             let temp = this.paramterList.data;
         temp.push( {

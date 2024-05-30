@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
     providedIn: "root",
 })
 export class TestmasterService {
+    is_subtest = true;
     myformSearch: FormGroup;
     myform: FormGroup;
     AddParameterFrom: FormGroup;
