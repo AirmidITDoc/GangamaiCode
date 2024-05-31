@@ -513,7 +513,7 @@
                                     <div fxLayout="row" fxLayoutGap="2px">
                                         <mat-form-field appearance="outline" style="width:30%;">
                                             <mat-label>Total Refund Amount</mat-label>
-                                            <input matInput [(ngModel)]="TotalRefundAmount"
+                                            <input matInput [(ngModel)]="TotalRefundAmount" onlyNumber
                                                 formControlName="TotalRefundAmount" name="TotalRefundAmount"  (keyup)="calculateTotalRefund()">
                                         </mat-form-field>&nbsp;
 

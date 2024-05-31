@@ -110,7 +110,7 @@ export class NewOpeningBalanceComponent implements OnInit {
         this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
         // console.log(this.vlastDay)
 
-        this._OpeningBalanceService.NewUseForm.get('ExpDatess').setValue(this.vlastDay)
+        this._OpeningBalanceService.NewUseForm.get('ExpDate').setValue(this.vlastDay)
         this.BalanceQty.nativeElement.focus() 
       } else {
         this.vlastDay = 'Invalid month';
@@ -120,16 +120,17 @@ export class NewOpeningBalanceComponent implements OnInit {
     }
 
   }
-  CheckValidation(){
-    
-  }
+
   getLastDayOfMonth(month: number, year: number): number {
     return new Date(year, month, 0).getDate();
   }
   pad(n: number): string {
     return n < 10 ? '0' + n : n.toString();
   }
-  lastDay1: any;
+  CheckValidation(){
+    
+  }
+ 
   Onadd(){
     if ((this.vBatchNo == '' || this.vBatchNo == null || this.vBatchNo == undefined)) {
       this.toastr.warning('Please enter a Batch No', 'Warning !', {
@@ -137,7 +138,12 @@ export class NewOpeningBalanceComponent implements OnInit {
       });
       return;
     }
-   
+    if ((this.vlastDay == '' || this.vlastDay == null || this.vlastDay == undefined)) {
+      this.toastr.warning('Please enter a Expairy Date', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if ((this.vBalQty == '' || this.vBalQty == null || this.vBalQty == undefined)) {
       this.toastr.warning('Please enter a BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -163,7 +169,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       this.chargeslist = this.dsTempItemNameList.data;
       this.chargeslist.push(
         {
-          ItemId: this._OpeningBalanceService.NewUseForm.get('ItemName').value.ItemID || 0,
+          ItemID: this._OpeningBalanceService.NewUseForm.get('ItemName').value.ItemID || 0,
           ItemName: this._OpeningBalanceService.NewUseForm.get('ItemName').value.ItemName || '',
           BatchNo: this.vBatchNo,
           ExpDate: this.vlastDay, 
@@ -174,6 +180,8 @@ export class NewOpeningBalanceComponent implements OnInit {
         });
       this.dsItemNameList.data = this.chargeslist
       this.ItemFromReset();
+      console.log(this.chargeslist)
+      this.itemid.nativeElement.focus(); 
     }
     else {
       this.toastr.warning('Selected Item already added in the list', 'Warning !', {
@@ -204,8 +212,9 @@ deleteTableRow(element) {
 Savebtn:boolean=false;
 vItemName:any;
 vItemId:any; 
+vExpDate1:any='';
   OnSave() {
-    //debugger
+    debugger
     if ((!this.dsItemNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -217,22 +226,33 @@ vItemId:any;
       this.vItemId = element.ItemID; 
       this.vItemName = element.ItemName  
       this.vBatchNo =  element.BatchNo
-      this.vExpDate =   element.ExpDate
+      this.vExpDate1 =   element.ExpDate
       this.vBalQty =   element.BalQty
       this.vRatePerUnit =  element.PerRate  
       this.vMRP =  element.UnitMRP 
       this.vGST = element.GST  
 
+      if (this.vExpDate1) {
+        const day = +this.vExpDate1.substring(0, 2);
+        const month = +this.vExpDate1.substring(3, 5);
+        const year = +this.vExpDate1.substring(6, 10);
+
+        this.vExpDate1 = `${year}/${this.pad(month)}/${day}`;
+      }
+
+    
+
     });
+    
       this.Savebtn=true;
     let openingBalanceParamInsertObj = {};
     openingBalanceParamInsertObj['openingDate'] = this.dateTimeObj.date;
     openingBalanceParamInsertObj['openingTime'] = this.dateTimeObj.time;
     openingBalanceParamInsertObj['storeId'] = this._loggedService.currentUserValue.user.storeId;
-    openingBalanceParamInsertObj['openingDocNo'] = this._OpeningBalanceService.NewUseForm.get('SupplierName').value.SupplierId || 0;
-    openingBalanceParamInsertObj['itemId'] = this._OpeningBalanceService.NewUseForm.get('ItemName').value.ItemID || 0,
+    openingBalanceParamInsertObj['openingDocNo'] =  0;
+    openingBalanceParamInsertObj['itemId'] = this.vItemId || 0,
     openingBalanceParamInsertObj['batchNo'] =  this.vBatchNo || ''
-    openingBalanceParamInsertObj['batchExpDate'] =   this.vExpDate
+    openingBalanceParamInsertObj['batchExpDate'] = this.vExpDate1 || '01/01/1900',
     openingBalanceParamInsertObj['perUnitPurRate'] =  this.vRatePerUnit || 0
     openingBalanceParamInsertObj['perUnitMrp'] =  this.vMRP || 0
     openingBalanceParamInsertObj['vatPer'] = this.vGST || 0
@@ -275,7 +295,7 @@ vItemId:any;
   }
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('BatchNo') BatchNo: ElementRef;
-  @ViewChild('ExpDate') ExpDate: ElementRef;
+  @ViewChild('expdate') expdate: ElementRef;
   @ViewChild('BalanceQty') BalanceQty: ElementRef;
   @ViewChild('GST') GST: ElementRef;
   @ViewChild('MRP') MRP: ElementRef;
@@ -290,37 +310,38 @@ vItemId:any;
 
   public onEnterBatchno(event): void {
     if (event.which === 13) {
-      this.ExpDate.nativeElement.focus()
+      this.expdate.nativeElement.focus()
     }
   }
   public onEnterExpDate(event): void {
     if (event.which === 13) {
       this.BalanceQty.nativeElement.focus()
+      this._OpeningBalanceService.NewUseForm.get('BalanceQty').setValue('');
     }
   }
   public onEnterbalQty(event): void {
     if (event.which === 13) {
       this.GST.nativeElement.focus()
+      this._OpeningBalanceService.NewUseForm.get('GST').setValue('');
     }
   }
   public onEntergst(event): void {
     if (event.which === 13) {
       this.MRP.nativeElement.focus()
+      this._OpeningBalanceService.NewUseForm.get('MRP').setValue('');
     }
   }
   public onEntermrp(event): void {
     if (event.which === 13) {
       this.RatePerUnit.nativeElement.focus()
+      this._OpeningBalanceService.NewUseForm.get('RatePerUnit').setValue('');
     }
   }
   public onEnterRatePerUnit(event): void {
     if (event.which === 13) {
       this.addbutton.nativeElement.focus()
     }
-  }
-
-
-  
+  } 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {

@@ -7,12 +7,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class SupplierPaymentStatusService {
   SearchFormGroup:FormGroup;
+  SupplierListForm :FormGroup;
   constructor(
     public _httpClient:HttpClient,
     public _formbuilder:FormBuilder
   )
    { 
     this.SearchFormGroup = this.CreateSearchForm();
+    this.SupplierListForm = this.CreateSupplierList();
    }
    CreateSearchForm(){
     return this._formbuilder.group({
@@ -20,7 +22,17 @@ export class SupplierPaymentStatusService {
       end: [(new Date()).toISOString()],
       ToStoreId:[''],
       SupplierId:[''],
-      Status:['0']
+      Status:['0'],
+      NetAmount:[''],
+      PaidAmount:[''],
+      BalanceAmount:['']
+    });
+   }
+   CreateSupplierList(){
+    return this._formbuilder.group({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()], 
+      SupplierId:[''], 
     });
    }
 

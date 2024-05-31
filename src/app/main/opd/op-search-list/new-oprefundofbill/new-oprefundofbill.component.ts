@@ -500,6 +500,7 @@ onSave() {
       PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
       PatientHeaderObj['NetPayAmount'] = this.TotalRefundAmount;
       PatientHeaderObj['PatientName'] = this.PatientName;
+      PatientHeaderObj['BillId'] = this.BillNo;
 
       const insertRefund = new InsertRefund(InsertRefundObj);
 

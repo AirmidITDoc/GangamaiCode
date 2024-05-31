@@ -1,0 +1,206 @@
+<div ic="content" class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
+    <mat-toolbar style="width: 100%;justify-content: space-between;height: 50px;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-icon-button class="user-icon">
+                <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+            </button>
+            <div class="top-header-title">
+                <span class="logo-text" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                    Supplier Payment  List
+                </span>
+            </div>
+        </div>
+        <div class="close-icon">
+            <span class="material-icons" style="cursor: pointer;" (click)="onClose()">
+                close
+            </span>
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar ">
+            <div class="sidebar-content">
+                <div class="sidebar-header accent" fxLayout="row" fxLayoutAlign="start center">
+                    <span class="search-title">Search Facility</span>
+                </div>
+
+                <div class="sidebar-body">
+                    <div class="sidebar-form">
+                        <form [formGroup]="_SupplierPaymentStatusService.SupplierListForm">
+                            <div fxLayout="column" fxLayoutAlign="start none">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="grnPicker">
+                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matEndDate formControlName="end" placeholder="End date"
+                                            (dateChnage)="getSupplierPayStatusList()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="grnPicker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #grnPicker></mat-date-range-picker>
+                                </mat-form-field> 
+
+                                <mat-form-field appearance="outline" fxFlex="25%">
+                                    <mat-label>Supplier Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text"
+                                        placeholder="Select Supplier" matInput formControlName="SupplierId"
+                                        [matAutocomplete]="autoSupllier" (input)="getSupplierList()">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_SupplierPaymentStatusService.SupplierListForm.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_SupplierPaymentStatusService.SupplierListForm.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoSupllier="matAutocomplete"
+                                        [displayWith]="getOptionTextSupplier">
+                                        <mat-option *ngFor="let option of filteredSupplier"  [value]="option">
+                                            {{option.SupplierName}} || {{option.SupplierId}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field> 
+
+                                <div class="action-buttons" style="margin-top: 15px;">
+                                    <button mat-raised-button (click)="onClear()" class="clear-button"
+                                        matTooltip="close">
+                                        <mat-icon class="cleariconbutton">close</mat-icon>
+                                    </button>
+                                    <button mat-raised-button class="search-button" (click)="getSupplierPayStatusList()"
+                                        matTooltip="search">
+                                        <mat-icon class="searchiconbutton">search</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </fuse-sidebar>
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+            <div class="content-card" style="border-radius:4px; ">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                    <div fxFlex.gt-sm="100%" fxFlex> 
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                                <div matColumnDef="loading"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                class="backgroundBlur" style="height: 100%;">
+                                <div class="spinner-border text-danger"></div>
+                              </div>
+                                <mat-table #table matSort class="table1" [dataSource]="dsSupplierList"
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
+
+                                    <ng-container matColumnDef="SupPayNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            SupPayNo</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.SupPayNo}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Date</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.Date}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="SupplierName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            SupplierName </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.SupplierName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="TotalAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            TotalAmount</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.TotalAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="CashPayAmt">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            CashPayAmt</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.CashPayAmt}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ChequePayAmt">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            ChequePayAmt</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ChequePayAmt}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="UserName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            UserName</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.UserName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PartyReceipt">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            PartyReceipt</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.PartyReceipt}}
+                                        </mat-cell>
+                                    </ng-container> 
+
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                            style="color: white;">Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button matTooltip="print"
+                                              >
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            No data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                    ></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':dsSupplierList!=null}"></mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsSupplierList!=null && dsSupplierList.data.length==0)}"></mat-footer-row>
+                                </mat-table>
+
+                                <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                    showFirstLastButtons>
+                                </mat-paginator>  
+                            </div> 
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>

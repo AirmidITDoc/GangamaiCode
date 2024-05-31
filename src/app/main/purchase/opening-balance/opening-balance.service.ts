@@ -43,7 +43,7 @@ CreateStorForm() {
       GST:'',
       MRP:'',
       RatePerUnit:'', 
-
+      Remark:''
 
     })
   }
