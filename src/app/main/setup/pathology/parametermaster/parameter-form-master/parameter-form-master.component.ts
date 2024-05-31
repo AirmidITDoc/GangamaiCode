@@ -289,7 +289,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 printParameterName: this._ParameterService.myform.get("PrintParameterName").value.trim() || "%",
                 methodName: this._ParameterService.myform.get("MethodName").value.trim() || "%",
                 unitId: this._ParameterService.myform.get("UnitId").value ||  1,
-                isNumeric: this._ParameterService.myform.get("IsNumeric").value != 2 ? true : false,
+                isNumeric: this._ParameterService.is_numeric,
                 isDeleted: Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
                 parameterID: this._ParameterService.myform.get("ParameterID").value || 0,
                 isPrintDisSummary: Boolean(JSON.parse(this._ParameterService.myform.get("IsPrintDisSummary").value))
@@ -302,7 +302,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 m_data['parameterRangeWithAgeMasterDelete']= {parameterId: this._ParameterService.myform.get("ParameterID").value || 0,};
             }else{
                 m_data['parameterDescriptiveMasterInsert']= data2;   
-                m_data['parameterDescriptiveMasterDelete']= {parameterId: this._ParameterService.myform.get("ParameterID").value || 0,}                           
+                m_data['descriptiveParameterMasterDelete']= {parameterId: this._ParameterService.myform.get("ParameterID").value || 0,}                           
             }   
             
             if (!this._ParameterService.myform.get("ParameterID").value) {

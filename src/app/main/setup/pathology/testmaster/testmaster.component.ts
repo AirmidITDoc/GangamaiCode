@@ -132,6 +132,9 @@ export class TestmasterComponent implements OnInit {
     }
     onSearch() {
         this.getTestMasterList();
+        setTimeout(() => {
+            this.onSearchClear();
+        }, 5000);
     }
 
     getTestMasterList() {
