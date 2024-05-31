@@ -61,7 +61,7 @@ public getAdmittedPatientListCompanywisesummaryView(FromDate,ToDate,DoctorId,War
 
 public getAdmittedPatientCasepaaperView(AdmissionId){
   
-  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId="+AdmissionId);
 }
 
 public getDischargedetailView(AdmissionId){
@@ -76,13 +76,13 @@ public getDischargedetailwithbillsummaryView(AdmissionId){
   
   return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
 }
-public getOptoIPconwithserviceavailedView(AdmissionId){
+public getOptoIPconwithserviceavailedView(FromDate,ToDate){
   
-  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 public getIpcurrAdmitwardwisedischargeView(AdmissionId){
   
-  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?AdmissionId=" + AdmissionId);
+  return this._httpClient.get("IPReport/view-OPToIPConvertedListWithServiceAvailed?AdmissionId=" + AdmissionId);
 }
 public getDischargetypecompanywiseView(AdmissionId){
   

@@ -104,30 +104,23 @@ var data={
     this.ReportName = el.ReportName;
     this.ReportID = el.ReportId;
     if (this.ReportName == 'Registration Report') {
-      this.FlagVisitSelected=true
-      this.FlagPaymentIdSelected=false
-      this.getRegistredPatientCasepaperview();
-    
-    } 
-    if (this.ReportName == 'Patient Appointment Detail') {
-      this.FlagVisitSelected=true
-      this.FlagPaymentIdSelected=false
-      // this.viewgetPatientAppointmentReportPdf();
-    
-    } 
-    else if (this.ReportName == 'OP Payment Receipt') {
       this.FlagVisitSelected=false
-      this.FlagPaymentIdSelected=true
-      // this.viewgetOPPayemntPdf();
-      this.FlagRefundIdSelected = false;
+      this.FlagPaymentIdSelected=false
+      
+    
+    } 
+    if (this.ReportName == 'AppoitnmentList Report') {
+      this.FlagVisitSelected=false
+      this.FlagPaymentIdSelected=false
       
     } 
+   
     
     else if (this.ReportName == 'DoctorWise Visit Report') {
-      this.FlagUserSelected = true;
+      this.FlagUserSelected = false;
       // this.FlagPaymentSelected = false;
 
-    } else if (this.ReportName == 'Refrance doctor wise Report') {
+    } else if (this.ReportName == 'c') {
       this.FlagUserSelected = true;
       // this.FlagPaymentSelected = false;
 
@@ -139,12 +132,21 @@ var data={
     } else if (this.ReportName == 'DoctorWise Visit Count Summary') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
-    } else if (this.ReportName == 'Appoinment List with servise Availed') {
+    } else if (this.ReportName == 'Reference doctor wise Report') {
+      // this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
+    }else if (this.ReportName == 'Department Wise Count Summary') {
+      // this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
+    }else if (this.ReportName == 'DoctorWise Visit Count Summary') {
+      // this.FlagPaymentSelected = false;
+      this.FlagUserSelected = false;
+    }else if (this.ReportName == 'Appoinment List with servise Availed') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
 
     } else if (this.ReportName == 'Cross Consultation Report') {
-      this.FlagUserSelected = true;
+      this.FlagUserSelected = false;
       // this.FlagPaymentSelected = false;
 
     }
@@ -152,27 +154,26 @@ var data={
       // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
 
-    }
+    } 
+     
   }
 
 
   getPrint() {
-    if (this.ReportName == 'Patient Appointment Detail') {
-      this.viewgetPatientAppointmentReportPdf();
-     
-    } 
-    else if (this.ReportName == 'OP Payment Receipt') {
-      this.viewgetOPPayemntPdf();
-     
-    } 
    
-    else if (this.ReportName == 'Registration Report') {
-      this.viewgetPatientAppointmentReportPdf();
+    if (this.ReportName == 'Registration Report') {
+      this.viewgetRegistrationlistReportPdf();
     }
-     else if (this.ReportName == 'DoctorWise Visit Report ') {
-      this.viewgetDoctorwisevisitReportPdf();
+    if (this.ReportName == 'AppoitnmentList Report') {
+      this.viewgetAppointmentlistReportPdf();
+     
     } 
-    else if (this.ReportName == 'Department Wise count summury') {
+     else if (this.ReportName == 'DoctorWise Visit Report') {
+      this.viewgetDoctorwisevisitReportPdf();
+    } else if (this.ReportName == 'Reference doctor wise Report') {
+      this.viewgetRefDoctorwisevisitReportPdf();
+    } 
+    else if (this.ReportName == 'Department Wise Count Summary') {
       this.viewgetDeptwisecountsummaryReportPdf();
     } else if (this.ReportName == 'DoctorWise Visit Count Summary') {
       this.viewgetDocwisevisitcountsummaryReportPdf();
@@ -185,19 +186,19 @@ var data={
     else if (this.ReportName == 'Doctor Wise new and Old Patient Report') {
       this.viewgetDocwisenewoldpatientReportPdf();
     }
+   
   }
 
 
-
-  viewgetPatientAppointmentReportPdf() {
-    
-    let VisitId =this._OPReportsService.userForm.get('VisitId').value || 0;
   
-     // this.sIsLoading = 'loading-data';
+  viewgetRegistrationlistReportPdf() {
+    this.sIsLoading = 'loading-data';
+   
      setTimeout(() => {
        this.AdList = true;
-       this._OPReportsService.getAppointmentReport(
-         VisitId
+       this._OPReportsService.getRegistrationlistReport(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
        ).subscribe(res => {
          const dialogRef = this._matDialog.open(PdfviewerComponent,
            {
@@ -206,7 +207,35 @@ var data={
              width: '100%',
              data: {
                base64: res["base64"] as string,
-               title: "Appointment  Viewer"
+               title: "Registration List Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           this.AdList = false;
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
+
+
+  viewgetAppointmentlistReportPdf() {
+    this.sIsLoading = 'loading-data';
+     setTimeout(() => {
+       this.AdList = true;
+       this._OPReportsService.getAppointmentListReport(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Appointment List Viewer"
              }
            });
          dialogRef.afterClosed().subscribe(result => {
@@ -220,71 +249,13 @@ var data={
 
   
 
-viewgetOPPayemntPdf() {
- let PaymentId=this._OPReportsService.userForm.get('PaymentId').value ||0;
-  setTimeout(() => {
-
-  this._OPReportsService.getOpPaymentview(
-  PaymentId
-  ).subscribe(res => {
-    const dialogRef = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Op Payment Receipt Viewer"
-        }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = '';
-      });
-     
-  });
- 
-  },100);
-}
-
-
-getRegistredPatientCasepaperview() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
-  this._OPReportsService.getRegisteredPatientCasepaaperView(
-    VisitId
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Admission Paper  Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-
-
 getCrossConsultationview() {
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
-  this._OPReportsService.getRegisteredPatientCasepaaperView(
-    VisitId
+ 
+  this._OPReportsService.getCrossConsultationreportView(
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
@@ -293,7 +264,7 @@ getCrossConsultationview() {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Admission Paper  Viewer"
+          title: "Cross Consultation Viewer"
         }
       });
 
@@ -307,14 +278,42 @@ getCrossConsultationview() {
 
 }
 
+viewgetRefDoctorwisevisitReportPdf(){
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+  //   this.SpinLoading =true;
+  let VisitId
+  this._OPReportsService.getRefDoctorwisevisitView(
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Ref Doctor Wise Visit  Viewer"
+        }
+      });
 
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+}
 viewgetDoctorwisevisitReportPdf() {
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
   //   this.SpinLoading =true;
   let VisitId
-  this._OPReportsService.getDoctorwisevisistView(
-    VisitId
+  this._OPReportsService.getDoctorwisevisitView(
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
@@ -340,10 +339,10 @@ viewgetDoctorwisevisitReportPdf() {
 viewgetDeptwisecountsummaryReportPdf() {
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
+ 
   this._OPReportsService.getdepartmentwisecountsummView(
-    VisitId
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
@@ -368,10 +367,10 @@ viewgetDeptwisecountsummaryReportPdf() {
 viewgetDocwisevisitcountsummaryReportPdf() {
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
+ 
   this._OPReportsService.getDocwisevisitsummaryView(
-    VisitId
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
@@ -380,7 +379,7 @@ viewgetDocwisevisitcountsummaryReportPdf() {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Doctor Wise Vissit count Summary Viewer"
+          title: "Doctor Wise Visit count Summary Viewer"
         }
       });
 
@@ -396,10 +395,10 @@ viewgetDocwisevisitcountsummaryReportPdf() {
 viewgetApplistwithserviceavailedReportPdf() {
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
+
   this._OPReportsService.getAppointmentlistwithserviceavailedView(
-    VisitId
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
@@ -424,10 +423,10 @@ viewgetApplistwithserviceavailedReportPdf() {
 viewgetDocwisenewoldpatientReportPdf() {
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
+ 
   this._OPReportsService.getDocwisenewoldpatientView(
-    VisitId
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
@@ -436,7 +435,7 @@ viewgetDocwisenewoldpatientReportPdf() {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Doctor Wise New Old Patient Viewer"
+          title: "Doctor Wise New Old Patient List Viewer"
         }
       });
 

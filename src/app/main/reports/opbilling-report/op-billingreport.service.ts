@@ -17,7 +17,7 @@ export class OpBillingreportService {
         enddate: [(new Date()).toISOString()],
         UserId:'',
         DoctorId:'',
-        // FirstName:'',
+        RefundId:'',
         // LastName:'',
         BillNo:'',
         // Radio:['1']
@@ -40,19 +40,28 @@ export class OpBillingreportService {
     return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById+"&DoctorId="+DoctorId);
   }
 
+  public getOpDailyCollectionsummary(FromDate,ToDate){
+    return this._httpClient.get("OPReport/view-OPCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
+  }
+  
   public getOpBillReceipt(BillNo){
     return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
   }
-  
-  public getOpRefundview(RefundId){
-    return this._httpClient.get("OutPatient/view-OPRefundofBill?RefundId=" + RefundId);
+
+  ///change
+  public getOPBillSummary(FromDate,ToDate,AddedById){
+    return this._httpClient.get("OPReport/view-OpBillReportSummary?FromDate="+FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
+  }
+
+  public getOpRefundofbillview(FromDate,ToDate){
+    return this._httpClient.get("OPReport/view-OpRefundofbillList?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
   public getOPIPBillSummary(BillNo){
     return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
   }
-  public getOPcreditBill(BillNo){
-    return this._httpClient.get("OutPatient/view-Op-BillReceipt?BillNo="+BillNo);
+  public getOPcreditlist(FromDate,ToDate){
+    return this._httpClient.get("OPReport/view-OpPatientCreditList?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
   
