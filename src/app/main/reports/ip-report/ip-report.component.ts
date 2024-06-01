@@ -290,7 +290,7 @@ var data={
     }
     else if (this.ReportName == 'OP to IP Converted List With Service availed') {
       
-      this.FlagAdmissionIdSelected=true
+      this.FlagAdmissionIdSelected=false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagAdvanceIdSelected = false;
@@ -1075,9 +1075,9 @@ viewgetIPAdvanceReportPdf() {
       this.AdList=true;
      this._IPReportService.getOptoIPconwithserviceavailedView(
       
-      //  this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      //  this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,
+       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+       
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {

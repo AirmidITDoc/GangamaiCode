@@ -40,13 +40,13 @@ import { OPMISReportsComponent } from './op-mis-reports.component';
 const routes : Routes =[
   {
     path:"**",
-    component:OPMISReportsComponent,
+    component:OPMISReportsComponent
   },
 ];
 
 @NgModule({
   declarations: [
-    OPMISReportsComponent,
+    OPMISReportsComponent
     
   ],
   imports: [
@@ -90,7 +90,7 @@ const routes : Routes =[
     MatTreeModule
   ],
   providers:[
-    DatePipe,
+    DatePipe
   ],
   entryComponents: [
     OPMISReportsComponent

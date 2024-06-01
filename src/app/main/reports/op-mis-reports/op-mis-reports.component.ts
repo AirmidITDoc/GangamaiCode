@@ -35,6 +35,8 @@ export class OPMISReportsComponent implements OnInit {
   FlagVisitSelected: boolean = false;
   FlagPaymentIdSelected: boolean = false;
   FlagRefundIdSelected: boolean = false;
+  FlagDoctorIdSelected: boolean = false;
+
 
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
@@ -104,14 +106,12 @@ var data={
     if (this.ReportName == 'Day wise OPD Count Details') {
       this.FlagVisitSelected=false
       this.FlagPaymentIdSelected=false
-      this.viewgetDaywiseopdcountReportPdf();
-    
+     
     } 
     if (this.ReportName == 'Day wise OPD Count Summary') {
       this.FlagVisitSelected=false
       this.FlagPaymentIdSelected=false
-      this.viewgetDaywiseopdcountsummaryReportPdf();
-    
+      
     } 
     else if (this.ReportName == 'Department wise OPD Count') {
       this.FlagVisitSelected=false
@@ -127,11 +127,11 @@ var data={
 
     } else if (this.ReportName == 'Dr. Wise OPD Count Detail') {
       this.FlagUserSelected = false;
-      // this.FlagPaymentSelected = false;
+      this.FlagDoctorIdSelected = true;
 
     } 
     else if (this.ReportName == 'Dr. Wise OPD Count Summary') {
-      // this.FlagPaymentSelected = false;
+      this.FlagDoctorIdSelected = true;
       this.FlagUserSelected = false;
 
     } else if (this.ReportName == 'Dr. Wise OPD Collection  Details ') {
@@ -165,7 +165,7 @@ var data={
 
   getPrint() {
   
-
+debugger
     if (this.ReportName == 'Day wise OPD Count Details') {
       this.viewgetDaywiseopdcountReportPdf();
     }
@@ -186,7 +186,7 @@ var data={
     } else if (this.ReportName == 'Dr. Wise OPD Collection  Details ') {
       this.viewgetDoctorwiseopdcolledetailReportPdf();
     }
-    else if (this.ReportName == 'Dr. Wise OPD Collection  Summary') {
+    else if (this.ReportName == 'Dr. Wise OPD Collection  Summary ') {
       this.getDocwiseopdcollsummaryview();
     }
     else if (this.ReportName == 'Department Wise OPD Collection Details') {
@@ -263,7 +263,7 @@ var data={
 
 
 viewgetDeptwiseopdcountPdf() {
-  debugger
+  
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
@@ -338,7 +338,7 @@ viewgetDeptwiseopdcountsummaryReportPdf() {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Doctor Wise Visit  Viewer"
+          title: "Department wise Count Summary  Viewer"
         }
       });
 
@@ -352,41 +352,16 @@ viewgetDeptwiseopdcountsummaryReportPdf() {
 
 }
 
-viewgetDeptwisecountsummaryReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
-  this._OPReportsService.getdepartmentwisecountsummView(
-    VisitId
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Department wise count Summary Viewer"
-        }
-      });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
 viewgetDocwiseopdcountsummaryReportPdf() {
+  debugger
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
   //   this.SpinLoading =true;
-  let VisitId
-  this._OPReportsService.getDocwisevisitsummaryView(
-    VisitId
+  let DoctorID=this._OPReportsService.userForm.get("DoctorID").value || 0
+  this._OPReportsService.getDocwisevisitCountsummaryView(
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",DoctorID
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
@@ -411,10 +386,10 @@ viewgetDocwiseopdcountsummaryReportPdf() {
 viewgetDoctorwiseopdcolledetailReportPdf() {
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
-  this._OPReportsService.getAppointmentlistwithserviceavailedView(
-    VisitId
+  
+  this._OPReportsService.getDocwisenopdcollsummarytView(
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
@@ -439,10 +414,10 @@ viewgetDoctorwiseopdcolledetailReportPdf() {
 getDocwiseopdcollsummaryview() {
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
-  this._OPReportsService.getDocwisenewoldpatientView(
-    VisitId
+
+  this._OPReportsService.getDocwisenopdcollsummarytView(
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
@@ -494,7 +469,7 @@ viewgetDeptwiseopdcolldetailReportPdf(){
 }
 
 viewgetDeptwiseopdcollesummaryReportPdf(){
-  debugger
+  
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  

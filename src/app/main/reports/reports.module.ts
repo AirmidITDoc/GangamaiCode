@@ -41,20 +41,20 @@ const appRoutes: Routes = [
                 (m) => m.IpbillingModule
             ),
     },
-    // {
-    //     path: "opreports",
-    //     loadChildren: () =>
-    //         import("./op-reports/opreports.module").then(
-    //             (m) => m.OPReportsModule
-    //         ),
-    // }
     {
         path: "opreports",
         loadChildren: () =>
-            import("./op-mis-reports/op-mis-report.module").then(
-                (m) => m.OPMisReportModule
+            import("./op-reports/opreports.module").then(
+                (m) => m.OPReportsModule
             ),
     },
+    // {
+    //     path: "opreports",
+    //     loadChildren: () =>
+    //         import("./op-mis-reports/op-mis-report.module").then(
+    //             (m) => m.OPMisReportModule
+    //         ),
+    // },
     {
         path: "commanreport",
         loadChildren: () =>
