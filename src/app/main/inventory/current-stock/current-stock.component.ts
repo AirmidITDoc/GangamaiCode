@@ -446,7 +446,7 @@ getOptionTextPurchaseItemList(option) {
     
   exportDayReportExcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['LedgerDate','ItemName','BatchNo','BalanceQty','ReceivedQty', 'IssueQty','UnitMRP','PurUnitRate','LandedRate','GST%'];
+    let exportHeaders = ['LedgerDate','ItemName','BatchNo','BalanceQty','ReceivedQty', 'IssueQty','UnitMRP','PurUnitRate','LandedRate','VatPercentage'];
     this.reportDownloadService.getExportJsonData(this.dsDaywiseStock.data, exportHeaders, 'Day Wise Report');
     this.dsDaywiseStock.data=[];
     this.sIsLoading = '';
