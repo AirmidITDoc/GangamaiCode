@@ -294,6 +294,7 @@ getOptionTextPurchaseItemList(option) {
       this._CurrentStockService.getDayWiseStockList(vdata).subscribe(
         (Visit) => {
           this.dsDaywiseStock.data = Visit as DayWiseStockList[];
+          console.log(this.dsDaywiseStock.data)
           this.dsDaywiseStock.sort = this.sort;
           this.dsDaywiseStock.paginator = this.thirdPaginator;
           this.sIsLoading = '';
@@ -445,7 +446,7 @@ getOptionTextPurchaseItemList(option) {
     
   exportDayReportExcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['BatchNo', 'BatchExpDate','LedgerDate' ,'ItemName', 'UnitMRP', 'ReceivedQty', 'IssueQty', 'BalanceQty'];
+    let exportHeaders = ['LedgerDate','ItemName','BatchNo','BalanceQty','ReceivedQty', 'IssueQty','UnitMRP','PurUnitRate','LandedRate','GST%'];
     this.reportDownloadService.getExportJsonData(this.dsDaywiseStock.data, exportHeaders, 'Day Wise Report');
     this.dsDaywiseStock.data=[];
     this.sIsLoading = '';
