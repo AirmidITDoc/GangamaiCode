@@ -334,7 +334,12 @@ export class UpdateGRNComponent implements OnInit {
       this.vsupplierName = this.vPurchaseOrderSupplierId;
     }
     else if (this.data.chkNewGRN == 2) {
-      this.vsupplierName = this.registerObj.SupplierName;
+    let  EditSupplier = this._GRNList.userFormGroup.get('SupplierId').value;
+      if(EditSupplier){
+        this.vsupplierName = this._GRNList.userFormGroup.get('SupplierId').value;
+      }else{
+        this.vsupplierName = this.registerObj.SupplierName;
+      } 
     }
     else {
       this.vsupplierName = this._GRNList.userFormGroup.get('SupplierId').value;
@@ -1401,7 +1406,7 @@ export class UpdateGRNComponent implements OnInit {
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
     grnSaveObj['storeId'] = this.accountService.currentUserValue.user.storeId;
-    grnSaveObj['supplierID'] = this._GRNList.userFormGroup.get('SupplierId').value.SupplierId || this.SupplierId;
+    grnSaveObj['supplierID'] = this._GRNList.userFormGroup.get('SupplierId').value.SupplierId || 0;
     grnSaveObj['invoiceNo'] = this._GRNList.userFormGroup.get('InvoiceNo').value || 0;
     grnSaveObj['deliveryNo'] = 0;
     grnSaveObj['gateEntryNo'] = this._GRNList.userFormGroup.get('GateEntryNo').value || 0;
@@ -1519,7 +1524,7 @@ export class UpdateGRNComponent implements OnInit {
     delete_GRNDetailsobj["GRNId"] = this.registerObj.GRNID;
 
     let submitData = {
-      //"updateGRNHeader": updateGRNHeaderObj,
+      "updateGRNHeader": grnSaveObj,
       "delete_GRNDetails": delete_GRNDetailsobj,
       "grnDetailSave": SavegrnDetailObj,
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray,

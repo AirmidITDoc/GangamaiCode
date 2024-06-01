@@ -220,48 +220,46 @@ vExpDate1:any='';
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    } 
+    }
+    this.Savebtn = true;
+
+    let insert_OpeningTransaction_Header_1 = {};
+    insert_OpeningTransaction_Header_1['openingDate'] = this.dateTimeObj.date;
+    insert_OpeningTransaction_Header_1['openingTime'] = this.dateTimeObj.time;
+    insert_OpeningTransaction_Header_1['storeId'] = this._loggedService.currentUserValue.user.storeId;
+    insert_OpeningTransaction_Header_1['addedby'] = this._loggedService.currentUserValue.user.id,
+      insert_OpeningTransaction_Header_1['openingHId'] = 0;
+
+
+    let openingBalanceParamInsertdetail = [];
     this.dsItemNameList.data.forEach((element) => {
-
-      this.vItemId = element.ItemID; 
-      this.vItemName = element.ItemName  
-      this.vBatchNo =  element.BatchNo
-      this.vExpDate1 =   element.ExpDate
-      this.vBalQty =   element.BalQty
-      this.vRatePerUnit =  element.PerRate  
-      this.vMRP =  element.UnitMRP 
-      this.vGST = element.GST  
-
-      if (this.vExpDate1) {
-        const day = +this.vExpDate1.substring(0, 2);
-        const month = +this.vExpDate1.substring(3, 5);
-        const year = +this.vExpDate1.substring(6, 10);
-
-        this.vExpDate1 = `${year}/${this.pad(month)}/${day}`;
-      }
-
-    
-
+      debugger
+      let openingBalanceParamInsertObj = {};
+      openingBalanceParamInsertObj['storeId'] = this._loggedService.currentUserValue.user.storeId;
+      openingBalanceParamInsertObj['openingDate'] = this.dateTimeObj.date;
+      openingBalanceParamInsertObj['openingTime'] = this.dateTimeObj.time;
+      openingBalanceParamInsertObj['openingDocNo'] = 0;
+      openingBalanceParamInsertObj['itemId'] = this.vItemId || 0,
+      openingBalanceParamInsertObj['batchNo'] = this.vBatchNo || ''
+      openingBalanceParamInsertObj['batchExpDate'] = this.vExpDate1 || '01/01/1900',
+      openingBalanceParamInsertObj['perUnitPurRate'] = this.vRatePerUnit || 0
+      openingBalanceParamInsertObj['perUnitMrp'] = this.vMRP || 0
+      openingBalanceParamInsertObj['vatPer'] = this.vGST || 0
+      openingBalanceParamInsertObj['balQty'] = this.vBalQty || 0
+      openingBalanceParamInsertObj['addedby'] = this._loggedService.currentUserValue.user.id,
+      openingBalanceParamInsertObj['updatedby'] = 0;
+      openingBalanceParamInsertObj['openingId'] = 0;
+      openingBalanceParamInsertdetail.push(openingBalanceParamInsertObj);
     });
-    
-      this.Savebtn=true;
-    let openingBalanceParamInsertObj = {};
-    openingBalanceParamInsertObj['openingDate'] = this.dateTimeObj.date;
-    openingBalanceParamInsertObj['openingTime'] = this.dateTimeObj.time;
-    openingBalanceParamInsertObj['storeId'] = this._loggedService.currentUserValue.user.storeId;
-    openingBalanceParamInsertObj['openingDocNo'] =  0;
-    openingBalanceParamInsertObj['itemId'] = this.vItemId || 0,
-    openingBalanceParamInsertObj['batchNo'] =  this.vBatchNo || ''
-    openingBalanceParamInsertObj['batchExpDate'] = this.vExpDate1 || '01/01/1900',
-    openingBalanceParamInsertObj['perUnitPurRate'] =  this.vRatePerUnit || 0
-    openingBalanceParamInsertObj['perUnitMrp'] =  this.vMRP || 0
-    openingBalanceParamInsertObj['vatPer'] = this.vGST || 0
-    openingBalanceParamInsertObj['balQty'] =  this.vBalQty || 0
-    openingBalanceParamInsertObj['addedby'] =this._loggedService.currentUserValue.user.id,
-    openingBalanceParamInsertObj['openingId'] = 0; 
-  
+
+    let insert_Update_OpeningTran_ItemStock_1 = {};
+    insert_Update_OpeningTran_ItemStock_1['openingHId'] = 0;
+
+
     let submitData = {
-      "openingBalanceParamInsert": openingBalanceParamInsertObj 
+      "insert_OpeningTransaction_Header_1": insert_OpeningTransaction_Header_1,
+      "openingTransactionInsert": openingBalanceParamInsertdetail,
+      "insert_Update_OpeningTran_ItemStock_1": insert_Update_OpeningTran_ItemStock_1
     };
     console.log(submitData);
     this._OpeningBalanceService.InsertOpeningBalSave(submitData).subscribe(response => {
@@ -271,7 +269,7 @@ vExpDate1:any='';
         });
         this.OnReset();
         this._matDialog.closeAll();
-        this.Savebtn=false; 
+        this.Savebtn = false;
       } else {
         this.toastr.error(' Opening Balance Data not Saved !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -281,7 +279,7 @@ vExpDate1:any='';
       this.toastr.error(' Opening Balance Data not Saved !, Please check API error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
-    }); 
+    });
   }
 
   OnReset() {

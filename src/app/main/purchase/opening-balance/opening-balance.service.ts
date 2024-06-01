@@ -62,6 +62,6 @@ CreateStorForm() {
   }
   
   public InsertOpeningBalSave(Param){
-    return this._httpClient.post("Inventory/Invopeningbalance", Param)
+    return this._httpClient.post("Inventory/OpeningTransactionSave", Param)
   }
 }

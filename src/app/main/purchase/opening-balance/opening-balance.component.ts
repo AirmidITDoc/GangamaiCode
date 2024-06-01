@@ -120,6 +120,7 @@ export class OpeningBalanceComponent {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getOpeningBalList();
     });
     //this.getGRNLit();
   }

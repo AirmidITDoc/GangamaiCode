@@ -251,12 +251,24 @@ export class UpdatePurchaseorderComponent implements OnInit {
   vSupplierId:any;
   vsupplierName:any;
   getSupplierSearchCombo() {
-    if(this.vSupplierId){
+    // if(this.vSupplierId){
+    //   this.vsupplierName = this._PurchaseOrder.userFormGroup.get('SupplierId').value ;
+    //  }
+    //  else{ 
+    //     this.vsupplierName = this.registerObj.SupplierName; 
+    //  }
+     if (this.vSupplierId) {
       this.vsupplierName = this._PurchaseOrder.userFormGroup.get('SupplierId').value ;
-     }
-     else{
-       this.vsupplierName = this.registerObj.SupplierName;
-     }
+    }
+    else if (this.data.chkNewGRN == 2) {
+      let  EditSupplier = this._PurchaseOrder.userFormGroup.get('SupplierId').value;
+      if(EditSupplier){
+        this.vsupplierName = this._PurchaseOrder.userFormGroup.get('SupplierId').value;
+      }else{
+        this.vsupplierName = this.registerObj.SupplierName;
+      }  
+    }
+    
    
     var m_data = {
       'SupplierName': `${this.vsupplierName}%`
