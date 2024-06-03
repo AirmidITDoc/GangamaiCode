@@ -14,6 +14,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { PainAssesList } from "app/main/nursingstation/clinical-care-chart/clinical-care-chart.component";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
+import { MatAutocomplete } from "@angular/material/autocomplete";
 
 
 @Component({
@@ -35,6 +36,7 @@ export class TestFormMasterComponent implements OnInit {
     ChargeList: any = [];
     registerObj: any;
     DSTestList = new MatTableDataSource<TestList>();
+    subTestList = new MatTableDataSource<TestList>();
     dsTemparoryList = new MatTableDataSource<TestList>();
     DSTestMasterList = new MatTableDataSource<TestMaster>();
 
@@ -42,7 +44,6 @@ export class TestFormMasterComponent implements OnInit {
     paramterList:any = new MatTableDataSource<TestList>();
 
     vCategoryId: any;
-    isSingleClick:boolean = false;
 
     //parametername filter
     public parameternameFilterCtrl: FormControl = new FormControl();
@@ -54,6 +55,8 @@ export class TestFormMasterComponent implements OnInit {
 
     //service filter
     public serviceFilterCtrl: FormControl = new FormControl();
+    public filterServiceCtrl: FormControl = new FormControl();
+
     public filteredService: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     // Template filter
@@ -64,6 +67,8 @@ export class TestFormMasterComponent implements OnInit {
     sIsLoading: string;
     isChecked = false;
     @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('auto1') auto1: MatAutocomplete;
+    @ViewChild('auto2') auto2: MatAutocomplete;  
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
   
@@ -100,11 +105,11 @@ export class TestFormMasterComponent implements OnInit {
                 this.filterCategoryname();
             });
 
-        this.serviceFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterServicename();
-            });
+        // this.serviceFilterCtrl.valueChanges
+        //     .pipe(takeUntil(this._onDestroy))
+        //     .subscribe(() => {
+        //         this.filterServicename();
+        //     });
 
         this.templateFilterCtrl.valueChanges
             .pipe(takeUntil(this._onDestroy))
@@ -235,6 +240,25 @@ export class TestFormMasterComponent implements OnInit {
             }
         });
     }
+    
+  filterStates(name: string): string[] {
+            //  return this.ServicecmbList.filter(state =>
+            //     state.toLowerCase().indexOf(name.toLowerCase()) === 0);
+            return this.ServicecmbList.filter(
+                (bank) => bank.ServiceName.toLowerCase().indexOf(name) > -1
+            )
+        
+  }
+  filterStates2(name: string): string[] {
+           return this.CategorycmbList.filter(
+            (bank) => bank.CategoryName.toLowerCase().indexOf(name) > -1
+        )
+  }
+  
+
+    chooseFirstOption(auto: MatAutocomplete): void {
+            auto.options.first.select();
+      }
 
     // Service name filter
     private filterTemplate() {
@@ -263,9 +287,8 @@ export class TestFormMasterComponent implements OnInit {
 
     getSubTestMasterList() {
         this._TestService.getNewSubTestList().subscribe((Menu) => {
-            this.DSTestList.data = Menu as TestList[];
-            console.log(this.DSTestList)
-        });
+            this.subTestList.data = Menu as TestList[];
+            });
     }
     
         onDeleteRow(event) {
@@ -283,9 +306,8 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     onAdd(event) {
-        console.log("evnet"+event)
-        if(!this.isSingleClick) this.isSingleClick = true;
-        else{
+        console.log("event is :" + event)
+        // for parameters
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
         this.ChargeList.push(
@@ -298,8 +320,9 @@ export class TestFormMasterComponent implements OnInit {
         this.paramterList.data = []
         temp.splice(temp.findIndex(item => item.ParameterName === event.ParameterName), 1);
         this.paramterList.data = temp;
-        this.isSingleClick = false;
-        }
+
+        
+        
     }
 
     onSubmit() {
@@ -311,7 +334,7 @@ export class TestFormMasterComponent implements OnInit {
             insertPathologyTestMaster['testName'] = this._TestService.myform.get('TestName').value || "";
             insertPathologyTestMaster['printTestName'] = this._TestService.myform.get('PrintTestName').value || "";
             insertPathologyTestMaster['categoryId'] = this._TestService.myform.get('CategoryId').value.CategoryId || 0;
-            insertPathologyTestMaster['isSubTest'] = this._TestService.myform.get('IsSubTest').value ||1;
+            insertPathologyTestMaster['isSubTest'] = this._TestService.myform.get('IsSubTest').value ;
             insertPathologyTestMaster['techniqueName'] = this._TestService.myform.get('TechniqueName').value || "";
             insertPathologyTestMaster['machineName'] = this._TestService.myform.get('MachineName').value || "";
             insertPathologyTestMaster['suggestionNote'] = this._TestService.myform.get('SuggestionNote').value || "";

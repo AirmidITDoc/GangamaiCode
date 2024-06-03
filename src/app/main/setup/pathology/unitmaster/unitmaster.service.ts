@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
     providedIn: "root",
 })
 export class UnitmasterService {
+    currentStatus = 0
     myform: FormGroup;
     myformSearch: FormGroup;
 

@@ -120,7 +120,6 @@ export class ParametermasterComponent implements OnInit {
     }
 
     onEdit(row) {
-       
         var m_data = {
             ParameterID: row.ParameterID,
             ParameterShortName: row.ParameterShortName.trim(),

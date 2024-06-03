@@ -154,6 +154,7 @@ export class TestmasterComponent implements OnInit {
             });
     }
     getSubTestMasterList() {
+        debugger;
         this.sIsLoading = 'loading-data';
         var m_data = {
             ServiceName: this._TestService.myformSearch.get('TestNameSearch').value + "%" || "%"
@@ -605,10 +606,9 @@ export class TestmasterComponent implements OnInit {
 
     onAdd() {
         const dialogRef = this._matDialog.open(TestFormMasterComponent, {
-            maxWidth: "70vw",
-            maxHeight: "90vh",
-            width: "100%",
-            height: "100%",
+
+            width: "80%",
+            height: "90%",
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);

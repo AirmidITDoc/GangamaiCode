@@ -184,6 +184,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 confirmButtonText: 'OK'
             });
         }
+       
     }
 
 
@@ -348,7 +349,7 @@ export class ParameterFormMasterComponent implements OnInit {
                     this.selectedItems = [];
                     this.dsParameterAgeList.data = [];
 
-                    this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                    this.toastr.success('Record updated Successfully.', 'Updated !', {
                         toastClass: 'tostr-tost custom-toast-success',
                     });   
                 } else {

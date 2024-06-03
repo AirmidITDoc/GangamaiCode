@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { timeStamp } from "console";
+import { forEach } from "lodash";
 
 @Component({
     selector: "app-categorymaster",
@@ -27,6 +29,7 @@ export class CategorymasterComponent implements OnInit {
     msg: any;
 
     DSCategoryMasterList = new MatTableDataSource<CategoryMaster>();
+    tempList = new MatTableDataSource<CategoryMaster>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -42,9 +45,11 @@ export class CategorymasterComponent implements OnInit {
     getCategoryMasterList() {
         var param = {
             CategoryName:this._categorymasterService.myformSearch.get("CategoryNameSearch").value + "%" || "%",
+            
         };
             this._categorymasterService.getCategoryMasterList(param).subscribe((Menu) => {
             this.DSCategoryMasterList.data = Menu as CategoryMaster[];
+            this.tempList.data = this.DSCategoryMasterList.data;
             this.DSCategoryMasterList.sort = this.sort;
             this.DSCategoryMasterList.paginator = this.paginator;
         });
@@ -67,6 +72,17 @@ export class CategorymasterComponent implements OnInit {
     onClear() {
         this._categorymasterService.myform.reset({ IsDeleted: "false" });
         this._categorymasterService.initializeFormGroup();
+    }
+    toggle(val: any) {
+        if (val == "2") {
+            this._categorymasterService.currentStatus = 2;
+        } else if(val=="1") {
+            this._categorymasterService.currentStatus = 1;
+        }
+        else{
+            this._categorymasterService.currentStatus = 0;
+
+        }
     }
 
     onSubmit() {
@@ -133,30 +149,70 @@ export class CategorymasterComponent implements OnInit {
             this.onClear();
         }
     }
-    onDeactive(CategoryId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                let Query =
-                "Update M_PathCategoryMaster set Isdeleted=1 where CategoryId=" +
-                    CategoryId;
+    onFilterChange(){
+        debugger;
+        if(this._categorymasterService.currentStatus==1){
+            this.tempList.data = []
+            for (let item of this.DSCategoryMasterList.data) {
+                if(!item.IsDeleted)this.tempList.data.push(item)
                     
-                console.log(Query);
-                this._categorymasterService.deactivateTheStatus(Query)
-                    .subscribe((data) => (this.msg = data));
-                this.getCategoryMasterList();
+                }
             }
-            this.confirmDialogRef = null;
-            this.getCategoryMasterList();
-        });
+        else if(this._categorymasterService.currentStatus==2){
+
+            this.tempList.data = []
+            for (let item of this.DSCategoryMasterList.data) {
+                if(item.IsDeleted)this.tempList.data.push(item)
+                
+            }
+        }
+        else{
+            this.tempList.data = this.DSCategoryMasterList.data;
+        }
+
+
     }
+    onDeactive(CategoryId) {
+        if (this.DSCategoryMasterList.data.find(item => item.CategoryId === CategoryId).IsDeleted) {
+            Swal.fire({
+              title: 'Already Deactivated',
+              text: 'This item is already deactivated.',
+              icon: 'info'
+            });
+            return 
+        }
+        if (this.DSCategoryMasterList.data.find(item => item.CategoryId === CategoryId).IsDeleted) {
+            Swal.fire({
+              title: 'Already Deactivated',
+              text: 'This item is already deactivated.',
+              icon: 'info'
+            });
+            return 
+        }
+        Swal.fire({
+          title: 'Confirm Deactivation',
+          text: 'Are you sure you want to deactivate?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, deactivate!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            let Query = "Update M_PathCategoryMaster set Isdeleted=1 where CategoryId=" + CategoryId;
+            console.log(Query);
+            this._categorymasterService.deactivateTheStatus(Query)
+              .subscribe((data) => {
+                // Handle success response
+                Swal.fire('Deactivated!', 'Category has been deactivated.', 'success');
+                this.getCategoryMasterList();
+              }, (error) => {
+                // Handle error response
+                Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+              });
+          }
+        });
+      }
     onEdit(row) {
         var m_data = {
             CategoryId: row.CategoryId,
