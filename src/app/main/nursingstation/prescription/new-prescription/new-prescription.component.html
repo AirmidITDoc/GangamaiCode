@@ -149,7 +149,7 @@
                                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
                                             (optionSelected)='getSelectedObjItem($event.option.value)'>
                                             <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
-                                                {{option.ItemID}} | {{option.ItemName}} |{{option.BalanceQty}}
+                                                {{option.ItemId}} | {{option.ItemName}} |{{option.BalanceQty}}
                                             </mat-option>
                                         </mat-autocomplete>
                                         <mat-error class="error" *ngIf="ItemForm.get('ItemId').invalid && ItemForm.get('ItemId').touched">

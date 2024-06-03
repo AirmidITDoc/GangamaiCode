@@ -47,6 +47,9 @@ export class UserDetailComponent implements OnInit {
   screenFromString = 'admission-form';
   Store1List: any = [];
   isLoading: string;
+  vPharExpOpt:any;
+  vPharIPOpt:any;
+  vPharOPOpt:any;
 
   constructor(public _UserService: AdministrationService,
     private accountService: AuthenticationService,
@@ -67,6 +70,9 @@ export class UserDetailComponent implements OnInit {
       console.log(this.data)
       this.registerObj = this.data.registerObj;
       this.vUserId = this.registerObj.UserId;
+      this.vPharExpOpt = this.registerObj.PharExpOpt;
+      this.vPharIPOpt = this.registerObj.PharIPOpt;
+      this.vPharOPOpt = this.registerObj.PharOPOpt;
     }
       console.log(this.registerObj)
     this.getDoctorlist1();
@@ -129,7 +135,10 @@ export class UserDetailComponent implements OnInit {
       IsAddChargeDelete: '',
       IsPharmacyBalClearnace: '',
       BedStatus: '',
-      IsActive: 'true'
+      IsActive: 'true',
+      PharExpOpt:'',
+      PharIPOpt:'',
+      PharOPOpt:''
     });
 
   }
@@ -295,6 +304,7 @@ export class UserDetailComponent implements OnInit {
   chkdoctor(event) {
     // debugger
     if (this.UserForm.get('IsDoctor').value  == true) {
+      this.docflag = true
       this.DoctorId =this.UserForm.get('DoctorId').value.DoctorId;
       
     }else{
@@ -397,8 +407,10 @@ export class UserDetailComponent implements OnInit {
           // "ViewBrowseBill": this.UserForm.get('ViewBrowseBill').value || 0,
           "addChargeIsDelete": this.UserForm.get('IsAddChargeDelete').value || 0,
           "IsPharmacyBalClearnace": this.UserForm.get('IsPharmacyBalClearnace').value || 0,
-          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId 
-
+          "WebRoleId": this.UserForm.get('WebroleId').value.RoleId , 
+          "PharExpOpt": this.UserForm.get('PharExpOpt').value || 0,
+          "PharIPOpt": this.UserForm.get('PharIPOpt').value || 0,
+          "PharOPOpt": this.UserForm.get('PharOPOpt').value || 0  
         }
       }
 
@@ -531,6 +543,9 @@ export class UserDetail {
   ViewBrowseBill:any;
   IsPharmacyBalClearnace:any;
   IsAddChargeDelete:any;
+  PharExpOpt:any;
+  PharIPOpt:any;
+  PharOPOpt:any;
   /**
    * Constructor
    *

@@ -50,16 +50,16 @@
                                 </mat-autocomplete>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex="10%">
+                            <!-- <mat-form-field appearance="outline" fxFlex="10%">
                                 <mat-label>Return Date</mat-label>
                                 <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
                                     formControlName="ReturnDate" id="ReturnDate"  (keyup.enter)="setFocus('ItemName')">
                                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
-                            </mat-form-field>
+                            </mat-form-field> -->
 
                             <mat-radio-group name="GSTType" formControlName="GSTType"  value="GST Return" 
-                                style="padding:15px;" (change)="CalculateTotalAmt()">
+                                style="padding:15px;" (change)="CalculateTotalAmt()" [(ngModel)]="vGSTTpe">
                                 <mat-radio-button value="GST Return" >GST Return</mat-radio-button>
                                 <mat-radio-button value="Without GST" >Without GST</mat-radio-button>
                             </mat-radio-group>

@@ -65,7 +65,7 @@ export class NewGRNReturnComponent implements OnInit {
   vGSTType:any;
   screenFromString:'GrnReturn-Form'
   SpinLoading: boolean = false;
-
+  vGSTTpe:any;
  dsItemList = new MatTableDataSource<ItemNameList>();
  dsTempItemNameList = new MatTableDataSource<ItemNameList>();
 
@@ -79,6 +79,7 @@ export class NewGRNReturnComponent implements OnInit {
 
   ngOnInit(): void {
     this.gePharStoreList();
+    this.vGSTTpe = 'GST Return';
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -119,6 +120,7 @@ export class NewGRNReturnComponent implements OnInit {
       //   this._GRNReturnService.NewGRNReturnFrom.get('SupplierName').setValue(this.filteredOptionssupplier[0]);
       // }
     })
+    this.vGSTTpe = 'GST Return';
   }
   getOptionTextSupplier(option) {
     return option && option.SupplierName ? option.SupplierName : '';
@@ -310,6 +312,11 @@ export class NewGRNReturnComponent implements OnInit {
   }
   Savebtn:boolean=false;
   OnSave(){
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
     if ((!this.dsItemList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -325,8 +332,8 @@ export class NewGRNReturnComponent implements OnInit {
     this.Savebtn = true;
     let grnReturnSave = {};
     grnReturnSave['grnId'] = 0;
-    grnReturnSave['grnReturnDate'] = this.datePipe.transform(this._GRNReturnService.NewGRNReturnFrom.get('ReturnDate').value ,'MM/dd/YYYY');
-    grnReturnSave['grnReturnTime'] =this.dateTimeObj.time;
+    grnReturnSave['grnReturnDate'] = formattedDate;
+    grnReturnSave['grnReturnTime'] = formattedTime;
     grnReturnSave['storeId'] =this._loggedService.currentUserValue.user.storeId || 0;
     grnReturnSave['supplierID'] =this._GRNReturnService.NewGRNReturnFrom.get('SupplierName').value.SupplierId;
     grnReturnSave['totalAmount'] =  this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value|| 0;

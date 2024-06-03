@@ -233,22 +233,25 @@ export class NewPrescriptionComponent implements OnInit {
   } 
   getSelectedObjItem(obj) {
     console.log(obj)
-    if (this.dsPresList.data.length > 0) {
-      this.dsPresList.data.forEach((element) => {
-        if (obj.ItemID == element.ItemID) {
-          Swal.fire('Selected Item already added in the list ');
-          this.ItemForm.reset();
-        }
-      });
       this.ItemName = obj.ItemName;
-      this.ItemId = obj.ItemID;
+      this.ItemId = obj.ItemId;
       this.BalanceQty = obj.BalanceQty;
-    }
-    else {
-      this.ItemName = obj.ItemName;
-      this.ItemId = obj.ItemID;
-      this.BalanceQty = obj.BalanceQty;
-    }
+    // if (this.dsPresList.data.length > 0) {
+    //   this.dsPresList.data.forEach((element) => {
+    //     if (obj.ItemID == element.ItemID) {
+    //       Swal.fire('Selected Item already added in the list ');
+    //       this.ItemForm.reset();
+    //     }
+    //   });
+    //   this.ItemName = obj.ItemName;
+    //   this.ItemId = obj.ItemID;
+    //   this.BalanceQty = obj.BalanceQty;
+    // }
+    // else {
+    //   this.ItemName = obj.ItemName;
+    //   this.ItemId = obj.ItemID;
+    //   this.BalanceQty = obj.BalanceQty;
+    // }
   }
   onAdd() {
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
@@ -257,6 +260,8 @@ export class NewPrescriptionComponent implements OnInit {
       });
       return;
     }
+    const iscekDuplicate = this.dsPresList.data.some(item => item.ItemID == this.ItemId)
+    if(!iscekDuplicate){
     this.dsPresList.data = [];
     this.PresItemlist.push(
       {
@@ -267,6 +272,12 @@ export class NewPrescriptionComponent implements OnInit {
       });
     this.dsPresList.data = this.PresItemlist
     console.log(this.dsPresList.data); 
+    }else{
+      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     this.ItemForm.get('ItemId').reset('');
     this.ItemForm.get('Qty').reset('');
     this.ItemForm.get('Remark').reset('');
