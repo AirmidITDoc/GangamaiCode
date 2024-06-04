@@ -336,8 +336,8 @@ export class NewRequestforlabComponent implements OnInit {
     ipPathOrRadiRequestInsertArray['isAddedBy'] = this._loggedService.currentUserValue.user.id;
     ipPathOrRadiRequestInsertArray['isCancelled'] = 0;
     ipPathOrRadiRequestInsertArray['isCancelledBy'] = 0;
-    ipPathOrRadiRequestInsertArray['isCancelledDate'] = this.dateTimeObj.date;
-    ipPathOrRadiRequestInsertArray['isCancelledTime'] = this.dateTimeObj.time;
+    ipPathOrRadiRequestInsertArray['isCancelledDate'] = formattedDate;
+    ipPathOrRadiRequestInsertArray['isCancelledTime'] =  formattedTime;
     ipPathOrRadiRequestInsertArray['IsOnFileTest'] = 1;
     ipPathOrRadiRequestInsertArray['requestId '] = 0 
    
