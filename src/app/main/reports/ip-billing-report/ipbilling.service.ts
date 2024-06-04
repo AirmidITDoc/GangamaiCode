@@ -72,7 +72,7 @@ export class IPBillingService {
   }
 
   public getDischargeBillgeneratependingview(FromDate,ToDate){
-    return this._httpClient.get("IPReport/view-IPCreditReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+    return this._httpClient.get("CommanReport/view-IPBillGenerationPaymentDueReport?FromDate=" + FromDate + "&ToDate="+ToDate);
   }
 
   

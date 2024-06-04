@@ -144,7 +144,7 @@ export class NewRegistrationComponent implements OnInit {
 
     if (this.data) {
       debugger
-console.log(this.data.registerObj)
+        console.log(this.data.registerObj)
         this.registerObj = this.data.registerObj;
         this.registerObj.PrefixID=this.registerObj.PrefixId;
       
@@ -298,6 +298,7 @@ console.log(this.data.registerObj)
         return;
       }
     });
+    this.onChangeGenderList(this.registerObj);
   }
 
 
@@ -508,7 +509,7 @@ console.log(this.data.registerObj)
     const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
     this.personalFormGroup.get('CityId').setValue(toSelectCity);
 
-    this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
+    this.onChangeGenderList(this.registerObj);
     debugger
     this.onChangeCityList(this.registerObj);
     this.personalFormGroup.updateValueAndValidity();
@@ -522,6 +523,7 @@ console.log(this.data.registerObj)
   }
 
   onChangeGenderList(prefixObj) {
+    debugger
     if (prefixObj) {
       this._registerService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
         this.GenderList = data;
@@ -614,15 +616,15 @@ debugger
           "Address": this.registerObj.Address || "",
           "City": this.personalFormGroup.get('CityId').value.CityName || 0,
           "PinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
-          "DateOfBirth": "2023-04-26T11:13:30.638Z",//this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
-          "Age": this.registerObj.AgeYear || 0,//this._registerService.mySaveForm.get("Age").value || "0",
+          "DateOfBirth": this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
+          "Age":this.registerObj.Age,
           "GenderID": this.personalFormGroup.get('GenderId').value.GenderId || 0,
-          "PhoneNo": this.registerObj.PhoneNo || "",// this._registerService.mySaveForm.get("PhoneNo").value || "0",
-          "MobileNo": this.registerObj.MobileNo || "",// this._registerService.mySaveForm.get("MobileNo").value || "0",
+          "PhoneNo": this.personalFormGroup.get("PhoneNo").value || "0",
+          "MobileNo": this.personalFormGroup.get("MobileNo").value || "0",
           "UpdatedBy": this.accountService.currentUserValue.user.id,
-          "AgeYear": this.registerObj.AgeYear || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
-          "AgeMonth": this.registerObj.AgeMonth || "0",// this._registerService.mySaveForm.get("AgeMonth").value.trim() || "%",
-          "AgeDay": this.registerObj.AgeDay || "0",// this._registerService.mySaveForm.get("AgeDay").value.trim() || "%",
+          "AgeYear": this.personalFormGroup.get("AgeYear").value || "0",
+          "AgeMonth": this.personalFormGroup.get("AgeMonth").value || "0",
+          "AgeDay": this.personalFormGroup.get("AgeDay").value || "0",
           "CountryId": this.personalFormGroup.get('CountryId').value.CountryId,
           "StateId": this.personalFormGroup.get('StateId').value.StateId,
           "CityId": this.personalFormGroup.get('CityId').value.CityId,
@@ -644,8 +646,8 @@ debugger
              
               debugger
               // if(this.Submitflag )
-                this.getAdmittedPatientCasepaperview(this.AdmissionID);
-              
+                // this.getAdmittedPatientCasepaperview(this.AdmissionID);
+              this.getRegistredPatientCasepaperview(this.registerObj.RegId);
               // if(!this.Submitflag)
               //   this.getRegistredPatientCasepaperview(this.registerObj.VisitId);
               this._matDialog.closeAll();

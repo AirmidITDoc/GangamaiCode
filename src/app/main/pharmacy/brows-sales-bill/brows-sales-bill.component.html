@@ -1258,7 +1258,7 @@
                     <div style="display:flex;align-items:center;margin-bottom: 5px;">
                         <span style="width:100px;display:inline-block;">Bill Date & Time</span>
                         <span style="margin:0 5px">:</span>
-                        <span>{{reportPrintObjList[0]?.Time | date:"dd/MM/yyyy hh:mm"}}</span>
+                        <span>{{reportPrintObjList[0]?.Time | date:"dd/MM/yyyy hh:mm tt"}}</span>
                     </div>
                     <div style="display:flex;align-items:center;margin-bottom: 5px;">
                         <span style="width:100px;display:inline-block;">Bill type</span>
@@ -1516,7 +1516,7 @@
                         <!-- <tr> -->
                         <td style="vertical-align: top;padding:0 10px 10px">
                             Bill No: {{reportPrintObjList[0]?.SalesNo}} <span style="margin-left: 10px;">Bill
-                                Date:{{reportPrintObjList[0]?.Time | date:'dd/MM/yyyy'}} | {{reportPrintObjList[0]?.Time | date:'hh:mm'}}</span><br>
+                                Date:{{reportPrintObjList[0]?.Time | date:'dd/MM/yyyy'}} | {{reportPrintObjList[0]?.Time | date:'hh:mm tt'}}</span><br>
                             Mode of Payment : {{reportPrintObjList[0]?.PayMode}} <br>
                         </td>
                         <!-- </tr> -->

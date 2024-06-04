@@ -11,7 +11,7 @@
                     </button>
 
                     <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}">
-                        OPD BILLING
+                        OPD BILLING d
                     </span>
 
                     <!-- <span  style="margin-left:400px;" hidden><app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>   -->
@@ -173,7 +173,7 @@
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="b_price" name="bPrice" #price
                                                     (keyup)="calculateTotalAmtbyprice()" formControlName="price"
-                                                    required type="number" id="Price" #price readonly
+                                                    required type="number" id="Price" #price
                                                     (keydown)="onEnterorice($event)"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
                                                 <mat-error
@@ -489,7 +489,7 @@
                                         </mat-form-field> -->
 
 
-                                        <mat-form-field appearance="outline">
+                                        <mat-form-field appearance="outline" *ngIf="conflag">
                                             <mat-label>Disc %</mat-label>
                                             <input matInput placeholder="Percentage" formControlName="concesDiscPer"
                                                 [ngModel]="b_concessionDiscPer" autocomplete="off" #disper

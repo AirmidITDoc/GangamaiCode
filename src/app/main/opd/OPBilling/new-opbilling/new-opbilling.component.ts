@@ -164,7 +164,7 @@ export class NewOPBillingComponent implements OnInit {
   CompanyId: any = 0;
   AgeYear: any = 0;
   VisitId: any = 0;
-
+  
   //doctorone filter
   public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -447,7 +447,7 @@ debugger
   }
 
   onSaveOPBill2() {
-debugger
+
     if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -471,12 +471,15 @@ else if(this.CompanyId =='' || this.CompanyId ==0){
     }
 
     this.isLoading = 'submit';
-
+    debugger
     let ConcessionId = 0;
-    if (this.BillingForm.get('ConcessionId').value)
-      ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
-
-    let InsertBillUpdateBillNoObj = {};
+    let ConcessionReason =''
+    if (this.BillingForm.get('ConcessionId').value || this.b_concessionDiscPer > 0){
+    ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
+     ConcessionReason =this.BillingForm.get('ConcessionId').value.ConcessionReason;
+    }
+    
+     let InsertBillUpdateBillNoObj = {};
     InsertBillUpdateBillNoObj['BillNo'] = 0;
     InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
     InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value;
@@ -501,8 +504,7 @@ else if(this.CompanyId =='' || this.CompanyId ==0){
     InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
     InsertBillUpdateBillNoObj['TaxPer'] = 0;
     InsertBillUpdateBillNoObj['TaxAmount'] = 0;
-    InsertBillUpdateBillNoObj['DiscComments'] = '',
-      InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
+    InsertBillUpdateBillNoObj['discComments'] =  ConcessionReason || '';
 
     let Billdetsarr = [];
     this.dataSource.data.forEach((element) => {
@@ -626,6 +628,7 @@ else if(this.CompanyId =='' || this.CompanyId ==0){
           this.chargeslist = [];
           this.PatientName = "";
           this.vOPDNo = "";
+          this.vOPIPId=""
           this.Doctorname = "";
           this.Tarrifname = "";
         }
@@ -763,8 +766,12 @@ else if(this.CompanyId =='' || this.CompanyId ==0){
     this.isLoading = 'submit';
 
     let ConcessionId = 0;
-    if (this.BillingForm.get('ConcessionId').value)
+
+    let ConcessionReason = '';
+    if (this.BillingForm.get('ConcessionId').value){
       ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
+      ConcessionReason =this.BillingForm.get('ConcessionId').value.ConcessionReason;
+    }
 
     let InsertBillUpdateBillNoObj = {};
     InsertBillUpdateBillNoObj['BillNo'] = 0;
@@ -791,8 +798,7 @@ else if(this.CompanyId =='' || this.CompanyId ==0){
     InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
     InsertBillUpdateBillNoObj['TaxPer'] = 0;
     InsertBillUpdateBillNoObj['TaxAmount'] = 0;
-    InsertBillUpdateBillNoObj['DiscComments'] = '',
-      InsertBillUpdateBillNoObj['DiscComments'] = this.BillingForm.get('BillRemark').value || '';
+    InsertBillUpdateBillNoObj['DiscComments'] = ConcessionReason || '';
 
     let Billdetsarr = [];
     this.dataSource.data.forEach((element) => {
@@ -888,6 +894,7 @@ else if(this.CompanyId =='' || this.CompanyId ==0){
 this.chargeslist = [];
 this.PatientName = " ";
 this.vOPDNo = " ";
+this.vOPIPId=" ";
 this.Doctorname = "";
 this.Tarrifname = "";
 this.searchFormGroup.get('RegId').reset();
@@ -995,17 +1002,20 @@ calculateTotalAmtbyprice() {
     }
   }
 }
+conflag:boolean=false;
 // Charges Wise Disc Percentage 
 calculatePersc() {
-  debugger
+  
   
   this.v_ChargeDiscPer= this.registeredForm.get('ChargeDiscPer').value;
 
   if ((this.v_ChargeDiscPer < 101) && (this.v_ChargeDiscPer > 0) ) {
     this.b_ChargeDisAmount = Math.round(this.b_totalAmount * parseInt(this.v_ChargeDiscPer)) / 100;
-
+    debugger
     this.b_netAmount = this.b_totalAmount - this.b_ChargeDisAmount;
     this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
+    this.conflag=true;
+    this.Consessionres=true
   }
   else if((this.v_ChargeDiscPer > 100) || (this.v_ChargeDiscPer < 0) ){
     Swal.fire("Enter Discount % Less than 100 & Greater > 0")
@@ -1016,6 +1026,12 @@ calculatePersc() {
 
   if( this.b_netAmount < 0){
     this.add=false;
+  }
+  
+  if(this.v_ChargeDiscPer == "0" || this.v_ChargeDiscPer ==null){
+    this.b_netAmount=this.b_totalAmount;
+    this.b_ChargeDisAmount=0;
+    this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
   }
 }
 
@@ -1041,7 +1057,7 @@ calculatechargesDiscamt() {
 
 
 calcDiscPersonTotal() {
-debugger
+
 this.b_concessionDiscPer= this.BillingForm.get('concesDiscPer').value;
   if (this.b_concessionDiscPer > 0 && this.b_concessionDiscPer < 101) {
   
@@ -1068,10 +1084,14 @@ this.b_concessionDiscPer= this.BillingForm.get('concesDiscPer').value;
     this.b_concessionamt=0;
     this.TotalnetPaybleAmt=this.b_TotalChargesAmount;
 
-
-    if (this.b_concessionDiscPer == 0 || this.BillingForm.get('concesDiscPer').value == null)
+  }else if (this.b_concessionDiscPer == 0 || this.BillingForm.get('concesDiscPer').value == null || this.b_concessionDiscPer == '0'){
       this.BillingForm.get('FinalAmt').setValue(this.b_TotalChargesAmount);
-
+       this.Consessionres = false;
+       this.BillingForm.get('ConcessionId').reset();
+       this.BillingForm.get('ConcessionId').clearValidators();
+       this.BillingForm.get('ConcessionId').updateValueAndValidity();
+       this.b_concessionDiscPer=0;
+       this.b_concessionamt=0;
   }
 }
 
@@ -1382,7 +1402,7 @@ export class Bill {
       this.ConcessionAuthorizationName = InsertBillUpdateBillNoObj.ConcessionAuthorizationName || 0;
       this.TaxPer = InsertBillUpdateBillNoObj.TaxPer || 0;
       this.TaxAmount = InsertBillUpdateBillNoObj.TaxAmount || 0;
-      this.DiscComments = InsertBillUpdateBillNoObj.DiscComments || 0;
+      this.DiscComments = InsertBillUpdateBillNoObj.DiscComments || '';
       this.CashCounterId = InsertBillUpdateBillNoObj.CashCounterId || 0;
     }
   }

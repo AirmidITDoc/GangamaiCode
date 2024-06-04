@@ -12,6 +12,7 @@ import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
+import { L } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-ip-report',
@@ -43,6 +44,8 @@ export class IpReportComponent implements OnInit {
 
   FlagPaymentIdSelected: boolean = false;
   FlagMaterialConsumptionIdSelected: boolean = false;
+  FlagWardIdSelected: boolean = false;
+  FlagCompanyIdSelected: boolean = false;
 
 
   optionsUser: any[] = [];
@@ -121,7 +124,18 @@ var data={
       this.FlagRequestIdSelected = false;
       this.FlagPaymentIdSelected = false;
       this.FlagMaterialConsumptionIdSelected=false;
-    }else if (this.ReportName == 'IPD Admission List Company Wise Details') {
+    } else if (this.ReportName == 'IP Patient CasePaper') {
+      
+      this.FlagAdmissionIdSelected=true
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagAdvanceIdSelected = false;
+      this.FlagRequestIdSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagMaterialConsumptionIdSelected=false;
+
+
+    } else if (this.ReportName == 'IPD Admission List Company Wise Details') {
       
       this.FlagAdmissionIdSelected=true
       this.FlagUserSelected = false;
@@ -159,13 +173,15 @@ var data={
     }
     else if (this.ReportName == 'IPD Current Admitted - Ward Wise Charges') {
       
-      this.FlagAdmissionIdSelected=true
+      this.FlagAdmissionIdSelected=false
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagAdvanceIdSelected = false;
       this.FlagRequestIdSelected = false;
       this.FlagPaymentIdSelected = false;
       this.FlagMaterialConsumptionIdSelected=false;
+      this.FlagWardIdSelected = true;
+      this.FlagCompanyIdSelected=true;
 
 
     } 
@@ -193,18 +209,7 @@ var data={
 
 
     } 
-    else if (this.ReportName == 'IPD Current Admitted - Ward Wise Charges') {
-      
-      this.FlagAdmissionIdSelected=true
-      this.FlagUserSelected = false;
-      this.FlagDoctorSelected = false;
-      this.FlagAdvanceIdSelected = false;
-      this.FlagRequestIdSelected = false;
-      this.FlagPaymentIdSelected = false;
-      this.FlagMaterialConsumptionIdSelected=false;
-
-
-    } 
+   
     else if (this.ReportName == 'IPD Current Ref Admitted List') {
       
       this.FlagAdmissionIdSelected=true
@@ -301,18 +306,7 @@ var data={
 
     }
 
-    else if (this.ReportName == 'IP Patient CasePaper') {
-      
-      this.FlagAdmissionIdSelected=true
-      this.FlagUserSelected = false;
-      this.FlagDoctorSelected = false;
-      this.FlagAdvanceIdSelected = false;
-      this.FlagRequestIdSelected = false;
-      this.FlagPaymentIdSelected = false;
-      this.FlagMaterialConsumptionIdSelected=false;
-
-
-    } else if (this.ReportName == 'IP Advance Receipt') {
+   else if (this.ReportName == 'IP Advance Receipt') {
       
       this.FlagAdmissionIdSelected=false;
       this.FlagUserSelected = false;
@@ -781,13 +775,12 @@ viewgetIPAdvanceReportPdf() {
   }
   getCurrentadmitwardwisechargsview(){
     setTimeout(() => {
-      
+      let DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0
+      let  WardId=this._IPReportService.userForm.get('WardId').value || 0
+      let CompanyId=this._IPReportService.userForm.get('CompanyId').value || 0
       this.AdList=true;
      this._IPReportService.getCurrAdmitwardwisechargesView(
-      
-       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-       this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,0,
+      DoctorId, WardId,CompanyId
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -814,9 +807,9 @@ viewgetIPAdvanceReportPdf() {
       this.AdList=true;
      this._IPReportService.getDeptwisecountsummaryView(
       
-      //  this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      //  this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,
+       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+       
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -843,9 +836,9 @@ viewgetIPAdvanceReportPdf() {
       this.AdList=true;
      this._IPReportService.getDoctwisecountsummaryView(
       
-      //  this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      //  this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,
+       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -868,13 +861,10 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetCurrRefdocAdmitlistReportPdf(){
     setTimeout(() => {
-      
+      let DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0
       this.AdList=true;
      this._IPReportService.getCurrRefDoctAdmitlistView(
-      
-      //  this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      //  this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,
+      DoctorId
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -901,9 +891,9 @@ viewgetIPAdvanceReportPdf() {
       this.AdList=true;
      this._IPReportService.getDischargetypewiseView(
       
-      //  this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      //  this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,
+       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+       0,0
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -1017,9 +1007,9 @@ viewgetIPAdvanceReportPdf() {
       this.AdList=true;
      this._IPReportService.getDischargedetailwithmarkView(
       
-      //  this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      //  this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,
+       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+       
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -1046,9 +1036,9 @@ viewgetIPAdvanceReportPdf() {
       this.AdList=true;
      this._IPReportService.getDischargedetailwithbillsummaryView(
       
-      //  this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      //  this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,
+       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+       
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
