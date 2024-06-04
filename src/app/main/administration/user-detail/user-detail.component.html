@@ -195,13 +195,33 @@
                                                 </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+
+                                      
+
+                                        <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            
                                             <div fxLayoutAlign="start center" class="gap-16">
                                                 <mat-checkbox formControlName="IsDoctor"
                                                     (change)="chkdoctor($event)">IsDoctor
                                                 </mat-checkbox>
                                                 <mat-checkbox formControlName="IsActive"
                                                     [(ngModel)]="registerObj.IsActive">Active
+                                                </mat-checkbox>
+                                            </div>
+                                        </div> -->
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"> 
+                                        
+                                            <div fxLayoutAlign="start center" fxLayoutAlign="space-between center" style="padding-top: 10px;">
+                                                <mat-checkbox formControlName="PharExpOpt" [(ngModel)]="vPharExpOpt">PharExpOpt
+                                                </mat-checkbox>
+                                                <mat-checkbox formControlName="PharIPOpt" [(ngModel)]="vPharIPOpt">PharIPOpt
+                                                </mat-checkbox>
+                                                <mat-checkbox formControlName="PharOPOpt" [(ngModel)]="vPharOPOpt">PharOPOpt
+                                                </mat-checkbox>
+                                                <mat-checkbox formControlName="IsDoctor" (change)="chkdoctor($event)">IsDoctor
+                                                </mat-checkbox>
+                                                <mat-checkbox formControlName="IsActive" [(ngModel)]="registerObj.IsActive">Active
                                                 </mat-checkbox>
                                             </div>
                                         </div>

@@ -100,6 +100,7 @@ export class OpeningBalanceComponent {
     var vdata={
       'OpeningHId':Param.OpeningHId
      }
+     console.log(vdata)
     this._OpeningBalanceService.getOpeningBalItemDetList(vdata).subscribe(data =>{
       this.dsOpeningBalItemDetList.data = data as OpeningBalanceItemList[];
       console.log(this.dsOpeningBalItemDetList.data)

@@ -272,12 +272,12 @@ export class UpdateWorkorderComponent implements OnInit {
     this.ItemID = 0;
     this.ItemName = '';
     this._WorkOrderService.WorkorderItemForm.get('ItemName').setValue('');
-    this.vQty = 0;
-    this.vRate = 0;
-    this.vDis = 0;
+    this.vQty = '';
+    this.vRate = '';
+    this.vDis = '';
     this.vTotalAmount =0;
     this.vDiscAmt = 0;
-    this.vGST =0;
+    this.vGST ='';
     this.vGSTAmt = 0;
     this.vNetAmount =0;
     this.vSpecification = '';
@@ -316,7 +316,7 @@ calculateDiscperAmount(){
       this._WorkOrderService.WorkorderItemForm.get('Disc').setValue(0);
     }
     if (disc) {
-    this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) /100).toFixed(2);
+    this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) /100).toFixed(2) || 0;
     this.vNetAmount = (parseFloat(this.vTotalAmount) - parseFloat(this.vDiscAmt)).toFixed(2); 
 
     if (this._WorkOrderService.WorkorderItemForm.get('GSTType').value.Name == "GST After Disc") {
@@ -644,7 +644,7 @@ getTotalAmt(element) {
   }
   public onEnterGST(event): void {
     if (event.which === 13) {
-      //this.specification.nativeElement.focus();
+       this.addbutton.nativeElement.focus();
     }
   } 
   public onEnterSpecification(event): void {
