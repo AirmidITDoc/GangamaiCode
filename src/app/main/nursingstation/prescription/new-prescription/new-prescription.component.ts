@@ -186,6 +186,7 @@ export class NewPrescriptionComponent implements OnInit {
       this.BedNo = ''
     }
     else{
+      debugger
       this.registerObj = obj;
       // this.PatientName = obj.FirstName + '' + obj.LastName;
       this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
@@ -433,7 +434,7 @@ export class NewPrescriptionComponent implements OnInit {
     this.isLoading = 'submit'; 
     let insertIP_Prescriptionarray = [];
     let insertIP_MedicalRecordArray = {}; 
- 
+ debugger
 
     insertIP_MedicalRecordArray['medicalRecoredId'] = 0;
     insertIP_MedicalRecordArray['admissionId'] = this.vAdmissionID;

@@ -2434,11 +2434,12 @@ debugger
 
   ageyearcheck(event) {
 
-    if (event > 110) {
+    if (event > 100) {
       this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
+      this.agey.nativeElement.focus();
     }
   }
 
@@ -2479,6 +2480,7 @@ debugger
           Submitflag: true
         }
       });
+      
   }
 
 

@@ -47,6 +47,7 @@ import { ToastrService } from "ngx-toastr";
 import { NewOPBillingComponent } from "../OPBilling/new-opbilling/new-opbilling.component";
 import { Table } from "jspdf-autotable";
 import { invalid } from "moment";
+import { values } from "lodash";
 
 export class DocData {
   doc: any;
@@ -939,6 +940,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   EditRegistration() {
+    
     this.advanceDataStored.storage = new AdvanceDetailObj(this.registerObj);
     console.log(this.registerObj)
     this._registrationService.populateFormpersonal(this.registerObj);
@@ -956,6 +958,7 @@ export class AppointmentComponent implements OnInit {
     );
     console.log(this.registerObj)
     this.getVisitList1();
+    debugger
     // this.viewgetPatientAppointmentReportPdf(this.registerObj, true);
   }
 
@@ -1598,9 +1601,16 @@ export class AppointmentComponent implements OnInit {
 
 
   onSave() {
-    //
+    debugger
+let DoctorID = this.VisitFormGroup.get('DoctorID').value.DoctorId
 
-
+if(DoctorID == undefined){
+  this.toastr.warning('Please Enter Valid DoctorName.', 'Warning !', {
+    toastClass: 'tostr-tost custom-toast-warning',
+  });
+  return;
+}
+else{
     if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
 
       if (this.searchFormGroup.get('regRadio').value == "registration") {
@@ -1615,7 +1625,7 @@ export class AppointmentComponent implements OnInit {
 
     }
   }
-
+  }
 
 
 
@@ -1724,7 +1734,7 @@ export class AppointmentComponent implements OnInit {
     }
     this.onClose();
 
-
+    this.getVisitList1();
   }
 
   onSaveRegistered() {
@@ -1827,7 +1837,7 @@ export class AppointmentComponent implements OnInit {
       this.isLoading = '';
     });
 
-
+    this.getVisitList1();
     this.RegOrPhoneflag = "";
   }
 
@@ -2010,7 +2020,7 @@ export class AppointmentComponent implements OnInit {
       // console.log(contact)
       this.AppointmentCancle(contact.VisitId);
     }
-
+    this.getVisitList1();
   }
 
   newappointment() {
@@ -2283,6 +2293,19 @@ export class AppointmentComponent implements OnInit {
     this.appointmentFormStepper.previous();
   }
 
+  ageyearcheck(event) {
+debugger
+    if (parseInt(event) > 100) {
+      this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+      this.agey.nativeElement.focus();
+    }
+    // else{
+    //   this.agem.nativeElement.focus();
+    // }
+  }
 
   onClose() {
 
@@ -2692,10 +2715,11 @@ export class AppointmentComponent implements OnInit {
   }
 
 
-  public onEnteragey(event): void {
+  public onEnteragey(event,value): void {
     if (event.which === 13) {
       this.agem.nativeElement.focus();
-      // this.addbutton.focus();
+     debugger
+      this.ageyearcheck(value);
     }
   }
   public onEnteragem(event): void {
@@ -3044,6 +3068,7 @@ export class RegInsert {
   AdmissionID: any;
   VisitId: any;
   WardId: any;
+  BedId:any;
   /**
    * Constructor
    *
@@ -3088,6 +3113,7 @@ export class RegInsert {
       this.AdmissionID = RegInsert.AdmissionID || 0;
       this.VisitId = RegInsert.VisitId || 0;
       this.WardId = RegInsert.WardId || 0;
+      this.BedId = RegInsert.BedId || 0;
     }
   }
 }

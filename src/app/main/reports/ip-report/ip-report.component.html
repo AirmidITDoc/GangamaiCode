@@ -212,6 +212,28 @@
                                         </mat-form-field>
 
                                     </div>
+
+                                    <div *ngIf="FlagWardIdSelected" style="margin-left: 20px;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Ward Id</mat-label>
+                                            <input name="WardId" formControlName="WardId" placeholder="Ward Id"
+                                                matInput>
+
+                                        </mat-form-field>
+                                        
+
+                                    </div>
+
+                                    <div *ngIf="FlagCompanyIdSelected" style="margin-left: 20px;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Company Id</mat-label>
+                                            <input name="CompanyId" formControlName="CompanyId" placeholder="Company Id"
+                                                matInput>
+
+                                        </mat-form-field>
+                                        
+
+                                    </div>
                                     
                                     <button mat-raised-button class="searchButton" matTooltip="Print"
                                         style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"

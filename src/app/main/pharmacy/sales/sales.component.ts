@@ -2498,7 +2498,7 @@ export class SalesComponent implements OnInit {
  
 
   getPrint3(el) {
-
+debugger
     
     var D_data = {
       "SalesID": el,// 

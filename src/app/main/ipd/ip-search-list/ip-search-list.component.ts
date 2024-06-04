@@ -100,10 +100,10 @@ export class IPSearchListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAdmittedPatientList();
-
+  
     if (this._ActRoute.url == '/ipd/ipadvance') {
       this.menuActions.push('Advance');
-      // this.menuActions.push('Bed Transfer');
+      this.menuActions.push('Bed Transfer');
     }
     else if (this._ActRoute.url == '/ipd/discharge') {
       this.menuActions.push('Discharge');

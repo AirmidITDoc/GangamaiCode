@@ -4,11 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { IpReportComponent } from './ip-report/ip-report.component';
 import { IpBillingReportComponent } from './ip-billing-report/ip-billing-report.component';
 import { OPBillingReportComponent } from './opbilling-report/opbilling-report.component';
-import { OPMISReportsComponent } from './op-mis-reports/op-mis-reports.component';
 import { CommonReportComponent } from './common-report/common-report.component';
-
-
-
 
 const appRoutes: Routes = [
     {

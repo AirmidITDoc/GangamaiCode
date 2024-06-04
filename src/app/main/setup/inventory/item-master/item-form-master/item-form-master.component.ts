@@ -1010,7 +1010,7 @@ export class ItemFormMasterComponent implements OnInit {
                         currencyId: currencyId || 0,
                         taxPer: 0,
                         isBatchRequired: 0,//Boolean(JSON.parse(this._itemService.myform.get("IsBatchRequired").value)),
-                        isDeleted: 0,// Boolean(JSON.parse(this._itemService.myform.get("IsDeleted").value)),
+                        isDeleted:  Boolean(JSON.parse(this._itemService.myform.get("IsDeleted").value)),
                         upDatedBy: this._loggedService.currentUserValue.user.id || 0,
                         minQty: this._itemService.myform.get("MinQty").value || "0",
                         maxQty: this._itemService.myform.get("MaxQty").value || "0",
