@@ -84,15 +84,4 @@ export class RequestforlabtestService {
 }
 
 
-// return this._httpClient
-// .post<any>("https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/", employee, httpOptions)
-// .pipe( catchError((error: HttpErrorResponse)=>{
-//  console.log(error);
-//  if (error.status === 401) {
-  
-//  } else {
-  
-//    return throwError(error);
-//  }
-// }));
-// }
+ 

@@ -1,28 +1,32 @@
 <div class="modal-wrapper grid-container">
     <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Request New Test</span>
+        <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                    Request New Test
+                </span>
+                
             </div>
-            <div class="modal-header-right">
-                <div class="comman-date-container">
-                    <div class="comman-date">
-                        <app-common-date (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div>
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
-                </div>
+          
+            <div class="close-icon">
+                <!-- <app-common-date (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
+                <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
             </div>
-        </div>
+        </mat-toolbar>  
     </div>
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-copnt">
             <div fxLayout="column" class="gap-12">
                 <div class="modal-card-container">
-                    <mat-card>
+                    <!-- <mat-card> -->
                         <form [formGroup]="searchFormGroup">
                             <div fxLayout="row wrap" class="gap-16" fxLayoutAlign="center center">
                                 <div class="radio-container">
@@ -51,7 +55,7 @@
                                 </div>
                             </div>
                         </form>
-                    </mat-card>
+                    <!-- </mat-card> -->
                 </div>
                 <div class="modal-card-container">
                     <mat-card>
@@ -104,16 +108,16 @@
                         <form [formGroup]="myFormGroup">
                             <div fxLayout="column">
                                 <div class="radio-container gap-8" fxLayout="row wrap" fxLayoutAlign="space-between center">
-                                    <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad" (change)="getServiceListdata()">
-                                        <mat-radio-button value="1">Pathology
-                                        </mat-radio-button>
-                                        <mat-radio-button value="2">Radiology</mat-radio-button>
-                                        <mat-radio-button value="3">Other Services</mat-radio-button>
+                                    <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
+                                        (change)="getServiceListdata()">
+                                        <mat-radio-button value="1">Pathology </mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-button value="2">Radiology</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-button value="3">Other Services</mat-radio-button>&nbsp;&nbsp;&nbsp;
                                     </mat-radio-group>
 
-                                    <mat-form-field appearance="outline">
+                                    <!-- <mat-form-field appearance="outline">
                                         <input matInput type="datetime-local" placeholder="Request Date / Time" formControlName="Requestdate" [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
-                                    </mat-form-field>
+                                    </mat-form-field> -->
                                 </div>
                                 <div class="input-container gap-8" fxLayout="row">
                                     <mat-form-field appearance="outline" fxFlex>
@@ -136,6 +140,11 @@
                         <!-- Table 1 -->
                         <div class="table-left" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="40%">
                             <mat-card>
+                                <div matColumnDef="loading"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                class="backgroundBlur" style="height: 100%;">
+                                <div class="spinner-border text-danger"></div>
+                                 </div>
                                 <mat-table #table matSort [dataSource]="dsLabRequest2" class="h-280 fix-first-col" [@animateStagger]="{value:'50'}">
                                     <ng-container matColumnDef="ServiceName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -235,7 +244,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" (click)="OnSaveLabRequest()">Save</button>
+                <button class="btn btn-primary" (click)="OnSave()" [disabled]="savebtn">Save</button>
             </div>
         </div>
     </div>

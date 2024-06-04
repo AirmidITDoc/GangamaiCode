@@ -248,12 +248,10 @@ export class NewMaterialConsumptionComponent implements OnInit {
       this.toastr.warning('Enter UsedQty less than BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       }); 
-      this.vUsedQty = 0;
-    }else{
-    this.vTotalAmount= this.vUsedQty * this.vRate
-    this.vBalQty = this.vBalQty - this.vUsedQty
-    }
-    this.remark.nativeElement.focus()
+      this.vUsedQty = '';
+      return 
+    } 
+    //this.remark.nativeElement.focus()
   }
   vMRPTotalAmount:any;
   vPurTotalAmount:any;
@@ -267,7 +265,11 @@ export class NewMaterialConsumptionComponent implements OnInit {
     return this.vLandedTotalAmount;
   }
   OnSave(){
-    
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
     if ((!this.dsNewmaterialList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -277,8 +279,8 @@ export class NewMaterialConsumptionComponent implements OnInit {
     this.Savebtn=true;
     let materialConsumptionObj = {};
     materialConsumptionObj['materialConsumptionId'] = 0;
-    materialConsumptionObj['consumptionDate'] = this.dateTimeObj.date;
-    materialConsumptionObj['consumptionTime'] =this.dateTimeObj.time;
+    materialConsumptionObj['consumptionDate'] =  formattedDate;
+    materialConsumptionObj['consumptionTime'] = formattedTime;
     materialConsumptionObj['fromStoreId'] =this._loggedService.currentUserValue.user.storeId;
     materialConsumptionObj['landedTotalAmount'] = parseInt(this.vLandedTotalAmount) || 0;
     materialConsumptionObj['purchaseTotal'] = parseInt(this.vPurTotalAmount) || 0;
@@ -371,20 +373,22 @@ export class NewMaterialConsumptionComponent implements OnInit {
   }
   onEnterdate(event): void {
     if (event.which === 13) {
-      this.addbutton.nativeElement.focus();
-      setTimeout(() => {
-     // this.vadd=true;
-     
-  }, 10);
-    }
-    // this.vadd=false;
-     
+      this.addbutton.nativeElement.focus(); 
+    } 
   }
   onClose() {
     this._matDialog.closeAll();
   }
 
-
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  } 
   OnReset(){
    this.ItemReset();
   //  this._MaterialConsumptionService.userFormGroup.reset();

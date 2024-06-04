@@ -12,6 +12,7 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ToastrService } from 'ngx-toastr';
  
  
 @Component({
@@ -76,7 +77,8 @@ export class NewRequestforlabComponent implements OnInit {
   constructor(private _FormBuilder: FormBuilder,
     private dialogRef: MatDialogRef<NewRequestforlabComponent>,
     private _matDialog:MatDialog,
-    public _RequestforlabtestService: RequestforlabtestService,
+    public _RequestforlabtestService: RequestforlabtestService, 
+    public toastr: ToastrService,
     private _loggedService: AuthenticationService) { 
       this.date = new Date();
     }
@@ -109,31 +111,10 @@ export class NewRequestforlabComponent implements OnInit {
 
     });
   }
-
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  }
-
-  // getSearchList() {
-  //   var m_data = {
-  //     "Keyword": `${this.searchFormGroup.get('RegId').value}%` || '%'
-  //   }
-  //   if (this.searchFormGroup.get('RegId').value.length >= 1) {
-  //     this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-  //       this.filteredOptions = resData;
-  //       this.V_SearchRegList=this.filteredOptions;
-  //       console.log(this.V_SearchRegList)
-  //       if (this.filteredOptions.length == 0) {
-  //         this.noOptionFound = true;
-  //       } else {
-  //         this.noOptionFound = false;
-  //       }
-  //     });
-  //   }
-
-
-
+  } 
   getSearchList() {
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegID').value}%`
@@ -147,8 +128,7 @@ export class NewRequestforlabComponent implements OnInit {
           this.noOptionFound = true;
         } else {
           this.noOptionFound = false;
-        }
-
+        } 
       });
     }
 
@@ -158,15 +138,7 @@ export class NewRequestforlabComponent implements OnInit {
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
 
-  getOptionTextPatientName(option){
-    return option && option.PatientName ? option.PatientName : '';
-  }
-  getOptionTextDoctorName(option){
-    return option && option.DoctorName ? option.DoctorName : '';
-  }
-  getOptionTextRegNo(option){
-    return option && option.RegNo ? option.RegNo : '';
-  }
+ 
   onEdit(row) {
     console.log(row);
 
@@ -190,24 +162,53 @@ export class NewRequestforlabComponent implements OnInit {
       this.BedNo = ''
     }
     else{
-      this.registerObj = obj;
-      // this.PatientName = obj.FirstName + '' + obj.LastName;
+      this.registerObj = obj; 
       this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
       this.RegNo = obj.RegNo;
       this.vAdmissionID = obj.AdmissionID
       this.CompanyName = obj.CompanyName;
       this.Tarrifname = obj.TariffName;
-      this.Doctorname = obj.DoctorName;
-      // this.vOpIpId = obj.AdmissionID;
+      this.Doctorname = obj.DoctorName; 
       this.vOPDNo = obj.IPDNo;
       this.WardName = obj.RoomName;
       this.BedNo = obj.BedName;
+      this.vClassId = obj.ClassId;
+      this.vTariffId = obj.TariffId;
       console.log(obj);
     } 
-    if(this.vAge > 100){
-      Swal.fire("Age is Above 100 can't Generate Request !");
-    }
+ this.dsLabRequest2.data = [];
+ this.dstable1.data = [];
   }
+
+  getServiceListdata() {
+    // debugger
+    if(this.RegNo > 0 ){
+      var Param = {
+        "ServiceName":`${this.myFormGroup.get('ServiceId').value}%` ||'%',
+        "IsPathRad":parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
+        "ClassId":   this.vClassId || 0,
+        "TariffId":  this.vTariffId  || 0
+    }
+      console.log(Param);
+      this._RequestforlabtestService.getServiceListDetails(Param).subscribe(data => {
+        this.dsLabRequest2.data = data as LabRequest[];
+        // this.chargeslist = data as LabRequestList[];
+        this.dsLabRequest2.data = data as LabRequest[];
+       console.log(this.dsLabRequest2)
+        this.sIsLoading = '';
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }
+    else{
+      this.toastr.warning('Please select patient ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
+   
+  }
+ 
   onChangeReg(event) {
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
@@ -221,21 +222,21 @@ export class NewRequestforlabComponent implements OnInit {
 
   viewgetLabrequestReportPdf(RequestId) {
     setTimeout(() => {
-      this.SpinLoading =true;
-    //  this.AdList=true;
-    this._RequestforlabtestService.getLabrequestview(
-      RequestId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "IP Prescription Viewer"
-          }
-        });
+      this.SpinLoading = true;
+      //  this.AdList=true;
+      this._RequestforlabtestService.getLabrequestview(
+        RequestId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Prescription Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
           // this.AdList=false;
           this.SpinLoading = false;
@@ -244,37 +245,11 @@ export class NewRequestforlabComponent implements OnInit {
           // this.AdList=false;
           this.SpinLoading = false;
         });
-    });
-   
-    },100);
-  }
-  
-  getServiceListdata() {
-    // debugger
-    var Param = {
-      "ServiceName":`${this.myFormGroup.get('ServiceId').value}%` ||'%',
-      "IsPathRad":parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
-      "ClassId":1,
-      "TariffId":1
-  }
-    console.log(Param);
-    this._RequestforlabtestService.getServiceListDetails(Param).subscribe(data => {
-      this.dsLabRequest2.data = data as LabRequest[];
-      // this.chargeslist = data as LabRequestList[];
-      this.dsLabRequest2.data = data as LabRequest[];
-     console.log(this.dsLabRequest2)
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
       });
+
+    }, 100);
   }
  
-
-  getServiceListItem(){
-
-  }
-
   onSaveEntry(row) {
     this.isLoading = 'save';
     this.dstable1.data = [];
@@ -290,6 +265,12 @@ export class NewRequestforlabComponent implements OnInit {
       this.dstable1.paginator = this.paginator;
     } else if (this.chargeslist && this.chargeslist.length == 0) {
       this.addChargList(row);
+    }
+    else{
+      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
     }
   }
 
@@ -307,8 +288,7 @@ export class NewRequestforlabComponent implements OnInit {
     this.dstable1.paginator = this.paginator;
   }
 
-  deleteTableRow(element) {
-    // if (this.key == "Delete") {
+  deleteTableRow(element) { 
       this.chargeslist= this.dstable1.data ;
       let index = this.chargeslist.indexOf(element);
       if (index >= 0) {
@@ -316,65 +296,83 @@ export class NewRequestforlabComponent implements OnInit {
         this.dstable1.data = [];
         this.dstable1.data = this.chargeslist;
       }
-      Swal.fire('Success !', 'Service Row Deleted Successfully', 'success');
-
-    // }
-   
-
+      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });  
   }
   onClose() {
     this.dialogRef.close();
   }
 
   
-
-  OnSaveLabRequest(){
-
+  savebtn:boolean=false;
+  OnSave() {
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    if ((this.RegNo == '' || this.RegNo == null || this.RegNo == undefined)) {
+      this.toastr.warning('Please select patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((!this.dstable1.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     this.isLoading = 'submit';
-      let submissionObj = {};
-      let ipPathOrRadiRequestInsertArray= {};
-      let ipPathOrRadiRequestLabRequestInsertArray = [];
-      let ipPathOrRadiRequestLabRequestInsert =[];
+    this.savebtn = true;
+    let submissionObj = {};
+    let ipPathOrRadiRequestInsertArray = {};
+    let ipPathOrRadiRequestLabRequestInsertArray = []; 
 
-      ipPathOrRadiRequestInsertArray['reqDate']  =  this.dateTimeObj.date;
-      ipPathOrRadiRequestInsertArray['reqTime']  = this.dateTimeObj.time;
-      ipPathOrRadiRequestInsertArray['oP_IP_ID']  = this.vOPIPId
-      ipPathOrRadiRequestInsertArray['oP_IP_Type']  =  1;
-      ipPathOrRadiRequestInsertArray['isAddedBy']  = this._loggedService.currentUserValue.user.id;
-      ipPathOrRadiRequestInsertArray['isCancelled']  = 0;
-      ipPathOrRadiRequestInsertArray['isCancelledBy']  = 0;
-      ipPathOrRadiRequestInsertArray['isCancelledDate']  = this.dateTimeObj.date;
-      ipPathOrRadiRequestInsertArray['isCancelledTime']  = this.dateTimeObj.time;
-      ipPathOrRadiRequestInsertArray['IsOnFileTest']  = 1;
-      ipPathOrRadiRequestInsertArray['RequestId ']  = 0
-     
-
-      submissionObj['ipPathOrRadiRequestInsert'] = ipPathOrRadiRequestInsertArray;
-
-      this.dstable1.data.forEach((element) => {
-        let ipPathOrRadiRequestLabRequestInsert = {};
-        ipPathOrRadiRequestLabRequestInsert['requestId'] =0;
-        ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId;
-        ipPathOrRadiRequestLabRequestInsert['price']=element.Price;
-        ipPathOrRadiRequestLabRequestInsert['isStatus']= false;
-        ipPathOrRadiRequestLabRequestInsert['IsOnFileTest']  = 1;
-        ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
+    ipPathOrRadiRequestInsertArray['reqDate'] = formattedDate;
+    ipPathOrRadiRequestInsertArray['reqTime'] = formattedTime;
+    ipPathOrRadiRequestInsertArray['oP_IP_ID'] = this.vOPIPId
+    ipPathOrRadiRequestInsertArray['oP_IP_Type'] = 1;
+    ipPathOrRadiRequestInsertArray['isAddedBy'] = this._loggedService.currentUserValue.user.id;
+    ipPathOrRadiRequestInsertArray['isCancelled'] = 0;
+    ipPathOrRadiRequestInsertArray['isCancelledBy'] = 0;
+    ipPathOrRadiRequestInsertArray['isCancelledDate'] = this.dateTimeObj.date;
+    ipPathOrRadiRequestInsertArray['isCancelledTime'] = this.dateTimeObj.time;
+    ipPathOrRadiRequestInsertArray['IsOnFileTest'] = 1;
+    ipPathOrRadiRequestInsertArray['requestId '] = 0 
+   
+    this.dstable1.data.forEach((element) => {
+      let ipPathOrRadiRequestLabRequestInsert = {};
+      ipPathOrRadiRequestLabRequestInsert['requestId'] = 0;
+      ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId;
+      ipPathOrRadiRequestLabRequestInsert['price'] = element.Price;
+      ipPathOrRadiRequestLabRequestInsert['isStatus'] = false;
+      ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = 1;
+      ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
     });
-    submissionObj['ipPathOrRadiRequestLabRequestInsert'] = ipPathOrRadiRequestLabRequestInsertArray;
+
+    submissionObj = {
+      'ipPathOrRadiRequestInsert' : ipPathOrRadiRequestInsertArray,
+      'ipPathOrRadiRequestLabRequestInsert' :ipPathOrRadiRequestLabRequestInsertArray
+    } 
     console.log(submissionObj);
     this._RequestforlabtestService.LabRequestSave(submissionObj).subscribe(response => {
       console.log(response);
       if (response) {
-        Swal.fire('Congratulations !', 'New Lab Request Saved Successfully  !', 'success').then((result) => {
-          if (result) {
-            this.dialogRef.close();
-this.viewgetLabrequestReportPdf(response);
-          }
+        this.toastr.success('Record Saved Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
         });
+        this.savebtn = true;
       } else {
-        Swal.fire('Error !', 'Lab Request Not Saved', 'error');
+        this.toastr.error('Record Not Saved!', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
       }
       this.isLoading = '';
+    }, error => {
+      this.toastr.error('API Error!', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
     });
   }
 
