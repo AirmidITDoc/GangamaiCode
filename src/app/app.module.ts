@@ -134,9 +134,20 @@ const appRoutes: Routes = [
             import("./main/reports/reports.module").then((m) => m.ReportsModule),
     },
     {
+        path: "emergencymanagement",
+        loadChildren: () =>
+            import("./main/emergencymanagement/emergencymanagement.module").then((m) => m.EmergencymanagementModule),
+    },
+    {
+        path: "ambulancemanagement",
+        loadChildren: () =>
+            import("./main/ambulancemanagement/ambulancemanagement.module").then((m) => m.AmbulancemanagementModule),
+    },
+    {
         path: '**',
         redirectTo: 'auth/login'
-    }
+    },
+  
 ];
 
 

@@ -82,12 +82,12 @@ export class GSTAdjustmentComponent implements OnInit {
  
   Savebtn:boolean=false;
   onSubmit(){
-    if (this._StockAdjustment.GSTAdjustment.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (this._StockAdjustment.GSTAdjustment.invalid) {
+    //   this.toastr.warning('please check from is invalid', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     if ((this.vNewSGSTPer == '' || this.vNewSGSTPer == null || this.vNewSGSTPer == undefined)) {
       this.toastr.warning('Please enter a New CGST', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -100,49 +100,34 @@ export class GSTAdjustmentComponent implements OnInit {
       });
       return;
     }
-    if ((this.vIGSTPer == '' || this.vIGSTPer == null || this.vIGSTPer == undefined)) {
+    if ((this.vIGSTPer == null || this.vIGSTPer == undefined)) {
       this.toastr.warning('Please enter a New IGST', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-   
+ 
   this.Savebtn = true;
-  let insertMRPAdju = {};
-  insertMRPAdju['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
-  insertMRPAdju['itemId'] = this. registerObj.ItemId || 0;
-  insertMRPAdju['batchNo'] =  this. registerObj.BatchNo || '';
-  insertMRPAdju['oldMrp'] = this._StockAdjustment.GSTAdjustment.get('CGSTPer').value || 0;
-  insertMRPAdju['oldLandedRate'] = this._StockAdjustment.GSTAdjustment.get('vSGSTPer').value || 0;
-  insertMRPAdju['oldPurRate'] = this._StockAdjustment.GSTAdjustment.get('vIGSTPer').value || 0;
-  insertMRPAdju['qty'] = 0;
-  insertMRPAdju['mrp'] = this._StockAdjustment.GSTAdjustment.get('NewCGSTPer').value ||  0;
-  insertMRPAdju['landedRate'] = this._StockAdjustment.GSTAdjustment.get('NewSGSTPer').value ||  0;
-  insertMRPAdju['purRate'] = this._StockAdjustment.GSTAdjustment.get('NewIGSTPer').value || 0;
-  insertMRPAdju['addedBy'] = this._loggedService.currentUserValue.user.id || 0;
-  insertMRPAdju['addedDateTime'] = new Date();
-
-  let insertMRPAdjuNew = {};
-  insertMRPAdjuNew['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
-  insertMRPAdjuNew['stockid'] = this. registerObj.StockId || 0;
-  insertMRPAdjuNew['itemId'] = this. registerObj.ItemId || 0;
-  insertMRPAdjuNew['batchNo'] =  this. registerObj.BatchNo || '';
-  insertMRPAdjuNew['perUnitMrp'] =  this._StockAdjustment.GSTAdjustment.get('NewMRP').value ||  0;
-  insertMRPAdjuNew['perUnitPurrate'] = this._StockAdjustment.GSTAdjustment.get('newLandedRate').value ||  0;
-  insertMRPAdjuNew['perUnitLanedrate'] = this._StockAdjustment.GSTAdjustment.get('NewPurchaseRate').value || 0;
-  insertMRPAdjuNew['oldUnitMrp'] = this._StockAdjustment.GSTAdjustment.get('OldMRP').value ||  0;
-  insertMRPAdjuNew['oldUnitPur'] = this._StockAdjustment.GSTAdjustment.get('PurchaseRate').value ||  0;
-  insertMRPAdjuNew['oldUnitLanded'] = this._StockAdjustment.GSTAdjustment.get('LandedRate').value || 0;
-
+  let insertGSTAdju = {};
+  insertGSTAdju['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
+  insertGSTAdju['itemId'] = this. registerObj.ItemId || 0;
+  insertGSTAdju['stkId'] =this. registerObj.StockId || 0;
+  insertGSTAdju['batchNo'] =  this. registerObj.BatchNo || '';
+  insertGSTAdju['oldCGSTPer'] = this._StockAdjustment.GSTAdjustment.get('CGSTPer').value || 0;
+  insertGSTAdju['oldSGSTPer'] = this._StockAdjustment.GSTAdjustment.get('SGSTPer').value || 0;
+  insertGSTAdju['oldIGSTPer'] = this._StockAdjustment.GSTAdjustment.get('IGSTPer').value || 0;
+  insertGSTAdju['cgstPer'] = this._StockAdjustment.GSTAdjustment.get('NewCGSTPer').value ||  0;
+  insertGSTAdju['sgstPer'] = this._StockAdjustment.GSTAdjustment.get('NewSGSTPer').value ||  0;
+  insertGSTAdju['igstPer'] = this._StockAdjustment.GSTAdjustment.get('NewIGSTPer').value || 0;
+  insertGSTAdju['addedBy'] = this._loggedService.currentUserValue.user.id || 0;  
 
   let submitData = {
-    "insertMRPAdju": insertMRPAdju,
-    "insertMRPAdjuNew" :insertMRPAdjuNew
+    "gstAdjustment": insertGSTAdju 
   };
   console.log(submitData);
-  this._StockAdjustment.MRPAdjSave(submitData).subscribe(response => {
+  this._StockAdjustment.GSTAdjSave(submitData).subscribe(response => {
     if (response) {
-      this.toastr.success('Record Saved Successfully.', 'Saved !', {
+      this.toastr.success('GST Adjustment Record Saved Successfully.', 'Saved !', {
         toastClass: 'tostr-tost custom-toast-success',
       }); this._matDialog.closeAll();
       this.Savebtn = false;

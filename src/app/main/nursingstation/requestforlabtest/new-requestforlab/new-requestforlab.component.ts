@@ -91,7 +91,7 @@ export class NewRequestforlabComponent implements OnInit {
 
   createMyForm():FormGroup {
     return this._FormBuilder.group({
-      IsPathRad: ['2'],
+      IsPathRad: ['3'],
       ServiceName1: '',
       Price1: '',
       ServiceId: '',
@@ -100,8 +100,8 @@ export class NewRequestforlabComponent implements OnInit {
       PatientName:'',
       RegId:'',
       AdmissionID:0,
-      Requestdate:''
-      
+      Requestdate:'',
+      IsOnFileTest:''
     })
   }
   createSearchForm():FormGroup{
@@ -169,12 +169,13 @@ export class NewRequestforlabComponent implements OnInit {
       this.CompanyName = obj.CompanyName;
       this.Tarrifname = obj.TariffName;
       this.Doctorname = obj.DoctorName; 
-      this.vOPDNo = obj.IPDNo;
+      this.vOPDNo = obj.AdmissionID;
       this.WardName = obj.RoomName;
       this.BedNo = obj.BedName;
       this.vClassId = obj.ClassId;
       this.vTariffId = obj.TariffId;
       console.log(obj);
+      this.getServiceListdata();
     } 
  this.dsLabRequest2.data = [];
  this.dstable1.data = [];
@@ -302,6 +303,9 @@ export class NewRequestforlabComponent implements OnInit {
   }
   onClose() {
     this.dialogRef.close();
+    this.myFormGroup.reset();
+    this.dsLabRequest2.data = [];
+    this.dstable1.data =[];
   }
 
   
@@ -331,14 +335,14 @@ export class NewRequestforlabComponent implements OnInit {
 
     ipPathOrRadiRequestInsertArray['reqDate'] = formattedDate;
     ipPathOrRadiRequestInsertArray['reqTime'] = formattedTime;
-    ipPathOrRadiRequestInsertArray['oP_IP_ID'] = this.vOPIPId
+    ipPathOrRadiRequestInsertArray['oP_IP_ID'] = this.vAdmissionID || 0;
     ipPathOrRadiRequestInsertArray['oP_IP_Type'] = 1;
     ipPathOrRadiRequestInsertArray['isAddedBy'] = this._loggedService.currentUserValue.user.id;
     ipPathOrRadiRequestInsertArray['isCancelled'] = 0;
     ipPathOrRadiRequestInsertArray['isCancelledBy'] = 0;
     ipPathOrRadiRequestInsertArray['isCancelledDate'] = formattedDate;
     ipPathOrRadiRequestInsertArray['isCancelledTime'] =  formattedTime;
-    ipPathOrRadiRequestInsertArray['IsOnFileTest'] = 1;
+    ipPathOrRadiRequestInsertArray['IsOnFileTest'] = this.myFormGroup.get('IsOnFileTest').value || 0;
     ipPathOrRadiRequestInsertArray['requestId '] = 0 
    
     this.dstable1.data.forEach((element) => {
@@ -347,7 +351,7 @@ export class NewRequestforlabComponent implements OnInit {
       ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId;
       ipPathOrRadiRequestLabRequestInsert['price'] = element.Price;
       ipPathOrRadiRequestLabRequestInsert['isStatus'] = false;
-      ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = 1;
+      ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = false;
       ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
     });
 
@@ -359,10 +363,11 @@ export class NewRequestforlabComponent implements OnInit {
     this._RequestforlabtestService.LabRequestSave(submissionObj).subscribe(response => {
       console.log(response);
       if (response) {
-        this.toastr.success('Record Saved Successfully.', 'Save !', {
+        this.toastr.success('Lab Request Saved Successfully.', 'Save !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
         this.savebtn = true;
+        this.onClose();
       } else {
         this.toastr.error('Record Not Saved!', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
