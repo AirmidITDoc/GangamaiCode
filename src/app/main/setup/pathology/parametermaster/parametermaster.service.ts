@@ -9,6 +9,9 @@ export class ParametermasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
     is_numeric : Boolean = true;
+    descriptiveList = [];
+    numericList = [];
+
 
     constructor(
         private _httpClient: HttpClient,
@@ -55,7 +58,7 @@ export class ParametermasterService {
             MinAge:[""],
             MaxAge: [""],
             MinValue: [""],
-            Maxvalue: [""],
+            MaxValue: [""],
             AgeType: [""]
         });
     }
@@ -124,6 +127,27 @@ export class ParametermasterService {
         return this._httpClient.post("Pathology/ParameterUpdate", param);
     }
 
+    // public getNumericMasterItem(param){
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=Rtrv_PathParameterRangeWithAge",
+    //         { ParameterId: param }
+    //     ); 
+    // }
+    public getTableData(param){
+        if(this.is_numeric) {
+            return this._httpClient.post(
+                "Generic/GetByProc?procName=Rtrv_PathParameterRangeWithAge",
+                { ParameterId: param }
+            ); 
+        }
+        else{
+        return this._httpClient.post(
+            "Generic/GetByProc?procName=Rtrv_PathDescriptiveValues_1",
+            { ParameterId: param }
+        ); 
+    }
+    }
+
     //Descriptive
 
     public getDescriptiveMasterList() {
@@ -158,5 +182,9 @@ export class ParametermasterService {
         this.myform.get("IsPrintDisSummary").setValue(param.IsPrintDisSummary == "false" ? false : true);
         this.myform.get("IsNumeric").setValue(param.IsNumeric == 1? 1: 2);
         this.is_numeric = param.IsNumeric == 1? true : false;
-    }
+        this.numericList = param.numericList;
+        this.descriptiveList = param.descriptiveList;
+        if (this.descriptiveList[0]?.DefaultValue) this.myform.get("DefaultValue").setValue(this.descriptiveList[0]?.DefaultValue);
+        
+}
 }

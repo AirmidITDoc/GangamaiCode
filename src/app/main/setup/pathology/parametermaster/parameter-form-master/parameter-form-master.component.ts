@@ -32,7 +32,7 @@ export class ParameterFormMasterComponent implements OnInit {
         "MinAge",
         "MaxAge",
         "MinValue",
-        "Maxvalue",
+        "MaxValue",
         "AgeType",
         "Action"
     ];
@@ -46,7 +46,7 @@ export class ParameterFormMasterComponent implements OnInit {
     vMinAge: any;
     vMaxAge: any;
     vMinValue: any;
-    vMaxvalue: any;
+    vMaxValue: any;
     msg: any;
 
     @ViewChild(MatSort) sort: MatSort;
@@ -77,19 +77,22 @@ export class ParameterFormMasterComponent implements OnInit {
         private router: Router
     ) { }
 
-    ngOnInit(): void {       
-        // this.getParameterNameCombobox();
+    ngOnInit(): void {  
+        debugger;
+        this.selectedItems = [];
+        this.dsParameterAgeList.data = [];
         this.getUnitNameCombobox();
         this.getGenderNameCombobox();
         this.getDscriptiveMasterList();
-        //this.getParameterNameCombobox();
-
-        // this.unitnameFilterCtrl.valueChanges
-        //     .pipe(takeUntil(this._onDestroy))
-        //     .subscribe(() => {
-        //         this.filterUnitname();
-        //     });
-    }
+        if (this._ParameterService.myform.get("ParameterID").value) {
+       
+            this.dsParameterAgeList.data =        this._ParameterService.numericList;
+                 this.selectedItems = this._ParameterService.descriptiveList;
+        }
+             
+          
+     }
+    
     getGenderNameCombobox() {
         this._ParameterService.getGenderMasterCombo().subscribe(data => {
             this.GendercmbList = data;
@@ -131,7 +134,7 @@ export class ParameterFormMasterComponent implements OnInit {
        && formValues.MaxAge
        && formValues.AgeType
        && formValues.MinValue
-       && formValues.Maxvalue;
+       && formValues.MaxValue;
        if(!fieldsTobeChecked){
             event.preventDefault;
             this.toastr.warning('Please fill in all the fields in this row to add', 'Warning');
@@ -153,6 +156,7 @@ export class ParameterFormMasterComponent implements OnInit {
     }
 
     onAdd(event) {
+
         let isNewRowUnique = true;
   
         const newRow: any = {
@@ -160,7 +164,7 @@ export class ParameterFormMasterComponent implements OnInit {
             MinAge: this.vMinAge || 0,
             MaxAge: this.vMaxAge || 0,
             MinValue: this.vMinValue || 0,
-            Maxvalue: this.vMaxvalue || 0,
+            MaxValue: this.vMaxValue || 0,
             AgeType: this._ParameterService.myform.value.AgeType,
         };
 
@@ -265,7 +269,7 @@ export class ParameterFormMasterComponent implements OnInit {
                     paraId: 0 || +this._ParameterService.myform.get("ParameterID").value,
                     sexId: 0,
                     minValue: "%",
-                    maxvalue: "%",
+                    MaxValue: "%",
                     addedby: this.accountService.currentUserValue.user.id ||1,
                     ageType: "%",
                     minAge: 0,
@@ -277,7 +281,7 @@ export class ParameterFormMasterComponent implements OnInit {
                     c['minValue'] = element.MinValue;
                     c['minAge'] = +element.MinAge;
                     c['maxAge'] = +element.MaxAge;
-                    c['maxvalue'] = element.Maxvalue;
+                    c['maxvalue'] = element.MaxValue;
                     c['ageType'] = element.AgeType;
                     numeric_info.push(c)
                 });
@@ -346,8 +350,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 if (data) {                       
                     this._ParameterService.myform.reset();
                     this._ParameterService.myform.get("IsDeleted").setValue(true);
-                    this.selectedItems = [];
-                    this.dsParameterAgeList.data = [];
+      
 
                     this.toastr.success('Record updated Successfully.', 'Updated !', {
                         toastClass: 'tostr-tost custom-toast-success',
@@ -444,7 +447,7 @@ export class PathParaRangeAgeMaster {
     GenderName: any;
     GenderId: any;
     MinValue: any;
-    Maxvalue: any;
+    MaxValue: any;
     AgeType: any;
     MinAge: any;
     MaxAge: any;
@@ -460,7 +463,7 @@ export class PathParaRangeAgeMaster {
             this.GenderName = PathParaRangeAgeMaster.GenderName || "";
             this.AgeType = PathParaRangeAgeMaster.AgeType || "";
             this.MinValue = PathParaRangeAgeMaster.MinValue || 0;
-            this.Maxvalue = PathParaRangeAgeMaster.Maxvalue || 0;
+            this.MaxValue = PathParaRangeAgeMaster.MaxValue || 0;
             this.MinAge = PathParaRangeAgeMaster.MinAge || 0;
             this.MaxAge = PathParaRangeAgeMaster.MaxAge || 0;
 

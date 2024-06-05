@@ -8,6 +8,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatAccordion } from "@angular/material/expansion";
 import { fuseAnimations } from "@fuse/animations";
 import { ParameterFormMasterComponent } from "./parameter-form-master/parameter-form-master.component";
+import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 
 @Component({
     selector: "app-parametermaster",
@@ -81,6 +82,7 @@ export class ParametermasterComponent implements OnInit {
             ParameterName:
                 this._ParameterService.myformSearch.get("ParameterNameSearch").value.trim() + "%" || "%",
         };
+        debugger;
         this._ParameterService.getParameterMasterList(m_data).subscribe((Menu) => {
             this.DSParameterList.data = Menu as PathparameterMaster[];
             this.isLoading = false;
@@ -133,11 +135,30 @@ export class ParametermasterComponent implements OnInit {
             MethodName: row.MethodName,
             ParaMultipleRange: row.ParaMultipleRange,
         };
-        console.log(row)        
 
-        this._ParameterService.populateForm(m_data);
+      
+        this._ParameterService.getTableData(row.ParameterID).subscribe((data) => {
+                debugger;
+            if(row.IsNumericParameter==1){
+                
+                m_data['numericList'] = data;
+                m_data['descriptiveList'] = [];
 
-        const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
+            }
+            else {
+                let updatedData = []
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        const element = data[key];
+                        updatedData.push(element.ParameterValues);
+                    }
+                }
+                
+                m_data['descriptiveList'] = updatedData;
+                m_data['numericList'] = [];
+            }
+            this._ParameterService.populateForm(m_data);
+            const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
             maxWidth: "70vw",
             maxHeight: "80vh",
             width: "100%",
@@ -145,15 +166,17 @@ export class ParametermasterComponent implements OnInit {
             data : {
                 registerObj : row,
               }
-        });
+             });
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
             this.getParameterMasterList();
         });
+        })
     }
 
     onAdd() {
+
         const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
             maxWidth: "70vw",
             maxHeight: "90vh",
@@ -236,7 +259,7 @@ export class PathparameterMaster {
 //     ParaId: bigint;
 //     SexId: bigint;
 //     MinValue: String;
-//     Maxvalue: String;
+//     MaxValue: String;
 //     IsDeleted: boolean;
 //     Addedby: bigint;
 //     Updatedby: bigint;
@@ -251,7 +274,7 @@ export class PathparameterMaster {
 //             this.ParaId = PathParaRangeMaster.ParaId || "";
 //             this.SexId = PathParaRangeMaster.SexId || "";
 //             this.MinValue = PathParaRangeMaster.MinValue || "";
-//             this.Maxvalue = PathParaRangeMaster.Maxvalue || "";
+//             this.MaxValue = PathParaRangeMaster.MaxValue || "";
 //             this.IsDeleted = PathParaRangeMaster.IsDeleted || "";
 //             this.Addedby = PathParaRangeMaster.Addedby || "";
 //             this.Updatedby = PathParaRangeMaster.Updatedby || "";

@@ -183,8 +183,8 @@
                                                         <mat-form-field appearance="outline" class="mr-sm-12"
                                                             fxFlex="10%">
                                                             <mat-label>Max value</mat-label>
-                                                            <input name="Maxvalue" placeholder="Maxvalue" maxlength="3" 
-                                                                [(ngModel)]="vMaxvalue" formControlName="Maxvalue"
+                                                            <input name="MaxValue" placeholder="MaxValue" maxlength="3" 
+                                                                [(ngModel)]="vMaxValue" formControlName="MaxValue"
                                                                 matInput >
                                                         </mat-form-field>
 
@@ -247,11 +247,11 @@
                                                                     {{element.MinValue}} </mat-cell>
                                                             </ng-container>
 
-                                                            <ng-container matColumnDef="Maxvalue">
+                                                            <ng-container matColumnDef="MaxValue">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                    Maxvalue </mat-header-cell>
+                                                                    MaxValue </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                    {{element.Maxvalue}}
+                                                                    {{element.MaxValue}}
                                                                 </mat-cell>
                                                             </ng-container>
                                                             <ng-container matColumnDef="AgeType">
@@ -358,7 +358,7 @@
                                                                 </div>
                                                                 <mat-list-item placeholder="" #txt *ngFor="let item of selectedItems; let i = index" [ngValue]="parameterValue" style="background-color: rgb(245, 237, 237); width: 100% !important; text-align: left;">
                                                                     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                                                        <div style="border-bottom: 1px solid #c3c7d2; padding: 7px;" mat-line>{{ item }}</div>
+                                                                        <div style=" padding: 7px;" mat-line>{{ item }}</div>
                                                                         <button mat-icon-button color="warn"
                                                                         (click)="removeItem(i)">
                                                                         <mat-icon>delete</mat-icon>

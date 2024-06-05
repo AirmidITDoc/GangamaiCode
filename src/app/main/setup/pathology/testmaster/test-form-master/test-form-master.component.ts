@@ -27,6 +27,8 @@ import { MatAutocomplete } from "@angular/material/autocomplete";
 export class TestFormMasterComponent implements OnInit {
     displayedColumns: string[] = ['ParameterName','Add'];
     displayedColumns2: string[] = ['Reorder','ParameterName','UnitName','Range', 'Action'];
+    displayedColumns3: string[] = ['Template Name','Add'];
+    displayedColumns4: string[] = ['ParameterName'];
     Parametercmb: any = [];
     paraselect: any = ["new"];
     CategorycmbList: any = [];
@@ -366,7 +368,6 @@ export class TestFormMasterComponent implements OnInit {
                
             };
 
-            console.log(submitData);
 
             this._TestService.insertPathologyTestMaster(submitData).subscribe(response => {
                 if (response) {
