@@ -288,7 +288,7 @@ export class NewRegistrationComponent implements OnInit {
   }
 
   getPrefixList() {
-    debugger
+    
     this._registerService.getPrefixCombo().subscribe(data => {
       this.PrefixList = data;
       if (this.data) {
@@ -510,7 +510,7 @@ export class NewRegistrationComponent implements OnInit {
     this.personalFormGroup.get('CityId').setValue(toSelectCity);
 
     this.onChangeGenderList(this.registerObj);
-    debugger
+    
     this.onChangeCityList(this.registerObj);
     this.personalFormGroup.updateValueAndValidity();
 
@@ -523,7 +523,7 @@ export class NewRegistrationComponent implements OnInit {
   }
 
   onChangeGenderList(prefixObj) {
-    debugger
+    
     if (prefixObj) {
       this._registerService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
         this.GenderList = data;
@@ -605,7 +605,7 @@ export class NewRegistrationComponent implements OnInit {
     //   }
     //   if(this.Submitflag)
     //     this.registerObj.RegId= this.RegId;
-debugger
+
       var m_data1 = {
         "opdRegistrationUpdate": {
           "RegID": this.registerObj.RegId,
@@ -619,7 +619,7 @@ debugger
           "DateOfBirth": this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
           "Age":this.registerObj.Age,
           "GenderID": this.personalFormGroup.get('GenderId').value.GenderId || 0,
-          "PhoneNo": this.personalFormGroup.get("PhoneNo").value || "0",
+          "PhoneNo": this.personalFormGroup.get("PhoneNo").value || "",
           "MobileNo": this.personalFormGroup.get("MobileNo").value || "0",
           "UpdatedBy": this.accountService.currentUserValue.user.id,
           "AgeYear": this.personalFormGroup.get("AgeYear").value || "0",
@@ -644,10 +644,7 @@ debugger
           Swal.fire('Congratulations !', 'Register Data Udated Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
              
-              debugger
-              // if(this.Submitflag )
-                // this.getAdmittedPatientCasepaperview(this.AdmissionID);
-              this.getRegistredPatientCasepaperview(this.registerObj.RegId);
+              this.getRegistredPatientCasepaperview(this.registerObj.VisitId);
               // if(!this.Submitflag)
               //   this.getRegistredPatientCasepaperview(this.registerObj.VisitId);
               this._matDialog.closeAll();
@@ -660,6 +657,8 @@ debugger
         }
 
       });
+
+      
     }
   // }
   getOptionTextPrefix(option) {
@@ -696,7 +695,7 @@ debugger
     });
   }
   onChangeDateofBirth(DateOfBirth) {
-    debugger
+    
     if (DateOfBirth) {
       const todayDate = new Date();
       const dob = new Date(DateOfBirth);
@@ -936,6 +935,7 @@ debugger
   }
 
   getRegistredPatientCasepaperview(VisitId) {
+    debugger
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
     //   this.SpinLoading =true;
@@ -950,7 +950,7 @@ debugger
           width: '100%',
           data: {
             base64: res["base64"] as string,
-            title: "Admission Paper  Viewer"
+            title: "Patient Case Paper  Viewer"
           }
         });
 

@@ -624,13 +624,7 @@ else if(this.CompanyId =='' || this.CompanyId ==0){
             this.isLoading = '';
           });
 
-          this.dataSource.data = [];
-          this.chargeslist = [];
-          this.PatientName = "";
-          this.vOPDNo = "";
-          this.vOPIPId=""
-          this.Doctorname = "";
-          this.Tarrifname = "";
+        
         }
         else {
 
@@ -744,8 +738,10 @@ else if(this.CompanyId =='' || this.CompanyId ==0){
     this.chargeslist = [];
     this.PatientName = " ";
     this.vOPDNo = " ";
+    this.vOPIPId=""
     this.Doctorname = "";
     this.Tarrifname = "";
+    this.Consessionres=false;
     this.searchFormGroup.get('RegId').reset();
 
   }
@@ -897,6 +893,7 @@ this.vOPDNo = " ";
 this.vOPIPId=" ";
 this.Doctorname = "";
 this.Tarrifname = "";
+this.Consessionres=false;
 this.searchFormGroup.get('RegId').reset();
   }
 

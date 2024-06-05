@@ -122,7 +122,7 @@ export class EditRefraneDoctorComponent implements OnInit {
   }
 
   onSubmit() {
-    
+    debugger
     this.RefDoctorId = this.searchFormGroup.get('DoctorId').value.DoctorId;
     
   //  let query = "Update VisitDetails set RefDocId= " + this.RefDoctorId +" where VisitId=" + this.VisitId + " ";
@@ -131,9 +131,9 @@ export class EditRefraneDoctorComponent implements OnInit {
    if (this.data.FormName == "Appointment") {
       query = "Update VisitDetails set RefDocId= " + this.RefDoctorId + " where Visitid=" + this.VisitId + " ";
    }
-   if (this.data.FormName == "Admission") {
-      query = "Update VisitDetails set RefDocId= " + this.RefDoctorId + " where RegID=" + this.RegID + " ";
-   }
+  //  if (this.data.FormName == "Admission") {
+  //     query = "Update VisitDetails set RefDocId= " + this.RefDoctorId + " where RegID=" + this.RegID + " ";
+  //  }
 
 
     console.log(query);

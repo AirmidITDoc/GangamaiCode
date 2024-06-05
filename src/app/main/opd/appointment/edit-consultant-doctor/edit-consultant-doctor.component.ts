@@ -189,9 +189,9 @@ export class EditConsultantDoctorComponent implements OnInit {
     if (this.data.FormName == "Appointment") {
        query = "Update VisitDetails set ConsultantDocId= " + this.DoctorId + " where Visitid=" + this.VisitId + " ";
     }
-    if (this.data.FormName == "Admission") {
-       query = "Update VisitDetails set ConsultantDocId= " + this.DoctorId + " where RegID=" + this.RegID + " ";
-    }
+    // if (this.data.FormName == "Admission") {
+    //    query = "Update VisitDetails set ConsultantDocId= " + this.DoctorId + " where RegID=" + this.RegID + " ";
+    // }
     console.log(query);
     this._OpAppointmentService.UpdateQueryByStatement(query).subscribe(response => {
 

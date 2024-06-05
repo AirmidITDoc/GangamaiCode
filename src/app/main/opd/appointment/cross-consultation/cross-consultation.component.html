@@ -11,6 +11,11 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
+                <div fxLayout="row" fxLayoutGap="5px">
+                    <app-common-date [screenFrom]="screenFromString" style="float:right"
+                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+        
+                </div>
             </div>
         </div>
     </div>
