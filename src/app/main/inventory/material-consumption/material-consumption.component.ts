@@ -11,6 +11,7 @@ import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { NewMaterialConsumptionComponent } from './new-material-consumption/new-material-consumption.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-material-consumption',
@@ -42,7 +43,7 @@ export class MaterialConsumptionComponent implements OnInit {
     'StkId'
   ];
 
-  
+  SpinLoading: boolean = false;
   StoreList: any = [];
   screenFromString = 'admission-form';
   sIsLoading: string = '';
@@ -120,6 +121,34 @@ export class MaterialConsumptionComponent implements OnInit {
       console.log('The dialog was closed - Insert Action', result);
       this.getMaterialConList();
     });
+  }
+
+     
+  viewgetMaterialconsumptionReportPdf(contact) {
+    
+    console.log(contact)
+    this.sIsLoading == 'loading-data'
+  
+    setTimeout(() => {
+    this.SpinLoading =true;
+    let MaterialConsumptionId= contact.MaterialConsumptionId
+  this._MaterialConsumptionService.getMaterialconsumptionview(MaterialConsumptionId).subscribe(res => {
+     
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Material Consumption Report Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.sIsLoading = '';
+        });
+    });
+    },1000);
   }
 }
 
