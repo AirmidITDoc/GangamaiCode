@@ -75,13 +75,7 @@
 
                                 <mat-table class="Tab1" matSort [dataSource]="dsrequestList" [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
-                                    <ng-container matColumnDef="RequestId">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RequestId
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.RequestId}}</span>
-                                        </mat-cell>
-                                    </ng-container>
+                                     
 
                                     <ng-container matColumnDef="RegNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
@@ -89,7 +83,7 @@
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <span> {{contact.RegNo}}</span>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="PatientName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
@@ -98,23 +92,7 @@
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                             <span> {{contact.PatientName}}</span>
                                         </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Vst_Adm_Date">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Adm Date
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.AdmDate}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Age">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Age
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.Age}}</span>
-                                        </mat-cell>
-                                    </ng-container>
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="WardName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Ward Name
@@ -130,39 +108,31 @@
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <span> {{contact.RequestType}}</span>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container>  
 
-                                    <ng-container matColumnDef="TariffName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> TariffName
+                                    <ng-container matColumnDef="IsOnFileTest">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> IsOnFile Test
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.TariffName}}</span>
+                                            <span> {{contact.IsOnFileTest}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="CompanyName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> CompanyName
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm [style.background-color]="CompanyName !== ' ' ? 'white' : 'pink'">
-                                            <span> {{contact.CompanyName}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="ReqTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> Presc Time
+                                    <ng-container matColumnDef="IsCancelled">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> IsCancelled
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.ReqTime | date:'mm/dd/yyyy hh:mm:ss'}}</span>
+                                            <span> {{contact.IsCancelled}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedBy">
+                                    <!-- <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm> AddedBy
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <span> {{contact.AddedBy}}</span>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm >Action
@@ -171,9 +141,9 @@
                                             <button mat-icon-button matTooltip="print" (click)="viewgetLabrequestReportPdf(row)">
                                                 <mat-icon>print</mat-icon>
                                             </button>
-                                            <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
+                                            <!-- <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
                                                 <mat-icon>delete_outline</mat-icon>
-                                            </button>
+                                            </button> -->
                                         </mat-cell>
                                     </ng-container>
 
@@ -188,8 +158,8 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-1600" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1600" [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''" [@animate]="{value:'*',params:{y:'100%'}}" (click)="getRequestdetList(contact)">
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact" [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''" [@animate]="{value:'*',params:{y:'100%'}}" (click)="getRequestdetList(contact)">
                                     </mat-row>
 
                                     <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">

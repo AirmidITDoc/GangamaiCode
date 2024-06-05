@@ -21,20 +21,13 @@ import Swal from 'sweetalert2';
 })
 export class RequestforlabtestComponent implements OnInit {
 
-  hasSelectedContacts: boolean;
-  SpinLoading:boolean=false;
-  displayedColumns: string[] = [
-    'RequestId',
-    'RegNo',
-    'PatientName',
-    'Age',
-    'Vst_Adm_Date',
+  displayedColumns: string[] = [ 
+    'RegNo', 
+    'PatientName',  
     'WardName',
     'RequestType',
-    'TariffName',
-    'CompanyName',
-    'ReqTime',
-    'AddedBy',
+    'IsOnFileTest',
+    'IsCancelled',  
     'action',
   ]
 
@@ -50,6 +43,10 @@ export class RequestforlabtestComponent implements OnInit {
     'IsComplted'
   ]
 
+  
+  hasSelectedContacts: boolean;
+  SpinLoading:boolean=false;
+
   dsrequestList = new MatTableDataSource<RequestList>();
   dsrequestdetList=new MatTableDataSource<RequestdetList>();
 
@@ -58,8 +55,7 @@ export class RequestforlabtestComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
   constructor(public _RequestforlabtestService:RequestforlabtestService,
-    public datePipe: DatePipe,
-    
+    public datePipe: DatePipe, 
     private _matDialog:MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     private dialog:MatDialog
@@ -69,18 +65,9 @@ export class RequestforlabtestComponent implements OnInit {
   ngOnInit(): void {
     this.getRequesttList();
   }
-     // toggle sidebar
-     toggleSidebar(name): void {
-      this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
- 
-
-  Openpopup(){
-    this.dialog.open(NewRequestforlabComponent,{
-      width:'70vw',
-      height:'95vh',
-      panelClass: 'new-request-dialog'
-    })
+  // toggle sidebar
+  toggleSidebar(name): void {
+    this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
   getRequesttList(){
     var vdata={
@@ -88,7 +75,7 @@ export class RequestforlabtestComponent implements OnInit {
       ToDate: this.datePipe.transform(this._RequestforlabtestService.mySearchForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
       Reg_No: this._RequestforlabtestService.mySearchForm.get('RegNo').value || 0
     }
-    //console.log(vdata);
+    console.log(vdata);
     this._RequestforlabtestService.getRequesttList(vdata).subscribe(data =>{
       this.dsrequestList.data = data as RequestList[];
       this.dsrequestList.sort = this.sort;
@@ -96,7 +83,6 @@ export class RequestforlabtestComponent implements OnInit {
       console.log(this.dsrequestList.data);
     })
   }
-
   getRequestdetList(Param){
     debugger
     var vdata={
@@ -109,6 +95,29 @@ export class RequestforlabtestComponent implements OnInit {
        console.log(this.dsrequestdetList.data);
     })
   }
+
+  Openpopup(){
+    // this.dialog.open(UpdateGRNComponent,
+    //   {
+    //   width:'70vw',
+    //   height:'95vh',
+    //   panelClass: 'new-request-dialog'
+    // });
+    
+    
+    const dialogRef = this._matDialog.open(NewRequestforlabComponent,
+      {
+        width:'70vw',
+        height:'95vh',
+        panelClass: 'new-request-dialog'
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getRequesttList();
+    });
+  }
+
+
+
 
   // onSelect(Parama){
   //   console.log(Parama.RequestId);
@@ -135,10 +144,7 @@ debugger
     else{
       Swal.fire('Billed Prescription can not Delete !');
 
-    }
-
-
-
+    } 
   }
 
 
@@ -168,11 +174,9 @@ debugger
           // this.AdList=false;
           this.SpinLoading = false;
         });
-    });
-   
+    }); 
     },100);
-  }
-
+  } 
   
   reportPrintObjList: RequestList[] = [];
   printTemplate: any;

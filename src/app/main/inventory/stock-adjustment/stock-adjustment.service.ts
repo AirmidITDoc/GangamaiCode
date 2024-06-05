@@ -76,5 +76,7 @@ export class StockAdjustmentService {
   public MRPAdjSave(param){
     return this._httpClient.post('Pharmacy/InsertMRPadjustment',param);
   }
-  
+  public GSTAdjSave(param){
+    return this._httpClient.post('InventoryTransaction/GSTAdjustment',param);
+  }
 }
