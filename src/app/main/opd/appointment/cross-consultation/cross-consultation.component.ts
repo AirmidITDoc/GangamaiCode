@@ -192,7 +192,7 @@ export class CrossConsultationComponent implements OnInit {
 
 
   onSubmit() {
-
+debugger
     this.submitted = true;
     this.isLoading = 'submit';
     let submissionObj = {};
@@ -225,8 +225,6 @@ export class CrossConsultationComponent implements OnInit {
 
       crossConsult['CrossConsulFlag'] = 1
 
-
-
     submissionObj['crossConsultationSave'] = crossConsult;
 
     console.log(submissionObj);
@@ -234,7 +232,7 @@ export class CrossConsultationComponent implements OnInit {
       if (response) {
         Swal.fire('Congratulations !', 'Cross Consultation Saved Successfully  !', 'success').then((result) => {
           if (result.isConfirmed) {
-            // this.getPrint(response);
+            
             this._matDialog.closeAll();
           }
           // this.getVisitList();

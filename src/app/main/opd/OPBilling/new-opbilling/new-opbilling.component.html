@@ -488,11 +488,11 @@
                                                 Percentage is Number</mat-error>
                                         </mat-form-field> -->
 
-
-                                        <mat-form-field appearance="outline" *ngIf="conflag">
+                                      
+                                        <mat-form-field appearance="outline">
                                             <mat-label>Disc %</mat-label>
-                                            <input matInput placeholder="Percentage" formControlName="concesDiscPer"
-                                                [ngModel]="b_concessionDiscPer" autocomplete="off" #disper
+                                            <input matInput placeholder="Percentage" formControlName="concesDiscPer" [disabled]="conflag"
+                                                [ngModel]="b_concessionDiscPer" autocomplete="off" #disper  id="Percentage"
                                                 (keyup)="calcDiscPersonTotal()" onlyNumber maxlength="3"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
                                                 (keypress)="keyPressAlphanumeric($event)">

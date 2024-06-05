@@ -932,15 +932,13 @@ export class AppointmentComponent implements OnInit {
       console.log(this.registerObj);
     });
 
-
-    debugger
     this.registerObj["VisitId"] = row.VisitId;
     console.log(this.registerObj)
     this.EditRegistration();
   }
 
   EditRegistration() {
-    
+
     this.advanceDataStored.storage = new AdvanceDetailObj(this.registerObj);
     console.log(this.registerObj)
     this._registrationService.populateFormpersonal(this.registerObj);
@@ -956,10 +954,14 @@ export class AppointmentComponent implements OnInit {
         },
       }
     );
-    console.log(this.registerObj)
-    this.getVisitList1();
-    debugger
-    // this.viewgetPatientAppointmentReportPdf(this.registerObj, true);
+      
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      if(result)
+      this.viewgetPatientAppointmentReportPdf(this.registerObj, true);
+     
+    });
+       this.getVisitList1();
   }
 
   AppointmentCancle(contact) {
@@ -1032,7 +1034,7 @@ export class AppointmentComponent implements OnInit {
     });
   }
 
-
+ 
   getMaritalStatusList() {
     this._opappointmentService.getMaritalStatusCombo().subscribe(data => {
       this.MaritalStatusList = data;
@@ -1143,7 +1145,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   onChangeDateofBirth(DateOfBirth) {
-    debugger
+    
     // console.log(DateOfBirth)
     if (DateOfBirth) {
       const todayDate = new Date();
@@ -1186,20 +1188,20 @@ export class AppointmentComponent implements OnInit {
       );
     }, 1000);
   }
-  isRowDisabled:boolean=false
+  isRowDisabled: boolean = false
 
   chkdisabled(contact) {
-    debugger
+    
     if (contact.IsCancelled)
-      this.isRowDisabled=true
+      this.isRowDisabled = true
     else
-    this.isRowDisabled=false
+      this.isRowDisabled = false
   }
 
- 
+
 
   getVisitList1() {
-    debugger
+    
     this.sIsLoading = "loading-data";
     var D_data = {
       F_Name: this._AppointmentSreviceService.myFilterform.get("FirstName").value.trim() + "%" || "%",
@@ -1601,39 +1603,69 @@ export class AppointmentComponent implements OnInit {
 
 
   onSave() {
-    debugger
-let DoctorID = this.VisitFormGroup.get('DoctorID').value.DoctorId
+    
+    let areaflag=0
+    let religionflag=0
+    let mstatusflag=0
+    console.log(this.personalFormGroup.get("AreaId").value.AreaId)
+    if(this.personalFormGroup.get("AreaId").value.AreaId > 0)
+      areaflag=1
+    else
+    this.toastr.warning('Please Enter Valid Area.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
 
-if(DoctorID == undefined){
-  this.toastr.warning('Please Enter Valid DoctorName.', 'Warning !', {
-    toastClass: 'tostr-tost custom-toast-warning',
-  });
-  return;
-}
-else{
-    if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
+    if(this.personalFormGroup.get("MaritalStatusId").value.MaritalStatusId >0)
+      religionflag=1
+    else
+    this.toastr.warning('Please Enter Valid MaritalStatusId.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    if(this.personalFormGroup.get("ReligionId").value.ReligionId >0)
+      mstatusflag=1
+    else
+    this.toastr.warning('Please Enter Valid ReligionId.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
 
-      if (this.searchFormGroup.get('regRadio').value == "registration") {
-        //if (this.vPhoneAppId == 0 && this.Regflag == false) {
-        this.OnsaveNewRegister();
 
-      }
-      else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-        this.onSaveRegistered();
-        this.onClose();
-      }
+if(areaflag ==1 &&religionflag==1 && mstatusflag==1){
+    let DoctorID = this.VisitFormGroup.get('DoctorID').value.DoctorId
 
+    if (DoctorID == undefined) {
+      this.toastr.warning('Please Enter Valid DoctorName.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
     }
-  }
-  }
+    else {
+      if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
+       
+        if (this.searchFormGroup.get('regRadio').value == "registration") {
+          //if (this.vPhoneAppId == 0 && this.Regflag == false) {
+          this.OnsaveNewRegister();
+
+        }
+        else if (this.searchFormGroup.get('regRadio').value == "registrered") {
+          this.onSaveRegistered();
+          this.onClose();
+        }
+
+      }
+    }
 
 
+  }
+else{
+ 
+}
+  }
 
 
 
   OnsaveNewRegister() {
 
-    debugger
+    
     if (this.patienttype != 2) {
       this.CompanyId = 0;
     } else if (this.patienttype == 2) {
@@ -2137,6 +2169,7 @@ else{
 
 
   viewgetPatientAppointmentReportPdf(obj, Pflag) {
+    debugger
     this.chkprint = true;
     let VisitId;
     if (Pflag) {
@@ -2294,14 +2327,15 @@ else{
   }
 
   ageyearcheck(event) {
-debugger
+    
     if (parseInt(event) > 100) {
       this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      return;
+
       this.agey.nativeElement.focus();
     }
+    return;
     // else{
     //   this.agem.nativeElement.focus();
     // }
@@ -2652,7 +2686,7 @@ debugger
 
 
   public onEnterprefix(event, value): void {
-    debugger
+    
     if (event.which === 13) {
 
       console.log(value)
@@ -2694,16 +2728,25 @@ debugger
 
 
   public onEntermstatus(event): void {
+  
+    let MaritalStatusId=this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId
     if (event.which === 13) {
+      console.log(MaritalStatusId)
+      if(MaritalStatusId==undefined || event.value== '%'){
 
+      }else if(MaritalStatusId==undefined || MaritalStatusId>0)
       this.mobile.nativeElement.focus();
-
     }
   }
 
   public onEnterreligion(event): void {
+  
+    let ReligionId=this.personalFormGroup.get('ReligionId').value.ReligionId
     if (event.which === 13) {
+      console.log(ReligionId)
+      if(ReligionId==undefined || event.value== '%'){
 
+      }else if(ReligionId==undefined || ReligionId>0)
       this.ptype.nativeElement.focus();
     }
   }
@@ -2715,10 +2758,10 @@ debugger
   }
 
 
-  public onEnteragey(event,value): void {
+  public onEnteragey(event, value): void {
     if (event.which === 13) {
       this.agem.nativeElement.focus();
-     debugger
+      
       this.ageyearcheck(value);
     }
   }
@@ -2764,10 +2807,18 @@ debugger
   }
 
   public onEnterarea(event): void {
+    
+    let AreaId=this.personalFormGroup.get('AreaId').value.AreaId
     if (event.which === 13) {
+      console.log(AreaId)
+      if(AreaId==undefined || event.value== '%'){
+
+      }else if(AreaId==undefined || AreaId>0)
       this.city.nativeElement.focus();
     }
-  }
+}
+
+
 
   public onEntercity(event, value): void {
     if (event.which === 13) {
@@ -3068,7 +3119,7 @@ export class RegInsert {
   AdmissionID: any;
   VisitId: any;
   WardId: any;
-  BedId:any;
+  BedId: any;
   /**
    * Constructor
    *
