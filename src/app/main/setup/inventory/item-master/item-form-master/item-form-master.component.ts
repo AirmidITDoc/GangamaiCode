@@ -14,6 +14,7 @@ import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { CasepaperVisitDetails, HistoryClass } from "app/main/opd/new-casepaper/new-casepaper.component";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { DatePipe } from "@angular/common";
+import { element } from "protractor";
 
 @Component({
     selector: "app-item-form-master",
@@ -119,9 +120,9 @@ export class ItemFormMasterComponent implements OnInit {
             this.vSGST = this.registerObj.SGST
             this.vIGST = this.registerObj.IGST
             this.vchkactive = (this.registerObj.Isdeleted)
-           
+           this.getAssigneToStoreList()
             this.setDropdownObjs1();
-           
+            this.getStoreNameMasterCombo();
         }
         this.getitemtypeNameMasterCombo();
         this.getitemclassNameMasterCombo();
@@ -197,7 +198,44 @@ export class ItemFormMasterComponent implements OnInit {
       
 
     }
+  
+    // getAssigneToStoreList() {
+    //     var vadat = {
+    //         'ItemID': this.registerObj.ItemID
+    //     }
+    //     console.log(vadat);
+    //     this._itemService.getAssigneToStoreList(vadat).subscribe(data => {
+    //         this.filteredStore = data;
+    //         console.log(this.filteredStore)
 
+    //         const AssignStore = this.StorecmbList.filter(c => c.Storeid == this.filteredStore.StoreId);
+    //         console.log(AssignStore)
+    //         //this._itemService.myform.get('StoreId').setValue(ddValue[0]); 
+    //     }) 
+    // }
+    filteredStore:any=[];
+    storelist:any=[];
+    getAssigneToStoreList() {
+        debugger
+        var vdata = {
+            'ItemID': this.registerObj.ItemID
+        }
+        this._itemService.getAssigneToStoreList(vdata).subscribe((data) => {
+          this.filteredStore.data = data;
+          console.log(data)  
+          console.log(this.filteredStore.data) 
+
+          this.StorecmbList = this.filteredStore;
+          console.log(this.StorecmbList )
+          this.vStoreName = true
+          this._itemService.myform.get('StoreId').setValue(this.StorecmbList); 
+          if(this.filteredStore.StoreId == this.StorecmbList.Storeid)
+            {
+                this.vStoreName =  this.filteredStore.StoreId
+                console.log(this.vStoreName )
+            }
+        }); 
+      }
    
   
     get f() {
@@ -487,17 +525,17 @@ export class ItemFormMasterComponent implements OnInit {
         
         this._itemService.getStoreMasterCombo().subscribe(data => {
             this.StorecmbList = data;
-           // console.log(this.StorecmbList)
-         
-            if (this.data) {
+            console.log(this.StorecmbList)
+           
+            // if (this.data) {
                
-                this.data.registerObj.StoreId =this._loggedService.currentUserValue.user.storeId;
-                const ddValue = this.StorecmbList.filter(c => c.Storeid == this.data.registerObj.StoreId);
-                this._itemService.myform.get('StoreId').setValue(ddValue[0]);
+            //     this.data.registerObj.StoreId =this._loggedService.currentUserValue.user.storeId;
+            //     const ddValue = this.StorecmbList.filter(c => c.Storeid == this.data.registerObj.StoreId);
+            //     this._itemService.myform.get('StoreId').setValue(ddValue[0]);
 
-                this._itemService.myform.updateValueAndValidity();
-                return;
-            }
+            //     this._itemService.myform.updateValueAndValidity();
+            //     return;
+            // }
 
         });
     }
@@ -810,9 +848,7 @@ export class ItemFormMasterComponent implements OnInit {
             // this.save=true;
 
         }
-    }
-
-
+    } 
     assets:[]
     vPurchaseUOMId:any;
     vConversionFactor:any;
@@ -822,6 +858,7 @@ export class ItemFormMasterComponent implements OnInit {
     vStoreName:any
     vROrder:any;
     Savebtn:boolean=false; 
+    selectedStore:any=[];
     onSubmit() {
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
@@ -870,6 +907,9 @@ export class ItemFormMasterComponent implements OnInit {
             return;
         }
 
+        this.selectedStore = this.vStoreName;
+      
+``       //console.log(this.selectedStore);
         let ItemCategaryId = 0;
         if (this._itemService.myform.get("ItemCategoryId").value)
             ItemCategaryId = this._itemService.myform.get("ItemCategoryId").value.ItemCategoryId;
@@ -907,17 +947,24 @@ export class ItemFormMasterComponent implements OnInit {
             manufId = this._itemService.myform.get("ManufId").value.ManufId;
 
 
-        
+          console.log(this.selectedStore);
             if (!this._itemService.myform.get("ItemID").value) {
                 this.Savebtn = true;
 
                 var data2 = [];
                 // for (var val of this._itemService.myform.get("StoreId").value) {
-                var data = {
-                    storeId: this._itemService.myform.get("StoreId").value.Storeid,
-                    itemId: 0,
-                };
-                data2.push(data);
+                // var data = {
+                //     storeId: this._itemService.myform.get("StoreId").value.Storeid,
+                //     itemId: 0,
+                // };
+                this.selectedStore.forEach(element =>{
+                    let data ={
+                        storeId :element.Storeid,
+                        itemId: 0,
+                    } 
+                    data2.push(data);
+                });
+              
                 //  
                 var m_data = {
                     insertItemMaster: {
@@ -987,11 +1034,20 @@ export class ItemFormMasterComponent implements OnInit {
             else {
                 this.Savebtn = true;
                 var data3 = []; 
-                var data4 = {
-                    storeId: this._itemService.myform.get("StoreId").value.Storeid,//this._loggedService.currentUserValue.user.storeId,
-                    itemId: this._itemService.myform.get("ItemID").value || 0,
-                };
-                data3.push(data4);
+                // var data4 = {
+                //     storeId: this._itemService.myform.get("StoreId").value.Storeid,//this._loggedService.currentUserValue.user.storeId,
+                //     itemId: this._itemService.myform.get("ItemID").value || 0,
+                // };
+
+                this.selectedStore.forEach(element =>{
+                    let data4 ={
+                        storeId :element.Storeid,
+                        itemId: this._itemService.myform.get("ItemID").value || 0,
+                    } 
+                    data3.push(data4);
+                });
+              
+ 
                 // }
                 console.log(data3);
                

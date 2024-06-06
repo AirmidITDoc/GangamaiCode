@@ -9,7 +9,7 @@
       </mat-icon>
       <h3 style="color: white;">New Item Master </h3>
       <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-        style="margin-left: 1150px;color: white;">
+        style="margin-left: 1190px;color: white;">
         <mat-icon>close</mat-icon>
       </button>
     </mat-toolbar-row>
@@ -293,7 +293,7 @@
               </mat-autocomplete>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
+            <!-- <mat-form-field appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
               <mat-label>Store Name</mat-label>
               <input matAutocompletePosition="below" type="text" placeholder="Select StoreId" matInput
                 formControlName="StoreId" [matAutocomplete]="autoStoreId" required #storename
@@ -305,11 +305,22 @@
                   (click)="_itemService.myform.get('StoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
               </span>
               <mat-autocomplete #autoStoreId="matAutocomplete" [displayWith]="getOptionTextStore">
-                <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option">
+                <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option"> 
                   {{option.StoreName}}
                 </mat-option>
               </mat-autocomplete>
+            </mat-form-field> -->
+
+            <mat-form-field  appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
+              <mat-label>Store Name</mat-label>
+              <mat-select  [(ngModel)]="vStoreName"  multiple  formControlName="StoreId" >
+                <mat-option *ngFor="let option of StorecmbList" [value]="option" > 
+                  {{ option.StoreName }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
+            
+           
 
           </div>
           <div>

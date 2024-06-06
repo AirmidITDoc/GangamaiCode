@@ -264,6 +264,7 @@ getOptionTextPurchaseItemList(option) {
     console.log(vdata)
       this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
       this.dsCurrentStock.data = data as CurrentStockList[];
+      console.log(this.dsCurrentStock.data)
       this.dsCurrentStock.sort = this.sort;
       this.dsCurrentStock.paginator = this.paginator;
       this.sIsLoading = '';

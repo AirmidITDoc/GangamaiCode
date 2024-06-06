@@ -141,7 +141,7 @@ export class ItemMasterComponent implements OnInit {
             IsScheduleX: JSON.stringify(row.IsScheduleX),
             IsLASA: JSON.stringify(row.IsLASA),
             IsEmgerency: JSON.stringify(row.IsEmgerency),
-            StoreId: row.StoreId,
+            //StoreId: row.StoreId,
             
         };
 

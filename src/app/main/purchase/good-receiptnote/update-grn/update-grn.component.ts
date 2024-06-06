@@ -2206,7 +2206,7 @@ export class UpdateGRNComponent implements OnInit {
             IGSTPer: element.IGSTPer || 0,
             IGSTAmt: element.IGSTAmt || 0,
             NetAmount: element.GrandTotalAmount || 0,
-            PurchaseId: element.PurchaseID || 0,
+            PurchaseId: element.PurchaseNo || 0,
             PurDetId: element.PurDetId || 0,
             POBalQty: element.POBalQty || 0,
             POQty: element.POQty || 0,

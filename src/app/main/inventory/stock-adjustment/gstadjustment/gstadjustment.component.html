@@ -73,7 +73,7 @@
                                     <mat-label>New IGSTPer</mat-label>
                                     <input name="NewIGSTPer" formControlName="NewIGSTPer" matInput required type="text" OnlyNUmber
                                      [(ngModel)]="vNewIGSTPer"  id="NewIGSTPer"   (keyup)="calculationAmt()"
-                                     (keypress)="keyPressCharater($event)">
+                                     (keypress)="keyPressCharater($event)" (keyup.enter)="focusNext('Save')">
                                 </mat-form-field>
 
                             </div>
@@ -93,7 +93,7 @@
                                 </mat-form-field>
     
                                 <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                                <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn">Save</button>
+                                <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn" id="Save">Save</button>
                             </div>
                         </form>
                       

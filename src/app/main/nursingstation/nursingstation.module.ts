@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterialConsumptionPatientwiseComponent } from './Patientwisematerialconsumption/material-consumption-patientwise/material-consumption-patientwise.component';
 import { PatientRefVisitComponent } from './patient-ref-visit/patient-ref-visit.component';
-import { NursingBedtransferComponent } from './nursing-bedtransfer/nursing-bedtransfer.component';
+import { NursingBedtransferComponent } from './nursing-bedtransfer/nursing-bedtransfer.component'; 
 
   
 
@@ -51,6 +51,10 @@ const approtes: Routes = [
   path:"nursingnote",
   loadChildren: () => import("./nursingnote/nursingnote/nursingnote.module").then((m)=>m.NursingnoteModule), 
 },
+{
+  path:"canteenrequest",
+  loadChildren: () => import("./canteen-request/canteen-request.module").then((m)=>m.CanteenRequestModule), 
+},
 
 // {
 //   path: "doctornote",
@@ -63,7 +67,7 @@ const approtes: Routes = [
 
 ];
 @NgModule({
-  declarations: [],
+  declarations: [ ],
   imports: [
     RouterModule.forChild(approtes),
   ]

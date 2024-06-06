@@ -786,6 +786,7 @@ export class ItemNameList {
   IsVerifiedId:any
   VerifiedDateTime:any;
   PurchaseID:any;
+  PurchaseNo:any;
   SupplierName:any;
   SrNo:number;
   /**
@@ -865,8 +866,8 @@ export class ItemNameList {
       this.VerifiedDateTime = ItemNameList.VerifiedDateTime || 0;
       this.ReceiveQty=ItemNameList.ReceiveQty || 0
       this.ConversionFactor=ItemNameList.ConversionFactor || 0
-      this.SrNo=ItemNameList.SrNo || 0
-      
+      this.SrNo=ItemNameList.SrNo || 0;
+      this.PurchaseNo = ItemNameList.PurchaseNo || 0;
     }
   }
 }

@@ -193,4 +193,7 @@ export class ItemMasterService {
   public getHistoryList() {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_PastHistoryMasterForCombo",{});
   }
+  public getAssigneToStoreList(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemMaster_by_Store",param);
+  }
 }

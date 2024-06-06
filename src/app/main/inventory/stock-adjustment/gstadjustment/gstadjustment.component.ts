@@ -82,30 +82,26 @@ export class GSTAdjustmentComponent implements OnInit {
  
   Savebtn:boolean=false;
   onSubmit(){
-    // if (this._StockAdjustment.GSTAdjustment.invalid) {
-    //   this.toastr.warning('please check from is invalid', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    if ((this.vNewSGSTPer == '' || this.vNewSGSTPer == null || this.vNewSGSTPer == undefined)) {
+   
+    if ((this.vNewCGSTPer == '' || this.vNewCGSTPer == null || this.vNewCGSTPer == undefined)) {
       this.toastr.warning('Please enter a New CGST', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if ((this.vNewIGSTPer == '' || this.vNewIGSTPer == null || this.vNewIGSTPer == undefined)) {
+    if ((this.vNewSGSTPer == '' || this.vNewSGSTPer == null || this.vNewSGSTPer == undefined)) {
       this.toastr.warning('Please enter a New SGST', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if ((this.vIGSTPer == null || this.vIGSTPer == undefined)) {
-      this.toastr.warning('Please enter a New IGST', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+   
+    // if ((this.vIGSTPer == null || this.vIGSTPer == undefined)) {
+    //   this.toastr.warning('Please enter a New IGST', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
  
   this.Savebtn = true;
   let insertGSTAdju = {};
