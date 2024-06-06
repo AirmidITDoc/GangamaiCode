@@ -237,7 +237,7 @@ export class SalesHospitalComponent implements OnInit {
   filteredOptionsBank4: Observable<string[]>;
   optionsBank4: any[] = [];
   isBank1elected4: boolean = false
-
+  Creditflag: boolean = false;
   IsCreditflag: boolean = false
   OP_IP_Id: any = 0;
   OP_IPType: any = 2;
@@ -250,7 +250,7 @@ export class SalesHospitalComponent implements OnInit {
   IsLoading: boolean = false;
   showTable: boolean = false
   vPatientType: any;
-
+  type = " ";
 
   Addflag: boolean = false;
   vBarcodeflag: boolean = false;
@@ -2474,6 +2474,14 @@ export class SalesHospitalComponent implements OnInit {
  
 
   getPrint3(el) {
+    if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
+      this.type = "Credit"
+      this.Creditflag = true;
+    } else if(!(el.PaidType=='Credit' && el.IsRefundFlag==false)){
+      this.type=" "
+      this.Creditflag = false;
+    }
+
     var D_data = {
       "SalesID": el,// 
       "OP_IP_Type": this.OP_IPType

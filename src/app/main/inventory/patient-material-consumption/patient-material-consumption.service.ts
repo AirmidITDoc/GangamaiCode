@@ -59,7 +59,7 @@ export class PatientMaterialConsumptionService {
   }
    
   public getMaterialConsumptionview(MaterialConsumptionId){
-    return this._httpClient.get("InventoryTransaction/view-IssuetoDeptIssuewise?MaterialConsumptionId=" + MaterialConsumptionId);
+    return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId=" + MaterialConsumptionId);
   }
 
 }

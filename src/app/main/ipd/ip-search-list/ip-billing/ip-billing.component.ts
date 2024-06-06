@@ -454,7 +454,7 @@ export class IPBillingComponent implements OnInit {
 
 
   getBillingClasslist() {
-    debugger
+    
     var m_data = {
       'ClassName': '%' //`${this.vClassName}%`
     }
@@ -581,7 +581,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   public onEnterdiscper(event, value): void {
-    debugger
+    
     if (event.which === 13) {
       if (!(value < 0) && !(value > 100)) {
         // this.calculatePersc();
@@ -618,7 +618,7 @@ export class IPBillingComponent implements OnInit {
 
 
   getSelectedObj(obj) {
-    debugger
+    
     console.log(obj)
     this.SrvcName = obj.ServiceName;
     this.b_price = obj.Price;
@@ -723,7 +723,7 @@ export class IPBillingComponent implements OnInit {
 
   getAdvanceDetList() {
 
-    debugger
+    
     var D_data = {
       "AdmissionID": this.selectedAdvanceObj.AdmissionID
     }
@@ -937,7 +937,7 @@ export class IPBillingComponent implements OnInit {
 
 
   CalAdmincharge() {
-    debugger
+    
     let Percentage = this.Ipbillform.get('Percentage').value;
     if (this.Ipbillform.get('Percentage').value > 0 && Percentage < 101) {
       this.vfDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100);
@@ -1090,7 +1090,7 @@ export class IPBillingComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         // console.log('============================== Save IP Billing ===========');
         console.log(result);
-        debugger
+        
         // this.paidamt = result.PaidAmt;
         this.flagSubmit = result.IsSubmitFlag
 
@@ -1155,7 +1155,7 @@ export class IPBillingComponent implements OnInit {
         const Cal_DiscAmount_IPBill = new Cal_DiscAmount(Cal_DiscAmount_IPBillObj);
         const AdmissionIPBillingUpdate = new AdmissionIPBilling(AdmissionIPBillingUpdateObj);
         //
-        debugger
+        
         let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
         // console.log(UpdateAdvanceDetailarr1);
@@ -1228,7 +1228,7 @@ export class IPBillingComponent implements OnInit {
           });
         }
         else {
-          debugger
+          
           console.log(result)
           this.balanceamt = result.BalAmt;
           // if (this.concessionAmtOfNetAmt > 0) {
@@ -1479,7 +1479,7 @@ export class IPBillingComponent implements OnInit {
       this.b_netAmount = (netAmt - discAmt).toString();
       // this.discamt.nativeElement.focus();
     }
-    debugger
+    
     if (this.formDiscPersc > 100 || this.formDiscPersc < 0) {
       this.toastr.warning('Please Enter Discount % less than 100 and Greater than 0.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1588,7 +1588,7 @@ export class IPBillingComponent implements OnInit {
 
   //For testing 
   viewgetDraftBillReportPdf(AdmissionID) {
-
+debugger
     this._IpSearchListService.getIpDraftBillReceipt(
       AdmissionID
     ).subscribe(res => {
@@ -1694,7 +1694,7 @@ export class IPBillingComponent implements OnInit {
   }
 
   onSave() {
-    debugger
+    
     if (!(this.vPercentage > 101)) {
       if (this.dataSource.data.length > 0) {
         if (this.Ipbillform.get('GenerateBill').value) {

@@ -366,7 +366,7 @@ registerObj:any;
       
   viewgetIndentReportPdf(contact,vprintflag) {
     let IndentId
-debugger
+
     if(vprintflag){
        IndentId=contact.IndentId
     }else{

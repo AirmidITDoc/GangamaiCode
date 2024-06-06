@@ -73,5 +73,9 @@ export class MaterialConsumptionService {
   public getItemlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemName_BalQty_M",Param)
   }
-  
+  public getMaterialconsumptionview(MaterialConsumptionId){
+    return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId=" + MaterialConsumptionId);
+  }
+
+
 }

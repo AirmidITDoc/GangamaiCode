@@ -47,7 +47,7 @@ export class IndentComponent implements OnInit {
 
 
   vsaveflag: boolean = true;
-  
+  SpinLoading: boolean = false;
   isItemIdSelected: boolean = false;
   sIsLoading: string = '';
   isLoading = true;
@@ -145,7 +145,7 @@ vToStoreId:any=0;
         this.sIsLoading = '';
       });
   }
-  SpinLoading: boolean = false;
+  
   viewgetIndentVerifyReportPdf(contact) {
     console.log(contact)
     this.sIsLoading == 'loading-data'
@@ -160,6 +160,35 @@ vToStoreId:any=0;
           data: {
             base64: res["base64"] as string,
             title: "Indent Verify Report Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.sIsLoading = '';
+        });
+    });
+    },1000);
+  }
+
+
+     
+  viewgetIndentReportPdf(contact) {
+    
+    console.log(contact)
+    this.sIsLoading == 'loading-data'
+  
+    setTimeout(() => {
+    this.SpinLoading =true;
+    let IndentId= contact.IndentId
+  this._IndentService.getIndentwiseview(IndentId).subscribe(res => {
+     
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '850px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Indent Report Viewer"
           }
         });
         dialogRef.afterClosed().subscribe(result => {

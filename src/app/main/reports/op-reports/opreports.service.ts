@@ -58,7 +58,7 @@ export class OPReportsService {
   
 
   public getRegistrationlistReport(FromDate,ToDate){
-    return this._httpClient.get("OPReport/view-RegistrationReport?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view-RegistrationReport ?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
   public getDoctorwisevisitView(FromDate,ToDate){

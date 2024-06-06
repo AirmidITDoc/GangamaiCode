@@ -2499,7 +2499,13 @@ export class SalesComponent implements OnInit {
 
   getPrint3(el) {
 debugger
-    
+if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
+  this.type = "Credit"
+  this.Creditflag = true;
+} else if(!(el.PaidType=='Credit' && el.IsRefundFlag==false)){
+  this.type=" "
+  this.Creditflag = false;
+}
     var D_data = {
       "SalesID": el,// 
       "OP_IP_Type": this.OP_IPType

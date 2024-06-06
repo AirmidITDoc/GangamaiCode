@@ -1317,22 +1317,13 @@
     </div>
     <!-- / CONTENT-->
 </div>
-
-<div hidden class="bill-template-wrapper2" style="font-size: 30.25%;" #billTemplate2>
-    <!-- <div class="watermark" style="position:absolute;
-        top: 50%;
-        left: 50%;
-        opacity: 0.1;
-        z-index: 99;
-        color: black;
-        font-size: 70px;
-        transform: translate(-50%,-50%) rotate(-45deg);
-        white-space: nowrap;
-        pointer-events: none;">Shri Siddeshwar Medicals</div> -->
+<!-- rename 2 as 3 for checking -->
+<div hidden class="bill-template-wrapper2" style="font-size: 30.25%;" #billTemplate3>
+  
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
             Trust)</span>
-        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice
+        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">{{type}} &nbsp; Tax Invoice
         </h4>
     </div>
 
@@ -1497,7 +1488,13 @@
                     <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
                         <span style="display:inline-block;">Grand Total</span>
                         <span style="margin:0 5px">:</span>
-                        <span>₹ {{reportPrintObjList[0]?.PaidAmount}}</span>
+                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
+                    </div>
+
+                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold">
+                        <span style="display:inline-block;">Balance Amount</span>
+                        <span style="margin:0 5px">:</span>
+                        <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
                     </div>
                 </td>
             </tr>
