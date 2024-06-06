@@ -1496,7 +1496,7 @@
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
             Trust)</span>
-        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">Tax Invoice
+        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">{{type}} &nbsp; Tax Invoice
         </h4>
     </div>
 
@@ -1551,7 +1551,7 @@
                     <table style="width: 100%;font-size:10px;">
                         <!-- <tr> -->
                         <td style="vertical-align: top;padding:0 10px 10px">
-                            Bill No: {{reportPrintObjList[0]?.SalesNo}} <span style="margin-left: 10px;">Bill Date:{{reportPrintObjList[0]?.Time | date:'dd/MM/yyyy'}} | {{reportPrintObjList[0]?.Time | date:'hh:mm tt'}}</span><br>
+                            Bill No: {{reportPrintObjList[0]?.SalesNo}} <span style="margin-left: 10px;">Bill Date:{{reportPrintObjList[0]?.Time | date:'dd/MM/yyyy h:mm'}} | {{reportPrintObjList[0]?.Time | date:'H:mm'}}</span><br>
                             Mode of Payment : {{reportPrintObjList[0]?.PayMode}} <br>
                         </td>
                         <!-- </tr> -->
@@ -1664,11 +1664,11 @@
                         <span>₹ {{reportPrintObjList[0]?.PaidAmount}}</span>
                     </div>
 
-                    <!-- <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold" *ngIf="Creditflag">
+                    <div style="display:flex;align-items: center;font-size: 12px;font-weight: bold" *ngIf="Creditflag">
                         <span style="display:inline-block;">Balance Amount</span>
                         <span style="margin:0 5px">:</span>
                         <span>₹ {{reportPrintObjList[0]?.NetAmount}}</span>
-                    </div> -->
+                    </div>
                 </td>
             </tr>
             <!-- <tr>

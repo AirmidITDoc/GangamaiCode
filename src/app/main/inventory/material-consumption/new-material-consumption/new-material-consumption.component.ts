@@ -350,26 +350,26 @@ export class NewMaterialConsumptionComponent implements OnInit {
   
   viewgetMaterialconsumptionReportPdf(MaterialConsumptionId) {
     
-    setTimeout(() => {
-    this.SpinLoading =true;
+  //   setTimeout(() => {
+  //   this.SpinLoading =true;
    
-  this._MaterialConsumptionService.getMaterialconsumptionview(MaterialConsumptionId).subscribe(res => {
+  // this._MaterialConsumptionService.getMaterialconsumptionview(MaterialConsumptionId).subscribe(res => {
      
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Material Consumption Report Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          this.sIsLoading = '';
-        });
-    });
-    },1000);
+  //     const dialogRef = this._matDialog.open(PdfviewerComponent,
+  //       {
+  //         maxWidth: "95vw",
+  //         height: '850px',
+  //         width: '100%',
+  //         data: {
+  //           base64: res["base64"] as string,
+  //           title: "Material Consumption Report Viewer"
+  //         }
+  //       });
+  //       dialogRef.afterClosed().subscribe(result => {
+  //         this.sIsLoading = '';
+  //       });
+  //   });
+  //   },1000);
   }
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('usedQty') usedQty: ElementRef;

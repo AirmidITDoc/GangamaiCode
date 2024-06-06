@@ -924,7 +924,7 @@ export class AppointmentComponent implements OnInit {
 
   }
   onEdit(row) {
-
+debugger
     console.log(row)
     let Query = "Select * from Registration where  RegId=" + row.RegId + " ";
     this._AppointmentSreviceService.getRegIdDetail(Query).subscribe(data => {
@@ -933,6 +933,9 @@ export class AppointmentComponent implements OnInit {
     });
 
     this.registerObj["VisitId"] = row.VisitId;
+    this.registerObj["RegId"]=row.RegId;
+    this.registerObj["RegID"]=row.RegId;
+
     console.log(this.registerObj)
     this.EditRegistration();
   }
@@ -942,7 +945,7 @@ export class AppointmentComponent implements OnInit {
     this.advanceDataStored.storage = new AdvanceDetailObj(this.registerObj);
     console.log(this.registerObj)
     this._registrationService.populateFormpersonal(this.registerObj);
-
+   
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "85vw",
@@ -958,10 +961,11 @@ export class AppointmentComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       if(result)
+        this.getVisitList1();
       this.viewgetPatientAppointmentReportPdf(this.registerObj, true);
      
     });
-       this.getVisitList1();
+      
   }
 
   AppointmentCancle(contact) {

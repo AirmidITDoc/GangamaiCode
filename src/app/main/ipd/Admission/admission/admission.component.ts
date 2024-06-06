@@ -1739,6 +1739,7 @@ export class AdmissionComponent implements OnInit {
   // }
   resultsLength = 0;
   getAdmittedPatientList_1() {
+    
     var Param = {
       "F_Name": this._AdmissionService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name": this._AdmissionService.myFilterform.get("LastName").value + '%' || "%",
@@ -2466,10 +2467,12 @@ debugger
 
 
   EditRegistration(row) {
+    debugger
     this.advanceDataStored.storage = new AdvanceDetailObj(row);
     console.log(row)
     this._registrationService.populateFormpersonal(row);
-
+    this.registerObj["RegId"]=row.RegID;
+    this.registerObj["RegID"]=row.RegID;
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "90vw",

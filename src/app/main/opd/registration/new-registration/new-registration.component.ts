@@ -152,7 +152,7 @@ export class NewRegistrationComponent implements OnInit {
         this.AdmissionID=this.registerObj.AdmissionID;
         this.isDisabled = true
         this.Submitflag=this.data.Submitflag;
-
+        // this.registerObj.RegID
 
         if(this.registerObj.AgeYear)
           this.registerObj.Age=this.registerObj.AgeYear.trim();
@@ -216,7 +216,7 @@ export class NewRegistrationComponent implements OnInit {
       PrefixID: '',
       FirstName: ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z()] *[a-zA-Z()]*$"),
+        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
       ]],
       MiddleName: ['', [
 
@@ -224,7 +224,7 @@ export class NewRegistrationComponent implements OnInit {
       ]],
       LastName: ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z()]*[a-zA-z()]*$"),
+        Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
       ]],
       GenderId: '',
       Address: '',
@@ -605,10 +605,10 @@ export class NewRegistrationComponent implements OnInit {
     //   }
     //   if(this.Submitflag)
     //     this.registerObj.RegId= this.RegId;
-
+debugger
       var m_data1 = {
         "opdRegistrationUpdate": {
-          "RegID": this.registerObj.RegId,
+          "RegID": this.registerObj.RegID,
           "PrefixId": this.personalFormGroup.get('PrefixID').value.PrefixID,
           "FirstName": this.registerObj.FirstName || "",
           "MiddleName": this.registerObj.MiddleName || "",
@@ -643,10 +643,10 @@ export class NewRegistrationComponent implements OnInit {
         if (response) {
           Swal.fire('Congratulations !', 'Register Data Udated Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
-             
+             debugger
               this.getRegistredPatientCasepaperview(this.registerObj.VisitId);
-              // if(!this.Submitflag)
-              //   this.getRegistredPatientCasepaperview(this.registerObj.VisitId);
+              if(this.Submitflag)
+                this.getAdmittedPatientCasepaperview(this.registerObj.AdmissionID);
               this._matDialog.closeAll();
             }
           });
