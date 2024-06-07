@@ -2811,7 +2811,7 @@ else{
   }
 
   public onEnterarea(event): void {
-    
+    debugger
     let AreaId=this.personalFormGroup.get('AreaId').value.AreaId
     if (event.which === 13) {
       console.log(AreaId)
