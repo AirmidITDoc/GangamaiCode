@@ -96,7 +96,7 @@ export class CanteenRequestComponent implements OnInit {
       {
         maxWidth: "100%",
         height: '95%',
-        width: '95%', 
+        width: '75%', 
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);

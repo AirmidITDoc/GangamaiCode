@@ -1,1 +1,304 @@
-<p>new-canteen-request works!</p>
+<div class="modal-wrapper grid-container">
+    
+        <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                    New Request
+                </span>
+            </div>
+            <div class="close-icon">
+                <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </mat-toolbar>
+    
+    
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container" style="border-radius: 4px;">
+            <form [formGroup]="_CanteenRequestservice.MyForm" >
+                <div fxLayout="column" class="gap-10">
+                    <div class="modal-card-container">
+                        
+                            <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="center center">
+                                <div class="radio-container">
+                                    <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
+                                        <mat-radio-button value="1">IP</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <div class="input-container gap-8" fxFlex>
+                                    <mat-form-field appearance="outline" disabled="isRegSearchDisabled" fxFlex>
+                                        <input type="text" name="RegID" formControlName="RegID"
+                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                                            [matAutocomplete]="auto1" (input)="getSearchList()">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_CanteenRequestservice.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_CanteenRequestservice.MyForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
+                                            (optionSelected)='getSelectedObj($event.option.value)'>
+                                            <mat-option *ngFor="let option of PatientListfilteredOptions"
+                                                [value]="option">
+                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                                {{option.RegNo}} |
+                                                {{option.MobileNo}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        
+                    </div>
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h2">Patient Information</span>
+                                    </div>
+                                    <div class="patient-info-box my-8">
+                                        <div class="patient-info-row">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key " style="width: 130px;">Patient
+                                                    Name(RegNo)</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value"
+                                                    style="width: 200px;">{{PatientName}}({{RegNo}})</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">IPDNo</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value" style="width: 150px;">{{vOPDNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">DoctorName</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">Dr.{{Doctorname}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">CompanyName</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{CompanyName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">WardName/BedNo</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value"
+                                                    style="width: 250px;">{{WardName}}/{{BedNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">TarrifName</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{Tarrifname}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <mat-card>
+                    <div class="modal-card-container"> 
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                                <mat-form-field appearance="outline" fxFlex="100%">
+                                    <mat-label>To Store Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Store"
+                                        matInput formControlName="StoreId" [matAutocomplete]="autoStore" required>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_CanteenRequestservice.MyForm.get('StoreId').setValue(''); isStoreselected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_CanteenRequestservice.MyForm.get('StoreId').setValue(''); isStoreselected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoStore="matAutocomplete" [displayWith]="getOptionTextStore">
+                                        <mat-option *ngFor="let option of filteredOptionsStore | async"
+                                            [value]="option">
+                                            {{option.StoreName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="100%">
+                                    <mat-label>Ward Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select WardName"
+                                        matInput formControlName="WardName" [matAutocomplete]="autoward" required>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_CanteenRequestservice.MyForm.get('WardName').setValue(''); isWardselected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="_CanteenRequestservice.MyForm.get('WardName').setValue(''); isWardselected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoward="matAutocomplete" [displayWith]="getOptionTextWard"
+                                        (optionSelected)='getSelectedObjward($event.option.value)'>
+                                        <mat-option *ngFor="let option of filteredOptionsWard | async" [value]="option">
+                                            {{option.RoomName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div> 
+                    </div>
+                    <div class="modal-card-container">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <form [formGroup]="_CanteenRequestservice.ItemForm">
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8"> 
+                                    <mat-form-field appearance="outline" fxFlex="1 1 auto">
+                                        <mat-label>ItemName</mat-label>
+                                        <input type="text" name="ItemId" formControlName="ItemId" #itemid
+                                            (keydown)="onEnterItem($event)" placeholder="Item Name " matInput
+                                            [matAutocomplete]="auto" (input)="getSearchItemList()">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_CanteenRequestservice.ItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">
+                                                close </mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_CanteenRequestservice.ItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
+                                            (optionSelected)='getSelectedObjItem($event.option.value)'>
+                                            <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
+                                                {{option.ItemID}} | {{option.ItemName}} | Price : {{option.Price}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <mat-error class="error"
+                                            *ngIf="_CanteenRequestservice.ItemForm.get('ItemId').invalid && _CanteenRequestservice.ItemForm.get('ItemId').touched">
+                                            Select ItemName
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="1 1 auto">
+                                        <mat-label>Qty</mat-label>
+                                        <input type="text" OnlyNumber [(ngModel)]="vQty" name="Qty"
+                                            (keydown)="onEnterqty($event)" formControlName="Qty" matInput required #qty
+                                            (keypress)="keyPressAlphanumeric($event)">
+                                    </mat-form-field> 
+                                    <!-- (keydown)="onEnterremark($event)" -->
+                                    <mat-form-field appearance="outline" fxFlex="10 1 auto">
+                                        <mat-label>Remark</mat-label>
+                                        <input type="text" name="Remark" [(ngModel)]="vRemark" formControlName="Remark"
+                                            matInput #remark (keydown)="onEnterremark($event)">
+                                    </mat-form-field>
+
+                                    <div class="input-add-button">
+                                        <div matTooltip="Select  name to enable this button!!"
+                                            [matTooltipDisabled]="!_CanteenRequestservice.ItemForm.invalid"
+                                            [matTooltipPosition]="'above'">
+                                            <button #addbutton class="btn btn-primary btn-with-icon" [disabled]="!add"
+                                                (click)="onAdd()">
+                                                <span class="btn-icon">
+                                                    <mat-icon> add </mat-icon>
+                                                </span>
+                                                <span>Add</span>
+                                            </button>
+                                            <!-- [disabled]="_salesService.IndentSearchGroup.invalid" -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                   </mat-card>
+                    <div class="modal-card-container table-container">
+                        <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
+                            <!-- Table 1 -->
+                            <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
+                                <mat-card>
+                                    <mat-table class="mat-table-1 h-250" matSort [dataSource]="dsItemList"
+                                        [@animateStagger]="{value:'50'}">
+
+                                        <ng-container matColumnDef="ItemName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                ItemName</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.ItemName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Qty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Total Qty</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.Qty}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Remark">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Remark</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.Remark}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="buttons" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact">
+                                                <ng-container class="actions">
+                                                    <mat-icon (click)="deleteTableRow($event ,contact)" color="warn">
+                                                        delete
+                                                    </mat-icon>
+                                                </ng-container>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedVisitColumns2; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: displayedVisitColumns2;" class="element"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    </mat-table>
+                                </mat-card>
+
+                            </div>
+                            <!-- Table 2 -->
+                            <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
+                                <mat-card>
+                                    <mat-table class="mat-table-2 h-250" matSort [dataSource]="dsCanteenDateList"
+                                        [@animateStagger]="{value:'50'}">
+
+                                        <ng-container matColumnDef="Date">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> Date
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.Date}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Time">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Time </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.Time}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedVisitColumns; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: displayedVisitColumns;" class="element"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    </mat-table>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div> 
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" (click)="OnSave()" [disabled]="savebtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

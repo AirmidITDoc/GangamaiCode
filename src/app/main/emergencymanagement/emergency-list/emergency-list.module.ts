@@ -37,6 +37,7 @@ import { MatChipsModule } from '@angular/material/chips'; ;
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { EmergencyListComponent } from './emergency-list.component';
+import { NewEmergencyComponent } from './new-emergency/new-emergency.component';
  
 const routes: Routes = [
   { 
@@ -46,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [EmergencyListComponent],
+  declarations: [EmergencyListComponent, NewEmergencyComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes), 

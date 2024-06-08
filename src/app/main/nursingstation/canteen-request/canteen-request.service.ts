@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -8,20 +8,38 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class CanteenRequestService {
   MyForm:FormGroup;
   SearchMyForm:FormGroup;
+  ItemForm:FormGroup;
   
   constructor(
     public _formbuilder:FormBuilder,
     public _httpClient:HttpClient
   )
    { this.MyForm = this.createMyForm(),
-     this.SearchMyForm = this.createsearchForm() 
+     this.SearchMyForm = this.createsearchForm(),
+     this.ItemForm = this.createItemorm()
    }
 
    createMyForm(){
       return this._formbuilder.group({
-        
-       // FromDate:[new Date()],
-       // ToDate:[new Date()],
+        RegId: '',
+        PatientName: '',
+        WardName: '',
+        StoreId: '',
+        RegID: [''],
+        Op_ip_id: ['1'],
+        AdmissionID: 0
+      })
+    }
+    createItemorm(){
+      return this._formbuilder.group({
+        ItemId: '',
+        ItemName: '',
+        Qty: ['', [
+          Validators.required,
+          Validators.pattern("^[0-9]*$")]],
+        Remark: ['', [
+          Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+        ]]
       })
     }
     createsearchForm(){
@@ -37,5 +55,22 @@ export class CanteenRequestService {
     }
     public getCanteenDetList(Param){
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CanteenRequestDet",Param);
+    }
+    public getAdmittedpatientlist(employee){
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+    }
+    public getPharmacyStoreList(){
+      return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_PharStoreList",{});
+    }
+  
+    public getLoggedStoreList(Param){
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+    }
+  
+    public getWardList(){
+      return this._httpClient.post("Generic/GetByProc?procName=RetrieveRoomMasterForCombo",{});
+    }
+    public getItemlist(Param){ 
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CanteenItemList",Param)
     }
 }
