@@ -2196,13 +2196,29 @@ debugger
   }
 
 
-  public onEnteragey(event): void {
+  public onEnteragey(event,value): void {
     debugger
     if (event.which === 13) {
       this.agem.nativeElement.focus();
-      // this.addbutton.focus();
+      this.ageyearcheck(value);
     }
 
+  }
+
+  
+  ageyearcheck(event) {
+    
+    if (parseInt(event) > 100) {
+      this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+
+      this.agey.nativeElement.focus();
+    }
+    return;
+    // else{
+    //   this.agem.nativeElement.focus();
+    // }
   }
   public onEnteragem(event): void {
     if (event.which === 13) {
@@ -2433,16 +2449,16 @@ debugger
     }
   }
 
-  ageyearcheck(event) {
+  // ageyearcheck(event) {
 
-    if (event > 100) {
-      this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-      this.agey.nativeElement.focus();
-    }
-  }
+  //   if (event > 100) {
+  //     this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //     this.agey.nativeElement.focus();
+  //   }
+  // }
 
   agemonthcheck(event) {
 
