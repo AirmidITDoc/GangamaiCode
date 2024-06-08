@@ -53,7 +53,7 @@ export class OpReportsComponent implements OnInit {
   IsLoading: boolean = false;
   searchDoctorList: any = [];
   optionsSearchDoc: any[] = [];
-
+Reportsection='OP Reports';
 
   displayedColumns = [
     'ReportName'
@@ -77,17 +77,24 @@ export class OpReportsComponent implements OnInit {
 
 
   ngOnInit(): void {
+    debugger
+    // if (this._ActRoute.url == "/reports/opreports") 
+    //   this.Reportsection='OP Reports'
+    // if (this._ActRoute.url == "/reports/ipreport") 
+    //   this.Reportsection='IP Reports'
+    // if (this._ActRoute.url == "/reports/pharmacyreport") 
+    //   this.Reportsection='Pharm Reports'
+    // if (this._ActRoute.url == "/reports/ipbillingreport") 
+    //   this.Reportsection='IPBilling Reports'
+    // if (this._ActRoute.url == "/reports/opbillingreport") 
+    //   this.Reportsection='OP Billing'
     this.bindReportData();
-   
-    // const toSelect = this.UserList.find(c => c.UserId == this.UserId);
-    // this._OPReportsService.userForm.get('UserId').setValue(toSelect);
-
   }
 
   bindReportData() {
-    // let qry = "SELECT * FROM ReportConfigMaster WHERE IsActive=1 AND IsDeleted=0 AND ReportType=1";
+   debugger
 var data={
-  ReportSection:"OP Reports"
+  ReportSection:this.Reportsection
 }
     this._OPReportsService.getDataByQuery(data).subscribe(data => {
       this.dataSource.data = data as any[];

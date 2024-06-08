@@ -158,9 +158,9 @@ var data={
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
 
-    } else if (this.ReportName == 'OP IP Common Collection') {
+    } else if (this.ReportName == 'IP Daily Collection Report') {
       this.FlagUserSelected = true;
-      this.FlagDoctorSelected = true;
+      this.FlagDoctorSelected = false;
 
     } else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
       this.FlagUserSelected = true;
@@ -274,7 +274,7 @@ var data={
     else if (this.ReportName == 'Refund of Bill Report') {
       this.viewgetRefundofbillReportPdf();
     }
-   if (this.ReportName == 'OP IP Common Collection') {
+   if (this.ReportName == 'IP Daily Collection Report') {
       this.viewIPDailyCollectionPdf();
     } else if (this.ReportName == 'IP Discharge & Bill Generation Pending report') {
       this.viewgetDiscbillgeneratingpendingReportPdf();

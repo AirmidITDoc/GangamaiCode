@@ -109,8 +109,12 @@ var data={
     this.ReportName = el.ReportName;
     this.ReportID = el.ReportId;
 
-  
-     if (this.ReportName == 'OP Bill Receipt') {
+    if (this.ReportName == 'OP Daily Collection') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }else if (this.ReportName == 'OP Bill Receipt') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -119,12 +123,13 @@ var data={
     else if (this.ReportName == 'Bill Summary Report') {
       this.FlagUserSelected = false;
     //  this.FlagPaymentSelected = false;
+    this.FlagBillNoSelected = false;
 
     } 
-    else if (this.ReportName == 'Credit Reports ') {
-      // this.FlagPaymentSelected = false;
-      // this.FlagUserSelected = false;
-
+    else if (this.ReportName == 'Credit Reports') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
     } 
      
     else if (this.ReportName == 'Refund of Bill Reports') {
@@ -228,7 +233,7 @@ var data={
 
   }
   getPrint() {
-    if (this.ReportName == 'OP DAILY COLLECTION') {
+    if (this.ReportName == 'OP Daily Collection') {
       this.viewOpDailyCollectionPdf();
     } 
     else if (this.ReportName == 'OP Daily Collection Summary Reports') {
@@ -245,7 +250,7 @@ var data={
     else if (this.ReportName == 'Bill Summary Report') {
       this.viewgetOPBillSummaryReportPdf();
     }
-     else if (this.ReportName == 'Credit Reports ') {
+     else if (this.ReportName == 'Credit Reports') {
       this.viewgetCreditReportPdf();
     } 
     else if (this.ReportName == 'Refund of Bill Reports') {

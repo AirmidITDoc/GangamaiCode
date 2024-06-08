@@ -644,7 +644,7 @@ debugger
           Swal.fire('Congratulations !', 'Register Data Udated Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
              debugger
-              this.getRegistredPatientCasepaperview(this.registerObj.VisitId);
+              this.viewgetPatientAppointmentReportPdf(this.registerObj.VisitId);
               if(this.Submitflag)
                 this.getAdmittedPatientCasepaperview(this.registerObj.AdmissionID);
               this._matDialog.closeAll();
@@ -668,6 +668,37 @@ debugger
   getOptionTextCity(option) {
     return option && option.CityName ? option.CityName : '';
 
+  }
+
+  
+
+  viewgetPatientAppointmentReportPdf(VisitId) {
+      
+
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      // this.AdList = true;
+      this._registerService.getAppointmentReport(
+        VisitId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Appointment  Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
+
+    }, 100);
+    
   }
 
   onClose() {

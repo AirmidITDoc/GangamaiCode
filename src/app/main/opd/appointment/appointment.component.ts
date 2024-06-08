@@ -924,7 +924,7 @@ export class AppointmentComponent implements OnInit {
 
   }
   onEdit(row) {
-debugger
+
     console.log(row)
     let Query = "Select * from Registration where  RegId=" + row.RegId + " ";
     this._AppointmentSreviceService.getRegIdDetail(Query).subscribe(data => {
@@ -935,7 +935,7 @@ debugger
     this.registerObj["VisitId"] = row.VisitId;
     this.registerObj["RegId"]=row.RegId;
     this.registerObj["RegID"]=row.RegId;
-
+    debugger
     console.log(this.registerObj)
     this.EditRegistration();
   }
@@ -962,10 +962,10 @@ debugger
       console.log('The dialog was closed - Insert Action', result);
       if(result)
         this.getVisitList1();
-      this.viewgetPatientAppointmentReportPdf(this.registerObj, true);
+      // this.viewgetPatientAppointmentReportPdf(this.registerObj, true);
      
     });
-      
+    
   }
 
   AppointmentCancle(contact) {
@@ -1608,32 +1608,30 @@ debugger
 
   onSave() {
     
-    let areaflag=0
-    let religionflag=0
-    let mstatusflag=0
-    console.log(this.personalFormGroup.get("AreaId").value.AreaId)
-    if(this.personalFormGroup.get("AreaId").value.AreaId > 0)
-      areaflag=1
-    else
-    this.toastr.warning('Please Enter Valid Area.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
+    
+    // console.log(this.personalFormGroup.get("AreaId").value.AreaId)
+    // if(this.personalFormGroup.get("AreaId").value.AreaId > 0)
+     
+    // else
+    // this.toastr.warning('Please Enter Valid Area.', 'Warning !', {
+    //   toastClass: 'tostr-tost custom-toast-warning',
+    // });
 
-    if(this.personalFormGroup.get("MaritalStatusId").value.MaritalStatusId >0)
-      religionflag=1
-    else
-    this.toastr.warning('Please Enter Valid MaritalStatusId.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    if(this.personalFormGroup.get("ReligionId").value.ReligionId >0)
-      mstatusflag=1
-    else
-    this.toastr.warning('Please Enter Valid ReligionId.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
+    // if(this.personalFormGroup.get("MaritalStatusId").value.MaritalStatusId >0)
+      
+    // else
+    // this.toastr.warning('Please Enter Valid MaritalStatusId.', 'Warning !', {
+    //   toastClass: 'tostr-tost custom-toast-warning',
+    // });
+    // if(this.personalFormGroup.get("ReligionId").value.ReligionId >0)
+      
+    // else
+    // this.toastr.warning('Please Enter Valid ReligionId.', 'Warning !', {
+    //   toastClass: 'tostr-tost custom-toast-warning',
+    // });
 
 
-if(areaflag ==1 &&religionflag==1 && mstatusflag==1){
+
     let DoctorID = this.VisitFormGroup.get('DoctorID').value.DoctorId
 
     if (DoctorID == undefined) {
@@ -1656,13 +1654,9 @@ if(areaflag ==1 &&religionflag==1 && mstatusflag==1){
         }
 
       }
-    }
-
-
+    
   }
-else{
- 
-}
+  this.getVisitList1();
   }
 
 
@@ -1862,7 +1856,7 @@ else{
 
             this.viewgetPatientAppointmentReportPdf(response, false);
           }
-          this.getVisitList();
+         
 
         });
 
@@ -1873,8 +1867,9 @@ else{
       this.isLoading = '';
     });
 
-    this.getVisitList1();
+   
     this.RegOrPhoneflag = "";
+    this.getVisitList1();
   }
 
 
@@ -2733,26 +2728,29 @@ else{
 
   public onEntermstatus(event): void {
   
-    let MaritalStatusId=this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId
-    if (event.which === 13) {
-      console.log(MaritalStatusId)
-      if(MaritalStatusId==undefined || event.value== '%'){
+    // let MaritalStatusId=this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId
+    // if (event.which === 13) {
+    //   console.log(MaritalStatusId)
+    //   if(MaritalStatusId==undefined || event.value== '%'){
 
-      }else if(MaritalStatusId==undefined || MaritalStatusId>0)
-      this.mobile.nativeElement.focus();
-    }
+    //   }else if(MaritalStatusId==undefined || MaritalStatusId>0)
+    //   this.mobile.nativeElement.focus();
+    // }
+    this.mobile.nativeElement.focus();
+
   }
 
   public onEnterreligion(event): void {
   
-    let ReligionId=this.personalFormGroup.get('ReligionId').value.ReligionId
-    if (event.which === 13) {
-      console.log(ReligionId)
-      if(ReligionId==undefined || event.value== '%'){
+    // let ReligionId=this.personalFormGroup.get('ReligionId').value.ReligionId
+    // if (event.which === 13) {
+    //   console.log(ReligionId)
+    //   if(ReligionId==undefined || event.value== '%'){
 
-      }else if(ReligionId==undefined || ReligionId>0)
-      this.ptype.nativeElement.focus();
-    }
+    //   }else if(ReligionId==undefined || ReligionId>0)
+    //   this.ptype.nativeElement.focus();
+    // }
+    this.ptype.nativeElement.focus();
   }
   public onEnterbday(event): void {
     if (event.which === 13) {
@@ -2812,12 +2810,16 @@ else{
 
   public onEnterarea(event): void {
     debugger
-    let AreaId=this.personalFormGroup.get('AreaId').value.AreaId
-    if (event.which === 13) {
-      console.log(AreaId)
-      if(AreaId==undefined || event.value== '%'){
+    // let AreaId=this.personalFormGroup.get('AreaId').value.AreaId
+    // if (event.which === 13) {
+    //   console.log(AreaId)
+    //   if(AreaId==undefined || event.value== '%'){
 
-      }else if(AreaId==undefined || AreaId>0)
+    //   }else if(AreaId==undefined || AreaId>0)
+    //   this.city.nativeElement.focus();
+    // }
+
+    if (event.which === 13) {
       this.city.nativeElement.focus();
     }
 }

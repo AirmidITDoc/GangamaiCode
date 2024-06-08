@@ -178,5 +178,7 @@ public getPatientTypeCombo() {
   
     return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
   }
-  
+  public getAppointmentReport(VisitId){
+    return this._httpClient.get("OutPatient/view-PatientAppointment?VisitId=" + VisitId);
+  }
 }

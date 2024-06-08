@@ -126,7 +126,8 @@ export class CompanyMasterListComponent implements OnInit {
     }
     
     onSubmit() {
-        if (this._companyService.myform.valid) {
+        debugger
+        // if (this._companyService.myform.valid) {
             if (!this._companyService.myform.get("CompanyId").value) {
                 var m_data = {
                     companyMasterInsert: {
@@ -157,7 +158,7 @@ export class CompanyMasterListComponent implements OnInit {
                         tariffId:
                             this._companyService.myform.get("TariffId").value
                                 .TariffId,
-                        isDeleted: Boolean(
+                                isActive: Boolean(
                             JSON.parse(
                                 this._companyService.myform.get("IsDeleted")
                                     .value
@@ -170,6 +171,7 @@ export class CompanyMasterListComponent implements OnInit {
                         isCancelledDate: "01/01/1900",
                     },
                 };
+                debugger
                 console.log(m_data);
                 this._companyService
                     .companyMasterInsert(m_data)
@@ -180,15 +182,7 @@ export class CompanyMasterListComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getCompanyMaster();
-                            // this.getGroupMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('Company Master Data not saved !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
@@ -255,14 +249,7 @@ export class CompanyMasterListComponent implements OnInit {
                                 toastClass: 'tostr-tost custom-toast-success',
                               });
                               this.getCompanyMaster();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //     }
-                            // });
+                           
                         } else {
                             this.toastr.error('Company Master Data not updated !, Please check API error..', 'Error !', {
                                 toastClass: 'tostr-tost custom-toast-error',
@@ -279,7 +266,7 @@ export class CompanyMasterListComponent implements OnInit {
             }
             this.onClose();
         }
-    }
+    
     // onEdit(row) {
     //     var m_data = {
     //         CompanyId: row.CompanyId,

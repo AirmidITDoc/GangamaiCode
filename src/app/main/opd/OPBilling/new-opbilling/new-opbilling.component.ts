@@ -203,7 +203,7 @@ export class NewOPBillingComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
-debugger
+
       this.VisitId=this.selectedAdvanceObj.VisitId;
       this.RegId=this.selectedAdvanceObj.RegId;
       this.AgeYear = this.selectedAdvanceObj.AgeYear;

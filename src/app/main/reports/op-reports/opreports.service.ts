@@ -148,7 +148,7 @@ return this._httpClient.get("OPReport/view-DoctorWiseNewAndOldPatientReport?From
   
   public getCommonDailycollectionView(FromDate,ToDate){
   
-    return this._httpClient.get("OPReport/view-DepartmentServiceGroupWiseCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("CommanReport/view-DailyCollectionSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   public getDailycollectionView(FromDate,ToDate){
   

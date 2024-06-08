@@ -22,7 +22,6 @@ const appRoutes: Routes = [
             ),
 
     },
-
     {
         path: "ipreport",
         loadChildren: () =>
@@ -47,8 +46,8 @@ const appRoutes: Routes = [
     // {
     //     path: "opreports",
     //     loadChildren: () =>
-    //         import("./op-mis-reports/op-mis-report.module").then(
-    //             (m) => m.OPMisReportModule
+    //         import("./op-reports/opreports.module").then(
+    //             (m) => m.OPReportsModule
     //         ),
     // },
     {

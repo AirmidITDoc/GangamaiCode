@@ -266,7 +266,7 @@ get f() { return this._opSearchListService.myFilterform.controls; }
       });
     }
 
-  
+    this.getVisitList();
   }
 
    // toggle sidebar
