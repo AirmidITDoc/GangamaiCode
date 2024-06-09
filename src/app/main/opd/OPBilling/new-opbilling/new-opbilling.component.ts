@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { BrowseOPDBill } from '../../browse-opbill/browse-opbill.component';
-import { ReplaySubject, Subject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { ChargesList, SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -17,7 +17,7 @@ import { OpPaymentNewComponent } from '../../op-search-list/op-payment-new/op-pa
 import { IpPaymentInsert, OPAdvancePaymentComponent } from '../../op-search-list/op-advance-payment/op-advance-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AdvanceDetailObj, RegInsert } from '../../appointment/appointment.component';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { MatSelect } from '@angular/material/select';
@@ -85,8 +85,9 @@ export class NewOPBillingComponent implements OnInit {
   ConcessionReasonList: any = [];
   FinalAmt: any;
   DoctorFinalId = 'N';
-
-
+  filteredOptionsDoctor: Observable<string[]>;
+  isDoctorSelected: boolean = false;
+  optionsDoctor: any[] = [];
   b_price = '0';
   b_qty = '1';
   b_totalAmount: any = 0;
@@ -471,7 +472,7 @@ else if(this.CompanyId =='' || this.CompanyId ==0){
     }
 
     this.isLoading = 'submit';
-    debugger
+    
     let ConcessionId = 0;
     let ConcessionReason =''
     if (this.BillingForm.get('ConcessionId').value || this.b_concessionDiscPer > 0){
@@ -1008,7 +1009,7 @@ calculatePersc() {
 
   if ((this.v_ChargeDiscPer < 101) && (this.v_ChargeDiscPer > 0) ) {
     this.b_ChargeDisAmount = Math.round(this.b_totalAmount * parseInt(this.v_ChargeDiscPer)) / 100;
-    debugger
+    
     this.b_netAmount = this.b_totalAmount - this.b_ChargeDisAmount;
     this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
     this.conflag=true;
@@ -1142,12 +1143,31 @@ deleteTableRow(element) {
 }
 
 
+// getAdmittedDoctorCombo() {
+//   this._oPSearhlistService.getAdmittedDoctorCombo().subscribe(data => {
+//     this.doctorNameCmbList = data;
+//     this.filteredDoctor.next(this.doctorNameCmbList.slice());
+//   })
+// }
 getAdmittedDoctorCombo() {
   this._oPSearhlistService.getAdmittedDoctorCombo().subscribe(data => {
     this.doctorNameCmbList = data;
-    this.filteredDoctor.next(this.doctorNameCmbList.slice());
-  })
+    this.optionsDoctor = this.doctorNameCmbList.slice();
+    this.filteredOptionsDoctor = this._oPSearhlistService.myFilterform.get('DoctorId').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterDoctor(value) : this.doctorNameCmbList.slice()),
+    );
+
+  });
 }
+private _filterDoctor(value: any): string[] {
+  if (value) {
+    const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+    return this.optionsDoctor.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+  }
+
+}
+
 
 getCashCounterComboList() {
   this._oPSearhlistService.getCashcounterList().subscribe(data => {
@@ -1194,7 +1214,8 @@ showNewPaymnet() {
 
 @ViewChild('netamt') netamt: ElementRef;
 
-@ViewChild('Doctor') Doctor: MatSelect;
+@ViewChild('Doctor') Doctor: ElementRef;
+// @ViewChild('Doctor') Doctor: MatSelect;
 
 onEnterservice(event): void {
 
@@ -1219,10 +1240,10 @@ onEnterservice(event): void {
   }
 
   public onEnterqty(event): void {
-
+    debugger
   if(event.which === 13) {
   if (this.isDoctor) {
-    if (this.Doctor) this.Doctor.focus();
+    this.doctorname.nativeElement.focus();
   }
   else {
     this.disper.nativeElement.focus();
@@ -1262,6 +1283,10 @@ onEnterservice(event): void {
 }
   }
 
+
+  getOptionTextDoctor(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
 addData() {
   this.add = true;
   this.addbutton.nativeElement.focus();

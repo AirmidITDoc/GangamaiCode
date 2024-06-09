@@ -209,7 +209,7 @@
                                             </mat-form-field>
 
                                             <div style="margin-right: 10px; width:200px;" *ngIf="isDoctor">
-                                                <mat-form-field appearance="outline" fxFlex id="DoctorID">
+                                                <!-- <mat-form-field appearance="outline" fxFlex id="DoctorID">
                                                     <mat-label>Doctor Name</mat-label>
                                                     <mat-select formControlName="DoctorID" placeholder="Doctor" #Doctor
                                                         #singleSelect (keydown)="onEnterdoctor($event)">
@@ -229,6 +229,25 @@
                                                             Required field cannot be left blank
                                                         </mat-error>
                                                     </mat-select>
+                                                </mat-form-field> -->
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Doctor Name</mat-label>
+                                                    <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" (keydown)="onEnterdoctor($event)"
+                                                        matInput formControlName="DoctorID" [matAutocomplete]="autoSearchDoctor1"  #doctorname>
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="registeredForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="registeredForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoSearchDoctor1="matAutocomplete"
+                                                        [displayWith]="getOptionTextDoctor">
+                                                        <mat-option *ngFor="let option of filteredOptionsDoctor| async"
+                                                            [value]="option">
+                                                            {{option.DoctorName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
                                                 </mat-form-field>
                                             </div>
 
