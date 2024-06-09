@@ -48,6 +48,7 @@ import { NewOPBillingComponent } from "../OPBilling/new-opbilling/new-opbilling.
 import { Table } from "jspdf-autotable";
 import { invalid } from "moment";
 import { values } from "lodash";
+import { WhatsAppEmailService } from "app/main/shared/services/whats-app-email.service";
 
 export class DocData {
   doc: any;
@@ -341,7 +342,8 @@ export class AppointmentComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private reportDownloadService: ExcelDownloadService,
     private _Activatedroute: ActivatedRoute,
-    private changeDetectorRefs: ChangeDetectorRef
+    private changeDetectorRefs: ChangeDetectorRef,
+    public _WhatsAppEmailService:WhatsAppEmailService
   ) {
     // this.getVisitList();
     this.getVisitList1();
@@ -1514,7 +1516,36 @@ export class AppointmentComponent implements OnInit {
   }
 
 
-
+  getWhatsappshareSales(el, vmono) {
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": vmono || 0,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'Appointment',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        this.toastr.success('Bill Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+    // this.IsLoading = false;
+  }
 
   getPhoneAppointmentList() {
     var m_data = {

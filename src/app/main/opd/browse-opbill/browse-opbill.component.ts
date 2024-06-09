@@ -19,6 +19,7 @@ import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/p
 import { HeaderComponent } from 'app/main/shared/componets/header/header.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 
 
@@ -123,7 +124,8 @@ export class BrowseOPBillComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private injector: Injector,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private applicationRef: ApplicationRef
+    private applicationRef: ApplicationRef,
+    public _WhatsAppEmailService:WhatsAppEmailService
 
   ) { }
 
@@ -276,7 +278,41 @@ console.log(contact)
     this._BrowseOPDBillsService.myFilterform.get('RegNo').reset('');
     this._BrowseOPDBillsService.myFilterform.get('PBillNo').reset('');
   }
+  // sIsLoading: any = '';
+  getWhatsappshareSales(Param) {
+    console.log(Param)
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": Param.MobileNo,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'OPBill',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": Param.BillNo,
+        "PatientType": 0,//el.PatientType,
+        "templateId": 0,
+        "smSurl": '',
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    console.log(m_data);
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+      }
 
+    });
+    // this.IsLoading = false;
+    // el.button.disbled = false;
+  }
 
   resultsLength = 0;
   getBrowseOPDBillsList() {

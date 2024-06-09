@@ -43,7 +43,7 @@
                                 <form [formGroup]="_BrowseOpdPaymentReceiptService.myFilterform">
                                     <div fxLayout="column" fxLayoutAlign="start none">
 
-                                        <mat-form-field appearance="outline" style="margin-left: 2%;">
+                                        <mat-form-field appearance="outline">
                                             <mat-label>Enter a date range</mat-label>
                                             <mat-date-range-input [rangePicker]="picker">
                                                 <input matStartDate formControlName="start" placeholder="Start date">
@@ -116,7 +116,7 @@
                         class="backgroundBlur">
                         <div class="spinner-border text-danger"></div>
                     </div>
-                    <mat-table #table matSort table="table1" [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+                    <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                         style="overflow: auto;">
 
                         <ng-container matColumnDef="RegNo">
@@ -274,9 +274,9 @@
                             </mat-footer-cell>
                         </ng-container>
 
-                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                        </mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                        <mat-header-row class="accent min-width-2000" class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                        </mat-header-row >
+                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact" class=" min-width-2000"
                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                         <mat-footer-row *matFooterRowDef="['loading']"
                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
