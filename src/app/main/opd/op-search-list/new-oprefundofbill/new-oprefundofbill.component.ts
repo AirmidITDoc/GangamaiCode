@@ -506,9 +506,9 @@ onSave() {
 
       const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
         {
-          maxWidth: "100vw",
+          maxWidth: "80vw",
           height: '600px',
-          width: '100%',
+          width: '80%',
           data: {
             vPatientHeaderObj: PatientHeaderObj,
             FromName: "Advance-Refund",
@@ -530,11 +530,7 @@ onSave() {
           if (response) {
             Swal.fire('Congratulations !', 'OP Refund Bill data saved Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
-
                 this.viewgetOPRefundofbillPdf(response);
-                // this._matDialog.closeAll();
-
-
               }
             });
           } else {

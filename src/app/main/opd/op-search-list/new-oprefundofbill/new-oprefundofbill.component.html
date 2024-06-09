@@ -307,20 +307,10 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="element.RefundAmt" type="number" (keyup)="getCellCalculation(element,element.RefundAmt)" (keypress)="keyPressAlphanumeric($event)">
+                                                    <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber (keyup)="getCellCalculation(element,element.RefundAmt)" (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
-
-                                        <!-- <ng-container matColumnDef="BalanceAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Bal Amount
-                                            </mat-header-cell>
-                                            <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
-                                                <mat-form-field appearance="outline">
-                                                    <input matInput [(ngModel)]="BalanceAmount" type="number">
-                                                </mat-form-field>
-                                            </mat-cell>
-                                        </ng-container> -->
 
                                         <ng-container matColumnDef="BalanceAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>

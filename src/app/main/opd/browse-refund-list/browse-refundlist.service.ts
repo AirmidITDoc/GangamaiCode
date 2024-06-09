@@ -29,7 +29,7 @@ export class BrowseRefundlistService {
    
     public getBrowseOPDReturnReceiptList(employee) {
       
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseOPDRefundReceipt",employee)
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowseOPDRefundBillList",employee)
     }
   
    

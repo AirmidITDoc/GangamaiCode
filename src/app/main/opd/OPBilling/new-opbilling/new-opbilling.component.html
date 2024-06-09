@@ -85,19 +85,14 @@
                                             <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                                 <span class="patient-col-key ">Patient Name</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{PatientName}}</span>
+                                                <span class="patient-col-value">{{RegNo}} - {{PatientName}}</span>
                                             </div>
-                                            <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="15%">
-                                                <span class="patient-col-key">RegId</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{RegId}}</span>
-                                            </div>
-                                            <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
+                                            <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="10%">
                                                 <span class="patient-col-key">OPDNo</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{vOPIPId}}</span>
                                             </div>
-                                            <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
+                                            <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="10%">
                                                 <span class="patient-col-key">Tariff</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{Tarrifname}}</span>
@@ -107,7 +102,7 @@
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{AgeYear}}</span>
                                                     </div> -->
-                                            <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
+                                            <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="20%">
                                                 <span class="patient-col-key">Company</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{CompanyName}}</span>
@@ -117,7 +112,7 @@
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{PatientType}}</span>
                                                     </div> -->
-                                            <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
+                                            <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="20%">
                                                 <span class="patient-col-key">Doctor</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{Doctorname}}</span>
@@ -142,7 +137,7 @@
                                     <form [formGroup]="registeredForm" style="display: flex;" #f="ngForm" #aForm
                                         class="mat-form-field-auto">
 
-                                        <div fxLayout="row" fxLayoutAlign="space-between" class="gap-4">
+                                        <div fxLayout="row" fxLayoutAlign="space-between">
 
                                             <mat-form-field appearance="outline" style="width:400px;" #myInput>
                                                 <input type="text" name="SrvcName" formControlName="SrvcName" #itemid
@@ -169,7 +164,7 @@
                                             </mat-form-field>
 
 
-                                            <mat-form-field appearance="outline" #Price>
+                                            <mat-form-field appearance="outline" #Price fxFlex="10%">
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="b_price" name="bPrice" #price
                                                     (keyup)="calculateTotalAmtbyprice()" formControlName="price"
@@ -199,7 +194,7 @@
 
                                             </mat-form-field>&nbsp;
 
-                                            <mat-form-field appearance="outline">
+                                            <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>TotalAmt</mat-label>
                                                 <input matInput [(ngModel)]="b_totalAmount" name="bTotalAmt" readonly
                                                     formControlName="ChargeTotalAmount" required>
@@ -261,7 +256,7 @@
                                                     Percentage is Number</mat-error>
                                             </mat-form-field> -->
 
-                                            <mat-form-field appearance="outline">
+                                            <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Disc %</mat-label>
                                                 <input matInput placeholder="Percentage" formControlName="ChargeDiscPer"
                                                     [ngModel]="v_ChargeDiscPer" autocomplete="off" #disper
@@ -273,7 +268,7 @@
 
 
 
-                                            <mat-form-field appearance="outline">
+                                            <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Disc Amt</mat-label>
                                                 <input matInput [(ngModel)]="b_ChargeDisAmount" name="b_ChargeDisAmount"
                                                     #discamt formControlName="ChargeDiscAmount" type="number"
@@ -285,7 +280,7 @@
                                                     required</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline">
+                                            <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>NetAmount</mat-label>
                                                 <input matInput [(ngModel)]="b_netAmount" name="b_netAmount" readonly
                                                     formControlName="netAmount" required (keyup)="addData()" #netamt>
@@ -557,7 +552,7 @@
                                         Cash Payment
                                     </mat-checkbox>
                                     <div class="action-btns gap-8" fxLayout="row">
-                                        <button class="btn btn-danger-outline" (click)="onClear()">Reset</button>
+                                        <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
                                         <button class="btn btn-primary" (click)="onSaveOPBill2()"
                                             [disabled]="BillingForm.invalid">Save</button>
                                     </div>

@@ -12,6 +12,8 @@ import { BrowseOPDBill, ViewBrowseOPDRefundComponent } from './view-browse-opdre
 import { fuseAnimations } from '@fuse/animations';
 import * as converter from 'number-to-words';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -40,19 +42,17 @@ export class BrowseRefundListComponent implements OnInit {
   displayedColumns = [
     'RefundDate',
     'RefundNo',
-    'RegId',
+    'RegNo',
     'PatientName',
+    'MobileNo',
+    'PatientType',
+    'TariffName',
+    'CompanyName',
     'PaymentDate',
     'RefundAmount',
     'TotalAmt',
-    'MobileNo',
-    "BillId",
-    // 'CashPayAmount',
-    // 'ChequePayAmount',
-    // 'CardPayAmount',
+    'PBillNo',
     'buttons'
-
-    // 'action'
   ];
   dataSource = new MatTableDataSource<RefundMaster>();
 
@@ -64,7 +64,9 @@ export class BrowseRefundListComponent implements OnInit {
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    public _WhatsAppEmailService:WhatsAppEmailService
+
   ) { }
 
   ngOnInit(): void {
@@ -128,6 +130,38 @@ export class BrowseRefundListComponent implements OnInit {
 
   }
 
+  getWhatsappshareSales(Param) {
+    console.log(Param)
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": Param.MobileNo,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'OPRefundBill',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": Param.RefundId,
+        "PatientType": 0,//el.PatientType,
+        "templateId": 0,
+        "smSurl": '',
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    console.log(m_data);
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+      }
+
+    });
+  }
 
 
   getViewbill(contact)

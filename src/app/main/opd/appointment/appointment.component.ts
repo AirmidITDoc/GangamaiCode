@@ -1575,7 +1575,6 @@ export class AppointmentComponent implements OnInit {
   RegOrPhoneflag = '';
 
   getSelectedObjPhone(obj) {
-
     this.RegOrPhoneflag = 'Entry From Phone Appointment'
     this.vPhoneFlage = 1;
     this.registerObj = obj;
@@ -2626,7 +2625,6 @@ export class AppointmentComponent implements OnInit {
     let xx = {
       RegId: contact.RegId,
       OPD_IPD_ID: contact.OPD_IPD_ID,
-
       RegNo: contact.RegNo,
       VisitId: contact.VisitId,
       PatientName: contact.PatientName,
