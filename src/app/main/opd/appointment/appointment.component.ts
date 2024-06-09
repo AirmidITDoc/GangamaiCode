@@ -927,18 +927,21 @@ export class AppointmentComponent implements OnInit {
   }
   onEdit(row) {
 
-    console.log(row)
-    let Query = "Select * from Registration where  RegId=" + row.RegId + " ";
-    this._AppointmentSreviceService.getRegIdDetail(Query).subscribe(data => {
-      this.registerObj = data[0];
-      console.log(this.registerObj);
-    });
+    // console.log(row)
+    // let Query = "Select * from Registration where  RegId=" + row.RegId + " ";
+    // this._AppointmentSreviceService.getRegIdDetail(Query).subscribe(data => {
+    //   this.registerObj = data[0];
+    //   console.log(this.registerObj);
+    // });
 
-    this.registerObj["VisitId"] = row.VisitId;
+    // this.registerObj["VisitId"] = row.VisitId;
+    // this.registerObj["RegId"]=row.RegId;
+    // this.registerObj["RegID"]=row.RegId;
+    // debugger
+    console.log(row)
+    this.registerObj =row;
     this.registerObj["RegId"]=row.RegId;
     this.registerObj["RegID"]=row.RegId;
-    debugger
-    console.log(this.registerObj)
     this.EditRegistration();
   }
 
@@ -962,12 +965,10 @@ export class AppointmentComponent implements OnInit {
       
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      if(result)
-        this.getVisitList1();
-      // this.viewgetPatientAppointmentReportPdf(this.registerObj, true);
-     
+      
     });
-    
+    this.getVisitList1();
+
   }
 
   AppointmentCancle(contact) {

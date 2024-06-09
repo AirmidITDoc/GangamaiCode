@@ -78,7 +78,7 @@ export class OPAdvancePaymentComponent implements OnInit {
   vdoctorname:any=''
   vCategory:any=''
   OPD_IPD_Id:any=''
-
+  Cashflag:boolean=false;
 
 
 
@@ -442,6 +442,7 @@ export class OPAdvancePaymentComponent implements OnInit {
             break;
 
           case 'UPI':
+            this.Cashflag=false;
             this.paytmAmt = 0;
             this.paymentForm.get('paytmAmountController').setValidators([
               // Validators.required,
