@@ -3404,7 +3404,8 @@ getSearchListIP() {
   TariffName:any;
   CompanyName:any;
   getSelectedObjRegIP(obj) {
-    if(obj.IsDischarged == 1){
+    let IsDischarged = obj.IsDischarged 
+    if(IsDischarged == 1){
       Swal.fire('Selected Patient is already discharged');
       //this.PatientInformRest();
       this.RegId = ''
@@ -3435,8 +3436,8 @@ getSearchListIP() {
       this.DoctorNamecheck = false;
       this.IPDNocheck = false;
       this.registerObj = obj;
-      this.PatientName = obj.FirstName + " " + obj.LastName;
       this.RegId = obj.RegId;
+      this.PatientName = obj.FirstName + " " + obj.LastName; 
       this.OP_IP_Id  = obj.VisitId;
       this.RegNo =obj.RegNo; 
       this.OPDNo = obj.OPDNo;

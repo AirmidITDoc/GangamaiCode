@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatTreeModule } from '@angular/material/tree';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module'; 
 
 
 const appRoutes: Routes = [
@@ -61,7 +61,10 @@ const appRoutes: Routes = [
     path:"scheduler",
     loadChildren: () => import("./scheduler/scheduler.module").then((m)=>m.NewScdulerModule),
    },
- 
+   {
+    path: "smsconfigrationtool",
+    loadChildren: () => import("./smsconfuguration/smsconfuguration.module").then((m) => m.SMSConfugurationModule),
+},
  
 ];
 

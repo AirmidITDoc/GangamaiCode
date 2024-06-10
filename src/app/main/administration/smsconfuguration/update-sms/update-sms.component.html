@@ -1,0 +1,137 @@
+<div id="content" class="simple page-layout inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
+    <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 40px;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+              Template Creation
+            </span>
+        </div> 
+        <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div fxlayout="column" fxLayoutGap="10px">
+                <div fxFlex.gt-sm="40%" fxFlex>
+    
+                    <mat-table class="table4" matSort [dataSource]="dsTemplateList" [@animateStagger]="{value:'50'}"
+                        style="overflow:auto;height: 500px;">
+    
+                        <ng-container matColumnDef="Code">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                Code
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{contact.Code}}
+                            </mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="MgsCategory">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                Mgs Category </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{contact.MgsCategory}}
+                            </mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="IsBlock">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                IsBlock</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{contact.IsBlock}}
+                            </mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="TemplateId">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                TemplateId</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                {{contact.TemplateId }}
+                            </mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="loading">
+                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                            </mat-header-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                no data found...
+                            </mat-footer-cell>
+                        </ng-container>
+    
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="getBillDetList(contact)"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['loading']"
+                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                        </mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{'hide':!(dsTemplateList!=null && dsTemplateList.data.length==0)}">
+                        </mat-footer-row>
+    
+                    </mat-table>
+                    
+                </div>
+    
+                <div fxFlex.gt-sm="60%" fxFlex>
+                    <form [formGroup]='_SMSConfigService.MyNewSMSForm'>
+                        <div fxLayout="column" fxLayoutGap="10px">
+    
+                            <div fxLayout="row"  fxLayoutGap="100px">
+                            <mat-form-field appearance="outline" fxFlex="30%">
+                                <mat-label>Template Creation</mat-label>
+                                <input matInput name="TemplateCreation" formControlName="TemplateCreation" type="text"
+                                    [(ngModel)]="vTemplateCreation" required>
+                            </mat-form-field>
+    
+                            <mat-form-field appearance="outline" fxFlex="60%">
+                                <mat-label>MSG Category</mat-label>
+                                <mat-select formControlName="Msgcategory" name="Msgcategory">
+                                    <mat-option></mat-option>
+                                    <!-- <mat-option *ngFor="let m of Gender" [value]="m">
+                                                                                                    {{m.StoreName}}
+                                                                                                </mat-option> -->
+                                </mat-select>
+                            </mat-form-field>
+                            </div>
+    
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Message</mat-label>
+                                <textarea rows="5" matInput name="Message" formControlName="Message" type="text"
+                                    [(ngModel)]="vMessage" required></textarea>
+                            </mat-form-field>
+    
+                            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center"> 
+                             
+                                <mat-checkbox name="IsBlock" [(ngModel)]="vIsBlock">IsBlock</mat-checkbox>
+                            
+                                <mat-form-field appearance="outline" fxFlex="50%">
+                                    <mat-label>Template Id</mat-label>
+                                    <input matInput name="TemplateId" formControlName="TemplateId" type="text" [(ngModel)]="vTemplateId" required>
+                                </mat-form-field>
+                            </div>
+    
+                        </div>
+                    </form>
+                    <div class="modal-footer-buttons" fxLayoutAlign="end center" style="margin-top: 200px;">
+                        <button class="btn btn-danger-outline">Close</button>&nbsp;
+                        <button class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+              
+            </div>
+          
+        </div>
+    </div>
+</div>
