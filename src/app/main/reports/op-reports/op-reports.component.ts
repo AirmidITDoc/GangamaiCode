@@ -55,6 +55,10 @@ export class OpReportsComponent implements OnInit {
   optionsSearchDoc: any[] = [];
 Reportsection='OP Reports';
 
+
+FlagDoctorSelected: boolean = false;
+FlagBillNoSelected: boolean = false;
+
   displayedColumns = [
     'ReportName'
   ];
@@ -78,16 +82,16 @@ Reportsection='OP Reports';
 
   ngOnInit(): void {
     debugger
-    // if (this._ActRoute.url == "/reports/opreports") 
-    //   this.Reportsection='OP Reports'
+    if (this._ActRoute.url == "/reports/opreports") 
+      this.Reportsection='OP Reports'
     // if (this._ActRoute.url == "/reports/ipreport") 
     //   this.Reportsection='IP Reports'
     // if (this._ActRoute.url == "/reports/pharmacyreport") 
     //   this.Reportsection='Pharm Reports'
     // if (this._ActRoute.url == "/reports/ipbillingreport") 
     //   this.Reportsection='IPBilling Reports'
-    // if (this._ActRoute.url == "/reports/opbillingreport") 
-    //   this.Reportsection='OP Billing'
+    if (this._ActRoute.url == "/reports/opbillingreport") 
+      this.Reportsection='OP Billing'
     this.bindReportData();
   }
 
@@ -162,7 +166,54 @@ var data={
       this.FlagUserSelected = false;
 
     } 
+
+    //op Billing
+    if (this.ReportName == 'OP Daily Collection') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }else if (this.ReportName == 'OP Bill Receipt') {
+      this.FlagBillNoSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'Bill Summary Report') {
+      this.FlagUserSelected = false;
+    //  this.FlagPaymentSelected = false;
+    this.FlagBillNoSelected = false;
+
+    } 
+    else if (this.ReportName == 'Credit Reports') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+    } 
      
+    else if (this.ReportName == 'Refund of Bill Reports') {
+      this.FlagUserSelected = false;
+      this.FlagPaymentIdSelected=false
+      this.FlagRefundIdSelected = false;
+
+    } 
+    else if (this.ReportName == 'OP DAILY COLLECTION') {
+      this.FlagUserSelected = true;
+      this.FlagDoctorSelected = true;
+      this.FlagBillNoSelected=false;
+    }
+    else if (this.ReportName == 'OP Daily Collection Summary Reports') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
+    }
+     else if (this.ReportName == 'OP DAILY COLLECTION USERWISE') {
+      this.FlagBillNoSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    
   }
 
 
@@ -194,6 +245,32 @@ var data={
       this.viewgetDocwisenewoldpatientReportPdf();
     }
    
+
+    //op billing 
+    if (this.ReportName == 'OP Daily Collection') {
+      this.viewOpDailyCollectionPdf();
+    } 
+    else if (this.ReportName == 'OP Daily Collection Summary Reports') {
+      this.viewOpDailyCollectionSummaryPdf();
+      
+    }
+    else if (this.ReportName == 'OP Bill Receipt') {
+      this.viewgetOPBillReportPdf();
+      
+    }
+     else if (this.ReportName == 'OP Daily COLLECTION UserWise') {
+      this.viewOpDailyCollectionUserwisePdf();
+    } 
+    else if (this.ReportName == 'Bill Summary Report') {
+      this.viewgetOPBillSummaryReportPdf();
+    }
+     else if (this.ReportName == 'Credit Reports') {
+      this.viewgetCreditReportPdf();
+    } 
+    else if (this.ReportName == 'Refund of Bill Reports') {
+    
+      this.viewgetOPRefundofBillPdf();
+    }
   }
 
 
@@ -456,6 +533,238 @@ viewgetDocwisenewoldpatientReportPdf() {
 
 }
 
+
+//opbilling
+viewOpDailyCollectionPdf() {
+  let AddUserId = 0;
+  let DoctorId =0
+  this.sIsLoading = 'loading-data';
+  if (this._OPReportsService.userForm.get('UserId').value)
+    AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
+  
+  if (this._OPReportsService.userForm.get('DoctorId').value)
+    DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID
+
+  setTimeout(() => {
+    
+    this.AdList = true;
+    
+    this._OPReportsService.getOpDailyCollection(
+      this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      AddUserId,DoctorId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '1000px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "OP Daily Collection Viewer"
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        this.AdList = false;
+        this.sIsLoading = '';
+      });
+    });
+
+  }, 100);
+}
+
+
+viewOpDailyCollectionSummaryPdf() {
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+    
+    this.AdList = true;
+    
+    this._OPReportsService.getOpDailyCollectionsummary(
+      this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+     
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "95vw",
+          height: '1000px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "OP Daily Collection Summary Viewer"
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        this.AdList = false;
+        this.sIsLoading = '';
+      });
+    });
+
+  }, 100);
+}
+
+
+viewgetOPBillReportPdf() {
+  let  BillNo=this._OPReportsService.userForm.get('BillNo').value ||0;
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      // this.SpinLoading =true;
+     this.AdList=true;
+    this._OPReportsService.getOpBillReceipt(
+   BillNo
+    ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "OP BILL Viewer"
+          }
+        });
+        matDialog.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.sIsLoading = '';
+        });
+    });
+   
+    },100);
+  }
+
+  
+  viewOpDailyCollectionUserwisePdf() {
+    this.sIsLoading = 'loading-data';
+    let AddUserId = 0;
+    let DoctorId =0
+
+    if (this._OPReportsService.userForm.get('UserId').value)
+      AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
+    
+    if (this._OPReportsService.userForm.get('DoctorId').value)
+      DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID
+
+    setTimeout(() => {
+      
+      this.AdList = true;
+      
+      this._OPReportsService.getOpDailyCollection(
+        this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        AddUserId,DoctorId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '1000px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "OP Daily Collection User Wise Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
+
+    }, 100);
+  }
+  viewgetOPBillSummaryReportPdf() {
+
+    let AddUserId = 0;
+    if (this._OPReportsService.userForm.get('UserId').value)
+      AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
+
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this.AdList = true;
+     
+      this._OPReportsService.getOPBillSummary(
+        this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        AddUserId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "OP Bill Summary Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
+
+    }, 100);
+  }
+ 
+  viewgetCreditReportPdf() {
+    this.sIsLoading = 'loading-data';
+  
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this.AdList = true;
+     
+      this._OPReportsService.getOPcreditlist(
+        this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+       
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "OP Credit List  Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
+
+    }, 100);
+  }
+  viewgetOPRefundofBillPdf() {
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+    
+    this._OPReportsService.getOpRefundofbillview(
+      this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+      this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Op Refund Of Bill Receipt Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+         
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          
+          this.sIsLoading = '';
+        });
+    });
+   
+    },100);
+  }
   userChk(option) {
     this.UserId = option.UserID || 0;
     this.UserName = option.UserName;

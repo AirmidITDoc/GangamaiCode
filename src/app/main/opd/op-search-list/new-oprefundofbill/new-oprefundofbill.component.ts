@@ -331,17 +331,17 @@ vBillBalanceAmt=0;
  
   RefundAmt: any;
   getCellCalculation(element, RefundAmt) {
-    
+    debugger
     
     console.log(element)
     this.serviceId = element.ServiceId;
     this.ServiceAmount = element.TotalAmt;
-   
-if (RefundAmt < element.NetAmount && RefundAmt < this.RefundBalAmount) {
+    // && !(parseFloat(RefundAmt)  this.RefundBalAmount
+if (!(parseFloat(RefundAmt) > element.NetAmount)) {
   // if (RefundAmt >  this.vBillBalanceAmt) {
 
   this.TotalRefundAmount = RefundAmt;
-  element.BalanceAmount = this.RefAmt1 - RefundAmt
+  element.BalanceAmount = element.NetAmount - RefundAmt
   element.PrevRefAmount = element.RefundAmount;
   // this.BalanceAmount = element.BalanceAmount;
   // this.RefundBalAmount = element.BalanceAmount;
@@ -541,9 +541,9 @@ onSave() {
 
       });
     }
-    else {
-      Swal.fire("Refund Amount is More than RefundBalance")
-    }
+    // else {
+    //   Swal.fire("Refund Amount is More than RefundBalance")
+    // }
 
     this.dataSource.data = [];
     this.dataSource1.data = [];

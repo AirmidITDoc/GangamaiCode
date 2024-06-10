@@ -63,7 +63,6 @@ export class OpBillingreportService {
   public getOPcreditlist(FromDate,ToDate){
     return this._httpClient.get("OPReport/view-OpPatientCreditList?FromDate="+FromDate+"&ToDate="+ToDate);
   }
-
   
   
  

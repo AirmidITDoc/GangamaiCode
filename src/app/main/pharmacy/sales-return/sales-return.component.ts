@@ -820,9 +820,10 @@ export class SalesReturnComponent implements OnInit {
   }
 
   getSalesRetPrint(el){
+    debugger
     var D_data = {
-      "SalesID":10666,// el,
-      "OP_IP_Type": 1//this.OP_IP_Type,
+      "SalesID": el,
+      "OP_IP_Type":this.OP_IP_Type,
     }
     let printContents;
     this.subscriptionArr.push(

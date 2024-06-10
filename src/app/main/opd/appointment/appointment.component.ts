@@ -238,6 +238,7 @@ export class AppointmentComponent implements OnInit {
   vOPDNo: any = 0;
   vTariffId = 0;
 
+
   VisitFlagDisp: boolean = false;
   DoctorId: any;
   AdList: boolean = false;
@@ -1444,6 +1445,9 @@ export class AppointmentComponent implements OnInit {
 
     this._opappointmentService.getRegistrationList(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
+      
+      
+      console.log(data)
       if (this.PatientListfilteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {
@@ -1584,6 +1588,12 @@ export class AppointmentComponent implements OnInit {
     this.RegId = obj.RegId;
     this.RegNo = obj.RegNo;
     this.vPhoneAppId = obj.PhoneAppId;
+    this.vReligionId=obj.ReligionId;
+    this.vAreaId=obj.AreaId
+    this.vMaritalStatusId=obj.MaritalStatusId;
+
+    
+
     this.setDropdownObjs();
 
     this.VisitFlagDisp = true;

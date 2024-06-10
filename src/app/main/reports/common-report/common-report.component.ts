@@ -397,12 +397,14 @@ viewgetConcessionReportPdf() {
 
 
 viewgetDailyCollectionReportPdf() {
+  let AddedById=0
+  let DoctorId=0
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
   this._OPReportsService.getCommonDailycollectionView(
     this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",AddedById,DoctorId
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {

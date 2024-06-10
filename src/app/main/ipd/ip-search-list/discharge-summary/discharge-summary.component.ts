@@ -353,8 +353,6 @@ export class DischargeSummaryComponent implements OnInit {
           "DischargeSummaryTime":  this.dateTimeObj.time,
           "DoctorAssistantName": this.DischargesumForm.get("DoctorAssistantName").value || "",
 
-          
-       
         }
       }
       console.log(m_data);

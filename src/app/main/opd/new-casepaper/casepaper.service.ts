@@ -59,4 +59,11 @@ export class CasepaperService {
   public getRegistrationList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList", employee)
   }
+
+  public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
+  }
+  public getPatientVisitedListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
 }
