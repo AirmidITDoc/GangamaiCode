@@ -46,16 +46,6 @@
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Receipt No</mat-label>
-                                <input name="ReceiptNo" formControlName="ReceiptNo" matInput>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Bill No</mat-label>
-                                <input name="PBillNo" formControlName="PBillNo" matInput>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Reg No</mat-label>
                                 <input name="RegNo" formControlName="RegNo" matInput>
                             </mat-form-field>
@@ -69,6 +59,17 @@
                                 <mat-label>Last Name</mat-label>
                                 <input name="LastName" formControlName="LastName" matInput>
                             </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Receipt No</mat-label>
+                                <input name="ReceiptNo" formControlName="ReceiptNo" matInput>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Bill No</mat-label>
+                                <input name="PBillNo" formControlName="PBillNo" matInput>
+                            </mat-form-field>
+
+                           
 
                             <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
                                 <button mat-raised-button (click)="onShow($event)" class="searchButton" matTooltip="search">
@@ -80,12 +81,6 @@
                                   Clear
                                 </button>
                               </div>
-
-
-                              <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
-                                Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
-                            </span> -->
-
                         </div>
                     </form>
                 </div>
@@ -103,8 +98,7 @@
                             class="backgroundBlur">
                             <div class="spinner-border text-danger"></div>
                         </div>
-                     <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                        style="overflow: auto;">
+                     <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
 
                         <ng-container matColumnDef="RegNo">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -113,10 +107,11 @@
                                 {{contact.RegNo}}
                             </mat-cell>
                         </ng-container>
+
                         <ng-container matColumnDef="PatientName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-220">
                                 Patient Name</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220">
                                 {{contact.PatientName}}
                             </mat-cell>
                         </ng-container>
@@ -261,9 +256,9 @@
                             </mat-footer-cell>
                         </ng-container>
 
-                        <mat-header-row class="accent min-width-3000" class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                        <mat-header-row class="accent min-width-2600" *matHeaderRowDef="displayedColumns; sticky: true">
                         </mat-header-row >
-                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"  class="contact min-width-3000"
+                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"  class="min-width-2600"
                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                         <mat-footer-row *matFooterRowDef="['loading']"
                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -272,7 +267,7 @@
                             [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                     </mat-table>
                         <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35" [length]="resultsLength"
-                            showFirstLastButtons (page)="getBrowseOPDBillsList()">
+                            showFirstLastButtons (page)="getBrowseOpdPaymentReceiptList()">
                         </mat-paginator>
                     </div>
                 </div>
