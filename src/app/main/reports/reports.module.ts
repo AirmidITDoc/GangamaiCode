@@ -9,9 +9,13 @@ import { CommonReportComponent } from './common-report/common-report.component';
 const appRoutes: Routes = [
     {
         path: "opbillingreport",
+        // loadChildren: () =>
+        //     import("./opbilling-report/opbillingreport.module").then(
+        //         (m) => m.OpbillingreportModule
+        //     ),
         loadChildren: () =>
-            import("./opbilling-report/opbillingreport.module").then(
-                (m) => m.OpbillingreportModule
+            import("./op-reports/opreports.module").then(
+                (m) => m.OPReportsModule
             ),
     },
     {

@@ -120,10 +120,15 @@
                                         </mat-select>
                                     </mat-form-field>
  -->
-
+                                    <button mat-raised-button class="searchButton" matTooltip="Print"
+                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
+                                        (click)="getPrint()">
+                                        Show
+                                    </button>
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="start none">
                                     <div *ngIf="FlagUserSelected" style="margin-left: 20px;">
-                                        <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%"
-                                            fxFlex.sm="80%">
+                                        <mat-form-field appearance="outline">
                                             <mat-label>User</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select User"
                                                 matInput formControlName="UserId" [matAutocomplete]="autoUser">
@@ -174,12 +179,8 @@
 
                                         </mat-form-field>
                                     </div>
-                                    
-                                    <button mat-raised-button class="searchButton" matTooltip="Print"
-                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
-                                        (click)="getPrint()">
-                                        Show
-                                    </button>
+
+
 
                                     <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>

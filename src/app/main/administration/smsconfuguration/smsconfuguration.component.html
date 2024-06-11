@@ -1,0 +1,157 @@
+ <div id="content" class="simple page-layout inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
+    <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 40px;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                SMS Sent List
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+            <button mat-raised-button (click)="NewSMS()" fxLayoutAlign="center center" class="py-8">
+               <mat-icon>add</mat-icon> <span>New</span>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
+                margin-left:12px; background-color: white;height:100%;">
+            <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
+                <span class="search-title">Search Facility</span>
+        
+            </div>
+        
+            <div class="nav material2">
+        
+                <form [formGroup]="_SMSConfigService.MySearchForm" style="padding: 6px 6px 5px 5px;"
+                    fusePerfectScrollbar>
+                    <div fxLayout="column" fxLayoutAlign="start none">
+        
+                        <mat-form-field appearance="outline" style="margin-left: 2%;">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker1">
+                                <input matStartDate formControlName="startdate" placeholder="Start date">
+                                <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getSMSSentList()">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker1></mat-date-range-picker>
+                        </mat-form-field>
+        
+                        <div style="margin-top: 10px;">
+                            <button mat-raised-button class="clearbutton" matTooltip="close">
+                                <mat-icon class="cleariconbutton">close</mat-icon>
+                            </button>&nbsp;
+                            <button mat-raised-button class="searchButton" (click)="getSMSSentList()" matTooltip="search">
+                                <mat-icon class="searchiconbutton">search</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fuse-sidebar>
+
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px; ">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                                <div>
+                                    <div matColumnDef="loading"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                        class="backgroundBlur" style="height: 300px;">
+                                        <div class="spinner-border text-danger"></div>
+
+                                    </div>
+                                    <mat-table class="table4" matSort [dataSource]="dsSMSSentList"
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                        <ng-container matColumnDef="OutGoingCode">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-sm>
+                                                OutGoing Code
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.OutGoingCode}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="MobileNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                Mobile No </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.MobileNo}}
+                                            </mat-cell>
+                                        </ng-container> 
+
+                                        <ng-container matColumnDef="SMSString">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                SMS String</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.SMSString}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="IsSent">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                IsSent</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.IsSent }}
+                                            </mat-cell>
+                                        </ng-container>  
+
+                                        <ng-container matColumnDef="Date">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                              Date </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                {{contact.BDate | date:'dd/MM/yyyy'}}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="loading">
+                                            <mat-header-cell *matFooterCellDef colspan="6"
+                                                style="display: none;">
+                                            </mat-header-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                no data found...
+                                            </mat-footer-cell>
+                                        </ng-container>
+
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedColumns; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                            class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                            (click)="getBillDetList(contact)"></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                        </mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dsSMSSentList!=null && dsSMSSentList.data.length==0)}">
+                                        </mat-footer-row>
+
+                                    </mat-table>
+
+                                    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
+                                        showFirstLastButtons>
+                                    </mat-paginator>
+                                </div> 
+                            </div>
+                        </div> 
+                    </div>
+                </div> 
+            </div>
+        </div> 
+    </div>
+ </div>

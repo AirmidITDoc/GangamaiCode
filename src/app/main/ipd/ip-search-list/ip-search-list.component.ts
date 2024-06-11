@@ -311,12 +311,12 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (m == "Discharge Summary") {
       console.log(contact);
-      if(!contact.IsDischarged){
-        this.toastr.warning('Please Check Patient Is Not Discharged', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
+      // if(!contact.IsDischarged){
+      //   this.toastr.warning('Please Check Patient Is Not Discharged', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   });
+      //   return;
+      // }
       var m_data1 = {
         RegNo: contact.RegNo,
         RegId: contact.RegID,

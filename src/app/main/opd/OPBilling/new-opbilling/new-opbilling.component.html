@@ -11,7 +11,7 @@
                     </button>
 
                     <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}">
-                        OPD BILLING d
+                        OPD BILLING 
                     </span>
 
                     <!-- <span  style="margin-left:400px;" hidden><app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>   -->
@@ -137,9 +137,9 @@
                                     <form [formGroup]="registeredForm" style="display: flex;" #f="ngForm" #aForm
                                         class="mat-form-field-auto">
 
-                                        <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <div fxLayout="row">
 
-                                            <mat-form-field appearance="outline" style="width:400px;" #myInput>
+                                            <mat-form-field appearance="outline" style="width:500px;" #myInput>
                                                 <input type="text" name="SrvcName" formControlName="SrvcName" #itemid
                                                     placeholder="Service Name" matInput [matAutocomplete]="auto"
                                                     (keydown)="onEnterservice($event)"

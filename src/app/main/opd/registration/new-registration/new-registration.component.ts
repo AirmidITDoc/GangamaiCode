@@ -152,7 +152,7 @@ export class NewRegistrationComponent implements OnInit {
         this.AdmissionID=this.registerObj.AdmissionID;
         this.isDisabled = true
         this.Submitflag=this.data.Submitflag;
-        // this.registerObj.RegID
+        // this.registerObj.ReligionId=this.registerObj.ReligionId1;
 
         if(this.registerObj.AgeYear)
           this.registerObj.Age=this.registerObj.AgeYear.trim();
@@ -493,7 +493,7 @@ export class NewRegistrationComponent implements OnInit {
   }
 
   setDropdownObjs() {
-
+debugger
     const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
     this.personalFormGroup.get('PrefixID').setValue(toSelect);
 
