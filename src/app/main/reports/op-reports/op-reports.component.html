@@ -9,7 +9,7 @@
 
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="font-size: 20px;width: 70%; font-weight: 400;">
-                 REPORTS
+                REPORTS
             </span>
 
             <div fxLayout="column" fxLayout.gt-xs="row">
@@ -120,7 +120,13 @@
                                         </mat-select>
                                     </mat-form-field>
  -->
-
+                                    <button mat-raised-button class="searchButton" matTooltip="Print"
+                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
+                                        (click)="getPrint()">
+                                        Show
+                                    </button>
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="start none">
                                     <div *ngIf="FlagUserSelected" style="margin-left: 20px;">
                                         <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%"
                                             fxFlex.sm="80%">
@@ -167,11 +173,7 @@
                                         </mat-form-field>
                                     </div>
 
-                                    <button mat-raised-button class="searchButton" matTooltip="Print"
-                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
-                                        (click)="getPrint()">
-                                        Show
-                                    </button>
+
 
                                     <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>

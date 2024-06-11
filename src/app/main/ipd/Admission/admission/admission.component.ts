@@ -33,6 +33,7 @@ import { NewRegistrationComponent } from 'app/main/opd/registration/new-registra
 import { RegistrationService } from 'app/main/opd/registration/registration.service';
 import { EditRefraneDoctorComponent } from 'app/main/opd/appointment/edit-refrane-doctor/edit-refrane-doctor.component';
 import { EditConsultantDoctorComponent } from 'app/main/opd/appointment/edit-consultant-doctor/edit-consultant-doctor.component';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-admission',
@@ -195,7 +196,9 @@ export class AdmissionComponent implements OnInit {
   VOPtoIPcount = 0;
   vIsDischarg = 0;
   VAdmissioncount = 0;
-
+  PatientName:any;
+  RegId:any;
+  RegNo:any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -348,9 +351,6 @@ export class AdmissionComponent implements OnInit {
     this.getWardList();
     this.getCompanyList();
     this.getSubTPACompList();
-
-
-
 
 
     if (this._ActRoute.url == '/ipd/admission') {
@@ -742,13 +742,25 @@ export class AdmissionComponent implements OnInit {
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
   }
 
-  getSelectedObj(obj) {
 
+  getSelectedObj(obj) {
+debugger
     this.registerObj = new AdmissionPersonlModel({});
+  
     obj.AgeDay = obj.AgeDay.trim();
     obj.AgeMonth = obj.AgeMonth.trim();
     obj.AgeYear = obj.AgeYear.trim();
     this.registerObj = obj;
+    console.log(this.registerObj );
+// this.onChangeDateofBirth(this.registerObj.DateofBirth)
+
+    this.PatientName = obj.PatientName;
+    this.RegId = obj.RegId;
+    this.RegNo = obj.RegNo;
+    this.vReligionId=obj.ReligionId;
+    this.vAreaId=obj.AreaId
+    this.vMaritalStatusId=obj.MaritalStatusId;
+
     this.onChangeDateofBirth(this.registerObj.DateofBirth)
     this.setDropdownObjs();
 

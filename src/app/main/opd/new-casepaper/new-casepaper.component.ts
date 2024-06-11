@@ -16,6 +16,9 @@ import { debounceTime, exhaustMap, filter, map, scan, startWith, switchMap, take
 import { fuseAnimations } from '@fuse/animations';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PrescriptionList } from 'app/main/nursingstation/prescription/prescription.component';
+import { PrecriptionItemList } from 'app/main/nursingstation/prescription/new-prescription/new-prescription.component';
+import { ToastrService } from 'ngx-toastr';
 
 export interface PrescriptionTable {
   drugName: ILookup;
@@ -54,10 +57,10 @@ export class NewCasepaperComponent implements OnInit {
   printTemplate: any;
   reportPrintObjList: CasepaperVisitDetails[] = [];
   subscriptionArr: Subscription[] = [];
-  regNo: any = 1234;
-  patientName: any = 'xyz xyz';
-  doctorName: any = 'abc abc';
-  age: any = 18;
+  regNo: any;
+  patientName: any;
+  doctorName: any;
+  age: any;
   visitDate = '12/12/2021';
   ChiefComplaint: string;
   historyOptions = [
@@ -91,6 +94,9 @@ export class NewCasepaperComponent implements OnInit {
   filteredDrugs1$: Observable<ILookup[]>;
 
   filteredOptions: any;
+
+
+  filteredOptionsItem: any;
 
   // public filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any>(1);
 
@@ -140,6 +146,25 @@ export class NewCasepaperComponent implements OnInit {
   allExamination: ExaminationClass[] = [];
   allComplaint: ComplaintClass[] = [];
 
+
+  CompanyName: any;
+  Tarrifname: any;
+  Doctorname: any;
+  Paymentdata: any;
+  vOPIPId: any = 0;
+  vOPDNo: any = 0;
+  vTariffId: any = 0;
+  vClassId: any = 0;
+  CompanyId: any = 0;
+  AgeYear: any = 0;
+  RegNo: any =0;
+  
+  vMobileNo:any;
+  City:any;
+  RegId:any;
+
+  ItemForm: FormGroup;
+
   @ViewChild('historyInput') historyInput: ElementRef<HTMLInputElement>;
   @ViewChild('diagnosisInput') diagnosisInput: ElementRef<HTMLInputElement>;
 
@@ -160,9 +185,21 @@ export class NewCasepaperComponent implements OnInit {
   isRegIdSelected: boolean = false;
   registerObj  = new AdmissionPersonlModel ({});
   PatientName:any;
-  RegNo:any;
-  MobileNo:any;
+   MobileNo:any;
 
+   add: boolean = false;
+   ItemName: any;
+   BalanceQty: any;
+   vQty: any;
+   ItemId: any;
+   PresItemlist: any = [];
+   vRemark: any;
+   dsPresList = new MatTableDataSource<PrecriptionItemList>();
+   dsPrePresList = new MatTableDataSource<PrescriptionList>();
+
+
+
+   
   @Input() dataArray: any;
   dataSource = new MatTableDataSource<any>();
   displayedPrescriptionColumns: string[] = [
@@ -209,26 +246,22 @@ export class NewCasepaperComponent implements OnInit {
   isRowAdded: boolean = false;
 
   constructor(
-    // private dialogRef: MatDialogRef<NewCasepaperComponent>,
+    private _FormBuilder: FormBuilder,
     private formBuilder: FormBuilder,
-    // private _matDialog: MatDialog,
     private _opSearchListService: CasepaperService,
     private accountService: AuthenticationService,
-    // public _opSearchListService: AdmissionService,
     private _snackBar: MatSnackBar,
+    
     private advanceDataStored: AdvanceDataStored,
     private cdr: ChangeDetectorRef,
-
-    // @Inject(MAT_DIALOG_DATA) public data: any
+    public toastr: ToastrService,
   ) {
-    // dialogRef.disableClose = true;
-    // this.patientInfo = data;
     console.log(this.patientInfo);
   }
 
   ngOnInit(): void {
 
-
+    this.ItemForm = this.createItemForm();  
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
@@ -315,6 +348,21 @@ export class NewCasepaperComponent implements OnInit {
     this.getPrescriptionListFill(70765);
   }
 
+
+  createItemForm() {
+    return this._FormBuilder.group({
+      ItemId: '',
+      ItemName: '',
+      Qty: ['', [
+        Validators.required,
+        Validators.pattern("^[0-9]*$")]],
+      Remark: ['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+      ]]
+
+    })
+  }
+
   createSearchForm() {
     return this.formBuilder.group({
       regRadio: ['registration'],
@@ -322,45 +370,51 @@ export class NewCasepaperComponent implements OnInit {
       RegId: ['']
     });
   }
-
-  getSearchList() {
-    debugger
-
+  PatientListfilteredOptions: any;
+   // Patient Search;
+   getSearchList() {
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
-    if (this.searchFormGroup.get('RegId').value.length >= 1) {
-      this._opSearchListService.getRegistrationList(m_data).subscribe(resData => {
-        // debugger;
-
-        this.filteredOptions = resData;
-        console.log(resData);
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-
-      });
-    }
+    this._opSearchListService.getPatientVisitedListSearch(m_data).subscribe(data => {
+      this.PatientListfilteredOptions = data;
+      if (this.PatientListfilteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
 
   }
 
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
-  }
-  getSelectedObj(obj) {
-    // console.log('obj==', obj);
-    this.registerObj = new AdmissionPersonlModel({});
-   this.PatientName= obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-   this.RegNo=obj.RegNo;
-   this.MobileNo=obj.MobileNo;
 
+
+  getOptionText1(option) {
+    if (!option)
+      return '';
+    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName;
+
+  }
+
+  getSelectedObj1(obj) {
+    this.dataSource.data = [];
     this.registerObj = obj;
-    
-  }
+    this.PatientName = obj.FirstName + " " + obj.LastName;
+    this.RegId = obj.RegId;
+    this.City = obj.City;
+    // this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    this.CompanyName = obj.CompanyName;
+    this.Tarrifname = obj.TariffName;
+    this.Doctorname = obj.DoctorName;
+    this.RegId = obj.RegId;
+    this.vOPIPId = obj.VisitId;
+    this.vOPDNo = obj.OPDNo;
+    this.vTariffId = obj.TariffId;
+    this.vClassId = obj.ClassId;
+    this.AgeYear = obj.AgeYear;
+    this.vMobileNo = obj.MobileNo;
 
+  }
 
 
   drugChange(event, index) {
@@ -1166,8 +1220,8 @@ export class NewCasepaperComponent implements OnInit {
   getPrint() {
     // debugger;
     var D_data = {
-      "VisitId": 82973,//this.selectedAdvanceObj.AdmissionID || 0,
-      "PatientType": 0,//this.selectedAdvanceObj.PatientType || 0
+      "VisitId": this.selectedAdvanceObj.VisitId || 0,
+      "PatientType": this.selectedAdvanceObj.PatientType || 0
 
     }
     // el.bgColor = 'red';
@@ -1359,7 +1413,7 @@ export class NewCasepaperComponent implements OnInit {
 
     var D_data = {
       // "VisitId": 70765,//this.selectedAdvanceObj.VisitId,
-      "VisitId": 10003,//this.selectedAdvanceObj.VisitId,
+      "VisitId": this.selectedAdvanceObj.VisitId,
     }
     //  this.advanceDataStored.storage = new SearchInforObj(D_data);
     // const dialogRef = this._matDialog.open(ViewCasepaperComponent,
@@ -1405,6 +1459,139 @@ export class NewCasepaperComponent implements OnInit {
     // );
   }
 
+  //new code
+  getSearchItemList() {  
+    // if(this.myForm.get('StoreId').value.StoreId > 0){ 
+      var m_data = {
+        "ItemName": `${this.ItemForm.get('ItemId').value}%`,
+        "StoreId":this.accountService.currentUserValue.user.storeId || 0
+      }
+      console.log(m_data);
+      // if (this.ItemForm.get('ItemId').value.length >= 2) {
+      this._opSearchListService.getItemlist(m_data).subscribe(data => {
+        this.filteredOptionsItem = data;
+        console.log(data);
+        this.filteredOptionsItem = data;
+        if (this.filteredOptionsItem.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    // }else{
+    //   this.toastr.warning('Please enter a Store', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   }); 
+    // }
+    
+  } 
+  getOptionItemText(option) {
+    this.ItemId = option.ItemID;
+    if (!option) return '';
+    return option.ItemName;
+  } 
+  getSelectedObjItem(obj) {
+    console.log(obj)
+      this.ItemName = obj.ItemName;
+      this.ItemId = obj.ItemId;
+      this.BalanceQty = obj.BalanceQty;
+    // if (this.dsPresList.data.length > 0) {
+    //   this.dsPresList.data.forEach((element) => {
+    //     if (obj.ItemID == element.ItemID) {
+    //       Swal.fire('Selected Item already added in the list ');
+    //       this.ItemForm.reset();
+    //     }
+    //   });
+    //   this.ItemName = obj.ItemName;
+    //   this.ItemId = obj.ItemID;
+    //   this.BalanceQty = obj.BalanceQty;
+    // }
+    // else {
+    //   this.ItemName = obj.ItemName;
+    //   this.ItemId = obj.ItemID;
+    //   this.BalanceQty = obj.BalanceQty;
+    // }
+  }
+
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  } 
+
+  @ViewChild('itemid') itemid: ElementRef;
+  @ViewChild('qty') qty: ElementRef;
+  @ViewChild('remark') remark: ElementRef; 
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement; 
+
+  onEnterItem(event){
+    if (event.which === 13) {
+      this.qty.nativeElement.focus(); 
+    }
+  }
+
+  onEnterqty(event){
+    if (event.which === 13) {
+      this.remark.nativeElement.focus(); 
+    }
+  }
+  
+  public onEnterremark(event): void { 
+    if (event.which === 13) {
+      this.add = true; 
+    } 
+  }
+ 
+  
+  onAdd() {
+    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+      this.toastr.warning('Please enter a qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const iscekDuplicate = this.dsPresList.data.some(item => item.ItemID == this.ItemId)
+    if(!iscekDuplicate){
+    this.dsPresList.data = [];
+    this.PresItemlist.push(
+      {
+        ItemID: this.ItemId,
+        ItemName: this.ItemName,
+        Qty: this.vQty,
+        Remark: this.vRemark || '' 
+      });
+    this.dsPresList.data = this.PresItemlist
+    console.log(this.dsPresList.data); 
+    }else{
+      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    this.ItemForm.get('ItemId').reset('');
+    this.ItemForm.get('Qty').reset('');
+    this.ItemForm.get('Remark').reset('');
+    this.itemid.nativeElement.focus();
+    this.add = false;
+    console.log(this.dsPrePresList.data)
+  }
+
+  deleteTableRow(event, element) {
+    // if (this.key == "Delete") {
+    let index = this.PresItemlist.indexOf(element);
+    if (index >= 0) {
+      this.PresItemlist.splice(index, 1);
+      this.dsPresList.data = [];
+      this.dsPresList.data = this.PresItemlist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    }); 
+  }
   copy() { }
 }
 

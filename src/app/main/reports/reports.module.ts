@@ -5,11 +5,14 @@ import { IpReportComponent } from './ip-report/ip-report.component';
 import { IpBillingReportComponent } from './ip-billing-report/ip-billing-report.component';
 import { OPBillingReportComponent } from './opbilling-report/opbilling-report.component';
 import { CommonReportComponent } from './common-report/common-report.component';
-
+ // loadChildren: () =>
+        //     import("./opbilling-report/opbillingreport.module").then(
+        //         (m) => m.OpbillingreportModule
+        //     ),
 const appRoutes: Routes = [
     {
         path: "opbillingreport",
-        loadChildren: () =>
+       loadChildren: () =>
             import("./opbilling-report/opbillingreport.module").then(
                 (m) => m.OpbillingreportModule
             ),
@@ -43,14 +46,7 @@ const appRoutes: Routes = [
                 (m) => m.OPReportsModule
             ),
     },
-    // {
-    //     path: "opreports",
-    //     loadChildren: () =>
-    //         import("./op-reports/opreports.module").then(
-    //             (m) => m.OPReportsModule
-    //         ),
-    // },
-    {
+   {
         path: "commanreport",
         loadChildren: () =>
             import("./common-report/common-report.module").then(

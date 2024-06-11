@@ -43,21 +43,18 @@ export class BrowsePaymentListComponent implements OnInit {
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator:MatPaginator;
   displayedColumns = [
-  
     'RegNo',
     'PatientName',
-    // 'Remark',
-    'PaymentDate',
-    'PBillNo',
-    'ReceiptNo',
-    'PayDate',
-    'UserName',
     'TotalAmt',
     'BalanceAmt',
+    'PaymentDate',
     'CashPayAmount',
     'ChequePayAmount',
     'CardPayAmount',
     'AdvanceUsedAmount',
+    'UserName',
+    'PBillNo',
+    'ReceiptNo',
     'PaidAmount',
     'NEFTPayAmount',
      'PayTMAmount',

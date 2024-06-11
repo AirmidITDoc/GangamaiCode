@@ -1,4 +1,5 @@
 <div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight fusePerfectScrollbar>
+
     <div class="top-header">
         <div class="top-header-info">
             <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
@@ -12,111 +13,97 @@
         </div>
     </div>
 
+    <!-- / HEADER -->
     <!-- SELECTED BAR -->
     <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
     <!-- / SELECTED BAR -->
-
     <!-- CONTENT -->
     <div class="content">
-
         <!-- SIDEBAR -->
-        <fuse-sidebar class="sidebar" name="app-main" position="left" lockedOpen="gt-sm" class="search-sidebar">
-
-            <!-- SIDEBAR CONTENT -->
-            <div class="content">
-                <div class="sidebar-content">
-
-                    <!-- <div class="card"> -->
-
-                        <!-- SIDEBAR HEADER -->
-                        <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
-                            <!-- USER -->
-                            <!-- <img [src]="user.avatar" class="avatar mr-16" [alt]="user.name" /> -->
-                            <span class="h5">Search Facility</span>
-                            <!-- / USER -->
-                        </div>
-                        <!-- / SIDEBAR HEADER -->
-
-                        <!-- SIDEBAR CONTENT -->
-                        <!-- <div class="content py-16 pl-10 p-12" fusePerfectScrollbar> -->
-                            <div class="nav material2">
-                                <form [formGroup]="_BrowseOpdPaymentReceiptService.myFilterform">
-                                    <div fxLayout="column" fxLayoutAlign="start none">
-
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>Enter a date range</mat-label>
-                                            <mat-date-range-input [rangePicker]="picker">
-                                                <input matStartDate formControlName="start" placeholder="Start date">
-                                                <input matEndDate formControlName="end" placeholder="End date"
-                                                    (dateChange)="onShow($event)">
-                                            </mat-date-range-input>
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-date-range-picker #picker></mat-date-range-picker>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Receipt No</mat-label>
-                                            <input name="ReceiptNo" formControlName="ReceiptNo" matInput>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Bill No</mat-label>
-                                            <input name="PBillNo" formControlName="PBillNo" matInput>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Reg No</mat-label>
-                                            <input name="RegNo" formControlName="RegNo" matInput>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>First Name</mat-label>
-                                            <input name="FirstName" formControlName="FirstName" matInput>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Last Name</mat-label>
-                                            <input name="LastName" formControlName="LastName" matInput>
-                                        </mat-form-field>
-
-                                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-                                            <button mat-raised-button (click)="onShow($event)" class="searchButton" matTooltip="search">
-                                              <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
-                                              Search
-                                            </button>
-                                            <button mat-raised-button class="clearbutton" (click)="onClear()" matTooltip="close">
-                                              <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
-                                              Clear
-                                            </button>
-                                          </div>
-
-
-                                          <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
-                                            Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
-                                        </span> -->
-    
-                                    </div>
-                                </form>
-                            </div>
-                        <!-- </div> -->
-                    <!-- </div> -->
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+            <!-- SIDEBAR HEADER -->
+            <div class="sidebar-content">
+                <div class="accent sidebar-header" fxLayout="row" fxLayoutAlign="start center">
+                    <span class="search-title">Search Facility</span>
+                    <!-- / USER -->
                 </div>
-                <!-- / SIDEBAR CONTENT -->
-            </div>
-            <!-- / SIDEBAR CONTENT -->
+                <!-- / SIDEBAR HEADER -->
+                <!-- SIDEBAR CONTENT -->
+                <div class="nav material2">
 
+                    <form [formGroup]="_BrowseOpdPaymentReceiptService.myFilterform">
+                        <div fxLayout="column" fxLayoutAlign="start none">
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate formControlName="start" placeholder="Start date">
+                                    <input matEndDate formControlName="end" placeholder="End date"
+                                        (dateChange)="onShow($event)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Receipt No</mat-label>
+                                <input name="ReceiptNo" formControlName="ReceiptNo" matInput>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Bill No</mat-label>
+                                <input name="PBillNo" formControlName="PBillNo" matInput>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Reg No</mat-label>
+                                <input name="RegNo" formControlName="RegNo" matInput>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>First Name</mat-label>
+                                <input name="FirstName" formControlName="FirstName" matInput>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Last Name</mat-label>
+                                <input name="LastName" formControlName="LastName" matInput>
+                            </mat-form-field>
+
+                            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+                                <button mat-raised-button (click)="onShow($event)" class="searchButton" matTooltip="search">
+                                  <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
+                                  Search
+                                </button>
+                                <button mat-raised-button class="clearbutton" (click)="onClear()" matTooltip="close">
+                                  <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
+                                  Clear
+                                </button>
+                              </div>
+
+
+                              <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
+                                Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
+                            </span> -->
+
+                        </div>
+                    </form>
+                </div>
+            </div>
         </fuse-sidebar>
         <!-- / SIDEBAR -->
-
         <!-- CENTER -->
+        <!-- CENTER -->
+
         <div class="center p-12">
-            <div class="content-card" >
-                <div >
-                    <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                        class="backgroundBlur">
-                        <div class="spinner-border text-danger"></div>
-                    </div>
-                    <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
+            <div class="content-card">
+                <div class="table-wrapper">
+                    <div class="table-spinner">
+                        <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                            class="backgroundBlur">
+                            <div class="spinner-border text-danger"></div>
+                        </div>
+                     <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                         style="overflow: auto;">
 
                         <ng-container matColumnDef="RegNo">
@@ -211,13 +198,13 @@
                             </mat-cell>
                         </ng-container>
 
-                        <ng-container matColumnDef="PayDate">
+                        <!-- <ng-container matColumnDef="PayDate">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>PayDate
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                 {{contact.PayDate}}
                             </mat-cell>
-                        </ng-container>
+                        </ng-container> -->
 
                         <ng-container matColumnDef="PaidAmount">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>PaidAmount
@@ -274,9 +261,9 @@
                             </mat-footer-cell>
                         </ng-container>
 
-                        <mat-header-row class="accent min-width-2000" class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                        <mat-header-row class="accent min-width-3000" class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                         </mat-header-row >
-                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact" class=" min-width-2000"
+                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"  class="contact min-width-3000"
                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                         <mat-footer-row *matFooterRowDef="['loading']"
                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -284,16 +271,16 @@
                         <mat-footer-row *matFooterRowDef="['noData']"
                             [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                     </mat-table>
-
-                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
-                        showFirstLastButtons></mat-paginator>
+                        <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35" [length]="resultsLength"
+                            showFirstLastButtons (page)="getBrowseOPDBillsList()">
+                        </mat-paginator>
+                    </div>
                 </div>
             </div>
-            <!-- / CONTENT -->
-
         </div>
-        <!-- / CENTER -->
-
+        <!-- CENTER -->
     </div>
+    <!-- / USER -->
+    <!-- / CENTER -->
     <!-- / CONTENT-->
 </div>

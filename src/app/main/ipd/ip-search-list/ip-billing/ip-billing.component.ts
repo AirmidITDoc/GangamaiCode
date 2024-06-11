@@ -1311,15 +1311,16 @@ export class IPBillingComponent implements OnInit {
   }
 
   onSaveDraft() {
+    debugger
     if (this.dataSource.data.length > 0 && (this.vNetBillAmount > 0)) {
       this.chargeslist = this.dataSource;
       this.isLoading = 'submit';
 
       let InsertDraftBillOb = {};
-      InsertDraftBillOb['DRBNo'] = 0;
+      InsertDraftBillOb['drbNo'] = 0;
       InsertDraftBillOb['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
         InsertDraftBillOb['TotalAmt'] = this.vBillTotalAmt || 0;
-      InsertDraftBillOb['ConcessionAmt'] = this.Ipbillform.get('concessionAmt').value || 0;
+      InsertDraftBillOb['ConcessionAmt'] =  this.vDiscountAmount || this.Ipbillform.get('concessionAmt').value || 0;
       InsertDraftBillOb['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
       InsertDraftBillOb['PaidAmt'] = 0;
       InsertDraftBillOb['BalanceAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
@@ -1327,13 +1328,13 @@ export class IPBillingComponent implements OnInit {
       InsertDraftBillOb['OPD_IPD_Type'] = 1;
       InsertDraftBillOb['AddedBy'] = this.accountService.currentUserValue.user.id,
         InsertDraftBillOb['TotalAdvanceAmount'] = 0;
-      InsertDraftBillOb['BillTime'] = this.dateTimeObj.date;
+      InsertDraftBillOb['BillTime'] = this.dateTimeObj.time;
       InsertDraftBillOb['ConcessionReasonId'] = this.ConcessionId,
         InsertDraftBillOb['IsSettled'] = 0;
       InsertDraftBillOb['IsPrinted'] = 0;
       InsertDraftBillOb['IsFree'] = 0;
       InsertDraftBillOb['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
-        InsertDraftBillOb['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
+        InsertDraftBillOb['TariffId'] = 3,//this.selectedAdvanceObj.TariffId || 0,
         InsertDraftBillOb['UnitId'] = this.selectedAdvanceObj.UnitId || 0,
         InsertDraftBillOb['InterimOrFinal'] = 0;
       InsertDraftBillOb['CompanyRefNo'] = 0;
@@ -1344,12 +1345,12 @@ export class IPBillingComponent implements OnInit {
       let DraftBilldetsarr = [];
       this.dataSource.data.forEach((element) => {
         let DraftBillDetailsInsertObj = {};
-        DraftBillDetailsInsertObj['DRNo '] = 0;
+        DraftBillDetailsInsertObj['DRNo'] = 0;
         DraftBillDetailsInsertObj['ChargesId'] = element.ChargesId;
         DraftBilldetsarr.push(DraftBillDetailsInsertObj);
       });
 
-      const InsertDraftBillObj = new Bill(InsertDraftBillOb);
+      const InsertDraftBillObj = new DraftBill(InsertDraftBillOb);
       console.log('============================== Save IP Billing ===========');
       let submitData = {
         "ipIntremdraftbillInsert": InsertDraftBillObj,
@@ -1361,7 +1362,7 @@ export class IPBillingComponent implements OnInit {
           Swal.fire('Draft Bill successfully!', 'IP Draft bill generated successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              this.viewgetDraftBillReportPdf(response);
+              this.viewgetDraftBillReportPdf(this.selectedAdvanceObj.AdmissionID);
 
             }
           });
@@ -1877,4 +1878,63 @@ export class PatientBilldetail {
       this.RemarkofBill = PatientBilldetail.RemarkofBill;
     }
   }
+}
+
+
+export class DraftBill {
+ 
+  OPD_IPD_ID: number;
+  TotalAmt: any;
+  ConcessionAmt: any;
+  NetPayableAmt: any;
+  PaidAmt: any;
+  BalanceAmt: any;
+  BillDate: any;
+  OPD_IPD_Type: any;
+  AddedBy: any;
+  TotalAdvanceAmount: any;
+  BillTime: any;
+  ConcessionReasonId: any;
+  IsSettled: boolean;
+  IsPrinted: boolean;
+  IsFree: boolean;
+  CompanyId: any;
+  TariffId: any;
+  UnitId: any;
+  InterimOrFinal: any;
+  CompanyRefNo: any;
+  ConcessionAuthorizationName: any;
+  TaxPer: any;
+  TaxAmount: any;
+  drbNo: any;
+  
+  constructor(DraftBill) {
+    
+    this.OPD_IPD_ID = DraftBill.OPD_IPD_ID || 0;
+    this.TotalAmt = DraftBill.TotalAmt || 0;
+    this.ConcessionAmt = DraftBill.ConcessionAmt || 0;
+    this.NetPayableAmt = DraftBill.NetPayableAmt || 0;
+    this.PaidAmt = DraftBill.PaidAmt || '0';
+    this.BalanceAmt = DraftBill.BalanceAmt || '0';
+    this.BillDate = DraftBill.BillDate || '';
+    this.OPD_IPD_Type = DraftBill.OPD_IPD_Type || '0';
+    this.AddedBy = DraftBill.AddedBy || '0';
+    this.TotalAdvanceAmount = DraftBill.TotalAdvanceAmount || '0';
+    this.BillTime = DraftBill.BillTime || '';
+    this.ConcessionReasonId = DraftBill.ConcessionReasonId || '0';
+    this.IsSettled = DraftBill.IsSettled || 0;
+    this.IsPrinted = DraftBill.IsPrinted || 0;
+    this.IsFree = DraftBill.IsFree || 0;
+    this.CompanyId = DraftBill.CompanyId || '0';
+    this.TariffId = DraftBill.TariffId || '0';
+    this.UnitId = DraftBill.UnitId || '0';
+    this.InterimOrFinal = DraftBill.InterimOrFinal || '0';
+    this.CompanyRefNo = DraftBill.CompanyRefNo || '0';
+    this.ConcessionAuthorizationName = DraftBill.ConcessionAuthorizationName || '0';
+    this.TaxPer = DraftBill.TaxPer || '0';
+    this.TaxAmount = DraftBill.TaxAmount || '0';
+    this.drbNo = DraftBill.drbNo || 0;
+  
+  }
+
 }

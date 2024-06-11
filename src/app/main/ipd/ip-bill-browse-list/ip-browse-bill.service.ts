@@ -25,9 +25,14 @@ filterForm_IpdBrowse(): FormGroup {
   });
 }
 
-public getIpBillBrowseList(employee) {
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPDBill", employee)
+// public getIpBillBrowseList(employee) {
+//   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowseIPDBill", employee)
+// }  
+
+public getIpBillBrowseList(param) {
+  return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseIPDBill", param) 
 }  
+
 public getTemplate(query) {
   return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
 }  

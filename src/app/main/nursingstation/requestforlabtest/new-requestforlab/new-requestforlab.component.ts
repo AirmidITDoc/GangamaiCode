@@ -367,6 +367,7 @@ export class NewRequestforlabComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-success',
         });
         this.savebtn = true;
+        this.viewgetLabrequestReportPdf(response);
         this.onClose();
       } else {
         this.toastr.error('Record Not Saved!', 'Error !', {
