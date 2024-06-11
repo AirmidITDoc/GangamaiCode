@@ -15,10 +15,10 @@
                     </span>
 
                     <!-- <span  style="margin-left:400px;" hidden><app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>   -->
-                    <span class="material-icons" style="cursor: pointer; margin-left: 1100px; color: #fff;"
+                    <!-- <span class="material-icons" style="cursor: pointer; margin-left: 1100px; color: #fff;"
                         (click)="onClose()">
                         close
-                    </span>
+                    </span> -->
                 </div>
             </div>
 
@@ -271,7 +271,7 @@
                                             <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Disc Amt</mat-label>
                                                 <input matInput [(ngModel)]="b_ChargeDisAmount" name="b_ChargeDisAmount"
-                                                    #discamt formControlName="ChargeDiscAmount" type="number"
+                                                    #discamt formControlName="ChargeDiscAmount" type="number" 
                                                     (keyup)="calculatechargesDiscamt()"
                                                     (keydown)="onEnterdiscAmount($event)" id="DiscAmt">
                                                 <mat-error
@@ -468,6 +468,9 @@
                                                         <span
                                                             class="net-amt-value text-primary">{{getNetAmtSum(dataSource.data)}}
                                                         </span>
+                                                        <span
+                                                        class="net-amt-value text-primary">{{getDiscAmtSum(dataSource.data)}}
+                                                    </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -503,9 +506,9 @@
                                         </mat-form-field> -->
 
                                       
-                                        <mat-form-field appearance="outline">
+                                        <mat-form-field appearance="outline" *ngIf="conflag">
                                             <mat-label>Disc %</mat-label>
-                                            <input matInput placeholder="Percentage" formControlName="concesDiscPer" [disabled]="conflag"
+                                            <input matInput placeholder="Percentage" formControlName="concesDiscPer" 
                                                 [ngModel]="b_concessionDiscPer" autocomplete="off" #disper  id="Percentage"
                                                 (keyup)="calcDiscPersonTotal()" onlyNumber maxlength="3"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"

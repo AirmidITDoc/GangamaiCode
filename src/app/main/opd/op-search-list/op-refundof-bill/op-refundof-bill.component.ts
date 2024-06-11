@@ -337,7 +337,7 @@ export class OPRefundofBillComponent implements OnInit {
     InsertRefundObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
     InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
     InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
-    InsertRefundObj['TransactionId'] = 2;
+    InsertRefundObj['TransactionId'] = 1;
     InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.user.id,
     InsertRefundObj['IsCancelled'] = 0;
     InsertRefundObj['IsCancelledBy'] = 0;

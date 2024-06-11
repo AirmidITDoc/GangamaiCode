@@ -1659,7 +1659,7 @@ debugger
 
       }
     }
-
+this.getAdmittedPatientList_1()
     this.onClose();
   }
 

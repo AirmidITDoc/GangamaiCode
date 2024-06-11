@@ -80,7 +80,7 @@ public getDischargedetailwithbillsummaryView(FromDate,ToDate,){
 }
 public getOptoIPconwithserviceavailedView(FromDate,ToDate){
   
-  return this._httpClient.get("InPatient/view-Admitted_PatientCasepaper?FromDate=" + FromDate+"&ToDate="+ToDate);
+  return this._httpClient.get("IPReport/view-OPToIPConvertedListWithServiceAvailed?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 public getIpcurrAdmitwardwisedischargeView(AdmissionId){
   
@@ -110,7 +110,7 @@ public getDischargetypewisecompanycountView(AdmissionId){
 
 public getDischargetypewiseView(DoctorId,FromDate,ToDate,DischargeTypeId){
   
-  return this._httpClient.get("IPReport/view-IPDischargeTypeReport?DoctorId=" + DoctorId+"&FromDate="+FromDate+"&ToDate="+ToDate+"&DischargeTypeId="+DischargeTypeId);
+  return this._httpClient.get("IPReport/view-IPDischargeTypeReport?DoctorId="+DoctorId+"&FromDate="+FromDate+"&ToDate="+ToDate+"&DischargeTypeId="+DischargeTypeId);
 }
 
 public getCurrRefDoctAdmitlistView(DoctorId){

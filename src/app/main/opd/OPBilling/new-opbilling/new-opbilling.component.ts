@@ -22,6 +22,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { MatSelect } from '@angular/material/select';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-new-opbilling',
@@ -420,9 +421,17 @@ export class NewOPBillingComponent implements OnInit {
 
   getDiscAmtSum(element) {
     let netAmt;
+    this.b_concessionamt =0;
     netAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0);
     this.b_concessionamt = netAmt;
     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
+    
+    if(this.b_concessionamt > 0){
+      this.conflag=false
+    
+    }
+    if(this.b_concessionamt ==0)
+      this.conflag=true
     return netAmt
   }
 
@@ -1011,7 +1020,6 @@ export class NewOPBillingComponent implements OnInit {
   // Charges Wise Disc Percentage 
   calculatePersc() {
 
-
     this.v_ChargeDiscPer = this.registeredForm.get('ChargeDiscPer').value;
 
     if ((this.v_ChargeDiscPer < 101) && (this.v_ChargeDiscPer > 0)) {
@@ -1020,13 +1028,21 @@ export class NewOPBillingComponent implements OnInit {
       this.b_netAmount = this.b_totalAmount - this.b_ChargeDisAmount;
       this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
       this.conflag = true;
-      this.Consessionres = true
+      this.Consessionres = true;
+      this.BillingForm.get('ConcessionId').reset();
+      this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
+      this.BillingForm.get('ConcessionId').enable();
+
     }
     else if ((this.v_ChargeDiscPer > 100) || (this.v_ChargeDiscPer < 0)) {
       Swal.fire("Enter Discount % Less than 100 & Greater > 0")
       // this.v_ChargeDiscPer=0;
       this.b_ChargeDisAmount = 0;
       this.b_netAmount = this.b_totalAmount;
+      // this.Consessionres = false;
+      // this.BillingForm.get('ConcessionId').reset();
+      // this.BillingForm.get('ConcessionId').clearValidators();
+      // this.BillingForm.get('ConcessionId').updateValueAndValidity();
     }
 
     if (this.b_netAmount < 0) {
@@ -1037,6 +1053,10 @@ export class NewOPBillingComponent implements OnInit {
       this.b_netAmount = this.b_totalAmount;
       this.b_ChargeDisAmount = 0;
       this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
+      // this.Consessionres = false;
+      // this.BillingForm.get('ConcessionId').reset();
+      // this.BillingForm.get('ConcessionId').clearValidators();
+      // this.BillingForm.get('ConcessionId').updateValueAndValidity();
     }
   }
 

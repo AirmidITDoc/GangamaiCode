@@ -108,17 +108,15 @@
                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                     </mat-form-field>
 
-                                    <!-- <mat-form-field appearance="outline" style="margin-left: 10px;width:60%;">
-                                        <mat-label>User Name</mat-label>
-                                        <mat-select formControlName="UserId" name="UserId" required (selectionChange)="userChk()">
-                                            <mat-option></mat-option>
-                                            <mat-option *ngFor="let m of UserList" [value]="m">
-                                                {{m.UserName}} 
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
- -->
+                                    
+                                    <button mat-raised-button class="searchButton" matTooltip="Print"
+                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
+                                        (click)="getPrint()">
+                                        Show
+                                    </button>
+                                </div>
 
+                                    <div fxLayout="row" fxLayoutAlign="start none">
                                     <div  *ngIf="FlagUserSelected" style="margin-left: 20px;">                                 
                                           <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%">
                                         <mat-label>User</mat-label>
@@ -138,7 +136,7 @@
                                         </mat-autocomplete>
                                       </mat-form-field>
                                     </div>
-                                    <div  *ngIf="FlagDoctorSelected" style="margin-left: 20px;">     
+                                    <div  *ngIf="FlagDoctorSelected" style="margin-left: 20px;" fxFlex="40%">     
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
@@ -162,7 +160,7 @@
                                         </mat-form-field>
                                     </div>
 
-                                    <div *ngIf="FlagAdmissionIdSelected" style="margin-left: 20px;">
+                                    <div *ngIf="FlagAdmissionIdSelected" style="margin-left: 20px;" fxFlex="40%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Admission Id</mat-label>
                                             <input name="AdmissionID" formControlName="AdmissionID" placeholder="Admission Id"
@@ -173,7 +171,7 @@
 
                                     </div>
 
-                                    <div *ngIf="FlagAdvanceIdSelected" style="margin-left: 20px;">
+                                    <div *ngIf="FlagAdvanceIdSelected" style="margin-left: 20px;" fxFlex="40%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>AdvanceDetail Id</mat-label>
                                             <input name="AdvanceDetailID" formControlName="AdvanceDetailID" placeholder="AdvanceDetail Id"
@@ -183,7 +181,7 @@
 
                                     </div>
                                     
-                                    <div *ngIf="FlagRequestIdSelected" style="margin-left: 20px;">
+                                    <div *ngIf="FlagRequestIdSelected" style="margin-left: 20px;" fxFlex="40%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Request Id</mat-label>
                                             <input name="RequestId" formControlName="RequestId" placeholder="Request Id"
@@ -192,7 +190,7 @@
                                         </mat-form-field>
 
                                     </div>
-                                    <div *ngIf="FlagPaymentIdSelected" style="margin-left: 20px;">
+                                    <div *ngIf="FlagPaymentIdSelected" style="margin-left: 20px;" fxFlex="40%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Payment Id</mat-label>
                                             <input name="PaymentId" formControlName="PaymentId" placeholder="Payment Id"
@@ -203,7 +201,7 @@
                                     </div>
                                     
 
-                                    <div *ngIf="FlagMaterialConsumptionIdSelected" style="margin-left: 20px;">
+                                    <div *ngIf="FlagMaterialConsumptionIdSelected" style="margin-left: 20px;" fxFlex="40%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>MaterialConsumption Id</mat-label>
                                             <input name="MaterialConsumptionId" formControlName="MaterialConsumptionId" placeholder="MaterialConsumption Id"
@@ -213,7 +211,7 @@
 
                                     </div>
 
-                                    <div *ngIf="FlagWardIdSelected" style="margin-left: 20px;">
+                                    <div *ngIf="FlagWardIdSelected" style="margin-left: 20px;" fxFlex="40%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Ward Id</mat-label>
                                             <input name="WardId" formControlName="WardId" placeholder="Ward Id"
@@ -224,7 +222,7 @@
 
                                     </div>
 
-                                    <div *ngIf="FlagCompanyIdSelected" style="margin-left: 20px;">
+                                    <div *ngIf="FlagCompanyIdSelected" style="margin-left: 20px;" fxFlex="40%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Company Id</mat-label>
                                             <input name="CompanyId" formControlName="CompanyId" placeholder="Company Id"
@@ -235,11 +233,6 @@
 
                                     </div>
                                     
-                                    <button mat-raised-button class="searchButton" matTooltip="Print"
-                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
-                                        (click)="getPrint()">
-                                        Show
-                                    </button>
 
                                     <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>

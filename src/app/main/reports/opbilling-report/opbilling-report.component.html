@@ -35,9 +35,9 @@
                         <!-- style="width: 100%;" -->
                         <div fxFlex.gt-sm="100%" style="width: 99%;">
                             <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                            class="backgroundBlur" style="height: 100%;">
-                            <div class="spinner-border text-danger"></div>
-                             </div>
+                                class="backgroundBlur" style="height: 100%;">
+                                <div class="spinner-border text-danger"></div>
+                            </div>
 
                             <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
                                 <ng-container matColumnDef="ReportName">
@@ -90,9 +90,11 @@
                                 <div>
                                     <span
                                         style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(80, 6, 30);padding: 10px;">Selected
-                                        Report : {{ReportName}}</span> 
+                                        Report : {{ReportName}}</span>
 
-                                        <span  style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(80, 6, 30);float: right;">Current User : {{UserId}} | {{UserName}}</span>
+                                    <span
+                                        style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(80, 6, 30);float: right;">Current
+                                        User : {{UserId}} | {{UserName}}</span>
                                 </div>
                                 <br />
                                 <div fxLayout="row" fxLayoutAlign="start none">
@@ -108,42 +110,40 @@
                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                     </mat-form-field>
 
-                                    <!-- <mat-form-field appearance="outline" style="margin-left: 10px;width:60%;">
-                                        <mat-label>User Name</mat-label>
-                                        <mat-select formControlName="UserId" name="UserId" required (selectionChange)="userChk()">
-                                            <mat-option></mat-option>
-                                            <mat-option *ngFor="let m of UserList" [value]="m">
-                                                {{m.UserName}} 
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
- -->
+                                    <button mat-raised-button class="searchButton" matTooltip="Print"
+                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
+                                        (click)="getPrint()">
+                                        Show
+                                    </button>
+                                </div>
 
-                                    <div  *ngIf="FlagUserSelected" style="margin-left: 20px;">                                 
-                                          <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%">
-                                        <mat-label>User</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select User" matInput
-                                           formControlName="UserId" [matAutocomplete]="autoUser">
-                                        <span matSuffix style="display: flex;">
-                                          <mat-icon class="mat-icon-close"
-                                            (click)="_OPReportsService.userForm.get('UserId').setValue(''); isUserSelected = false;">close</mat-icon>
-                                          <mat-icon class="mat-icon-close"
-                                            (click)="_OPReportsService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="getOptionTextUser">
-                                          <mat-option *ngFor="let option of filteredOptionsUser | async" [value]="option"
-                                            (onSelectionChange)="userChk(option)">
-                                            {{option.UserName}}
-                                          </mat-option>
-                                        </mat-autocomplete>
-                                      </mat-form-field>
+                                <div fxLayout="row" fxLayoutAlign="start none">
+                                    <div *ngIf="FlagUserSelected" style="margin-left: 20px;">
+                                        <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%"
+                                            fxFlex.sm="80%">
+                                            <mat-label>User</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select User"
+                                                matInput formControlName="UserId" [matAutocomplete]="autoUser">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('UserId').setValue(''); isUserSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('UserId').setValue(''); isUserSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoUser="matAutocomplete"
+                                                [displayWith]="getOptionTextUser">
+                                                <mat-option *ngFor="let option of filteredOptionsUser | async"
+                                                    [value]="option" (onSelectionChange)="userChk(option)">
+                                                    {{option.UserName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
                                     </div>
-                                    <div  *ngIf="FlagDoctorSelected" style="margin-left: 20px;">     
+                                    <div *ngIf="FlagDoctorSelected" style="margin-left: 20px;">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Doctor" matInput
-                                                formControlName="DoctorId"
+                                                placeholder="Select Doctor" matInput formControlName="DoctorId"
                                                 [matAutocomplete]="autosearchDoctorReport2" required>
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
@@ -153,8 +153,7 @@
                                             </span>
                                             <mat-autocomplete #autosearchDoctorReport2="matAutocomplete"
                                                 [displayWith]="getOptionTextsearchDoctor">
-                                                <mat-option
-                                                    *ngFor="let option of filteredOptionsDoctorMode | async"
+                                                <mat-option *ngFor="let option of filteredOptionsDoctorMode | async"
                                                     [value]="option">
                                                     {{option.DoctorName}}
                                                 </mat-option>
@@ -165,8 +164,7 @@
                                     <div *ngIf="FlagBillNoSelected" style="margin-left: 20px;">
                                         <mat-form-field appearance="outline">
                                             <mat-label>BillNo</mat-label>
-                                            <input name="BillNo" formControlName="BillNo" placeholder="BillNo"
-                                                matInput>
+                                            <input name="BillNo" formControlName="BillNo" placeholder="BillNo" matInput>
                                         </mat-form-field>
 
                                     </div>
@@ -179,11 +177,7 @@
                                         </mat-form-field>
 
                                     </div>
-                                    <button mat-raised-button class="searchButton" matTooltip="Print"
-                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
-                                        (click)="getPrint()">
-                                        Show
-                                    </button>
+
 
                                     <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
@@ -218,10 +212,3 @@
     </div>
     <!-- / CENTER -->
 </div>
-
-
-
-
-
-
-

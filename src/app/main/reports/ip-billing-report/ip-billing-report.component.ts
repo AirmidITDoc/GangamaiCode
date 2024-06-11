@@ -124,7 +124,7 @@ var data={
       this.FlagBillSelected=true;
       this.FlagRefundIdSelected=false;
     }else if (this.ReportName == 'OP IP Bill Summary') {
-      this.FlagUserSelected = true;
+      this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagAdvanceDetailIDSelected=false;
       this.FlagBillSelected=false;
@@ -154,11 +154,7 @@ var data={
       this.FlagDoctorSelected = false;
       this.FlagRefundIdSelected=true;
     } 
-    if (this.ReportName == 'IP DAILY COLLECTION') {
-      this.FlagUserSelected = true;
-      this.FlagDoctorSelected = false;
-
-    } else if (this.ReportName == 'IP Daily Collection Report') {
+    else if (this.ReportName == 'IP Daily Collection Report') {
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
 
@@ -166,31 +162,13 @@ var data={
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
 
+    } else if (this.ReportName == 'IP Bill Generation Payment Due report') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
     } 
 
-
-
-    // else if (this.ReportName == 'Sales Return Summary Report') {
-    //   this.FlagDoctorSelected = false;
-    //   this.FlagUserSelected = false;
-
-    // } else if (this.ReportName == 'Sales Return PatientWise Report') {
-    //   this.FlagDoctorSelected = false;
-    //   this.FlagUserSelected = false;
-    // } else if (this.ReportName == 'Sales Credit Report') {
-    //   this.FlagDoctorSelected = false;
-    //   this.FlagUserSelected = false;
-
-    // } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
-    //   this.FlagUserSelected = true;
-    //   this.FlagDoctorSelected = false;
-
-    // }
-    // else if (this.ReportName == 'Sales Cash Book Report') {
-    //   this.FlagDoctorSelected = true;
-    //   this.FlagUserSelected = false;
-
-    // }
+    
   }
 
 
@@ -281,7 +259,11 @@ var data={
     } else if (this.ReportName == 'IP Bill Generation Payment Due Report') {
       this.viewgetBillgenepaymentdueReportPdf();
     }
-   
+    else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
+      this.viewgetIpdischargebillgenependingPdf();
+    }else if (this.ReportName == 'IP Bill Generation Payment Due report') {
+      this.ViewgetIpbillgenepaymentdueview();
+    }
   }
 
 
@@ -616,6 +598,63 @@ viewgetBillgenepaymentdueReportPdf(){
    },100);
 }
  
+
+viewgetIpdischargebillgenependingPdf(){
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+ 
+  this._IPBillingService.getIdischargebillgenependingView(
+    this.datePipe.transform(this._IPBillingService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPBillingService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Ip Discharge Bill Generated Pending  Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+}
+
+ViewgetIpbillgenepaymentdueview(){
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+ 
+  this._IPBillingService.getIpbillgenepaymentdueView(
+    this.datePipe.transform(this._IPBillingService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPBillingService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Ip Bill Generated Pament Due  Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+}
+
   userChk(option) {
     this.UserId = option.UserID || 0;
     this.UserName = option.UserName;

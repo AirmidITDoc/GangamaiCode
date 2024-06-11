@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-common-report',
@@ -18,6 +19,9 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations
 })
 export class CommonReportComponent implements OnInit {
+  filteredOptionssearchDoctor: Observable<string[]>;
+
+
 
   UserList: any = [];
   DoctorList: any = [];
@@ -79,6 +83,7 @@ export class CommonReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.bindReportData();
+    this.getDoctorList();
    
     // const toSelect = this.UserList.find(c => c.UserId == this.UserId);
     // this._OPReportsService.userForm.get('UserId').setValue(toSelect);
@@ -118,110 +123,166 @@ var data={
     else if (this.ReportName == 'Concession Report') {
       this.FlagVisitSelected=false
       this.FlagPaymentIdSelected=false
-      // this.viewgetOPPayemntPdf();
+      this.FlagDoctorIDSelected=true;
       this.FlagRefundIdSelected = false;
      
     } 
     
     else if (this.ReportName == 'Daily Collection Report') {
       this.FlagUserSelected = true;
+      this.FlagVisitSelected=false;
       // this.FlagPaymentSelected = false;
+      this.FlagDoctorIDSelected=true;
+      this.FlagRefundIdSelected = false;
       
 
     } else if (this.ReportName == 'Daily Collection Summary Report') {
       this.FlagUserSelected = true;
-      // this.FlagPaymentSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     } 
     else if (this.ReportName == 'Group wise Collection Report') {
-      this.FlaggroupIdSelected = false;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
 
     } else if (this.ReportName == 'Group wise Summary Report') {
-      this.FlaggroupIdSelected = false;
       this.FlagUserSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
       
     } else if (this.ReportName == 'Group Wise Revenue Summary Report') {
-      // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
       
     } else if (this.ReportName == 'Credit Report') {
-      this.FlagUserSelected = true;
-      // this.FlagPaymentSelected = false;
-      
+      this.FlagUserSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }
     else if (this.ReportName == 'Patient Ledger') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }
     else if (this.ReportName == 'Service Wise Report without Bill') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
       
     }else if (this.ReportName == 'Service Wise Report with Bill') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }
     else if (this.ReportName == 'Service Wise Report') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }else if (this.ReportName == 'Bill Summary With TCS Report') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }
     else if (this.ReportName == 'Ref By Patient List') {
-      // this.FlagPaymentSelected = true;
+      this.FlagPaymentIdSelected = false;
+      this.FlagRefundIdSelected = false;
+      this.FlagServiceIdSelected = false;
+      this.FlagPaymentIdSelected = false;
       this.FlagUserSelected = false;
       
     }else if (this.ReportName == 'Cancel Charges List') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }
     else if (this.ReportName == 'Service Wise Report without Bill') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }else if (this.ReportName == 'Doctor and Department Wise Monthly Collection Report') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }
     else if (this.ReportName == 'IP Company Wise Bill Report') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }else if (this.ReportName == 'IP Company Wise Credit Report') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
       
     }
     else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }else if (this.ReportName == 'IP Bill Generation Payment Due report') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }
     else if (this.ReportName == 'Collection Summary Report') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }else if (this.ReportName == 'Bill Summary Report for 2 Lakh Amount') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }else if (this.ReportName == 'Bill Summary Report OPD & IPD') {
-      // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
-      
+      this.FlagPaymentIdSelected = false;
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
+    }else if(this.ReportName=='Doctor (Visit/Admitted) WISE GROUP REPORT'){
+      this.FlagDoctorIDSelected=true;
+      this.FlagUserSelected = false;
+      this.FlagPaymentIdSelected = false;
+      this.FlagRefundIdSelected = false;
+      this.FlagVisitSelected=false;
     }
   }
 
@@ -299,6 +360,8 @@ var data={
     }
     else if (this.ReportName == 'Bill Summary Report OPD & IPD') {
       this.getBillsummaryforopdipdview();
+    }else if (this.ReportName == 'Doctor (Visit/Admitted) WISE GROUP REPORT') {
+      this.getDoctorvisitAdminwisegroupview();
     }
 
 
@@ -308,7 +371,7 @@ var data={
 
   viewgetDocwisepatientcountReportPdf() {
    debugger
-   let DosctorID=this._OPReportsService.userForm.get("DoctorID").value || 0
+   let DosctorID=this._OPReportsService.userForm.get("DoctorID").value.DoctorID || 0
      setTimeout(() => {
        this.AdList = true;
        this._OPReportsService.getdocwisepatinetcountReport(
@@ -367,12 +430,14 @@ var data={
 
 
 viewgetConcessionReportPdf() {
+  let OP_IP_Type=1
+  let DoctorID =this._OPReportsService.userForm.get("DoctorID").value.DoctorID || 0
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
   this._OPReportsService.getConcessionreportView(
     this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",OP_IP_Type,DoctorID
     ).subscribe(res => {
     const matDialog = this._matDialog.open(PdfviewerComponent,
       {
@@ -397,8 +462,8 @@ viewgetConcessionReportPdf() {
 
 
 viewgetDailyCollectionReportPdf() {
-  let AddedById=0
-  let DoctorId=0
+  let AddedById=this._OPReportsService.userForm.get('UserId').value.UserId || 0
+  let DoctorId=this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
@@ -602,32 +667,33 @@ viewgetPatientLedgerReportPdf(){
 }
 
 ViewgeServicewisereportwithoutbillview(){
-  // this.sIsLoading = 'loading-data';
-  // setTimeout(() => {
-  // //   this.SpinLoading =true;
-  // let VisitId
-  // this._OPReportsService.getservicewisereportwithoutbillView(
-  //   this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-  //   this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-  //   ).subscribe(res => {
-  //   const matDialog = this._matDialog.open(PdfviewerComponent,
-  //     {
-  //       maxWidth: "85vw",
-  //       height: '750px',
-  //       width: '100%',
-  //       data: {
-  //         base64: res["base64"] as string,
-  //         title: "Service Wise Report Without Bill Viewer"
-  //       }
-  //     });
+  let ServiceId=this._OPReportsService.userForm.get('ServiceId').value | 0;
+  this.sIsLoading = 'loading-data';
+  setTimeout(() => {
+  //   this.SpinLoading =true;
+  let VisitId
+  this._OPReportsService.getservicewisereportwithoutbillView(ServiceId,
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Service Wise Report Without Bill Viewer"
+        }
+      });
 
-  //     matDialog.afterClosed().subscribe(result => {
-  //       // this.AdList=false;
-  //       this.sIsLoading = ' ';
-  //     });
-  // });
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
  
-  // },100); 
+  },100); 
 }
 getServicewisereportwithbillview(){
   this.sIsLoading = 'loading-data';
@@ -988,6 +1054,34 @@ getBillsummaryforopdipdview(){
   },100);
 }
 
+getDoctorvisitAdminwisegroupview(){
+  this.sIsLoading = 'loading-data';
+  let DoctorId=this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
+  setTimeout(() => {
+ 
+  this._OPReportsService.getdoctorvisitadmingroupwiseView(
+    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",DoctorId
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Doctor (Visist/Admitted )Group Wise Report Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+}
 
   userChk(option) {
     this.UserId = option.UserID || 0;
@@ -999,8 +1093,28 @@ getBillsummaryforopdipdview(){
   }
 
   onClose() { }
+  getOptionTextsearchDoctor(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
 
+getDoctorList() {
+    this._OPReportsService.getDoctorMaster().subscribe(data => {
+      this.searchDoctorList = data;
+      this.optionsSearchDoc = this.searchDoctorList.slice();
+      this.filteredOptionssearchDoctor = this._OPReportsService.userForm.get('DoctorID').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterSearchdoc(value) : this.searchDoctorList.slice()),
+      );
+    });
+  }
 
+  private _filterSearchdoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsSearchDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
 
 }
 

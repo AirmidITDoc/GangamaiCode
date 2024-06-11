@@ -117,17 +117,12 @@ var data={
     if (this.ReportName == 'Registration Report') {
       this.FlagVisitSelected=false
       this.FlagPaymentIdSelected=false
-      
-    
-    } 
+      } 
     if (this.ReportName == 'AppoitnmentList Report') {
       this.FlagVisitSelected=false
       this.FlagPaymentIdSelected=false
-      
-    } 
-   
-    
-    else if (this.ReportName == 'DoctorWise Visit Report') {
+      } 
+   else if (this.ReportName == 'DoctorWise Visit Report') {
       this.FlagUserSelected = false;
       // this.FlagPaymentSelected = false;
 
@@ -152,7 +147,7 @@ var data={
     }else if (this.ReportName == 'DoctorWise Visit Count Summary') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
-    }else if (this.ReportName == 'Appoinment List with servise Availed') {
+    }else if (this.ReportName == 'Appointment List with Service Availed') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
 
@@ -235,7 +230,7 @@ var data={
       this.viewgetDeptwisecountsummaryReportPdf();
     } else if (this.ReportName == 'DoctorWise Visit Count Summary') {
       this.viewgetDocwisevisitcountsummaryReportPdf();
-    } else if (this.ReportName == 'Appoinment List with servise Availed') {
+    } else if (this.ReportName == 'Appointment List with Service Availed') {
       this.viewgetApplistwithserviceavailedReportPdf();
     }
     else if (this.ReportName == 'Cross Consultation Report') {

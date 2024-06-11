@@ -186,7 +186,7 @@ export class IPSettlementComponent implements OnInit {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
-      this._IpSearchListService.getAdmittedpatientlist(m_data).subscribe(resData => {
+      this._IpSearchListService.getRegistrationList(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;

@@ -53,7 +53,7 @@ export class OPReportsService {
 
   public getDocwisevisitsummaryView(FromDate,ToDate){
   
-    return this._httpClient.get("OPReport/view-DoctorWiseVisitCountSummary?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view-OPDoctorWiseVisitCountSummary?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
 
@@ -69,7 +69,7 @@ export class OPReportsService {
   }
   
   public getdepartmentwisecountsummView(FromDate,ToDate){
-    return this._httpClient.get("OPReport/view-OPDeptwisecountsummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view-DepartmentWiseCountSummury?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   public getDocwisevisitCountsummaryView(FromDate,ToDate,DoctorID){
     return this._httpClient.get("CommanReport/view-DoctorWisePatientCountReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorID="+DoctorID);
@@ -77,7 +77,7 @@ export class OPReportsService {
   
   public getAppointmentlistwithserviceavailedView(FromDate,ToDate){
   
-    return this._httpClient.get("OPReport/view-AppoinmentListWithServiseAvailed?FromDate=" + FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view- OPAppoinmentListWithServiseAvailed?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
 
   
@@ -97,7 +97,7 @@ export class OPReportsService {
     return this._httpClient.get("OPReport/view-DepartmentWiseOpdCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
  public getDocwisenewoldpatientView(FromDate,ToDate){
-return this._httpClient.get("OPReport/view-DoctorWiseNewAndOldPatientReport?FromDate=" + FromDate+"&ToDate="+ToDate);
+return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromDate="+FromDate+"&ToDate="+ToDate);
  }
 
   // OPD MIS 
@@ -141,9 +141,9 @@ return this._httpClient.get("OPReport/view-DoctorWiseNewAndOldPatientReport?From
 
 
 
-  public getConcessionreportView(FromDate,ToDate){
+  public getConcessionreportView(FromDate,ToDate,OP_IP_Type,DoctorID){
   
-    return this._httpClient.get("CommanReport/view-ConcessionReport?FromDate=" + FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("CommanReport/view-ConcessionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&OP_IP_Type="+OP_IP_Type+"&DoctorID="+DoctorID);
   }
   
   public getCommonDailycollectionView(FromDate,ToDate,AddedById,DoctorId){
@@ -172,8 +172,13 @@ return this._httpClient.get("OPReport/view-DoctorWiseNewAndOldPatientReport?From
   
   public getgroupwiserevenusummaryView(FromDate,ToDate){
   
-    return this._httpClient.get("OPReport/view-DepartmentServiceGroupWiseCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("CommanReport/view-GroupwiseRevenueSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
+  public getservicewisereportwithoutbillView(ServiceId,FromDate,ToDate){
+  
+    return this._httpClient.get("CommanReport/view-ServiceWiseReportWithoutBill?ServiceId="+ServiceId+"&FromDate=" + FromDate+"&ToDate="+ToDate);
+  }
+  
   
   public getCreditreportView(FromDate,ToDate){
   
@@ -186,10 +191,7 @@ return this._httpClient.get("OPReport/view-DoctorWiseNewAndOldPatientReport?From
     return this._httpClient.get("OPReport/view-DepartmentServiceGroupWiseCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
   
-  public getservicewisereportwithoutbillView(FromDate,ToDate,ServiceId){
-  
-    return this._httpClient.get("CommanReport/view-ServicewisepatientamtReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&ServiceId"+ServiceId);
-  }
+ 
   
   public getServicewisereportwithbillView(ServiceId,FromDate,ToDate){
   
@@ -209,7 +211,11 @@ return this._httpClient.get("OPReport/view-DoctorWiseNewAndOldPatientReport?From
   
     return this._httpClient.get("CommanReport/view-RefByPatientList?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-
+  public getdoctorvisitadmingroupwiseView(FromDate,ToDate,DoctorId){
+  
+    return this._httpClient.get("CommanReport/view-DoctorVisitAdmittedWiseGroupReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
+  }
+  
  
   public getCanclechargesView(FromDate,ToDate){
   
@@ -247,8 +253,8 @@ return this._httpClient.get("OPReport/view-DoctorWiseNewAndOldPatientReport?From
   
     return this._httpClient.get("IPReport/view-OPIPBILLSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
-  public getOpDailyCollection(FromDate,ToDate,AddedById,DoctorId){
-    return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById+"&DoctorId="+DoctorId);
+  public getOpDailyCollection(FromDate,ToDate,AddedById,doctorId){
+    return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById+"&DoctorId="+doctorId);
   }
   public getOpDailyCollectionsummary(FromDate,ToDate){
     return this._httpClient.get("OPReport/view-OPCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
@@ -263,6 +269,9 @@ return this._httpClient.get("OPReport/view-DoctorWiseNewAndOldPatientReport?From
     return this._httpClient.get("OPReport/view-OpPatientCreditList?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   public getOpRefundofbillview(FromDate,ToDate){
-    return this._httpClient.get("OPReport/view-OpRefundofbillList?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view-OPDRefundOfBill?FromDate="+FromDate+"&ToDate="+ToDate);
+  }
+  public getDoctorMaster() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
   }

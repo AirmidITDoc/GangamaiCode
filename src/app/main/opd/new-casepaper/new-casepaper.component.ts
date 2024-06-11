@@ -52,6 +52,8 @@ export class ILookup {
 })
 export class NewCasepaperComponent implements OnInit {
 
+
+  isItemIdSelected:boolean=false;
   subscriptions: Subscription[] = [];
   reportPrintObj: CasepaperVisitDetails;
   printTemplate: any;

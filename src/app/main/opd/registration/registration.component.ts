@@ -26,7 +26,7 @@ export class RegistrationComponent implements OnInit {
 
   sIsLoading: string = '';
   isLoading = true;
-  
+  registerObj = new RegInsert({});
 
   hasSelectedContacts: boolean;
   
@@ -126,7 +126,9 @@ export class RegistrationComponent implements OnInit {
   
 onEdit(row){
   console.log(row);
-   
+  this.registerObj=row;
+  this.registerObj["RegId"]=row.RegId;
+  this.registerObj["RegID"]=row.RegId;
     this._registrationService.populateFormpersonal(row);
     
     const dialogRef = this._matDialog.open(NewRegistrationComponent, 
@@ -134,7 +136,7 @@ onEdit(row){
           height: '450px',
           width: '100%',
            data : {
-          registerObj : row,
+          registerObj :this.registerObj,
           Submitflag:true
         }
     });

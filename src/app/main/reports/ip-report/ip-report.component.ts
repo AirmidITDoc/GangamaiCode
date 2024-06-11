@@ -187,7 +187,7 @@ var data={
     } 
     else if (this.ReportName == 'Department Wise Count Summary') {
       
-      this.FlagAdmissionIdSelected=true
+      this.FlagAdmissionIdSelected=false
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagAdvanceIdSelected = false;
@@ -224,9 +224,9 @@ var data={
     } 
     else if (this.ReportName == 'IPD Discharge Type Wise') {
       
-      this.FlagAdmissionIdSelected=true
+      this.FlagAdmissionIdSelected=false
       this.FlagUserSelected = false;
-      this.FlagDoctorSelected = false;
+      this.FlagDoctorSelected = true;
       this.FlagAdvanceIdSelected = false;
       this.FlagRequestIdSelected = false;
       this.FlagPaymentIdSelected = false;
@@ -283,7 +283,7 @@ var data={
     }
     else if (this.ReportName == 'IPD Discharge Report with Bill Summary') {
       
-      this.FlagAdmissionIdSelected=true
+      this.FlagAdmissionIdSelected=false
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagAdvanceIdSelected = false;
@@ -410,7 +410,7 @@ var data={
   }
 
   getOptionTextsearchDoctor(option) {
-    return option && option.Doctorname ? option.Doctorname : '';
+    return option && option.DoctorName ? option.DoctorName : '';
   }
 
   getDoctorList() {
@@ -490,7 +490,11 @@ var data={
     }
     else if (this.ReportName == 'IPD Current Admitted - Ward Wise Charges') {
       this.viewgetIpdcurAdmitwardwisechargesReportPdf();
+    } else if (this.ReportName == 'IP Lab Request Report') {
+      this.viewgetLabrequestReportPdf();
     }
+
+    
   }
 
 
@@ -592,6 +596,7 @@ viewgetIPAdvanceReportPdf() {
  
   
   viewgetLabrequestReportPdf() {
+    debugger
     let RequestId=this._IPReportService.userForm.get('RequestId').value || 0;
     setTimeout(() => {
       this.SpinLoading =true;
@@ -886,14 +891,16 @@ viewgetIPAdvanceReportPdf() {
      },100);
   }
   viewgetDischargeTypewiseReportPdf(){
+    debugger
+    let DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorID || 0
+    let DischargeTypeId=0
     setTimeout(() => {
       
       this.AdList=true;
-     this._IPReportService.getDischargetypewiseView(
-      
-       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+     this._IPReportService.getDischargetypewiseView(DoctorId,
+      this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
        this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,0
+       DischargeTypeId
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -1147,6 +1154,9 @@ viewgetIPAdvanceReportPdf() {
     
      },100);
   }
+  
+
+  
 
   userChk(option) {
     this.UserId = option.UserID || 0;

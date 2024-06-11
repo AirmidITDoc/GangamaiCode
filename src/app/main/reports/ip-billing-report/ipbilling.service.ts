@@ -75,5 +75,12 @@ export class IPBillingService {
     return this._httpClient.get("CommanReport/view-IPBillGenerationPaymentDueReport?FromDate=" + FromDate + "&ToDate="+ToDate);
   }
 
+  public getIdischargebillgenependingView(FromDate,ToDate){
   
+    return this._httpClient.get("CommanReport/view-IPDischargeBillGenerationPendingReport?FromDate=" + FromDate+"&ToDate="+ToDate);
+  }
+  public getIpbillgenepaymentdueView(FromDate,ToDate){
+  
+    return this._httpClient.get("CommanReport/view-IPBillGenerationPaymentDueReport?FromDate=" + FromDate+"&ToDate="+ToDate);
+  }
 }
