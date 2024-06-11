@@ -30,7 +30,7 @@ export class BrowsePaymentListService {
   }
 
   public getBrowseOpdPaymentReceiptList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseOPDPaymentReceipt", employee)
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPPaymentList", employee)
   }  
   public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
