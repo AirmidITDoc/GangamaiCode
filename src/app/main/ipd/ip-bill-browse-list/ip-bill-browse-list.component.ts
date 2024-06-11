@@ -67,19 +67,18 @@ export class IPBillBrowseListComponent implements OnInit {
   reportPrintObjList: ReportPrintObj[] = [];
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
-  Groupname:any;
-  SpinLoading:boolean=false;
-  AdList:boolean=false;
+  Groupname: any;
+  SpinLoading: boolean = false;
+  AdList: boolean = false;
 
 
   displayedColumns = [
-
     'SelfOrCompany',
     'InterimOrFinal',
     'BalanceAmt',
     'BillDate',
     'PBillNo',
-    'RegID',
+    'RegNo',
     'PatientName',
     'TotalAmt',
     'ConcessionAmt',
@@ -87,9 +86,8 @@ export class IPBillBrowseListComponent implements OnInit {
     'CashPay',
     'CardPay',
     'ChequePay',
-    'NEFTPay',
-    'PayTMPay',
-    'AdvPay',
+    'OnlinePay',
+    'AdvUsedPay',
     'buttons',
   ];
 
@@ -149,22 +147,21 @@ export class IPBillBrowseListComponent implements OnInit {
 
   getRecord(contact, m): void {
     if (m == "Print Final Bill") {
-    if(!contact.InterimOrFinal)
-    this.viewgetBillReportPdf(contact.BillNo)
-   else
-   this.viewgetInterimBillReportPdf(contact.BillNo)
+      if (!contact.InterimOrFinal)
+        this.viewgetBillReportPdf(contact.BillNo)
+      else
+        this.viewgetInterimBillReportPdf(contact.BillNo)
     }
-  
     else if (m == "Print FinalBill Datewise") {
       this.viewgetBillReportDatewisePdf(contact);
     }
     else if (m == "Print FinalBill WardWise") {
       this.viewgetBillReportwardwisePdf(contact);
     }
-       
+
   }
 
-  SubMenu(contact) {}
+  // SubMenu(contact) { }
 
   onShow(event: MouseEvent) {
 
@@ -182,7 +179,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
 
     let PatientHeaderObj = {};
-    
+
     PatientHeaderObj['Date'] = contact.BillDate;
     PatientHeaderObj['PatientName'] = contact.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
@@ -190,14 +187,14 @@ export class IPBillBrowseListComponent implements OnInit {
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     PatientHeaderObj['BillId'] = contact.BillNo;
     PatientHeaderObj['CompanyName'] = contact.CompanyName;
-    
+
     const dialogRef = this._matDialog.open(IPSettlementComponent,
       {
         maxWidth: "95vw",
         height: '740px',
         width: '100%',
         data: {
-          
+
           registerObj: contact,
           FromName: "IP-Bill"
         }
@@ -214,15 +211,15 @@ export class IPBillBrowseListComponent implements OnInit {
       const updateIpBill = new UpdateBill(updateIpBillobj);
 
 
-      let iPsettlementAdvanceDetailUpdateobj= {};
-    // need loop here
+      let iPsettlementAdvanceDetailUpdateobj = {};
+      // need loop here
 
       iPsettlementAdvanceDetailUpdateobj['advanceDetailID'] = contact.BillNo;
       iPsettlementAdvanceDetailUpdateobj['usedAmount'] = 0;
       iPsettlementAdvanceDetailUpdateobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController
 
       const iPsettlementAdvanceDetailUpdate = new Advheaderdetail(iPsettlementAdvanceDetailUpdateobj);
-   
+
 
       let iPsettlementAdvanceHeaderUpdateobj = {};
 
@@ -276,8 +273,8 @@ export class IPBillBrowseListComponent implements OnInit {
       let Data = {
         "updateIpBill": updateIpBill,
         "ipPaymentCreditUpdat": ipPaymentInsert,
-        "iPsettlementAdvanceDetailUpdate":iPsettlementAdvanceDetailUpdate,
-        "iPsettlementAdvanceHeaderUpdate":iPsettlementAdvanceHeaderUpdate
+        "iPsettlementAdvanceDetailUpdate": iPsettlementAdvanceDetailUpdate,
+        "iPsettlementAdvanceHeaderUpdate": iPsettlementAdvanceHeaderUpdate
       };
 
       console.log(Data)
@@ -285,7 +282,7 @@ export class IPBillBrowseListComponent implements OnInit {
         if (response) {
           Swal.fire('IP Bill With Settlement!', 'Bill Payment Successfully !', 'success').then((result) => {
             if (result) {
-            
+
               this.viewgetBillReportPdf(response)
               this._matDialog.closeAll();
               this.onShow_IpdBrowse();
@@ -310,7 +307,7 @@ export class IPBillBrowseListComponent implements OnInit {
   }
 
   getViewbill(contact) {
-    
+
     let xx = {
       RegNo: contact.RegNo,
       AdmissionID: contact.VisitId,
@@ -361,7 +358,7 @@ export class IPBillBrowseListComponent implements OnInit {
   }
 
 
-
+  resultsLength = 0;
   onShow_IpdBrowse() {
     this.sIsLoading = 'loading-data';
     var D_data = {
@@ -370,19 +367,20 @@ export class IPBillBrowseListComponent implements OnInit {
       "From_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       "To_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "Reg_No": this._IpBillBrowseListService.myFilterform.get("RegNo").value || 0,
-      "PBillNo": this._IpBillBrowseListService.myFilterform.get("PBillNo").value || 0,
-      "IsInterimOrFinal": 2,//this._ipbillBrowseService.myFilterform.get("IsInterimOrFinal").value || "0",
-      "CompanyId": this._IpBillBrowseListService.myFilterform.get("CompanyId").value.CompanyId || 0,
+      "PBillNo": this._IpBillBrowseListService.myFilterform.get("PBillNo").value + '%' || "%",
+      "Start":(this.paginator?.pageIndex??0),
+      "Length":(this.paginator?.pageSize??35)
+      // "IsInterimOrFinal": 2,//this._ipbillBrowseService.myFilterform.get("IsInterimOrFinal").value || "0",
+      // "CompanyId": this._IpBillBrowseListService.myFilterform.get("CompanyId").value.CompanyId || 0,
     }
     console.log(D_data);
-    this._IpBillBrowseListService.getIpBillBrowseList(D_data).subscribe(data => {
-      this.dataSource.data = data as IpBillBrowseList[];
-      console.log(this.dataSource.data);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
+    this._IpBillBrowseListService.getIpBillBrowseList(D_data).subscribe(Visit => {
+      this.dataSource.data = Visit as IpBillBrowseList[];
+      this.dataSource.data = Visit["Table1"]??[] as IpBillBrowseList[];
+      console.log(this.dataSource.data)
+      this.resultsLength= Visit["Table"][0]["total_row"];
+      this.sIsLoading = this.dataSource.data.length == 0 ? 'no-data' : '';
       this.click = false;
-
     },
       error => {
         this.sIsLoading = '';
@@ -394,7 +392,6 @@ export class IPBillBrowseListComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
     this.dataSource.data = changes.dataArray.currentValue as IpBillBrowseList[];
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -402,123 +399,122 @@ export class IPBillBrowseListComponent implements OnInit {
 
   dummyGrpNameArr = [];
   groupWiseObj: any = {};
-  
 
   viewgetBillReportPdf(BillNo) {
     setTimeout(() => {
       // this.SpinLoading =true;
-      this.chkprint=true;
+      this.chkprint = true;
       this.sIsLoading = 'loading-data';
 
-     this.AdList=true;
-    this._IpBillBrowseListService.getIpFinalBillReceipt(
-    BillNo
+      this.AdList = true;
+      this._IpBillBrowseListService.getIpFinalBillReceipt(
+        BillNo
       ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "IP Bill  Viewer"
-          }
-        });
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Bill  Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           // this.SpinLoading = false;
           this.sIsLoading = '';
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
   viewgetBillReportDatewisePdf(row) {
     setTimeout(() => {
-      this.SpinLoading =true;
-     this.AdList=true;
-    this._IpBillBrowseListService.getIPBILLdatewisePrint(
-    row.BillNo
+      this.SpinLoading = true;
+      this.AdList = true;
+      this._IpBillBrowseListService.getIPBILLdatewisePrint(
+        row.BillNo
       ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "IP Bill Datewise Viewer"
-          }
-        });
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Bill Datewise Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.SpinLoading = false;
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
-  
+
 
 
 
   viewgetBillReportwardwisePdf(row) {
     setTimeout(() => {
-      this.SpinLoading =true;
-     this.AdList=true;
-    this._IpBillBrowseListService.getIpFinalBillwardwiseReceipt(
-    row.BillNo
+      this.SpinLoading = true;
+      this.AdList = true;
+      this._IpBillBrowseListService.getIpFinalBillwardwiseReceipt(
+        row.BillNo
       ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "IP Bill Ward wise Viewer"
-          }
-        });
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Bill Ward wise Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.SpinLoading = false;
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
   viewgetInterimBillReportPdf(BillNo) {
     setTimeout(() => {
-      this.SpinLoading =true;
-     this.AdList=true;
-    this._IpBillBrowseListService.getIpInterimBillReceipt(
-    BillNo
+      this.SpinLoading = true;
+      this.AdList = true;
+      this._IpBillBrowseListService.getIpInterimBillReceipt(
+        BillNo
       ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "IP Interim Bill  Viewer"
-          }
-        });
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Interim Bill  Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
-          this.AdList=false;
+          this.AdList = false;
           this.SpinLoading = false;
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
-  
-  exportBillDatewiseReportExcel(){
+
+  exportBillDatewiseReportExcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['SelfOrCompany', 'InterimOrFinal', 'BalanceAmt', 'BillDate', 'PBillNo', 'RegID', 'PatientName', 'TotalAmt', 'ConcessionAmt','NetPayableAmt','CashPay','CardPay','ChequePay','NEFTPay','PayTMPay','AdvPay'];
+    let exportHeaders = ['SelfOrCompany', 'InterimOrFinal', 'BalanceAmt', 'BillDate', 'PBillNo', 'RegID', 'PatientName', 'TotalAmt', 'ConcessionAmt', 'NetPayableAmt', 'CashPay', 'CardPay', 'ChequePay', 'NEFTPay', 'PayTMPay', 'AdvPay'];
     this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Ip Bill Datewise');
     this.dataSource.data = [];
     this.sIsLoading = '';
@@ -706,10 +702,10 @@ export class ReportPrintObj {
   RegId: any;
   Doctorname: any;
   TariffName: any;
-  AdvanceNo:any;
-  PaymentTime:any;
-  BalanceAmount:any;
-  UsedAmount:any;
-  ChargesDate:any;
+  AdvanceNo: any;
+  PaymentTime: any;
+  BalanceAmount: any;
+  UsedAmount: any;
+  ChargesDate: any;
 }
 

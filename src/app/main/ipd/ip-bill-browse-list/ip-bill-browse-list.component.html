@@ -157,7 +157,7 @@
                             </mat-cell>
                         </ng-container>
 
-                        <ng-container matColumnDef="RegID">
+                        <ng-container matColumnDef="RegNo">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>RegNo
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-md>
@@ -221,19 +221,11 @@
                             </mat-cell>
                         </ng-container>
 
-                        <ng-container matColumnDef="NEFTPay">
+                        <ng-container matColumnDef="OnlinePay">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>NEFTPay
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                <span> {{contact.NEFTPay | currency:"INR":"symbol"}}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="PayTMPay">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>PayTMPay
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                <span> {{contact.PayTMPay | currency:"INR":"symbol"}}</span>
+                                <span> {{contact.OnlinePay | currency:"INR":"symbol"}}</span>
                             </mat-cell>
                         </ng-container>
 
@@ -245,11 +237,11 @@
                             </mat-cell>
                         </ng-container>
 
-                        <ng-container matColumnDef="AdvPay">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>AdvPay
+                        <ng-container matColumnDef="AdvUsedPay">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>AdvUsedPay
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                <span> {{contact.AdvPay | currency:'INR'}}</span>
+                                <span> {{contact.AdvUsedPay | currency:'INR'}}</span>
                             </mat-cell>
                         </ng-container>
 
@@ -257,15 +249,11 @@
                             <mat-header-cell *matHeaderCellDef class="table-actions">Action</mat-header-cell>
                             <mat-cell *matCellDef="let contact">
                                 <div fxFlex="row" fxLayoutAlign="start">
-                                    <!-- <button mat-icon-button (click)="SubMenu(contact)">
-                                        <mat-icon title="Add SubMenu" class="indigo-600-fg">add_circle_outline</mat-icon>
-                                    </button> -->
                                     <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
                                         <mat-icon class="secondary-text">more_vert</mat-icon>
                                     </button>
                                     <mat-menu #moreMenu="matMenu">
                                         <ng-container *ngFor="let m of menuActions, let i=index">
-                                            <!-- <button mat-icon-button (click)="onEdit(row)"><mat-icon title="Edit Menu">launch</mat-icon></button> -->
                                             <button mat-menu-item aria-label="remove" (click)="getRecord(contact,m)">
                                                 <span>{{m}}</span>
                                             </button>
@@ -288,14 +276,17 @@
 
                         <mat-header-row class="accent min-width-2400" *matHeaderRowDef="displayedColumns; sticky: true">
                         </mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class=" min-width-2400" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-2400" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                         <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                         </mat-footer-row>
                         <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
 
                     </mat-table>
-                    <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15" showFirstLastButtons>
-                    </mat-paginator>
+                    <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35" [length]="resultsLength"
+                    showFirstLastButtons (page)="onShow_IpdBrowse()">
+                </mat-paginator>
+                    <!-- <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15" showFirstLastButtons>
+                    </mat-paginator> -->
                 </div>
             </div>
         </div>

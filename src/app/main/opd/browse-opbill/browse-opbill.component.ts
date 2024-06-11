@@ -306,8 +306,8 @@ console.log(contact)
       "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy"),
       "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy"),
       "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0,
-      "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value || 0,
-      Start:(this.paginator?.pageIndex??1),
+      "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value + '%' || "%",
+      Start:(this.paginator?.pageIndex??0),
       Length:(this.paginator?.pageSize??35),
     }
     setTimeout(() => {
