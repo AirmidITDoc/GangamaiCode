@@ -19,92 +19,93 @@
 
                 <form [formGroup]="_NursingStationService.myform">
                     <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                           
+                            <div class="radio-container">
+                                <mat-radio-group formControlName="Op_ip_id" fxFlex="5%" style="padding: 15px;">
+                                    <mat-radio-button value="1">IP</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
 
-                        <div fxFlex="row">
-                            <fieldset fxFlex style="background-color:rgba(225, 226, 223, 0.981); border-radius: 10px; ">
-                                <legend>Patient Details</legend>
+                            <mat-form-field appearance="outline" fxFlex="50%">
+                                <mat-label>PatientName</mat-label>
+                                <input type="text" name="RegID" formControlName="RegID" matInput required
+                                    placeholder="RegNo / First Name / Last Name / Mobile No"
+                                    [matAutocomplete]="auto" #RegID (input)="getSearchList()">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_NursingStationService.myform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="_NursingStationService.myform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                    (optionSelected)='getSelectedObj($event.option.value)'>
+                                    <mat-option *ngFor="let option of PatientListfilteredOptions"
+                                        [value]="option">
+                                        {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                        {{option.RegNo}} |
+                                        {{option.MobileNo}}
+                                    </mat-option>
+                                    <mat-error
+                                        *ngIf="_NursingStationService.myform.get('RegID').hasError('required')">
+                                        Required field cannot be left blank
+                                    </mat-error>
+                                </mat-autocomplete>
+                            </mat-form-field>
 
-                                <div fxLayout="row">
-                                    <div fxFlex="row">
-                                        <div>
-                                            <h3 class="labels-h4">Reg No
-                                                <span style="margin-left:5px;margin-right: 5px;">:</span>
-                                            </h3>
-                                        </div>
-                                        <div style="width: 100px;">
-                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
-                                        </div>
-
-                                    </div>
-
-                                    <div fxFlex="row">
-                                        <div>
-                                            <h3 class="labels-h4">Patient Name
-                                                <span style="margin-left:5px;margin-right: 5px;">:</span>
-                                            </h3>
-                                        </div>
-                                        <div style="width: 180px;">
-                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
-                                        </div>
-
-                                    </div> 
-
-                                    <div fxFlex="row">
-                                        <div>
-                                            <h3 class="labels-h4">Ward Name
-                                                <span style="margin-left:5px;margin-right: 5px;">:</span>
-                                            </h3>
-                                        </div>
-                                        <div style="width: 180px;">
-                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
-                                        </div>
-
-                                    </div>
-
-                                    <div fxFlex="row">
-                                        <div style="margin-left: 5px;">
-                                            <h3 class="labels-h4">Bed No
-                                                <span style="margin-left:5px;">:</span>
-                                            </h3>
-                                        </div>
-                                        <div style="width: 100px;">
-                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
-                                        </div>
-
-                                    </div>
-
-                                   
-                                    <div fxFlex="row">
-                                        <div>
-                                            <h3 class="labels-h4">Gender
-                                                <span style="margin-left:5px;margin-right: 5px;">:</span>
-                                            </h3>
-                                        </div>
-                                        <div style="width: 120px;">
-                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
-                                        </div>
-
-                                    </div>
-
-                                    <div fxFlex="row">
-                                        <div style="margin-left: 5px;">
-                                            <h3 class="labels-h4">Age
-                                                <span style="margin-left:5px;">:</span>
-                                            </h3>
-                                        </div>
-                                        <div style="width: 100px;">
-                                            <!-- <h6 class="labels-h6">{{Gender}}</h6> -->
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </fieldset>
+                            <app-common-date [screenFrom]="screenFromString" style="padding-left: 10px;"
+                            (dateTimeEventEmitter)="getDateTime($event)">
+                            </app-common-date> 
+                       
                         </div>
 
+                        <mat-card *ngIf="vRegNo>0">
+                            <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                <div class="patient-info-container">
+                                    <div class="patient-info-box">
+                                        <div class="patient-info-title border-bottom pb-2">
+                                            <span class="h1">Patient Information</span>
+                                        </div>
+                                        <div class="patient-info-box my-8">
+                                            <div class="patient-info-row ">
+                                                <!-- <div class="patient-col">
+                                                    <span class="patient-col-key">RegNo</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{vRegNo}}</span>
+                                                </div> -->
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key ">Patient Name(RegNo)</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{vPatienName}}({{vRegNo}})</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Gender/Age</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{vGender}}/{{vAge}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">IPDNo</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{vIPDNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">WardName/BedNo</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{vWardName}}/{{vBedName}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                           </div>
+                          
+                        </mat-card>
+                       
                         <div fxLayout="row" fxLayoutGap="10px">
                             <div fxFlex.gt-sm="40%" fxFlex>
                                 <mat-table class="table2" matSort [dataSource]="dsNursingNoteList"
-                                    [@animateStagger]="{value:'50'}" style="overflow: auto;height:450px;">
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;height:350px;">
 
                                     <ng-container matColumnDef="VDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -157,51 +158,39 @@
                                     showFirstLastButtons>
                                 </mat-paginator>
                             </div>
+                           
                             <div fxFlex.gt-sm="60%" fxFlex>
-                                <div fxLayout="column" fxLayoutGap="5px">
-                                    <div fxLayout="row" fxLayoutGap="4px">
-
-                                        <mat-form-field appearance="outline" fxFlex="50%">
-                                            <mat-label>Notes</mat-label>
-                                            <mat-select formControlName="Note" placeholder="Bank" #singleSelect>
-                                                <mat-option>
-                                                    <ngx-mat-select-search [formControl]="pathodoctorFilterCtrl"
-                                                        [placeholderLabel]="'Search'"
-                                                        [noEntriesFoundLabel]="'No matching found'">
-                                                    </ngx-mat-select-search>
-                                                </mat-option>
-                                                <mat-option *ngFor="let element of filteredPathDoctor | async"
-                                                    [value]="element">
-                                                    {{element.DoctorName}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>&nbsp;&nbsp;&nbsp; 
-
-                                        <button type="button" class="btn btn-primary btn-with-icon py-8" #addbutton
-                                            id="btnAdd">
-                                            <mat-icon>add</mat-icon>
-                                        </button>&nbsp;&nbsp;&nbsp;
-
-                                        <app-common-date [screenFrom]="screenFromString" style="padding-left: 100px;"
-                                            (dateTimeEventEmitter)="getDateTime($event)">
-                                        </app-common-date> 
-
-                                    </div>
+                                <div fxLayout="column" fxLayoutGap="10px"> 
+                                        <div style="padding: 5px;"  fxLayout="row" fxLayoutGap="20px">
+                                    
+                                            <mat-form-field appearance="outline" fxFlex="60%">
+                                                <mat-label>Notes</mat-label>
+                                                <mat-select formControlName="Note" placeholder="Select Note" #singleSelect>
+                                                    <mat-option> </mat-option>
+                                                    <mat-option *ngFor="let m of NoteList" [value]="m">
+                                                        {{m.NursTempName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                    
+                                            <button class="btn btn-primary btn-with-icon py-8" (click)="onAdd()" id="btnAdd">
+                                                <mat-icon>add</mat-icon>
+                                            </button>
+                                        </div> 
 
                                     <div> 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Description</mat-label>
-                                            <textarea matInput name="Description" formControlName="DoctorID"
+                                            <textarea rows="10" matInput name="Description" formControlName="Description"
                                                 placeholder="Add Note....." type="text" id="Description" #description
-                                                required style="height: 360px;"></textarea>
+                                                required [(ngModel)]="vDescription"></textarea>
                                         </mat-form-field> 
                                     </div>
-                                    <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end">
+                                    <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="end" style="padding-top: 50px;">
                                         <button mat-raised-button class="py-8"><mat-icon>add</mat-icon>New
-                                            Template</button> &nbsp;&nbsp;
-                                        <button class="btn btn-danger-outline">Reset</button>&nbsp;&nbsp;
-                                        <button class="btn btn-primary ">Save</button>&nbsp;&nbsp;
- 
+                                            Template</button>
+                                        <button class="btn btn-danger-outline">Reset</button>
+                                        <button class="btn btn-primary">Save</button>
                                     </div>
                                 </div> 
                             </div> 

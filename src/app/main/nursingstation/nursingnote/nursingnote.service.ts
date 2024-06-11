@@ -16,7 +16,9 @@ export class NursingnoteService {
   createtemplateForm(): FormGroup {
     return this._formBuilder.group({
       Note: [''], 
-      Description:['']
+      Description:[''],
+      Op_ip_id:['1'],
+      RegID:['']
     });
   }
 
@@ -25,6 +27,15 @@ export class NursingnoteService {
     return this._httpClient.post("InPatient/DoctorNoteInsert", employee)
   }
   public getDoctorCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingNotesTemplateMaterForCombo", {})
+  }
+  public getAdmittedpatientlist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+  }
+  public getNoteList() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingNotesTemplateMaterForCombo", {})
+  }
+  public getNursingNotelist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingNotesList ", employee)
   }
 }

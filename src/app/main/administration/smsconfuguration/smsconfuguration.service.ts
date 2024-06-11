@@ -25,15 +25,24 @@ export class SMSConfugurationService {
     });
    }
    CreateSMSForm(){
-    return this._formbuilder.group({
-      startdate: [new Date().toISOString()],
-      enddate: [new Date().toISOString()],
+    return this._formbuilder.group({ 
       TemplateCreation:[''],
       Msgcategory:[''],
-      Message:['']
+      Message:[''],
+      TemplateId:[''],
+      IsBlock:['']
     });
    }
    public getSMSSentList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CanteenRequestDet",Param);
+  }
+  public getMappinfSMS(){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_MappingListForSMS", {});
+  }
+  public getMSGCategory(){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_MsgCategoryForCombo", {});
+  }
+  public getMSGCategoryList(){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_MsgTempMasterList", {});
   }
 }

@@ -25,18 +25,20 @@ export class UpdateSMSComponent implements OnInit {
     'TemplateId' 
   ];
   displayedColumns1 = [
-     'MappingValue'
+     'MappingValue' 
   ];
 
   vTemplateCreation:any;
   vMessage:any;
   vTemplateId:any; 
   vIsBlock:any;
+  MSGCategory:any=[];
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator; 
   
   dsTemplateList= new MatTableDataSource<TemplateList>();
+  dsmappingList= new MatTableDataSource<MappingList>();
 
   constructor(
     public _SMSConfigService : SMSConfugurationService,
@@ -47,9 +49,58 @@ export class UpdateSMSComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getMappingSMS();
+    this.getMSGCategoryList();
+    this.getMSGCategory();
+  }
+  getMSGCategory(){
+    this._SMSConfigService.getMSGCategory().subscribe(data =>{
+      this.MSGCategory = data ;
+    });
+  }
+  getMappingSMS(){
+    this._SMSConfigService.getMappinfSMS().subscribe(data =>{
+      this.dsmappingList.data = data as MappingList[];
+    });
+  }
+  getMSGCategoryList(){
+    this._SMSConfigService.getMSGCategoryList().subscribe(data =>{
+      this.dsTemplateList.data = data as TemplateList[] ;
+      console.log(this.dsTemplateList.data)
+    });
+  }
+  OnSelectTemplate(contact){
+    console.log(contact)
+    this.vTemplateId = contact.TemplateId;
+    this.vTemplateCreation = contact.MsgId;
+    this.vMessage = contact.msg; 
+    let isBlock = contact.IsBlock;
+    if(isBlock == 1){
+      this.vIsBlock = true;
+    }else{
+      this.vIsBlock = false;
+    }
+
+    if(this.vTemplateCreation > 0){
+      const selectCategory = this.MSGCategory.find(item => item.Msgid ==this.vTemplateCreation )
+      console.log(selectCategory)
+      this._SMSConfigService.MyNewSMSForm.get('Msgcategory').setValue(selectCategory)
+    }
+  }
+  OnSave(){
+    if ((this.vMessage == '' || this.vMessage == null || this.vMessage == undefined)) {
+      this.toastr.warning('Please enter message', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
+  OnReset(){
+    this.onClose();
   }
   onClose(){
     this._matDialog.closeAll();
+    this._SMSConfigService.MyNewSMSForm.reset();
   }
 }
 export class TemplateList { 
@@ -63,6 +114,14 @@ export class TemplateList {
       this.IsBlock = TemplateList.IsBlock || 0;
       this.TemplateId = TemplateList.TemplateId || 0;  
       this.MgsCategory = TemplateList.MgsCategory || '';
+    }
+  }
+}
+export class MappingList { 
+  MappingValue:string; 
+  constructor(MappingList) {
+    {
+      this.MappingValue = MappingList.MappingValue ||  ''; 
     }
   }
 }
