@@ -124,7 +124,7 @@ export class BrowseOPBillComponent implements OnInit {
   vpaidamt: any = 0;
   vbalanceamt: any = 0;
   NewBillpayment(contact) {
-debugger
+
 console.log(contact)
     let PatientHeaderObj = {};
 
@@ -142,7 +142,6 @@ console.log(contact)
         width: '75%',
         data: {
           vPatientHeaderObj: contact,
-          // FromName: "OP_SETTLEMENT",
           FromName: "OP-Bill",
           advanceObj: PatientHeaderObj,
         }
@@ -306,10 +305,12 @@ console.log(contact)
       "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy"),
       "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy"),
       "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0,
-      "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value + '%' || "%",
+      "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value || "%",
       Start:(this.paginator?.pageIndex??0),
       Length:(this.paginator?.pageSize??35),
     }
+    debugger
+    console.log(D_data)
     setTimeout(() => {
       this.isLoadingStr = 'loading';
       debugger

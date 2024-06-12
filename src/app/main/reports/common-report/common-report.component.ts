@@ -462,8 +462,10 @@ viewgetConcessionReportPdf() {
 
 
 viewgetDailyCollectionReportPdf() {
+  debugger
+  console.log(this._OPReportsService.userForm.get('DoctorID').value)
   let AddedById=this._OPReportsService.userForm.get('UserId').value.UserId || 0
-  let DoctorId=this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
+  let DoctorId=this._OPReportsService.userForm.get('DoctorID').value.DoctorID || 0
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  

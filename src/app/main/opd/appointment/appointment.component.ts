@@ -279,7 +279,7 @@ export class AppointmentComponent implements OnInit {
 
   displayedColumns = [
     "PatientOldNew",
-    // "MPbillNo",
+    // "CrossConsulFlag",
     // "CrossConsultation",
     // "Edit",
     // "Bill",

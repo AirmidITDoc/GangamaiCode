@@ -170,6 +170,17 @@
                                                                     </mat-icon>
                                                                 </div>
                                                             </div>
+                                                            <div class="CrossConsulFlag" fxLayout="row"
+                                                                fxLayoutAlign="center">
+                                                                <div class="pill-icon" fxLayout="row"
+                                                                    fxLayoutAlign="center">
+                                                                    <mat-icon
+                                                                        *ngIf="contact.CrossConsulFlag=='1' || contact.CrossConsulFlag=='1'"
+                                                                        matTooltip="CrossConsulFlag"
+                                                                        class="blue-600 s-16">circle</mat-icon>
+
+                                                                </div>
+                                                            </div>
                                                             <div class="bill-generated" fxLayout="row"
                                                                 fxLayoutAlign="center">
                                                                 <mat-icon
@@ -410,8 +421,7 @@
                                                         </button>
                                                         <!-- *ngIf="contact.IsCancelled==0" -->
                                                         <button mat-icon-button [matMenuTriggerFor]="moreMenu"
-                                                          aria-label="More"
-                                                            (click)="$event.stopPropagation();">
+                                                            aria-label="More" (click)="$event.stopPropagation();">
                                                             <mat-icon class="secondary-text">more_vert</mat-icon>
                                                         </button>
                                                         <mat-menu #moreMenu="matMenu">
@@ -740,7 +750,8 @@
                                                                 placeholder="Age (Y)" matInput
                                                                 [ngModel]="registerObj.AgeYear"
                                                                 (ngModelChange)="registerObj.AgeYear = $event" required
-                                                             maxlength="3" #agey (keyup)="ageyearcheck(registerObj.AgeYear)"
+                                                                maxlength="3" #agey
+                                                                (keyup)="ageyearcheck(registerObj.AgeYear)"
                                                                 (keydown)="onEnteragey($event,registerObj.AgeYear)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
                                                             <mat-error
