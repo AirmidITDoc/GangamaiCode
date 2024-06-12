@@ -36,7 +36,7 @@
                             <!-- SIDEBAR CONTENT -->
                             <div class="sidebar-body">
                                 <div class="sidebar-form">
-                                    <form [formGroup]="_BrowsSalesBillService.userForm"fusePerfectScrollbar>
+                                    <form [formGroup]="_BrowsSalesBillService.userForm" fusePerfectScrollbar>
                                         <div fxLayout="column" fxLayoutAlign="start none">
 
                                             <mat-form-field appearance="outline" fxFlex>
@@ -49,7 +49,7 @@
                                                 </mat-select>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" >
+                                            <mat-form-field appearance="outline">
                                                 <mat-label>Enter a date range</mat-label>
                                                 <mat-date-range-input [rangePicker]="picker">
                                                     <input matStartDate formControlName="startdate"
@@ -138,7 +138,7 @@
                                                 [@animateStagger]="{value:'50'}">
                                                 <ng-container matColumnDef="action">
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                        style="color: white;"   >
+                                                        style="color: white;">
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact">
                                                         <button mat-icon-button matTooltip="Print2"
@@ -217,11 +217,10 @@
 
 
                                                 <ng-container matColumnDef="PatientName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                       >
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Patient Name
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.PatientName}}
                                                     </mat-cell>
                                                 </ng-container>
@@ -273,11 +272,34 @@
                                                     </mat-cell>
                                                 </ng-container>
 
+                                                <ng-container matColumnDef="action" stickyEnd>
+                                                
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-260">
+                                                        <span class="mat-header-text">Action</span>
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" class="w-260 gap-4">
+                                                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                                    (click)="$event.stopPropagation();">
+                                                    <mat-icon class="secondary-text">more_vert</mat-icon>
+                                                </button>
+                                                <mat-menu #moreMenu="matMenu">
+                                                    <ng-container *ngFor="let m of menuActions, let i=index">
+                                                        <button mat-menu-item aria-label="remove"
+                                                            (click)="getRecord(contact,m)">
+                                                            <span>{{m}}</span>
+                                                        </button>
+                                                    </ng-container>
+                                                </mat-menu>
+                                            </mat-cell>
+                                        </ng-container>
+
+
 
                                                 <mat-header-row class="accent min-width-1350"
                                                     *matHeaderRowDef="displayedColumns;"></mat-header-row>
                                                 <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                                    class="contact min-width-1350" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                    class="contact min-width-1350"
+                                                    [@animate]="{value:'*',params:{y:'100%'}}"
                                                     (click)="onSelect(contact)">
                                                 </mat-row>
                                                 <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -818,14 +840,13 @@
 
         </mat-tab>
 
-    <mat-tab label="Patient List">
-      
+        <mat-tab label="Patient List">
+
             <ng-template mat-tab-label>
                 Patient List
             </ng-template>
 
-            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
-                dynamicTableHeight>
+            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
 
                 <!-- / HEADER -->
                 <!-- SELECTED BAR -->
@@ -834,8 +855,7 @@
                 <!-- CONTENT -->
                 <div class="content">
                     <!-- SIDEBAR -->
-                    <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm"
-                        class="fuse-search-sidebar">
+                    <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
                         <div class="sidebar-content">
                             <!-- SIDEBAR HEADER -->
                             <div class="accent sidebar-header">
@@ -853,12 +873,10 @@
                                                 <mat-date-range-input [rangePicker]="picker">
                                                     <input matStartDate formControlName="start"
                                                         placeholder="Start date">
-                                                    <input matEndDate formControlName="end"
-                                                        placeholder="End date"
+                                                    <input matEndDate formControlName="end" placeholder="End date"
                                                         (dateChange)="getAdmittedPatientList_1()">
                                                 </mat-date-range-input>
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                 <mat-date-range-picker #picker></mat-date-range-picker>
                                             </mat-form-field>
 
@@ -891,7 +909,7 @@
                                                 <input name="LastName" formControlName="LastName" matInput
                                                     (keyup)="getAdmittedPatientList_1()">
                                             </mat-form-field>
-<!-- 
+                                            <!-- 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Doctor Name</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
@@ -924,7 +942,7 @@
                                                     <mat-icon class="searchiconbutton">search</mat-icon>
                                                 </button>
                                             </div>
-                                          
+
                                         </div>
                                     </form>
                                 </div>
@@ -945,27 +963,32 @@
 
                                     <div fxlayout="row">
                                         <div style="width: 100%;">
-                                            
+
                                             <div class="info-badge-top pb-2 border-bottom">
                                                 <!-- "pill" class is used for rounded border -->
                                                 <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                                                    <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                    <div style="color: blue;" fxLayout="row"
+                                                        fxLayoutAlign="start center" class="gap-4">
                                                         <mat-icon class="pill blue-600 s-16">circle</mat-icon>
                                                         <!-- <span class="blue-600-fg">New Admissions : {{VNewcount}}</span> -->
                                                     </div>
-                                                    <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                    <div style="color: green" fxLayout="row"
+                                                        fxLayoutAlign="start center" class="gap-4">
                                                         <mat-icon class="pill green-600 s-16">circle</mat-icon>
                                                         <!-- <span class="green-600-fg"> Total Admissions  : {{VAdmissioncount}}</span> -->
                                                     </div>
-                                                    <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                    <div style="color: green" fxLayout="row"
+                                                        fxLayoutAlign="start center" class="gap-4">
                                                         <mat-icon class="pill green-600 s-16">circle</mat-icon>
                                                         <!-- <span class="green-600-fg"> Total BillGenerated  : {{VBillcount}}</span> -->
                                                     </div>
-                                                    <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                    <div style="color: orange" fxLayout="row"
+                                                        fxLayoutAlign="start center" class="gap-4">
                                                         <mat-icon class="pill orange-600 s-16">circle</mat-icon>
                                                         <!-- <span class="orange-600-fg">Today's Discharges  :{{vIsDischarg}}</span> -->
                                                     </div>
-                                                    <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                    <div style="color: red" fxLayout="row" fxLayoutAlign="start center"
+                                                        class="gap-4">
                                                         <mat-icon class="pill red-600 s-16">circle</mat-icon>
                                                         <!-- <span class="red-600-fg">OPTOIPConvert : {{VOPtoIPcount}}</span> -->
                                                     </div>
@@ -979,8 +1002,7 @@
 
                                             </div>
                                             <mat-table #table matSort [dataSource]="dataSource"
-                                                [@animateStagger]="{value:'50'}" class="table1"
-                                                style="overflow: auto;">
+                                                [@animateStagger]="{value:'50'}" class="table1" style="overflow: auto;">
 
                                                 <!-- <ng-container matColumnDef="IsMLC" sticky>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80"
@@ -1003,18 +1025,17 @@
                                                 </ng-container> -->
 
                                                 <ng-container matColumnDef="RegNo" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                        class="w-90" fxShow.gt-sm>Reg
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-90"
+                                                        fxShow.gt-sm>Reg
                                                         No</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                        class="w-90">
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                                         <span> {{contact.RegNo}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="PatientName" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                        fxShow.gt-sm class="w-200">Patient Name
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-200">Patient Name
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                         <span> {{contact.PatientName}}</span>
@@ -1043,7 +1064,8 @@
                                                         fxShow.gt-md class="w-160">Doctor
                                                         Name
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-160">
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
+                                                        class="w-160">
                                                         <span> {{contact.Doctorname}}</span>
                                                     </mat-cell>
                                                 </ng-container>
@@ -1053,7 +1075,8 @@
                                                         fxShow.gt-md class="w-160">Ref Doc
                                                         Name
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-160">
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
+                                                        class="w-160">
                                                         <span> {{contact.RefDocName}}</span>
                                                     </mat-cell>
                                                 </ng-container>
@@ -1129,16 +1152,16 @@
                                                         class="table-actions w-150">Action</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" class="w-150">
                                                         <div fxLayout="row">
-                                                          
-
                                                             <button mat-icon-button
                                                                 (click)="getAdmittedPatientCasepaperview(contact)"
                                                                 matTooltip="Print">
                                                                 <mat-icon style="color: black;">print</mat-icon>
                                                             </button>
-                                                            
-                                                            
+
+
                                                         </div>
+
+
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -1167,9 +1190,10 @@
                                                 <mat-footer-row *matFooterRowDef="['noData']"
                                                     [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                             </mat-table>
-                                            <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35" [length]="resultsLength"
-                                            showFirstLastButtons (page)="getAdmittedPatientList_1()">
-                                        </mat-paginator>
+                                            <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35"
+                                                [length]="resultsLength" showFirstLastButtons
+                                                (page)="getAdmittedPatientList_1()">
+                                            </mat-paginator>
                                         </div>
                                     </div>
                                 </div>
@@ -1204,7 +1228,8 @@
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <span style="font-size: 9px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
             Trust)</span>
-        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">{{type}}Tax Invoice
+        <h2 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">{{type}}Tax
+            Invoice
         </h2>
     </div>
 
@@ -1460,7 +1485,8 @@
     <div style="display:flex; align-items: center; margin-bottom: 10px;">
         <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
             Trust)</span>
-        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">{{type}} &nbsp; Tax Invoice
+        <h4 style="text-transform: uppercase;font-weight: 500;margin:0;;width: 33.33%;text-align: center;">{{type}}
+            &nbsp; Tax Invoice
         </h4>
     </div>
 
@@ -1516,7 +1542,8 @@
                         <!-- <tr> -->
                         <td style="vertical-align: top;padding:0 10px 10px">
                             Bill No: {{reportPrintObjList[0]?.SalesNo}} <span style="margin-left: 10px;">Bill
-                                Date:{{reportPrintObjList[0]?.Time | date:'dd/MM/yyyy H:mm'}} | {{reportPrintObjList[0]?.Time | date:'H:mm tt'}}</span><br>
+                                Date:{{reportPrintObjList[0]?.Time | date:'dd/MM/yyyy H:mm'}} |
+                                {{reportPrintObjList[0]?.Time | date:'H:mm tt'}}</span><br>
                             Mode of Payment : {{reportPrintObjList[0]?.PayMode}} <br>
                         </td>
                         <!-- </tr> -->

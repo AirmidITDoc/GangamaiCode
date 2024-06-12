@@ -165,7 +165,7 @@ console.log(contact)
           if (response) {
             Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
-                debugger
+                
                 this.viewgetOPPayemntPdf(response)
                 this._matDialog.closeAll();
                 this.getBrowseOPDBillsList();
@@ -309,11 +309,11 @@ console.log(contact)
       Start:(this.paginator?.pageIndex??0),
       Length:(this.paginator?.pageSize??35),
     }
-    debugger
+    
     console.log(D_data)
     setTimeout(() => {
       this.isLoadingStr = 'loading';
-      debugger
+      
       this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
         this.dataSource.data = Visit as BrowseOPDBill[];
         this.dataSource.data = Visit["Table1"]??[] as BrowseOPDBill[];

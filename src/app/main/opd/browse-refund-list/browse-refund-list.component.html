@@ -62,17 +62,17 @@
                                     <input name="LastName" formControlName="LastName" matInput>
                                 </mat-form-field>
 
-                                <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-                                    <button mat-raised-button (click)="getBrowseOPDReturnList()" class="searchButton" matTooltip="search">
-                                        <!-- <mat-icon class="cleariconbutton">close</mat-icon> -->
-                                        Search
-                                    </button>
-                                    <button mat-raised-button class="clearbutton" (click)="onClear()" matTooltip="close">
-                                        <!-- <mat-icon class="searchiconbutton">search</mat-icon> -->
-                                        Clear
+                                
+                                <div style="margin-top: 10px;">
+                                    <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                        matTooltip="close">
+                                        <mat-icon class="cleariconbutton">close</mat-icon>
+                                    </button>&nbsp;
+                                    <button mat-raised-button class="searchButton" (click)="getBrowseOPDReturnList()"
+                                        matTooltip="search">
+                                        <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
                                 </div>
-
                                 <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
                                     </span> -->

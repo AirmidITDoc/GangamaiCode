@@ -191,7 +191,7 @@ var data={
 
   GetUserList() {
     var data = {
-      "StoreId": this._loggedUser.currentUserValue.user.storeId
+      "StoreId": this._loggedUser.currentUserValue.user.storeId || 0
     }
     this._IPBillingService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;

@@ -137,6 +137,12 @@
                                                     <mat-icon class="pill red-600 s-16">circle</mat-icon>
                                                     <span class="red-600-fg">Bill Count : {{VBillcount}}</span>
                                                 </div>
+                                                <div style="color: red" fxLayout="row" fxLayoutAlign="start center"
+                                                class="gap-4">
+                                                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                                                <span class="blue-600-fg">Cross Consultant Count : {{VCrossConscount}}</span>
+                                            </div>
+                                                
                                             </div>
                                         </div>
                                         <div class="table-wrapper">
@@ -170,17 +176,7 @@
                                                                     </mat-icon>
                                                                 </div>
                                                             </div>
-                                                            <div class="CrossConsulFlag" fxLayout="row"
-                                                                fxLayoutAlign="center">
-                                                                <div class="pill-icon" fxLayout="row"
-                                                                    fxLayoutAlign="center">
-                                                                    <mat-icon
-                                                                        *ngIf="contact.CrossConsulFlag=='1' || contact.CrossConsulFlag=='1'"
-                                                                        matTooltip="CrossConsulFlag"
-                                                                        class="blue-600 s-16">circle</mat-icon>
-
-                                                                </div>
-                                                            </div>
+                                                          
                                                             <div class="bill-generated" fxLayout="row"
                                                                 fxLayoutAlign="center">
                                                                 <mat-icon

@@ -108,19 +108,15 @@
                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                     </mat-form-field>
 
-                                    <!-- <mat-form-field appearance="outline" style="margin-left: 10px;width:60%;">
-                                        <mat-label>User Name</mat-label>
-                                        <mat-select formControlName="UserId" name="UserId" required (selectionChange)="userChk()">
-                                            <mat-option></mat-option>
-                                            <mat-option *ngFor="let m of UserList" [value]="m">
-                                                {{m.UserName}} 
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
- -->
-
+                                    <button mat-raised-button class="searchButton" matTooltip="Print"
+                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
+                                        (click)="getPrint()">
+                                        Show
+                                    </button>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start none">
                                     <div  *ngIf="FlagUserSelected" style="margin-left: 10px;">                                 
-                                          <mat-form-field appearance="outline" fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="60%">
+                                          <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>User</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select User" matInput
                                            formControlName="UserId" [matAutocomplete]="autoUser">
@@ -139,7 +135,7 @@
                                       </mat-form-field>
                                     </div>
                                     <div  *ngIf="FlagPaymentSelected" style="margin-left: 10px;">     
-                                      <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%">
+                                      <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>PayemntMode</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select PaymentMode" matInput
                                            formControlName="PaymentMode" [matAutocomplete]="autoPayment">
@@ -157,7 +153,7 @@
                                         </mat-autocomplete>
                                       </mat-form-field>
                                     </div>
-                                    <div  *ngIf="FlagStoreSelected" style="margin-left: 10px;" fxFlex="80%" fxFlex.xs="100%" fxFlex.sm="80%"> 
+                                    <div  *ngIf="FlagStoreSelected" style="margin-left: 10px;"> 
                                         <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Store Name</mat-label>
                                         <mat-select formControlName="StoreId" name="StoreId1" required>
@@ -170,11 +166,7 @@
                                     </div>
 
 
-                                    <button mat-raised-button class="searchButton" matTooltip="Print"
-                                        style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
-                                        (click)="getPrint()">
-                                        Show
-                                    </button>
+                                   
 
                                     <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>

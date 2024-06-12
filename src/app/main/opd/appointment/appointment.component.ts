@@ -938,7 +938,7 @@ export class AppointmentComponent implements OnInit {
     // this.registerObj["VisitId"] = row.VisitId;
     // this.registerObj["RegId"]=row.RegId;
     // this.registerObj["RegID"]=row.RegId;
-    // debugger
+    // 
     console.log(row)
     this.registerObj =row;
     this.registerObj["RegId"]=row.RegId;
@@ -1253,13 +1253,13 @@ export class AppointmentComponent implements OnInit {
   VNewcount = 0;
   VFollowupcount = 0;
   VBillcount = 0;
-
+  VCrossConscount = 0;
   Appointdetail(data) {
     this.Vtotalcount = 0;
     this.VNewcount = 0;
     this.VFollowupcount = 0;
     this.VBillcount = 0;
-
+    this.VCrossConscount=0;
     // console.log(data)
     this.Vtotalcount;
 
@@ -1273,6 +1273,10 @@ export class AppointmentComponent implements OnInit {
       if (data[i].MPbillNo == 1 || data[i].MPbillNo == 2) {
         this.VBillcount = this.VBillcount + 1;
       }
+      if (data[i].CrossConsulFlag == 1) {
+        this.VCrossConscount = this.VCrossConscount + 1;
+      }
+
       this.Vtotalcount = this.Vtotalcount + 1;
     }
     //  data.forEach((element) => {
@@ -2209,7 +2213,7 @@ export class AppointmentComponent implements OnInit {
 
 
   viewgetPatientAppointmentReportPdf(obj, Pflag) {
-    debugger
+    
     this.chkprint = true;
     let VisitId;
     if (Pflag) {
@@ -2849,7 +2853,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   public onEnterarea(event): void {
-    debugger
+    
     // let AreaId=this.personalFormGroup.get('AreaId').value.AreaId
     // if (event.which === 13) {
     //   console.log(AreaId)

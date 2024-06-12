@@ -26,6 +26,7 @@ import autoTable from 'jspdf-autotable'
 import { Admission } from 'app/main/ipd/Admission/admission/admission.component';
 import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -69,7 +70,7 @@ export class BrowsSalesBillComponent implements OnInit {
   type = " ";
 
   Creditflag: boolean = false;
-
+  menuActions: Array<string> = [];
   displayedColumns: string[] = [
     'action',
     //  'action1',
@@ -83,7 +84,8 @@ export class BrowsSalesBillComponent implements OnInit {
     'BalAmt',
     'PaidAmt',
     'PaidType',
-    'IPNo'
+    'IPNo',
+    'action'
   ]
   displayedColumns2: string[] = [
     'ItemName',
@@ -171,10 +173,20 @@ export class BrowsSalesBillComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     public toastr: ToastrService,
-
+    
+    private _ActRoute: Router,
   ) { }
 
   ngOnInit(): void {
+    
+    if (this._ActRoute.url == '/pharmacy/browsesalesbill') {
+
+      this.menuActions.push('Patient Ledger');
+      this.menuActions.push("Patient Statement");
+      this.menuActions.push("Patient Sales Summary");
+      this.menuActions.push("Patient Sales Detail");
+     
+    }
     this.getAdmittedPatientList_1();
     this.getSalesList();
     this.getSalesReturnList()
@@ -1329,6 +1341,67 @@ export class BrowsSalesBillComponent implements OnInit {
     }
   }
 
+
+  getRecord(contact, m): void {
+
+    if (m == "Patient Ledger") {
+      // let Regdata;
+      // this._AdmissionService.getRegdata(contact.RegID).subscribe(data => {
+      //   Regdata = data as RegInsert[];
+
+      // },
+      //   error => {
+      //     this.sIsLoading = '';
+      //   });
+
+      // const dialogRef = this._matDialog.open(RegAdmissionComponent,
+      //   {
+      //     maxWidth: '95vw',
+
+      //     height: '900px', width: '100%',
+      //     data: {
+      //       PatObj: Regdata
+      //     }
+      //   });
+
+      // dialogRef.afterClosed().subscribe(result => {
+      //   console.log('The dialog was closed - Insert Action', result);
+      // });
+    }else if(m=='Patient Statement'){
+this.viewSalesstatement(contact);
+    }else if(m=='Patient Sales Summary'){
+
+    }else if(m=='Patient Sales Detail'){
+
+    }
+  }
+
+ viewSalesstatement(el) {
+  debugger
+  let StoreId= this._loggedService.currentUserValue.user.storeId || 0
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      // this.SpinLoading =true;
+      this.AdList = true;
+      this._BrowsSalesBillService.getPdfSalesstatement(el.OP_IP_ID, StoreId).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Patient Statement viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.AdList = false;
+          this.sIsLoading = '';
+        });
+      });
+
+    }, 100);
+  }
   WhatsSalesRetPdf(el) {
 
   }

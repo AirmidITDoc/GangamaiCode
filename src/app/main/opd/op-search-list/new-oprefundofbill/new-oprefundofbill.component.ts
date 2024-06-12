@@ -218,7 +218,7 @@ vBillBalanceAmt=0;
 
   // Patient Search;
   getSearchList() {
-    debugger
+    
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
@@ -263,7 +263,7 @@ vBillBalanceAmt=0;
 
   //Give BillNumber For List
   getRefundofBillOPDListByReg() {
-    debugger;
+    ;
 
     var m_data = {
       "RegId": this.RegId //2
@@ -278,9 +278,11 @@ vBillBalanceAmt=0;
     });
   }
 
+TServiceamt=0;
+TRefundamt=0;
 
   getservicedtailList(row) {
-    this.vBillBalanceAmt=row.BalanceAmt;
+    // this.vBillBalanceAmt=row.BalanceAmt;
     var m_data = {
       "BillNo": this.BillNo //74//
     }
@@ -296,8 +298,24 @@ vBillBalanceAmt=0;
   
     this.dataSource2.data["BalanceAmount"]=0;
     console.log(this.dataSource2.data);
+    
+  
   }
 
+
+  calBalamt(){
+    
+    this.dataSource.data.forEach((element) => {
+      
+      console.log(element)
+      this.TServiceamt +=element.NetAmount;
+      this.TRefundamt +=element.RefundAmount;
+
+    });
+
+    this.vBillBalanceAmt = this.TServiceamt - this.TRefundamt;
+
+  }
   refundBillForm() {
     this.myRefundBillForm = this.formBuilder.group({
       BillId: [''],
@@ -331,27 +349,24 @@ vBillBalanceAmt=0;
  
   RefundAmt: any;
   getCellCalculation(element, RefundAmt) {
-    debugger
     
-    console.log(element)
     this.serviceId = element.ServiceId;
     this.ServiceAmount = element.TotalAmt;
-    // && !(parseFloat(RefundAmt)  this.RefundBalAmount
-if (!(parseFloat(RefundAmt) > element.NetAmount)) {
-  // if (RefundAmt >  this.vBillBalanceAmt) {
-
+    
+if ((parseFloat(RefundAmt) <   this.RefundBalAmount)) {
+ 
   this.TotalRefundAmount = RefundAmt;
   element.BalanceAmount = element.NetAmount - RefundAmt
   element.PrevRefAmount = element.RefundAmount;
   // this.BalanceAmount = element.BalanceAmount;
   // this.RefundBalAmount = element.BalanceAmount;
-  debugger
-
+  
+  
   if(RefundAmt==0 || RefundAmt==null){
     {
-      element.BalanceAmount = this.RefAmt1;
+      element.BalanceAmount =   this.vBillBalanceAmt ;
       this.BalanceAmount = element.BalanceAmount;
-      this.RefundBalAmount = this.RefAmt1;
+      this.RefundBalAmount = this.vBillBalanceAmt ;
     
     }
   }
@@ -359,7 +374,7 @@ if (!(parseFloat(RefundAmt) > element.NetAmount)) {
 } else {
   Swal.fire("Enter Refund Amount Less than Balance Amount ");
 }
-this.RefundBalAmount = element.BalanceAmount;
+this.RefundBalAmount =  this.vBillBalanceAmt ;
   }
 
 
@@ -635,7 +650,7 @@ getServiceListCombobox() {
 }
 
 Serviceselect(row, event){
-  debugger;
+ 
   console.log(row);
   this.RefAmt = this.RefundBalAmount;
 
@@ -645,25 +660,27 @@ Serviceselect(row, event){
   this.ServiceAmount = row.NetAmount;
   this.ChargeId = row.ChargeId;
 
-  this.serselamttot = parseInt(row.NetAmount) + parseInt(this.serselamttot);
-  console.log(this.RefundBalAmount);
-  console.log(this.serselamttot);
+  // this.serselamttot = parseInt(row.NetAmount) + parseInt(this.serselamttot);
+  // console.log(this.RefundBalAmount);
+  // console.log(this.serselamttot);
 
-  if (this.RefAmt1 >= this.serselamttot) {
-    this.TotalRefundAmount = row.Price;
-    this.RefundBalAmount = (parseInt(this.RefundBalAmount.toString()) - parseInt(this.TotalRefundAmount.toString()));
-    this.TotalRefundAmount = this.serselamttot;
-  }
-  else {
-    Swal.fire("Select service total more than Bill Amount");
-    this.TotalRefundAmount = 0;
-    this.serselamttot = 0;
-    this.RefundBalAmount = this.RefAmt1;
-  }
+  // if (this.RefAmt1 >= this.serselamttot) {
+  //   this.TotalRefundAmount = row.Price;
+  //   this.RefundBalAmount = (parseInt(this.RefundBalAmount.toString()) - parseInt(this.TotalRefundAmount.toString()));
+  //   this.TotalRefundAmount = this.serselamttot;
+  // }
+  // else {
+  //   Swal.fire("Select service total more than Bill Amount");
+  //   this.TotalRefundAmount = 0;
+  //   this.serselamttot = 0;
+  //   this.RefundBalAmount = this.RefAmt1;
+  // }
 }
 //
 onEdit(row) {
   console.log(row);
+
+  ;
   var datePipe = new DatePipe("en-US");
   this.BillNo = row.BillNo;
   this.BillDate = datePipe.transform(row.BillDate, 'dd/MM/yyyy hh:mm a');
@@ -673,8 +690,9 @@ onEdit(row) {
   this.vOPIPId = row.VisitId;
   this.getservicedtailList(row);
 
-  debugger;
+ 
   //Testing
+  if(row.RefundAmount < row.NetPayableAmt){
   var m_data1 = {
     "BillNo": row.BillNo
   }
@@ -688,6 +706,26 @@ onEdit(row) {
   });
 
   this.RefAmt1 = this.RefundBalAmount;
+  }else{
+Swal.fire("Already Refund")
+  }
+  // this.TServiceamt=0;
+  //   this.TRefundamt =0;
+  //   this.vBillBalanceAmt =0;
+
+  //   if(this.dataSource2.data.length > 0 ){
+  //    this.dataSource3.data.forEach((element) => {
+  //     
+  //     console.log(element)
+  //     this.TServiceamt +=element.NetPayableAmt;
+  //     this.TRefundamt +=element.RefundAmount;
+
+  //   });
+
+  //   this.vBillBalanceAmt = this.TServiceamt - this.TRefundamt;
+
+  //   }
+
 }
 
 
@@ -697,7 +735,7 @@ populateiprefund(employee) {
 }
 
 calculateTotalRefund() {
-  debugger
+  
   this.RefundBalAmount = this.RefundAmount - this.TotalRefundAmount;
 
 

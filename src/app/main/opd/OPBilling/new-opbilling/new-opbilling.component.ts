@@ -85,6 +85,7 @@ export class NewOPBillingComponent implements OnInit {
   billingServiceList = [];
   showAutocomplete = false;
   ConcessionReasonList: any = [];
+  ConcessionReason:any;
   FinalAmt: any;
   DoctorFinalId = 'N';
   filteredOptionsDoctor: Observable<string[]>;
@@ -168,6 +169,9 @@ export class NewOPBillingComponent implements OnInit {
   AgeYear: any = 0;
   VisitId: any = 0;
   RegNo: any =0;
+  vClassName:any;
+
+
   //doctorone filter
   public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -219,6 +223,7 @@ export class NewOPBillingComponent implements OnInit {
       this.Tarrifname = this.selectedAdvanceObj.TariffName;
       this.vTariffId = this.selectedAdvanceObj.TariffId;
       this.vClassId = this.selectedAdvanceObj.ClassId;
+      this.vClassName=this.selectedAdvanceObj.ClassName;
       // this.PatientType
     }
 
@@ -473,25 +478,25 @@ export class NewOPBillingComponent implements OnInit {
       this.isLoading = 'submit';
 
       let ConcessionId = 0;
-      let ConcessionReason = ''
-      if (this.BillingForm.get('ConcessionId').value || this.b_concessionDiscPer > 0) {
+     
+      if (this.Consessionres || this.b_concessionDiscPer > 0) {
         ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
-        ConcessionReason = this.BillingForm.get('ConcessionId').value.ConcessionReason;
+        this.ConcessionReason = this.BillingForm.get('ConcessionId').value.ConcessionReason;
       }
-
+      
       let InsertBillUpdateBillNoObj = {};
       InsertBillUpdateBillNoObj['BillNo'] = 0;
       InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
       InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value;
       InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value;
       InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
-      InsertBillUpdateBillNoObj['PaidAmt'] = 0//this.BillingForm.get('FinalAmt').value;
+      InsertBillUpdateBillNoObj['PaidAmt'] = 0;//this.BillingForm.get('FinalAmt').value;
       InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
       InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
       InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
       InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
-      InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      InsertBillUpdateBillNoObj['BillTime'] =this.dateTimeObj.time,// this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId;
       InsertBillUpdateBillNoObj['IsSettled'] = 0;
       InsertBillUpdateBillNoObj['IsPrinted'] = 0;
@@ -504,7 +509,8 @@ export class NewOPBillingComponent implements OnInit {
       InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
       InsertBillUpdateBillNoObj['TaxPer'] = 0;
       InsertBillUpdateBillNoObj['TaxAmount'] = 0;
-      InsertBillUpdateBillNoObj['discComments'] = ConcessionReason || '';
+      InsertBillUpdateBillNoObj['compDiscAmt'] = this.BillingForm.get('concessionAmt').value || 0;
+      InsertBillUpdateBillNoObj['discComments'] = this.ConcessionReason || '';
 
       let Billdetsarr = [];
       this.dataSource.data.forEach((element) => {
@@ -944,7 +950,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   getWhatsappshareSales(el, vmono) {
-    debugger
+    
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
@@ -1265,7 +1271,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   public onEnterqty(event): void {
-    debugger
+    
     if (event.which === 13) {
       if (this.isDoctor) {
         this.doctorname.nativeElement.focus();
@@ -1369,13 +1375,14 @@ export class NewOPBillingComponent implements OnInit {
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
     this.Doctorname = obj.DoctorName;
-    this.RegId = obj.RegId;
+    this.RegNo = obj.RegNo;
     this.vOPIPId = obj.VisitId;
     this.vOPDNo = obj.OPDNo;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.ClassId;
     this.AgeYear = obj.AgeYear;
     this.vMobileNo = obj.MobileNo;
+    this.vClassName = obj.ClassName;
 
   }
 
@@ -1420,7 +1427,7 @@ export class Bill {
   TaxAmount: any;
   DiscComments: String;
   CashCounterId: any;
-
+  discComments :any;
   constructor(InsertBillUpdateBillNoObj) {
     {
       this.BillNo = InsertBillUpdateBillNoObj.BillNo || 0;
@@ -1449,6 +1456,7 @@ export class Bill {
       this.TaxAmount = InsertBillUpdateBillNoObj.TaxAmount || 0;
       this.DiscComments = InsertBillUpdateBillNoObj.DiscComments || '';
       this.CashCounterId = InsertBillUpdateBillNoObj.CashCounterId || 0;
+      this.discComments = InsertBillUpdateBillNoObj.discComments || 0;
     }
   }
 }
