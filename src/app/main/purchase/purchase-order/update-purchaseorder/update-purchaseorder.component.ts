@@ -341,12 +341,12 @@ export class UpdatePurchaseorderComponent implements OnInit {
       });
       return;
     }
-    if ((this.vMRP == '' || this.vMRP == null || this.vMRP == undefined)) {
-      this.toastr.warning('Please enter a MRP', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if ((this.vMRP == '' || this.vMRP == null || this.vMRP == undefined)) {
+    //   this.toastr.warning('Please enter a MRP', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     if ((this.vRate == '' || this.vRate == null || this.vRate == undefined)) {
       this.toastr.warning('Please enter a Rate', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -444,7 +444,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     this.vConversionFactor = obj.ConversionFactor;
     this.vHSNcode = obj.HSNcode;
     this.vQty = '';
-    this.vMRP = '';
+    this.vMRP = 0;
     this.vRate = '';
     this.vDis = '';
     this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(2);
@@ -771,24 +771,32 @@ export class UpdatePurchaseorderComponent implements OnInit {
   }
   OnchekPurchaserateValidation() {
     if (this.vRate) {
-      if (parseFloat(this.vRate) <= parseFloat(this.vMRP)) {
+      // if (parseFloat(this.vRate) <= parseFloat(this.vMRP)) {
+      //   this.calculateTotalAmt();
+      // } else {
+      //   this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   });
+      //   this.vRate=this.vMRP;
+      // }
+      this.calculateTotalAmt();
+    }
+    else if(this.vDefRate){
+       if (parseFloat(this.vRate) > parseFloat(this.vDefRate)) {
+        Swal.fire("Please Check defined Supplier Rate for product ...!!!"); 
         this.calculateTotalAmt();
-      } else {
-        this.toastr.warning('Enter Purchase Rate lessthan MRP', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        this.vRate=this.vMRP;
-      }
+      } 
+      // if (this.vDefRate == '' || this.vDefRate == 0) {
+      //   this.toastr.warning('Defined rate is not defined for this Item.', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   }); 
+      // } else {
+      //   if (parseFloat(this.vRate) > parseFloat(this.vDefRate)) {
+      //     Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+      //   }
+      // }
     }
-    if (this.vDefRate == '' || this.vDefRate == 0) {
-      this.toastr.warning('Defined rate is not defined for this Item.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      }); 
-    } else {
-      if (parseFloat(this.vRate) > parseFloat(this.vMRP)) {
-        Swal.fire("Please Check defined Supplier Rate for product ...!!!");
-      }
-    }
+   
   }
 
   calculateTotalAmt() {
