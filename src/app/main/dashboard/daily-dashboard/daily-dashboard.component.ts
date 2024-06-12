@@ -5,6 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import Chart, { ChartColor } from 'chart.js';
 import { Router } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-daily-dashboard',
@@ -14,6 +15,67 @@ import { Router } from '@angular/router';
   animations: fuseAnimations,
 })
 export class DailyDashboardComponent implements OnInit {
+  displayedColumns:string[]=[
+    'OldPatient',
+    'NewPatient',
+    'ReferPatient',
+    'Company'
+  ]
+  displayedBillColumns:string[]=[
+    'Cash',
+    'Cheque',
+    'Online',
+    'Company'
+  ]
+  displayedBilColumns:string[]=[
+    'Cash',
+    'Cheque',
+    'Online',
+    'Company'
+  ]
+  displayeddepColumns:string[]=[
+    'DepartmentName',
+    'Count', 
+  ]
+  displayedDepBillColumns:string[]=[
+    'DepartmentName',
+    'Amount', 
+  ]
+  displayedDocBillColumns:string[]=[
+    'DoctorName',
+    'Count', 
+  ]
+  displayedIPDCountColumns:string[]=[
+    'Admitted',
+    'TodayAdmitted',
+    'Discharge',
+    'Company'
+  ]
+  displayedIPDBillColumns:string[]=[
+    'Cash',
+    'Cheque',
+    'Online',
+    'Company'
+  ]
+  displayedIPDAdvanceColumns:string[]=[
+    'Cash',
+    'Cheque',
+    'Online',
+    'Company'
+  ]
+  displayedIPDdepColumns:string[]=[
+    'DepartmentName',
+    'Count', 
+  ]
+  displayedIPDDepBillColumns:string[]=[
+    'DepartmentName',
+    'Amount', 
+  ]
+  displayedIPDDocBillColumns:string[]=[
+    'DoctorName',
+    'Count', 
+  ]
+
 
   dashbardCardData: any = [];
   username: any;
@@ -31,6 +93,20 @@ export class DailyDashboardComponent implements OnInit {
   public chart4: any;
   public surveyChart: any;
   public doughnutChart: any;
+
+  dsDailyCountList= new MatTableDataSource<OPDCount>();
+  dsDailyBillList = new MatTableDataSource<OPDBillDateWise>();
+  
+  dsDailyDepartmentCountList = new MatTableDataSource<OPDBillDateWise>();
+  dsDailyDepBillList = new MatTableDataSource
+  dsDailyDocBillList = new MatTableDataSource<OPDBillDateWise>(); 
+
+  dsDailyIPDCountList = new MatTableDataSource<IPDCountList>();
+  dsDailyIPDBillList = new MatTableDataSource<IPDCountList>();
+  dsDailyIPDAdvaList = new MatTableDataSource<IPDCountList>(); 
+  dsDailyIPDDepcotList = new MatTableDataSource<IPDCountList>();
+  dsDailyIPDDepBillList = new MatTableDataSource<IPDCountList>();
+  dsDailyIPDDocList = new MatTableDataSource<IPDCountList>(); 
 
   constructor(
     public _dashboardServices: DashboardService,
@@ -55,6 +131,11 @@ export class DailyDashboardComponent implements OnInit {
     this.chart4 = this.getLineChartData('MyChart4', '#c5f1ef', '#a1e6e3');
     this.surveyChart = this.getSurveyChart();
     this.doughnutChart = this.getDoughnutChart();
+
+    this.getOPDCoutList();
+    this.getOPDBillDatewiseList();
+    this.getOPDDepartmentCountList();
+    this.getOPDDoctorCountList();
   }
 
   public getDashboardSummary() {
@@ -63,7 +144,46 @@ export class DailyDashboardComponent implements OnInit {
       //console.log(this.dashCardsData);
     });
   }
-
+getOPDCoutList(){
+  var vadat={
+    'FromDate':'01/01/2024',
+    'ToDate':    '01/01/2024'
+  }
+  this._dashboardServices.getOPDCoutList(vadat).subscribe(data =>{
+    this.dsDailyCountList.data = data as OPDCount[];
+    console.log(this.dsDailyCountList.data)
+  })
+}
+getOPDBillDatewiseList(){
+  var vadat={
+    'FromDate':'01/01/2024',
+    'ToDate':    '01/01/2024'
+  }
+  this._dashboardServices.getOPDBillDatewiseList(vadat).subscribe(data =>{
+    this.dsDailyBillList.data = data as OPDBillDateWise[];
+    console.log(this.dsDailyBillList.data)
+  })
+}
+getOPDDepartmentCountList(){
+  var vadat={
+    'FromDate':'01/01/2024',
+    'ToDate':    '01/01/2024'
+  }
+  this._dashboardServices.getOPDDepartmentCountList(vadat).subscribe(data =>{
+    this.dsDailyDepartmentCountList.data = data as OPDBillDateWise[];
+    console.log(this.dsDailyDepartmentCountList.data)
+  })
+}
+getOPDDoctorCountList(){
+  var vadat={
+    'FromDate':'01/01/2024',
+    'ToDate':    '01/01/2024'
+  }
+  this._dashboardServices.getOPDDoctorCountList(vadat).subscribe(data =>{
+    this.dsDailyDocBillList.data = data as OPDBillDateWise[];
+    console.log(this.dsDailyDocBillList.data)
+  })
+}
   showOPDayGroupWiseSummary() {
 
   }
@@ -297,4 +417,66 @@ export class PieChartOPData {
     title: '',
     count: 0
   };
+}
+export class OPDCount{
+  OldPatient:any;
+  NewPatient:any;
+  ReferPatient:any;
+  Company:any;
+  constructor(OPDCount){
+    {
+      this.OldPatient = OPDCount.OldPatient || 0;
+      this.NewPatient = OPDCount.NewPatient || 0;
+      this.ReferPatient = OPDCount.ReferPatient || 0;
+      this.Company = OPDCount.Company || 0;
+    }
+  } 
+}
+export class OPDBillDateWise{
+  Cash:any;
+  Cheque:any;
+  Online:any;
+  Company:any;
+  DoctorName:string;
+  Count:any;
+  DepartmentName:any;
+
+  constructor(OPDBillDateWise){
+    {
+      this.Cash = OPDBillDateWise.Cash || 0;
+      this.Cheque = OPDBillDateWise.Cheque || 0;
+      this.Online = OPDBillDateWise.Online || 0;
+      this.Company = OPDBillDateWise.Company || 0;
+      this.DoctorName = OPDBillDateWise.DoctorName || '';
+      this.Count = OPDBillDateWise.Count || 0;
+      this.DepartmentName = OPDBillDateWise.DepartmentName || '';
+    }
+  } 
+}
+export class IPDCountList{
+  Cash:any;
+  Cheque:any;
+  Online:any;
+  Company:any;
+  DoctorName:string;
+  Count:any;
+  DepartmentName:any;
+  Admitted:any;
+  TodayAdmitted:any;
+  Discharge:any; 
+
+  constructor(IPDCountList){
+    {
+      this.Cash = IPDCountList.Cash || 0;
+      this.Cheque = IPDCountList.Cheque || 0;
+      this.Online = IPDCountList.Online || 0;
+      this.Company = IPDCountList.Company || 0;
+      this.DoctorName = IPDCountList.DoctorName || '';
+      this.Count = IPDCountList.Count || 0;
+      this.DepartmentName = IPDCountList.DepartmentName || '';
+      this.Admitted = IPDCountList.Admitted || 0;
+      this.TodayAdmitted = IPDCountList.TodayAdmitted || 0;
+      this.Discharge = IPDCountList.Discharge || 0;
+    }
+  } 
 }

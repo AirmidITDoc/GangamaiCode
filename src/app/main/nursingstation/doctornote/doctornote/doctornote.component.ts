@@ -13,6 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-doctornote',
@@ -49,6 +50,10 @@ export class DoctornoteComponent implements OnInit {
   sIsLoading: string = '';
   isLoading:string ='';
   PathologyDoctorList:any=[];
+  wardList:any=[];
+  DoctorNoteList:any=[];
+  vRegNo:any;
+  vDescription:any;
 
   dsPatientList = new MatTableDataSource;
   dsDoctorNoteList = new MatTableDataSource;
@@ -63,58 +68,45 @@ export class DoctornoteComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder, 
     public datePipe: DatePipe, 
+    public toastr: ToastrService,
   ) { }
 
-  //doctorone filter
-  public pathodoctorFilterCtrl: FormControl = new FormControl();
-  public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  private _onDestroy = new Subject<void>();
+  
+ 
   ngOnInit(): void { 
- 
-    this.pathodoctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      }); 
-    this.getDoctorList(); 
+    this.getDoctorNoteList(); 
+    this.getWardNameList();
   }
 
- 
-  private filterDoctor() {
-
-    if (!this.PathologyDoctorList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.pathodoctorFilterCtrl.value;
-    if (!search) {
-      this.filteredPathDoctor.next(this.PathologyDoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredPathDoctor.next(
-      this.PathologyDoctorList.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-
+  getWardNameList(){
+    this._NursingStationService.getWardNameList().subscribe(data =>{
+      this.wardList = data;
+    })
   }
-
-  getDoctorList() {
-    debugger;
-   
-    this._NursingStationService.getDoctorCombo().subscribe(data => {
-      this.PathologyDoctorList = data;
-     this.filteredPathDoctor.next(this.PathologyDoctorList.slice());
-    // //  if(this.data){
-    // //   const ddValue = this.PathologyDoctorList.find(c => c.DoctorID == this.advanceData.DoctorId);
-    // //  this.otherForm.get('DoctorId').setValue(ddValue); 
-    
-    //  }
+  getDoctorNoteList() {
+    this._NursingStationService.getDoctorNoteCombo().subscribe(data => {
+      this.DoctorNoteList = data;
     }); 
   } 
+OnAdd(){
+  if(this.vRegNo =='' || this.vRegNo  == null || this.vRegNo == undefined){ 
+    this.toastr.warning('Please select Patient', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if(this._NursingStationService.myform.get('Note').value){
+    this.vDescription = this._NursingStationService.myform.get('Note').value.DocsTempName || '';
+  }else{
+    this.toastr.warning('Please select Note', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+  }
+  this._NursingStationService.myform.get('Note').setValue('');
+}
+
+
+
   onSubmit() { 
  
     this.isLoading = 'submit';

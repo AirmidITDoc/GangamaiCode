@@ -20,10 +20,10 @@ import { UpdateSMSComponent } from './update-sms/update-sms.component';
 export class SMSConfugurationComponent implements OnInit {
   displayedColumns = [
     'OutGoingCode',
+    'Date',
     'MobileNo',
     'SMSString',
     'IsSent',
-    'Date' 
   ];
 
   sIsLoading: string = '';
@@ -43,6 +43,7 @@ export class SMSConfugurationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getSMSSentList();
   }
 
   getSMSSentList(){

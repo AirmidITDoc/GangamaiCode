@@ -26,9 +26,9 @@
                                     <mat-label>Ward Name</mat-label>
                                     <mat-select formControlName="WardName" name="WardName" Placeholder="select Floor">
                                         <mat-option></mat-option>
-                                        <!-- <mat-option *ngFor="let m of FloorList" [value]="m">
-                                                                                                            {{m.Floor}}
-                                                                                                        </mat-option> -->
+                                        <mat-option *ngFor="let m of wardList" [value]="m">
+                                            {{m.ClassName}}
+                                        </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>&nbsp;&nbsp;
@@ -197,19 +197,15 @@
                                             
                                                                     <mat-form-field appearance="outline" fxFlex="50%">
                                                                         <mat-label>Notes</mat-label>
-                                                                        <mat-select formControlName="Note" placeholder="Bank" #singleSelect>
-                                                                            <mat-option>
-                                                                                <ngx-mat-select-search [formControl]="pathodoctorFilterCtrl"
-                                                                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                                                                </ngx-mat-select-search>
-                                                                            </mat-option>
-                                                                            <mat-option *ngFor="let element of filteredPathDoctor | async" [value]="element">
-                                                                                {{element.DoctorName}}
+                                                                        <mat-select formControlName="Note" placeholder="Select note" #singleSelect>
+                                                                            <mat-option></mat-option>
+                                                                            <mat-option *ngFor="let m of DoctorNoteList " [value]="m">
+                                                                                {{m.DocsTempName}}
                                                                             </mat-option>
                                                                         </mat-select>
                                                                     </mat-form-field>&nbsp;&nbsp;&nbsp;
                                             
-                                                                    <button type="button" class="btn btn-primary btn-with-icon py-8" #addbutton id="btnAdd">
+                                                                    <button class="btn btn-primary btn-with-icon py-8" #addbutton id="btnAdd" (click)="OnAdd()">
                                                                         <mat-icon>add</mat-icon>
                                                                     </button>&nbsp;&nbsp;
                                             
@@ -222,8 +218,8 @@
                                                                 <div>
                                                                     <mat-form-field appearance="outline" fxFlex>
                                                                         <mat-label>Description</mat-label>
-                                                                        <textarea matInput name="Description" formControlName="DoctorID" placeholder="Add Note....."
-                                                                            type="text" id="Description" #description required style="height: 320px;"></textarea>
+                                                                        <textarea rows="10" matInput name="Description" formControlName="DoctorID" placeholder="Add Note....."
+                                                                            type="text" id="Description" #description required [(ngModel)]="vDescription"></textarea>
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end">

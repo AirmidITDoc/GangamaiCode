@@ -34,7 +34,7 @@ export class SMSConfugurationService {
     });
    }
    public getSMSSentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CanteenRequestDet",Param);
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Sent_SMS_List",Param);
   }
   public getMappinfSMS(){
     return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_MappingListForSMS", {});

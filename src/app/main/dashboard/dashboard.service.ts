@@ -159,6 +159,22 @@ export class DashboardService {
   {
      return this._httpClient.post("Generic/GetByProc?procName=m_dash_PharCollectionSummary",x)
   }
-  
+
+  public getOPDCoutList(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_DASH_OP_VISITCOUNT",x)
+  }
+  public getOPDBillDatewiseList(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_Dash_OP_BillDateWise",x)
+  }
+  public getOPDDepartmentCountList(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_DASH_OP_DEPARTMENTCOUNT",x)
+  }
+  public getOPDDoctorCountList(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_DASH_OP_DOCTORCOUNT",x)
+  }
 }
 

@@ -20,9 +20,44 @@ import { SalesSummaryComponent } from "./sales-summary/sales-summary.component";
     animations: fuseAnimations,
 })
 export class PharmacyDashboardComponent implements OnInit {
+  displayedColumns:string[]=[
+    'OPD',
+    'IPD',
+    'External',
+    'Company'
+  ]
+  displayedAdvaColumns:string[]=[
+    'Cash',
+    'Cheque',
+    'Online',
+    'Company'
+  ]
+  displayedBillColumns:string[]=[
+    'Cash',
+    'Cheque',
+    'Online',
+    'Company'
+  ]
+  displayedPurchaseColumns:string[]=[
+    'Cash',
+    'Cheque',
+    'Online',
+    'Company'
+  ]
+  displayedsupplierColumns:string[]=[
+    'SupplierName',
+    'InvoiceNo',
+    'Amount' 
+  ]
     sIsLoading: any;
     PharmStoreList: any = [];
     dashCardsData: any = [];
+
+    dsPharmaCountList= new MatTableDataSource
+    dsPharmaAdvancList = new MatTableDataSource
+    dsPharmaBillList = new MatTableDataSource
+    dsPharmaPurchaseList = new MatTableDataSource
+    dsPharmaSupplierList = new MatTableDataSource
 
   constructor(
     public _DashboardService: DashboardService,

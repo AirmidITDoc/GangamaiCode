@@ -25,7 +25,10 @@ export class DoctornoteService {
     return this._httpClient.post("InPatient/DoctorNoteInsert", employee)
   }
 
-  public getDoctorCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+  public getDoctorNoteCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorNotesTemplateMaterForCombo", {})
+  }
+  public getWardNameList() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_WardClassMasterForCombo", {})
   }
 }
