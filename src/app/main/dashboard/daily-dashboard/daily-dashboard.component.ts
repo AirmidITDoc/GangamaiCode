@@ -6,6 +6,7 @@ import { fuseAnimations } from '@fuse/animations';
 import Chart, { ChartColor } from 'chart.js';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-daily-dashboard',
@@ -22,10 +23,15 @@ export class DailyDashboardComponent implements OnInit {
     'Company'
   ]
   displayedBillColumns:string[]=[
+    'TotalAmount',
+    'NetAmount',
+    'DiscAmount',
     'Cash',
     'Cheque',
     'Online',
-    'Company'
+    'Company',
+    'PaidAmount',
+    'BalAmount'
   ]
   displayedBilColumns:string[]=[
     'Cash',
@@ -45,17 +51,23 @@ export class DailyDashboardComponent implements OnInit {
     'DoctorName',
     'Count', 
   ]
-  displayedIPDCountColumns:string[]=[
-    'Admitted',
-    'TodayAdmitted',
-    'Discharge',
-    'Company'
+  displayedbedColumns:string[]=[
+    'RoomName',
+    'LocationName',
+    'AvailableCount',
+    'OccuipedCount'
   ]
   displayedIPDBillColumns:string[]=[
+    'TotalAmount',
+    'NetAmount',
+    'DiscAmount',
     'Cash',
     'Cheque',
     'Online',
-    'Company'
+    'Company',
+    'AdvancePay',
+    'PaidAmount',
+    'BalAmount'
   ]
   displayedIPDAdvanceColumns:string[]=[
     'Cash',
@@ -101,7 +113,7 @@ export class DailyDashboardComponent implements OnInit {
   dsDailyDepBillList = new MatTableDataSource
   dsDailyDocBillList = new MatTableDataSource<OPDBillDateWise>(); 
 
-  dsDailyIPDCountList = new MatTableDataSource<IPDCountList>();
+  dsBedOccupanyList = new MatTableDataSource<BedList>();
   dsDailyIPDBillList = new MatTableDataSource<IPDCountList>();
   dsDailyIPDAdvaList = new MatTableDataSource<IPDCountList>(); 
   dsDailyIPDDepcotList = new MatTableDataSource<IPDCountList>();
@@ -111,7 +123,9 @@ export class DailyDashboardComponent implements OnInit {
   constructor(
     public _dashboardServices: DashboardService,
     public _accountServices: AuthenticationService,
-    private router: Router
+    private router: Router,
+    public datePipe: DatePipe,
+    
   ) { }
 
   ngOnInit(): void {
@@ -132,10 +146,13 @@ export class DailyDashboardComponent implements OnInit {
     this.surveyChart = this.getSurveyChart();
     this.doughnutChart = this.getDoughnutChart();
 
-    this.getOPDCoutList();
-    this.getOPDBillDatewiseList();
-    this.getOPDDepartmentCountList();
-    this.getOPDDoctorCountList();
+    this.getAppointmentlist();
+    // this.getOPDBillDatewiseList();
+    // this.getOPDDepartmentCountList();
+    // this.getOPDDoctorCountList();
+    // this.getOPDDepartmentBillList();
+    // this.getIPDBillDatewiseList();
+     this.getBedOccupancyList();
   }
 
   public getDashboardSummary() {
@@ -144,44 +161,62 @@ export class DailyDashboardComponent implements OnInit {
       //console.log(this.dashCardsData);
     });
   }
+  onDateRangeChanged() {
+    this.getOPDCoutList();
+    this.getIPDBillDatewiseList();
+  }
 getOPDCoutList(){
   var vadat={
-    'FromDate':'01/01/2024',
-    'ToDate':    '01/01/2024'
+    'FromDate':this.datePipe.transform(this._dashboardServices.DailyUseFrom.get('start').value,"yyyy-MM-dd 00:00:00.000") || '01/01/2020',
+    'ToDate': this.datePipe.transform(this._dashboardServices.DailyUseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/2020',
   }
   this._dashboardServices.getOPDCoutList(vadat).subscribe(data =>{
     this.dsDailyCountList.data = data as OPDCount[];
-    console.log(this.dsDailyCountList.data)
-  })
-}
-getOPDBillDatewiseList(){
-  var vadat={
-    'FromDate':'01/01/2024',
-    'ToDate':    '01/01/2024'
-  }
+    //console.log(this.dsDailyCountList.data)
+  });
   this._dashboardServices.getOPDBillDatewiseList(vadat).subscribe(data =>{
     this.dsDailyBillList.data = data as OPDBillDateWise[];
-    console.log(this.dsDailyBillList.data)
-  })
-}
-getOPDDepartmentCountList(){
-  var vadat={
-    'FromDate':'01/01/2024',
-    'ToDate':    '01/01/2024'
-  }
+    //console.log(this.dsDailyBillList.data)
+  });
   this._dashboardServices.getOPDDepartmentCountList(vadat).subscribe(data =>{
     this.dsDailyDepartmentCountList.data = data as OPDBillDateWise[];
-    console.log(this.dsDailyDepartmentCountList.data)
-  })
-}
-getOPDDoctorCountList(){
-  var vadat={
-    'FromDate':'01/01/2024',
-    'ToDate':    '01/01/2024'
-  }
+   // console.log(this.dsDailyDepartmentCountList.data)
+  });
+  this._dashboardServices.getOPDDepartmentBillList(vadat).subscribe(data =>{
+    this.dsDailyDepBillList.data = data as OPDBillDateWise[];
+    //console.log(this.dsDailyDepBillList.data)
+  });
   this._dashboardServices.getOPDDoctorCountList(vadat).subscribe(data =>{
     this.dsDailyDocBillList.data = data as OPDBillDateWise[];
-    console.log(this.dsDailyDocBillList.data)
+    //console.log(this.dsDailyDocBillList.data)
+  });
+
+
+}
+Appoinmentlist:any=[];
+getAppointmentlist(){
+  this._dashboardServices.getIPDAppointCountList().subscribe(data =>{
+    this.Appoinmentlist = data
+    console.log(this.Appoinmentlist)
+  });
+}
+getIPDBillDatewiseList(){
+  var vadat={
+    'FromDate':this.datePipe.transform(this._dashboardServices.DailyUseFrom.get('start').value,"yyyy-MM-dd 00:00:00.000") || '01/01/2020',
+    'ToDate': this.datePipe.transform(this._dashboardServices.DailyUseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/2020',
+  }
+  this._dashboardServices.getIPDBillDatewiseList(vadat).subscribe(data =>{
+    this.dsDailyIPDBillList.data = data as IPDCountList[];
+    //console.log(this.dsDailyIPDBillList.data)
+  })
+}
+WardList:any=[];
+getBedOccupancyList(){
+  this._dashboardServices.getBedOccupancyList().subscribe(data =>{
+    this.WardList = data;
+    console.log(this.WardList)
+    this.dsBedOccupanyList.data = this.WardList
+     console.log(this.dsBedOccupanyList.data)
   })
 }
   showOPDayGroupWiseSummary() {
@@ -260,7 +295,7 @@ getOPDDoctorCountList(){
     });
     return subject.asObservable();
   }
-
+// new chart
   getLineChartData(charId: string, backgroundColor: ChartColor, borderColor: ChartColor) {
 
     return new Chart(charId, {
@@ -440,6 +475,11 @@ export class OPDBillDateWise{
   DoctorName:string;
   Count:any;
   DepartmentName:any;
+  NetAmount:any;
+  DiscAmount:any;
+  PaidAmount:any;
+  BalAmount:any;
+  TotalAmount:any;
 
   constructor(OPDBillDateWise){
     {
@@ -450,6 +490,11 @@ export class OPDBillDateWise{
       this.DoctorName = OPDBillDateWise.DoctorName || '';
       this.Count = OPDBillDateWise.Count || 0;
       this.DepartmentName = OPDBillDateWise.DepartmentName || '';
+      this.NetAmount = OPDBillDateWise.NetAmount || 0;
+      this.DiscAmount = OPDBillDateWise.DiscAmount || 0;
+      this.BalAmount = OPDBillDateWise.BalAmount || 0;
+      this.PaidAmount = OPDBillDateWise.PaidAmount || 0;
+      this.TotalAmount = OPDBillDateWise.TotalAmount || 0;
     }
   } 
 }
@@ -464,6 +509,16 @@ export class IPDCountList{
   Admitted:any;
   TodayAdmitted:any;
   Discharge:any; 
+  NetAmount:any;
+  DiscAmount:any;
+  PaidAmount:any;
+  BalAmount:any;
+  TotalAmount:any;
+  AdvancePay:any;
+  RoomName:any;
+  LocationName:any;
+  AvailableCount:any;
+  OccuipedCount:any;
 
   constructor(IPDCountList){
     {
@@ -477,6 +532,31 @@ export class IPDCountList{
       this.Admitted = IPDCountList.Admitted || 0;
       this.TodayAdmitted = IPDCountList.TodayAdmitted || 0;
       this.Discharge = IPDCountList.Discharge || 0;
+      this.NetAmount = IPDCountList.NetAmount || 0;
+      this.DiscAmount = IPDCountList.DiscAmount || 0;
+      this.BalAmount = IPDCountList.BalAmount || 0;
+      this.PaidAmount = IPDCountList.PaidAmount || 0;
+      this.TotalAmount = IPDCountList.TotalAmount || 0;
+      this.AdvancePay = IPDCountList.AdvancePay || 0;
+      this.RoomName = IPDCountList.RoomName || '';
+      this.LocationName = IPDCountList.LocationName || '';
+      this.AvailableCount = IPDCountList.AvailableCount || 0;
+      this.OccuipedCount = IPDCountList.OccuipedCount || 0;
+    }
+  } 
+}
+export class BedList{
+  RoomName:any;
+  LocationName:any;
+  AvailableCount:any;
+  OccuipedCount:any;
+
+  constructor(BedList){
+    {
+      this.RoomName = BedList.RoomName || '';
+      this.LocationName = BedList.LocationName || '';
+      this.AvailableCount = BedList.AvailableCount || 0;
+      this.OccuipedCount = BedList.OccuipedCount || 0;
     }
   } 
 }

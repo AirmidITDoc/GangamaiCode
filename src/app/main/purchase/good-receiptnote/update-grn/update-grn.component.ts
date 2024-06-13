@@ -221,10 +221,10 @@ export class UpdateGRNComponent implements OnInit {
     if (this.data.chkNewGRN == 2) {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
-      this.InvoiceNo = this.registerObj.InvoiceNo;
-      this.GateEntryNo = this.registerObj.GateEntryNo;
-      this.SupplierId = this.registerObj.SupplierId;
-      this.StoreId = this.registerObj.StoreId;
+      // this.InvoiceNo = this.registerObj.InvoiceNo;
+      // this.GateEntryNo = this.registerObj.GateEntryNo;
+      // this.SupplierId = this.registerObj.SupplierId;
+      // this.StoreId = this.registerObj.StoreId;
       // this._GRNList.GRNFinalForm.get('NetPayamt').setValue(this.registerObj.RoundingAmt);
       this.getSupplierSearchCombo();
       if (this.registerObj.Cash_CreditType)
@@ -389,6 +389,7 @@ export class UpdateGRNComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
   getGRNItemDetailList(el) {
+    this.sIsLoading = 'loading-data';
     var Param = {
       "GRNID": el.GRNID,
     }
@@ -432,6 +433,8 @@ export class UpdateGRNComponent implements OnInit {
   highlight(contact: any) {
     this.selectedRowIndex = contact;
   }
+  isLoading123:boolean=false;
+  loading: boolean = false;
   onAdd() {
 
     if ((this.vItemName == '' || this.vItemName == null || this.vItemName == undefined)) {
@@ -473,6 +476,7 @@ export class UpdateGRNComponent implements OnInit {
     const isDuplicate = this.dsItemNameList.data.some(item => item.BatchNo === this._GRNList.userFormGroup.get('BatchNo').value);
 
     if (!isDuplicate) {
+      this.loading = true;
       this.dsItemNameList.data = [];
       this.chargeslist = this.dsTempItemNameList.data;
       this.chargeslist.push(
@@ -516,19 +520,24 @@ export class UpdateGRNComponent implements OnInit {
           IsVerifiedDatetime: "01/01/1900",
           StkID: 0
         });
-      this.dsItemNameList.data = this.chargeslist
+
+        setTimeout(() => {
+          this.dsItemNameList.data = this.chargeslist;
+          this.loading = false;
+        }, 3000);
     }
     else {
       this.toastr.warning('Selected Item already added in the list', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
+      this.loading = false;
     }
     this.ItemReset();
     //this.date.setValue(new Date());
     this._GRNList.userFormGroup.get('ItemName').setValue('');
     //this.vNetAmount = 0;
     this.itemid.nativeElement.focus();
-    this.add = false;
+    //this.add = false;
     //this.vlastDay = '';
   }
 
@@ -1196,7 +1205,7 @@ export class UpdateGRNComponent implements OnInit {
   OnSave() { 
     debugger
     const checkTotalQty = this.dsItemNameList.data.some(item => item.TotalQty === this.vTotalQty && item.TotalQty == null);
-
+    this.isLoading123 = true;
     if (!checkTotalQty) {
       if (!this.vPurchaseId) {
         if (this.data.chkNewGRN == 1) {
@@ -1372,11 +1381,14 @@ export class UpdateGRNComponent implements OnInit {
         this._matDialog.closeAll();
         this.OnReset();
         this.viewGRNREPORTPdf(response)
+      
       } else {
         this.toastr.error('PO TO GRN Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
       }
+      this.isLoading123=false;
+      this.sIsLoading = '';
     }, error => {
       this.toastr.error('PO TO GRN Data not saved !, Please check API error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
@@ -1542,6 +1554,8 @@ export class UpdateGRNComponent implements OnInit {
         this._matDialog.closeAll();
         this.OnReset();
         this.viewGRNREPORTPdf(data)
+        this.isLoading123=false;
+        this.sIsLoading = '';
       } else {
         this.toastr.error('PO TO GRN Data not Updated !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -1698,6 +1712,8 @@ export class UpdateGRNComponent implements OnInit {
         this._matDialog.closeAll();
         this.OnReset();
         this.viewGRNREPORTPdf(response)
+        this.isLoading123=false;
+        this.sIsLoading = '';
       } else {
         this.toastr.error('New GRN Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -1846,6 +1862,8 @@ export class UpdateGRNComponent implements OnInit {
         this.Savebtn = false;
         this._matDialog.closeAll();
         this.OnReset()
+        this.isLoading123=false;
+        this.sIsLoading = '';
       }
     }, error => {
       this.toastr.error('New GRN Data not Updated !, Please check API error..', 'Error !', {
@@ -2004,14 +2022,14 @@ export class UpdateGRNComponent implements OnInit {
         this.disc2.nativeElement.focus();
         return
       }
-      this.add = true
+      //this.add = true
       this.addbutton.nativeElement.focus();
     }
   }
   public onEnterDisc2(event): void {
     if (event.which === 13) {
       this.cgst.nativeElement.focus();
-      this.add = true
+      //this.add = true
       this.addbutton.nativeElement.focus();
     }
   }

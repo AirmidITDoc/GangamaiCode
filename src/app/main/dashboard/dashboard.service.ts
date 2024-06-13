@@ -10,11 +10,13 @@ export class DashboardService {
   UseFrom: FormGroup;
   DayWiseFrom:FormGroup;
   MonthWiseFrom:FormGroup;
+  DailyUseFrom:FormGroup;
   constructor(public _httpClient: HttpClient,
     private _formBuilder: FormBuilder
   ) { this.UseFrom = this.createUseFrom();
     this.DayWiseFrom = this.createDaywisefrom();
     this.MonthWiseFrom = this.createMonthwiseFrom();
+    this.DailyUseFrom = this.CreateDailyUseForm();
   }
 
   createUseFrom() {
@@ -22,6 +24,12 @@ export class DashboardService {
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
       StoreId: ''
+    });
+  }
+  CreateDailyUseForm() {
+    return this._formBuilder.group({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()]
     });
   }
   createDaywisefrom(){
@@ -166,7 +174,7 @@ export class DashboardService {
   }
   public getOPDBillDatewiseList(x)
   {
-     return this._httpClient.post("Generic/GetByProc?procName=m_Dash_OP_BillDateWise",x)
+     return this._httpClient.post("Generic/GetByProc?procName=m_DASH_OP_BILL_PAYMENT_SUMMARY",x)
   }
   public getOPDDepartmentCountList(x)
   {
@@ -175,6 +183,22 @@ export class DashboardService {
   public getOPDDoctorCountList(x)
   {
      return this._httpClient.post("Generic/GetByProc?procName=m_DASH_OP_DOCTORCOUNT",x)
+  }
+  public getOPDDepartmentBillList(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_DASH_OP_DEPARTMENTWISEBILLAMOUNT",x)
+  }
+  public getIPDBillDatewiseList(x)
+  {
+     return this._httpClient.post("Generic/GetByProc?procName=m_DASH_IP_BILL_PAYMENT_SUMMARY",x)
+  }
+  public getBedOccupancyList()
+  {
+     return this._httpClient.post("Generic/GetByProc?procName= m_DASH_WARD_WISE_BED_OCCUPANCY",{})
+  }
+  public getIPDAppointCountList()
+  {
+     return this._httpClient.post("Generic/GetByProc?procName= m_DASH_IP_ADMISSION_DISCHARGE_COUNT",{})
   }
 }
 

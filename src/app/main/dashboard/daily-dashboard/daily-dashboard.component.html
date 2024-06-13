@@ -1,22 +1,29 @@
-<div id="dashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
-
-    <!-- CENTER -->
-    <div class="center" fusePerfectScrollbar> <!-- fusePerfectScrollbar -->
-
-        <!-- HEADER -->
-        <div class="header accent p-12 pb-0" fxLayout="column" fxLayoutAlign="center">
-
-            <div fxLayout="row" fxLayoutAlign="space-between start">
-
-                <span class="mat-display-1 m-0 welcome-message" [@animate]="{value:'*',params:{x:'50px'}}">Welcome back,
-                    {{username}}!
-                </span>
-
-                <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md>
-                    <mat-icon>menu</mat-icon>
-                </button>
-            </div>
+<div id="dashboard-project" class="simple page-layout right-sidebar inner-scroll" fxLayout="column">
+    <mat-toolbar class="accent h-80" style="width: 100%;height: 100px;justify-content: space-between;">
+        <div fxLayout="row" faLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;"
+            [@animate]="{value:'*',params:{x:'50px'}}">
+                <mat-icon>dashboard</mat-icon>
+            </button>
+            <span class="mat-display-1 m-0 welcome-message h1" [@animate]="{value:'*',params:{x:'50px'}}">Welcome back,
+                {{username}}!
+            </span>
         </div>
+        <form [formGroup]="_dashboardServices.DailyUseFrom">
+
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate formControlName="start" placeholder="Start date">
+                    <input matEndDate formControlName="end" placeholder="End date" (dateChange)="onDateRangeChanged()">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </form>
+    </mat-toolbar>
+
+    <div class="center" fusePerfectScrollbar>
 
         <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
             <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)" (click)="getBedOccupancy()">
@@ -26,9 +33,11 @@
                             <div class="icon-div icon-1">
                                 <mat-icon style="color: white;"> account_circle </mat-icon>
                             </div>
+
                             <div class="labels-div">
                                 <div>Appointments</div>
                                 <div>20</div>
+
                             </div>
                         </div>
                         <div>
@@ -95,722 +104,725 @@
         </div>
 
         <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
+            <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="chart-card-container">
+                    <mat-card>
+                        <mat-card-header>
+                            <div class="card-header">
+                                <mat-card-title>OPD Count</mat-card-title>
+                            </div>
+                        </mat-card-header>
+                        <hr>
+                        <mat-table matSort class="h-200" [dataSource]="dsDailyCountList"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                            <ng-container matColumnDef="OldPatient">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    OldPatient </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.OldPatientCount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="NewPatient">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    NewPatient </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.NewPatientCount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ReferPatient">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    CrossConsultantPat </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.CrossConsultantPatCount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Company">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Company </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.CompanyPatientCount}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsDailyCountList!=null && dsDailyCountList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+
+            <div fxFlex="64.8%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="chart-card-container">
+                    <mat-card>
+                        <mat-card-header>
+                            <div class="card-header">
+                                <mat-card-title>OPD Collection and Summary</mat-card-title>
+                            </div>
+                        </mat-card-header>
+                        <hr>
+                        <mat-table matSort class="h-200" [dataSource]="dsDailyBillList" [@animateStagger]="{value:'50'}"
+                            style="overflow:auto; ">
+
+                            <ng-container matColumnDef="Cash">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    CashPay </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.CashPay | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Cheque">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    ChequePay </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.ChequePay | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Online">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    OnlinePay </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.OnlinePay | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Company">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    CardPay </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.CardPay | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="DiscAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Discount Amount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.DiscAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="TotalAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Total Amount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.TotalBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="NetAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Net Amount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.NetBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="PaidAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    PaidAmount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.PaidAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="BalAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    BalAmount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.BillBalAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedBillColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedBillColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsDailyBillList!=null && dsDailyBillList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
+            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="chart-card-container">
+                    <mat-card>
+                        <mat-card-header>
+                            <div class="card-header">
+                                <mat-card-title>OPD Department Wise Count</mat-card-title>
+                            </div>
+                        </mat-card-header>
+                        <hr>
+                        <mat-table matSort class="h-200" [dataSource]="dsDailyDepartmentCountList"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                            <ng-container matColumnDef="DepartmentName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Department Name </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.DepartmentName}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Count">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Count </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.vCount}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayeddepColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayeddepColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsDailyDepartmentCountList!=null && dsDailyDepartmentCountList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+
+            <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="chart-card-container">
+                    <mat-card>
+                        <mat-card-header>
+                            <div class="card-header">
+                                <mat-card-title>OPD Department Wise Bill</mat-card-title>
+                            </div>
+                        </mat-card-header>
+                        <hr>
+                        <mat-table matSort class="h-200" [dataSource]="dsDailyDepBillList"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                            <ng-container matColumnDef="DepartmentName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Department Name </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.DepartmentName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Amount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Amount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.BillAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedDepBillColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedDepBillColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsDailyBillList!=null && dsDailyBillList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+            <div fxFlex="32.5%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="chart-card-container">
+                    <mat-card>
+                        <mat-card-header>
+                            <div class="card-header">
+                                <mat-card-title>OPD Doctor Wise Count</mat-card-title>
+                            </div>
+                        </mat-card-header>
+                        <hr>
+                        <mat-table matSort class="h-200" [dataSource]="dsDailyDocBillList"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                            <ng-container matColumnDef="DoctorName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Doctor Name </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.DoctorName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Count">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Count </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.vCount}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedDocBillColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedDocBillColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsDailyDocBillList!=null && dsDailyDocBillList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
+
+
+            <div fxFlex="65%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="chart-card-container">
+                    <mat-card>
+                        <mat-card-header>
+                            <div class="card-header">
+                                <mat-card-title>IPD Collection and Summary</mat-card-title>
+                            </div>
+                        </mat-card-header>
+                        <hr>
+                        <mat-table matSort class="h-200" [dataSource]="dsDailyIPDBillList"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                            <ng-container matColumnDef="Cash">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    CashPay </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.CashPay | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Cheque">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    ChequePay </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.ChequePay | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Online">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    OnlinePay </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.OnlinePay | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Company">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    CardPay </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.CardPay | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="DiscAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    DiscountAmt </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.DiscAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="AdvancePay">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    AdvancePay </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.AdvPay | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="TotalAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Total Amount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.TotalBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="NetAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Net Amount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.NetBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="PaidAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    PaidAmount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.PaidAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="BalAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    BalAmount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.BillBalAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedIPDBillColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedIPDBillColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsDailyIPDBillList!=null && dsDailyIPDBillList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+            <div fxFlex="33.5%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="chart-card-container">
+                    <mat-card>
+                        <mat-card-header>
+                            <div class="card-header">
+                                <mat-card-title>IPD Advance</mat-card-title>
+                            </div>
+                        </mat-card-header>
+                        <hr>
+                        <mat-table matSort class="h-200" [dataSource]="dsDailyIPDAdvaList"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                            <ng-container matColumnDef="Cash">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Cash </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.Cash | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Cheque">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Cheque </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.Cheque | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Online">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Online </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.Online | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Company">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Company </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.Company | currency:'INR' :'symbol' :'2.2-2'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedIPDAdvanceColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedIPDAdvanceColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsDailyIPDAdvaList!=null && dsDailyIPDAdvaList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
+            <div fxFlex="27.5%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="chart-card-container">
+                    <mat-card>
+                        <mat-card-header>
+                            <div class="card-header">
+                                <mat-card-title>IPD Department Wise Count</mat-card-title>
+                            </div>
+                        </mat-card-header>
+                        <hr>
+                        <mat-table matSort class="h-200" [dataSource]="dsDailyIPDDepcotList"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                            <ng-container matColumnDef="DepartmentName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Department Name</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.DepartmentName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Count">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Count </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.vCount}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedIPDdepColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedIPDdepColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsDailyIPDDepcotList!=null && dsDailyIPDDepcotList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+            <div fxFlex="27.5%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="chart-card-container">
+                    <mat-card>
+                        <mat-card-header>
+                            <div class="card-header">
+                                <mat-card-title>IPD Doctor Wise Count</mat-card-title>
+                            </div>
+                        </mat-card-header>
+                        <hr>
+                        <mat-table matSort class="h-200" [dataSource]="dsDailyIPDDocList"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                            <ng-container matColumnDef="DoctorName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Doctor Name </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.DoctorName}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Count">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Count </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.Count}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedIPDDocBillColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedIPDDocBillColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsDailyIPDDocList!=null && dsDailyIPDDocList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+
+            <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="chart-card-container">
+                    <mat-card>
+                        <mat-card-header>
+                            <div class="card-header">
+                                <mat-card-title>Ward Wise Bed Occupany</mat-card-title>
+                            </div>
+                        </mat-card-header>
+                        <hr>
+                        <mat-table matSort class="h-200" [dataSource]="dsBedOccupanyList"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                            <ng-container matColumnDef="RoomName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    RoomName </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.RoomName}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="LocationName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    LocationName </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.LocationName}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="AvailableCount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    AvailableCount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.AvailableCount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="OccuipedCount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    OccuipedCount </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.OccuipedCount}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedbedColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedbedColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsBedOccupanyList!=null && dsBedOccupanyList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
+
             <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                <mat-card >
-                    <mat-card-header>
-                        <div class="card-header">
-                            <mat-card-title>OPD Count</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-table matSort class="h-200" [dataSource]="dsDailyCountList" [@animateStagger]="{value:'50'}"
-                    style="overflow:auto; ">
-                     
-                    <ng-container matColumnDef="OldPatient">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            OldPatient </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.OldPatientCount1}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="NewPatient">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            NewPatient </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.NewPatient}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="ReferPatient">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            CrossConsultantPat </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.CrossConsultantPatCount}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Company">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Company </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.CompanyPatientCount}}
-                        </mat-cell>
-                    </ng-container> 
-
-                    <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6"
-                            style="display: none;">
-                        </mat-header-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <mat-header-row class="accent"
-                        *matHeaderRowDef="displayedColumns; sticky: true">
-                    </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                    appHighlight></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dsDailyCountList!=null && dsDailyCountList.data.length==0)}">
-                    </mat-footer-row>
-                   </mat-table> 
-                </mat-card>
-                </div>
-            </div>
-
-            <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                <mat-card>
-                    <mat-card-header>
-                        <div class="card-header">
-                            <mat-card-title>OPD Bill</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-table matSort class="h-200" [dataSource]="dsDailyBillList" [@animateStagger]="{value:'50'}"
-                    style="overflow:auto; ">
-                     
-                    <ng-container matColumnDef="Cash">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Cash </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Cash}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Cheque">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Cheque </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Cheque}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Online">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Online </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Online}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Company">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Company </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Company}}
-                        </mat-cell>
-                    </ng-container> 
-
-                    <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6"
-                            style="display: none;">
-                        </mat-header-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <mat-header-row class="accent"
-                        *matHeaderRowDef="displayedBillColumns; sticky: true">
-                    </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayedBillColumns;"
-                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                    appHighlight></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dsDailyBillList!=null && dsDailyBillList.data.length==0)}">
-                    </mat-footer-row>
-                   </mat-table> 
-                </mat-card>
-                </div>
-            </div>
-        </div>
-
-        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                <mat-card>
-                    <mat-card-header>
-                        <div class="card-header">
-                            <mat-card-title>OPD Department Wise Count</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-table matSort class="h-200" [dataSource]="dsDailyDepartmentCountList" [@animateStagger]="{value:'50'}"
-                    style="overflow:auto; ">
-                     
-                    <ng-container matColumnDef="DepartmentName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Department Name </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.DepartmentName}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Count">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Count </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.vCount}}
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6"
-                            style="display: none;">
-                        </mat-header-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <mat-header-row class="accent"
-                        *matHeaderRowDef="displayeddepColumns; sticky: true">
-                    </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayeddepColumns;"
-                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                    appHighlight></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dsDailyDepartmentCountList!=null && dsDailyDepartmentCountList.data.length==0)}">
-                    </mat-footer-row>
-                   </mat-table> 
-                </mat-card>
-                </div>
-            </div>
-
-            <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                <mat-card>
-                    <mat-card-header>
-                        <div class="card-header">
-                            <mat-card-title>OPD Department Wise Bill</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-table matSort class="h-200" [dataSource]="dsDailyDepBillList" [@animateStagger]="{value:'50'}"
-                    style="overflow:auto; ">
-                     
-                    <ng-container matColumnDef="DepartmentName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Department Name </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.DepartmentName}}
-                        </mat-cell>
-                    </ng-container> 
-
-                    <ng-container matColumnDef="Amount">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Amount </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Amount}}
-                        </mat-cell>
-                    </ng-container> 
-
-                    <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6"
-                            style="display: none;">
-                        </mat-header-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <mat-header-row class="accent"
-                        *matHeaderRowDef="displayedDepBillColumns; sticky: true">
-                    </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayedDepBillColumns;"
-                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                    appHighlight></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dsDailyBillList!=null && dsDailyBillList.data.length==0)}">
-                    </mat-footer-row>
-                   </mat-table> 
-                </mat-card>
-                </div>
-            </div>
-            <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                <mat-card>
-                    <mat-card-header>
-                        <div class="card-header">
-                            <mat-card-title>OPD Doctor Wise Count</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-table matSort class="h-200" [dataSource]="dsDailyDocBillList" [@animateStagger]="{value:'50'}"
-                    style="overflow:auto; " >
-                     
-                    <ng-container matColumnDef="DoctorName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Doctor Name </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.DoctorName}}
-                        </mat-cell>
-                    </ng-container> 
-                    
-                    <ng-container matColumnDef="Count">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Count </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.vCount}}
-                        </mat-cell>
-                    </ng-container> 
-
-                    <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6"
-                            style="display: none;">
-                        </mat-header-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <mat-header-row class="accent"
-                        *matHeaderRowDef="displayedDocBillColumns; sticky: true">
-                    </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayedDocBillColumns;"
-                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                    appHighlight></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dsDailyDocBillList!=null && dsDailyDocBillList.data.length==0)}">
-                    </mat-footer-row>
-                   </mat-table> 
-                </mat-card>
-                </div>
-            </div>
-           
-        </div>
-
-        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                <mat-card>
-                    <mat-card-header>
-                        <div class="card-header">
-                            <mat-card-title>IPD Count</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-table matSort class="h-200" [dataSource]="dsDailyIPDCountList" [@animateStagger]="{value:'50'}"
-                    style="overflow:auto; ">
-                     
-                    <ng-container matColumnDef="Admitted">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Admitted </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Admitted}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="TodayAdmitted">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Today Admitted </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.TodayAdmitted}}
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Discharge">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Discharge </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Discharge}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Company">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Company </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Company}}
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6"
-                            style="display: none;">
-                        </mat-header-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <mat-header-row class="accent"
-                        *matHeaderRowDef="displayedIPDCountColumns; sticky: true">
-                    </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayedIPDCountColumns;"
-                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                    appHighlight></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dsDailyIPDCountList!=null && dsDailyIPDCountList.data.length==0)}">
-                    </mat-footer-row>
-                   </mat-table> 
-                </mat-card>
-                </div>
-            </div>
-
-            <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                <mat-card>
-                    <mat-card-header>
-                        <div class="card-header">
-                            <mat-card-title>IPD Bill</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-table matSort class="h-200" [dataSource]="dsDailyIPDBillList" [@animateStagger]="{value:'50'}"
-                    style="overflow:auto; ">
-                     
-                    <ng-container matColumnDef="Cash">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Cash </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Cash}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Cheque">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Cheque </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Cheque}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Online">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Online </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Online}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Company">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Company </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Company}}
-                        </mat-cell>
-                    </ng-container> 
-
-                    <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6"
-                            style="display: none;">
-                        </mat-header-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <mat-header-row class="accent"
-                        *matHeaderRowDef="displayedIPDBillColumns; sticky: true">
-                    </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayedIPDBillColumns;"
-                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                    appHighlight></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dsDailyIPDBillList!=null && dsDailyIPDBillList.data.length==0)}">
-                    </mat-footer-row>
-                   </mat-table> 
-                </mat-card>
-                </div>
-            </div>
-            <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                <mat-card>
-                    <mat-card-header>
-                        <div class="card-header">
-                            <mat-card-title>IPD Advance</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-table matSort class="h-200" [dataSource]="dsDailyIPDAdvaList" [@animateStagger]="{value:'50'}"
-                    style="overflow:auto; " >
-                     
-                    <ng-container matColumnDef="Cash">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Cash </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Cash}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Cheque">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Cheque </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Cheque}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Online">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Online </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Online}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Company">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Company </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Company}}
-                        </mat-cell>
-                    </ng-container> 
-
-                    <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6"
-                            style="display: none;">
-                        </mat-header-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <mat-header-row class="accent"
-                        *matHeaderRowDef="displayedIPDAdvanceColumns; sticky: true">
-                    </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayedIPDAdvanceColumns;"
-                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                    appHighlight></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dsDailyIPDAdvaList!=null && dsDailyIPDAdvaList.data.length==0)}">
-                    </mat-footer-row>
-                   </mat-table> 
-                </mat-card>
-                </div>
-            </div>
-        </div>
-
-        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                <mat-card>
-                    <mat-card-header>
-                        <div class="card-header">
-                            <mat-card-title>IPD Department Wise Count</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-table matSort class="h-200" [dataSource]="dsDailyIPDDepcotList" [@animateStagger]="{value:'50'}"
-                    style="overflow:auto; ">
-                     
-                    <ng-container matColumnDef="DepartmentName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Department Name</mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.DepartmentName}}
-                        </mat-cell>
-                    </ng-container> 
-                    
-                    <ng-container matColumnDef="Count">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Count </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.vCount}}
-                        </mat-cell>
-                    </ng-container> 
-
-                    <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6"
-                            style="display: none;">
-                        </mat-header-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <mat-header-row class="accent"
-                        *matHeaderRowDef="displayedIPDdepColumns; sticky: true">
-                    </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayedIPDdepColumns;"
-                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                    appHighlight></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dsDailyIPDDepcotList!=null && dsDailyIPDDepcotList.data.length==0)}">
-                    </mat-footer-row>
-                   </mat-table> 
-                </mat-card>
-                </div>
-            </div>
-
-            <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                <mat-card>
-                    <mat-card-header>
-                        <div class="card-header">
-                            <mat-card-title>IPD Department Bill</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-table matSort class="h-200" [dataSource]="dsDailyIPDDepBillList" [@animateStagger]="{value:'50'}"
-                    style="overflow:auto; ">
-                     
-                    <ng-container matColumnDef="DepartmentName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Department Name </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.DepartmentName}}
-                        </mat-cell>
-                    </ng-container> 
-                    
-                    <ng-container matColumnDef="Amount">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Amount </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Amount}}
-                        </mat-cell>
-                    </ng-container> 
-
-                    <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6"
-                            style="display: none;">
-                        </mat-header-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <mat-header-row class="accent"
-                        *matHeaderRowDef="displayedIPDDepBillColumns; sticky: true">
-                    </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayedIPDDepBillColumns;"
-                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                    appHighlight></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dsDailyIPDDepBillList!=null && dsDailyIPDDepBillList.data.length==0)}">
-                    </mat-footer-row>
-                   </mat-table> 
-                </mat-card>
-                </div>
-            </div>
-            <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                <mat-card>
-                    <mat-card-header>
-                        <div class="card-header">
-                            <mat-card-title>IPD Doctor Wise Count</mat-card-title>
-                        </div>
-                    </mat-card-header>
-                    <hr>
-                    <mat-table matSort class="h-200" [dataSource]="dsDailyIPDDocList" [@animateStagger]="{value:'50'}"
-                    style="overflow:auto; " >
-                     
-                    <ng-container matColumnDef="DoctorName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Doctor Name </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.DoctorName}}
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Count">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            Count </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            {{contact.Count}}
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="loading">
-                        <mat-header-cell *matFooterCellDef colspan="6"
-                            style="display: none;">
-                        </mat-header-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noData">
-                        <mat-footer-cell *matFooterCellDef colspan="6">
-                            no data found...
-                        </mat-footer-cell>
-                    </ng-container>
-
-                    <mat-header-row class="accent"
-                        *matHeaderRowDef="displayedIPDDocBillColumns; sticky: true">
-                    </mat-header-row>
-                    <mat-row *matRowDef="let contact; columns: displayedIPDDocBillColumns;"
-                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                    appHighlight></mat-row>
-                    <mat-footer-row *matFooterRowDef="['loading']"
-                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                    </mat-footer-row>
-                    <mat-footer-row *matFooterRowDef="['noData']"
-                        [ngClass]="{'hide':!(dsDailyIPDDocList!=null && dsDailyIPDDocList.data.length==0)}">
-                    </mat-footer-row>
-                   </mat-table> 
-                </mat-card>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-
-
-        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                <mat-card>
+                <mat-card class="h-350">
                     <mat-card-content>
                         <canvas id="surveyChart" style="width: 100%;">{{ surveyChart }}</canvas>
                     </mat-card-content>
                 </mat-card>
             </div>
-            <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
+
+            <div fxFlex="49.5%" fxFlex.xs="100%" fxFlex.sm="50%">
                 <mat-card>
                     <mat-card-content>
                         <canvas id="doughnutChart" style="width: 100%;">{{ doughnutChart }}</canvas>
                     </mat-card-content>
                 </mat-card>
+
             </div>
         </div>
         <!-- / HEADER -->
