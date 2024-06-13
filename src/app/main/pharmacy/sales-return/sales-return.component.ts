@@ -408,7 +408,7 @@ export class SalesReturnComponent implements OnInit {
 
   
   SelectedItem(contact) {
-  
+  debugger
     this.OP_IP_Type=contact.OP_IP_Type;
     this.IsPrescriptionFlag=contact.IsPrescriptionFlag;
     this.TempItemselectedlist.data=this.selectedssaleDetailList.data;
@@ -823,7 +823,7 @@ export class SalesReturnComponent implements OnInit {
     debugger
     var D_data = {
       "SalesID": el,
-      "OP_IP_Type":this.OP_IP_Type,
+      "OP_IP_Type": 2//this.OP_IP_Type,
     }
     let printContents;
     this.subscriptionArr.push(

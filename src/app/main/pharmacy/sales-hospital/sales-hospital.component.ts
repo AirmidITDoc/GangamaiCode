@@ -261,6 +261,7 @@ export class SalesHospitalComponent implements OnInit {
   opflag:Boolean=false;
   ipflag:Boolean=false;
   externalflag:Boolean=false;
+  vPaymode='';
 
   displayedColumns = [
     'FromStoreId',
@@ -1870,7 +1871,7 @@ export class SalesHospitalComponent implements OnInit {
   onChangePaymentMode(event) {
     if (event.value == 'Online') {
       this.IsOnlineRefNo = true;
-
+    
       this.ItemSubform.get('referanceNo').reset();
       this.ItemSubform.get('referanceNo').setValidators([Validators.required]);
       this.ItemSubform.get('referanceNo').enable();
@@ -1884,7 +1885,7 @@ export class SalesHospitalComponent implements OnInit {
       this.netPayAmt = this.FinalNetAmount;
       this.getBalanceAmt();
       this.paymentRowObj["cash"] = true;
-      //this.onPaymentChange(1, 'cash');
+      // this.vPaymode='Online';
 
       this.IsOnlineRefNo = false;
       this.ItemSubform.get('referanceNo').clearValidators();
@@ -1893,6 +1894,8 @@ export class SalesHospitalComponent implements OnInit {
       this.IsOnlineRefNo = false;
       this.ItemSubform.get('referanceNo').clearValidators();
       this.ItemSubform.get('referanceNo').updateValueAndValidity();
+    }else if (event.value == "Credit") {
+      this.vPaymode='Credit';
     }
     else {
       this.IsOnlineRefNo = false;
@@ -2474,10 +2477,13 @@ export class SalesHospitalComponent implements OnInit {
  
 
   getPrint3(el) {
-    if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
+
+debugger
+
+    if (this.vPaymode=='Credit') {
       this.type = "Credit"
       this.Creditflag = true;
-    } else if(!(el.PaidType=='Credit' && el.IsRefundFlag==false)){
+    } else if(!(this.vPaymode=='Credit')){
       this.type=" "
       this.Creditflag = false;
     }

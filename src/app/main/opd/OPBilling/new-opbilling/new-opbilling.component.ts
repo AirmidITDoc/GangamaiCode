@@ -1366,6 +1366,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   getSelectedObj1(obj) {
+    debugger
     this.dataSource.data = [];
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;

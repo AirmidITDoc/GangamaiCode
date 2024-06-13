@@ -307,7 +307,7 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber (keyup)="getCellCalculation(element,element.RefundAmt)" (keypress)="keyPressAlphanumeric($event)">
+                                                    <input matInput [(ngModel)]="element.RefundAmt" type="text" (keypress)="keyPressAlphanumeric($event)" (keyup)="getCellCalculation(element,element.RefundAmt)" (keypress)="keyPressAlphanumeric($event)">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
