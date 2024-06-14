@@ -92,9 +92,13 @@ export class IPRefundofBillComponent implements OnInit {
   vOPDNo: any = 0;
   vTariffId: any = 0;
   vClassId: any = 0;
-
+  vRegId: any = 0;
   PatientName: any = "";
   RegId: any = 0;
+  Age: any = 0;
+  RegNo: any = 0;
+  VisitId: any = 0;
+
   noOptionFound: boolean = false;
   PatientListfilteredOptions: any;
   isRegIdSelected: boolean = false;
@@ -175,8 +179,14 @@ export class IPRefundofBillComponent implements OnInit {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj.RegNo);
       this.vOPIPId=this.selectedAdvanceObj.AdmissionID
+      this.vRegId=this.selectedAdvanceObj.RegId
       this.PatientName=this.selectedAdvanceObj.PatientName;
       this.Doctorname=this.selectedAdvanceObj.Doctorname
+      this.RegNo=this.selectedAdvanceObj.RegNo
+      
+      this.Tarrifname= this.selectedAdvanceObj.TariffName
+      this.Age= this.selectedAdvanceObj.AgeYear
+      this.CompanyName= this.selectedAdvanceObj.CompanyName
     }
     // this.myControl = new FormControl();
     // this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -288,9 +298,16 @@ createSearchForm() {
     this.Tarrifname = obj.TariffName;
     this.Doctorname = obj.DoctorName;
     this.vOPIPId = obj.RegId;
-    this.vOPDNo = obj.RegId;//obj.OPDNo;
+    this.vRegId = obj.RegId;
+    this.vOPDNo = obj.OPDNo;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
+    this.RegNo=obj.RegNo
+    this.Age=obj.Age;
+    this.VisitId=obj.VisitId
+    
+    
+    
     this. getRefundofBillIPDList();
   }
 
@@ -354,7 +371,7 @@ createSearchForm() {
   getRefundofBillIPDList() {
     debugger
         var m_data = {
-      "RegId ": this.vOPIPId
+      "RegId ": this.vRegId
       
     }
     // this.isLoadingStr = 'loading';

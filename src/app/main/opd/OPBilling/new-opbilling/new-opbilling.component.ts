@@ -419,6 +419,7 @@ export class NewOPBillingComponent implements OnInit {
 
   getNetAmtSum(element) {
     let netAmt;
+    let netAmt1;
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.b_TotalChargesAmount = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2);
     this.b_concessionamt  = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0).toFixed(2);
@@ -938,7 +939,7 @@ export class NewOPBillingComponent implements OnInit {
             ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
             IsPathology: this.b_isPath,
             IsRadiology: this.b_isRad,
-            ClassName: 'c1',// this.selectedAdvanceObj.ClassName || '',
+            ClassName: '',// this.selectedAdvanceObj.ClassName || '',
             ChargesAddedName: this.accountService.currentUserValue.user.id || 1,
 
           });
@@ -1035,7 +1036,7 @@ export class NewOPBillingComponent implements OnInit {
   conflag: boolean = false;
   // Charges Wise Disc Percentage 
   calculatePersc() {
-
+debugger
     this.v_ChargeDiscPer = this.registeredForm.get('ChargeDiscPer').value;
 
     if ((this.v_ChargeDiscPer < 101) && (this.v_ChargeDiscPer > 0)) {
@@ -1376,6 +1377,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   getSelectedObj1(obj) {
+    debugger
     this.dataSource.data = [];
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;

@@ -64,7 +64,7 @@ export class IPSettlementComponent implements OnInit {
   vAdmissionID: any;
   vCompanyName: any;
   vTariif: any;
-
+  RegID: any;
   PatientHeaderObj: AdvanceDetailObj;
 
   dataSource = new MatTableDataSource<PaidBilldetail>();
@@ -134,13 +134,14 @@ export class IPSettlementComponent implements OnInit {
       this.PatientHeaderObj = this.selectedAdvanceObj;
       console.log(this.PatientHeaderObj);
       this.vAdmissionID = this.PatientHeaderObj.OPD_IPD_Id;
-      this.RegId = this.PatientHeaderObj.RegID;
+      this.RegId = this.PatientHeaderObj.RegId;
+      this.RegID = this.PatientHeaderObj.RegID;
       this.PatientName = this.PatientHeaderObj.PatientName;
       //  this.Doctorname= this.PatientHeaderObj.Doctorname;
       this.vCompanyName = this.PatientHeaderObj.CompanyName;
       this.vTariif = this.PatientHeaderObj.TariffName;
     }
-
+debugger
     this.getPaidBillDetails();
     this.getCreditBillDetails();
 

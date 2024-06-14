@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 
 @Component({
   selector: 'app-ip-bill-browse-list',
@@ -177,16 +178,23 @@ export class IPBillBrowseListComponent implements OnInit {
 
   Billpayment(contact) {
 
-
+    console.log(contact)
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = contact.BillDate;
     PatientHeaderObj['PatientName'] = contact.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-    PatientHeaderObj['RegID'] = contact.RegID;
+    // PatientHeaderObj['RegID'] = contact.RegID;
+    PatientHeaderObj['RegID'] = contact.RegId;
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
     PatientHeaderObj['BillId'] = contact.BillNo;
     PatientHeaderObj['CompanyName'] = contact.CompanyName;
+    PatientHeaderObj['RegNo'] = contact.RegNo;
+    PatientHeaderObj['RegId'] = contact.RegId;
+    this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj);
+
+console.log(PatientHeaderObj)
+
 
     const dialogRef = this._matDialog.open(IPSettlementComponent,
       {
@@ -365,7 +373,7 @@ export class IPBillBrowseListComponent implements OnInit {
       "F_Name": this._IpBillBrowseListService.myFilterform.get("FirstName").value + '%' || "%",
       "L_Name": this._IpBillBrowseListService.myFilterform.get("LastName").value + '%' || "%",
       "From_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-      "To_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      "To_Dt ": this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "Reg_No": this._IpBillBrowseListService.myFilterform.get("RegNo").value || 0,
       "PBillNo": this._IpBillBrowseListService.myFilterform.get("PBillNo").value + '%' || "%",
       "Start":(this.paginator?.pageIndex??0),

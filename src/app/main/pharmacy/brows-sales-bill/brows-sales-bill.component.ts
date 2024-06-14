@@ -85,7 +85,7 @@ export class BrowsSalesBillComponent implements OnInit {
     'PaidAmt',
     'PaidType',
     'IPNo',
-    'action'
+    'action1'
   ]
   displayedColumns2: string[] = [
     'ItemName',
@@ -556,6 +556,7 @@ export class BrowsSalesBillComponent implements OnInit {
     );
   }
   viewSalesPdf(el) {
+    debugger
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       // this.SpinLoading =true;
