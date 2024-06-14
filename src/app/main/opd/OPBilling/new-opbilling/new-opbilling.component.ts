@@ -289,7 +289,8 @@ export class NewOPBillingComponent implements OnInit {
       ConcessionId: [],
       BillRemark: [''],
       FinalAmt: ['', Validators.required],
-      cashpay: ['1'],
+     // cashpay: ['1'],
+     PaymentType:['1'],
       CashCounterId: ['']// ['', Validators.required]
       // TotalAmount: [Validators.pattern("^[0-9]*$")],
     });
@@ -419,8 +420,9 @@ export class NewOPBillingComponent implements OnInit {
   getNetAmtSum(element) {
     let netAmt;
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-    this.b_TotalChargesAmount = netAmt;
-    this.TotalnetPaybleAmt = this.b_TotalChargesAmount;
+    this.b_TotalChargesAmount = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2);
+    this.b_concessionamt  = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0).toFixed(2);
+    this.TotalnetPaybleAmt = netAmt;
     return netAmt
   }
 
@@ -568,7 +570,7 @@ export class NewOPBillingComponent implements OnInit {
       PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
       PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
-      if (!this.BillingForm.get('cashpay').value) {
+      if (this.BillingForm.get('PaymentType').value == 1) {
         const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
           {
             maxWidth: "80vw",
@@ -618,51 +620,57 @@ export class NewOPBillingComponent implements OnInit {
                     let m = response;
                     this.viewgetBillReportPdf(response);
                     this.getWhatsappshareSales(response, vmMobileNo)
+                    this.onClose();
                   }
                 });
+                this.onClose();
               } else {
                 Swal.fire('Error !', 'OP Billing data not saved', 'error');
               }
               this.isLoading = '';
             });
           }
-          else {
-            Swal.fire({
-              title: 'Do you want to generate Credit Bill',
-              // showDenyButton: true,
-              showCancelButton: true,
-              confirmButtonText: 'OK',
+          // else {
+          //   Swal.fire({
+          //     title: 'Do you want to generate Credit Bill',
+          //     // showDenyButton: true,
+          //     showCancelButton: true,
+          //     confirmButtonText: 'OK',
 
-            }).then((flag) => {
+          //   }).then((flag) => {
 
-              if (flag.isConfirmed) {
-                InsertBillUpdateBillNoObj['BalanceAmt'] = result.submitDataPay.ipPaymentInsert.CashPayAmount;
-                let submitData = {
-                  "chargesDetailCreditInsert": InsertAdddetArr,
-                  "insertBillcreditupdatewithbillno": InsertBillUpdateBillNoObj,
-                  "opBillDetailscreditInsert": Billdetsarr,
-                  "opCalDiscAmountBillcredit": opCalDiscAmountBill,
-                };
-                console.log(submitData);
-                this._oPSearhlistService.InsertOPBillingCredit(submitData).subscribe(response => {
-                  if (response) {
-                    Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
-                      if (result.isConfirmed) {
-                        let m = response;
-                        this.viewgetBillReportPdf(response);
-                        this.getWhatsappshareSales(response, vmMobileNo)
-                      }
-                    });
-                  } else {
-                    Swal.fire('Error !', 'OP Billing data not saved', 'error');
-                  }
-                  this.isLoading = '';
-                });
-              }
-            });
-          }
+          //     if (flag.isConfirmed) {
+          //       InsertBillUpdateBillNoObj['BalanceAmt'] = result.submitDataPay.ipPaymentInsert.CashPayAmount;
+          //       let submitData = {
+          //         "chargesDetailCreditInsert": InsertAdddetArr,
+          //         "insertBillcreditupdatewithbillno": InsertBillUpdateBillNoObj,
+          //         "opBillDetailscreditInsert": Billdetsarr,
+          //         "opCalDiscAmountBillcredit": opCalDiscAmountBill,
+          //       };
+          //       console.log(submitData);
+          //       this._oPSearhlistService.InsertOPBillingCredit(submitData).subscribe(response => {
+          //         if (response) {
+          //           Swal.fire('OP Bill Credit !', 'Bill Generated Successfully!', 'success').then((result) => {
+          //             if (result.isConfirmed) {
+          //               let m = response;
+          //               this.viewgetBillReportPdf(response);
+          //               this.getWhatsappshareSales(response, vmMobileNo)
+          //             }
+          //           });
+          //         } else {
+          //           Swal.fire('Error !', 'OP Billing data not saved', 'error');
+          //         }
+          //         this.isLoading = '';
+          //       });
+          //     }
+          //   });
+          // }
         });
-      } else {
+      }
+      else if(this.BillingForm.get('PaymentType').value == 0) {
+        this.saveCreditbill();
+      }
+       else {
 
         InsertBillUpdateBillNoObj['PaidAmt'] = this.BillingForm.get('FinalAmt').value || 0;
 
@@ -868,9 +876,11 @@ export class NewOPBillingComponent implements OnInit {
           if (result.isConfirmed) {
             let m = response;
             this.viewgetBillReportPdf(response);
-            this.getWhatsappshareSales(response, this.vMobileNo)
+            this.getWhatsappshareSales(response, this.vMobileNo);
+            this.onClose();
           }
         });
+        this.onClose();
       } else {
         Swal.fire('Error !', 'OP Billing data not saved', 'error');
       }
@@ -1219,7 +1229,7 @@ export class NewOPBillingComponent implements OnInit {
   }
 
   onClose() {
-    // this.dialogRef.close();
+    this._matDialog.closeAll();
 
   }
 

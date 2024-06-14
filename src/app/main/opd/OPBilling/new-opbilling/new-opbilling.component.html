@@ -1,4 +1,4 @@
-<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" class="page-layout" fusePerfectScrollbar>
+<div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px" class="page-layout" fusePerfectScrollbar >
     <div class="container" style="width: 100%;">
         <div style="width: 100%;">
             <!-- <div fxFlex> -->
@@ -14,15 +14,22 @@
                         OPD BILLING 
                     </span>
 
+                   
+
                     <!-- <span  style="margin-left:400px;" hidden><app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date></span>   -->
                     <!-- <span class="material-icons" style="cursor: pointer; margin-left: 1100px; color: #fff;"
                         (click)="onClose()">
                         close
                     </span> -->
                 </div>
+                <div class="close-icon">
+                    <span class="material-icons" style="cursor: pointer;margin-left: 950px;" (click)="onClose()"  >
+                        close
+                    </span>
+                </div>
             </div>
 
-            <div style="width: 100%;" class="opd-billing-body p-16">
+            <div style="width: 100%;" class="opd-billing-body p-16" >
                 <div fxLayout="column">
                     <div class="patient-search-container">
                         <form [formGroup]="searchFormGroup">
@@ -72,8 +79,59 @@
                     </div>
 
                     <div fxlayout="row">
+                        <div class="modal-card-container">
+                            <mat-card>
+                                <div class="patient-info-container">
+                                    <div class="patient-info-box">
+                                        <div class="patient-info-title border-bottom pb-2">
+                                            <span class="h2">Patient Information</span>
+                                        </div>
+                                        <div class="patient-info-box my-8">
+                                            <div class="patient-info-row">
+                                                <!-- <div class="patient-col">
+                                                    <span class="patient-col-key ">RegNo</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{RegNo}}</span>
+                                                </div> -->
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key "  style="width: 130px;">Patient Name(RegNo)</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value" style="width: 200px;">{{PatientName}}({{RegNo}})</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">OPDNo</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{vOPIPId}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Tariff</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{Tarrifname}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key ">Class</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vClassName}}</span>
+                                                </div> 
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Company</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{CompanyName}}</span>
+                                                </div> 
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Doctor</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{Doctorname}}</span>
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
 
-                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                        <!-- <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                             <div class="patient-info-container">
                                 <div class="patient-info-box">
                                     <div class="patient-info-title border-bottom pb-2">
@@ -113,11 +171,7 @@
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{CompanyName}}</span>
                                             </div>
-                                            <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                        <span class="patient-col-key">Patient Source</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{PatientType}}</span>
-                                                    </div> -->
+                                          
                                             <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="20%">
                                                 <span class="patient-col-key">Doctor</span>
                                                 <span>:</span>
@@ -127,7 +181,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                 </div>
@@ -143,7 +197,7 @@
                                     <form [formGroup]="registeredForm" style="display: flex;" #f="ngForm" #aForm
                                         class="mat-form-field-auto">
 
-                                        <div fxLayout="row">
+                                        <div fxLayout="row" fxLayoutGap="5px">
 
                                             <mat-form-field appearance="outline" style="width:500px;" #myInput>
                                                 <input type="text" name="SrvcName" formControlName="SrvcName" #itemid
@@ -293,7 +347,7 @@
                                                 <mat-error
                                                     *ngIf="registeredForm.get('netAmount').invalid && registeredForm.get('netAmount').touched">
                                                     NetAmount is required</mat-error>
-                                            </mat-form-field>
+                                            </mat-form-field> &nbsp;&nbsp;
 
                                             <div matTooltip="Enter all data to enable this button!!"
                                                 [matTooltipDisabled]="!registeredForm.invalid"
@@ -315,16 +369,16 @@
                     </div>
                     <div fxLayout="row" style="width: 100%;">
                         <div fxFlex="100" fxLayout="row" fxLayout.gt-xs="column">
-                            <mat-tab-group class="gap-8 inkbar-hidden">
-                                <mat-tab>
-                                    <ng-template mat-tab-label>
-                                        <!-- <mat-icon class="example-tab-icon">thumb_up</mat-icon>&nbsp; -->
+                            <!-- <mat-tab-group class="gap-8 inkbar-hidden">
+                                <mat-tab> -->
+                                    <!-- <ng-template mat-tab-label>
+                                        <mat-icon class="example-tab-icon">thumb_up</mat-icon>&nbsp;
                                         chargeslist
-                                    </ng-template>
+                                    </ng-template> -->
                                     <div>
                                         <div class="col-md-12">
                                             <!-- ================= Charges List Table ======================= -->
-                                            <mat-table #table matSort [dataSource]="dataSource" class="h-340"
+                                            <mat-table #table matSort [dataSource]="dataSource" class="h-250"
                                                 [@animateStagger]="{value:'50'}"
                                                 style="height:200px !important;overflow: auto;">
 
@@ -460,30 +514,39 @@
                                             </mat-table>
                                             <!-- ================= Charges List Footer Table ======================= -->
                                             <div class="amt-container py-4">
-                                                <div class="amount-box w-100-p gap-28" fxLayout="row"
-                                                    fxLayoutAlign="center center">
-                                                    <div class="no-of-service" fxLayout="row" fxLayoutGap="8px">
-                                                        <span class="net-amt-label font-weight-600">No of Services :
-                                                        </span>
-                                                        <span
-                                                            class="net-amt-value text-primary">{{dataSource.data.length}}</span>
-                                                    </div>
-                                                    <div class="net-amount" fxLayout="row" fxLayoutGap="8px">
-                                                        <span class="net-amt-label font-weight-600">Net Amount :
-                                                        </span>
-                                                        <span
-                                                            class="net-amt-value text-primary">{{getNetAmtSum(dataSource.data)}}
-                                                        </span>
-                                                        <span
-                                                        class="net-amt-value text-primary">{{getDiscAmtSum(dataSource.data)}}
-                                                    </span>
+                                                <div class="amount-box w-100-p gap-28" fxLayout="row">
+                                                   
+                                                    <div class="net-amount" fxLayout="row" fxLayoutGap="20px" fxLayoutALign="start center">
+
+                                                        <span class="net-amt-mat-label"
+                                                        style="font-weight:bold;padding-bottom: 8px;">No Of
+                                                        Item:
+                                                     </span>&nbsp;
+                                                      <span class="net-amt-value"
+                                                        style="margin-left:10px;font-weight:bolder;color: blue;">{{dataSource.data.length}}</span>
+        
+
+                                                        <span class="net-amt-mat-label"
+                                                        style="font-weight:bold;margin-left:20px;">Net Amount :
+                                                       </span>&nbsp;
+                                                        <span class="net-amt-value text-primary"
+                                                        style="margin-left:10px;font-weight:bolder;color: blue;">{{getNetAmtSum(dataSource.data)
+                                                        | currency:'INR' }}</span>
+
+                                                        <span class="net-amt-mat-label"
+                                                        style="font-weight:bold;margin-left:20px;">Discount Amount :
+                                                       </span>&nbsp;
+                                                        <span class="net-amt-value text-primary"
+                                                        style="margin-left:10px;font-weight:bolder;color: blue;">{{getDiscAmtSum(dataSource.data)
+                                                        | currency:'INR' }}</span>
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </mat-tab>
-                            </mat-tab-group>
+                                <!-- </mat-tab> 
+                            </mat-tab-group>-->
                         </div>
                     </div>
                     <div class="bottom-form">
@@ -518,7 +581,7 @@
                                                 [ngModel]="b_concessionDiscPer" autocomplete="off" #disper  id="Percentage"
                                                 (keyup)="calcDiscPersonTotal()" onlyNumber maxlength="3"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                (keypress)="keyPressAlphanumeric($event)">
+                                                (keypress)="keyPressAlphanumeric($event)" [disabled]="v_ChargeDiscPer > 0">
                                         </mat-form-field>
 
 
@@ -547,19 +610,32 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Remark</mat-label>
                                             <input name="Address" appearance="legacy" style="color: green;"
                                                 formControlName="BillRemark" placeholder="Remark" matInput>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
 
                                     </div>
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center">
-                                    <mat-checkbox aria-label="Cash Payment" formControlName="cashpay" (checked)=true
+                                    <div fxLayout="row" fxLayoutGap="50px">
+                                    <!-- <mat-checkbox aria-label="Cash Payment" formControlName="cashpay" (checked)=true
                                         class="font-weight-600 text-primary">
                                         Cash Payment
                                     </mat-checkbox>
+                                    <mat-checkbox aria-label="Credit Payment" formControlName="creditpay" (checked)=false
+                                    class="font-weight-600 text-primary">
+                                    Credit Payment
+                                   </mat-checkbox> -->
+
+                                   <mat-radio-group  formControlName="PaymentType"
+                                   fxLayout="row" class="gap-4">
+                                   <mat-radio-button value="1">Cash Payment</mat-radio-button>
+                                   <mat-radio-button value="0">Credit Payment</mat-radio-button>
+                                   </mat-radio-group>
+
+                                   </div>
                                     <div class="action-btns gap-8" fxLayout="row">
                                         <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
                                         <button class="btn btn-primary" (click)="onSaveOPBill2()"

@@ -194,11 +194,11 @@ export class DashboardService {
   }
   public getBedOccupancyList()
   {
-     return this._httpClient.post("Generic/GetByProc?procName= m_DASH_WARD_WISE_BED_OCCUPANCY",{})
+     return this._httpClient.post("Generic/GetByProc?procName=m_DASH_WARD_WISE_BED_OCCUPANCY",{})
   }
   public getIPDAppointCountList()
   {
-     return this._httpClient.post("Generic/GetByProc?procName= m_DASH_IP_ADMISSION_DISCHARGE_COUNT",{})
+     return this._httpClient.post("Generic/GetByProc?procName=m_DASH_IP_ADMISSION_DISCHARGE_COUNT",{})
   }
 }
 

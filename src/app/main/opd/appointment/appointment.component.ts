@@ -431,8 +431,7 @@ export class AppointmentComponent implements OnInit {
 
       });
     dialogRef.afterClosed().subscribe(result => {
-
-
+      this.getVisitList();
     });
   }
 
@@ -966,10 +965,8 @@ export class AppointmentComponent implements OnInit {
       
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      
+      this.getVisitList1();
     });
-    this.getVisitList1();
-
   }
 
   AppointmentCancle(contact) {
@@ -996,6 +993,7 @@ export class AppointmentComponent implements OnInit {
             Swal.fire('Appointment cancelled !', 'Appointment cancelled Successfully!', 'success').then((result) => {
 
             });
+            this.getVisitList1();
           } else {
             Swal.fire('Error !', 'Appointment cancelled data not saved', 'error');
           }
@@ -1650,9 +1648,138 @@ export class AppointmentComponent implements OnInit {
     }
   }
 
+  onNewSave(){
+    if ((this.vPrefixID == '' || this.vPrefixID == null || this.vPrefixID == undefined)) {
+      this.toastr.warning('Please select valid Prefix ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vCityId == '' || this.vCityId == null || this.vCityId == undefined)) {
+      this.toastr.warning('Please select valid City', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vPatientTypeID == '' || this.vPatientTypeID == null || this.vPatientTypeID == undefined)) {
+      this.toastr.warning('Please select PatientType', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vTariff == '' || this.vTariff == null || this.vTariff == undefined)) {
+      this.toastr.warning('Please select Tariff', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vDepartmentid == '' || this.vDepartmentid == null || this.vDepartmentid == undefined)) {
+      this.toastr.warning('Please Select Department', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined)) {
+      this.toastr.warning('Please Select Doctor', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const ischeckprefix = this.PrefixList.some(item => item.PrefixName ===this.personalFormGroup.get('PrefixID').value.PrefixName)
+    if(!ischeckprefix){
+      this.toastr.warning('Please Select valid Prefix', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.personalFormGroup.get('AreaId').value){
+      if(!this.AreaList.some(item => item.AreaName ===this.personalFormGroup.get('AreaId').value.AreaName)){
+        this.toastr.warning('Please Select valid AreaName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(!this.cityList.some(item => item.CityName ===this.personalFormGroup.get('CityId').value.CityName)){
+      this.toastr.warning('Please Select valid City', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.personalFormGroup.get('MaritalStatusId').value){
+      if(!this.MaritalStatusList.some(item => item.MaritalStatusName ===this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusName)){
+        this.toastr.warning('Please Select valid MaritalStatus', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(this.personalFormGroup.get('ReligionId').value){
+      if(!this.ReligionList.some(item => item.ReligionName ===this.personalFormGroup.get('ReligionId').value.ReligionName)){
+        this.toastr.warning('Please Select valid ReligionName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(!this.PatientTypeList.some(item => item.PatientType ===this.VisitFormGroup.get('PatientTypeID').value.PatientType)){
+      this.toastr.warning('Please Select valid PatientType', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(!this.TariffList.some(item => item.TariffName ===this.VisitFormGroup.get('TariffId').value.TariffName)){
+      this.toastr.warning('Please Select valid TariffName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+   
+    if(!this.DepartmentList.some(item => item.departmentName ===this.VisitFormGroup.get('Departmentid').value.departmentName)){
+      this.toastr.warning('Please Select valid departmentName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(!this.DoctorList.some(item => item.Doctorname ===this.VisitFormGroup.get('DoctorID').value.Doctorname)){
+      this.toastr.warning('Please Select valid Doctorname', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.VisitFormGroup.get('RefDocId').value){
+      if(!this.Doctor1List.some(item => item.DoctorName ===this.VisitFormGroup.get('RefDocId').value.DoctorName)){
+        this.toastr.warning('Please Select valid RefDoctorName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(this.VisitFormGroup.get('PurposeId').value){
+      if(!this.PurposeList.some(item => item.PurposeName ===this.VisitFormGroup.get('PurposeId').value.PurposeName)){
+        this.toastr.warning('Please Select valid PurposeName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+  
+    if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
+       
+      if (this.searchFormGroup.get('regRadio').value == "registration") {
+        //if (this.vPhoneAppId == 0 && this.Regflag == false) {
+        this.OnsaveNewRegister();
+
+      }
+      else if (this.searchFormGroup.get('regRadio').value == "registrered") {
+        this.onSaveRegistered();
+        this.onClose();
+      }
+    }
+    this.getVisitList1();
+  }
 
   onSave() {
-    
     
     // console.log(this.personalFormGroup.get("AreaId").value.AreaId)
     // if(this.personalFormGroup.get("AreaId").value.AreaId > 0)
@@ -1674,6 +1801,8 @@ export class AppointmentComponent implements OnInit {
     // this.toastr.warning('Please Enter Valid ReligionId.', 'Warning !', {
     //   toastClass: 'tostr-tost custom-toast-warning',
     // });
+
+
 
 
 
@@ -1707,6 +1836,26 @@ export class AppointmentComponent implements OnInit {
 
 
   OnsaveNewRegister() {
+    
+    let Areaid = 0;
+    if (this.personalFormGroup.get('AreaId').value)
+      Areaid = this.personalFormGroup.get('AreaId').value.AreaId;
+
+    let MaritalStatusId = 0;
+    if (this.personalFormGroup.get('MaritalStatusId').value)
+      MaritalStatusId = this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId;
+
+    let ReligionId = 0;
+    if (this.personalFormGroup.get('ReligionId').value)
+      ReligionId = this.personalFormGroup.get('ReligionId').value.ReligionId;
+
+    let RefDocId = 0;
+    if (this.VisitFormGroup.get('RefDocId').value)
+      RefDocId = this.VisitFormGroup.get('RefDocId').value.DoctorId;
+
+    let PurposeId = 0;
+    if (this.VisitFormGroup.get('PurposeId').value)
+      PurposeId = this.VisitFormGroup.get('PurposeId').value.PurposeId;
 
     
     if (this.patienttype != 2) {
@@ -1746,10 +1895,10 @@ export class AppointmentComponent implements OnInit {
       registrationSave['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
       registrationSave['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
       registrationSave['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
-      registrationSave['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
+      registrationSave['maritalStatusId'] = MaritalStatusId; //this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
       registrationSave['isCharity'] = false;
-      registrationSave['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
-      registrationSave['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
+      registrationSave['religionId'] = ReligionId; //this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
+      registrationSave['areaId'] = Areaid; //this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
       registrationSave['Aadharcardno'] = this.personalFormGroup.get('AadharCardNo').value || '';
       registrationSave['Pancardno'] = this.registerObj.PanCardNo || '';// this.personalFormGroup.get('Pancardno').value || '';
       registrationSave['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
@@ -1764,7 +1913,7 @@ export class AppointmentComponent implements OnInit {
         visitSave['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
       visitSave['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;
       visitSave['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;
-      visitSave['RefDocId'] = this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;
+      visitSave['RefDocId'] = RefDocId ; // this.VisitFormGroup.get('RefDocId').value.DoctorId || 0;
       visitSave['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
       visitSave['CompanyId'] = this.CompanyId;
       visitSave['AddedBy'] = this.accountService.currentUserValue.user.id;
@@ -1776,7 +1925,7 @@ export class AppointmentComponent implements OnInit {
       visitSave['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid;
       visitSave['PatientOldNew'] = this.Patientnewold;
       visitSave['FirstFollowupVisit'] = 0,
-        visitSave['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;
+        visitSave['appPurposeId'] =PurposeId ; // this.VisitFormGroup.get('PurposeId').value.PurposeId || 0;
       visitSave['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
         visitSave['crossConsulFlag'] = 0,
         visitSave['phoneAppId'] = this.vPhoneAppId || 0;
@@ -1795,6 +1944,7 @@ export class AppointmentComponent implements OnInit {
             Swal.fire('Congratulations !', 'New Appoinment from Phone save Successfully !', 'success').then((result) => {
 
             });
+            this.getVisitList1();
           } else {
             Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
             });
@@ -1813,6 +1963,27 @@ export class AppointmentComponent implements OnInit {
   }
 
   onSaveRegistered() {
+    
+    let Areaid = 0;
+    if (this.personalFormGroup.get('AreaId').value)
+      Areaid = this.personalFormGroup.get('AreaId').value.AreaId;
+
+    let MaritalStatusId = 0;
+    if (this.personalFormGroup.get('MaritalStatusId').value)
+      MaritalStatusId = this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId;
+
+    let ReligionId = 0;
+    if (this.personalFormGroup.get('ReligionId').value)
+      ReligionId = this.personalFormGroup.get('ReligionId').value.ReligionId;
+
+    let RefDocId = 0;
+    if (this.VisitFormGroup.get('RefDocId').value)
+      RefDocId = this.VisitFormGroup.get('RefDocId').value.DoctorId;
+
+    let PurposeId = 0;
+    if (this.VisitFormGroup.get('PurposeId').value)
+      PurposeId = this.VisitFormGroup.get('PurposeId').value.PurposeId;
+
 
     if (this.patienttype != 2) {
       this.CompanyId = 0;
@@ -1849,10 +2020,10 @@ export class AppointmentComponent implements OnInit {
     registrationUpdate['countryId'] = this.personalFormGroup.get('CountryId').value.CountryId;
     registrationUpdate['stateId'] = this.personalFormGroup.get('StateId').value.StateId;
     registrationUpdate['cityId'] = this.personalFormGroup.get('CityId').value.CityId;
-    registrationUpdate['maritalStatusId'] = this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
+    registrationUpdate['maritalStatusId'] = MaritalStatusId ;// this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0;
     registrationUpdate['isCharity'] = false;
-    registrationUpdate['religionId'] = this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
-    registrationUpdate['areaId'] = this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
+    registrationUpdate['religionId'] = ReligionId ;//this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0;
+    registrationUpdate['areaId'] =  Areaid ;//this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0;
     registrationUpdate['Aadharcardno'] = this.personalFormGroup.get('AadharCardNo').value || '';
     registrationUpdate['Pancardno'] = this.personalFormGroup.get('PanCardNo').value || '';
     registrationUpdate['isSeniorCitizen'] = true; //this.personalFormGroup.get('isSeniorCitizen').value ? this.personalFormGroup.get('VillageId').value.VillageId : 0; //this.registerObj.VillageId;
@@ -1868,7 +2039,7 @@ export class AppointmentComponent implements OnInit {
       visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
     visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
     visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
-    visitUpdate['RefDocId'] = this.VisitFormGroup.get('DoctorIdOne').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
+    visitUpdate['RefDocId'] = RefDocId; // this.VisitFormGroup.get('DoctorIdOne').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
     visitUpdate['TariffId'] = this.VisitFormGroup.get('TariffId').value.TariffId ? this.VisitFormGroup.get('TariffId').value.TariffId : 0;
     visitUpdate['CompanyId'] = this.CompanyId || 0;
     visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
@@ -1880,7 +2051,7 @@ export class AppointmentComponent implements OnInit {
     visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.Departmentid; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
     visitUpdate['PatientOldNew'] = this.Patientnewold;
     visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-      visitUpdate['appPurposeId'] = this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
+      visitUpdate['appPurposeId'] = PurposeId ; //this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
     visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
       visitUpdate['crossConsulFlag'] = 0,
       visitUpdate['phoneAppId'] = this.vPhoneAppId || 0;
@@ -1898,21 +2069,15 @@ export class AppointmentComponent implements OnInit {
 
         Swal.fire('Congratulations !', 'Registered Appoinment Saved Successfully  !', 'success').then((result) => {
           if (result.isConfirmed) {
-
             this.viewgetPatientAppointmentReportPdf(response, false);
           }
-         
-
+          this.getVisitList();
         });
-
-
       } else {
         Swal.fire('Error !', 'Appointment not Updated', 'error');
       }
       this.isLoading = '';
     });
-
-   
     this.RegOrPhoneflag = "";
     this.getVisitList1();
   }
@@ -2068,7 +2233,7 @@ export class AppointmentComponent implements OnInit {
         }
       );
       dialogRef.afterClosed().subscribe((result) => {
-
+        this.getVisitList();
       });
     } else if (m == "Update Referred Doctor") {
       var m_data3 = {
@@ -2091,6 +2256,7 @@ export class AppointmentComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((result) => {
         console.log("The dialog was closed - Insert Action", result);
+        this.getVisitList();
       });
     } else if (m == "Cancle Appointment") {
       // console.log(contact)
@@ -2639,7 +2805,7 @@ export class AppointmentComponent implements OnInit {
     let xx = {
       RegId: contact.RegId,
       OPD_IPD_ID: contact.OPD_IPD_ID,
-      RegNo: contact.RegNo,
+      RegNo: contact.RegNoWithPrefix,
       VisitId: contact.VisitId,
       PatientName: contact.PatientName,
       Doctorname: contact.Doctorname,
@@ -2664,7 +2830,7 @@ export class AppointmentComponent implements OnInit {
       });
 
     dialogRef.afterClosed().subscribe(result => {
-
+      this.getVisitList1();
     });
 
   }

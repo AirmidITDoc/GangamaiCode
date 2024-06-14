@@ -21,7 +21,7 @@
             <div fxLayout="column" class="gap-12">
                 <div class="layout-card-container">
                     <form [formGroup]="searchFormGroup">
-                        <mat-card>
+                        <mat-card style="padding: 6px;">
                             <div class="patient-search">
                                 <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
                                     <mat-form-field class=searchRegId appearance="outline" fxFlex="40%">
@@ -45,7 +45,7 @@
                 </div>
                 <div class="layout-card-container">
                     <form [formGroup]="searchFormGroup">
-                        <mat-card>
+                        <mat-card style="padding: 6px;">
                             <div class="patient-info-container">
                                 <fieldset class="fieldset-div">
                                     <legend class="h2">Patient Information</legend>
@@ -91,7 +91,7 @@
                         <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
                             <mat-card>
                                 <div class="table-wrapper">
-                                    <mat-table class="h-240" matSort [dataSource]="dataSource3" [@animateStagger]="{value:'50'}">
+                                    <mat-table class="h-200" matSort [dataSource]="dataSource3" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="BillNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -176,7 +176,7 @@
                         <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
                             <mat-card>
                                 <div class="table-wrapper">
-                                    <mat-table class="h-240" matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
+                                    <mat-table class="h-200" matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="RefundDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -237,7 +237,7 @@
                         <div class="table-main" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                             <mat-card>
                                 <div class="table-wrapper">
-                                    <mat-table class="h-240" matSort [dataSource]="dataSource2" [@animateStagger]="{value:'50'}">
+                                    <mat-table class="h-200" matSort [dataSource]="dataSource2" [@animateStagger]="{value:'50'}">
 
                                         <ng-container matColumnDef="ServiceId">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -307,7 +307,9 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                 <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber (keyup)="getCellCalculation(element,element.RefundAmt)" (keypress)="keyPressAlphanumeric($event)">
+                                                    <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber 
+                                                    (keyup)="gettablecalculation(element,element.RefundAmt)" 
+                                                    (keypress)="keyPressCharater($event)">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
@@ -316,7 +318,8 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Bal Amount </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <input matInput [(ngModel)]="element.BalanceAmount">
+                                                <!-- <input matInput [(ngModel)]="element.BalanceAmount"> -->
+                                                <span>{{element.BalanceAmount}}</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -368,7 +371,7 @@
                 </div>
                 <div class="layout-card-container">
                     <form [formGroup]="RefundOfBillFormGroup">
-                        <mat-card>
+                        <mat-card style="padding: 6px;">
                             <div class="net-amt-form">
                                 <div fxLayout="row" class="gap-8">
                                     <mat-form-field appearance="outline">
@@ -385,6 +388,15 @@
                                         <mat-label>Remark</mat-label>
                                         <input matInput [(ngModel)]="Remark" formControlName="Remark" name="Remark">
                                     </mat-form-field>
+
+                                    <div class="layout-footer">
+                                        <div class="footer-navigation-container">
+                                            <div class="layout-footer-buttons">
+                                                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                                <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="this.RefundOfBillFormGroup.invalid">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </mat-card>
@@ -394,14 +406,7 @@
         </div>
         <!-- / CONTENT -->
     </div>
-    <div class="layout-footer">
-        <div class="footer-navigation-container">
-            <div class="layout-footer-buttons">
-                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="this.RefundOfBillFormGroup.invalid">Save</button>
-            </div>
-        </div>
-    </div>
+   
     <!-- / CENTER -->
 </div>
 <!--End of Middle Data-->

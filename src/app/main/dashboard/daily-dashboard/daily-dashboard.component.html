@@ -25,8 +25,8 @@
 
     <div class="center" fusePerfectScrollbar>
 
-        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)" (click)="getBedOccupancy()">
+        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+            <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)" >
                 <mat-card>
                     <mat-card-content>
                         <div fxLayout="row" fxLayoutAlign="space-between">
@@ -34,10 +34,9 @@
                                 <mat-icon style="color: white;"> account_circle </mat-icon>
                             </div>
 
-                            <div class="labels-div">
-                                <div>Appointments</div>
-                                <div>20</div>
-
+                            <div class="labels-div"  fxLayout="row">
+                                <div>Appointments  | </div>
+                                <div [@animate]="{value:'*',params:{x:'50px'}}">{{Appoinmentlist[0].AppointmentCount}}</div>
                             </div>
                         </div>
                         <div>
@@ -52,19 +51,25 @@
                         <div fxLayout="row" fxLayoutAlign="space-between">
                             <div class="icon-div icon-2">
                                 <mat-icon style="color: white;"> account_circle </mat-icon>
-                                <!-- <i class="fa fa-scissors" aria-hidden="true"></i> -->
                             </div>
-                            <div class="labels-div">
-                                <div>Operations</div>
-                                <div>12</div>
+                            <div class="labels-div" fxLayout="row">
+                                <div>Admission | </div>
+                                <div [@animate]="{value:'*',params:{x:'50px'}}">
+                                    {{Appoinmentlist[0].TotalAdmittedPatientCount}}</div>
+                            </div>
+                            <div class="labels-sm" fxLayout="row" fxLayoutAlign="center">
+                                <div>Self | {{Appoinmentlist[0].SelfPatient}}</div>
+                                <div>Company | {{Appoinmentlist[0].CompnayPatient}}</div>
                             </div>
                         </div>
+                      
                         <div>
                             <canvas id="MyChart2" style="width: 100%; height: 150px;">{{ chart2 }}</canvas>
                         </div>
                     </mat-card-content>
                 </mat-card>
             </div>
+
             <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
                 <mat-card>
                     <mat-card-content>
@@ -73,12 +78,21 @@
                                 <mat-icon style="color: white;"> account_circle </mat-icon>
                             </div>
                             <div class="labels-div">
-                                <div>New Patients</div>
-                                <div>30</div>
+                                <div>Todays Admission | </div>
+                                <div>Todays Discharge | </div>
+                                <div></div>
+                            </div>
+                            <div class="labels-div">
+                                <div>{{Appoinmentlist[0].TodayAdmittedPatient}}</div>
+                                <div>{{Appoinmentlist[0].TodayDischargePatient}}</div>
+                            </div>
+                            <div class="labels-sm" fxLayout="row" fxLayoutAlign="center">
+                                <div>Self | {{Appoinmentlist[0].TodaySelfPatient}}</div>
+                                <div>Company | {{Appoinmentlist[0].TodayOtherPatient}}</div>
                             </div>
                         </div>
                         <div>
-                            <canvas id="MyChart3" style="width: 100%; height: 150px;">{{ chart3 }}</canvas>
+                            <canvas id="MyChart3" style="width: 100%; height: 140px;">{{ chart3 }}</canvas>
                         </div>
                     </mat-card-content>
                 </mat-card>
@@ -103,17 +117,16 @@
             </div>
         </div>
 
-        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
+        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
             <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="25%">
                 <div class="chart-card-container">
                     <mat-card>
-                        <mat-card-header>
-                            <div class="card-header">
-                                <mat-card-title>OPD Count</mat-card-title>
-                            </div>
-                        </mat-card-header>
+                                <div class="header-sm" fxLayout="row">
+                                    <div>OPD Count</div>
+                                    <div>Total : {{dsDailyCountList.data[0].TotalVisitCount}}</div>
+                                </div>
                         <hr>
-                        <mat-table matSort class="h-200" [dataSource]="dsDailyCountList"
+                        <mat-table matSort class="h-100" [dataSource]="dsDailyCountList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto; ">
 
                             <ng-container matColumnDef="OldPatient">
@@ -132,7 +145,7 @@
                             </ng-container>
                             <ng-container matColumnDef="ReferPatient">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    CrossConsultantPat </mat-header-cell>
+                                    CrossConsultant </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.CrossConsultantPatCount}}
                                 </mat-cell>
@@ -174,13 +187,12 @@
             <div fxFlex="64.8%" fxFlex.xs="100%" fxFlex.sm="25%">
                 <div class="chart-card-container">
                     <mat-card>
-                        <mat-card-header>
-                            <div class="card-header">
-                                <mat-card-title>OPD Collection and Summary</mat-card-title>
-                            </div>
-                        </mat-card-header>
+                        <div class="header-sm" fxLayout="row">
+                            <div>OPD Collection and Summary</div>
+                            <div>Total Bill Amount : {{dsDailyBillList.data[0].NetBillAmount | currency:'INR' :'symbol' :'2.2-2'}}</div>
+                        </div>
                         <hr>
-                        <mat-table matSort class="h-200" [dataSource]="dsDailyBillList" [@animateStagger]="{value:'50'}"
+                        <mat-table matSort class="h-100" [dataSource]="dsDailyBillList" [@animateStagger]="{value:'50'}"
                             style="overflow:auto; ">
 
                             <ng-container matColumnDef="Cash">
@@ -214,7 +226,7 @@
 
                             <ng-container matColumnDef="DiscAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Discount Amount </mat-header-cell>
+                                    Discount Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.DiscAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                 </mat-cell>
@@ -222,7 +234,7 @@
 
                             <ng-container matColumnDef="TotalAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Total Amount </mat-header-cell>
+                                    Total Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.TotalBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                 </mat-cell>
@@ -230,7 +242,7 @@
 
                             <ng-container matColumnDef="NetAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Net Amount </mat-header-cell>
+                                    Net Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.NetBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                 </mat-cell>
@@ -238,14 +250,14 @@
 
                             <ng-container matColumnDef="PaidAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    PaidAmount </mat-header-cell>
+                                    Paid Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.PaidAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                 </mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="BalAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    BalAmount </mat-header-cell>
+                                    Bal Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.BillBalAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                 </mat-cell>
@@ -278,15 +290,14 @@
             </div>
         </div>
 
-        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
+        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
             <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="25%">
                 <div class="chart-card-container">
                     <mat-card>
-                        <mat-card-header>
-                            <div class="card-header">
-                                <mat-card-title>OPD Department Wise Count</mat-card-title>
-                            </div>
-                        </mat-card-header>
+                        <div class="header-sm" fxLayout="row">
+                            <div>OPD Department Wise Count</div>
+                            <div>Total : {{getServicetotSum(dsDailyDepartmentCountList.data)}}</div>
+                        </div>
                         <hr>
                         <mat-table matSort class="h-200" [dataSource]="dsDailyDepartmentCountList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto; ">
@@ -335,11 +346,9 @@
             <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
                 <div class="chart-card-container">
                     <mat-card>
-                        <mat-card-header>
-                            <div class="card-header">
-                                <mat-card-title>OPD Department Wise Bill</mat-card-title>
-                            </div>
-                        </mat-card-header>
+                        <div class="header-sm" fxLayout="row">
+                            <div>OPD Department Wise Bill</div>
+                        </div>
                         <hr>
                         <mat-table matSort class="h-200" [dataSource]="dsDailyDepBillList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto; ">
@@ -388,11 +397,10 @@
             <div fxFlex="32.5%" fxFlex.xs="100%" fxFlex.sm="25%">
                 <div class="chart-card-container">
                     <mat-card>
-                        <mat-card-header>
-                            <div class="card-header">
-                                <mat-card-title>OPD Doctor Wise Count</mat-card-title>
-                            </div>
-                        </mat-card-header>
+                        <div class="header-sm" fxLayout="row">
+                            <div>OPD Doctor Wise Count</div>
+                        </div>
+                       
                         <hr>
                         <mat-table matSort class="h-200" [dataSource]="dsDailyDocBillList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto; ">
@@ -441,19 +449,18 @@
 
         </div>
 
-        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
+        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
 
 
             <div fxFlex="65%" fxFlex.xs="100%" fxFlex.sm="25%">
                 <div class="chart-card-container">
                     <mat-card>
-                        <mat-card-header>
-                            <div class="card-header">
-                                <mat-card-title>IPD Collection and Summary</mat-card-title>
-                            </div>
-                        </mat-card-header>
+                        <div class="header-sm" fxLayout="row">
+                            <div>IPD Collection and Summary</div>
+                            <div>Total Bill Amount : {{dsDailyIPDBillList.data[0].NetBillAmount | currency:'INR' :'symbol' :'2.2-2'}}</div>
+                        </div>
                         <hr>
-                        <mat-table matSort class="h-200" [dataSource]="dsDailyIPDBillList"
+                        <mat-table matSort class="h-100" [dataSource]="dsDailyIPDBillList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto; ">
 
                             <ng-container matColumnDef="Cash">
@@ -506,7 +513,7 @@
 
                             <ng-container matColumnDef="TotalAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Total Amount </mat-header-cell>
+                                    Total Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.TotalBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                 </mat-cell>
@@ -514,7 +521,7 @@
 
                             <ng-container matColumnDef="NetAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Net Amount </mat-header-cell>
+                                    Net Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.NetBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                 </mat-cell>
@@ -522,7 +529,7 @@
 
                             <ng-container matColumnDef="PaidAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    PaidAmount </mat-header-cell>
+                                    Paid Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.PaidAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                 </mat-cell>
@@ -530,7 +537,7 @@
 
                             <ng-container matColumnDef="BalAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    BalAmount </mat-header-cell>
+                                    Bal Amt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.BillBalAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                 </mat-cell>
@@ -565,13 +572,11 @@
             <div fxFlex="33.5%" fxFlex.xs="100%" fxFlex.sm="25%">
                 <div class="chart-card-container">
                     <mat-card>
-                        <mat-card-header>
-                            <div class="card-header">
-                                <mat-card-title>IPD Advance</mat-card-title>
-                            </div>
-                        </mat-card-header>
+                        <div class="header-sm" fxLayout="row">
+                            <div>IPD Advance</div>
+                        </div>
                         <hr>
-                        <mat-table matSort class="h-200" [dataSource]="dsDailyIPDAdvaList"
+                        <mat-table matSort class="h-100" [dataSource]="dsDailyIPDAdvaList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto; ">
 
                             <ng-container matColumnDef="Cash">
@@ -630,123 +635,16 @@
             </div>
         </div>
 
-        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div fxFlex="27.5%" fxFlex.xs="100%" fxFlex.sm="25%">
+        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+          
+            <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="50%">
                 <div class="chart-card-container">
                     <mat-card>
-                        <mat-card-header>
-                            <div class="card-header">
-                                <mat-card-title>IPD Department Wise Count</mat-card-title>
-                            </div>
-                        </mat-card-header>
+                        <div class="header-sm" fxLayout="row">
+                            <div>Ward Wise Bed Occupany</div>
+                        </div>
                         <hr>
-                        <mat-table matSort class="h-200" [dataSource]="dsDailyIPDDepcotList"
-                            [@animateStagger]="{value:'50'}" style="overflow:auto; ">
-
-                            <ng-container matColumnDef="DepartmentName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Department Name</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.DepartmentName}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="Count">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Count </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.vCount}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                </mat-header-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    no data found...
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedIPDdepColumns; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedIPDdepColumns;" class="contact"
-                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                            </mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsDailyIPDDepcotList!=null && dsDailyIPDDepcotList.data.length==0)}">
-                            </mat-footer-row>
-                        </mat-table>
-                    </mat-card>
-                </div>
-            </div>
-            <div fxFlex="27.5%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                    <mat-card>
-                        <mat-card-header>
-                            <div class="card-header">
-                                <mat-card-title>IPD Doctor Wise Count</mat-card-title>
-                            </div>
-                        </mat-card-header>
-                        <hr>
-                        <mat-table matSort class="h-200" [dataSource]="dsDailyIPDDocList"
-                            [@animateStagger]="{value:'50'}" style="overflow:auto; ">
-
-                            <ng-container matColumnDef="DoctorName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Doctor Name </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.DoctorName}}
-                                </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="Count">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Count </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.Count}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                </mat-header-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    no data found...
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedIPDDocBillColumns; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedIPDDocBillColumns;" class="contact"
-                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                            </mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsDailyIPDDocList!=null && dsDailyIPDDocList.data.length==0)}">
-                            </mat-footer-row>
-                        </mat-table>
-                    </mat-card>
-                </div>
-            </div>
-
-            <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <div class="chart-card-container">
-                    <mat-card>
-                        <mat-card-header>
-                            <div class="card-header">
-                                <mat-card-title>Ward Wise Bed Occupany</mat-card-title>
-                            </div>
-                        </mat-card-header>
-                        <hr>
-                        <mat-table matSort class="h-200" [dataSource]="dsBedOccupanyList"
+                        <mat-table matSort class="h-510" [dataSource]="dsBedOccupanyList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto; ">
 
                             <ng-container matColumnDef="RoomName">
@@ -803,10 +701,114 @@
                     </mat-card>
                 </div>
             </div>
+
+            <div fxLayout="column">
+                <div fxFlex="27.5%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <div class="chart-card-container">
+                        <mat-card>
+                            <div class="header-sm" fxLayout="row">
+                                <div>IPD Department Wise Count</div>
+                            </div>
+                            <hr>
+                            <mat-table matSort class="h-200" [dataSource]="dsDailyIPDDepcotList"
+                                [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+    
+                                <ng-container matColumnDef="DepartmentName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Department Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.DepartmentName}}
+                                    </mat-cell>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="Count">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Count </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.vCount}}
+                                    </mat-cell>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+    
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedIPDdepColumns; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedIPDdepColumns;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dsDailyIPDDepcotList!=null && dsDailyIPDDepcotList.data.length==0)}">
+                                </mat-footer-row>
+                            </mat-table>
+                        </mat-card>
+                    </div>
+                </div>
+                <div fxFlex="27.5%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <div class="chart-card-container">
+                        <mat-card>
+                            <div class="header-sm" fxLayout="row">
+                                <div>IPD Doctor Wise Count</div>
+                            </div>
+                            <hr>
+                            <mat-table matSort class="h-200" [dataSource]="dsDailyIPDDocList"
+                                [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+    
+                                <ng-container matColumnDef="DoctorName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Doctor Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.DoctorName}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="Count">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Count </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.Count}}
+                                    </mat-cell>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+    
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedIPDDocBillColumns; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedIPDDocBillColumns;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dsDailyIPDDocList!=null && dsDailyIPDDocList.data.length==0)}">
+                                </mat-footer-row>
+                            </mat-table>
+                        </mat-card>
+                    </div>
+                </div>
+                </div>
         </div>
 
 
-        <div class="dashboard-container gap-16" fxLayout="row wrap" fxLayoutGap="0px grid">
+        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
 
             <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="25%">
                 <mat-card class="h-350">

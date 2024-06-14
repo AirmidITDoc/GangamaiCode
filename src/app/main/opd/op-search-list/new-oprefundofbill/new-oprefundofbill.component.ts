@@ -23,6 +23,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { fuseAnimations } from '@fuse/animations';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 import { element } from 'protractor';
+import { ToastrService } from 'ngx-toastr';
 type NewType = Observable<any[]>;
 
 
@@ -49,7 +50,7 @@ export class NewOPRefundofbillComponent implements OnInit {
   billNo: number;
   BillNo: number;
   NetBillAmount: number;
-  TotalRefundAmount: number = 0;
+  TotalRefundAmount: any = 0;
   RefundBalAmount: number;
   BillDate: any;
   RefundAmount: number = 0;
@@ -160,6 +161,7 @@ vBillBalanceAmt=0;
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
     private formBuilder: FormBuilder,
+    public toastr: ToastrService,
 
     private changeDetectorRefs: ChangeDetectorRef,
     // private dialogRef: MatDialogRef<NewOPRefundofbillComponent>,
@@ -346,7 +348,48 @@ TRefundamt=0;
       return false;
     }
   }
- 
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  gettablecalculation(element, RefundAmt) {
+    if (this.RefundAmount < this.NetBillAmount) {
+      console.log(element)
+      this.serviceId = element.ServiceId;
+      this.ServiceAmount = element.TotalAmt;
+
+      if (RefundAmt > 0) {
+        if (parseFloat(RefundAmt) > parseFloat(element.NetAmount)) {
+          Swal.fire('Enter Refund Amount Less than Price Amount ', 'warning!').then((result) => {
+            if (result.isConfirmed) {
+              element.RefundAmount = '';
+            }
+          });
+        }
+
+        element.BalanceAmount = (parseFloat(element.NetAmount) - parseFloat(RefundAmt)).toFixed(2);
+        element.PrevRefAmount = RefundAmt;
+        // this.TotalRefundAmount =(parseFloat(this.TotalRefundAmount) + parseFloat(RefundAmt)).toFixed(2) ;
+
+      } else {
+        element.BalanceAmount = 0;
+        element.RefundAmount = '';
+        // this.TotalRefundAmount = (parseFloat(this.TotalRefundAmount) - parseFloat(RefundAmt)).toFixed(2) ;
+      }
+    } else {
+      Swal.fire('Bill Amount !', 'Already Refund !').then((result) => {
+        if (result.isConfirmed) {
+          element.RefundAmount = '';
+        }
+      });
+    }
+  }
+
   RefundAmt: any;
   getCellCalculation(element, RefundAmt) {
     
@@ -436,7 +479,7 @@ getRefundtotSum1(element){
 
 
 getServicetotSum(element) {
-
+  this.TotalRefundAmount = (element.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0)).toFixed(2);
   let netAmt;
   netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
   this.totalAmtOfNetAmt = netAmt;
@@ -458,7 +501,12 @@ tableElementChecked(event, element) {
 chkform: boolean = true;
 
 onSave() {
-
+if ((this.TotalRefundAmount == '' || this.TotalRefundAmount == null || this.TotalRefundAmount == undefined)) {
+  this.toastr.warning('Please add refund amount', 'Warning !', {
+    toastClass: 'tostr-tost custom-toast-warning',
+  });
+  return;
+}
   if (!this.RefundOfBillFormGroup.invalid && this.vOPIPId !== 0) {
     // this.chkform=false;
     this.isLoading = 'submit';
@@ -692,6 +740,7 @@ onEdit(row) {
 
  
   //Testing
+
   if(row.RefundAmount < row.NetPayableAmt){
   var m_data1 = {
     "BillNo": row.BillNo
@@ -707,7 +756,7 @@ onEdit(row) {
 
   this.RefAmt1 = this.RefundBalAmount;
   }else{
-Swal.fire("Already Refund")
+    Swal.fire("Already Refund")
   }
   // this.TServiceamt=0;
   //   this.TRefundamt =0;

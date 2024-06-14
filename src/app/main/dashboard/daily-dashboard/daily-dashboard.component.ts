@@ -24,14 +24,14 @@ export class DailyDashboardComponent implements OnInit {
   ]
   displayedBillColumns:string[]=[
     'TotalAmount',
-    'NetAmount',
     'DiscAmount',
+    'NetAmount',
+    'PaidAmount',
+    'BalAmount',
     'Cash',
     'Cheque',
     'Online',
     'Company',
-    'PaidAmount',
-    'BalAmount'
   ]
   displayedBilColumns:string[]=[
     'Cash',
@@ -59,15 +59,15 @@ export class DailyDashboardComponent implements OnInit {
   ]
   displayedIPDBillColumns:string[]=[
     'TotalAmount',
-    'NetAmount',
     'DiscAmount',
+    'NetAmount',
+    'AdvancePay',
+    'PaidAmount',
+    'BalAmount',
     'Cash',
     'Cheque',
     'Online',
     'Company',
-    'AdvancePay',
-    'PaidAmount',
-    'BalAmount'
   ]
   displayedIPDAdvanceColumns:string[]=[
     'Cash',
@@ -147,11 +147,8 @@ export class DailyDashboardComponent implements OnInit {
     this.doughnutChart = this.getDoughnutChart();
 
     this.getAppointmentlist();
-    // this.getOPDBillDatewiseList();
-    // this.getOPDDepartmentCountList();
-    // this.getOPDDoctorCountList();
-    // this.getOPDDepartmentBillList();
-    // this.getIPDBillDatewiseList();
+    this.getOPDCoutList();
+    this.getIPDBillDatewiseList();
      this.getBedOccupancyList();
   }
 
@@ -165,6 +162,7 @@ export class DailyDashboardComponent implements OnInit {
     this.getOPDCoutList();
     this.getIPDBillDatewiseList();
   }
+  
 getOPDCoutList(){
   var vadat={
     'FromDate':this.datePipe.transform(this._dashboardServices.DailyUseFrom.get('start').value,"yyyy-MM-dd 00:00:00.000") || '01/01/2020',
@@ -172,7 +170,7 @@ getOPDCoutList(){
   }
   this._dashboardServices.getOPDCoutList(vadat).subscribe(data =>{
     this.dsDailyCountList.data = data as OPDCount[];
-    //console.log(this.dsDailyCountList.data)
+    console.log(this.dsDailyCountList.data)
   });
   this._dashboardServices.getOPDBillDatewiseList(vadat).subscribe(data =>{
     this.dsDailyBillList.data = data as OPDBillDateWise[];
@@ -216,8 +214,13 @@ getBedOccupancyList(){
     this.WardList = data;
     console.log(this.WardList)
     this.dsBedOccupanyList.data = this.WardList
-     console.log(this.dsBedOccupanyList.data)
+    // console.log(this.dsBedOccupanyList.data)
   })
+}
+getServicetotSum(element) {
+  debugger
+  let DepartmentOPDCount = (element.reduce((sum, { vCount }) => sum += +(vCount || 0), 0));
+  return DepartmentOPDCount;
 }
   showOPDayGroupWiseSummary() {
 
@@ -458,6 +461,7 @@ export class OPDCount{
   NewPatient:any;
   ReferPatient:any;
   Company:any;
+  TotalVisitCount:any;
   constructor(OPDCount){
     {
       this.OldPatient = OPDCount.OldPatient || 0;
@@ -480,6 +484,7 @@ export class OPDBillDateWise{
   PaidAmount:any;
   BalAmount:any;
   TotalAmount:any;
+  NetBillAmount:any;
 
   constructor(OPDBillDateWise){
     {
@@ -519,6 +524,7 @@ export class IPDCountList{
   LocationName:any;
   AvailableCount:any;
   OccuipedCount:any;
+  NetBillAmount:any;
 
   constructor(IPDCountList){
     {
