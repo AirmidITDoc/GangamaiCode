@@ -53,12 +53,8 @@
                     </mat-error> -->
                         </mat-form-field>
 
-                        <span style="margin-right: 40px;">
-                            <app-common-date [screenFrom]="screenFromString"
-                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                        </span>
                     </div>
-                  
+
                 </form>
             </div>
             <!-- CONTENT -->
@@ -73,46 +69,47 @@
                                     </div>
                                     <div class="patient-info-box my-8">
                                         <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="10%">
+                                                <span class="patient-col-key ">RegNo</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{RegNo}}</span>
+                                            </div>
+
                                             <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                                 <span class="patient-col-key ">Patient Name</span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                <span class="patient-col-value">{{PatientName}}</span>
                                             </div>
-                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="20%">
                                                 <span class="patient-col-key">Patient Category</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">Staff</span>
                                             </div>
-                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="10%">
                                                 <span class="patient-col-key">IPDNo</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                                <span class="patient-col-value">{{vOPIPId}}</span>
                                             </div>
-                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="15%">
                                                 <span class="patient-col-key">Tariff</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                <span class="patient-col-value">{{Tarrifname}}</span>
                                             </div>
-                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="10%">
                                                 <span class="patient-col-key ">Age</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}</span>
+                                                <span class="patient-col-value">{{Age}}</span>
                                             </div>
-                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="20%">
                                                 <span class="patient-col-key">Company</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
+                                                <span class="patient-col-value">{{CompanyName}}</span>
                                             </div>
-                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                <span class="patient-col-key">Patient Source</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
-                                            </div>
-                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+
+                                            <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="20%">
                                                 <span class="patient-col-key">Doctor</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                <span class="patient-col-value">{{Doctorname}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -221,7 +218,8 @@
 
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5"
                                     showFirstLastButtons></mat-paginator>
-
+                                <span class="net-amt-value" style="font-weight:bold;margin-left: 600px;">{{getRefundSum(dataSource.data) |
+                                    currency:'INR' }}</span>
 
                             </mat-card>
                         </div>
@@ -283,6 +281,8 @@
                                     <span class="net-amt-value"
                                         style="font-weight:bold;">{{getRefundtotSum1(dataSource1.data) |
                                         currency:'INR' }}</span>
+
+
                                 </div>
                             </mat-card>
                         </div>
@@ -299,14 +299,14 @@
 
                                             <div fxLayout="row" class="gap-8">
 
-                                                <mat-form-field appearance="outline" fxFlex>
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Total Refund Amount</mat-label>
-                                                    <input matInput 
-                                                        formControlName="BalanceAmount" name="BalanceAmount" readonly>
+                                                    <input matInput formControlName="BalanceAmount" name="BalanceAmount"
+                                                        readonly>
                                                     <mat-error class="error"
                                                         *ngIf="RefundOfAdvanceFormGroup.get('BalanceAmount').invalid && RefundOfAdvanceFormGroup.get('BalanceAmount').touched">
                                                         Total Refund Amount is required</mat-error>
-                                                </mat-form-field>
+                                                </mat-form-field> -->
 
 
                                                 <mat-form-field appearance="outline" fxFlex>

@@ -418,8 +418,12 @@ export class NewOPBillingComponent implements OnInit {
 
   getNetAmtSum(element) {
     let netAmt;
+    let netAmt1;
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-    this.b_TotalChargesAmount = netAmt;
+
+    netAmt1 = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0);
+
+    this.b_TotalChargesAmount = netAmt1;
     this.TotalnetPaybleAmt = this.b_TotalChargesAmount;
     return netAmt
   }
@@ -928,7 +932,7 @@ export class NewOPBillingComponent implements OnInit {
             ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
             IsPathology: this.b_isPath,
             IsRadiology: this.b_isRad,
-            ClassName: 'c1',// this.selectedAdvanceObj.ClassName || '',
+            ClassName: '',// this.selectedAdvanceObj.ClassName || '',
             ChargesAddedName: this.accountService.currentUserValue.user.id || 1,
 
           });
@@ -1025,7 +1029,7 @@ export class NewOPBillingComponent implements OnInit {
   conflag: boolean = false;
   // Charges Wise Disc Percentage 
   calculatePersc() {
-
+debugger
     this.v_ChargeDiscPer = this.registeredForm.get('ChargeDiscPer').value;
 
     if ((this.v_ChargeDiscPer < 101) && (this.v_ChargeDiscPer > 0)) {

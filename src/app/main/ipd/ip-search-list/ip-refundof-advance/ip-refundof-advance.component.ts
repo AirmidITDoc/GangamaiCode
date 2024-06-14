@@ -42,6 +42,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   BalanceAdvance: number = 0;
   NewRefundAmount: number = 0;
   TotRefundAmount: number = 0;
+  TotRefundAmt: number = 0;
   BalanceAmount: number = 0;
   Remark: string;
   isLoading: string = '';
@@ -55,7 +56,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   vOPIPId: any;
   vRegId: any;
-
+  Age:any;
 
   printTemplate: any;
   reportPrintObj: BrowseIpdreturnadvanceReceipt;
@@ -141,8 +142,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
       this.vOPIPId = this.selectedAdvanceObj.AdmissionID;
       this.PatientName = this.selectedAdvanceObj.PatientName;
       this.Doctorname = this.selectedAdvanceObj.Doctorname
+      this.Tarrifname= this.selectedAdvanceObj.TariffName
+      this.Age= this.selectedAdvanceObj.AgeYear
+      this.CompanyName= this.selectedAdvanceObj.CompanyName
+      this.RegNo= this.selectedAdvanceObj.RegNo
+      
     }
-
+   
     this.getRefundofAdvanceListRegIdwise();
     this.getReturndetails();
   }
@@ -160,6 +166,14 @@ export class IPRefundofAdvanceComponent implements OnInit {
     return netAmt1;
     this.TotRefundAmount = netAmt1;
     console.log(this.TotRefundAmount);
+  }
+
+  getRefundSum(element) {
+    let netAmt1;
+    netAmt1 = element.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
+    return netAmt1;
+    this.NewRefundAmount = netAmt1;
+    console.log(this.NewRefundAmount);
   }
 
 
@@ -197,7 +211,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.vRegId = obj.RegId;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
-    this.PatientName = 'sk';
+    
+    this.Age=obj.Age;
     this.getReturndetails();
     this.getRefundofAdvanceListRegIdwise();
   }
@@ -255,7 +270,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       this.BalanceAmount = RefundAmt;
       contact.BalanceAmount = contact.BalanceAmount - RefundAmt
       this.NewRefundAmount = RefundAmt;
-      this.BalanceAdvance = contact.BalanceAmount;
+      this.BalanceAdvance = contact.BalanceAmount - this.NewRefundAmount;
     }
 
   }
@@ -310,6 +325,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
   onSave() {
 
+    // for chk?
+          this.vOPIPId=this.vRegId 
     this.isLoading = 'submit';
 
     let IPRefundofAdvanceObj = {};
