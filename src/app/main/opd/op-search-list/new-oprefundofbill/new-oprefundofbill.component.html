@@ -309,7 +309,7 @@
                                                 <mat-form-field appearance="legacy">
                                                     <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber 
                                                     (keyup)="gettablecalculation(element,element.RefundAmt)" 
-                                                    (keypress)="keyPressCharater($event)">
+                                                    (keypress)="keyPressCharater($event)" [disabled]="refund==1">
                                                 </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
