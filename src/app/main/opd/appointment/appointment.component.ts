@@ -2071,7 +2071,7 @@ export class AppointmentComponent implements OnInit {
           if (result.isConfirmed) {
             this.viewgetPatientAppointmentReportPdf(response, false);
           }
-          this.getVisitList();
+          this.getVisitList1();
         });
       } else {
         Swal.fire('Error !', 'Appointment not Updated', 'error');
