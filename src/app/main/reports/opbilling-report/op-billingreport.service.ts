@@ -64,6 +64,9 @@ export class OpBillingreportService {
     return this._httpClient.get("OPReport/view-OpPatientCreditList?FromDate="+FromDate+"&ToDate="+ToDate);
   }
   
-  
+  public getOpDailyCollectionuserwise(FromDate,ToDate,AddedById){
+    return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
+  }
+
  
   }
