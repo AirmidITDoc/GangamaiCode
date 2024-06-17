@@ -1781,30 +1781,7 @@ export class AppointmentComponent implements OnInit {
 
   onSave() {
     
-    // console.log(this.personalFormGroup.get("AreaId").value.AreaId)
-    // if(this.personalFormGroup.get("AreaId").value.AreaId > 0)
-     
-    // else
-    // this.toastr.warning('Please Enter Valid Area.', 'Warning !', {
-    //   toastClass: 'tostr-tost custom-toast-warning',
-    // });
-
-    // if(this.personalFormGroup.get("MaritalStatusId").value.MaritalStatusId >0)
-      
-    // else
-    // this.toastr.warning('Please Enter Valid MaritalStatusId.', 'Warning !', {
-    //   toastClass: 'tostr-tost custom-toast-warning',
-    // });
-    // if(this.personalFormGroup.get("ReligionId").value.ReligionId >0)
-      
-    // else
-    // this.toastr.warning('Please Enter Valid ReligionId.', 'Warning !', {
-    //   toastClass: 'tostr-tost custom-toast-warning',
-    // });
-
-
-
-
+   
 
     let DoctorID = this.VisitFormGroup.get('DoctorID').value.DoctorId
 
@@ -2928,39 +2905,33 @@ export class AppointmentComponent implements OnInit {
     }
   }
 
-  // public onEntergendere(event): void {
-  //   if (event.which === 13) {
-  //   // this.gender.nativeElement.focus();
-  //   if(this.mstatus) this.mstatus.focus();
-  //   }
-  // }
-
-
+ 
   public onEntermstatus(event): void {
   
     // let MaritalStatusId=this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId
-    // if (event.which === 13) {
+    if (event.which === 13) {
     //   console.log(MaritalStatusId)
     //   if(MaritalStatusId==undefined || event.value== '%'){
 
     //   }else if(MaritalStatusId==undefined || MaritalStatusId>0)
-    //   this.mobile.nativeElement.focus();
-    // }
-    this.mobile.nativeElement.focus();
+      this.mobile.nativeElement.focus();
+    }
+    // this.mobile.nativeElement.focus();
 
   }
 
   public onEnterreligion(event): void {
   
     // let ReligionId=this.personalFormGroup.get('ReligionId').value.ReligionId
-    // if (event.which === 13) {
+    if (event.which === 13) {
     //   console.log(ReligionId)
     //   if(ReligionId==undefined || event.value== '%'){
 
     //   }else if(ReligionId==undefined || ReligionId>0)
     //   this.ptype.nativeElement.focus();
-    // }
     this.ptype.nativeElement.focus();
+    }
+    
   }
   public onEnterbday(event): void {
     if (event.which === 13) {
@@ -3019,15 +2990,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   public onEnterarea(event): void {
-    
-    // let AreaId=this.personalFormGroup.get('AreaId').value.AreaId
-    // if (event.which === 13) {
-    //   console.log(AreaId)
-    //   if(AreaId==undefined || event.value== '%'){
-
-    //   }else if(AreaId==undefined || AreaId>0)
-    //   this.city.nativeElement.focus();
-    // }
+   
 
     if (event.which === 13) {
       this.city.nativeElement.focus();

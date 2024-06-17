@@ -165,7 +165,7 @@ var data={
     //op Billing
     if (this.ReportName == 'OP Daily Collection') {
       this.FlagBillNoSelected = false;
-      this.FlagUserSelected = false;
+      this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
 
     }else if (this.ReportName == 'OP Bill Receipt') {
@@ -192,11 +192,11 @@ var data={
       this.FlagRefundIdSelected = false;
 
     } 
-    else if (this.ReportName == 'OP DAILY COLLECTION') {
-      this.FlagUserSelected = true;
-      this.FlagDoctorSelected = true;
-      this.FlagBillNoSelected=false;
-    }
+    // else if (this.ReportName == 'OP DAILY COLLECTION') {
+    //   this.FlagUserSelected = true;
+    //   this.FlagDoctorSelected = true;
+    //   this.FlagBillNoSelected=false;
+    // }
     else if (this.ReportName == 'OP Daily Collection Summary Reports') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -243,7 +243,7 @@ var data={
 
     //op billing 
     if (this.ReportName == 'OP Daily Collection') {
-      this.viewOpDailyCollectionPdf();
+      this.viewOpDailyCollectionuserwisePdf();
     } 
     else if (this.ReportName == 'OP Daily Collection Summary Reports') {
       this.viewOpDailyCollectionSummaryPdf();
@@ -530,24 +530,21 @@ viewgetDocwisenewoldpatientReportPdf() {
 
 
 //opbilling
-viewOpDailyCollectionPdf() {
+viewOpDailyCollectionuserwisePdf() {
   let AddUserId = 0;
   let DoctorId =0
   this.sIsLoading = 'loading-data';
   if (this._OPReportsService.userForm.get('UserId').value)
     AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
   
-  if (this._OPReportsService.userForm.get('DoctorId').value)
-    DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID
-
   setTimeout(() => {
     
     this.AdList = true;
     
-    this._OPReportsService.getOpDailyCollection(
+    this._OPReportsService.getOpDailyCollectionuserwise(
       this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      AddUserId,DoctorId
+      AddUserId
     ).subscribe(res => {
       const dialogRef = this._matDialog.open(PdfviewerComponent,
         {

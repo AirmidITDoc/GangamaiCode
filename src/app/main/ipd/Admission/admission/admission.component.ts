@@ -1426,7 +1426,7 @@ debugger
     debugger
     if (formGroupName == this.otherFormGroup) {
       if (this.vRoomId && isNaN(this.vBedId)) {
-        this.OnSaveAdmission();
+        this.onNewSave();
       }
       else {
         this.toastr.warning('Please select Ward and Bed.', 'Warning !', {
@@ -1442,6 +1442,193 @@ debugger
   patienttype: any = 1;
   CompanyId: any = 0;
   SubCompanyId: any = 0;
+
+  onNewSave(){
+    if ((this.vPrefixID == '' || this.vPrefixID == null || this.vPrefixID == undefined)) {
+      this.toastr.warning('Please select valid Prefix ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vCityId == '' || this.vCityId == null || this.vCityId == undefined)) {
+      this.toastr.warning('Please select valid City', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vPatientTypeID == '' || this.vPatientTypeID == null || this.vPatientTypeID == undefined)) {
+      this.toastr.warning('Please select PatientType', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    // if ((this.vTariff == '' || this.vTariff == null || this.vTariff == undefined)) {
+    //   this.toastr.warning('Please select Tariff', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    if ((this.vDepartmentid == '' || this.vDepartmentid == null || this.vDepartmentid == undefined)) {
+      this.toastr.warning('Please Select Department', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined)) {
+      this.toastr.warning('Please Select Doctor', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const ischeckprefix = this.PrefixList.some(item => item.PrefixName ===this.personalFormGroup.get('PrefixID').value.PrefixName)
+    if(!ischeckprefix){
+      this.toastr.warning('Please Select valid Prefix', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.personalFormGroup.get('AreaId').value){
+      if(!this.AreaList.some(item => item.AreaName ===this.personalFormGroup.get('AreaId').value.AreaName)){
+        this.toastr.warning('Please Select valid AreaName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(!this.cityList.some(item => item.CityName ===this.personalFormGroup.get('CityId').value.CityName)){
+      this.toastr.warning('Please Select valid City', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.personalFormGroup.get('MaritalStatusId').value){
+      if(!this.MaritalStatusList.some(item => item.MaritalStatusName ===this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusName)){
+        this.toastr.warning('Please Select valid MaritalStatus', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(this.personalFormGroup.get('ReligionId').value){
+      if(!this.ReligionList.some(item => item.ReligionName ===this.personalFormGroup.get('ReligionId').value.ReligionName)){
+        this.toastr.warning('Please Select valid ReligionName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    // if(!this.PatientTypeList.some(item => item.PatientType ===this.VisitFormGroup.get('PatientTypeID').value.PatientType)){
+    //   this.toastr.warning('Please Select valid PatientType', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    if(!this.TariffList.some(item => item.TariffName ===this.hospitalFormGroup.get('TariffId').value.TariffName)){
+      this.toastr.warning('Please Select valid TariffName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+   
+    if(!this.DepartmentList.some(item => item.departmentName ===this.hospitalFormGroup.get('Departmentid').value.departmentName)){
+      this.toastr.warning('Please Select valid departmentName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(!this.DoctorList.some(item => item.Doctorname ===this.hospitalFormGroup.get('DoctorId').value.Doctorname)){
+      this.toastr.warning('Please Select valid Doctorname', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.hospitalFormGroup.get('admittedDoctor1').value){
+      if(!this.Doctor1List.some(item => item.DoctorName ===this.hospitalFormGroup.get('admittedDoctor1').value.DoctorName)){
+        this.toastr.warning('Please Select valid AdmitDoctorName11', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(this.hospitalFormGroup.get('admittedDoctor2').value){
+      if(!this.Doctor2List.some(item => item.DoctorName ===this.hospitalFormGroup.get('admittedDoctor2').value.DoctorName)){
+        this.toastr.warning('Please Select valid AdmitDoctorName2', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(this.hospitalFormGroup.get('refDoctorId').value){
+      if(!this.Doctor1List.some(item => item.DoctorName ===this.hospitalFormGroup.get('refDoctorId').value.DoctorName)){
+        this.toastr.warning('Please Select valid RefDoctor', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(this.hospitalFormGroup.get('refDoctorId').value){
+      if(!this.Doctor1List.some(item => item.DoctorName ===this.hospitalFormGroup.get('refDoctorId').value.DoctorName)){
+        this.toastr.warning('Please Select valid RefDoctor', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(this.hospitalFormGroup.get('CompanyId').value){
+      if(!this.Doctor1List.some(item => item.CompanyName ===this.hospitalFormGroup.get('CompanyId').value.CompanyName)){
+        this.toastr.warning('Please Select valid CompanyName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(this.hospitalFormGroup.get('SubCompanyId').value){
+      if(!this.SubTPACompList.some(item => item.CompanyName ===this.hospitalFormGroup.get('SubCompanyId').value.CompanyName)){
+        this.toastr.warning('Please Select valid SubCompany', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(this.wardFormGroup.get('RoomId').value){
+      if(!this.WardList.some(item => item.RoomName ===this.wardFormGroup.get('RoomId').value.RoomName)){
+        this.toastr.warning('Please Select valid WardName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(this.wardFormGroup.get('BedId').value){
+      if(!this.BedList.some(item => item.BedName ===this.wardFormGroup.get('BedId').value.BedName)){
+        this.toastr.warning('Please Select valid BedName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if(this.otherFormGroup.get('RelationshipId').value){
+      if(!this.RelationshipList.some(item => item.RelationshipName ===this.otherFormGroup.get('RelationshipId').value.RelationshipName)){
+        this.toastr.warning('Please Select valid RelationshipName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+
+    // if(this.VisitFormGroup.get('PurposeId').value){
+    //   if(!this.PurposeList.some(item => item.PurposeName ===this.VisitFormGroup.get('PurposeId').value.PurposeName)){
+    //     this.toastr.warning('Please Select valid PurposeName', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // }
+  debugger
+    if ((!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)) {
+    this.OnSaveAdmission();
+    }
+    this.getAdmittedPatientList_1();
+  }
   OnSaveAdmission() {
 
 
@@ -1987,7 +2174,7 @@ this.getAdmittedPatientList_1()
         console.log('The dialog was closed - Insert Action', result);
       });
     } else if (m == "Update Consultant Doctor") {
-debugger
+
       var m_data2 = {
         RegId: contact.RegID,
         PatientName: contact.PatientName,
@@ -2012,7 +2199,7 @@ debugger
 
       });
     } else if (m == "Update Referred Doctor") {
-      debugger
+      
       var m_data3 = {
         RegId: contact.RegID,
         PatientName: contact.PatientName,

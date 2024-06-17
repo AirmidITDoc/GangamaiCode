@@ -112,6 +112,13 @@
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="PBillNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>BillNo</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <span> {{contact.PBillNo}}</span>
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="TotalAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Total
                                     Amount</mat-header-cell>

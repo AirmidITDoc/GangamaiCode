@@ -256,6 +256,12 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   public getOpDailyCollection(FromDate,ToDate,AddedById,doctorId){
     return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById+"&DoctorId="+doctorId);
   }
+
+  public getOpDailyCollectionuserwise(FromDate,ToDate,AddedById){
+    return this._httpClient.get("OPReport/view-OPDailyCollectionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&AddedById="+AddedById);
+  }
+
+  
   public getOpDailyCollectionsummary(FromDate,ToDate){
     return this._httpClient.get("OPReport/view-OPCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
   }
