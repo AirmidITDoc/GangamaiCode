@@ -429,7 +429,12 @@ export class NewPrescriptionComponent implements OnInit {
       });
       return;
     }
-  
+    if(!this.WardList.some(item => item.RoomName ===this.myForm.get('WardName').value.RoomName)){
+      this.toastr.warning('Please Select valid Ward Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
     this.isLoading = 'submit'; 
     let insertIP_Prescriptionarray = [];

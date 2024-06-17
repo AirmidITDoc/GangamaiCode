@@ -23,7 +23,7 @@
             <form [formGroup]="myForm">
                 <div fxLayout="column" class="gap-12">
                     <div class="modal-card-container">
-                        <mat-card>
+                        <mat-card style="padding: 6px;">
                             <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="center center">
                                 <div class="radio-container">
                                     <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
@@ -62,32 +62,32 @@
                                     <div class="patient-info-box my-8">
                                         <div class="patient-info-row">
                                             <div class="patient-col">
-                                                <span class="patient-col-key "  style="width: 130px;">Patient Name(RegNo)</span>
+                                                <span class="patient-col-key ">Patient Name</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value" style="width: 200px;">{{PatientName}}({{RegNo}})</span>
+                                                <span class="patient-col-value" style="width: 200px;">{{RegNo}}-{{PatientName}}</span>
                                             </div>
                                             <div class="patient-col">
-                                                <span class="patient-col-key">IPDNo</span>
+                                                <span class="patient-col-key">IPD No</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value" style="width: 150px;">{{vOPDNo}}</span>
                                             </div>
                                             <div class="patient-col">
-                                                <span class="patient-col-key">DoctorName</span>
+                                                <span class="patient-col-key">Doctor Name</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">Dr.{{Doctorname}}</span>
                                             </div>
                                             <div class="patient-col">
-                                                <span class="patient-col-key">CompanyName</span>
+                                                <span class="patient-col-key">Company Name</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{CompanyName}}</span>
                                             </div> 
                                             <div class="patient-col">
-                                                <span class="patient-col-key ">WardName/BedNo</span>
+                                                <span class="patient-col-key" style="width: 80px;">Ward Name</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value" style="width: 250px;">{{WardName}}/{{BedNo}}</span>
+                                                <span class="patient-col-value" style="width: 250px;">{{WardName}}-{{BedNo}}</span>
                                             </div> 
                                             <div class="patient-col">
-                                                <span class="patient-col-key ">TarrifName</span>
+                                                <span class="patient-col-key ">Tarrif Name</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{Tarrifname}}</span>
                                             </div>
@@ -99,7 +99,7 @@
                         </mat-card>
                     </div>
                     <div class="modal-card-container">
-                        <mat-card>
+                        <mat-card style="padding: 6px;">
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                                 <mat-form-field appearance="outline" fxFlex="100%">
                                     <mat-label>From Store Name</mat-label>
@@ -132,7 +132,7 @@
                         </mat-card>
                     </div>
                     <div class="modal-card-container">
-                        <mat-card fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
                             <form [formGroup]="ItemForm">
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                         

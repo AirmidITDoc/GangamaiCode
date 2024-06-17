@@ -31,13 +31,13 @@ export class NewCanteenRequestComponent implements OnInit {
   ]
   
   vOPIPId: any = 0;
-  vOPDNo: any = 0;
+  vOPDNo: any ;
   vTariffId: any = 0;
   vClassId: any = 0;
   filteredOptions:any;
   PatientListfilteredOptions:any;
   noOptionFound:any;
-  PatientName: any = 0;
+  PatientName: any ;
   vAdmissionID: any = 0;
   RegNo:any;
   Doctorname:any;
@@ -65,6 +65,7 @@ export class NewCanteenRequestComponent implements OnInit {
   vQty:any;
   vRemark:any
   Chargelist:any=[];
+  vStoredId:any;
 
   dsItemList = new MatTableDataSource<CanteenItemList>(); 
   dsCanteenDateList = new MatTableDataSource<CanteenList>();
@@ -302,18 +303,39 @@ export class NewCanteenRequestComponent implements OnInit {
       });
       return;
     }
-    // if(this._CanteenRequestservice.MyForm.get('StoreId').value.StoreId > 0){
-    //   this.toastr.warning('Please select Store', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+    if ((this.vStoredId == '' || this.vStoredId == null || this.vStoredId == undefined)) {
+    this.toastr.warning('Please select Store', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+  if(!this.StoreList.some(item => item.StoreName ===this._CanteenRequestservice.MyForm.get('StoreId').value.StoreName)){
+    this.toastr.warning('Please Select valid Store Name', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+    if ((this._CanteenRequestservice.MyForm.get('WardName').value == '' || 
+      this._CanteenRequestservice.MyForm.get('WardName').value == null || 
+      this._CanteenRequestservice.MyForm.get('WardName').value == undefined)) {
+      this.toastr.warning('Please select WardName', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(!this.WardList.some(item => item.RoomName ===this._CanteenRequestservice.MyForm.get('WardName').value.RoomName)){
+      this.toastr.warning('Please Select valid Ward Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if ((!this.dsItemList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
+    Swal.fire('Need Save Api');
   }
   onClose(){
     this._matDialog.closeAll();

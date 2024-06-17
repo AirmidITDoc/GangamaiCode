@@ -67,7 +67,7 @@
                                     <div class="patient-info-box my-8">
                                         <div class="patient-info-row">
                                             <div class="patient-col">
-                                                <span class="patient-col-key " style="width: 130px;">Patient
+                                                <span class="patient-col-key " style="width: 80px;">Patient
                                                     Name</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value"
@@ -89,7 +89,7 @@
                                                 <span class="patient-col-value">{{CompanyName}}</span>
                                             </div>
                                             <div class="patient-col">
-                                                <span class="patient-col-key ">Ward Name</span>
+                                                <span class="patient-col-key " style="width: 80px;">Ward Name</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value"
                                                     style="width: 250px;">{{WardName}}-{{BedNo}}</span>
@@ -105,12 +105,12 @@
                             </div>
                         </mat-card>
                     </div>
-                    <mat-card>
+                    <mat-card style="padding: 6px;">
                     <div class="modal-card-container"> 
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                                 <mat-form-field appearance="outline" fxFlex="100%">
                                     <mat-label>To Store Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Store"
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Store"  [(ngModel)]="vStoredId"
                                         matInput formControlName="StoreId" [matAutocomplete]="autoStore" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"

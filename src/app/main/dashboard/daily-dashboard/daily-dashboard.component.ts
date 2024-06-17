@@ -127,7 +127,14 @@ export class DailyDashboardComponent implements OnInit {
     public datePipe: DatePipe,
     
   ) { }
-
+  AppoinmentCount:any;
+  TotalAdmittedCount:any;
+  TotalSelf:any;
+  TotalCompany:any;
+  TodayAdmittedCount:any;
+  TodayDischargeCount:any;
+  TodaySelf:any;
+  TodayOther:any;
   ngOnInit(): void {
 
     this.username = this._accountServices.currentUserValue.user
@@ -196,6 +203,14 @@ getAppointmentlist(){
   this._dashboardServices.getIPDAppointCountList().subscribe(data =>{
     this.Appoinmentlist = data
     console.log(this.Appoinmentlist)
+    this.AppoinmentCount = this.Appoinmentlist[0].AppointmentCount;
+    this.TotalAdmittedCount = this.Appoinmentlist[0].TotalAdmittedPatientCount;
+    this.TotalSelf = this.Appoinmentlist[0].SelfPatient ;
+    this.TotalCompany = this.Appoinmentlist[0].CompnayPatient ;
+    this.TodayAdmittedCount = this.Appoinmentlist[0].TodayAdmittedPatient;
+    this.TodayDischargeCount = this.Appoinmentlist[0].TodayDischargePatient;
+    this.TodaySelf = this.Appoinmentlist[0].TodaySelfPatient;
+    this.TodayOther = this.Appoinmentlist[0].TodayOtherPatient;
   });
 }
 getIPDBillDatewiseList(){
@@ -218,7 +233,6 @@ getBedOccupancyList(){
   })
 }
 getServicetotSum(element) {
-  debugger
   let DepartmentOPDCount = (element.reduce((sum, { vCount }) => sum += +(vCount || 0), 0));
   return DepartmentOPDCount;
 }

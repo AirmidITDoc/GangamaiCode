@@ -287,7 +287,6 @@ export class NewOPRefundofbillComponent implements OnInit {
   getservicedtailList(row) {
 
     // this.vBillBalanceAmt=row.BalanceAmt;
-    if(this.refund == 1){
       var m_data = {
         "BillNo": this.BillNo //74//
       }
@@ -300,15 +299,7 @@ export class NewOPRefundofbillComponent implements OnInit {
         console.log(this.dataSource2.data);
         this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
       });
-  
       this.dataSource2.data["BalanceAmount"] = 0;
-      console.log(this.dataSource2.data);
-  
-    }else{
-      Swal.fire("Bill Already Refund");
-    }
- 
-
   }
 
 
@@ -802,10 +793,10 @@ onSave() {
   //
   refund:any=0;
   onEdit(row) {
-    this.TotalRefundAmount=0
-    this.RefundBalAmount=0
+    this.TotalRefundAmount = 0
+    this.RefundBalAmount = 0
     console.log(row);
-debugger
+    debugger
     var datePipe = new DatePipe("en-US");
     this.BillNo = row.BillNo;
     this.BillDate = datePipe.transform(row.BillDate, 'dd/MM/yyyy hh:mm a');
@@ -814,44 +805,28 @@ debugger
     this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
     this.vFinalrefundbamt = this.RefundBalAmount
     this.vOPIPId = row.VisitId;
-    this.getservicedtailList(row);
-
- 
-  //Testing
-  if(row.RefundAmount < row.NetPayableAmt){
-  var m_data1 = {
-    "BillNo": row.BillNo
-  }
-  this.isLoadingStr = 'loading';
-  this._OpSearchListService.getRefundofBillDetailList(m_data1).subscribe(Visit => {
-    this.dataSource1.data = Visit as BillRefundMaster[];
+    //Testing
+    if (row.RefundAmount < row.NetPayableAmt) {
+      var m_data1 = {
+        "BillNo": row.BillNo
+      }
+      this.isLoadingStr = 'loading';
+      this._OpSearchListService.getRefundofBillDetailList(m_data1).subscribe(Visit => {
+        this.dataSource1.data = Visit as BillRefundMaster[];
 
         this.dataSource1.sort = this.sort;
         this.dataSource1.paginator = this.paginator;
         this.isLoadingStr = this.dataSource1.data.length == 0 ? 'no-data' : '';
       });
 
-  this.RefAmt1 = this.RefundBalAmount;
-  }else{
-Swal.fire("Already Refund")
-    this.refund = 1;
-  }
-  // this.TServiceamt=0;
-  //   this.TRefundamt =0;
-  //   this.vBillBalanceAmt =0;
+      this.RefAmt1 = this.RefundBalAmount;
+      this.getservicedtailList(row);
+    } else {
+      Swal.fire("Already Refund")
+      this.refund = 1;
+    }
+   
 
-    //   if(this.dataSource2.data.length > 0 ){
-    //    this.dataSource3.data.forEach((element) => {
-    //     
-    //     console.log(element)
-    //     this.TServiceamt +=element.NetPayableAmt;
-    //     this.TRefundamt +=element.RefundAmount;
-
-    //   });
-
-    //   this.vBillBalanceAmt = this.TServiceamt - this.TRefundamt;
-
-    //   }
 
   }
 
