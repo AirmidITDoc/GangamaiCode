@@ -285,23 +285,29 @@ export class NewOPRefundofbillComponent implements OnInit {
   TRefundamt = 0;
 
   getservicedtailList(row) {
+
     // this.vBillBalanceAmt=row.BalanceAmt;
-    var m_data = {
-      "BillNo": this.BillNo //74//
-    }
-
-    this.isLoadingStr = 'loading';
-    this._OpSearchListService.getRefundofBillServiceList(m_data).subscribe(Visit => {
-      this.dataSource2.data = Visit as InsertRefundDetail[];
-      this.dataSource2.sort = this.sort;
-      this.dataSource2.paginator = this.paginator;
+    if(this.refund == 1){
+      var m_data = {
+        "BillNo": this.BillNo //74//
+      }
+  
+      this.isLoadingStr = 'loading';
+      this._OpSearchListService.getRefundofBillServiceList(m_data).subscribe(Visit => {
+        this.dataSource2.data = Visit as InsertRefundDetail[];
+        this.dataSource2.sort = this.sort;
+        this.dataSource2.paginator = this.paginator;
+        console.log(this.dataSource2.data);
+        this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
+      });
+  
+      this.dataSource2.data["BalanceAmount"] = 0;
       console.log(this.dataSource2.data);
-      this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
-    });
-
-    this.dataSource2.data["BalanceAmount"] = 0;
-    console.log(this.dataSource2.data);
-
+  
+    }else{
+      Swal.fire("Bill Already Refund");
+    }
+ 
 
   }
 
