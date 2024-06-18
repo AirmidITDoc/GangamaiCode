@@ -49,7 +49,7 @@
                                 <mat-form-field appearance="outline" fxFlex >
                                     <mat-label>Reg No</mat-label>
                                     <input name="RegNo" formControlName="RegNo" matInput  
-                                         required #RegNo type="text" OnlyNumber (dateChange)='getCanteenList()'>
+                                         required #RegNo type="text" OnlyNumber (keyup)='getCanteenList()'>
                                 </mat-form-field>  
         
                                 <div style="margin-top: 10px;">
@@ -87,7 +87,7 @@
                                             Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.Date | date:'dd/MM/YYYY'}}
+                                            {{contact.Date}}
                                         </mat-cell>
                                     </ng-container>
                 
@@ -135,7 +135,11 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             IsBillgenerates</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.IsBillGenerated}}
+                                            <mat-icon *ngIf="contact.IsBillGenerated" matTooltip="Bill Generated"
+                                            class="pill green-600 s-16">check</mat-icon>
+                                        <mat-icon *ngIf="!contact.IsBillGenerated" matTooltip="Not Generated"
+                                            class="pill red-600 s-16">close</mat-icon>
+                                            
                                         </mat-cell>
                                     </ng-container>
                 

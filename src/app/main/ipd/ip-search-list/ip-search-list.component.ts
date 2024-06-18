@@ -474,7 +474,7 @@ export class IPSearchListComponent implements OnInit {
           maxHeight: "95%", width: '100%', height: "100%"
         });
       dialogRef.afterClosed().subscribe(result => {
-        
+        this.getAdmittedPatientList();
       });
     // }else Swal.fire("Bill already Generated")
     }
@@ -512,7 +512,7 @@ export class IPSearchListComponent implements OnInit {
           maxHeight: "99%", width: '100%', height: "100%"
         });
       dialogRef.afterClosed().subscribe(result => {
-        
+        this.getAdmittedPatientList();
       });
     // }else Swal.fire("Bill already Generated")
     }
@@ -550,11 +550,11 @@ export class IPSearchListComponent implements OnInit {
           {
             maxWidth: "90%",
             width:'98%',
-            height: '90%',   
+            height: '95%',   
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
-
+          this.getAdmittedPatientList();
         });
       } else { Swal.fire("Final Bill Already Generated") }
     }

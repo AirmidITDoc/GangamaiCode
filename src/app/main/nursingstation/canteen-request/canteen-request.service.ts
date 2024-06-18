@@ -73,4 +73,7 @@ export class CanteenRequestService {
     public getItemlist(Param){ 
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CanteenItemList",Param)
     }
+    public CanteenReqSave(param){
+      return this._httpClient.post('InPatient/CanteenRequest',param);
+    }
 }

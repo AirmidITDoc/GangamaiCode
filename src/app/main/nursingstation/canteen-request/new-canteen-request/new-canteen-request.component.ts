@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { CanteenList } from '../canteen-request.component';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-new-canteen-request',
@@ -66,6 +67,7 @@ export class NewCanteenRequestComponent implements OnInit {
   vRemark:any
   Chargelist:any=[];
   vStoredId:any;
+  vOpDId:any;
 
   dsItemList = new MatTableDataSource<CanteenItemList>(); 
   dsCanteenDateList = new MatTableDataSource<CanteenList>();
@@ -129,7 +131,7 @@ export class NewCanteenRequestComponent implements OnInit {
       this.CompanyName = obj.CompanyName;
       this.Tarrifname = obj.TariffName;
       this.Doctorname = obj.DoctorName;
-      // this.vOpIpId = obj.AdmissionID;
+      this.vOpDId = obj.AdmissionID;
       this.vOPDNo = obj.IPDNo;
       this.WardName = obj.RoomName;
       this.BedNo = obj.BedName;
@@ -297,6 +299,10 @@ export class NewCanteenRequestComponent implements OnInit {
   }
   savebtn:boolean=false;
   OnSave(){
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     if (( this.RegNo== '' || this.RegNo == null || this.RegNo == undefined)) {
       this.toastr.warning('Please select patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -335,7 +341,55 @@ export class NewCanteenRequestComponent implements OnInit {
       });
       return;
     }
-    Swal.fire('Need Save Api');
+    this.savebtn = true;
+    let canteenRequestHeaderInsert = {};
+    let canteenRequestDetailsInsert = [];
+
+    canteenRequestHeaderInsert['date'] = formattedDate;
+    canteenRequestHeaderInsert['time'] = formattedTime;
+    canteenRequestHeaderInsert['oP_IP_ID'] = this.vOpDId || 0;
+    canteenRequestHeaderInsert['oP_IP_Type'] = 1 ;
+    canteenRequestHeaderInsert['wardId'] = this._CanteenRequestservice.MyForm.get('WardName').value.RoomId || 0;
+    canteenRequestHeaderInsert['cashCounterID'] = 0
+    canteenRequestHeaderInsert['isFree'] = false ;
+    canteenRequestHeaderInsert['unitID'] = 0
+    canteenRequestHeaderInsert['isBillGenerated'] = false ;
+    canteenRequestHeaderInsert['addedBy'] = this._loggedService.currentUserValue.user.id;
+    canteenRequestHeaderInsert['isPrint'] = false;
+    canteenRequestHeaderInsert['reqId'] = 0;
+
+    this.dsItemList.data.forEach(element =>{
+      let CanteenReqDetObj = {};
+      CanteenReqDetObj['reqId'] = 0 
+      CanteenReqDetObj['itemId'] = element.ItemID || 0;
+      CanteenReqDetObj['unitMRP'] = 0
+      CanteenReqDetObj['qty'] = element.Qty || 0;
+      CanteenReqDetObj['totalAmount'] = 0;
+      canteenRequestDetailsInsert.push(CanteenReqDetObj);
+    });
+
+    let SubmitDataObj={
+      'canteenRequestHeaderInsert' : canteenRequestHeaderInsert,
+      'canteenRequestDetailsInsert' : canteenRequestDetailsInsert
+    }
+    console.log(SubmitDataObj);
+    this._CanteenRequestservice.CanteenReqSave(SubmitDataObj).subscribe(response =>{
+      if (response) { 
+        this.toastr.success('Record Saved Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.onClose();
+        this.savebtn = false;
+      } else { 
+        this.toastr.error('Record Not Saved!', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    }, error => {
+      this.toastr.error('API Error!', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });
   }
   onClose(){
     this._matDialog.closeAll();

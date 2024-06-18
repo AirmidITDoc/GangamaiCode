@@ -29,11 +29,20 @@
                     <div class="sidebar-form">
                         <form class="example-form mat-form-field-100" [formGroup]="Serviceform" fxLayout="column">
                             <div fxFlex="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Service Date</mat-label>
+                                    <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
+                                        formControlName="Date">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="100%">
                                 <mat-form-field appearance="outline">
                                     <mat-label>Select</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select " matInput
                                         formControlName="ChargeClass" [matAutocomplete]="autoclass" required #itemid
-                                        (keyup.enter)="setFocus('ServiceId')">
+                                        (keyup.enter)="setFocus('ServiceId')" [(ngModel)]="vselect">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="Serviceform.get('ChargeClass').setValue(''); isClasselected = false;">close</mat-icon>
@@ -52,9 +61,10 @@
                             <div fxFlex="100%">
                                 <!-- (keyup.enter)="setFocus('price')" -->
                                 <mat-form-field appearance="outline">
+                                    <mat-label>Servce Name</mat-label>
                                     <input type="text" name="SrvcName" formControlName="SrvcName"
                                         placeholder="Service Name" matInput [matAutocomplete]="auto"
-                                        (input)="getServiceListCombobox()" id="ServiceId"
+                                        (input)="getServiceListCombobox()" id="ServiceId" [(ngModel)]="vService"
                                         (keydown)="onEnterservice($event)" required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
@@ -86,7 +96,7 @@
                                             <mat-label>Price</mat-label>
                                             <input matInput [(ngModel)]="b_price" name="bPrice" #price
                                                 (keyup)="calculateTotalAmt()" formControlName="price" required
-                                                type="number" id="price" (keydown)="onEnterprice($event)">
+                                                type="text" OnlyNumber id="price" (keydown)="onEnterprice($event)" (keypress)="keyPressCharater($event)">
                                             <mat-error
                                                 *ngIf="Serviceform.get('price').invalid && Serviceform.get('price').touched">
                                                 Price is required</mat-error>
@@ -124,18 +134,19 @@
                                         TotalAmount is required</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div fxFlex="100%" *ngIf="isDoctor">
+                            <!-- *ngIf="isDoctor" -->
+                            <div fxFlex="100%" >
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" #doctorname
                                         [(ngModel)]="vDoctorID" placeholder="Select Doctor" matInput
-                                        (keydown)="onEnterdoctor($event,vDoctorID.DoctorID)" formControlName="DoctorID"
-                                        [matAutocomplete]="autosearchDoctor1" required>
+                                        (keydown)="onEnterdoctor($event)" formControlName="DoctorID"
+                                        [matAutocomplete]="autosearchDoctor1" >
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
-                                            (click)="Serviceform.myFilterform.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                            (click)="Serviceform.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
-                                            (click)="Serviceform.myFilterform.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                            (click)="Serviceform.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
                                     </span>
                                     <mat-autocomplete #autosearchDoctor1="matAutocomplete"
                                         [displayWith]="getOptionTextsearchDoctor">
@@ -189,9 +200,7 @@
                                             <input matInput placeholder="Percentage" formControlName="discPer"
                                                 [(ngModel)]="formDiscPersc" autocomplete="off" #disc
                                                 (keydown)="onEnterdiscper($event,formDiscPersc)" (keyup)="calculatePersc()"
-                                                maxlength="3"
-                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                (keypress)="keyPressAlphanumeric($event)">
+                                                maxlength="3" required  (keypress)="keyPressCharater($event)">
                                         </mat-form-field>
 
                                     </div>
@@ -199,7 +208,7 @@
                                         <mat-form-field appearance="outline">
                                             <mat-label>Disc Amt</mat-label>
                                             <input matInput [(ngModel)]="b_disAmount" name="bDisAmount" #discamt
-                                                formControlName="discAmount" type="number" id="discAmount"
+                                                formControlName="discAmount" type="number" id="discAmount" readonly
                                                 (keydown)="onEnterdiscamt($event)" (keyup)="calculatechargesDiscamt()">
                                         </mat-form-field>
                                     </div>
@@ -217,7 +226,8 @@
                                         NetAmount is required</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div fxFlex="100%">
+                           
+                            <div fxFlex="100%" fxLayout="row">
                                 <!-- [disabled]="Serviceform.invalid" -->
                                 <div class="action-buttons">
                                     <!-- <button class="btn btn-primary" (click)="onSaveAddCharges()" 
@@ -228,9 +238,9 @@
                                             </mat-spinner>
                                         </span>
                                     </button> -->
-
+                                    <!-- [disabled]="!add" -->
                                     <button (click)="onSaveAddCharges()" class="btn btn-primary btn-with-icon py-8"
-                                        [disabled]="!add" #addbutton>
+                                         #addbutton>
                                         <span class="btn-icon">
                                             <mat-icon> add </mat-icon>
                                         </span>
@@ -240,7 +250,11 @@
                         </form>
                     </div>
                 </div>
-                <div class="sidebar-footer">
+            
+                
+               
+             
+                <!-- <div class="sidebar-footer">
                     <div class="bill-summary px-12">
                         <div class="bill-summary-title py-8 border-bottom">
                             <span class="h3 font-weight-600">Bill Summary </span>
@@ -283,7 +297,7 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </mat-drawer>
 
@@ -293,136 +307,258 @@
             <div class="example-sidenav-content" style="padding-left: 10px;">
 
                 <div class="filter-div mb-4" fxLayout="row" fxLayoutAlign="space-between center">
-                    <!-- <div class="left-content title-content">
-                        <div class="billing-header-content">
-                            <div class="billin-header-item">
-                                <span><b>RegNo : </b> {{selectedAdvanceObj.RegNo}} - </span>
-                                <span>{{selectedAdvanceObj.PatientName}} </span>
-                            </div>
-                            <div class="billin-header-item">
-                                <span><b>IPD No : </b> {{selectedAdvanceObj.IPDNo}} </span>
-                            </div>
-                            <div class="billin-header-item">
-                                <span> <b>AdmissionDate : </b> {{selectedAdvanceObj.AdmDateTime}} </span>
-                            </div>
-                            <div class="billin-header-item">
-                                <span><b>Ward : </b> {{selectedAdvanceObj.WardName}} </span>
-                            </div>
-                            <div class="billin-header-item">
-                                <span><b>Tariff : </b>{{selectedAdvanceObj.TariffName}}</span>
-                            </div>
-                        </div>
-                    </div> -->
-                    <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                        <div class="patient-info-container">
-                            <div class="patient-info-box">
-                                <div class="patient-info-title border-bottom pb-2">
-                                    <span class="h1">Patient Information</span>
-                                    <div class="right-content" fxLayout="row" class="gap-8"
-                                        fxLayoutAlign="center center">
-                                        <div fxLayout="row" class="gap-4" fxLayoutAlign="center center">
-                                            <form [formGroup]="Ipbillform">
-                                                <mat-form-field appearance="outline" fxFlex
-                                                    *ngIf="isFilteredDateDisabled" class="padding-fix">
-                                                    <mat-label>Choose date</mat-label>
-                                                    <input name="ChargeDate" matInput [matDatepicker]="picker"
-                                                        formControllName="ChargeDate"
-                                                        (dateChange)="getDatewiseChargesList($event.value)"
-                                                        [value]="currentDate" [readonly]="true">
-                                                    <mat-datepicker-toggle matSuffix
-                                                        [for]="picker"></mat-datepicker-toggle>
-                                                    <mat-datepicker #picker></mat-datepicker>
-                                                </mat-form-field>
-                                            </form>
+                
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <div fxlayout="row" fxLayoutGap="5px">
+                                <mat-card fxFlex.gt-sm="74%" fxFlex style="padding: 6px;">
+                                    <div class="patient-info-sales my-8">
+                                        <div class="sales-patient-info-title">
+                                            <span style="font-weight: 700;">
+                                                Patient Information
+                                            </span>
                                         </div>
-                                        <div fxLayout="row" fxLayoutAlign="center center"
-                                            class="date-time-container gap-8">
-                                            <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">
-                                                Show All Charges
-                                            </mat-checkbox>
-                                            <button mat-icon-button (click)="drawer1.toggle()">
-
-                                                <span class="material-icons">
-                                                    notifications_none
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="patient-info-box my-8">
-                                    <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                        <div class="patient-col gap-3" fxFlex="35%" fxFlex.gt-sm="35%">
-                                            <span class="patient-col-key ">Patient Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
-                                        </div>
-                                        <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key">Patient Category</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">Staff</span>
-                                        </div> -->
-                                        <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="15%">
-                                            <span class="patient-col-key">IPDNo</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="h-100-p">
-                                            <span class="patient-col-key">Tariff</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
-                                            <span class="patient-col-key ">Age</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key">Company</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key">Patient Source</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key">Doctor</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                        <hr>
+                                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                            class="patient-info">
+                                            <div class="patient-sub">
+                                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                    fxLayoutAlign="space-between">
+                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Patient Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.RegNo}}-{{selectedAdvanceObj.PatientName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">AdmDate/Time</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Ward Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.WardName}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">IPD No</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Doctor Name</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Company Name</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Adm ID
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.AdmissionID}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Tarrif Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </mat-card>
+                                <mat-card fxFlex.gt-sm="26%" fxFlex style="padding: 6px;">
+                                    <div class="bill-summary px-12">
+                                        <div class="bill-summary-title py-8 border-bottom">
+                                            <span class="h3 font-weight-600">Bill Summary </span>
+                                        </div>
+                                        <div class="bil-summary-list px-4 mt-8">
+                                            <ul class="gap-4 list-basic" fxLayout="column">
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Bill Amount :</span>
+                                                        <span class="list-item-value"> {{getNetAmtSum(dataSource.data) |
+                                                            currency:'INR' }}</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Advance Amount :</span>
+                                                        <span class="list-item-value">
+                                                            {{getAdvAmtSum(advancedatasource.data) | currency:'INR'
+                                                            }}</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Balance Amount :</span>
+                                                        <span class="list-item-value"> {{vBalanceAmt}}</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Payment Remain :</span>
+                                                        <span class="list-item-value"> {{vpaidBalanceAmt}}</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Pharmacy Amount :</span>
+                                                        <span class="list-item-value"> {{netPaybleAmt}}</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </mat-card>
                             </div>
                         </div>
+                       
                     </div>
-
-
-
-
-
+                  
+                    <!-- <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                        <div class="patient-info-container">
+                                            <div class="patient-info-box">
+                                                <div class="patient-info-title border-bottom pb-2">
+                                                    <span class="h1">Patient Information</span>
+                                                    <div class="right-content" fxLayout="row" class="gap-8"
+                                                        fxLayoutAlign="center center">
+                                                        <div fxLayout="row" class="gap-4" fxLayoutAlign="center center">
+                                                            <form [formGroup]="Ipbillform">
+                                                                <mat-form-field appearance="outline" fxFlex
+                                                                    *ngIf="isFilteredDateDisabled" class="padding-fix">
+                                                                    <mat-label>Choose date</mat-label>
+                                                                    <input name="ChargeDate" matInput [matDatepicker]="picker"
+                                                                        formControllName="ChargeDate"
+                                                                        (dateChange)="getDatewiseChargesList($event.value)"
+                                                                        [value]="currentDate" [readonly]="true">
+                                                                    <mat-datepicker-toggle matSuffix
+                                                                        [for]="picker"></mat-datepicker-toggle>
+                                                                    <mat-datepicker #picker></mat-datepicker>
+                                                                </mat-form-field>
+                                                            </form>
+                                                        </div>
+                                                        <div fxLayout="row" fxLayoutAlign="center center"
+                                                            class="date-time-container gap-8">
+                                                            <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">
+                                                                Show All Charges
+                                                            </mat-checkbox>
+                                                            <button mat-icon-button (click)="drawer1.toggle()">
+                
+                                                                <span class="material-icons">
+                                                                    notifications_none
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="patient-info-box my-8">
+                                                    <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                                        <div class="patient-col gap-3" fxFlex="35%" fxFlex.gt-sm="35%">
+                                                            <span class="patient-col-key ">Patient Name</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                        </div>
+                                                     
+                                                        <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="15%">
+                                                            <span class="patient-col-key">IPDNo</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                                        </div>
+                                                        <div class="patient-col gap-3" fxFlex="15%" fxFlex.gt-sm="h-100-p">
+                                                            <span class="patient-col-key">Tariff</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                        </div>
+                                                        <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
+                                                            <span class="patient-col-key ">Age</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}</span>
+                                                        </div>
+                                                        <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
+                                                            <span class="patient-col-key">Company</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
+                                                        </div>
+                                                        <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
+                                                            <span class="patient-col-key">Patient Source</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                        </div>
+                                                        <div class="patient-col gap-3" fxFlex="25%" fxFlex.gt-sm="25%">
+                                                            <span class="patient-col-key">Doctor</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                
+                
+                
+                
+                
                     <!-- <mat-form-field appearance="outline" fxFlex="16%" style="margin-left:800px;">
-                    <mat-label>Select</mat-label>
-                    <input matAutocompletePosition="below" type="text"
-                        placeholder="Select" matInput
-                        formControlName="ChargeClass"
-                        [matAutocomplete]="autoclass" required>
-                    <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                            (click)="Ipbillform.get('ChargeClass').setValue(''); isClasselected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                            (click)="Ipbillform.get('ChargeClass').setValue(''); isClasselected = false;">search</mat-icon>
-                    </span>
-                    <mat-autocomplete #autoclass="matAutocomplete"
-                        [displayWith]="getOptionTextclass">
-                        <mat-option
-                            *ngFor="let option of filteredOptionsselclass | async"
-                            [value]="option">
-                            {{option.ClassName}}
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field> -->
-
+                                    <mat-label>Select</mat-label>
+                                    <input matAutocompletePosition="below" type="text"
+                                        placeholder="Select" matInput
+                                        formControlName="ChargeClass"
+                                        [matAutocomplete]="autoclass" required>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="Ipbillform.get('ChargeClass').setValue(''); isClasselected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="Ipbillform.get('ChargeClass').setValue(''); isClasselected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoclass="matAutocomplete"
+                                        [displayWith]="getOptionTextclass">
+                                        <mat-option
+                                            *ngFor="let option of filteredOptionsselclass | async"
+                                            [value]="option">
+                                            {{option.ClassName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field> -->
+                
+                </div>
+                <div class="right-content" fxLayout="row" class="gap-8" fxLayoutAlign="end center">
+                    <div fxLayout="row" class="gap-4" fxLayoutAlign="end center">
+                        <form [formGroup]="Ipbillform">
+                            <mat-form-field appearance="outline" fxFlex *ngIf="isFilteredDateDisabled" class="padding-fix">
+                                <mat-label>Choose date</mat-label>
+                                <input name="ChargeDate" matInput [matDatepicker]="picker" formControllName="ChargeDate"
+                                    (dateChange)="getDatewiseChargesList($event.value)" [value]="currentDate" [readonly]="true">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="end center" class="date-time-container gap-8">
+                        <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">
+                            Show All Charges
+                        </mat-checkbox>
+                        <button mat-icon-button (click)="drawer1.toggle()">
+                
+                            <span class="material-icons">
+                                notifications_none
+                            </span>
+                        </button>
+                    </div>
                 </div>
                 <mat-tab-group class="mat-tab-header-small" #tabGroup (selectedTabChange)="tabChanged($event)">
 
@@ -696,7 +832,7 @@
                     </mat-tab>
                     
                     <mat-tab label="Package Det.">
-                        <mat-table matSort [dataSource]="prevbilldatasource" [@animateStagger]="{value:'50'}"
+                        <mat-table matSort [dataSource]="PackageDatasource" [@animateStagger]="{value:'50'}"
                             class="table3 mt-8" style="height: calc(100vh - 500px);">
 
                             <ng-container matColumnDef="BDate">
@@ -804,7 +940,7 @@
                             <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':PrevBillColumns!=null}">
                             </mat-footer-row>
                             <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(prevbilldatasource!=null && prevbilldatasource.data.length==0)}">
+                                [ngClass]="{'hide':!(PackageDatasource!=null && PackageDatasource.data.length==0)}">
                             </mat-footer-row>
                         </mat-table>
                     </mat-tab>
@@ -956,13 +1092,23 @@
                                         
                                     </mat-form-field> -->
 
+                                    <mat-form-field appearance="outline" fxFlex="10%" *ngIf="isAdminDisabled">
+                                        <mat-label>Admin %</mat-label>
+                                        <input matInput [(ngModel)]="vAdminPer" name="AdminPer"  
+                                            formControlName="AdminPer"  >
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="10%" *ngIf="isAdminDisabled">
+                                        <mat-label>Admin Amount</mat-label>
+                                        <input matInput [(ngModel)]="vAdminAmt" name="AdminAmt" readonly
+                                            formControlName="AdminAmt"  >
+                                    </mat-form-field>
+
                                     <mat-form-field appearance="outline" *ngIf="admin">
                                         <mat-label>Final Disc %</mat-label>
                                         <input matInput placeholder="Percentage" formControlName="Percentage"
                                            [(ngModel)]="vPercentage" autocomplete="off" #finaldisc onlyNumber maxlength="3"
-                                            (keyup)="CalAdmincharge()"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                            (keypress)="keyPressAlphanumeric($event)">
+                                            (keyup)="CalAdmincharge()" (keypress)="keyPressAlphanumeric($event)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%" *ngIf="admin">
@@ -995,9 +1141,14 @@
                                 <div fxLayout="row" class="" fxLayoutAlign="space-between center">
                                     <div class="action-content-left" fxLayout="row" class="gap-24"
                                         fxLayoutAlign="start center">
+                                        <mat-checkbox formControlName="Admincheck" (checked)=true  (change)="AdminStatus($event)">
+                                            Admin 
+                                        </mat-checkbox>
+
                                         <mat-checkbox formControlName="GenerateBill" (checked)=true>
                                             Generate Bill
                                         </mat-checkbox>
+
                                         <div class="cash-container gap-12">
                                             <div class="net-amt-section">
                                                 <div class="net-amt">

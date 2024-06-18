@@ -107,6 +107,7 @@ export class IPBillingComponent implements OnInit {
   dataSource1 = new MatTableDataSource<ChargesList>();
   prevbilldatasource = new MatTableDataSource<Bill>();
   advancedatasource = new MatTableDataSource<IpdAdvanceBrowseModel>();
+  PackageDatasource = new MatTableDataSource
 
   myControl = new FormControl();
   // filteredOptions: Observable<any[]>;
@@ -340,6 +341,7 @@ export class IPBillingComponent implements OnInit {
       netAmount: [''],
       paidAmt: [''],
       ChargeDate: [new Date()],
+      Date:[new Date()],
       balanceAmt: [''],
       ChargeClass: ['']
     });
@@ -357,7 +359,10 @@ export class IPBillingComponent implements OnInit {
       CashCounterId: [''],
       IpCash: [''],
       Pharcash: [''],
-      ChargeClass: ['']
+      ChargeClass: [''],
+      AdminPer: [''],
+      AdminAmt: [''],
+      Admincheck:['']
     });
   }
 
@@ -391,8 +396,14 @@ export class IPBillingComponent implements OnInit {
     this.serviceName = selectedItem.ServiceName;
     // this.calculateTotalAmt();
   }
-
-
+  isAdminDisabled : boolean=false;
+  AdminStatus(event){
+    if (event.checked == true)
+      this.isAdminDisabled = true;
+    if (event.checked == false) {
+      this.isAdminDisabled = false;
+    }
+  }
 
   // getDoctorList() {
   //   this._IpSearchListService.getAdmittedDoctorCombo().subscribe(data => {
@@ -426,7 +437,7 @@ export class IPBillingComponent implements OnInit {
   }
 
 
-
+ServiceList:any=[];
   getServiceListCombobox() {
     let tempObj;
     var m_data = {
@@ -437,6 +448,7 @@ export class IPBillingComponent implements OnInit {
     if (this.Serviceform.get('SrvcName').value.length >= 1) {
       this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
         this.filteredOptions = data;
+        this.ServiceList = data;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
         } else {
@@ -530,14 +542,15 @@ export class IPBillingComponent implements OnInit {
   onEnterservice(event): void {
 
     if (event.which === 13) {
-      if (this.isDoctor) {
+      // if (this.isDoctor) {
 
-        this.price.nativeElement.focus();
-      }
-      else {
-        this.qty.nativeElement.focus();
+      //   
+      // }
+      // else {
+      //   this.qty.nativeElement.focus();
 
-      }
+      // }
+      this.price.nativeElement.focus();
     }
   }
 
@@ -557,26 +570,28 @@ export class IPBillingComponent implements OnInit {
         this.disc.nativeElement.focus();
         // this.calculateTotalAmt()
       }
+      //this.disc.nativeElement.focus();
     }
   }
 
-  public onEnterdoctor(event, value): void {
+  public onEnterdoctor(event): void {
     // console.log(value)
 
     if (event.which === 13) {
 
-      if (this.isDoctor) {
-        if ((value == '' || value == null || value == undefined || isNaN(value))) {
-          this.toastr.warning('Please select Doctor', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-          this.doctorname.nativeElement.focus();
+      // if (this.isDoctor) {
+      //   if ((value == '' || value == null || value == undefined || isNaN(value))) {
+      //     this.toastr.warning('Please select Doctor', 'Warning !', {
+      //       toastClass: 'tostr-tost custom-toast-warning',
+      //     });
+      //     return;
+      //     this.doctorname.nativeElement.focus();
 
-        } else if (value > 0) {
-          this.disc.nativeElement.focus();
-        }
-      }
+      //   } else if (value > 0) {
+      //     this.disc.nativeElement.focus();
+      //   }
+      // }
+      this.disc.nativeElement.focus();
     }
   }
 
@@ -587,7 +602,7 @@ export class IPBillingComponent implements OnInit {
         // this.calculatePersc();
         this.discamt.nativeElement.focus();
       } else if (event.which === 13 && (parseInt(value) < 0 && parseInt(value) > 100)) {
-        this.toastr.warning('Please Enter disc % less than 101 and Greater than 0  ', 'Warning !', {
+        this.toastr.warning('Please Enter disc % less than 100 and Greater than 0  ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
@@ -662,7 +677,6 @@ export class IPBillingComponent implements OnInit {
   }
 
   getChargesList() {
-
     this.chargeslist = [];
     this.dataSource.data = [];
     this.isLoadingStr = 'loading';
@@ -1040,6 +1054,8 @@ export class IPBillingComponent implements OnInit {
           height: "500px",
           data: this.interimArray
         });
+    }else{
+      Swal.fire('Warring !', 'Please select check box ', 'warning');
     }
 
   }
@@ -1372,25 +1388,81 @@ export class IPBillingComponent implements OnInit {
         this.isLoading = '';
       });
 
+    }else{
+      Swal.fire('error !', 'Please select check box ', 'error');
     }
 
   }
-
+  vselect:any;
+  vService:any;
+  vAdminPer:any;
+  vAdminAmt:any;
   onSaveAddCharges() {
-    if (this.Serviceform.get("DoctorID").value) {
-      this.DoctornewId = this.Serviceform.get("DoctorID").value.DoctorID;
-      this.ChargesDoctorname = this.Serviceform.get("DoctorID").value.DoctorName.toString()
-    } else {
-      this.DoctornewId = 0;
-      this.ChargesDoctorname = '';
+    if (( this.vselect== '' || this.vselect == null || this.vselect == undefined)) {
+      this.toastr.warning('Please select Ward', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
     }
-    this.isLoading = 'save';
+    if(!this.ClassList.find(item => item.ClassName == this.Serviceform.get('ChargeClass').value.ClassName)){
+      this.toastr.warning('Please select valid ward', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (( this.vService== '' || this.vService == null || this.vService == undefined)) {
+      this.toastr.warning('Please select service', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(!this.ServiceList.find(item => item.ServiceName == this.Serviceform.get('SrvcName').value.ServiceName)){
+      this.toastr.warning('Please select valid Service', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (( this.b_price== '' || this.b_price == null || this.b_price == undefined)) {
+      this.toastr.warning('Please enter price', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (( this.b_qty== '' || this.b_qty == null || this.b_qty == undefined)) {
+      this.toastr.warning('Please enter qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.isDoctor){
+      if (( this.vDoctorID== '' || this.vDoctorID == null || this.vDoctorID == undefined)) {
+        this.toastr.warning('Please select Doctor', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if (( this.formDiscPersc== '' || this.formDiscPersc == null || this.formDiscPersc == undefined)) {
+      this.toastr.warning('Please enter disc', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+   
+    let doctorid = 0;
+    if (this.Serviceform.get("DoctorID").value)
+    doctorid = this.Serviceform.get("DoctorID").value.DoctorID;
 
+    let doctorName = '';
+    if (this.Serviceform.get("DoctorID").value)
+      doctorName = this.Serviceform.get("DoctorID").value.DoctorName;
+
+    this.isLoading = 'save';
     if ((this.SrvcName && (parseInt(this.b_price) > 0 || this.b_price == '0') && this.b_qty) && (parseFloat(this.b_netAmount) > 0)) {
 
       var m_data = {
         "chargeID": 0,
-        "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+        "chargesDate": this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         "opD_IPD_Type": 1,
         "opD_IPD_Id": this.selectedAdvanceObj.AdmissionID,
         "serviceId": this.serviceId,
@@ -1400,8 +1472,8 @@ export class IPBillingComponent implements OnInit {
         "concessionPercentage": this.formDiscPersc || 0,
         "concessionAmount": this.b_disAmount,
         "netAmount": this.b_netAmount,
-        "doctorId": this.DoctornewId,// this.Ipbillform.get("doctorId").value || 0,
-        "doctorName": this.ChargesDoctorname || '',
+        "doctorId": doctorid,
+        "doctorName": doctorName,
         "docPercentage": 0,
         "docAmt": 0,
         "hospitalAmt": this.FAmount,// this.b_netAmount,
@@ -1416,21 +1488,17 @@ export class IPBillingComponent implements OnInit {
         "packageMainChargeID": 0,
         "isSelfOrCompanyService": false,
         "packageId": 0,
-        "chargeTime": this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+        "chargeTime":this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
         "classId": this.selectedAdvanceObj.ClassId,
       }
       console.log(m_data);
-
-
       let submitData = {
         "addCharges": m_data
-
       };
 
       this._IpSearchListService.InsertIPAddCharges(submitData).subscribe(data => {
         if (data) {
           this.getChargesList();
-
         }
       });
       this.onClearServiceAddList()
@@ -1440,7 +1508,6 @@ export class IPBillingComponent implements OnInit {
     else {
       Swal.fire("Enter Proper Values !")
     }
-
     this.itemid.nativeElement.focus();
     this.add = false;
     if (this.formDiscPersc > 0) {
@@ -1546,7 +1613,16 @@ export class IPBillingComponent implements OnInit {
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp)) {
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  } 
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
       event.preventDefault();
@@ -1731,6 +1807,7 @@ debugger
           })
 
         }
+     
       } else {
         Swal.fire("Select Data For Save")
       }
