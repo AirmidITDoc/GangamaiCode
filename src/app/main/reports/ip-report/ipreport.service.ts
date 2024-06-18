@@ -45,9 +45,9 @@ public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
   return this._httpClient.get("InPatient/view-Admitted_PatientList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
 }
   
-public getAdmittedPatientListCompanywiseView(FromDate,ToDate,DoctorId,WardId){
+public getAdmittedPatientListCompanywiseView(FromDate,ToDate){
   
-  return this._httpClient.get("InPatient/view-Admitted_PatientList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
+  return this._httpClient.get("IPReport/view-CompanyWiseAdmissionCountDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
 
@@ -56,9 +56,9 @@ public getCurrAdmitwardwisechargesView(DoctorId, WardId,CompanyId){
   return this._httpClient.get("IPReport/view-IPAdmitPatientwardwisechargesReport?DoctorId=" + DoctorId+"&WardId="+WardId+"&CompanyId="+CompanyId+"&WardId="+WardId);
 }
   
-public getAdmittedPatientListCompanywisesummaryView(FromDate,ToDate,DoctorId,WardId){
+public getAdmittedPatientListCompanywisesummaryView(FromDate,ToDate){
   
-  return this._httpClient.get("InPatient/view-Admitted_PatientList?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&WardId="+WardId);
+  return this._httpClient.get("IPReport/view-CompanyWiseAdmissionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
 }
 
 public getAdmittedPatientCasepaaperView(AdmissionId){
@@ -139,4 +139,13 @@ getMaterialconsumptionView(MaterialConsumptionId){
   
   return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId=" + MaterialConsumptionId);
 }
+public getMaterialConsumptionReport(MaterialConsumptionId){
+  return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId="+MaterialConsumptionId);
+}
+
+public getDischargetypewiseReport(DoctorId,FromDate,ToDate,DischargeTypeId){
+  return this._httpClient.get("InPatient/view-MaterialConsumption?DoctorId="+DoctorId+"&FromDate="+FromDate+"&ToDate="+ToDate+"&DischargeTypeId="+DischargeTypeId);
+}
+
+
 }

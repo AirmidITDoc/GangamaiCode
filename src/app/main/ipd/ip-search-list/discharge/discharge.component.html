@@ -9,7 +9,7 @@
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="width:80% ;font-size: 20px; font-weight: 400;">
                 Discharge
-                <span> RegNo - {{selectedAdvanceObj.RegNo}}</span>
+                <!-- <span> RegNo - {{selectedAdvanceObj.RegNo}}</span> -->
             </span>
             <!-- </span> -->
             <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -42,53 +42,61 @@
                                         </div>
                                         <div class="patient-info-box my-8">
                                             <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                    <span class="patient-col-key ">Patient Name</span>
+                                                <div class="patient-col gap-1" fxFlex="30%">
+                                                    <span class="patient-col-key " >UHID </span>
                                                     <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="15%">
-                                                    <span class="patient-col-key">DOA</span>
+                                                <div class="patient-col gap-1" fxFlex="30%">
+                                                    <span class="patient-col-key" >DOA /Time</span>
                                                     <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.DOA}}</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
-                                                    <span class="patient-col-key">IPDNo</span>
+                                                <div class="patient-col gap-1" fxFlex="30%">
+                                                    <span class="patient-col-key" >IPDNo</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
-                                                    <span class="patient-col-key">Tariff</span>
+                                                <div class="patient-col gap-1" fxFlex="30%">
+                                                    <span class="patient-col-key" >Patient Name</span>
                                                     <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="10%" fxFlex.gt-sm="10%">
-                                                    <span class="patient-col-key ">Age</span>
+                                                <div class="patient-col gap-1" fxFlex="30%">
+                                                    <span class="patient-col-key " >Age /Sex</span>
                                                     <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{selectedAdvanceObj.AgeYear}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}} D | {{selectedAdvanceObj.GenderName}}</span>
                                                 </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="20%">
+                                                <div class="patient-col gap-1" fxFlex="30%">
+                                                    <span class="patient-col-key" >Doctor Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                </div>
+                                                <div class="patient-col gap-1" fxFlex="30%">
+                                                    <span class="patient-col-key"  >Ward Name | Bed</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.RoomName}} | {{selectedAdvanceObj.BedName}}</span>
+                                                </div>
+                                                <div class="patient-col gap-1" fxFlex="30%">
+                                                    <span class="patient-col-key"  > Department Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                                </div>
+                                               
+                                                <div class="patient-col gap-1" fxFlex="30%">
+                                                    <span class="patient-col-key">Patient Type</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}-{{selectedAdvanceObj.TariffName}}</span>
+                                                </div>
+                                                <div class="patient-col gap-1" fxFlex="30%">
+                                                    <span class="patient-col-key">Ref Dr.Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
+                                                </div>
+                                                <div class="patient-col gap-1" fxFlex="30%">
                                                     <span class="patient-col-key">Company</span>
                                                     <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
-                                                </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                    <span class="patient-col-key">ward</span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{selectedAdvanceObj.WardName}}</span>
-                                                    {{selectedAdvanceObj.WardName}}
-                                                </div>
-                                                <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                                    <span class="patient-col-key">Doctor</span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                    <span class="patient-col-value" style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
                                                 </div>
                                             </div>
                                         </div>

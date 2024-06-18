@@ -1,11 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AdmissionService } from '../admission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Admission } from '../admission.component';
@@ -30,11 +30,18 @@ export class MLCInformationComponent implements OnInit {
   public value = new Date();
   date: string;
   dateValue: any = new Date().toISOString();
+  MLCId:any=0;
+  Mlcno: any;
+  Mlcdate: any;
+  AuthorityName: any;
+  ABuckleNo: any;
+  PoliceStation: any;
+
 
   constructor(public _AdmissionService: AdmissionService,
     private formBuilder: FormBuilder,
     private accountService: AuthenticationService,
-    // public notification: NotificationServiceService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
@@ -50,18 +57,34 @@ export class MLCInformationComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
+
+   
+    }
+    if(this.data){
+      this.MLCId=this.data.registerObj.MLCId;
+      this.Mlcno=this.data.registerObj.MLCNo;
+      this.Mlcdate=this.data.registerObj.Mlcdate;
+      this.AuthorityName=this.data.registerObj.AuthorityName;
+      this.ABuckleNo=this.data.registerObj.BuckleNo;
+      this.PoliceStation=this.data.registerObj.PoliceStation;
     }
   }
 
   createmlcForm() {
     return this.formBuilder.group({
       AdmissionOn: '',
-      MlcNo: '',
-      ReportingDate: '',
-      ReportingTime: '',
-      AuthorityName: '',
-      ABuckleNo: '',
-      PoliceStation: '',
+      MlcNo: ['', [
+        Validators.required]],
+      ReportingDate:  ['', [
+        Validators.required]],
+      // ReportingTime:  ['', [
+      //   Validators.required]],
+      AuthorityName:  ['', [
+        Validators.required]],
+      ABuckleNo:  ['', [
+        Validators.required]],
+      PoliceStation:  ['', [
+        Validators.required]],
       MlcType:''
     });
   }
@@ -149,15 +172,15 @@ public onEnterpolic(event): void {
   
 
 
-  if(this.selectedAdvanceObj.IsMLC){
+  if(this.MLCId ==0){
   var m_data = {
     "insertMLCInfo": {
       "AdmissionId ": this.selectedAdvanceObj.AdmissionID,
-      "MlcNo": this.MlcInfoFormGroup.get("MlcNo").value || 0,
+      "MlcNo":this.MLCId|| this.MlcInfoFormGroup.get("MlcNo").value || 0,
       "ReportingDate": this.dateTimeObj.date,
       "ReportingTime": this.dateTimeObj.time,
       "AuthorityName": this.MlcInfoFormGroup.get("AuthorityName").value || '',
-      "BuckleNo": this.MlcInfoFormGroup.get("ABuckleNo").value || 0,
+      "BuckleNo": this.MlcInfoFormGroup.get("ABuckleNo").value || '',
       "PoliceStation": this.MlcInfoFormGroup.get("PoliceStation").value || '',
       "MLCId": 0,// this.MlcInfoFormGroup.get("MLCId").value || '',
     }
@@ -181,16 +204,18 @@ public onEnterpolic(event): void {
 
 }
 else{
+  debugger
+  console.log(this.MlcInfoFormGroup.get("ReportingDate").value)
   var m_data1 = {
     "updateMLCInfo": {
-      "mlcId": 13,//this.MlcInfoFormGroup.get("MLCId").value,
+      "mlcId":this.MLCId || this.MlcInfoFormGroup.get("MLCId").value,
       "admissionId": this.selectedAdvanceObj.AdmissionID,
       "MlcNo": this.MlcInfoFormGroup.get("MlcNo").value,
       "ReportingDate": this.datePipe.transform(this.MlcInfoFormGroup.get("ReportingDate").value,"MM-dd-yyyy") || '01/01/1900',
-      "ReportingTime": this.datePipe.transform(this.MlcInfoFormGroup.get("ReportingTime").value,"MM-dd-yyyy") || '01/01/1900',
-      "AuthorityName": this.MlcInfoFormGroup.get("AuthorityName").value || 0,
+      "ReportingTime": this.datePipe.transform(this.MlcInfoFormGroup.get("ReportingDate").value,"hh:mm") || '01/01/1900',
+      "AuthorityName": this.MlcInfoFormGroup.get("AuthorityName").value || '',
       "BuckleNo": this.MlcInfoFormGroup.get("ABuckleNo").value || 0,
-      "PoliceStation": this.MlcInfoFormGroup.get("PoliceStation").value,
+      "PoliceStation": this.MlcInfoFormGroup.get("PoliceStation").value || '',
     }
   }
     console.log(m_data1);
@@ -214,5 +239,38 @@ else{
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
+  }
+}
+
+
+
+export class MlcDetail {
+  MLCId: any;
+  AdmissionId: any;
+  MLCNo: any;
+  ReportingDate: any;
+  ReportingTime: any;
+  AuthorityName: any;
+  BuckleNo: any;
+  PoliceStation: any;
+  
+  /**
+   * Constructor
+   *
+   * @param RegInsert
+   */
+
+  constructor(MlcDetail) {
+    {
+      this.MLCId = MlcDetail.MLCId || '';
+      this.AdmissionId = MlcDetail.AdmissionId || '';
+      this.MLCNo = MlcDetail.MLCNo || '';
+      this.ReportingDate = MlcDetail.ReportingDate || '';
+      this.ReportingTime = MlcDetail.ReportingTime || '';
+      this.AuthorityName = MlcDetail.MiddleName || '';
+      this.BuckleNo = MlcDetail.BuckleNo || '';
+      this.PoliceStation = MlcDetail.PoliceStation || '';
+
+    }
   }
 }

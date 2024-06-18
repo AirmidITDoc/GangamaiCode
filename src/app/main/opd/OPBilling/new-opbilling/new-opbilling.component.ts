@@ -22,7 +22,6 @@ import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { MatSelect } from '@angular/material/select';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { debug } from 'console';
 
 @Component({
   selector: 'app-new-opbilling',
@@ -224,7 +223,7 @@ export class NewOPBillingComponent implements OnInit {
       this.vTariffId = this.selectedAdvanceObj.TariffId;
       this.vClassId = this.selectedAdvanceObj.ClassId;
       this.vClassName=this.selectedAdvanceObj.ClassName;
-      // this.PatientType
+      this.vMobileNo = this.selectedAdvanceObj.MobileNo;
     }
 
     this.getServiceListCombobox();
@@ -295,15 +294,6 @@ export class NewOPBillingComponent implements OnInit {
       // TotalAmount: [Validators.pattern("^[0-9]*$")],
     });
   }
-
-  // private getDrugs(startsWith: string, page: number): Observable<ILookup[]> {
-  //   const take = 10;
-  //   const skip = page > 0 ? (page - 1) * take : 0;
-  //   const filtered = this.lookups
-  //     .filter(option => option.ItemName.toLowerCase().startsWith(startsWith.toLowerCase()));
-  //   return of(filtered.slice(skip, skip + take));
-  // }
-
   //  ===================================================================================
   filterStates(name: string) {
     let tempArr = [];
@@ -603,6 +593,7 @@ export class NewOPBillingComponent implements OnInit {
             this.FinalAmt = this.TotalnetPaybleAmt;
           }
           let vmMobileNo = this.vMobileNo;
+          console.log(vmMobileNo);
           if (this.flagSubmit == true) {
             console.log("Procced with Payment Option");
             const insertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
@@ -1036,7 +1027,6 @@ export class NewOPBillingComponent implements OnInit {
   conflag: boolean = false;
   // Charges Wise Disc Percentage 
   calculatePersc() {
-debugger
     this.v_ChargeDiscPer = this.registeredForm.get('ChargeDiscPer').value;
 
     if ((this.v_ChargeDiscPer < 101) && (this.v_ChargeDiscPer > 0)) {
@@ -1377,7 +1367,6 @@ debugger
   }
 
   getSelectedObj1(obj) {
-    debugger
     this.dataSource.data = [];
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;

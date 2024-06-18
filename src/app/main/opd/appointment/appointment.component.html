@@ -349,6 +349,17 @@
                                                         <span> {{contact.TariffName}}</span>
                                                     </mat-cell>
                                                 </ng-container>
+                                                
+                                                <ng-container matColumnDef="MobileNo">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-md>
+                                                        <span class="mat-header-text">MobileNo</span>
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        <span> {{contact.MobileNo}}</span>
+                                                    </mat-cell>
+                                                </ng-container>
+
                                                 <!-- stickyEnd -->
                                                 <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-260">

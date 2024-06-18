@@ -53,6 +53,7 @@ constructor(public _httpClient:HttpClient,
       start: [],
       end: [],
       DischargeId:[''],
+      
     });
   }
 

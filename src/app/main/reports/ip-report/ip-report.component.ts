@@ -493,8 +493,15 @@ var data={
     } else if (this.ReportName == 'IP Lab Request Report') {
       this.viewgetLabrequestReportPdf();
     }
-
-    
+    else if (this.ReportName == 'IP Settlement Receipt') {
+      this.getIpPaymentReceiptview();
+    } else if (this.ReportName == 'Material Consumption Report') {
+      this.viewgetMaterialConsumptionPdf();
+    }
+    else if (this.ReportName == ' IPD Discharge Type Wise') {
+      this.viewgetDischaregTypewisePdf();
+    }
+   
   }
 
 
@@ -728,7 +735,7 @@ viewgetIPAdvanceReportPdf() {
       
        this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
        this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,0,
+     
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -757,7 +764,7 @@ viewgetIPAdvanceReportPdf() {
       
        this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
        this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       0,0,
+     
        ).subscribe(res => {
        const matDialog = this._matDialog.open(PdfviewerComponent,
          {
@@ -1157,6 +1164,69 @@ viewgetIPAdvanceReportPdf() {
   
 
   
+  viewgetMaterialConsumptionPdf() {
+    this.sIsLoading = 'loading-data';
+   let MaterialConsumptionId=0
+     setTimeout(() => {
+       this.AdList = true;
+       this._IPReportService.getMaterialConsumptionReport(
+        MaterialConsumptionId
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Material Consumption Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           this.AdList = false;
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
+
+   
+   viewgetDischaregTypewisePdf() {
+    this.sIsLoading = 'loading-data';
+   let DoctorId=0
+   let DischargeTypeId=0
+
+
+     setTimeout(() => {
+       this.AdList = true;
+       this._IPReportService.getDischargetypewiseReport(
+        DoctorId,
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        DischargeTypeId
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "IPD Discharge Type Wise Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           this.AdList = false;
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
+
+
+
 
   userChk(option) {
     this.UserId = option.UserID || 0;

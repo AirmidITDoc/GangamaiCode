@@ -54,6 +54,8 @@ export class OpReportsComponent implements OnInit {
   searchDoctorList: any = [];
   optionsSearchDoc: any[] = [];
 Reportsection='OP Reports';
+// Reportsection='Inventory Reports';
+
 
 
 FlagDoctorSelected: boolean = false;
@@ -208,6 +210,174 @@ var data={
       this.FlagDoctorSelected = false;
 
     }
+
+
+    
+    //Inventory
+    if (this.ReportName == 'Item List') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }else if (this.ReportName == 'Supplier List') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'Indent Report') {
+      this.FlagUserSelected = false;
+    //  this.FlagPaymentSelected = false;
+    this.FlagBillNoSelected = false;
+
+    } 
+    else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+    } 
+     
+    else if (this.ReportName == 'GRN Report') {
+      this.FlagUserSelected = false;
+      this.FlagPaymentIdSelected=false
+      this.FlagRefundIdSelected = false;
+
+    } 
+    else if (this.ReportName == 'GRN Return Report') {
+      this.FlagUserSelected = true;
+      this.FlagDoctorSelected = true;
+      this.FlagBillNoSelected=false;
+    }
+    else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
+    }
+     else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
+      this.FlagBillNoSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'GRN Wise Product Qty Report') {
+      this.FlagUserSelected = true;
+      this.FlagDoctorSelected = true;
+      this.FlagBillNoSelected=false;
+    }
+    else if (this.ReportName == 'GRN Purchase Report') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
+    }
+     else if (this.ReportName == 'Supplier Wise GRN List') {
+      this.FlagBillNoSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'Issue To Department') {
+      this.FlagUserSelected = true;
+      this.FlagDoctorSelected = true;
+      this.FlagBillNoSelected=false;
+    }
+    else if (this.ReportName == 'Issue To Department Item Wise') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
+    }
+     else if (this.ReportName == 'Return From Department') {
+      this.FlagBillNoSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'Purchase Order') {
+      this.FlagUserSelected = true;
+      this.FlagDoctorSelected = true;
+      this.FlagBillNoSelected=false;
+    }
+    else if (this.ReportName == 'Material Consumption Monthly Summary') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
+    }
+     else if (this.ReportName == 'Material Consumption') {
+      this.FlagBillNoSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'Item Expiry Report') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
+    }
+     else if (this.ReportName == 'Current Stock Report') {
+      this.FlagBillNoSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'Closing Current Stock Report') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
+    }
+     else if (this.ReportName == 'Item Wise Supplier List') {
+      this.FlagBillNoSelected = true;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'Current Stock Date Wise') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
+    }
+     else if (this.ReportName == 'Non-Moving Item List') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'Non-Moving Item Without Batch List') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'Patient Wise Material Consumption') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
+    }
+     else if (this.ReportName == 'Last Purchase Rate Wise Consumtion') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'Item Count') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
+    }
+     else if (this.ReportName == 'Supplier Wise Debit Credit Note') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }   else if (this.ReportName == 'Stock Adjustment Report') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+      this.FlagBillNoSelected=false;
+    }
+     else if (this.ReportName == 'Purchase Wise GRN Summary') {
+      this.FlagBillNoSelected = false;
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
     
   }
 
@@ -266,6 +436,51 @@ var data={
     
       this.viewgetOPRefundofBillPdf();
     }
+
+
+    
+    
+    //Inventory
+    if (this.ReportName == 'Current Stock Report') {
+      this.viewInvCurrentstockPdf();
+    } 
+    else if (this.ReportName == 'Current Stock Date Wise') {
+      this.viewCurrentstockdatewisePdf();
+      
+    }
+    else if (this.ReportName == 'Item Expiry Report') {
+      this.viewgetItemexpiryPdf();
+      
+    }
+     else if (this.ReportName == 'Non-Moving Item List') {
+      this.viewNonMovingItemPdf();
+    } 
+    else if (this.ReportName == 'Indent Report') {
+      this.viewgetIndentPdf();
+    }
+     else if (this.ReportName == 'Material Consumption') {
+      this.viewgetMaterialConsumptionPdf();
+    } 
+    else if (this.ReportName == 'Issue To Department') {
+    
+      this.viewgetIssuetodeptPdf();
+    }
+    else if (this.ReportName == 'Return From Department') {
+      this.viewgetReturnfromdeptPdf();
+    } 
+    else if (this.ReportName == 'Issue To Department') {
+    
+      this.viewgetIssuetodeptPdf();
+    }
+    else if (this.ReportName == 'Patient Wise Material Consumption') {
+      this.viewgetMaterialConsumptionPdf();
+    } 
+    else if (this.ReportName == 'GRN Report') {
+      this.viewgetGRNReportPdf();
+    } 
+    else if (this.ReportName == 'Purchase Order') {
+      this.viewgetItemwisePurchasePdf();
+    } 
   }
 
 
@@ -756,6 +971,309 @@ viewgetOPBillReportPdf() {
     });
    
     },100);
+  }
+
+
+  //inventory
+  viewInvCurrentstockPdf() {
+    this.sIsLoading = 'loading-data';
+   
+   let ItemName ='%'
+ let StoreId =0
+     setTimeout(() => {
+       this.AdList = true;
+       this._OPReportsService.getCurrentstockReport(
+        ItemName,StoreId
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Current Stock Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           this.AdList = false;
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
+
+   viewCurrentstockdatewisePdf() {
+    this.sIsLoading = 'loading-data';
+   let StoreId =0;
+     setTimeout(() => {
+       this.AdList = true;
+       this._OPReportsService.getCurrentstockdatewiseReport(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        StoreId
+        // ? this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Current Stock Date Wise Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           this.AdList = false;
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
+   viewgetItemexpiryPdf() {
+   let ExpMonth =0
+   let ExpYear =0
+   let StoreID =0
+
+
+    this.sIsLoading = 'loading-data';
+   
+     setTimeout(() => {
+       this.AdList = true;
+       this._OPReportsService.getItemExpiryReport(
+        ExpMonth,ExpYear,StoreID
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Item Expiry Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           this.AdList = false;
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
+
+  
+   viewNonMovingItemPdf() {
+    this.sIsLoading = 'loading-data';
+   let NonMovingDay =0
+    let StoreId =0
+     setTimeout(() => {
+       this.AdList = true;
+       this._OPReportsService.getNonmovinglistReport(
+        NonMovingDay,StoreId
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Non Moving Item List Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           this.AdList = false;
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
+
+
+
+   viewgetIndentPdf() {
+    this.sIsLoading = 'loading-data';
+   
+   let IndentId =0
+
+     setTimeout(() => {
+       this.AdList = true;
+       this._OPReportsService.getIndentwiseReport(
+        IndentId
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Indent Wise Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           this.AdList = false;
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
+ 
+   
+   viewgetMaterialConsumptionPdf() {
+    this.sIsLoading = 'loading-data';
+   let MaterialConsumptionId=0
+     setTimeout(() => {
+       this.AdList = true;
+       this._OPReportsService.getMaterialConsumptionReport(
+        MaterialConsumptionId
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Material Consumption Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           this.AdList = false;
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
+   viewgetIssuetodeptPdf() {
+   let IssueId =0
+  
+    this.sIsLoading = 'loading-data';
+   
+     setTimeout(() => {
+       this.AdList = true;
+       this._OPReportsService.getIssuetodeptReport(
+        IssueId
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Issue To Department Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           this.AdList = false;
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
+
+  
+   viewgetReturnfromdeptPdf() {
+    this.sIsLoading = 'loading-data';
+   
+    let ReturnId =0
+     setTimeout(() => {
+       this.AdList = true;
+       this._OPReportsService.getReturnfromdeptReport(
+        ReturnId
+       ).subscribe(res => {
+         const dialogRef = this._matDialog.open(PdfviewerComponent,
+           {
+             maxWidth: "85vw",
+             height: '750px',
+             width: '100%',
+             data: {
+               base64: res["base64"] as string,
+               title: "Return From Department Report  Viewer"
+             }
+           });
+         dialogRef.afterClosed().subscribe(result => {
+           this.AdList = false;
+           this.sIsLoading = '';
+         });
+       });
+ 
+     }, 100);
+   }
+
+
+   viewgetGRNReportPdf() {
+    let GRNID=0
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._OPReportsService.getGRNreportview(
+        GRNID
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "GRN REPORT Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
+  }
+
+
+  
+
+  
+  viewgetItemwisePurchasePdf() {
+    let StoreId=0
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._OPReportsService.getItemwisepurchaseview(
+        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+       this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" ,
+        StoreId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Item Wise Purchase Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
   }
   userChk(option) {
     this.UserId = option.UserID || 0;

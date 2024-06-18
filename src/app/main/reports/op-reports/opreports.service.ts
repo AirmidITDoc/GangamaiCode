@@ -280,4 +280,45 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
   public getDoctorMaster() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
+
+
+  //Inventory
+  public getCurrentstockReport(ItemName,StoreId){
+    return this._httpClient.get("InventoryTransaction/view-InvCurrentStock?ItemName="+ItemName+"&ItemName="+StoreId);
+  }
+  public getCurrentstockdatewiseReport(LedgerDate,StoreId){
+    return this._httpClient.get("InventoryTransaction/view-InvDaywiseStock?LedgerDate="+LedgerDate+"&StoreId="+StoreId);
+  }
+  public getItemExpiryReport(ExpMonth,ExpYear,StoreID){
+    return this._httpClient.get("InventoryTransaction/view-ExpiryItemList?ExpMonth="+ExpMonth+"&ExpYear="+ExpYear+"&StoreID="+StoreID);
+  }
+  
+  
+  public getNonmovinglistReport(NonMovingDay,StoreId){
+    return this._httpClient.get("InventoryTransaction/view-NonMovingItem?NonMovingDay="+NonMovingDay+"&StoreId="+StoreId);
+  }
+  public getIndentwiseReport(IndentId){
+    return this._httpClient.get("InventoryTransaction/view-IndentWise?IndentId="+IndentId);
+  }
+
+  public getMaterialConsumptionReport(MaterialConsumptionId){
+    return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId="+MaterialConsumptionId);
+  }
+  public getIssuetodeptReport(IssueId){
+    return this._httpClient.get("InventoryTransaction/view-IssuetoDeptIssuewise?IssueId="+IssueId);
+  }
+  
+  
+  
+  public getReturnfromdeptReport(IssueId){
+    return this._httpClient.get("InventoryTransaction/view-ReturnfromDept?IssueId="+IssueId);
+  }
+  public getGRNreportview(GRNID) {
+    return this._httpClient.get("Pharmacy/view-GRNReport?GRNID=" + GRNID);
+  }
+
+  public getItemwisepurchaseview(FromDate,todate,StoreId){
+    return this._httpClient.get("InventoryTransaction/view-ItemWisePurchase?FromDate="+FromDate+"&todate="+todate+"&StoreId="+StoreId);
+  }
+  
   }
