@@ -135,6 +135,11 @@
                                                 number is required
                                             </mat-error> -->
                                         </mat-form-field>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>PanCard Number</mat-label>
+                                            <input name="PanCardNo" formControlName="PanCardNo" placeholder="PanCardNo Number" matInput [(ngModel)]="registerObj.PanCardNo" type="number" #AadharCardNo (keydown)="onEnterAadharCardNo($event)" type="number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
+                                           
+                                        </mat-form-field> -->
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

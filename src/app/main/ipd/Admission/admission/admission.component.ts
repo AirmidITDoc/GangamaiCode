@@ -16,7 +16,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
-import { MLCInformationComponent } from './mlcinformation/mlcinformation.component';
+import { MLCInformationComponent, MlcDetail } from './mlcinformation/mlcinformation.component';
 import { AdmissionNewComponent } from './admission-new/admission-new.component';
 import { AdmissionViewComponent } from './admission-view/admission-view.component';
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
@@ -159,6 +159,7 @@ export class AdmissionComponent implements OnInit {
   noOptionFound: boolean = false;
   Regdisplay: boolean = false;
   registerObj = new AdmissionPersonlModel({});
+  MlcObj=new MlcDetail({})
   bedObj = new Bed({});
   selectedPrefixId: any;
 
@@ -2082,12 +2083,33 @@ this.getAdmittedPatientList_1()
 
 
   NewMLc(contact) {
+    debugger
     this.advanceDataStored.storage = new AdvanceDetailObj(contact);
     this._AdmissionService.populateForm(contact);
+    contact.AdmissionID=53732;
+    //  console.log(row)
+    let Query = "Select * from T_MLCInformation where  AdmissionId=" + contact.AdmissionID + " ";
+    this._AdmissionService.getMLCDetail(Query).subscribe(data => {
+      this.MlcObj = data[0];
+      console.log(this.registerObj);
+    });
+
+    
+    this.MlcObj["MLCId"] = this.MlcObj.MLCId;
+    this.MlcObj["MLCNo"]=this.MlcObj.MLCNo;
+    this.MlcObj["ReportingDate"]=this.MlcObj.ReportingDate;
+    this.MlcObj["ReportingTime"] = this.MlcObj.ReportingTime;
+    this.MlcObj["AuthorityName"]=this.MlcObj.AuthorityName;
+    this.MlcObj["BuckleNo"]=this.MlcObj.BuckleNo;
+    this.MlcObj["PoliceStation"]=this.MlcObj.PoliceStation;
+    
     const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
         maxWidth: '85vw',
         height: '600px', width: '100%',
+        data: {
+          registerObj: this.MlcObj,
+        },
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -2123,47 +2145,47 @@ this.getAdmittedPatientList_1()
  
     else if (m == "Update TPA Company Information") {
 
-      let xx = {
+      // let xx = {
 
-        RegNo: contact.RegId,
-        AdmissionID: contact.AdmissionID,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId,
-        HospitalAddress: contact.HospitalAddress,
-        BDate: contact.BDate,
-        BalanceAmt: contact.BalanceAmt,
-        TotalAmt: contact.TotalAmt,
-        BillDate: contact.BillDate,
-        BillNo: contact.BillNo,
-        ConcessionAmt: contact.ConcessionAmt,
-        HospitalName: contact.HospitalName,
-        NetPayableAmt: contact.NetPayableAmt,
-        OPD_IPD_ID: contact.OPD_IPD_ID,
-        OPD_IPD_Type: contact.OPD_IPD_Type,
-        PBillNo: contact.PBillNo,
-        PaidAmount: contact.PaidAmount,
-        VisitDate: contact.VisitDate,
-        TotalBillAmount: contact.TotalBillAmount,
-        TransactionType: contact.TransactionType,
-        ConsultantDocName: contact.ConsultantDocName,
-        DepartmentName: contact.DepartmentName,
-        AddedByName: contact.AddedByName,
-        NetAmount: contact.NetAmount,
-        ServiceName: contact.ServiceName,
-        Price: contact.Price,
-        Qty: contact.Qty,
-        IsMLC: contact.IsMLC,
-        SubCompanyId: contact.SubTpaComId
+      //   RegNo: contact.RegId,
+      //   AdmissionID: contact.AdmissionID,
+      //   PatientName: contact.PatientName,
+      //   Doctorname: contact.Doctorname,
+      //   AdmDateTime: contact.AdmDateTime,
+      //   AgeYear: contact.AgeYear,
+      //   ClassId: contact.ClassId,
+      //   TariffName: contact.TariffName,
+      //   TariffId: contact.TariffId,
+      //   HospitalAddress: contact.HospitalAddress,
+      //   BDate: contact.BDate,
+      //   BalanceAmt: contact.BalanceAmt,
+      //   TotalAmt: contact.TotalAmt,
+      //   BillDate: contact.BillDate,
+      //   BillNo: contact.BillNo,
+      //   ConcessionAmt: contact.ConcessionAmt,
+      //   HospitalName: contact.HospitalName,
+      //   NetPayableAmt: contact.NetPayableAmt,
+      //   OPD_IPD_ID: contact.OPD_IPD_ID,
+      //   OPD_IPD_Type: contact.OPD_IPD_Type,
+      //   PBillNo: contact.PBillNo,
+      //   PaidAmount: contact.PaidAmount,
+      //   VisitDate: contact.VisitDate,
+      //   TotalBillAmount: contact.TotalBillAmount,
+      //   TransactionType: contact.TransactionType,
+      //   ConsultantDocName: contact.ConsultantDocName,
+      //   DepartmentName: contact.DepartmentName,
+      //   AddedByName: contact.AddedByName,
+      //   NetAmount: contact.NetAmount,
+      //   ServiceName: contact.ServiceName,
+      //   Price: contact.Price,
+      //   Qty: contact.Qty,
+      //   IsMLC: contact.IsMLC,
+      //   SubCompanyId: contact.SubTpaComId
 
-      };
+      // };
 
-      this.advanceDataStored.storage = new AdvanceDetailObj(xx);
-      this._AdmissionService.populateForm(xx);
+      this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+      this._AdmissionService.populateForm(contact);
       const dialogRef = this._matDialog.open(SubCompanyTPAInfoComponent,
         {
           maxWidth: '85vw',

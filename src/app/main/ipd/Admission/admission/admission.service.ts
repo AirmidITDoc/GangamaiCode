@@ -226,7 +226,7 @@ public regInsert(employee)
   // registration patient list
 public getRegistrationList(employee)
 {
-  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PatientRegistrationList",employee)
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList",employee)
 }                                 
  // Search Window Option
 
@@ -479,6 +479,11 @@ public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
   public getRegIdDetailforAdmission(data){
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
+
+  public getMLCDetail(data){
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
+  
 }
 
 

@@ -259,33 +259,9 @@ export class IPSearchListComponent implements OnInit {
   getRecord(contact, m): void {
     if (m == "Advance") {
       console.log(contact);
-      var m_data3 = {
-        RegNo: contact.RegNo,
-        RegId: contact.RegID,
-        AdmissionID: contact.AdmissionID,
-        OPD_IPD_ID: contact.OPD_IPD_Id,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId,
-        DoctorId: contact.DoctorId,
-        DOA: contact.DOA,
-        DOT: contact.DOT,
-        DoctorName: contact.DoctorName,
-        RoomName: contact.RoomName,
-        BedNo: contact.BedName,
-        IPDNo: contact.IPDNo,
-        DocNameID: contact.DocNameID,
-        opD_IPD_Typec: contact.opD_IPD_Type,
-        CompanyName:contact.CompanyName
-        }
-
-      console.log(m_data3)
-      this.advanceDataStored.storage = new AdvanceDetailObj(m_data3);
-      this._IpSearchListService.populateForm(m_data3);
+     
+      this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+      this._IpSearchListService.populateForm(contact);
       debugger
       let Advflag:boolean=false;
       if (contact.IsBillGenerated) {
@@ -299,7 +275,7 @@ export class IPSearchListComponent implements OnInit {
       const dialogRef = this._matDialog.open(IPAdvanceComponent,
         {
           maxWidth: "100%",
-          height: '90%',
+          height: '95%',
           width: '80%',
         });
       dialogRef.afterClosed().subscribe(result => {
@@ -311,43 +287,12 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (m == "Discharge Summary") {
       console.log(contact);
-      // if(!contact.IsDischarged){
-      //   this.toastr.warning('Please Check Patient Is Not Discharged', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // }
-      var m_data1 = {
-        RegNo: contact.RegNo,
-        RegId: contact.RegID,
-        AdmissionID: contact.AdmissionID,
-        OPD_IPD_ID: contact.OPD_IPD_Id,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId,
-        DoctorId: contact.DoctorId,
-        DOA: contact.DOA,
-        DOT: contact.DOT,
-        DoctorName: contact.DoctorName,
-        RoomName: contact.RoomName,
-        BedNo: contact.BedName,
-        IPDNo: contact.IPDNo,
-        DocNameID: contact.DocNameID,
-        opD_IPD_Typec: contact.opD_IPD_Type,
-        CompanyName:contact.CompanyName,
-        IsDischarged:contact.IsDischarged
-      }
-     
-      this.advanceDataStored.storage = new AdvanceDetailObj(m_data1);
-      this._IpSearchListService.populateForm1(m_data1);
+     this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+      this._IpSearchListService.populateForm1(contact);
       const dialogRef = this._matDialog.open(DischargeSummaryComponent,
         {
 
-          maxWidth: "80vw",
+          maxWidth: "95vw",
           height: '90vh',
           width: '100%',
 
@@ -402,30 +347,8 @@ export class IPSearchListComponent implements OnInit {
     else if (m == "Refund of Bill") {
     
       console.log(" This is for IP Refund of Bill pop : " + m);
-      let xx = {
-        RegNo: contact.RegNo,
-        RegId: contact.RegID,
-        AdmissionID: contact.AdmissionID,
-        OPD_IPD_ID: contact.OPD_IPD_Id,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId,
-        DoctorId: contact.DoctorId,
-        DOA: contact.DOA,
-        DOT: contact.DOT,
-        DoctorName: contact.DoctorName,
-        RoomName: contact.RoomName,
-        BedNo: contact.BedName,
-        IPDNo: contact.IPDNo,
-        DocNameID: contact.DocNameID,
-        opD_IPD_Typec: contact.opD_IPD_Type,
-        CompanyName:contact.CompanyName
-      };
-      this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+     
+      this.advanceDataStored.storage = new AdvanceDetailObj(contact);
 
       // if (!contact.IsBillGenerated || contact.IsDischarged ==1) {
       const dialogRef = this._matDialog.open(IPRefundofBillComponent,
@@ -441,32 +364,10 @@ export class IPSearchListComponent implements OnInit {
     // }else{Swal.fire("Bill Generated")}
     }
     else if (m == "Refund of Advance") {
-      let m_data = {
-        RegNo: contact.RegNo,
-        RegId: contact.RegID,
-        AdmissionID: contact.AdmissionID,
-        OPD_IPD_ID: contact.OPD_IPD_Id,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId,
-        DoctorId: contact.DoctorId,
-        DOA: contact.DOA,
-        DOT: contact.DOT,
-        DoctorName: contact.DoctorName,
-        RoomName: contact.RoomName,
-        BedNo: contact.BedName,
-        IPDNo: contact.IPDNo,
-        DocNameID: contact.DocNameID,
-        opD_IPD_Typec: contact.opD_IPD_Type,
-        CompanyName:contact.CompanyName
-      }
      
-      this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-      this._IpSearchListService.populateForm2(m_data);
+     
+      this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+      this._IpSearchListService.populateForm2(contact);
       // if (!contact.IsBillGenerated) {
       const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
         {
@@ -518,31 +419,31 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (m == "Bill") {
       console.log(" This is for  Bill pop : " + m);
-      let xx = {
-        RegNo: contact.RegNo,
-        RegId: contact.RegID,
-        AdmissionID: contact.AdmissionID,
-        OPD_IPD_ID: contact.OPD_IPD_Id,
-        PatientName: contact.PatientName,
-        Doctorname: contact.Doctorname,
-        AdmDateTime: contact.AdmDateTime,
-        AgeYear: contact.AgeYear,
-        ClassId: contact.ClassId,
-        TariffName: contact.TariffName,
-        TariffId: contact.TariffId,
-        DoctorId: contact.DoctorId,
-        DOA: contact.DOA,
-        DOT: contact.DOT,
-        DoctorName: contact.DoctorName,
-        RoomName: contact.RoomName,
-        BedNo: contact.BedName,
-        IPDNo: contact.IPDNo,
-        DocNameID: contact.DocNameID,
-        opD_IPD_Typec: contact.opD_IPD_Type,
-        CompanyName:contact.CompanyName,
-        IsDischarged:contact.IsDischarged,
-      };
-      this.advanceDataStored.storage = new AdvanceDetailObj(xx);
+      // let xx = {
+      //   RegNo: contact.RegNo,
+      //   RegId: contact.RegID,
+      //   AdmissionID: contact.AdmissionID,
+      //   OPD_IPD_ID: contact.OPD_IPD_Id,
+      //   PatientName: contact.PatientName,
+      //   Doctorname: contact.Doctorname,
+      //   AdmDateTime: contact.AdmDateTime,
+      //   AgeYear: contact.AgeYear,
+      //   ClassId: contact.ClassId,
+      //   TariffName: contact.TariffName,
+      //   TariffId: contact.TariffId,
+      //   DoctorId: contact.DoctorId,
+      //   DOA: contact.DOA,
+      //   DOT: contact.DOT,
+      //   DoctorName: contact.DoctorName,
+      //   RoomName: contact.RoomName,
+      //   BedNo: contact.BedName,
+      //   IPDNo: contact.IPDNo,
+      //   DocNameID: contact.DocNameID,
+      //   opD_IPD_Typec: contact.opD_IPD_Type,
+      //   CompanyName:contact.CompanyName,
+      //   IsDischarged:contact.IsDischarged,
+      // };
+      this.advanceDataStored.storage = new AdvanceDetailObj(contact);
       
       if (!contact.IsBillGenerated) {
         
@@ -560,34 +461,34 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (m == "Discharge") {
       if (!contact.IsDischarged) {
-        let m_data = {
-          RegNo: contact.RegNo,
-          RegId: contact.RegID,
-          AdmissionID: contact.AdmissionID,
-          OPD_IPD_ID: contact.OPD_IPD_Id,
-          PatientName: contact.PatientName,
-          Doctorname: contact.Doctorname,
-          AdmDateTime: contact.AdmDateTime,
-          AgeYear: contact.AgeYear,
-          ClassId: contact.ClassId,
-          TariffName: contact.TariffName,
-          TariffId: contact.TariffId,
-          DoctorId: contact.DoctorId,
-          DOA: contact.DOA,
-          DOT: contact.DOT,
-          DoctorName: contact.DoctorName,
-          RoomName: contact.RoomName,
-          WardName: contact.RoomName,
-          BedNo: contact.BedName,
-          BedId: contact.BedId,
-          IPDNo: contact.IPDNo,
-          DocNameID: contact.DocNameID,
-          opD_IPD_Typec: contact.opD_IPD_Type,
-          CompanyName:contact.CompanyName,
-          IsDischarged:contact.IsDischarged,
-        }
-        this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-        this._IpSearchListService.populateForm(m_data);
+        // let m_data = {
+        //   RegNo: contact.RegNo,
+        //   RegId: contact.RegID,
+        //   AdmissionID: contact.AdmissionID,
+        //   OPD_IPD_ID: contact.OPD_IPD_Id,
+        //   PatientName: contact.PatientName,
+        //   Doctorname: contact.Doctorname,
+        //   AdmDateTime: contact.AdmDateTime,
+        //   AgeYear: contact.AgeYear,
+        //   ClassId: contact.ClassId,
+        //   TariffName: contact.TariffName,
+        //   TariffId: contact.TariffId,
+        //   DoctorId: contact.DoctorId,
+        //   DOA: contact.DOA,
+        //   DOT: contact.DOT,
+        //   DoctorName: contact.DoctorName,
+        //   RoomName: contact.RoomName,
+        //   WardName: contact.RoomName,
+        //   BedNo: contact.BedName,
+        //   BedId: contact.BedId,
+        //   IPDNo: contact.IPDNo,
+        //   DocNameID: contact.DocNameID,
+        //   opD_IPD_Typec: contact.opD_IPD_Type,
+        //   CompanyName:contact.CompanyName,
+        //   IsDischarged:contact.IsDischarged,
+        // }
+        this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+        this._IpSearchListService.populateForm(contact);
         const dialogRef = this._matDialog.open(DischargeComponent,
           {
             maxWidth: "85vw",
@@ -624,13 +525,13 @@ export class IPSearchListComponent implements OnInit {
               "DocNameID": contact.DocNameID,
               "IsDischarged": contact.IsDischarged
             }
-            this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-            this._IpSearchListService.populateForm(m_data);
+            this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+            this._IpSearchListService.populateForm(contact);
             const dialogRef = this._matDialog.open(DischargeComponent,
               {
                 maxWidth: "90vw",
                 maxHeight: "90vh",
-                height: '600px',
+                height: '700px',
                 width: '1300px',
               });
             dialogRef.afterClosed().subscribe(result => {
@@ -647,31 +548,31 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (m == "Bed Transfer") {
       console.log(" This is for BedTransfer pop : " + m);
-      let m_data = {
-        "RegNo": contact.RegNo,
-        "PatientName": contact.PatientName,
-        "AdmissionID": contact.AdmissionID,
-        "AdmDateTime": contact.AdmDateTime,
-        "DOA": contact.DOA,
-         "DocNameID": contact.DocNameID,
-        "RoomId": contact.WardId,
-        "WardId": contact.WardId,
-        "RoomName": contact.RoomName,
-        "BedId": contact.BedId,
-        "BedName": contact.BedName,
-        "TariffId": contact.TariffId,
-        "TariffName": contact.TariffName,
-        "ClassId": contact.ClassId,
-        "ClassName": contact.ClassName,
-        IsDischarged:contact.IsDischarged,
-      }
-      this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-      this._IpSearchListService.populateForm(m_data);
+      // let m_data = {
+      //   "RegNo": contact.RegNo,
+      //   "PatientName": contact.PatientName,
+      //   "AdmissionID": contact.AdmissionID,
+      //   "AdmDateTime": contact.AdmDateTime,
+      //   "DOA": contact.DOA,
+      //    "DocNameID": contact.DocNameID,
+      //   "RoomId": contact.WardId,
+      //   "WardId": contact.WardId,
+      //   "RoomName": contact.RoomName,
+      //   "BedId": contact.BedId,
+      //   "BedName": contact.BedName,
+      //   "TariffId": contact.TariffId,
+      //   "TariffName": contact.TariffName,
+      //   "ClassId": contact.ClassId,
+      //   "ClassName": contact.ClassName,
+      //   IsDischarged:contact.IsDischarged,
+      // }
+      this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+      this._IpSearchListService.populateForm(contact);
       //      this.getAdvanceList();
       const dialogRef = this._matDialog.open(BedTransferComponent,
         {
           maxWidth: "95vw",
-          maxHeight: "85vh", width: '100%', height: "100%"
+          maxHeight: "55vh", width: '100%', height: "100%"
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
@@ -840,6 +741,8 @@ export class AdvanceDetailObj {
   Doctorname: string;
   AdmDateTime: string;
   AgeYear: number;
+  AgeMonth: number;
+  AgeDay: number;
   ClassId: number;
   ClassName: String;
   TariffName: String;
@@ -868,6 +771,12 @@ export class AdvanceDetailObj {
   OPD_IPD_Id:any;
   RegID:any;
   CompanyName:any;
+  RoomName:any;
+  DOA:any;
+  DOD:any;
+  DepartmentName:any;
+  RefDocName:any;
+  GenderName:any;
   /**
   * Constructor
   *
@@ -908,6 +817,14 @@ export class AdvanceDetailObj {
       this.OPD_IPD_Id = AdvanceDetailObj.OPD_IPD_Id || 0;
       this.RegID = AdvanceDetailObj.RegID || 0;
       this.CompanyName=AdvanceDetailObj.CompanyName || ''
+      this.RoomName=AdvanceDetailObj.RoomName || ''
+      this.DOA=AdvanceDetailObj.DOA || ''
+      this.DOD=AdvanceDetailObj.DOD || ''
+      this.DepartmentName= AdvanceDetailObj.DepartmentName|| ''
+      this.AgeMonth= AdvanceDetailObj.AgeMonth|| ''
+      this.AgeDay= AdvanceDetailObj.AgeDay|| ''
+      this.RefDocName=AdvanceDetailObj.RefDocName || ''
+      this.GenderName =AdvanceDetailObj.GenderName ||''
     }
   }
 }

@@ -92,32 +92,33 @@
          <div fxLayoutGap="5px">
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>MLC No</mat-label>
-              <input name="MlcNo" formControlName="MlcNo" placeholder="Mlc No. " matInput required
+              <input name="MlcNo" formControlName="MlcNo" placeholder="Mlc No. "  [(ngModel)]="Mlcno" matInput required
               #mlc (keydown)="onEntermlc($event)">
             </mat-form-field>
          
             <mat-form-field appearance="outline">
               <mat-label>Reporting Collection Date / Time</mat-label>
-              <input matInput type="datetime-local" placeholder="start date" [value]="date" (change)="date=$event.target.value" formControlName="ReportingDate">
+              <input matInput type="datetime-local" placeholder="start date" [value]="date"  [(ngModel)]="Mlcdate"
+               (change)="date=$event.target.value" formControlName="ReportingDate">
             </mat-form-field>
          
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>Authority Name</mat-label>
-              <input name="AuthorityName" formControlName="AuthorityName" placeholder="AuthorityName"
+              <input name="AuthorityName" formControlName="AuthorityName" placeholder="AuthorityName"  [(ngModel)]="AuthorityName"
               #authority (keydown)="onEnterauthority($event)" matInput required>
             </mat-form-field>
           
         
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>Authority Buckle No</mat-label>
-              <input name="ABuckleNo" formControlName="ABuckleNo" placeholder="ABuckleNo" matInput 
+              <input name="ABuckleNo" formControlName="ABuckleNo" placeholder="ABuckleNo" matInput   [(ngModel)]="ABuckleNo"
               #buckleno (keydown)="onEnterbuckleno($event)" required>
             </mat-form-field>
           </div>
           <div fxLayoutGap="5px">
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>PoliceStation</mat-label>
-              <input name="PoliceStation" formControlName="PoliceStation" placeholder="PoliceStation" 
+              <input name="PoliceStation" formControlName="PoliceStation" placeholder="PoliceStation"   [(ngModel)]="PoliceStation"
               #polic (keydown)="onEnterpolic($event)" matInput required>
             </mat-form-field>
             <!-- (keydown)="onEnterreligion($event)" -->
@@ -141,43 +142,19 @@
               </mat-autocomplete>
           </mat-form-field> -->
           </div>
-
+<!-- 
           <div fxLayoutGap="5px">
             
-            <textarea rows="8" cols="450">
+            <textarea rows="8" cols="450"  [(ngModel)]="PoliceStation">
               
            </textarea>
 
-           <textarea rows="28" cols="450">
+           <textarea rows="28" cols="450"  [(ngModel)]="PoliceStation">
               
            </textarea>
-          </div>
+          </div> -->
 
-                  
-          <!-- <div fxLayoutGap="5px">
-            <mat-form-field appearance="outline" fxFlex>
-              <mat-label>PoliceStation</mat-label>
-              <input name="PoliceStation" formControlName="PoliceStation" placeholder="PoliceStation" 
-              #polic (keydown)="onEnterpolic($event)" matInput required>
-            </mat-form-field> -->
-  
-        
-<!--   
-       
-            <mat-form-field appearance="outline" fxFlex>
-              <input matInput [matDatepicker]="picker2" placeholder="Choose a ReportingDate" name="ReportingDate"
-                formControlName="ReportingDate" [(ngModel)]="value" #rdate>
-              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-              <mat-datepicker #picker2></mat-datepicker>
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline" fxFlex>
-              <input matInput [matDatepicker]="picker3" placeholder="Choose a ReportingTime" name="ReportingTime"
-                formControlName="ReportingTime" [(ngModel)]="value">
-              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-              <mat-datepicker #picker3></mat-datepicker>
-            </mat-form-field> -->
-          <!-- </div> -->
+         
    
   
 
