@@ -285,7 +285,6 @@ export class AppointmentComponent implements OnInit {
     // "Bill",
     "RegNoWithPrefix",
     "PatientName",
-    //  "DepartmentName",
     "DVisitDate",
     "VisitTime",
     "OPDNo",
@@ -294,6 +293,7 @@ export class AppointmentComponent implements OnInit {
     "PatientType",
     "CompanyName",
     'TariffName',
+    'MobileNo',
     "action",
     // "action1"
   ];
@@ -2793,6 +2793,7 @@ export class AppointmentComponent implements OnInit {
       TariffName: contact.TariffName,
       TariffId: contact.TariffId,
       CompanyId: contact.CompanyId,
+      MobileNo: contact.MobileNo,
       Lbl: "AppointmentBill"
     };
     console.log(xx)
