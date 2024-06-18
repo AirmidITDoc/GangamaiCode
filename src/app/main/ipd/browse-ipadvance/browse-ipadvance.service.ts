@@ -26,7 +26,7 @@ export class BrowseIPAdvanceService {
   }
 
   public getIpdAdvanceBrowseList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPDAdvanceBill", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowseIPAdvanceList", employee)
   }  
 
   public getTemplate(query) {

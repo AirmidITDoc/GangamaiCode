@@ -35,16 +35,24 @@ export class BrowseIPAdvanceComponent implements OnInit {
   AdList:boolean=false;
 
   displayedColumns = [
-    'RegNo',
+    'useraction',
     'Date',
+    'RegNo',
     'PatientName',
+    'IPDNo',
+    'DoctorName',
+    'RefDoctorName',
+    'CompanyName',
+    'MobileNo',
+    'WardName',
     'AdvanceNo',
     'AdvanceAmount',
-    // 'AddedBy',
     'CashPayAmount',
     'ChequePayAmount',
     'CardPayAmount',
     'PayTMAmount',
+    'BalanceAmount',
+    'RefundAmount',
     'UserName',
     'buttons'
   ];
