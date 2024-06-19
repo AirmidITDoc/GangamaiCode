@@ -34,6 +34,7 @@ import { RegistrationService } from 'app/main/opd/registration/registration.serv
 import { EditRefraneDoctorComponent } from 'app/main/opd/appointment/edit-refrane-doctor/edit-refrane-doctor.component';
 import { EditConsultantDoctorComponent } from 'app/main/opd/appointment/edit-consultant-doctor/edit-consultant-doctor.component';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { CompanyInformationComponent } from '../../company-information/company-information.component';
 
 @Component({
   selector: 'app-admission',
@@ -153,6 +154,7 @@ export class AdmissionComponent implements OnInit {
   optionsSubCompany: any[] = [];
   optionsSearchDoc: any[] = [];
   optionRegSearch: any[] = [];
+  optionsubCompany: any[] = [];
 
   filteredOptions: any;
   showtable: boolean = false;
@@ -469,17 +471,17 @@ export class AdmissionComponent implements OnInit {
 
   createHospitalForm() {
     return this.formBuilder.group({
-      HospitalId: 0,
-      PatientTypeID: 0,
-      TariffId: 0,
+      HospitalId:'',
+      PatientTypeID:'',
+      TariffId: '',
       DoctorId: '',
       DoctorID: '',
       Departmentid: '',
-      CompanyId: 0,
-      SubCompanyId: 0,
-      admittedDoctor1: 0,
-      admittedDoctor2: 0,
-      refDoctorId: 0
+      CompanyId:'',
+      SubCompanyId:'',
+      admittedDoctor1: '',
+      admittedDoctor2:'',
+      refDoctorId:'',
     });
   }
 
@@ -696,7 +698,7 @@ export class AdmissionComponent implements OnInit {
   private _filterSubCompany(value: any): string[] {
     if (value) {
       const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
-      return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+      return this.optionsSubCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
     }
 
   }
@@ -1567,22 +1569,22 @@ debugger
         return;
       }
     }
-    if(this.hospitalFormGroup.get('refDoctorId').value){
-      if(!this.Doctor1List.some(item => item.DoctorName ===this.hospitalFormGroup.get('refDoctorId').value.DoctorName)){
-        this.toastr.warning('Please Select valid RefDoctor', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
+    // if(this.hospitalFormGroup.get('refDoctorId').value){
+    //   if(!this.Doctor1List.some(item => item.DoctorName ===this.hospitalFormGroup.get('refDoctorId').value.DoctorName)){
+    //     this.toastr.warning('Please Select valid RefDoctor', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // }
     if(this.hospitalFormGroup.get('CompanyId').value){
-      if(!this.Doctor1List.some(item => item.CompanyName ===this.hospitalFormGroup.get('CompanyId').value.CompanyName)){
+      if(!this.CompanyList.some(item => item.CompanyName ===this.hospitalFormGroup.get('CompanyId').value.CompanyName)){
         this.toastr.warning('Please Select valid CompanyName', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
-    }
+    }debugger
     if(this.hospitalFormGroup.get('SubCompanyId').value){
       if(!this.SubTPACompList.some(item => item.CompanyName ===this.hospitalFormGroup.get('SubCompanyId').value.CompanyName)){
         this.toastr.warning('Please Select valid SubCompany', 'Warning !', {
@@ -2086,30 +2088,16 @@ this.getAdmittedPatientList_1()
     debugger
     this.advanceDataStored.storage = new AdvanceDetailObj(contact);
     this._AdmissionService.populateForm(contact);
-    contact.AdmissionID=53732;
+    // contact.AdmissionID=53732;
     //  console.log(row)
-    let Query = "Select * from T_MLCInformation where  AdmissionId=" + contact.AdmissionID + " ";
-    this._AdmissionService.getMLCDetail(Query).subscribe(data => {
-      this.MlcObj = data[0];
-      console.log(this.registerObj);
-    });
-
-    
-    this.MlcObj["MLCId"] = this.MlcObj.MLCId;
-    this.MlcObj["MLCNo"]=this.MlcObj.MLCNo;
-    this.MlcObj["ReportingDate"]=this.MlcObj.ReportingDate;
-    this.MlcObj["ReportingTime"] = this.MlcObj.ReportingTime;
-    this.MlcObj["AuthorityName"]=this.MlcObj.AuthorityName;
-    this.MlcObj["BuckleNo"]=this.MlcObj.BuckleNo;
-    this.MlcObj["PoliceStation"]=this.MlcObj.PoliceStation;
-    
+  
     const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
         maxWidth: '85vw',
-        height: '600px', width: '100%',
-        data: {
-          registerObj: this.MlcObj,
-        },
+        height: '450px', width: '100%',
+        // data: {
+        //   registerObj: this.MlcObj,
+        // },
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -2722,8 +2710,44 @@ this.getAdmittedPatientList_1()
       });
       
   }
+  getEditAdmission(row) {
+    debugger
+    this.advanceDataStored.storage = new AdvanceDetailObj(row);
+    console.log(row)
+    this._registrationService.populateFormpersonal(row);
+    this.registerObj["RegId"]=row.RegID;
+    this.registerObj["RegID"]=row.RegID;
+    const dialogRef = this._matDialog.open(EditAdmissionComponent,
+      {
+        maxWidth: "90vw",
+        height: '650px',
+        width: '100%',
+        data: {
+          registerObj: row,
+         }
+      });
+      
+  }
 
-
+  getEditCompany(row) {
+    debugger
+    this.advanceDataStored.storage = new AdvanceDetailObj(row);
+    console.log(row)
+    this._registrationService.populateFormpersonal(row);
+    this.registerObj["RegId"]=row.RegID;
+    this.registerObj["RegID"]=row.RegID;
+    const dialogRef = this._matDialog.open(CompanyInformationComponent,
+      {
+        maxWidth: "90vw",
+        height: '450px',
+        width: '100%',
+        data: {
+          registerObj: row,
+          Submitflag: true
+        }
+      });
+      
+  }
 }
 
 export class Admission {
