@@ -1,18 +1,21 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { AppointmentSreviceService } from '../appointment-srevice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { AdvanceDetailObj } from '../appointment.component';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-edit-consultant-doctor',
   templateUrl: './edit-consultant-doctor.component.html',
-  styleUrls: ['./edit-consultant-doctor.component.scss']
+  styleUrls: ['./edit-consultant-doctor.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class EditConsultantDoctorComponent implements OnInit {
 
@@ -33,16 +36,17 @@ export class EditConsultantDoctorComponent implements OnInit {
   VisitDate: any;
   RegID: any = 0;
 
-  //department filter
-  public departmentFilterCtrl: FormControl = new FormControl();
-  public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
+  RefoptionsDoc: any[] = [];
+  isRefDoctorSelected: boolean = false;
+  vrefDoctorId:any;
 
-  //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
+  optionsDept: any[] = [];
+  isDeptSelected: boolean = false;
+  vDeptId:any;
 
-  private _onDestroy = new Subject<void>();
 
+  filteredDoctor: Observable<string[]>;
+filteredDepartment: Observable<string[]>;
   constructor(
 
     public _OpAppointmentService: AppointmentSreviceService,
@@ -69,26 +73,15 @@ export class EditConsultantDoctorComponent implements OnInit {
       this.AdmissionID = this.PatientHeaderObj.AdmissionID;
       console.log(this.PatientHeaderObj);
       debugger
-      if (this.data.FormName == "Admission")
-        this.RegID = this.PatientHeaderObj.AdmissionID;
+      // if (this.data.FormName == "Admission")
+      //   this.RegID = this.PatientHeaderObj.AdmissionID;
     }
 
 
     this.getDoctorList();
     this.getDepartmentList();
 
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
-
-    this.departmentFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDepartment();
-      });
-
+   
     setTimeout(function () {
       let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
       element.click();
@@ -105,78 +98,112 @@ export class EditConsultantDoctorComponent implements OnInit {
 
   setDropdownObjs() {
     const toSelectDoc1 = this.DoctorList.find(c => c.DoctorID == this.DoctorId);
-    this._OpAppointmentService.mySaveForm.get('DoctorID').setValue(toSelectDoc1);
-    this._OpAppointmentService.mySaveForm.updateValueAndValidity();
+    this.searchFormGroup.get('DoctorId').setValue(toSelectDoc1);
+    this.searchFormGroup.updateValueAndValidity();
   }
+
+  // getDoctorList() {
+  //   this._OpAppointmentService.getDeptwiseDoctorMaster().subscribe(
+  //     data => {
+  //       this.DoctorList = data;
+  //       console.log(data)
+
+  //       this.filteredDoctor.next(this.DoctorList.slice());
+  //     })
+  // }
 
   getDoctorList() {
-    this._OpAppointmentService.getDeptwiseDoctorMaster().subscribe(
-      data => {
-        this.DoctorList = data;
-        console.log(data)
+    this._OpAppointmentService.getDeptwiseDoctorMaster().subscribe(data => {
+      this.DoctorList = data;
+      this.RefoptionsDoc = this.DoctorList.slice();
+      this.filteredDoctor = this.searchFormGroup.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterdoc(value) : this.DoctorList.slice()),
+      );
 
-        this.filteredDoctor.next(this.DoctorList.slice());
-      })
+    });
+  }
+  private _filterdoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.RefoptionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+
   }
 
-  // doctorone filter code  
-  private filterDoctor() {
-    if (!this.DoctorList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.DoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
-    );
+  getOptionTextRefDoc(option) {
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
+  // OnChangeDoctorList(departmentObj) {
+  //   console.log("departmentObj", departmentObj)
+  //   this._OpAppointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+  //     data => {
+  //       this.DoctorList = data;
+  //       console.log(this.DoctorList);
+  //       // this.filteredDoctor.next(this.DoctorList.slice());
+  //     })
+  // }
 
-  // department filter code
-  private filterDepartment() {
-
-    if (!this.DepartmentList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.departmentFilterCtrl.value;
-    if (!search) {
-      this.filteredDepartment.next(this.DepartmentList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDepartment.next(
-      this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
+  
   OnChangeDoctorList(departmentObj) {
-    console.log("departmentObj", departmentObj)
+    debugger
+    this.isDeptSelected = true;
     this._OpAppointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
         this.DoctorList = data;
-        console.log(this.DoctorList);
-        this.filteredDoctor.next(this.DoctorList.slice());
+        this.RefoptionsDoc = this.DoctorList.slice();
+        this.filteredDoctor = this.searchFormGroup.get('DoctorId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filterdoc(value) : this.DoctorList.slice()),
+        );
       })
   }
+
+
+  // getDepartmentList() {
+  //   this._OpAppointmentService.getDepartmentCombo().subscribe(data => {
+  //     this.DepartmentList = data;
+  //     this.filteredDepartment.next(this.DepartmentList.slice());
+  //   });
+  // }
+
 
   getDepartmentList() {
     this._OpAppointmentService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
-      this.filteredDepartment.next(this.DepartmentList.slice());
+      this.optionsDept = this.DepartmentList.slice();
+      this.filteredDepartment = this.searchFormGroup.get('Departmentid').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterdept(value) : this.DepartmentList.slice()),
+      );
+
     });
   }
+  private _filterdept(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
+      return this.optionsDept.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
+  getOptionTextDept(option) {
+    return option && option.departmentName ? option.departmentName : '';
+  }
+
+  @ViewChild('refdoc') refdoc: ElementRef;
+
+  public onEnterrefdoc(event): void {
+    if (event.which === 13) {
+
+      this.refdoc.nativeElement.focus();
+
+    }
+  }
+
+
+
 
 
   onClose() {

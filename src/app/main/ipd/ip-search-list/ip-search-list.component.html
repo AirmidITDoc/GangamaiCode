@@ -165,7 +165,7 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="IsMLC" sticky>
+                            <!-- <ng-container matColumnDef="IsMLC" sticky>
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80">IsMLC
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" class="w-80">
@@ -180,7 +180,15 @@
                                     </ng-template>
 
                                 </mat-cell>
+                            </ng-container> -->
+
+                            <ng-container matColumnDef="IsMLC">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80" fxShow.gt-sm>IsMLC</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+                                    <span> {{contact.IsMLC}}</span>
+                                </mat-cell>
                             </ng-container>
+
 
                             <ng-container matColumnDef="RegNo" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80" fxShow.gt-sm>RegNo</mat-header-cell>

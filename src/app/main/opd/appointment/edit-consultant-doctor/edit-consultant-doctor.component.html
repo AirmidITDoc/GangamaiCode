@@ -87,7 +87,7 @@
                         </div>
                     <br>
                         <div>
-                            <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
+                            <!-- <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
                                 <mat-label>Department</mat-label>
                                 <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required
                                   (selectionChange)="OnChangeDoctorList($event.value)">
@@ -112,6 +112,57 @@
                                   </mat-option>
             
                                 </mat-select>
+                                </mat-form-field> -->
+                                <!-- <mat-form-field appearance="outline" fxFlex style="margin-right: 5px;">
+                                    <mat-label>Department</mat-label>
+                                    <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required
+                                      (selectionChange)="OnChangeDoctorList($event.value)">
+                                      <mat-option>
+                                        <ngx-mat-select-search [formControl]="departmentFilterCtrl"  [placeholderLabel]="'Search'"
+                                        [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                                      </mat-option>
+                                      <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
+                                        {{element.departmentName}}
+                                      </mat-option>
+                                    </mat-select>
+                                  </mat-form-field> -->
+
+
+                                  <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Department Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor "
+                                        matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="Departmentid" [(ngModel)]="vDeptId"
+                                        [matAutocomplete]="autodept1">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="searchFormGroup.get('Departmentid').setValue(''); isDeptSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="searchFormGroup.get('Departmentid').setValue(''); isDeptSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autodept1="matAutocomplete" [displayWith]="getOptionTextDept">
+                                        <mat-option *ngFor="let option of filteredDepartment | async" [value]="option"   (onSelectionChange)="OnChangeDoctorList(option)">
+                                            {{option.departmentName }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Doctor Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select  Doctor "
+                                        matInput #refdoc  formControlName="DoctorId" [(ngModel)]="vrefDoctorId"
+                                        [matAutocomplete]="autorefdoc2">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="searchFormGroup.get('DoctorId').setValue(''); isRefDoctorSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="searchFormGroup.get('DoctorId').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autorefdoc2="matAutocomplete" [displayWith]="getOptionTextRefDoc">
+                                        <mat-option *ngFor="let option of filteredDoctor | async" [value]="option">
+                                            {{option.Doctorname }}  <b>|</b> {{option.DepartmentName }} <b>|</b> {{option.DoctorId }}
+                                        </mat-option>
+                                    </mat-autocomplete>
                                 </mat-form-field>
 
                         </div>
