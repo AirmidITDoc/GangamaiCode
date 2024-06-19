@@ -306,14 +306,22 @@
                                                                 <span> {{contact.ClassName}}</span>
                                                             </mat-cell>
                                                         </ng-container>
-
-                                                        <ng-container matColumnDef="CompanyName">
+                                                        <!-- fxHide fxShow.gt-md -->
+                                                        <!-- <ng-container matColumnDef="CompanyName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-md>Company
                                                                 Name
                                                             </mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                            <mat-cell *matCellDef="let contact"  [ngClass]="{' red-600 s-16': contact.CompanyName !=''}">
                                                                 <span> {{contact.CompanyName}}</span>
+                                                            </mat-cell>
+                                                        </ng-container> -->
+
+                                                        <ng-container matColumnDef="CompanyName" sticky>
+                                                            <mat-header-cell *matHeaderCellDef>CompanyName
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" [ngClass]="{'pink-600 s-16': contact.CompanyName !=''}">
+                                                                {{contact.CompanyName}} 
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -360,6 +368,22 @@
                                                                         <mat-icon
                                                                             class="secondary-text">more_vert</mat-icon>
                                                                     </button>
+
+
+                                                                    <button mat-icon-button
+                                                                        (click)="getEditAdmission(contact)"
+                                                                        matTooltip="EditAdmission">
+                                                                        <mat-icon style="color: black;">account_circle</mat-icon>
+                                                                    </button>
+                                                                    
+                                                                    
+                                                                    <button mat-icon-button
+                                                                        (click)="getEditCompany(contact)"
+                                                                        matTooltip="EditCpmpany">
+                                                                        <mat-icon style="color: black;">card_membership</mat-icon>
+                                                                    </button>
+
+
                                                                     <mat-menu #moreMenu="matMenu">
                                                                         <ng-container
                                                                             *ngFor="let m of menuActions, let i=index">
@@ -1146,14 +1170,12 @@
                                     IsCharity
                                 </mat-checkbox>
                                 <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsSenior" style="margin-left:30px;">
-                                    IsSenior
+                                    IsSeniorCitizen
                                 </mat-checkbox>
-                                <mat-checkbox aria-label="Op TO Ip Change" formControlName="Citizen" style="margin-left:30px;">
-                                    Citizen
-                                </mat-checkbox>
-                                <mat-checkbox aria-label="Op TO Ip Change" formControlName="Emergancy" style="margin-left:30px;">
+
+                                <!-- <mat-checkbox aria-label="Op TO Ip Change" formControlName="Emergancy" style="margin-left:30px;">
                                     Emergancy
-                                </mat-checkbox>
+                                </mat-checkbox> -->
                                
                                 
                             </div>
