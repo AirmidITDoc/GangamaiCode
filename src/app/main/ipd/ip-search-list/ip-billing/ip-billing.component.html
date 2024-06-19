@@ -247,6 +247,20 @@
                                     </button>
                                 </div>
                             </div>
+                            <div class="cash-container gap-12" style="padding-top: 8px;">
+                                <div class="net-amt-section">
+                                    <div class="net-amt">
+                                        <div class="net-amt-box">
+                                            <span class="net-amt-label">Phar. Cash : </span>
+                                            <span class="net-amt-value">{{vPharcash}}</span>
+                                        </div>
+                                        <div class="net-amt-box">
+                                            <span class="net-amt-label">IP Cash : </span>
+                                            <span class="net-amt-value">{{vIpCash}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -326,25 +340,40 @@
                                                     fxLayoutAlign="space-between">
                                                     <div fxLayout="column" fxLayoutGap="10px">
                                                         <div class="patient-col">
+                                                            <span class="patient-col-key">UHID
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span
+                                                                class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
                                                             <span class="patient-col-key">Patient Name
                                                             </span>
                                                             <span>:</span>
                                                             <span
-                                                                class="patient-col-value">{{selectedAdvanceObj.RegNo}}-{{selectedAdvanceObj.PatientName}}</span>
+                                                                class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
                                                         </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">DOA/Time
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.DOA}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Age/Sex
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}} D | {{selectedAdvanceObj.GenderName}}</span>
+                                                        </div>
+                                                      
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                        
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">AdmDate/Time</span>
                                                             <span>:</span>
                                                             <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
                                                         </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Ward Name
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.WardName}}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div fxLayout="column" fxLayoutGap="10px">
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">IPD No</span>
                                                             <span>:</span>
@@ -355,24 +384,32 @@
                                                             <span>:</span>
                                                             <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
                                                         </div>
+                                                       
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">Company Name</span>
+                                                            <span class="patient-col-key">Ward Name | Bed
+                                                            </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.RoomName}} | {{selectedAdvanceObj.BedName}}</span>
                                                         </div>
                                                     </div>
                                                     <div fxLayout="column" fxLayoutGap="10px">
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Adm ID
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.AdmissionID}}</span>
-                                                        </div>
+                                                      
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Tarrif Name
                                                             </span>
                                                             <span>:</span>
                                                             <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Patient Type
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                        </div>
+                                                        <div class="patient-col" >
+                                                            <span class="patient-col-key">Company Name</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1094,8 +1131,8 @@
 
                                     <mat-form-field appearance="outline" fxFlex="10%" *ngIf="isAdminDisabled">
                                         <mat-label>Admin %</mat-label>
-                                        <input matInput [(ngModel)]="vAdminPer" name="AdminPer"  
-                                            formControlName="AdminPer"  >
+                                        <input matInput [(ngModel)]="vAdminPer" name="AdminPer"   formControlName="AdminPer"
+                                             (keypress)="keyPressCharater($event)" (keyup)="CalculateAdminCharge()">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%" *ngIf="isAdminDisabled">
@@ -1104,15 +1141,15 @@
                                             formControlName="AdminAmt"  >
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" *ngIf="admin">
-                                        <mat-label>Final Disc %</mat-label>
+                                    <mat-form-field appearance="outline"  fxFlex="10%" *ngIf="ServiceDiscDisable">
+                                        <mat-label>Disc %</mat-label>
                                         <input matInput placeholder="Percentage" formControlName="Percentage"
                                            [(ngModel)]="vPercentage" autocomplete="off" #finaldisc onlyNumber maxlength="3"
-                                            (keyup)="CalAdmincharge()" (keypress)="keyPressAlphanumeric($event)">
+                                            (keyup)="CalFinalDisc()"  (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="10%" *ngIf="admin">
-                                        <mat-label>Concession Amount</mat-label>
+                                    <mat-form-field appearance="outline" fxFlex="10%" *ngIf="ServiceDiscDisable">
+                                        <mat-label>Disc Amount</mat-label>
                                         <input matInput [(ngModel)]="vfDiscountAmount" name="vDiscountAmount" readonly
                                             formControlName="concessionAmt" (keyup)="getNetAmount()">
                                     </mat-form-field>
@@ -1138,7 +1175,7 @@
                                     </mat-form-field>
 
                                 </div>
-                                <div fxLayout="row" class="" fxLayoutAlign="space-between center">
+                                <div fxLayout="row"  fxLayoutAlign="space-between center">
                                     <div class="action-content-left" fxLayout="row" class="gap-24"
                                         fxLayoutAlign="start center">
                                         <mat-checkbox formControlName="Admincheck" (checked)=true  (change)="AdminStatus($event)">
@@ -1149,7 +1186,7 @@
                                             Generate Bill
                                         </mat-checkbox>
 
-                                        <div class="cash-container gap-12">
+                                        <!-- <div class="cash-container gap-12">
                                             <div class="net-amt-section">
                                                 <div class="net-amt">
                                                     <div class="net-amt-box">
@@ -1162,13 +1199,23 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div> -->
+                                       
+                                    </div>
+                                    <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
+                                        <div class="button-row-group">
+                                            <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
+                                            <button class="btn btn-primary-outline" (click)="getInterimData()"
+                                                [disabled]="Ipbillform.invalid">Interim</button>
+                                            <button class="btn btn-primary" (click)="onSave()" [disabled]="Ipbillform.invalid">Save</button>
+                                    
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
+                    <!-- <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
                         <div class="button-row-group">
                             <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
                             <button class="btn btn-primary-outline" (click)="getInterimData()"
@@ -1177,7 +1224,7 @@
                                 [disabled]="Ipbillform.invalid">Save</button>
 
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </form>
         </div>

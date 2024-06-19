@@ -153,11 +153,11 @@
 
                                     <div class="net-amt">
                                         <span class="net-amt-label">No of Items:</span>&nbsp;<span class="net-amt-value"
-                                            style="margin-right: 420px;">{{interimArray.length
+                                            style="margin-right: 60px;color: blue;">{{interimArray.length
                                             }}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                                         <span class="net-amt-label" style="margin-right:10px;">Net
                                             Amount:</span>&nbsp;
-                                        <span class="net-amt-value">{{getNetAmtSum(dataSource.data) |
+                                        <span class="net-amt-value" style="color: blue;">{{getNetAmtSum(dataSource.data) |
                                             currency:'INR'}}</span>
                                     </div>
 
@@ -235,28 +235,28 @@
                     <mat-card>
                         <div class="bill-amts" fxFlexFill fxLayout="column">
                             <form [formGroup]="InterimFormGroup">
-                                <div>
+                                <div fxLayout="row" fxLayoutGap="4px">
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Total Amount</mat-label>
                                         <input matInput [(ngModel)]="vTotalBillAmt" name="vTotalBillAmt"
-                                            formControlName="TotalAmt" readonly>
+                                            formControlName="TotalAmt" readonly type="text" OnlyNumber>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Disc %</mat-label>
                                         <input name="formDiscPer" formControlName="discPer"
                                             (keyup.enter)="setFocus('discAmount')" id="discPer" placeholder="Disc (%)"
-                                            (keyup)="calculatePersc()" matInput [(ngModel)]="formDiscPersc" onlyNumber
-                                            maxlength="2"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
+                                            (keyup)="calculatePersc()" matInput [(ngModel)]="formDiscPersc" type="text" OnlyNumber
+                                            maxlength="2"  (keypress)="keyPressAlphanumeric($event)"  >
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Disc Amt</mat-label>
-                                        <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"
-                                            formControlName="concessionAmt" onlyNumber id="discAmount"
+                                        <input matInput [(ngModel)]="b_disAmount" name="bDisAmount" readonly
+                                            formControlName="concessionAmt" type="text" OnlyNumber id="discAmount"
                                             (keyup.enter)="setFocus('ConId')" (keyup)="calculatechargesDiscamt()">
                                     </mat-form-field>
+
                                     <mat-form-field *ngIf="ConShow" appearance="outline" fxFlex="15%">
                                         <mat-label>Concession Reason Type</mat-label>
                                         <mat-select formControlName="ConcessionId" id="ConId"
@@ -270,7 +270,7 @@
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Net Paid Amount</mat-label>
                                         <input matInput [(ngModel)]="vNetAmount" formControlName="NetpayAmount"
-                                            name="NetpayAmount" type="number" readonly>
+                                            name="NetpayAmount" type="text" OnlyNumber readonly>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="20%">
@@ -281,30 +281,29 @@
                                 </div>
 
                                 <div fxLayout="row" class="" fxLayoutAlign="space-between center">
-                                    <mat-radio-group aria-label="Select an option" formControlName="paymode"
-                                        name="paymode" (change)="onChangeReg($event)" fxFlex>
+                                    <mat-radio-group aria-label="Select an option" formControlName="paymode" name="paymode"
+                                        (change)="onChangeReg($event)" fxFlex>
                                         <mat-radio-button checked="true" value="cashpay">Cash Pay </mat-radio-button>
                                         <mat-radio-button value="onlinepay">Online Pay</mat-radio-button>
-                                        <!-- <mat-radio-button value="credit">Credit</mat-radio-button> -->
+                                        <mat-radio-button value="PayOption">PayOption</mat-radio-button>
                                     </mat-radio-group>
-
+                                
                                     <mat-form-field appearance="outline" *ngIf="onlineflag" fxFlex="15%" style="margin-right: 600px;">
                                         <mat-label>UPI NO</mat-label>
-                                        <input matInput placeholder="UPI Number" formControlName="UPINO"
-                                            [(ngModel)]="vUPINO" onlyNumber maxlength="10"
+                                        <input matInput placeholder="UPI Number" formControlName="UPINO" [(ngModel)]="vUPINO" onlyNumber maxlength="10"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                                             (keypress)="keyPressAlphanumeric($event)">
                                     </mat-form-field>
-
-
+                                
+                                
                                     <div class="next-div button-row-group">
+                                        <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
                                         <button class="btn btn-primary" color="accent" (click)="onSave()">
                                             <span>Save</span>
                                         </button>
-                                        <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
                                     </div>
-
-
+                                
+                                
                                 </div>
                             </form>
                         </div>
