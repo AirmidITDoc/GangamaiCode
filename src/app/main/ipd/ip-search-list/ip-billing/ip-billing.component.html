@@ -79,10 +79,10 @@
                                             {{option.ServiceName}}
                                         </mat-option>
                                     </mat-autocomplete>
-                                    <mat-hint>
+                                    <!-- <mat-hint>
                                         <span *ngIf="noOptionFound" style="color: #f44336;">No data
                                             Found</span>
-                                    </mat-hint>
+                                    </mat-hint> -->
                                     <mat-error *ngIf="Serviceform.get('SrvcName').hasError('required')">
                                         Required field cannot be left blank
                                     </mat-error>
@@ -953,6 +953,23 @@
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="Action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <button mat-icon-button  matTooltip="Details">
+                                        <mat-icon>view</mat-icon>
+                                    </button>
+                                    <button mat-icon-button   matTooltip="Print">
+                                        <mat-icon>print</mat-icon>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Send Bill On WhatsApp"
+                                    class="p-4"  >
+                                    <img width="100" height="20px"
+                                        src="assets/images/logos/WhatsApp.png">
+                                  </button>
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="loading">
                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                 </mat-header-cell>
@@ -968,13 +985,13 @@
                             </ng-container>
 
                             <mat-header-row class="accent min-width-1100"
-                                *matHeaderRowDef="PrevBillColumns; sticky: true">
+                                *matHeaderRowDef="PackageBillColumns; sticky: true">
                             </mat-header-row>
 
-                            <mat-row class="min-width-1100" *matRowDef="let contact; columns: PrevBillColumns;"
+                            <mat-row class="min-width-1100" *matRowDef="let contact; columns: PackageBillColumns;"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
 
-                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':PrevBillColumns!=null}">
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':PackageBillColumns!=null}">
                             </mat-footer-row>
                             <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{'hide':!(PackageDatasource!=null && PackageDatasource.data.length==0)}">
@@ -985,6 +1002,24 @@
                     <mat-tab label="Prev.Bill">
                         <mat-table matSort [dataSource]="prevbilldatasource" [@animateStagger]="{value:'50'}"
                             class="table3 mt-8" style="height: calc(100vh - 500px);">
+
+                            <ng-container matColumnDef="Action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <button mat-icon-button  matTooltip="Details">
+                                        <mat-icon>visibility</mat-icon>
+                                    </button>
+                                    <button mat-icon-button   matTooltip="Print">
+                                        <mat-icon>print</mat-icon>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Send Bill On WhatsApp"
+                                    class="p-4" (click)="getWhatsappshareSales(row)">
+                                    <img width="100" height="20px"
+                                        src="assets/images/logos/WhatsApp.png">
+                                     </button>
+                                     
+                                </mat-cell>
+                            </ng-container>
 
                             <ng-container matColumnDef="BDate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>BDate</mat-header-cell>

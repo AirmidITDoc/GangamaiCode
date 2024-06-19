@@ -87,7 +87,8 @@ export class IPBillingComponent implements OnInit {
     'CashPayAmount',
     'ChequePayAmount',
     'CardPayAmount',
-    'AdvanceUsedAmount'
+    'AdvanceUsedAmount',
+    'Action'
   ];
 
   AdvDetailColumns = [
@@ -101,6 +102,19 @@ export class IPBillingComponent implements OnInit {
     // 'ChequePayAmount',
     // 'CardPayAmount',
     // 'AdvanceUsedAmount'
+  ];
+  PackageBillColumns = [
+    'BDate',
+    'PBillNo',
+    'TotalAmt',
+    'ConcessionAmt',
+    'NetPayableAmt',
+    'BalanceAmt',
+    'CashPayAmount',
+    'ChequePayAmount',
+    'CardPayAmount',
+    'AdvanceUsedAmount',
+    'Action'
   ];
 
   dataSource = new MatTableDataSource<ChargesList>();
@@ -474,7 +488,7 @@ ServiceList:any=[];
     }
     this._IpSearchListService.getseletclassMasterCombo(m_data).subscribe(data => {
       this.ClassList = data;
-      console.log(this.ClassList)
+      //console.log(this.ClassList)
       if (this.vClassId != 0) {
         const ddValue = this.ClassList.filter(c => c.ClassId == this.vClassId);
 
@@ -708,7 +722,7 @@ ServiceList:any=[];
       this.sIsLoading = 'loading-data';
       this._IpSearchListService.getpreviousbilldetail(D_data).subscribe(Visit => {
         this.prevbilldatasource.data = Visit as Bill[];
-        // console.log(this.prevbilldatasource.data)
+         console.log(this.prevbilldatasource.data)
       },
         error => {
           this.sIsLoading = '';
@@ -851,9 +865,9 @@ ServiceList:any=[];
     })
   }
   getCashCounterComboList() {
-    this._IpSearchListService.getCashcounterList().subscribe(data => {
-      this.CashCounterList = data
-    });
+    // this._IpSearchListService.getCashcounterList().subscribe(data => {
+    //   this.CashCounterList = data
+    // });
   }
   vBillTotalAmt: any = 0;
 
@@ -1117,6 +1131,7 @@ debugger
           height: "500px",
           data: this.interimArray
         });
+        this.onClose();
     }else{
       Swal.fire('Warring !', 'Please select check box ', 'warning');
     }

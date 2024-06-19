@@ -284,16 +284,16 @@
                                     <mat-radio-group aria-label="Select an option" formControlName="paymode" name="paymode"
                                         (change)="onChangeReg($event)" fxFlex>
                                         <mat-radio-button checked="true" value="cashpay">Cash Pay </mat-radio-button>
-                                        <mat-radio-button value="onlinepay">Online Pay</mat-radio-button>
+                                        <!-- <mat-radio-button value="onlinepay">Online Pay</mat-radio-button> -->
                                         <mat-radio-button value="PayOption">PayOption</mat-radio-button>
                                     </mat-radio-group>
                                 
-                                    <mat-form-field appearance="outline" *ngIf="onlineflag" fxFlex="15%" style="margin-right: 600px;">
+                                    <!-- <mat-form-field appearance="outline" *ngIf="onlineflag" fxFlex="15%" style="margin-right: 600px;">
                                         <mat-label>UPI NO</mat-label>
                                         <input matInput placeholder="UPI Number" formControlName="UPINO" [(ngModel)]="vUPINO" onlyNumber maxlength="10"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);"
                                             (keypress)="keyPressAlphanumeric($event)">
-                                    </mat-form-field>
+                                    </mat-form-field> -->
                                 
                                 
                                     <div class="next-div button-row-group">
