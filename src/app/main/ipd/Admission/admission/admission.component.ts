@@ -105,6 +105,7 @@ export class AdmissionComponent implements OnInit {
   DoctorList: any = [];
   Doctor1List: any = [];
   Doctor2List: any = [];
+  RefDoctorList: any = [];
   WardList: any = [];
   BedList: any = [];
   BedClassList: any = [];
@@ -186,11 +187,14 @@ export class AdmissionComponent implements OnInit {
   filteredOptionsRegSearch: Observable<string[]>;
   filteredOptionsPatientType: Observable<string[]>;
   filteredOptionsTarrif: Observable<string[]>;
+  filteredOptionsRefrenceDoc: Observable<string[]>;
 
   ispatienttypeSelected: boolean = false;
   isTariffIdSelected: boolean = false;
   optionsPatientType: any[] = [];
   optionsTariff: any[] = [];
+  RefoptionsDoc: any[] = [];
+
 
   Vtotalcount = 0;
   VNewcount = 0;
@@ -354,7 +358,7 @@ export class AdmissionComponent implements OnInit {
     this.getWardList();
     this.getCompanyList();
     this.getSubTPACompList();
-
+    this.getRefDoctorList();
 
     if (this._ActRoute.url == '/ipd/admission') {
 
@@ -382,7 +386,7 @@ export class AdmissionComponent implements OnInit {
     this.vIsDischarg = 0;
     console.log(data)
     this.Vtotalcount;
-    debugger
+    
     for (var i = 0; i < data.length; i++) {
       if (data[i].PatientOldNew == 1) {
         this.VNewcount = this.VNewcount + 1;
@@ -628,6 +632,14 @@ export class AdmissionComponent implements OnInit {
 
   }
 
+  private _filterReferdoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.RefoptionsDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+  
   private _filterSearchdoc(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
@@ -747,7 +759,7 @@ export class AdmissionComponent implements OnInit {
 
 
   getSelectedObj(obj) {
-debugger
+
     this.registerObj = new AdmissionPersonlModel({});
   
     obj.AgeDay = obj.AgeDay.trim();
@@ -772,7 +784,7 @@ debugger
 
   AdmittedRegId: any = 0;
   chekAdmittedpatient(obj) {
-    debugger
+    
     this.AdmittedRegId = obj.RegId;
     // let SelectQueryForAllAdmitted = "select isnull(RegId,0) as regid from Admission where regid =  " + this.searchFormGroup.get('RegId').value;
     let Query = "select isnull(RegID,0) as RegID from Admission where RegID =  " + this.AdmittedRegId + " and Admissionid not in(select Admissionid from Discharge) "
@@ -780,7 +792,7 @@ debugger
     this._AdmissionService.getRegIdDetailforAdmission(Query).subscribe(data => {
       this.registerObj = data[0];
       console.log(this.registerObj);
-      if (this.registerObj == undefined) {
+      if (this.registerObj != undefined) {
         this.AdmittedRegId = 0;
         Swal.fire("selected patient is already admitted!!..")
         this.onReset();
@@ -1135,7 +1147,7 @@ debugger
     this._AdmissionService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor1List = data;
       this.optionsRefDoc = this.Doctor1List.slice();
-      this.filteredOptionsRefDoc = this.hospitalFormGroup.get('admittedDoctor2').valueChanges.pipe(
+      this.filteredOptionsRefDoc = this.hospitalFormGroup.get('admittedDoctor1').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterRefdoc(value) : this.Doctor1List.slice()),
       );
@@ -1155,6 +1167,20 @@ debugger
 
     });
   }
+
+  getRefDoctorList() {
+    this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
+      this.RefDoctorList = data;
+      this.RefoptionsDoc = this.RefDoctorList.slice();
+      this.filteredOptionsRefrenceDoc = this.hospitalFormGroup.get('refDoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterReferdoc(value) : this.RefDoctorList.slice()),
+      );
+
+    });
+  }
+
+
 
   getWardList() {
     this._AdmissionService.getWardCombo().subscribe(data => {
@@ -1426,7 +1452,7 @@ debugger
       });
       return;
     }
-    debugger
+    
     if (formGroupName == this.otherFormGroup) {
       if (this.vRoomId && isNaN(this.vBedId)) {
         this.onNewSave();
@@ -1584,7 +1610,7 @@ debugger
         });
         return;
       }
-    }debugger
+    }
     if(this.hospitalFormGroup.get('SubCompanyId').value){
       if(!this.SubTPACompList.some(item => item.CompanyName ===this.hospitalFormGroup.get('SubCompanyId').value.CompanyName)){
         this.toastr.warning('Please Select valid SubCompany', 'Warning !', {
@@ -1626,7 +1652,7 @@ debugger
     //     return;
     //   }
     // }
-  debugger
+  
     if ((!this.personalFormGroup.invalid && !this.hospitalFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)) {
     this.OnSaveAdmission();
     }
@@ -1639,7 +1665,7 @@ debugger
       this.CompanyId = 0;
       this.SubCompanyId = 0;
     } else if (this.patienttype == 2) {
-      debugger
+      
       this.CompanyId = this.hospitalFormGroup.get('CompanyId').value.CompanyId;
       this.SubCompanyId = this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId;
 
@@ -1718,8 +1744,8 @@ debugger
         admissionNewInsert['relativeAddress'] = this.otherFormGroup.get('RelativeAddress').value ? this.otherFormGroup.get('RelativeAddress').value : '';
 
         admissionNewInsert['phoneNo'] = this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-        admissionNewInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
-        admissionNewInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId ? this.otherFormGroup.get('RelationshipId').value.RelationshipId : 0;
+        admissionNewInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.otherFormGroup.get('RelatvieMobileNo').value : '';
+        admissionNewInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId || 0;
         admissionNewInsert['addedBy'] = this.accountService.currentUserValue.user.id;
 
         admissionNewInsert['isMLC'] = this.otherFormGroup.get('IsMLC').value || false;
@@ -1798,8 +1824,8 @@ debugger
         admissionInsert['relativeAddress'] = this.otherFormGroup.get('RelativeAddress').value ? this.otherFormGroup.get('RelativeAddress').value : '';
 
         admissionInsert['phoneNo'] = this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-        admissionInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.personalFormGroup.get('MobileNo').value : '';
-        admissionInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId ? this.otherFormGroup.get('RelationshipId').value.RelationshipId : 0;
+        admissionInsert['mobileNo'] = this.otherFormGroup.get('RelatvieMobileNo').value ? this.otherFormGroup.get('RelatvieMobileNo').value : '';
+        admissionInsert['relationshipId'] = this.otherFormGroup.get('RelationshipId').value.RelationshipId || 0;
         admissionInsert['addedBy'] = this.accountService.currentUserValue.user.id;
 
         admissionInsert['isMLC'] = this.otherFormGroup.get('IsMLC').value || false;
@@ -2085,7 +2111,7 @@ this.getAdmittedPatientList_1()
 
 
   NewMLc(contact) {
-    debugger
+    
     this.advanceDataStored.storage = new AdvanceDetailObj(contact);
     this._AdmissionService.populateForm(contact);
     // contact.AdmissionID=53732;
@@ -2095,9 +2121,9 @@ this.getAdmittedPatientList_1()
       {
         maxWidth: '85vw',
         height: '450px', width: '100%',
-        // data: {
-        //   registerObj: this.MlcObj,
-        // },
+        data: {
+          registerObj: contact,
+        },
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -2334,7 +2360,7 @@ this.getAdmittedPatientList_1()
 
   // isNaN(value
   public onEnterprefix(event, value): void {
-    debugger
+    
     if (event.which === 13) {
 
       console.log(value)
@@ -2369,7 +2395,7 @@ this.getAdmittedPatientList_1()
 
   public onEntermstatus(event): void {
     if (event.which === 13) {
-      //     debugger
+      //     
       // console.log(value)
       // if (value ==undefined || isNaN(value)) {
       //   this.toastr.warning('Please Enter Valid MStatus.', 'Warning !', {
@@ -2406,7 +2432,7 @@ this.getAdmittedPatientList_1()
 
 
   public onEnteragey(event,value): void {
-    debugger
+    
     if (event.which === 13) {
       this.agem.nativeElement.focus();
       this.ageyearcheck(value);
@@ -2692,7 +2718,7 @@ this.getAdmittedPatientList_1()
 
 
   EditRegistration(row) {
-    debugger
+    
     this.advanceDataStored.storage = new AdvanceDetailObj(row);
     console.log(row)
     this._registrationService.populateFormpersonal(row);
@@ -2711,7 +2737,7 @@ this.getAdmittedPatientList_1()
       
   }
   getEditAdmission(row) {
-    debugger
+    
     this.advanceDataStored.storage = new AdvanceDetailObj(row);
     console.log(row)
     this._registrationService.populateFormpersonal(row);
@@ -2730,7 +2756,7 @@ this.getAdmittedPatientList_1()
   }
 
   getEditCompany(row) {
-    debugger
+    
     this.advanceDataStored.storage = new AdvanceDetailObj(row);
     console.log(row)
     this._registrationService.populateFormpersonal(row);
@@ -2739,7 +2765,7 @@ this.getAdmittedPatientList_1()
     const dialogRef = this._matDialog.open(CompanyInformationComponent,
       {
         maxWidth: "90vw",
-        height: '450px',
+        height: '750px',
         width: '100%',
         data: {
           registerObj: row,
@@ -3080,6 +3106,7 @@ export class AdmissionPersonlModel {
   Pancardno: any;
   RefDocName: any;
   RelativePhoneNo: any;
+  DepartmentId:any;
   /**
 * Constructor
 *
@@ -3156,7 +3183,8 @@ export class AdmissionPersonlModel {
       this.Aadharcardno = AdmissionPersonl.Aadharcardno || ''
       this.Pancardno = AdmissionPersonl.Pancardno || '';
       this.RefDocName = AdmissionPersonl.RefDocName || '';
-      this.RelativePhoneNo = AdmissionPersonl.RelativePhoneNo || ''
+      this.RelativePhoneNo = AdmissionPersonl.RelativePhoneNo || '';
+      this.DepartmentId=AdmissionPersonl.DepartmentId ||0
     }
   }
 }

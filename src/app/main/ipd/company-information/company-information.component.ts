@@ -7,6 +7,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from '../advance';
+import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 
 @Component({
   selector: 'app-company-information',
@@ -19,7 +20,9 @@ export class CompanyInformationComponent implements OnInit {
   companyFormGroup:FormGroup;
   dateTimeObj: any;
   screenFromString = 'discharge';
-
+  selectedAdvanceObj: AdvanceDetailObj;
+  registerObj1: AdvanceDetailObj;
+  
   constructor(
     public _AdmissionService: AdmissionService,
     public datePipe: DatePipe,
@@ -34,7 +37,19 @@ export class CompanyInformationComponent implements OnInit {
 
   ) { }
 
+
   ngOnInit(): void {
+    this.companyFormGroup = this.createCompanyForm();
+     
+    if (this.advanceDataStored.storage) {
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj);
+      this.registerObj1 = this.selectedAdvanceObj;
+  
+      console.log(this.registerObj1);
+    this.setDropdownObjs();
+  
+    }
     this.companyFormGroup = this.createCompanyForm();
   }
 
@@ -68,7 +83,7 @@ export class CompanyInformationComponent implements OnInit {
 
   }
 
-
+  setDropdownObjs(){}
   Save(){
 
   }

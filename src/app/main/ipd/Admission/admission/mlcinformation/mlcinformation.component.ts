@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { Admission } from '../admission.component';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class MLCInformationComponent implements OnInit {
   MlcInfoFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'advance';
-  selectedAdvanceObj: Admission;
+  selectedAdvanceObj: AdvanceDetailObj;
   submitted: any;
   isLoading: any;
   AdmissionId: any;
@@ -36,7 +37,7 @@ export class MLCInformationComponent implements OnInit {
   AuthorityName: any;
   ABuckleNo: any;
   PoliceStation: any;
-
+  MlcObj=new MlcDetail({})
 
   constructor(public _AdmissionService: AdmissionService,
     private formBuilder: FormBuilder,
@@ -52,22 +53,16 @@ export class MLCInformationComponent implements OnInit {
    }
 
   ngOnInit(): void {
-
+debugger
     this.MlcInfoFormGroup = this.createmlcForm();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.AdmissionId=this.selectedAdvanceObj.AdmissionID;
       console.log(this.selectedAdvanceObj);
-
+      this.getMlcdetail(this.AdmissionId)
    
     }
-    if(this.data){
-      this.MLCId=this.data.registerObj.MLCId;
-      this.Mlcno=this.data.registerObj.MLCNo;
-      this.Mlcdate=this.data.registerObj.Mlcdate;
-      this.AuthorityName=this.data.registerObj.AuthorityName;
-      this.ABuckleNo=this.data.registerObj.BuckleNo;
-      this.PoliceStation=this.data.registerObj.PoliceStation;
-    }
+    this.MlcInfoFormGroup = this.createmlcForm();
   }
 
   createmlcForm() {
@@ -94,6 +89,25 @@ export class MLCInformationComponent implements OnInit {
   MLCList:any=[];
   
   optionsMLC: any[] = [];
+
+  getMlcdetail(AdmissionId){
+    let Query = "Select * from T_MLCInformation where  AdmissionId=" + AdmissionId + " ";
+    this._AdmissionService.getMLCDetail(Query).subscribe(data => {
+      this.MlcObj = data[0];
+      console.log(this.MlcObj);
+      debugger
+      if(data){
+
+        this.MLCId=this.MlcObj.MLCId;
+        this.Mlcno=this.MlcObj.MLCNo;
+        this.Mlcdate=this.MlcObj.ReportingDate;
+        this.AuthorityName=this.MlcObj.AuthorityName;
+        this.ABuckleNo=this.MlcObj.BuckleNo;
+        this.PoliceStation=this.MlcObj.PoliceStation;
+      }
+    });
+
+  }
 
   getReligionList() {
     this._AdmissionService.getMLCCombo().subscribe(data => {
@@ -170,19 +184,17 @@ public onEnterpolic(event): void {
   this.submitted = true;
   this.isLoading = 'submit';
   
-
-
   if(this.MLCId ==0){
   var m_data = {
     "insertMLCInfo": {
-      "AdmissionId ": this.selectedAdvanceObj.AdmissionID,
+      "AdmissionId":this.AdmissionId,
       "MlcNo":this.MLCId|| this.MlcInfoFormGroup.get("MlcNo").value || 0,
-      "ReportingDate": this.dateTimeObj.date,
-      "ReportingTime": this.dateTimeObj.time,
+      "ReportingDate": this.datePipe.transform(this.MlcInfoFormGroup.get("ReportingDate").value,"MM-dd-yyyy") || '01/01/1900',
+      "ReportingTime": this.datePipe.transform(this.MlcInfoFormGroup.get("ReportingDate").value,"hh:mm") || '01/01/1900',
       "AuthorityName": this.MlcInfoFormGroup.get("AuthorityName").value || '',
       "BuckleNo": this.MlcInfoFormGroup.get("ABuckleNo").value || '',
       "PoliceStation": this.MlcInfoFormGroup.get("PoliceStation").value || '',
-      "MLCId": 0,// this.MlcInfoFormGroup.get("MLCId").value || '',
+      "MLCId": 0,
     }
 
   }
@@ -214,7 +226,7 @@ else{
       "ReportingDate": this.datePipe.transform(this.MlcInfoFormGroup.get("ReportingDate").value,"MM-dd-yyyy") || '01/01/1900',
       "ReportingTime": this.datePipe.transform(this.MlcInfoFormGroup.get("ReportingDate").value,"hh:mm") || '01/01/1900',
       "AuthorityName": this.MlcInfoFormGroup.get("AuthorityName").value || '',
-      "BuckleNo": this.MlcInfoFormGroup.get("ABuckleNo").value || 0,
+      "BuckleNo": this.MlcInfoFormGroup.get("ABuckleNo").value || '',
       "PoliceStation": this.MlcInfoFormGroup.get("PoliceStation").value || '',
     }
   }

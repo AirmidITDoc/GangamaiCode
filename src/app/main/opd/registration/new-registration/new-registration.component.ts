@@ -120,8 +120,9 @@ export class NewRegistrationComponent implements OnInit {
     public datePipe: DatePipe,
     private router: Router,
 
-  ) { console.log(this.data) 
-    this.registerObj = this.data.registerObj;
+  ) {
+    //  console.log(this.data) 
+    // this.registerObj = this.data.registerObj;
   }
 
 

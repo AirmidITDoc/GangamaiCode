@@ -958,8 +958,8 @@
                                         <mat-icon class="mat-icon-close"
                                             (click)="hospitalFormGroup.get('refDoctorId').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #autodoc2="matAutocomplete" [displayWith]="getOptionTextDoc2">
-                                        <mat-option *ngFor="let option of filteredOptionsDoc2 | async" [value]="option">
+                                    <mat-autocomplete #autodoc2="matAutocomplete" [displayWith]="getOptionTextRefDoc">
+                                        <mat-option *ngFor="let option of filteredOptionsRefrenceDoc | async" [value]="option">
                                             {{option.DoctorName}}
                                         </mat-option>
                                     </mat-autocomplete>
