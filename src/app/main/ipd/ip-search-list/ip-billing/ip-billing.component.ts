@@ -31,6 +31,7 @@ import { forEach } from 'lodash';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { IpPaymentwithAdvanceComponent } from '../ip-paymentwith-advance/ip-paymentwith-advance.component';
 import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
+import { PrebillDetailsComponent } from './prebill-details/prebill-details.component';
 
 
 @Component({
@@ -55,6 +56,7 @@ export class IPBillingComponent implements OnInit {
   selectDate: Date = new Date();
   displayedColumns = [
     'checkbox',
+    'IsCheck',
     'ChargesDate',
     'ServiceName',
     'Price',
@@ -93,15 +95,15 @@ export class IPBillingComponent implements OnInit {
 
   AdvDetailColumns = [
     'Date',
+    'AdvanceNo',
     'AdvanceAmount',
     'UsedAmount',
     'BalanceAmount',
     'RefundAmount',
-    // 'BalanceAmt',
-    // 'CashPayAmount',
-    // 'ChequePayAmount',
-    // 'CardPayAmount',
-    // 'AdvanceUsedAmount'
+    'Reason',
+    'IsCancelled',
+    'UserName',
+    'Action'
   ];
   PackageBillColumns = [
     'BDate',
@@ -419,6 +421,24 @@ export class IPBillingComponent implements OnInit {
       this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
       this.CalFinalDisc();
     }
+  }
+  OnDateChange(){
+    // debugger
+    // if (this.selectedAdvanceObj.AdmDateTime) {
+    //   const day = +this.selectedAdvanceObj.AdmDateTime.substring(0, 2);
+    //   const month = +this.selectedAdvanceObj.AdmDateTime.substring(3, 5);
+    //   const year = +this.selectedAdvanceObj.AdmDateTime.substring(6, 10);
+
+    //   this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+    // }
+    // const serviceDate = this.datePipe.transform(this.Serviceform.get('Date').value,"yyyy-MM-dd 00:00:00.000") || 0;
+    // const AdmissionDate = this.datePipe.transform(this.selectedAdvanceObj.AdmDateTime,"yyyy-MM-dd 00:00:00.000") || 0;
+    // if(serviceDate > AdmissionDate){
+    //   Swal.fire('should not chnage');
+    // }
+    // else{
+    //   Swal.fire('ok');
+    // }
   }
 
   // getDoctorList() {
@@ -776,10 +796,12 @@ ServiceList:any=[];
     this.dataSource.data = [];
 
     this.isLoadingStr = 'loading';
-    let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='" + this.datePipe.transform(param, "MM-dd-yyyy") + "' Order by Chargesid"
+    let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='" + this.datePipe.transform(param, "dd/MM/YYYY") + "' Order by Chargesid"
 
+    console.log(Query)
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
+      console.log(this.chargeslist)
       this.dataSource.data = this.chargeslist;
 
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
@@ -887,7 +909,7 @@ ServiceList:any=[];
     }
     return netAmt;
   }
-
+ 
   getDiscountSum(element) {
     let netAmt;
     netAmt = element.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0);
@@ -899,6 +921,9 @@ ServiceList:any=[];
     if (this.vDiscountAmount > 0) {
       this.ServiceDiscDisable = false;
       this.ConShow = true;
+    }else{
+      this.ServiceDiscDisable = true;
+      this.ConShow = true;
     }
     return netAmt;
   }
@@ -908,6 +933,7 @@ ServiceList:any=[];
     let netAmt, netAmt1;
     netAmt = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0);
     this.vTotalAmount = netAmt;
+    this.CalculateAdminCharge();
     return netAmt;
   }
   getAdvAmtSum(element) {
@@ -970,7 +996,7 @@ ServiceList:any=[];
 
   CalculateAdminCharge(){
     if(this.vAdminPer > 0 && this.vAdminPer < 100 ){
-     this.vAdminAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vAdminPer))/ 100).toFixed(2);
+     this.vAdminAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(this.vAdminPer))/ 100).toFixed(2);
      let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
      if(this.vDiscountAmount > 0){
       let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
@@ -986,6 +1012,7 @@ ServiceList:any=[];
       this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
      }
     }else{
+      if(this.vAdminPer < 0 && this.vAdminPer > 100 ){
       this.toastr.warning('Please Enter Admin % less than 100 and Greater than 0.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -994,9 +1021,10 @@ ServiceList:any=[];
       this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
       this.CalFinalDisc();
     }
+    }
   }
   CalFinalDisc() {
-debugger
+//debugger
     if (this.Ipbillform.get('AdminAmt').value > 0) {
       let Percentage = this.Ipbillform.get('Percentage').value;
       let finalnetAmt = ((parseFloat(this.vNetBillAmount) + parseFloat(this.vAdminAmt)))
@@ -1567,7 +1595,7 @@ debugger
         "isSelfOrCompanyService": false,
         "packageId": 0,
         "chargeTime":this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-        "classId": this.selectedAdvanceObj.ClassId,
+        "classId":this.Serviceform.get('ChargeClass').value.ClassId     // this.selectedAdvanceObj.ClassId,
       }
       console.log(m_data);
       let submitData = {
@@ -1577,6 +1605,7 @@ debugger
       this._IpSearchListService.InsertIPAddCharges(submitData).subscribe(data => {
         if (data) {
           this.getChargesList();
+         
         }
       });
       this.onClearServiceAddList()
@@ -1643,6 +1672,21 @@ debugger
     // console.log(this.b_netAmount)
   }
 
+  getPreBilldet(contact) {
+    console.log(contact)
+    const dialogRef = this._matDialog.open(PrebillDetailsComponent,
+      {
+        maxWidth: "100%",
+        height: '60%',
+        width: '74%',
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
 
   calculatechargesDiscamt() {
 
@@ -1770,16 +1814,13 @@ debugger
 
     }).then((flag) => {
 
-
       if (flag.isConfirmed) {
         let Chargescancle = {};
         Chargescancle['ChargesId'] = contact.ChargesId;
         Chargescancle['userId'] = this.accountService.currentUserValue.user.id;
 
-
         let submitData = {
           "deleteCharges": Chargescancle
-
         };
 
         console.log(submitData);
@@ -1787,6 +1828,7 @@ debugger
           if (response) {
             Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
               this.getChargesList();
+              this.CalculateAdminCharge();
             });
           } else {
             Swal.fire('Error !', 'Charges cancelled data not saved', 'error');
@@ -1902,7 +1944,38 @@ debugger
       this.getAdvanceDetList();
     }
   }
-
+  chkprint: boolean = false;
+  AdList:boolean=false;
+  viewgetIPAdvanceReportPdf(contact) {
+    debugger
+     this.chkprint=true;
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+      // this.SpinLoading =true;
+     this.AdList=true;
+     
+    this._IpSearchListService.getViewAdvanceReceipt(
+   contact.AdvanceDetailID
+    ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Ip advance Viewer"
+          }
+        });
+        matDialog.afterClosed().subscribe(result => {
+          this.AdList=false;
+          this.sIsLoading = '';
+        });
+    });
+   
+    },100)
+    this.chkprint=false;
+  }
 
 }
 

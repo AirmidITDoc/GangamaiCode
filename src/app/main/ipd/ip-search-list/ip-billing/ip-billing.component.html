@@ -32,7 +32,7 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Service Date</mat-label>
                                     <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
-                                        formControlName="Date">
+                                        formControlName="Date" (dateChange)="OnDateChange()">
                                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                     <mat-datepicker #picker1></mat-datepicker>
                                 </mat-form-field>
@@ -73,10 +73,21 @@
                                             (click)="Serviceform.get('SrvcName').setValue(''); isSrvcNameSelected = false;">search</mat-icon>
                                     </span>
                                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                                        showPanel="true" (optionsScroll)="onScroll()"
+                                        showPanel="true" (optionsScroll)="onScroll()"  
                                         (optionSelected)='getSelectedObj($event.option.value)'>
                                         <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                                            {{option.ServiceName}}
+                                            {{option.ServiceName}} | {{option.Price}} | 
+                                            <span  fxLayoutGap="4px">
+                                                <mat-icon *ngIf="option.IsDocEditable == true" matTooltip="IsDoctor">
+                                                    <img width="15px" height="6px" src="assets/images/logos/doctor.png"> 
+                                                </mat-icon> |
+                                                <mat-icon *ngIf="option.IsRadiology == true" matTooltip="IsRadiology">
+                                                    <img width="15px" height="6px" src="assets/images/logos/radiology.png">
+                                                </mat-icon>
+                                                <mat-icon *ngIf="option.IsPathology == true" matTooltip="IsPatholgy">
+                                                    <img width="15px" height="6px" src="assets/images/logos/pathology.png">  
+                                                </mat-icon>
+                                            </span>
                                         </mat-option>
                                     </mat-autocomplete>
                                     <!-- <mat-hint>
@@ -340,7 +351,7 @@
                                                     fxLayoutAlign="space-between">
                                                     <div fxLayout="column" fxLayoutGap="10px">
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">UHID
+                                                            <span class="patient-col-key">UHID No
                                                             </span>
                                                             <span>:</span>
                                                             <span
@@ -354,23 +365,20 @@
                                                                 class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
                                                         </div>
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">DOA/Time
-                                                            </span>
+                                                            <span class="patient-col-key">Doctor Name</span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.DOA}}</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
                                                         </div>
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">Age/Sex
-                                                            </span>
+                                                            <span class="patient-col-key">Department</span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}} D | {{selectedAdvanceObj.GenderName}}</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
                                                         </div>
-                                                      
                                                     </div>
                                                     <div fxLayout="column" fxLayoutGap="10px">
                                                         
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">AdmDate/Time</span>
+                                                            <span class="patient-col-key">DOA | Time</span>
                                                             <span>:</span>
                                                             <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
                                                         </div>
@@ -380,31 +388,37 @@
                                                             <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
                                                         </div>
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">Doctor Name</span>
+                                                            <span class="patient-col-key">Age | Sex
+                                                            </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}} D | {{selectedAdvanceObj.GenderName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Ref-Doctor Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
                                                         </div>
                                                        
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutGap="10px">
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">Ward Name | Bed
+                                                            <span class="patient-col-key">Ward | Bed Name
                                                             </span>
                                                             <span>:</span>
                                                             <span class="patient-col-value">{{selectedAdvanceObj.RoomName}} | {{selectedAdvanceObj.BedName}}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div fxLayout="column" fxLayoutGap="10px">
-                                                      
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Tarrif Name
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Patient Type
                                                             </span>
                                                             <span>:</span>
                                                             <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Tarrif Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
                                                         </div>
                                                         <div class="patient-col" >
                                                             <span class="patient-col-key">Company Name</span>
@@ -445,12 +459,12 @@
                                                         <span class="list-item-value"> {{vBalanceAmt}}</span>
                                                     </div>
                                                 </li>
-                                                <li>
+                                                <!-- <li>
                                                     <div class="list-item">
                                                         <span class="list-item-key">Payment Remain :</span>
                                                         <span class="list-item-value"> {{vpaidBalanceAmt}}</span>
                                                     </div>
-                                                </li>
+                                                </li> -->
                                                 <li>
                                                     <div class="list-item">
                                                         <span class="list-item-key">Pharmacy Amount :</span>
@@ -614,6 +628,19 @@
                                     </mat-checkbox>
                                 </mat-cell>
                             </ng-container>
+
+                            <ng-container matColumnDef="IsCheck" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">Status</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-50">
+                                    <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
+                                        <img width="20px" height="8px" src="assets/images/logos/radiology.png">
+                                    </mat-icon>
+                                    <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
+                                        <img width="22px" height="9px" src="assets/images/logos/pathology.png">  
+                                    </mat-icon>
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="ChargesDate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>ChargesDate</mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
@@ -682,7 +709,7 @@
                                     class="w-200">ChargeDoctorName
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                    <span> {{contact.DoctorName}}</span>
+                                    <span> {{contact.DoctorName || '--'}}</span>
                                 </mat-cell>
                             </ng-container>
 
@@ -794,6 +821,14 @@
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="AdvanceNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AdvanceNo
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.AdvanceNo}}</span>
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="AdvanceAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AdvanceAmount
                                 </mat-header-cell>
@@ -823,6 +858,50 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <span> {{contact.RefundAmount | currency:'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                          
+                            <ng-container matColumnDef="IsCancelled">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsCancelled
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <mat-icon *ngIf="contact.IsCancelled" 
+                                    class="pill green-600 s-16">check_circle</mat-icon>
+                                <mat-icon *ngIf="!contact.IsCancelled"  
+                                    class="pill red-600 s-16">close</mat-icon>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="UserName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UserName
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.UserName}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Reason">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Reason
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.Reason}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <button mat-icon-button    matTooltip="Advance Print" (click)="viewgetIPAdvanceReportPdf(contact)"
+                                    [disabled]="chkprint">
+                                        <mat-icon>print</mat-icon>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Send Bill On WhatsApp"
+                                    class="p-4" >
+                                    <img width="100" height="20px"
+                                        src="assets/images/logos/WhatsApp.png">
+                                     </button>
+                                     
                                 </mat-cell>
                             </ng-container>
 
@@ -1006,14 +1085,14 @@
                             <ng-container matColumnDef="Action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button  matTooltip="Details">
+                                    <button mat-icon-button  matTooltip="Details" (click)="getPreBilldet(contact)">
                                         <mat-icon>visibility</mat-icon>
                                     </button>
                                     <button mat-icon-button   matTooltip="Print">
                                         <mat-icon>print</mat-icon>
                                     </button>
                                     <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                    class="p-4" (click)="getWhatsappshareSales(row)">
+                                    class="p-4"  >
                                     <img width="100" height="20px"
                                         src="assets/images/logos/WhatsApp.png">
                                      </button>
@@ -1183,7 +1262,7 @@
                                             (keyup)="CalFinalDisc()"  (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="10%" *ngIf="ServiceDiscDisable">
+                                    <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Disc Amount</mat-label>
                                         <input matInput [(ngModel)]="vfDiscountAmount" name="vDiscountAmount" readonly
                                             formControlName="concessionAmt" (keyup)="getNetAmount()">
@@ -1240,8 +1319,7 @@
                                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
                                         <div class="button-row-group">
                                             <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
-                                            <button class="btn btn-primary-outline" (click)="getInterimData()"
-                                                [disabled]="Ipbillform.invalid">Interim</button>
+                                            <button class="btn btn-primary-outline" (click)="getInterimData()">Interim</button>
                                             <button class="btn btn-primary" (click)="onSave()" [disabled]="Ipbillform.invalid">Save</button>
                                     
                                         </div>
@@ -1342,3 +1420,4 @@
         </div>
     </div>
 </mat-drawer>
+
