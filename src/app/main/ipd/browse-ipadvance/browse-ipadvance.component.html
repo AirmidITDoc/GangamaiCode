@@ -76,7 +76,7 @@
                                     </button>
                                 </div>
 
-                                <div class="export-buttons mt-12">
+                                <!-- <div class="export-buttons mt-12">
                                     <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="gap-8">
                                         <button type="button" (click)="exportReportPdf()"
                                             class="btn btn-primary btn-with-icon btn-xs">
@@ -89,7 +89,7 @@
                                             <img width="32" height="10px" src="assets/images/logos/xls.png">
                                         </button>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </form>
                     </div>
@@ -111,11 +111,11 @@
                             <div class="table-header-right">
                                 <div class="export-buttons">
                                     <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                        <button type="button" mat-icon-button (click)="exportReportPdf()" [disabled]="!(dataSource.data.length > 0)">
+                                        <button type="button" mat-icon-button (click)="exportReportPdf()" [disabled]="dataArray.data.length ==0">
                                             <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
                                         </button>
 
-                                        <button type="button" mat-icon-button (click)="exportIpadvanceReportExcel()" [disabled]="!(dataSource.data.length > 0)">
+                                        <button type="button" mat-icon-button (click)="exportIpadvanceReportExcel()" [disabled]="dataArray.data.length == 0">
                                             <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
                                         </button>
                                     </div>

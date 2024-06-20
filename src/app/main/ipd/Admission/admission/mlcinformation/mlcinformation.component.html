@@ -133,13 +133,14 @@
               <input name="ABuckleNo" formControlName="ABuckleNo" placeholder="ABuckleNo" matInput
                 [(ngModel)]="ABuckleNo" #buckleno (keydown)="onEnterbuckleno($event)" required>
             </mat-form-field>
-          </div>
-          <div fxLayoutGap="5px">
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>PoliceStation</mat-label>
               <input name="PoliceStation" formControlName="PoliceStation" placeholder="PoliceStation"
                 [(ngModel)]="PoliceStation" #polic (keydown)="onEnterpolic($event)" matInput required>
             </mat-form-field>
+          </div>
+          <div fxLayoutGap="5px">
+          
             <!-- (keydown)="onEnterreligion($event)" -->
             <!-- <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
               <mat-label>MLC Type</mat-label>
@@ -161,20 +162,20 @@
               </mat-autocomplete>
           </mat-form-field> -->
           </div>
-          <!-- 
+          
           <div fxLayoutGap="5px">
             
-            <textarea rows="8" cols="450"  [(ngModel)]="PoliceStation">
+            <textarea rows="4" cols="100"  [(ngModel)]="PoliceStation">
               
            </textarea>
 
-           <textarea rows="28" cols="450"  [(ngModel)]="PoliceStation">
+           <textarea rows="4" cols="100"  [(ngModel)]="PoliceStation">
               
            </textarea>
-          </div> -->
+          </div>
 
 
-          <div class="modal-footer">
+          <div class="modal-footer" style="margin-top: 10px;">
             <div class="footer-navigation-container">
               <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>

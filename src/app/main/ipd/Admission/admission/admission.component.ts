@@ -35,6 +35,7 @@ import { EditRefraneDoctorComponent } from 'app/main/opd/appointment/edit-refran
 import { EditConsultantDoctorComponent } from 'app/main/opd/appointment/edit-consultant-doctor/edit-consultant-doctor.component';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-admission',
@@ -72,7 +73,7 @@ export class AdmissionComponent implements OnInit {
   isPrefixSelected: boolean = false;
   isCitySelected: boolean = false;
   isCompanySelected: boolean = false;
-  isCompanyselected: boolean = false;
+  // isCompanyselected: boolean = false;
   isSubCompanySelected: boolean = false;
   isDepartmentSelected: boolean = false;
 
@@ -185,7 +186,8 @@ export class AdmissionComponent implements OnInit {
   filteredOptionsSubCompany: Observable<string[]>;
   filteredOptionssearchDoctor: Observable<string[]>;
   filteredOptionsRegSearch: Observable<string[]>;
-  filteredOptionsPatientType: Observable<string[]>;
+  // filteredOptionsPatientType: Observable<string[]>;'
+  filteredOptionsPatientType:any;
   filteredOptionsTarrif: Observable<string[]>;
   filteredOptionsRefrenceDoc: Observable<string[]>;
 
@@ -225,6 +227,7 @@ export class AdmissionComponent implements OnInit {
   private _onDestroy = new Subject<void>();
 
   displayedColumns = [
+    'useraction',
     'IsMLC',
     'RegNo',
     'PatientName',
@@ -297,6 +300,7 @@ export class AdmissionComponent implements OnInit {
     private accountService: AuthenticationService,
     public datePipe: DatePipe,
     private router: Router,
+    private reportDownloadService: ExcelDownloadService,
     private formBuilder: FormBuilder,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored) {
@@ -344,8 +348,8 @@ export class AdmissionComponent implements OnInit {
     this.getPrefixList();
     this.getHospitalList();
     this.getPrefixList();
-    this.getPatientTypeList();
-    this.getTariffList();
+    // this.getPatientTypeList();
+    // this.getTariffList();
     this.getAreaList();
     this.getMaritalStatusList();
     this.getReligionList();
@@ -359,6 +363,9 @@ export class AdmissionComponent implements OnInit {
     this.getCompanyList();
     this.getSubTPACompList();
     this.getRefDoctorList();
+      this.getPtypeCombo()
+      this.getTariffCombo()
+
 
     if (this._ActRoute.url == '/ipd/admission') {
 
@@ -375,9 +382,52 @@ export class AdmissionComponent implements OnInit {
       // this.menuActions.push('Prefix Demo');
       // this.menuActions.push('Emergency');
     }
+
+
+    
+    this.filteredOptionsPatientType = this.hospitalFormGroup.get('PatientTypeID').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterPtype(value)),
+
+    );
+     
+    this.filteredOptionsTarrif = this.hospitalFormGroup.get('TariffId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterTariffId(value)),
+
+    );
   }
 
+  private _filterPtype(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
+      return this.PatientTypeList.filter(option => option.PatientType.toLowerCase().includes(filterValue));
+    }
+  }
 
+  getPtypeCombo() {
+    this._AdmissionService.getPatientTypeCombo().subscribe(data => {
+      this.PatientTypeList = data;
+      this.hospitalFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
+    });
+  }
+
+  
+  private _filterTariffId(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();
+      return this.TariffList.filter(option => option.TariffName.toLowerCase().includes(filterValue));
+    }
+  }
+
+  getTariffCombo(){
+    this._AdmissionService.getTariffCombo().subscribe(data => {
+      this.TariffList = data;
+      this.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
+    });
+  }
+
+  
   Admissiondetail(data) {
     this.Vtotalcount = 0;
     this.VNewcount = 0;
@@ -823,6 +873,12 @@ export class AdmissionComponent implements OnInit {
     const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
     this.personalFormGroup.get('CityId').setValue(toSelectCity);
 
+    // this.hospitalFormGroup.get("PatientTypeID").reset();
+
+
+
+
+
     this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
     this.onChangeCityList(this.registerObj);
 
@@ -1055,6 +1111,7 @@ export class AdmissionComponent implements OnInit {
     });
     this.hospitalFormGroup.get('TariffId').setValue(this.TariffList[0]);
   }
+
   getOptionTextpatienttype(option) {
     return option && option.PatientType ? option.PatientType : '';
   }
@@ -1208,21 +1265,26 @@ export class AdmissionComponent implements OnInit {
       this.filteredOptionsPatientType = this.hospitalFormGroup.get('PatientTypeID').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterPatientType(value) : this.PatientTypeList.slice()),
+        
       );
 
     });
     this.hospitalFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
+    this.hospitalFormGroup.updateValueAndValidity();
+
   }
 
   private _filterPatientType(value: any): string[] {
     if (value) {
       const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
-
       return this.optionsPatientType.filter(option => option.PatientType.toLowerCase().includes(filterValue));
 
     }
+    // this.setptype();
 
   }
+
+
 
   private _filterTariff(value: any): string[] {
     if (value) {
@@ -1320,6 +1382,10 @@ export class AdmissionComponent implements OnInit {
 
 
   OnChangeDoctorList(departmentObj) {
+    debugger
+    
+    this.hospitalFormGroup.get('DoctorId').reset();
+
     this.isDepartmentSelected = true;
     this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
@@ -1358,25 +1424,30 @@ export class AdmissionComponent implements OnInit {
 
   onChangePatient(value) {
 
-    if (value.PatientTypeId !== 1) {
+    if (value.PatientTypeId != 2) {
+      this.isCompanySelected = false;
       this.hospitalFormGroup.get('CompanyId').clearValidators();
       this.hospitalFormGroup.get('SubCompanyId').clearValidators();
       this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
       this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
+      
+      this.patienttype = 1;
+
+    } 
+     if (value.PatientTypeId == 2) {
       this.isCompanySelected = true;
-    } else if (value.PatientTypeId == 2) {
       this.hospitalFormGroup.get('CompanyId').reset();
       this.hospitalFormGroup.get('CompanyId').setValidators([Validators.required]);
       this.hospitalFormGroup.get('SubCompanyId').setValidators([Validators.required]);
-
-      this.isCompanySelected = false;
-    }
-
-    if (value.PatientTypeId == 2) {
       this.patienttype = 2;
-    } else if (value.PatientTypeId !== 2) {
-      this.patienttype = 1;
+      
     }
+
+    // if (value.PatientTypeId == 2) {
+    //   this.patienttype = 2;
+    // } else if (value.PatientTypeId !== 2) {
+    //   this.patienttype = 1;
+    // }
   }
 
   onReset() {
@@ -1424,12 +1495,7 @@ export class AdmissionComponent implements OnInit {
     this.getSubTPACompList();
     this.getcityList1();
 
-    // this.isCompanySelected = true;
-    // this.hospitalFormGroup.get('CompanyId').clearValidators();
-    // this.hospitalFormGroup.get('SubCompanyId').clearValidators();
-    // this.hospitalFormGroup.get('CompanyId').updateValueAndValidity();
-    // this.hospitalFormGroup.get('SubCompanyId').updateValueAndValidity();
-
+   
     this.isCompanySelected = false;
     this.hospitalFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
     this.hospitalFormGroup.get('CompanyId').clearValidators();
@@ -2035,7 +2101,13 @@ this.getAdmittedPatientList_1()
 
   }
 
-
+  getAdmittedPatientListExcelview(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['IsMLC','RegNo', 'DOA', 'PatientName', 'Doctorname', 'RefDocName', 'IPNo', 'PatientType', 'WardName','TariffName','ClassName','CompanyName','RelativeName'];
+    this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Ip Admitted Patient List Datewise');
+    this.dataSource.data = [];
+    this.sIsLoading = '';
+  }
 
   getAdmittedPatientCasepaperview(AdmissionId, flag) {
     this.sIsLoading = 'loading-data';
@@ -2120,7 +2192,7 @@ this.getAdmittedPatientList_1()
     const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
         maxWidth: '85vw',
-        height: '450px', width: '100%',
+        height: '650px', width: '100%',
         data: {
           registerObj: contact,
         },
@@ -2738,7 +2810,7 @@ this.getAdmittedPatientList_1()
   }
   getEditAdmission(row) {
     
-    this.advanceDataStored.storage = new AdvanceDetailObj(row);
+    this.advanceDataStored.storage = new AdmissionPersonlModel(row);
     console.log(row)
     this._registrationService.populateFormpersonal(row);
     this.registerObj["RegId"]=row.RegID;
@@ -3107,6 +3179,15 @@ export class AdmissionPersonlModel {
   RefDocName: any;
   RelativePhoneNo: any;
   DepartmentId:any;
+  IsOpToIPconv:any;
+  ClassName:any;
+  IsBillGenerated:any;
+  RoomName:any;
+  Doctorname:any;
+  AdmDateTime:any;
+
+
+RelativeAddress:any;
   /**
 * Constructor
 *
@@ -3184,7 +3265,16 @@ export class AdmissionPersonlModel {
       this.Pancardno = AdmissionPersonl.Pancardno || '';
       this.RefDocName = AdmissionPersonl.RefDocName || '';
       this.RelativePhoneNo = AdmissionPersonl.RelativePhoneNo || '';
-      this.DepartmentId=AdmissionPersonl.DepartmentId ||0
+      this.DepartmentId=AdmissionPersonl.DepartmentId || 0;
+      this.IsOpToIPconv=AdmissionPersonl.IsOpToIPconv || ''
+      this.RelativeName=AdmissionPersonl.RelativeName || ''
+      this.RelativeAddress=AdmissionPersonl.RelativeAddress || ''
+      this.ClassName=AdmissionPersonl.ClassName || ''
+      this.IsBillGenerated=AdmissionPersonl.IsBillGenerated || 0
+      this.RoomName=AdmissionPersonl.RoomName || ''
+      this.Doctorname=AdmissionPersonl.Doctorname || ''
+      this.AdmDateTime=AdmissionPersonl.AdmDateTime || ''
+
     }
   }
 }

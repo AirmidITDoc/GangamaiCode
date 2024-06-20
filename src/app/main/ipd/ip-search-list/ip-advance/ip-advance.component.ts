@@ -41,6 +41,9 @@ export class IPAdvanceComponent implements OnInit {
   currentDate = new Date();
   reportPrintObjList: IpdAdvanceBrowseModel[] = [];
   reportPrintsummaryObjList: IpdAdvanceBrowseModel[] = [];
+  Filepath:any;
+
+
   displayedColumns = [
     'Date',
     'AdvanceNo',
@@ -148,12 +151,29 @@ export class IPAdvanceComponent implements OnInit {
     return netAmt;
   }
 
-  getAdvavilable(element) {
+  getAdvBalance(element) {
     let netAmt;
     netAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
-    this.Advavilableamt = netAmt;
+    // this.Advavilableamt = netAmt;
     return netAmt;
   }
+
+  getAdvanceusedtotal(element) {
+    let netAmt;
+    netAmt = element.reduce((sum, { UsedAmount }) => sum += +(UsedAmount || 0), 0);
+    // this.Advavilableamt = netAmt;
+    return netAmt;
+  }
+
+  getAdvancerefund(element) {
+    let netAmt;
+    netAmt = element.reduce((sum, { RefundAmount }) => sum += +(RefundAmount || 0), 0);
+    // this.Advavilableamt = netAmt;
+    return netAmt;
+  }
+
+
+
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -168,7 +188,7 @@ export class IPAdvanceComponent implements OnInit {
       let advanceHeaderObj = {};
       advanceHeaderObj['AdvanceId'] = 0;
       advanceHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
-      advanceHeaderObj['RefId'] = this.selectedAdvanceObj.RegId,
+      advanceHeaderObj['RefId'] = this.selectedAdvanceObj.RegID,
         advanceHeaderObj['OPD_IPD_Type'] = 1;
       advanceHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
       advanceHeaderObj['AdvanceAmount'] = this.advanceAmount;
@@ -184,7 +204,7 @@ export class IPAdvanceComponent implements OnInit {
       AdvanceDetObj['Date'] = this.dateTimeObj.date || '01/01/1900'
       AdvanceDetObj['Time'] = this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900'
       AdvanceDetObj['AdvanceId'] = 0;
-      AdvanceDetObj['RefId'] = this.selectedAdvanceObj.RegId,
+      AdvanceDetObj['RefId'] = this.selectedAdvanceObj.RegID,
         AdvanceDetObj['transactionID'] = 2;
       AdvanceDetObj['OPD_IPD_Type'] = 1;
       AdvanceDetObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
@@ -237,7 +257,7 @@ export class IPAdvanceComponent implements OnInit {
             if (response) {
               Swal.fire('Congratulations !', 'IP Advance data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
-                  this.viewgetAdvanceReceiptReportPdf(response);
+                  this.viewgetAdvanceReceiptReportPdf(response,true);
 
                   this._matDialog.closeAll();
                 }
@@ -321,7 +341,7 @@ export class IPAdvanceComponent implements OnInit {
       AdvanceDetObj['Date'] = this.dateTimeObj.date || '01/01/1900'
       AdvanceDetObj['Time'] = this.dateTimeObj.time || '01/01/1900'
       AdvanceDetObj['AdvanceId'] = this.vAdvanceId || 0;
-      AdvanceDetObj['RefId'] = this.selectedAdvanceObj.RegId;
+      AdvanceDetObj['RefId'] =0,// this.selectedAdvanceObj.RegId;
       AdvanceDetObj['transactionID'] = 2;
       AdvanceDetObj['OPD_IPD_Type'] = 1;
       AdvanceDetObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
@@ -378,7 +398,7 @@ export class IPAdvanceComponent implements OnInit {
                 if (result.isConfirmed) {
                   this.getAdvanceList();
                   this._matDialog.closeAll();
-                  this.viewgetAdvanceReceiptReportPdf(response);
+                  this.viewgetAdvanceReceiptReportPdf(response,true);
                   // this.getPrint(response);
                 }
               });
@@ -461,13 +481,26 @@ export class IPAdvanceComponent implements OnInit {
     return converter.toWords(e);
   }
 
-  getPrint(contact){
-    this.viewgetAdvanceReceiptReportPdf(contact.AdvanceDetailID);
+ 
+
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
 
 
+  viewgetAdvanceReceiptReportPdf(AdvanceID,Flag) {
+    let AdvanceDetailID
+    if(Flag)
+    AdvanceDetailID = AdvanceID
+    else
+    AdvanceDetailID = AdvanceID.AdvanceDetailID
 
-  viewgetAdvanceReceiptReportPdf(AdvanceDetailID) {
 
     this._IpSearchListService.getViewAdvanceReceipt(
       AdvanceDetailID
@@ -485,8 +518,58 @@ export class IPAdvanceComponent implements OnInit {
     });
   }
 
+  getWhatsappshare(el) {
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": 22,//el.RegNo,
+        "smsString": "Dear" + el.PatientName + ",Your Advance has been successfully Added. UHID is " + el.AdvanceDetailID + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+        "isSent": 0,
+        "smsType": 'GRN',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": el.AdvanceDetailID,
+        "PatientType": 2,//el.PatientType,
+        "templateId": 0,
+        "smSurl": "info@gmail.com",
+        "filePath": this.Filepath || '',
+        "smsOutGoingID": 0
 
-  AdvSummaryPrint() { }
+      }
+    }
+    this._IpSearchListService.InsertWhatsappAdvance(m_data).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+      }
+
+    });
+    // this.IsLoading = false;
+    el.button.disable = false;
+  }
+
+
+  getStatementPrint(AdvanceDetailID) {
+    
+    this._IpSearchListService.getViewAdvancestatementReceipt(
+      AdvanceDetailID
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Advance Statement Viewer"
+          }
+        });
+    });
+   }
 
 
   transform2(value: string) {

@@ -3378,6 +3378,8 @@ export class AdvanceDetailObj {
   HospitalId: any;
   VistDateTime: any;
   AadharCardNo: any;
+  DepartmentId:any;
+  Departmentid:any;
   /**
    * Constructor
    *
@@ -3412,6 +3414,8 @@ export class AdvanceDetailObj {
       this.HospitalId = AdvanceDetailObj.HospitalId || 0;
       this.VistDateTime = AdvanceDetailObj.VistDateTime || ''
       this.AadharCardNo = AdvanceDetailObj.AadharCardNo || 0;
+      this.DepartmentId = AdvanceDetailObj.DepartmentId || 0;
+      this.Departmentid = AdvanceDetailObj.Departmentid || 0;
     }
   }
 }

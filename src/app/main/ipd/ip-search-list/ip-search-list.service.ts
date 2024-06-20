@@ -991,6 +991,15 @@ getIpDischargeReceipt(AdmId){
  getIpDischargesummaryReceipt(AdmissionID){
   return this._httpClient.get("InPatient/view-DischargSummary?AdmissionID=" + AdmissionID)
  }
+
+ getViewAdvancestatementReceipt(AdmissionID){
+  return this._httpClient.get("InPatient/view-DischargSummary?AdmissionID=" + AdmissionID)
+ }
+
+ 
+ public InsertWhatsappAdvance(emp) {
+  return this._httpClient.post("WhatsappE1mail/WhatsappSalesSave", emp);
+}
 }
 
 // ultra viewer id 67229924 Password :- Airmid@123

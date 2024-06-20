@@ -52,7 +52,7 @@
                                       <div class="patient-col gap-1" fxFlex="30%">
                                         <span class="patient-col-key">DOA /Time</span>
                                         <span>:</span>
-                                        <span class="patient-col-value">{{selectedAdvanceObj.DOA}}</span>
+                                        <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
                                       </div>
                                       <div class="patient-col gap-1" fxFlex="30%">
                                         <span class="patient-col-key">IPDNo</span>
@@ -133,7 +133,7 @@
                                     <span class="h1">Policy Information</span>
                                 </div>
 
-                                <div fxLayoutGap="1px">
+                                <div fxLayoutGap="20px">
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Policy No / Member No </mat-label>
@@ -155,7 +155,7 @@
                                             matInput>
                                     </mat-form-field>
                                 </div>
-                                <div fxLayoutGap="1px">
+                                <!-- <div fxLayoutGap="1px">
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Comments</mat-label>
@@ -163,8 +163,8 @@
                                             matInput>
                                     </mat-form-field>
 
-                                </div>
-                                <div fxLayoutGap="1px">
+                                </div> -->
+                                <div fxLayoutGap="20px">
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>EstimatAmt</mat-label>
@@ -186,7 +186,7 @@
 
                                 </div>
 
-                                <div fxLayoutGap="1px">
+                                <div fxLayoutGap="20px">
 
 
                                     <mat-form-field appearance="outline" fxFlex>
@@ -208,7 +208,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayoutGap="1px">
+                                <div fxLayoutGap="20px">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Path Amt</mat-label>
                                         <input name="PathAmt" formControlName="PathAmt" placeholder="PathAmt" matInput>
@@ -224,7 +224,7 @@
                                             matInput>
                                     </mat-form-field>
                                 </div>
-                                <div fxLayoutGap="1px">
+                                <div fxLayoutGap="20px">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Radi Amt</mat-label>
                                         <input name="RadiAmt" formControlName="RadiAmt" placeholder="RadiAmt" matInput>
@@ -238,7 +238,7 @@
 
 
                                 </div>
-                                <div fxLayoutGap="1px">
+                                <div fxLayoutGap="20px">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Pharmacy Amt</mat-label>
                                         <input name="PharmacyAmt" formControlName="PharmacyAmt"
@@ -250,13 +250,15 @@
                                             placeholder="RecoverAmtbyPatient" matInput>
                                     </mat-form-field>
                                 </div>
-                                <div fxLayoutGap="1px">
-                                    <mat-form-field appearance="outline" fxFlex>
+                                <div fxLayoutGap="900px">
+                                    <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Medical Amt</mat-label>
                                         <input name="MedicalAmt" formControlName="MedicalAmt" placeholder="MedicalAmt"
                                             matInput>
                                     </mat-form-field>
-
+                                    <button class="btn btn-primary " (click)="Save()">
+                                        <span>RefundOFAdvance</span>
+                                    </button>
                                 </div>
                             </div>
                         </mat-card>
