@@ -951,9 +951,6 @@ public getprescriptionList(employee) {
   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IP_Prescriptio_Det", employee)
    
 }
-public getViewAdvanceReceipt(AdvanceDetailID){
-  return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
-}
 
 public getIpFinalBillReceipt(BillNo){
   return this._httpClient.get("InPatient/view-IP-BillReceipt?BillNo=" + BillNo);
@@ -982,7 +979,9 @@ public getRefundofAdvanceview(RefundId){
 public getRefundofbillview(RefundId){
   return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
 }
-
+public getPreBillDetList(param){
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPBillInfo",param);
+}
 
 getIpDischargeReceipt(AdmId){
   return this._httpClient.get("InPatient/view-DischargeCheckOutReceipt?AdmId=" + AdmId)
@@ -1000,6 +999,12 @@ getIpDischargeReceipt(AdmId){
  public InsertWhatsappAdvance(emp) {
   return this._httpClient.post("WhatsappE1mail/WhatsappSalesSave", emp);
 }
+ public getViewAdvanceReceipt(AdvanceDetailID){
+  // return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
+  return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
+}
+
+
 }
 
 // ultra viewer id 67229924 Password :- Airmid@123
