@@ -99,6 +99,13 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
       this.filterClass();
     });
     
+    
+    if (this.advanceDataStored.storage) {
+      debugger
+       this.selectedAdvanceObj = this.advanceDataStored.storage;
+       // this.PatientHeaderObj = this.advanceDataStored.storage;
+       console.log( this.selectedAdvanceObj)
+     }
   }
 
   get f() { return this._IpSearchListService.mySaveForm.controls; }

@@ -483,7 +483,11 @@ public getAdmittedPatientListView(FromDate,ToDate,DoctorId,WardId){
   public getMLCDetail(data){
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
+ 
   
+  public CompanyUpdate(param) {
+    return this._httpClient.post("InPatient/CompanyInformationUpdate", param);
+  }
 }
 
 

@@ -99,7 +99,7 @@ export class IPAdvanceComponent implements OnInit {
     });
 
     if (this.advanceDataStored.storage) {
-     
+     debugger
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       // this.PatientHeaderObj = this.advanceDataStored.storage;
       console.log( this.selectedAdvanceObj)
@@ -553,8 +553,8 @@ export class IPAdvanceComponent implements OnInit {
   }
 
 
-  getStatementPrint(AdvanceDetailID) {
-    
+  getStatementPrint() {
+    let AdvanceDetailID=0
     this._IpSearchListService.getViewAdvancestatementReceipt(
       AdvanceDetailID
     ).subscribe(res => {

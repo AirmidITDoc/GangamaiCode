@@ -24,6 +24,7 @@ import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component'
 import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyInformationComponent } from '../company-information/company-information.component';
+import { NewCasepaperComponent } from 'app/main/opd/new-casepaper/new-casepaper.component';
 
 
 
@@ -578,7 +579,40 @@ export class IPSearchListComponent implements OnInit {
         console.log('The dialog was closed - Insert Action', result);
         this.getAdmittedPatientList();
       });
+    } else if (m == "Case Paper") {
+      console.log(" This is for Case Paper pop : " + m);
+      // let m_data = {
+      //   "RegNo": contact.RegNo,
+      //   "PatientName": contact.PatientName,
+      //   "AdmissionID": contact.AdmissionID,
+      //   "AdmDateTime": contact.AdmDateTime,
+      //   "DOA": contact.DOA,
+      //    "DocNameID": contact.DocNameID,
+      //   "RoomId": contact.WardId,
+      //   "WardId": contact.WardId,
+      //   "RoomName": contact.RoomName,
+      //   "BedId": contact.BedId,
+      //   "BedName": contact.BedName,
+      //   "TariffId": contact.TariffId,
+      //   "TariffName": contact.TariffName,
+      //   "ClassId": contact.ClassId,
+      //   "ClassName": contact.ClassName,
+      //   IsDischarged:contact.IsDischarged,
+      // }
+      this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+      this._IpSearchListService.populateForm(contact);
+      //      this.getAdvanceList();
+      const dialogRef = this._matDialog.open(NewCasepaperComponent,
+        {
+          maxWidth: "95vw",
+          maxHeight: "55vh", width: '100%', height: "100%"
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getAdmittedPatientList();
+      });
     }
+ 
  
   }
 

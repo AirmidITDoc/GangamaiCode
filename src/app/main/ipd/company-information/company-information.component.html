@@ -150,19 +150,19 @@
                                 <!-- Line 1 -->
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>EstimatAmt</mat-label>
-                                        <input name="EstimatAmt" formControlName="EstimatAmt" placeholder="EstimatAmt"
+                                        <input name="EstimatAmt" formControlName="EstimatAmt" placeholder="EstimatAmt" (keypress)="keyPressCharater($event)"
                                             matInput>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Final Bill To TPA Scheme</mat-label>
-                                        <input name="BillToTpa" formControlName="BillToTpa" placeholder="BillToTpa"
-                                            matInput>
+                                        <input name="BillToTpa" formControlName="BillToTpa" placeholder="BillToTpa" (keypress)="keyPressCharater($event)"
+                                            matInput> 
                                     </mat-form-field>
                                  
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Investigation Paid</mat-label>
-                                        <input name="InvestigationPaid" formControlName="InvestigationPaid"
+                                        <input name="InvestigationPaid" formControlName="InvestigationPaid" (keypress)="keyPressCharater($event)"
                                             placeholder="InvestigationPaid" matInput>
                                     </mat-form-field>
 
@@ -173,20 +173,20 @@
                                   
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Approved Hospital Amt</mat-label>
-                                        <input name="AppHospitalAmt" formControlName="AppHospitalAmt"
+                                        <input name="AppHospitalAmt" formControlName="AppHospitalAmt" (keypress)="keyPressCharater($event)"
                                             placeholder="AppHospitalAmt" matInput>
                                     </mat-form-field>
                                     
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Approv BY TPA Scheme</mat-label>
-                                        <input name="ApprovBYTpa" formControlName="ApprovBYTpa"
+                                        <input name="ApprovBYTpa" formControlName="ApprovBYTpa" (keypress)="keyPressCharater($event)"
                                             placeholder="ApprovBYTpa" matInput>
                                     </mat-form-field>
 
 
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Refund Amt/Recovered From</mat-label>
-                                        <input name="NetAmtRefund" formControlName="NetAmtRefund"
+                                        <input name="NetAmtRefund" formControlName="NetAmtRefund" (keypress)="keyPressCharater($event)"
                                             placeholder="NetAmtRefund" matInput>
                                     </mat-form-field>
                                 </div>
@@ -195,17 +195,17 @@
                                     <!-- Line 3 -->
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Path Amt</mat-label>
-                                        <input name="PathAmt" formControlName="PathAmt" placeholder="PathAmt" matInput>
+                                        <input name="PathAmt" formControlName="PathAmt" placeholder="PathAmt" matInput (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="20%">
-                                        <mat-label>Disallowed Amount By TPA</mat-label>
-                                        <input name="DisallowAmt" formControlName="DisallowAmt"
+                                        <mat-label>Disallowed Amount By TPA</mat-label >
+                                        <input name="DisallowAmt" formControlName="DisallowAmt" (keypress)="keyPressCharater($event)"
                                             placeholder="DisallowAmt" matInput>
                                     </mat-form-field>
                                  
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Refund Amount </mat-label>
-                                        <input name="RefundAmt" formControlName="RefundAmt" placeholder="RefundAmt"
+                                        <input name="RefundAmt" formControlName="RefundAmt" placeholder="RefundAmt" (keypress)="keyPressCharater($event)"
                                             matInput>
                                     </mat-form-field>
                                 </div>
@@ -213,11 +213,11 @@
                                     <!-- Line 4 -->
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Radi Amt</mat-label>
-                                        <input name="RadiAmt" formControlName="RadiAmt" placeholder="RadiAmt" matInput>
+                                        <input name="RadiAmt" formControlName="RadiAmt" placeholder="RadiAmt" matInput (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Discount By TPA</mat-label>
-                                        <input name="DiscByTpa" formControlName="DiscByTpa" placeholder="DiscByTpa"
+                                        <input name="DiscByTpa" formControlName="DiscByTpa" placeholder="DiscByTpa" (keypress)="keyPressCharater($event)"
                                             matInput>
                                     </mat-form-field>
                                 
@@ -228,12 +228,12 @@
                                     <!-- Line 5 -->
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Pharmacy Amt</mat-label>
-                                        <input name="PharmacyAmt" formControlName="PharmacyAmt"
+                                        <input name="PharmacyAmt" formControlName="PharmacyAmt" (keypress)="keyPressCharater($event)"
                                             placeholder="PharmacyAmt" matInput>
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Disc As Per Management</mat-label>
-                                        <input name="DiscByManagement" formControlName="DiscByManagement"
+                                        <input name="DiscByManagement" formControlName="DiscByManagement" (keypress)="keyPressCharater($event)"
                                             placeholder="DiscByManagement" matInput>
                                     </mat-form-field>
 
@@ -243,11 +243,11 @@
                                     <!-- Line 6 -->
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Medical Amt</mat-label>
-                                        <input name="MedicalAmt" formControlName="MedicalAmt" placeholder="MedicalAmt" matInput>
+                                        <input name="MedicalAmt" formControlName="MedicalAmt" placeholder="MedicalAmt" matInput (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Amt Recovered From Patient</mat-label>
-                                        <input name="RecoverAmtbyPatient" formControlName="RecoverAmtbyPatient"
+                                        <input name="RecoverAmtbyPatient" formControlName="RecoverAmtbyPatient" (keypress)="keyPressCharater($event)"
                                             placeholder="RecoverAmtbyPatient" matInput>
                                     </mat-form-field>
                                 </div>

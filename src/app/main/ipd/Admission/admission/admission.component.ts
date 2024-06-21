@@ -2192,7 +2192,7 @@ this.getAdmittedPatientList_1()
     const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
         maxWidth: '85vw',
-        height: '650px', width: '100%',
+        height: '600px', width: '100%',
         data: {
           registerObj: contact,
         },
@@ -3185,9 +3185,12 @@ export class AdmissionPersonlModel {
   RoomName:any;
   Doctorname:any;
   AdmDateTime:any;
-
-
+  TariffId:any;
+  RefDocNameId:any;
+  RefDocNameID:any;
+  DocNameID:any;
 RelativeAddress:any;
+IsSeniorCitizen:any;
   /**
 * Constructor
 *
@@ -3195,7 +3198,7 @@ RelativeAddress:any;
 */
   constructor(AdmissionPersonl) {
     {
-      this.Departmentid = AdmissionPersonl.Departmentid || '';
+      this.Departmentid = AdmissionPersonl.Departmentid || 0;
       this.AadharCardNo = AdmissionPersonl.AadharCardNo || '';
       this.Address = AdmissionPersonl.Address || '';
       this.Age = AdmissionPersonl.Age || '';
@@ -3204,7 +3207,7 @@ RelativeAddress:any;
       this.AgeYear = AdmissionPersonl.AgeYear || '';
       this.AreaId = AdmissionPersonl.AreaId || '';
       this.CityName = AdmissionPersonl.CityName || '';
-      this.CityId = AdmissionPersonl.CityId || '';
+      this.CityId = AdmissionPersonl.CityId || 0;
       this.CountryId = AdmissionPersonl.CountryId || '';
       this.DateofBirth = AdmissionPersonl.DateOfBirth || this.currentDate;
       this.Expr1 = AdmissionPersonl.Expr1 || '';
@@ -3235,21 +3238,21 @@ RelativeAddress:any;
       this.TalukaName = AdmissionPersonl.TalukaName || '';
       this.VillageId = AdmissionPersonl.VillageId || '';
       this.VillageName = AdmissionPersonl.VillageName || '';
-      this.AdmittedDoctor1ID = AdmissionPersonl.AdmittedDoctor1ID || '';
-      this.AdmittedDoctor2ID = AdmissionPersonl.AdmittedDoctor2ID || '';
-      this.RelationshipId = AdmissionPersonl.RelationshipId || '';
-      this.AdmissionID = AdmissionPersonl.AdmissionID || '';
+      this.AdmittedDoctor1ID = AdmissionPersonl.AdmittedDoctor1ID || 0;
+      this.AdmittedDoctor2ID = AdmissionPersonl.AdmittedDoctor2ID || 0;
+      this.RelationshipId = AdmissionPersonl.RelationshipId || 0;
+      this.AdmissionID = AdmissionPersonl.AdmissionID || 0;
       this.AdmissionDate = AdmissionPersonl.AdmissionDate || '';
       this.AdmissionTime = AdmissionPersonl.AdmissionTime || '';
-      this.DoctorId = AdmissionPersonl.DoctorId || '';
+      this.DoctorId = AdmissionPersonl.DoctorId || 0;
       this.RelatvieMobileNo = AdmissionPersonl.RelatvieMobileNo || '';
       this.MaritalStatusName = AdmissionPersonl.MaritalStatusName || '';
-      this.IsMLC = AdmissionPersonl.IsMLC || '';
+      this.IsMLC = AdmissionPersonl.IsMLC || 0;
       this.CompanyName = AdmissionPersonl.CompanyName || '';
       this.RelationshipName = AdmissionPersonl.RelationshipName || '';
       this.RefDoctorName = AdmissionPersonl.RefDoctorName || '';
-      this.AdmittedDoctor2 = AdmissionPersonl.AdmittedDoctor2 || '';
-      this.AdmittedDoctor1 = AdmissionPersonl.AdmittedDoctor1 || '';
+      this.AdmittedDoctor2 = AdmissionPersonl.AdmittedDoctor2 || 0;
+      this.AdmittedDoctor1 = AdmissionPersonl.AdmittedDoctor1 || 0;
       this.BedName = AdmissionPersonl.BedName || '';
       this.IPDNo = AdmissionPersonl.IPDNo || '';
       this.TariffName = AdmissionPersonl.TariffName || '';
@@ -3266,7 +3269,7 @@ RelativeAddress:any;
       this.RefDocName = AdmissionPersonl.RefDocName || '';
       this.RelativePhoneNo = AdmissionPersonl.RelativePhoneNo || '';
       this.DepartmentId=AdmissionPersonl.DepartmentId || 0;
-      this.IsOpToIPconv=AdmissionPersonl.IsOpToIPconv || ''
+      this.IsOpToIPconv=AdmissionPersonl.IsOpToIPconv || 0
       this.RelativeName=AdmissionPersonl.RelativeName || ''
       this.RelativeAddress=AdmissionPersonl.RelativeAddress || ''
       this.ClassName=AdmissionPersonl.ClassName || ''
@@ -3274,7 +3277,11 @@ RelativeAddress:any;
       this.RoomName=AdmissionPersonl.RoomName || ''
       this.Doctorname=AdmissionPersonl.Doctorname || ''
       this.AdmDateTime=AdmissionPersonl.AdmDateTime || ''
-
+      this.TariffId=AdmissionPersonl.TariffId || 0;
+      this.RefDocNameId=AdmissionPersonl.RefDocNameId || 0
+      this.RefDocNameID=AdmissionPersonl.RefDocNameID || 0
+      this.DocNameID=AdmissionPersonl.DocNameID || 0
+      this.IsSeniorCitizen=AdmissionPersonl.IsSeniorCitizen || 0
     }
   }
 }
