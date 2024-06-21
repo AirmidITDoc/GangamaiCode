@@ -37,6 +37,7 @@ export class DischargeSummaryComponent implements OnInit {
   Doctor2List: any = [];
   DischargeSList = new DischargeSummary({});
   screenFromString = 'discharge-summary';
+  dateTimeObj: any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -82,26 +83,26 @@ export class DischargeSummaryComponent implements OnInit {
 
 
     let AdmissionId = this.DischargesumForm.get("AdmissionId").value
-
     this.getAdmissionInfo();
     this.getDischargeSummaryData();
-
     this.getDoctorList1();
     this.getDoctorList2();
     this.getDoctorList3();
     this.getdischargeIdbyadmission();
     
   }
+
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
   getdischargeIdbyadmission(){
     let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
+    console.log(Query)
     this._IpSearchListService.getDischargeId(Query).subscribe(data => {
       this.registerObj = data[0];
       console.log(this.registerObj);
       this.vDischargeId=this.registerObj.DischargeId
-
-
     });
-
   }
 
   // showDischargeSummaryForm(): FormGroup {
@@ -257,24 +258,18 @@ export class DischargeSummaryComponent implements OnInit {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
       return this.optionsDoc1.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
     }
-
   }
-
-
   private _filterdoc2(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
       return this.optionsDoc2.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
     }
-
   }
-
   private _filterdoc3(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
       return this.optionsDoc3.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
     }
-
   }
 
    getOptionTextsDoctor1(option) {
@@ -287,13 +282,17 @@ export class DischargeSummaryComponent implements OnInit {
     return option && option.DoctorName ? option.DoctorName : '';
   }
 
+
+  
   lngAdmId: any = [];
   // ============================================================================
   getAdmissionInfo() {
-    let Query = "select Isnull(AdmissionId,0) as AdmId from T_DischargeSummary where AdmissionId=" + this.DischargesumForm.get("AdmissionId").value + ""
+    let Query = "select Isnull(AdmissionId,0) as AdmId from T_DischargeSummary where AdmissionId=" + this.vAdmissionId + ""
+    console.log(Query)
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
      
       this.lngAdmId = data;
+      console.log(this.lngAdmId)
       if (this.lngAdmId.length > 0) {
         this.getDischargeSummaryData();
       }
@@ -308,8 +307,9 @@ export class DischargeSummaryComponent implements OnInit {
 
   getDischargeSummaryData() {
     var m_data2 = {
-      "AdmissionId": this.DischargesumForm.get("AdmissionId").value || "0"
+      "AdmissionId": this.vAdmissionId || 0
     }
+    console.log(m_data2)
     this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data: any) => {
       if (data && data.length > 0) {
         this.DischargeSList = data[0] as DischargeSummary;
@@ -442,13 +442,6 @@ viewgetDischargesummaryPdf(AdmId) {
       });
   });
 }
- 
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-
 }
 
 
