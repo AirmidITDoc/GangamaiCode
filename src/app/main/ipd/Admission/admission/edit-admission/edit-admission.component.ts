@@ -191,6 +191,8 @@ export class EditAdmissionComponent implements OnInit {
       this.registerObj1 =  this.advanceDataStored.storage;
       this.IsMLC=this.registerObj1.IsMLC
       console.log(this.registerObj1);
+      if(this.registerObj1.CompanyId > 0)
+        this.isCompanySelected=true
        }
 
   }
@@ -378,7 +380,12 @@ export class EditAdmissionComponent implements OnInit {
   getCompanyList() {
     this._AdmissionService.getCompanyCombo().subscribe(data => {
       this.CompanyList = data;
-     
+      if (this.registerObj1) {
+        const ddValue = this.CompanyList.filter(c => c.CompanyId == this.registerObj1.CompanyId);
+        this.hospitalFormGroup.get('CompanyId').setValue(ddValue[0]);
+        this.hospitalFormGroup.updateValueAndValidity();
+        return;
+      }
 
     });
   }
@@ -388,7 +395,12 @@ export class EditAdmissionComponent implements OnInit {
   getSubTPACompList() {
     this._AdmissionService.getSubTPACompCombo().subscribe(data => {
       this.SubTPACompList = data;
-      
+      if (this.registerObj1) {
+        const ddValue = this.SubTPACompList.filter(c => c.CompanyId == this.registerObj1.SubCompanyId);
+        this.hospitalFormGroup.get('SubCompanyId').setValue(ddValue[0]);
+        this.hospitalFormGroup.updateValueAndValidity();
+        return;
+      }
 
     });
   }
@@ -520,6 +532,8 @@ debugger
         return;
       }
       });
+
+      
   }
 
   private _filterdept(value: any): string[] {
@@ -642,7 +656,7 @@ getTariffCombo(){
     this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
         this.DoctorList = data;
-               
+        this.hospitalFormGroup.get('DoctorId').setValue(this.DoctorList[0]);       
       })
   }
 

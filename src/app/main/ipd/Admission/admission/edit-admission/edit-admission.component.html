@@ -251,14 +251,14 @@
                             <mat-label>Ref Doctor Name</mat-label>
                             <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor " matInput
                                 #refdoc (keydown)="onEnterrefdoc($event)" formControlName="refDoctorId"
-                                [matAutocomplete]="autodoc2">
+                                [matAutocomplete]="autorefdoc">
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
                                     (click)="hospitalFormGroup.get('refDoctorId').setValue(''); isRefDoctorSelected = false;">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
                                     (click)="hospitalFormGroup.get('refDoctorId').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
                             </span>
-                            <mat-autocomplete #autodoc2="matAutocomplete" [displayWith]="getOptionTextRefDoc">
+                            <mat-autocomplete #autorefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
                                 <mat-option *ngFor="let option of filteredOptionsRefrenceDoc | async" [value]="option">
                                     {{option.DoctorName}}
                                 </mat-option>
