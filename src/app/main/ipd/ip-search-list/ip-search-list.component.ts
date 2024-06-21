@@ -167,7 +167,7 @@ export class IPSearchListComponent implements OnInit {
 
   resultsLength = 0;
   getAdmittedPatientList() {
-    debugger
+    
     if (this._IpSearchListService.myFilterform.get("IsDischarge").value == "0" || this._IpSearchListService.myFilterform.get("IsDischarge").value == false) {
       this.isLoadingStr = 'loading';
       var D_data = {
@@ -263,7 +263,7 @@ export class IPSearchListComponent implements OnInit {
      
       this.advanceDataStored.storage = new AdvanceDetailObj(contact);
       this._IpSearchListService.populateForm(contact);
-      debugger
+      //debugger
       let Advflag:boolean=false;
       if (contact.IsBillGenerated) {
         Advflag=true;

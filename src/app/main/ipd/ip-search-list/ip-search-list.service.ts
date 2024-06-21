@@ -288,8 +288,8 @@ constructor(public _httpClient:HttpClient,
      DischargeDate:[''],
      DischargeTime:'',
      Modeofdischarge:'',
-     DOT: ''  
-     
+     DOT: '' ,
+     ModeId:''
     });
   }
   refundAdvanceForm(): FormGroup {
@@ -1003,7 +1003,9 @@ getIpDischargeReceipt(AdmId){
   // return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
   return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
 }
-
+public getModenameListCombo(){
+  return this._httpClient.post("Generic/GetByProc?procName=Rtrvm_modeOfDischarge",{});
+}
 
 
 }
