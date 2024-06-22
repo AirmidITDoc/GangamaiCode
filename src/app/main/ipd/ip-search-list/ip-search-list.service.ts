@@ -525,21 +525,21 @@ public getPaymentPrint (paymentid){
 
   //Doctor 1 Combobox List
 public getDischaregDoctor1Combo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
 }
 //Doctor 1 Combobox List
 public getDischaregDoctor2Combo() {
-  return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
 }
 //Doctor 1 Combobox List
 public getDischaregDoctor3Combo() {
-  return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
 }
 
   
   //Dischargedoctor Master Combobox List
    public getDischargedoctorNameCombo() {
-     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
    }
 
   public getPatientTypeCombo() {
@@ -600,7 +600,7 @@ public updateIPDDischargSummary(employee)
 
  // Admitted Doctor Master Combobox List
   public getAdmittedDoctorCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
   }
 
   //Ward Master Combobox List
@@ -806,11 +806,11 @@ public updateIPDDischargSummary(employee)
   }
   //Doctor 1 Combobox List
   public getDoctorMaster1Combo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
   }
   //Doctor 2 Combobox List
   public getDoctorMaster2Combo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmittedDoctorForCombo", {})
   }
   public getserviceCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ServiceMasterForCombo", {})
@@ -1006,8 +1006,12 @@ getIpDischargeReceipt(AdmId){
 public getModenameListCombo(){
   return this._httpClient.post("Generic/GetByProc?procName=Rtrvm_modeOfDischarge",{});
 }
-
-
+public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
+  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
+}
+public getDoseList() {
+  return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
+}
 }
 
 // ultra viewer id 67229924 Password :- Airmid@123

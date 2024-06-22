@@ -345,7 +345,7 @@
                                 <mat-label>Trans ID</mat-label>
                                 <input name="paytmTransNo" formControlName="paytmMobileNoController"
                                     placeholder="paytmTrans Number" matInput required [(ngModel)]="paytmTransNo"
-                                    max="999999999999" min="100000000000" autocomplete="off" maxlength="12"
+                                    max="999999999999" min="100000000000" autocomplete="off" maxlength="12" minlength="4"
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
                                     required="required" value="987665868822">
                                 <mat-error class="error"

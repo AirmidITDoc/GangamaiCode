@@ -79,13 +79,13 @@
                                             {{option.ServiceName}} | {{option.Price}} | 
                                             <span  fxLayoutGap="4px">
                                                 <mat-icon *ngIf="option.IsDocEditable == true" matTooltip="IsDoctor">
-                                                    <img width="15px" height="6px" src="assets/images/logos/doctor.png"> 
+                                                    <img width="10px" height="6px" src="assets/images/logos/doctor.png"> 
                                                 </mat-icon> |
                                                 <mat-icon *ngIf="option.IsRadiology == true" matTooltip="IsRadiology">
-                                                    <img width="15px" height="6px" src="assets/images/logos/radiology.png">
+                                                    <img width="10px" height="6px" src="assets/images/logos/radiology.png">
                                                 </mat-icon>
                                                 <mat-icon *ngIf="option.IsPathology == true" matTooltip="IsPatholgy">
-                                                    <img width="15px" height="6px" src="assets/images/logos/pathology.png">  
+                                                    <img width="10px" height="6px" src="assets/images/logos/pathology.png">  
                                                 </mat-icon>
                                             </span>
                                         </mat-option>
@@ -633,10 +633,10 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">Status</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" class="w-50">
                                     <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
-                                        <img width="20px" height="8px" src="assets/images/logos/radiology.png">
+                                        <img width="15px" height="8px" src="assets/images/logos/radiology.png">
                                     </mat-icon>
                                     <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
-                                        <img width="22px" height="9px" src="assets/images/logos/pathology.png">  
+                                        <img width="15px" height="9px" src="assets/images/logos/pathology.png">  
                                     </mat-icon>
                                 </mat-cell>
                             </ng-container>

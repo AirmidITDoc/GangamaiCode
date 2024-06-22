@@ -495,6 +495,9 @@ export class IPSearchListComponent implements OnInit {
             maxWidth: "85vw",
             height: '400px',
             width: '100%',
+            data: {
+              Obj: contact
+            }
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { AdvanceDetailObj, Discharge, IPSearchListComponent } from '../ip-search-list.component';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,7 +8,7 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IPSearchListService } from '../ip-search-list.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from '../../advance';
 import { DatePipe } from '@angular/common';
 import { map, startWith, takeUntil } from 'rxjs/operators';
@@ -32,55 +32,65 @@ export class DischargeComponent implements OnInit {
   selectedAdvanceObj: AdvanceDetailObj;
   DischargeId: any;
   Today: Date = new Date();
-  PatientHeaderObj: any;
+  registerObj: any;
   isDoctorSelected: boolean = false;
   isDistypeSelected: boolean = false;
   isModeSelected: boolean = false;
-  filteredOptionsDoctorname: Observable<string[]>;
+  // filteredOptionsDoctorname: Observable<string[]>;
+  filteredOptionsDoctorname:any;
   filteredOptionsModename: Observable<string[]>;
   filteredOptionsDisctype: Observable<string[]>;
   DoctorNameList: any = [];
   ModeNameList: any = [];
-  dateTimeObj: any;
-  DoctorNameset:any;
+  dateTimeObj: any; 
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(public _IpSearchListService: IPSearchListService,
+  constructor(
+    public _IpSearchListService: IPSearchListService,
     private accountService: AuthenticationService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
-    public dialogRef: MatDialogRef<IPSearchListComponent>,
+    public dialogRef: MatDialogRef<DischargeComponent>,
     public toastr: ToastrService,
-  ) { }
-
-  ngOnInit(): void {
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.PatientHeaderObj = this.advanceDataStored.storage;
-      this.DoctorNameset = this.selectedAdvanceObj.Doctorname;
-     
-      console.log(this.selectedAdvanceObj);
-      this.setdropdownvalue();
-    }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) { 
     this.getDoctorNameList();
     this.getDischargetypeCombo();
     this.getModeNameList();
+
+    if (this.advanceDataStored.storage) {
+      debugger
+       this.selectedAdvanceObj = this.advanceDataStored.storage;
+       this.registerObj =  this.advanceDataStored.storage;
+       console.log(this.registerObj);
+ 
+        }
+  }
+
+  ngOnInit(): void {
+    if (this.advanceDataStored.storage) { 
+      this.setdropdownvalue();
+    }
 
     this.filteredOptionsDisctype = this._IpSearchListService.mySaveForm.get('DischargeTypeId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterDischargeType(value)),
     );
+    
     this.filteredOptionsDoctorname = this._IpSearchListService.mySaveForm.get('DoctorID').valueChanges.pipe(
       startWith(''),
       map(value => this._filterDoctorname(value)),
     );
-    // this.filteredOptionsModename = this._IpSearchListService.mySaveForm.get('ModeId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterModeName(value)),
-    // );
+
+
+
+    this.filteredOptionsModename = this._IpSearchListService.mySaveForm.get('ModeId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterModeName(value)),
+    );
   }
 
 
@@ -89,32 +99,25 @@ export class DischargeComponent implements OnInit {
   }
 
   setdropdownvalue(){
-    if (this.selectedAdvanceObj.AdmissionID != 0) {
-      const ddValue= this.DoctorNameList.some(item => item.DoctorName ==  this.DoctorNameset);
-      console.log(ddValue)
-      //this._IpSearchListService.mySaveForm.get('DoctorID').setValue(ddValue[0]);
-    }
+    // debugger
+    // const toSelect = this.DoctorNameList.find(c => c.DoctorId == this.registerObj.DocNameID);
+    // this._IpSearchListService.mySaveForm.get('DoctorID').setValue(toSelect);
   }
   getDoctorNameList() {
+    debugger
     this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
       this.DoctorNameList = data;
       console.log(this.DoctorNameList)
-    
-      // if (this.selectedAdvanceObj.AdmissionID != 0) {
-      //   const ddValue = this.DoctorNameList.filter(c => c.DoctorId == this.selectedAdvanceObj.DoctorId);
-      //   console.log(ddValue)
-      //   this._IpSearchListService.mySaveForm.get('DoctorID').setValue(ddValue[0]);
-      //   this._IpSearchListService.mySaveForm.updateValueAndValidity();
-      //   return;
-      // }
+      
+      if (this.registerObj) {
+        const ddValue= this.DoctorNameList.filter(item => item.DoctorId ==  this.registerObj.DocNameID);
+        console.log(ddValue)
+        this._IpSearchListService.mySaveForm.get('DoctorID').setValue(ddValue[0]);
+        this._IpSearchListService.mySaveForm.updateValueAndValidity();
+      }
     });
-    debugger
-    if (this.selectedAdvanceObj.AdmissionID != 0) {
-      const ddValue= this.DoctorNameList.find(item => item.DoctorName ==  this.DoctorNameset);
-      console.log(ddValue)
-      //this._IpSearchListService.mySaveForm.get('DoctorID').setValue(ddValue[0]);
-    }
   }
+
   private _filterDoctorname(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
@@ -125,7 +128,7 @@ export class DischargeComponent implements OnInit {
   getModeNameList() {
     this._IpSearchListService.getModenameListCombo().subscribe(data => {
       this.ModeNameList = data;
-      console.log(this.ModeNameList)
+      //console.log(this.ModeNameList)
     });
   }
   private _filterModeName(value: any): string[] {
