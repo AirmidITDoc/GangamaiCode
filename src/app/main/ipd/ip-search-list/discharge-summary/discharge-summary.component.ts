@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,6 +14,8 @@ import { AdvanceDetailObj } from '../ip-search-list.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ToastrService } from 'ngx-toastr';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -23,8 +25,16 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations
 })
 export class DischargeSummaryComponent implements OnInit {
+  displayedColumns: string[] = [
+    'ItemName',
+    'DoseName',
+    'Day',
+    'Remark',
+    'Action'
+  ]
 
   DischargesumForm:FormGroup;
+  MedicineItemForm:FormGroup;
   submitted = false;
   msg: any;
   Id: any;
@@ -46,9 +56,10 @@ export class DischargeSummaryComponent implements OnInit {
   registerObj = new DischargeSummary({});
 
  
-  filteredOptionDoctor1: Observable<string[]>;
+  filteredOptionDoctor1: any;
   filteredOptionDoctor2: Observable<string[]>;
   filteredOptionDoctor3: Observable<string[]>;
+  filteredOptionsDosename: Observable<string[]>;
 
   optionsDoc1: any[] = [];
   optionsDoc2: any[] = [];
@@ -62,34 +73,54 @@ export class DischargeSummaryComponent implements OnInit {
   vAdmissionId:any=0;
   vDischargeId:any=0;
 
+  dsItemList = new MatTableDataSource<MedicineItemList>();
+
   constructor(public _IpSearchListService: IPSearchListService,
     public _matDialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _ActRoute: Router,
+    public toastr: ToastrService,
     private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<DischargeSummaryComponent>,
     private advanceDataStored: AdvanceDataStored,
-    public datePipe: DatePipe) {
-      dialogRef.disableClose = true;
-     }
-
-  ngOnInit(): void {
-    this.DischargesumForm=this.showDischargeSummaryForm();
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      // this.PatientHeaderObj = this.advanceDataStored.storage;
-      this.vAdmissionId=this.selectedAdvanceObj.AdmissionID;
-    }
-
-
-    let AdmissionId = this.DischargesumForm.get("AdmissionId").value
-    this.getAdmissionInfo();
-    this.getDischargeSummaryData();
+    public datePipe: DatePipe) 
+    
+  {
     this.getDoctorList1();
     this.getDoctorList2();
     this.getDoctorList3();
+    if (this.advanceDataStored.storage) {
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.registerObj = this.advanceDataStored.storage;
+      this.vAdmissionId = this.selectedAdvanceObj.AdmissionID;
+      console.log(this.registerObj);
+    }
+  }
+
+  ngOnInit(): void {
+    this.DischargesumForm=this.showDischargeSummaryForm();
+    this.MedicineItemForm = this.MedicineItemform();
+    this.getAdmissionInfo();
+    this.getDischargeSummaryData();
     this.getdischargeIdbyadmission();
-    
+    this.getDoseList();
+
+      this.filteredOptionsDosename = this.MedicineItemForm.get('DoseId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterDosename(value)),
+    );
+    this.filteredOptionDoctor1 = this.DischargesumForm.get('DischargeDoctor1').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
+    );
+    this.filteredOptionDoctor2 = this.DischargesumForm.get('DischargeDoctor2').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterdoc2(value) : this.Doctor2List.slice()),
+    );
+    this.filteredOptionDoctor3 = this.DischargesumForm.get('DischargeDoctor3').valueChanges.pipe(
+      startWith(''),
+      map(value => value ? this._filterdoc3(value) : this.Doctor3List.slice()),
+    );
   }
 
   getDateTime(dateTimeObj) {
@@ -161,7 +192,15 @@ export class DischargeSummaryComponent implements OnInit {
   //     DoctorIdTwo: ''
   //   });
   // }
-
+  isItemIdSelected:boolean=false;
+  MedicineItemform(): FormGroup {
+    return this._formBuilder.group({
+      ItemId:'',             
+      DoseId:'',
+      Day:'',            
+      Instruction:'',
+    });
+  }
   showDischargeSummaryForm(): FormGroup {
     return this._formBuilder.group({
     
@@ -204,55 +243,40 @@ export class DischargeSummaryComponent implements OnInit {
  DischargesummaryId:'',  
     });
   }
-
-
-  // getDoctorList() {
-  //   this._IpSearchListService.getDischaregDoctor1Combo().subscribe(data => {
-  //     this.Doctor1List = data;
-  //      this.optionsDoc1 = this.Doctor1List.slice();
-  //     this.filteredOptionDoctor1 = this.DischargesumForm.get('DischargeDoctor1').valueChanges.pipe(
-  //       startWith(''),
-  //       map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
-  //     );
-  //   });
-  // }
-
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  } 
 
   getDoctorList1() {
     this._IpSearchListService.getDischaregDoctor1Combo().subscribe(data => {
-      this.Doctor1List = data;
-       this.optionsDoc1 = this.Doctor1List.slice();
-      this.filteredOptionDoctor1 = this.DischargesumForm.get('DischargeDoctor2').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterdoc1(value) : this.Doctor1List.slice()),
-      );
+      this.Doctor1List = data; 
+      if (this.registerObj) {
+        const ddValue= this.Doctor1List.filter(item => item.DoctorId ==  this.registerObj.DocNameID);
+        console.log(ddValue)
+        this.DischargesumForm.get('DischargeDoctor1').setValue(ddValue[0]);
+        this.DischargesumForm.updateValueAndValidity();
+      }
     });
   }
-
   getDoctorList2() {
     this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor2List = data;
-       this.optionsDoc2 = this.Doctor2List.slice();
-      this.filteredOptionDoctor2 = this.DischargesumForm.get('DischargeDoctor2').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterdoc2(value) : this.Doctor2List.slice()),
-      );
+       this.optionsDoc2 = this.Doctor2List.slice(); 
     });
   }
-
   getDoctorList3() {
     this._IpSearchListService.getDoctorMaster2Combo().subscribe(data => {
       this.Doctor3List = data;
       console.log( this.Doctor3List )
-       this.optionsDoc3 = this.Doctor3List.slice();
-      this.filteredOptionDoctor3 = this.DischargesumForm.get('DischargeDoctor3').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterdoc3(value) : this.Doctor3List.slice()),
-      );
+       this.optionsDoc3 = this.Doctor3List.slice(); 
     });
   }
-
-  
   private _filterdoc1(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
@@ -281,9 +305,150 @@ export class DischargeSummaryComponent implements OnInit {
   getOptionTextsDoctor3(option) {
     return option && option.DoctorName ? option.DoctorName : '';
   }
-
-
+  getOptionTextDose(option) {
+    return option && option.DoseName ? option.DoseName : '';
+  }
+  filteredOptionsItem:any;
+  noOptionFound:any;
+  getSearchItemList() {   
+      var m_data = {
+        "ItemName": `${this.MedicineItemForm.get('ItemId').value}%`,
+        "StoreId": this.accountService.currentUserValue.user.storeId
+      }
+      console.log(m_data); 
+      this._IpSearchListService.getItemlist(m_data).subscribe(data => {
+        this.filteredOptionsItem = data;
+        // console.log(this.data);
+        this.filteredOptionsItem = data;
+        if (this.filteredOptionsItem.length == 0) {
+          this.noOptionFound = true;
+        } else {
+          this.noOptionFound = false;
+        }
+      });
+    }
+    ItemId:any;
+    isDoseSelected:boolean=false;
+    getOptionItemText(option) {
+      this.ItemId = option.ItemID;
+      if (!option) return '';
+      return option.ItemName;
+    } 
+    getSelectedObjItem(obj) {
+     // console.log(obj)
+     this.ItemId = obj.ItemId;
+    }
+    doseList:any=[];
+    getDoseList() {
+      this._IpSearchListService.getDoseList().subscribe((data) => {
+        this.doseList = data; 
+      });
+    }
+    private _filterDosename(value: any): string[] {
+      if (value) {
+        const filterValue = value && value.DoseName ? value.DoseName.toLowerCase() : value.toLowerCase();
+        return this.doseList.filter(option => option.DoseName.toLowerCase().includes(filterValue));
+      }
+    }
+    vDay:any;
+    vInstruction:any;
+    Chargelist:any=[];
+    onAdd() {
+      if ((this.MedicineItemForm.get('ItemId').value == '' || this.MedicineItemForm.get('ItemId').value == null || this.MedicineItemForm.get('ItemId').value == undefined)) {
+        this.toastr.warning('Please select Item', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if(!this.filteredOptionsItem.find(item => item.ItemName ==  this.MedicineItemForm.get('ItemId').value.ItemName)){
+        this.toastr.warning('Please select valid Item Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if ((this.MedicineItemForm.get('DoseId').value == '' || this.MedicineItemForm.get('DoseId').value == null || this.MedicineItemForm.get('DoseId').value == undefined)) {
+        this.toastr.warning('Please select Dose', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if(!this.doseList.find(item => item.DoseName ==  this.MedicineItemForm.get('DoseId').value.DoseName)){
+        this.toastr.warning('Please select valid Dose Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
+        this.toastr.warning('Please enter a Day', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
+      if(!iscekDuplicate){
+      this.dsItemList.data = [];
+      this.Chargelist.push(
+        {
+          ItemID:  this.MedicineItemForm.get('ItemId').value.ItemId || 0,
+          ItemName: this.MedicineItemForm.get('ItemId').value.ItemName || '',
+          DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
+          Day: this.vDay,
+          Instruction: this.vInstruction || '' 
+        });
+      this.dsItemList.data = this.Chargelist
+      console.log(this.dsItemList.data); 
+      }else{
+        this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      this.MedicineItemForm.get('ItemId').reset('');
+      this.MedicineItemForm.get('DoseId').reset('');
+      this.MedicineItemForm.get('Day').reset('');
+      this.MedicineItemForm.get('Instruction').reset('');
+      this.itemid.nativeElement.focus(); 
+    }
   
+    deleteTableRow(event, element) { 
+      let index = this.Chargelist.indexOf(element);
+      if (index >= 0) {
+        this.Chargelist.splice(index, 1);
+        this.dsItemList.data = [];
+        this.dsItemList.data = this.Chargelist;
+      }
+      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      }); 
+    }
+    @ViewChild('itemid') itemid: ElementRef;
+    @ViewChild('dosename') dosename: ElementRef;
+    @ViewChild('Day') Day: ElementRef;
+    @ViewChild('Instruction') Instruction: ElementRef; 
+    @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement; 
+    add: boolean = false;
+    onEnterItem(event): void {
+      if (event.which === 13) {
+        this.dosename.nativeElement.focus(); 
+      }
+    }
+    public onEnterDose(event): void { 
+      if (event.which === 13) {
+        this.Day.nativeElement.focus(); 
+      }
+    }
+    public onEnterqty(event): void { 
+      if (event.which === 13) {
+        this.Instruction.nativeElement.focus(); 
+      }
+    }
+    public onEnterremark(event): void { 
+      if (event.which === 13) {
+        this.addbutton.focus;
+        this.add = true; 
+      } 
+    }
+
   lngAdmId: any = [];
   // ============================================================================
   getAdmissionInfo() {
@@ -326,7 +491,32 @@ export class DischargeSummaryComponent implements OnInit {
   }
 
   onSubmit() {
-   debugger;
+   debugger
+  //  if(this.DischargesumForm.get('DischargeDoctor1').value){
+  //   if(!this.Doctor1List.find(item => item.DoctorName ==  this.DischargesumForm.get('DischargeDoctor1').value.DoctorName)){
+  //     this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+  //  }
+   
+  //  if(this.DischargesumForm.get('DischargeDoctor2').value){
+  //   if(!this.Doctor2List.find(item => item.DoctorName ==  this.DischargesumForm.get('DischargeDoctor2').value.DoctorName)){
+  //     this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+  //  }
+  //  if(this.DischargesumForm.get('DischargeDoctor3').value){
+  //   if(!this.Doctor3List.find(item => item.DoctorName ==  this.DischargesumForm.get('DischargeDoctor3').value.DoctorName)){
+  //     this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+  //  }
     this.submitted = true;
     this.isLoading = 'submit';
     // console.log(this.DischargeSList.DischargeSummaryId);
@@ -484,6 +674,7 @@ export class DischargeSummary{
   IsNormalOrDeath:any;  
   DischargesummaryId:any;  
   Pathology:any;
+  DocNameID:any;
   
   
   constructor(DischargeSummary){
@@ -508,5 +699,28 @@ export class DischargeSummary{
     this.DischargeSummaryTime=DischargeSummary.DischargeSummaryTime || 0,
     this.DoctorAssistantName=DischargeSummary.DoctorAssistantName || 0
     this.Pathology=DischargeSummary.Pathology || '';
+  }
+}
+export class MedicineItemList {
+  ItemID: any;
+  ItemId: any;
+  ItemName: string;
+  DoseName:any;
+  Day: number;
+  Instruction: any;
+  /**
+  * Constructor
+  *
+  * @param MedicineItemList
+  */
+  constructor(MedicineItemList) {
+    {
+      this.ItemId = MedicineItemList.ItemId || 0;
+      this.ItemID = MedicineItemList.ItemID || 0;
+      this.ItemName = MedicineItemList.ItemName || "";
+      this.Day = MedicineItemList.Day || 0;
+      this.Instruction = MedicineItemList.Instruction || '';
+      this.DoseName = MedicineItemList.DoseName || '';
+    }
   }
 }
