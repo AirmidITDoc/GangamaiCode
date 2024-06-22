@@ -1556,9 +1556,9 @@ export class AppointmentComponent implements OnInit {
 
   getPhoneAppointmentList() {
     var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}`
+      "Keyword": `${this.searchFormGroup.get('PhoneRegId').value}`
     }
-    if (this.searchFormGroup.get('RegId').value.length >= 1) {
+    if (this.searchFormGroup.get('PhoneRegId').value.length >= 1) {
       this._opappointmentService.getPhoneAppointmentList1(m_data).subscribe(resData => {
         this.filteredOptions = resData;
         this.PatientListfilteredOptions = resData;

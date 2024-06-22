@@ -576,12 +576,12 @@ onSave() {
       if (this.TotalRefundAmount <= this.RefundBalAmount) {
         let InsertRefundObj = {};
 
-        InsertRefundObj['refundNo'] = 's2';
+        InsertRefundObj['refundNo'] = '';
         InsertRefundObj['RefundDate'] = this.dateTimeObj.date;
-        InsertRefundObj['RefundTime'] = this.dateTimeObj.date;
+        InsertRefundObj['RefundTime'] = this.dateTimeObj.time;
         InsertRefundObj['BillId'] = this.BillNo,//parseInt(this.RefundOfBillFormGroup.get('BillNo').value);
           InsertRefundObj['AdvanceId'] = 0;
-        InsertRefundObj['OPD_IPD_Type'] = 0;
+        InsertRefundObj['OPD_IPD_Type'] = 0; 
         InsertRefundObj['OPD_IPD_ID'] = this.vOPIPId,
           InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
         InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;

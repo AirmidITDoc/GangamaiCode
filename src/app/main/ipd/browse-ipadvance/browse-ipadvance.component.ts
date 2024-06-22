@@ -13,6 +13,7 @@ import { AdvanceDataStored } from '../advance';
 import * as converter from 'number-to-words';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { BrowseIpdreturnadvanceReceipt } from '../ip-search-list/ip-refundof-advance/ip-refundof-advance.component';
 @Component({
   selector: 'app-browse-ipadvance',
   templateUrl: './browse-ipadvance.component.html',
@@ -59,10 +60,34 @@ export class BrowseIPAdvanceComponent implements OnInit {
   dataSource = new MatTableDataSource<IpdAdvanceBrowseModel>();
   dataArray = new MatTableDataSource<IpdAdvanceBrowseModel>();
 
+
+  
+  displayedColumns1 = [
+    // 'checkbox',
+    'RegNo',
+    'RefundDate',
+    'PatientName',
+    'AdvanceAmount',
+    'AdvanceUsedAmount',
+    'BalanceAmount',
+    // 'RefundNo',
+    'RefundAmount',
+    'PaymentDate',
+    //  'GenderName',
+    'CashPayAmount',
+    'ChequePayAmount',
+    'CardPayAmount',
+    'Remark',
+    'UserName',
+  
+   
+     'buttons'
+  ];
+  dataSource1 = new MatTableDataSource<BrowseIpdreturnadvanceReceipt>();
   reportPrintObj: IpdAdvanceBrowseModel;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
- 
+  resultsLength = 0;
   constructor(public _advanceService:BrowseIPAdvanceService,
     private _fuseSidebarService: FuseSidebarService,
     private reportDownloadService: ExcelDownloadService,
@@ -71,6 +96,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
   ngOnInit(): void {
    this.onShow_IpdAdvance();
+   this.GetIpdreturnAdvancepaymentreceipt(); 
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -220,6 +246,66 @@ viewgetIPAdvanceReportPdf(contact) {
   }
 
   onClear(){}
+
+  //refund
+  GetIpdreturnAdvancepaymentreceipt() {
+    this.sIsLoading = 'loading-data';
+    var D_data = {
+      "F_Name": this._advanceService.myFilterform.get("FirstName").value + '%' || "%",
+      "L_Name": this._advanceService.myFilterform.get("LastName").value + '%' || "%",
+      "From_Dt": this.datePipe.transform(this._advanceService.myFilterform.get("start").value, "MM-dd-yyyy"), //"01/01/2018",
+      "To_Dt": this.datePipe.transform(this._advanceService.myFilterform.get("end").value, "MM-dd-yyyy"), //"01/01/2020",
+      "Reg_No": this._advanceService.myFilterform.get("RegNo").value || 0
+    }
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      console.log(D_data);
+      this._advanceService.getIpdreturnAdvancepaymentreceipt(D_data).subscribe(Visit => {
+        this.dataSource1.data = Visit as BrowseIpdreturnadvanceReceipt[];
+        // console.log(this.dataSource.data)
+        this.dataSource1.sort = this.sort;
+        this.dataSource1.paginator = this.paginator;
+        this.sIsLoading = ' ';
+        // this.click = false;
+
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }, 50);
+
+  }
+
+  
+viewgetRefundofadvanceReportPdf(row) {
+  setTimeout(() => {
+    this.SpinLoading =true;
+  //  this.AdList=true;
+  this._advanceService.getRefundofAdvanceview(
+    row.RefundId
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Refund Of Advance  Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+  });
+ 
+  },100);
+}
 
 }
 

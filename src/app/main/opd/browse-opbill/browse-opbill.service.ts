@@ -14,6 +14,7 @@ export class BrowseOPBillService {
     private _formBuilder: FormBuilder
   ) { 
     this.myFilterform=this.filterForm();
+    
   }
 
   filterForm(): FormGroup {
@@ -29,8 +30,11 @@ export class BrowseOPBillService {
       end: [(new Date()).toISOString()],
       PBillNo: '', 
       RegNo: '',
+     ReceiptNo: '',
     });
   }
+
+  
 
   public getBrowseOPDBillsList(param) {
     return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPDBill", param) 
@@ -63,4 +67,17 @@ public getDailycollectionview(FromDate,ToDate,AddedById){
 public getOpPaymentview(PaymentId){
   return this._httpClient.get("OutPatient/view-OP-PaymentReceipt?PaymentId=" + PaymentId);
 }
+public getOpRefundview(RefundId){
+  return this._httpClient.get("OutPatient/view-OPRefundofBill?RefundId="+RefundId);
+}
+
+public getBrowseOpdPaymentReceiptList(employee) {
+  return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPPaymentList", employee)
+}  
+
+public getBrowseOPDReturnReceiptList(employee) {
+      
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowseOPDRefundBillList",employee)
+}
+
 }

@@ -22,6 +22,8 @@ filterForm_IpdBrowse(): FormGroup {
     CompanyId:[''],
     start: [(new Date()).toISOString()],
     end: [(new Date()).toISOString()],
+    ReceiptNo:'',
+   
   });
 }
 
@@ -78,4 +80,17 @@ public getIPBILLBrowsedatewisePrint(BillNo) {
   return this._httpClient.get("InPatient/view-IP-BillWardwiseReceipt?BillNo=" + BillNo)
  }
 
+ public getIpdRefundpaymentreceiptBrowseList(employee) {
+  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPDPaymentReceipt", employee)
+} 
+public getIpPaymentReceiptView(PaymentId){
+  
+  return this._httpClient.get("InPatient/view-IP-SettlementReceipt?PaymentId=" + PaymentId);
+}
+public getIpdRefundBillBrowseList(employee) {
+  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPRefundBillReceipt", employee)
+} 
+public getRefundofbillview(RefundId){
+  return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
+}
 }

@@ -162,6 +162,11 @@ export class NewRegistrationComponent implements OnInit {
         if(this.registerObj.AgeDay)
           this.registerObj.AgeDay=this.registerObj.AgeDay.trim();
 
+        if(this.registerObj.AadharCardNo)
+          this.registerObj.AadharCardNo=this.registerObj.AadharCardNo.trim();
+
+        
+
         this.onChangeCityList(this.registerObj.CityId);
         this.setDropdownObjs();
     
@@ -248,9 +253,9 @@ export class NewRegistrationComponent implements OnInit {
       Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
       AadharCardNo: ['', Validators.compose([Validators.minLength(12),
-      Validators.maxLength(12),
+      Validators.maxLength(12)
       // Validators.required,
-      Validators.pattern("^[0-9]+$"),
+      // Validators.pattern("^[0-9]+$"),
 
       ])],
       PanCardNo: '',

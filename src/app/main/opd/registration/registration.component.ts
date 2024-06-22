@@ -220,6 +220,7 @@ export class RegInsert
     currentDate = new Date();
     AdmissionID:any;
     VisitId:any;
+    
     /**
      * Constructor
      *

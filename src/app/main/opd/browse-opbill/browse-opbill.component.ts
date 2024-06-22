@@ -20,6 +20,8 @@ import { HeaderComponent } from 'app/main/shared/componets/header/header.compone
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { BrowseOpdPaymentReceipt } from '../browse-payment-list/browse-payment-list.component';
+import { RefundMaster } from '../browse-refund-list/browse-refund-list.component';
 
 
 
@@ -91,6 +93,44 @@ export class BrowseOPBillComponent implements OnInit {
     'action'
   ];
 
+//Payment list
+displayedColumns1 = [
+  'PaymentDate',
+  'PBillNo',
+  'ReceiptNo',
+  'RegNo',
+  'PatientName',
+  'TotalAmt',
+  'BalanceAmt',
+  'PaidAmount',
+  'CashPayAmount',
+  'ChequePayAmount',
+  'CardPayAmount',
+  'AdvanceUsedAmount',
+  'NEFTPayAmount',
+  'PayTMAmount',
+  'UserName',
+  'buttons'
+];
+dataSource1 = new MatTableDataSource<BrowseOpdPaymentReceipt>();
+
+
+displayedColumns2 = [
+  'RefundDate',
+  'RefundNo',
+  'RegNo',
+  'PatientName',
+  'MobileNo',
+  'PatientType',
+  'TariffName',
+  'CompanyName',
+  'PaymentDate',
+  'RefundAmount',
+  'TotalAmt',
+  'PBillNo',
+  'buttons'
+];
+dataSource2 = new MatTableDataSource<RefundMaster>();
 
   showSpinner = false;
   tablehide = false;
@@ -114,6 +154,8 @@ export class BrowseOPBillComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBrowseOPDBillsList();
+    this.getBrowseOpdPaymentReceiptList();
+    this.getBrowseOPDReturnList();
     this.onClear();
   }
 
@@ -166,7 +208,7 @@ console.log(contact)
             Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
               if (result.isConfirmed) {
                 
-                this.viewgetOPPayemntPdf(response)
+                this.viewgetOPPayemntPdf(response,true)
                 this._matDialog.closeAll();
                 this.getBrowseOPDBillsList();
               }
@@ -181,36 +223,7 @@ console.log(contact)
 
   }
 
-
-
-
-  viewgetOPPayemntPdf(PaymentId) {
-
-    setTimeout(() => {
-
-      this._BrowseOPDBillsService.getOpPaymentview(
-        PaymentId
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Op Payment Receipt Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.sIsLoading = '';
-        });
-
-      });
-
-    }, 100);
-  }
-
+  
 
   onShow(event: MouseEvent) {
     this.click = !this.click;
@@ -486,6 +499,128 @@ console.log(contact)
     let headers = [['BillDate', 'BillNo', 'RegNo', 'PatientName', 'TotalAmt', 'ConcessionAmt', 'NetPayableAmt', 'PaidAmount','BalanceAmt']];
     this.reportDownloadService.exportPdfDownload(headers, actualData, 'OP Bill');
   }
+
+
+  //payment
+
+  getBrowseOpdPaymentReceiptList() {
+    this.sIsLoading = 'loading-data';
+    var D_data = {
+      "F_Name": this._BrowseOPDBillsService.myFilterform.get("FirstName").value + '%' || "%",
+      "L_Name": this._BrowseOPDBillsService.myFilterform.get("LastName").value + '%' || "%",
+      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0,
+      "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value || 0,
+      "ReceiptNo": this._BrowseOPDBillsService.myFilterform.get("ReceiptNo").value || 0,
+      Start: (this.paginator?.pageIndex ?? 0),
+      Length: (this.paginator?.pageSize ?? 35),
+    }
+
+    this._BrowseOPDBillsService.getBrowseOpdPaymentReceiptList(D_data).subscribe(Visit => {
+      this.dataSource1.data = Visit as BrowseOpdPaymentReceipt[];
+      this.dataSource1.data = Visit["Table1"] ?? [] as BrowseOpdPaymentReceipt[];
+      console.log(this.dataSource1.data)
+      this.resultsLength = Visit["Table"][0]["total_row"];
+      this.sIsLoading = this.dataSource1.data.length == 0 ? 'no-data' : '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+
+
+  viewgetOPPayemntPdf(Id,value) {
+    let PaymentId=0;
+if(value)
+ PaymentId=Id
+else
+PaymentId=Id.PaymentId
+    setTimeout(() => {
+
+      this._BrowseOPDBillsService.getOpPaymentview(
+        PaymentId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Op Payment Receipt Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = '';
+        });
+
+      });
+
+    }, 100);
+  }
+
+
+  //refund
+  getBrowseOPDReturnList() {
+    this.sIsLoading = 'loading-data';
+    var D_data = {
+      "F_Name": this._BrowseOPDBillsService.myFilterform.get("FirstName").value + '%' || '%',
+      "L_Name": this._BrowseOPDBillsService.myFilterform.get("LastName").value + '%' || '%',
+      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0
+
+    }
+    console.log(D_data)
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      console.log(D_data);
+      this._BrowseOPDBillsService.getBrowseOPDReturnReceiptList(D_data).subscribe(Visit => {
+        this.dataSource2.data = Visit as RefundMaster[];
+        console.log(this.dataSource.data);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.sIsLoading = '';
+        this.click = false;
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }, 500);
+
+  }
+  viewgetOPRefundofBillPdf(row) {
+    // this.sIsLoading = 'loading-data';
+    
+    setTimeout(() => {
+    this._BrowseOPDBillsService.getOpRefundview(
+      row.RefundId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Op Refund Of Bill Receipt Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          // this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.sIsLoading = '';
+        });
+    });
+   
+    },100);
+  }
+ 
 
 }
 

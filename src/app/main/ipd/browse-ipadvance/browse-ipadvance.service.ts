@@ -45,4 +45,11 @@ export class BrowseIPAdvanceService {
     // return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
     return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
   }
+  public getIpdreturnAdvancepaymentreceipt(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPRefundAdvanceReceipt", employee)
+  }
+  
+  public getRefundofAdvanceview(RefundId){
+    return this._httpClient.get("InPatient/view-IP-ReturnOfAdvanceReceipt?RefundId=" + RefundId);
+  }
 }

@@ -2149,20 +2149,7 @@ this.getAdmittedPatientList_1()
 
   }
 
-  // AdmissionNewComponent
-  // addNewAdmission() {
-  //   const dialogRef = this._matDialog.open(RegAdmissionComponent,
-  //     {
-  //       maxWidth: "90vw",
-  //       height: '850px',
-  //       width: '100%',
-
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-
-  //     this.getAdmittedPatientList();
-  //   });
-  // }
+  
 
   onClear() {
     this._AdmissionService.myFilterform.reset(
@@ -2806,7 +2793,7 @@ this.getAdmittedPatientList_1()
           Submitflag: true
         }
       });
-      
+      this.getAdmittedPatientList_1()
   }
   getEditAdmission(row) {
     
@@ -2824,7 +2811,7 @@ this.getAdmittedPatientList_1()
           registerObj: row,
          }
       });
-      
+      this.getAdmittedPatientList_1()
   }
 
   getEditCompany(row) {

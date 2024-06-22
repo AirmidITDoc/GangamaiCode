@@ -25,6 +25,8 @@ import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-ne
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
+import { BrowseIpdPaymentReceipt } from '../browse-ipdpayment-receipt/ipd-paymentreceipt/ipd-paymentreceipt.component';
+import { RefundMaster } from '../Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.component';
 
 @Component({
   selector: 'app-ip-bill-browse-list',
@@ -92,6 +94,49 @@ export class IPBillBrowseListComponent implements OnInit {
     'buttons',
   ];
 
+  displayedColumns2 = [
+    // 'checkbox',
+    'RegNo',
+    'PatientName',
+    'PBillNo',
+    // 'ReceiptNo',
+    // 'PayDate',
+    'TotalAmt',
+    'BalanceAmt',
+    'PaymentDate',
+    'CashPayAmount',
+    'ChequePayAmount',
+    'CardPayAmount',
+    'AdvanceUsedAmount',
+    'PaidAmount',
+    'NEFTPayAmount',
+    'PayTMAmount',
+    'Remark',
+    'UserName',
+    'buttons'
+  ];
+  dataSource2 = new MatTableDataSource<BrowseIpdPaymentReceipt>();
+  
+  displayedColumns3 = [
+    'RegNo',
+    // 'RefundId',
+    'RefundDate',
+    // 'BillId',
+    'PatientName',
+    // 'PaymentDate',
+    'RefundAmount',
+    'TotalAmt', 
+    'CashPayAmount',
+    'ChequePayAmount',
+    'CardPayAmount',
+    'Remark',
+    'buttons'
+  
+    
+    // 'action'
+  ];
+  dataSource3 = new MatTableDataSource<RefundMaster>();
+
   menuActions: Array<string> = [];
   constructor(public _IpBillBrowseListService: IPBrowseBillService,
     private _fuseSidebarService: FuseSidebarService,
@@ -113,9 +158,9 @@ export class IPBillBrowseListComponent implements OnInit {
       this.menuActions.push('Print FinalBill WardWise');
     }
 
-
+    this.getBrowseIPDPaymentReceiptList();
     this.getCompanyNameCombobox();
-
+    this.getBrowseIPDRefundbillList(); 
     this.onShow_IpdBrowse();
   }
 
@@ -175,6 +220,32 @@ export class IPBillBrowseListComponent implements OnInit {
     }, 200);
     this.MouseEvent = true;
   }
+
+  onShow1(event: MouseEvent) {
+ 
+    this.click = !this.click;
+    setTimeout(() => {
+      {
+        this.sIsLoading = 'loading-data';
+        this.getBrowseIPDPaymentReceiptList();
+      }
+    }, 50);
+    this.MouseEvent = true;
+  }
+  onShow2(event:MouseEvent)
+{   
+  //debugger;
+ 
+  this.click=!this.click;
+   setTimeout(() => {
+     {
+      this.sIsLoading = 'loading-data';
+      this.getBrowseIPDRefundbillList(); 
+    }
+  }, 50);
+  this.MouseEvent=true;
+}
+
 
   Billpayment(contact) {
 
@@ -530,22 +601,168 @@ console.log(PatientHeaderObj)
 
   exportReportPdf() {
     let actualData = [];
-    this.dataSource.data.forEach(e => {
+    this.dataSource2.data.forEach(e => {
       var tempObj = [];
-      tempObj.push(e.BillDate);
+      
       tempObj.push(e.RegNo);
-      // tempObj.push(e.DVisitDate);
+      
       tempObj.push(e.PBillNo);
       tempObj.push(e.PatientName);
       tempObj.push(e.TotalAmt);
-      tempObj.push(e.ConcessionAmt);
+      tempObj.push(e.BalanceAmt);
       tempObj.push(e.NetPayableAmt);
-      tempObj.push(e.NEFTPay);
+      tempObj.push(e.BalanceAmt);
+      tempObj.push(e.AdvanceUsedAmount);
+      tempObj.push(e.PaidAmount);
+      tempObj.push(e.CashPayAmount);
+      tempObj.push(e.ChequePayAmount);
+      tempObj.push(e.CardPayAmount);
+      tempObj.push(e.NEFTPayAmount);
+      tempObj.push(e.PayTMAmount);
+     
       actualData.push(tempObj);
     });
-    let headers = [['Bill Date', 'Reg ID', 'PBill No', 'Patient Name', 'Total Amt', 'Concession Amt', 'Net Payable Amt', 'NEFT Pay']];
-    this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Bill');
+    let headers = [['RegNo','PBill No', 'Patient Name', 'Total Amt', 'Bal Amt', 'Net Payable Amt',,'AdvanceUsedAmount','PaidAmount', 'Cash Pay','Cheque Pay','Card Pay','NEFT Pay','PAYTm Pay']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Refund Of Bill');
   }
+  
+  getBrowseIPDPaymentReceiptList() {
+    debugger;
+    this.sIsLoading = 'loading-data';
+    var D_data = {
+      "F_Name": this._IpBillBrowseListService.myFilterform.get("FirstName").value + '%' || "%",
+      "L_Name": this._IpBillBrowseListService.myFilterform.get("LastName").value + '%' || "%",
+      "From_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("start").value, "MM-dd-yyyy"), //"01/01/2018",
+      "To_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("end").value, "MM-dd-yyyy"), //"01/01/2020",
+      "Reg_No": this._IpBillBrowseListService.myFilterform.get("RegNo").value || 0,
+      "PBillNo": this._IpBillBrowseListService.myFilterform.get("PBillNo").value  || '%',
+      "ReceiptNo": this._IpBillBrowseListService.myFilterform.get("ReceiptNo").value || '%',
+  
+    }
+    console.log(D_data);
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      this._IpBillBrowseListService.getIpdRefundpaymentreceiptBrowseList(D_data).subscribe(Visit => {
+        this.dataSource2.data = Visit as BrowseIpdPaymentReceipt[];
+        this.dataSource2.sort = this.sort;
+        this.dataSource2.paginator = this.paginator;
+        this.sIsLoading = '';
+        this.click = false;
+  
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    },5);
+  
+  }
+  
+  
+  getIpPaymentReceiptview(row) {
+    this.chkprint=true;
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+    //  this.AdList=true;
+    this._IpBillBrowseListService.getIpPaymentReceiptView(
+    row.PaymentId
+      ).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "IP Payment Receipt Viewer"
+          }
+        });
+  
+        matDialog.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          // this.SpinLoading = false;
+          this.sIsLoading = '';
+        });
+    });
+   
+    },100);
+  
+    this.chkprint=false;
+  }
+
+
+  //Refund
+  
+  getBrowseIPDRefundbillList(){
+    debugger
+    this.sIsLoading = 'loading-data';
+    var D_data= {
+      "F_Name":this._IpBillBrowseListService.myFilterform.get("FirstName").value + '%' || "%",
+      "L_Name":this._IpBillBrowseListService.myFilterform.get("LastName").value + '%' || "%",
+      "From_Dt" : this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
+      "To_Dt" : this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
+      "Reg_No":this._IpBillBrowseListService.myFilterform.get("RegNo").value || 0,
+      // "PBillNo":this._IPBrowseRefundofBillService.myFilterform.get("PBillNo").value || "0",
+    }
+  
+    setTimeout(() => {
+      this.sIsLoading = 'loading-data';
+      console.log(D_data);
+        this._IpBillBrowseListService.getIpdRefundBillBrowseList(D_data).subscribe(Visit=> {
+        this.dataSource3.data = Visit as RefundMaster[];
+        console.log(this.dataSource.data);
+        this.dataSource3.sort= this.sort;
+        this.dataSource3.paginator=this.paginator;
+        this.sIsLoading = ' ';
+        this.click = false;
+        
+      },
+        error => {
+          this.sIsLoading = '';
+        });
+    }, 50);
+  
+  }
+  
+  
+  
+  
+  viewgetRefundofbillReportPdf(row) {
+    setTimeout(() => {
+      this.SpinLoading =true;
+    //  this.AdList=true;
+    this._IpBillBrowseListService.getRefundofbillview(
+      row.RefundId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Refund Of Bill Viewer"
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.AdList=false;
+          this.SpinLoading = false;
+        });
+    });
+   
+    },100);
+  }
+  exportIprefundofbillReportExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['RegNo', 'RefundDate', 'PatientName', 'RefundAmount', 'TotalAmt', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'Remark'];
+    this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Ip Refund Of Bill Datewise');
+    this.dataSource.data = [];
+    this.sIsLoading = '';
+  }
+  
 }
 
 export class IpBillBrowseList {
