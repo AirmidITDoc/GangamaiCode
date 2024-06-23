@@ -159,13 +159,13 @@ var data={
       this.FlagDoctorSelected = false;
 
     } else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
-      this.FlagUserSelected = true;
+      this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagRefundIdSelected=false;
     } else if (this.ReportName == 'IP Bill Generation Payment Due report') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-
+      this.FlagRefundIdSelected=false;
     } 
 
     

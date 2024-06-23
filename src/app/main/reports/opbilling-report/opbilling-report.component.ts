@@ -144,7 +144,7 @@ var data={
       this.FlagBillNoSelected=false;
     }
     else if (this.ReportName == 'OP Daily Collection Summary Reports') {
-      this.FlagUserSelected = false;
+      this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
       this.FlagBillNoSelected=false;
     }
@@ -311,13 +311,18 @@ var data={
 
   viewOpDailyCollectionSummaryPdf() {
     this.sIsLoading = 'loading-data';
+    let AddUserId=0;
+    if (this._OPReportsService.userForm.get('UserId').value)
+      AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
+    
     setTimeout(() => {
       
       this.AdList = true;
       
       this._OPReportsService.getOpDailyCollectionsummary(
         this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        AddUserId
        
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,

@@ -116,16 +116,18 @@ var data={
      
     } 
     if (this.ReportName == 'Reference Doctor Wise Patient Count Report') {
-      this.FlagVisitSelected=true
+      this.FlagVisitSelected=false;
       this.FlagPaymentIdSelected=false
-   
+      this.FlagDoctorIDSelected=false;
+      this.FlagRefundIdSelected = false;
+     
     } 
     else if (this.ReportName == 'Concession Report') {
       this.FlagVisitSelected=false
       this.FlagPaymentIdSelected=false
       this.FlagDoctorIDSelected=true;
       this.FlagRefundIdSelected = false;
-     
+      this.FlagUserSelected = false;
     } 
     
     else if (this.ReportName == 'Daily Collection Report') {
@@ -430,7 +432,7 @@ var data={
 
 
 viewgetConcessionReportPdf() {
-  let OP_IP_Type=1
+  let OP_IP_Type=1;
   let DoctorID =this._OPReportsService.userForm.get("DoctorID").value.DoctorID || 0
   this.sIsLoading = 'loading-data';
   setTimeout(() => {

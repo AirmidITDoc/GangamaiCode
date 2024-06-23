@@ -148,4 +148,88 @@ public getDischargetypewiseReport(DoctorId,FromDate,ToDate,DischargeTypeId){
 }
 
 
+
+//IPMIS
+public getDatewiseAdmissioncountView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-DateWiseAdmissionCount?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+
+public getMonthwiseAdmissioncountView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-MonthWiseAdmissionCount?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+
+public getdatedrwiseAdmissioncountView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-DateWiseDoctorWiseAdmissionCountDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+public getdatedrwiseAdmissioncountsummaryView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-DateWiseDoctorWiseAdmissionCountSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+
+public getdatedrwisedeptwiseAdmissioncountdetailView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-DateWiseDepartmentWiseAdmissionCountDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+public getdatedrwisedeptwiseAdmissioncountsummaryView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-DateWiseDepartmentWiseAdmissionCountSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+public getdoctorwisecolldetailView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-DrWiseCollectionDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+public getDoctorwisecollsummaryView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-DrWiseCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+public getDeptwisecolldetailView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-DepartmentWiseCollectionDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+public getDeptwisecollsummaryView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-DepartmentWiseCollectionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+public getCompanywiseAdmissioncountView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-CompanyWiseAdmissionCountDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+
+public getCompanywiseAdmissioncountsummaryView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-CompanyWiseAdmissionSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+
+public getCompanywisebilldetailView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-CompanyWiseBillDetailReport?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+public getCompanywisebillsummaryView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-CompanyWiseBillSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+
+public getCompanywisecreditView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-CompanyWiseCreditReportDetail?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
+
+public getCompanywisecreditsummaryView(FromDate,ToDate){
+  
+  return this._httpClient.get("IPReport/view-CompanyWiseCreditReportSummary?FromDate=" + FromDate+"&ToDate="+ToDate);
+}
 }

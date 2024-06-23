@@ -98,7 +98,7 @@ export class IpReportComponent implements OnInit {
   bindReportData() {
     // let qry = "SELECT * FROM ReportConfigMaster WHERE IsActive=1 AND IsDeleted=0 AND ReportType=1";
 var data={
-  ReportSection:"IP Reports"
+  ReportSection:"IPD MIS REPORT"//"IP Reports"
 }
     this._IPReportService.getDataByQuery(data).subscribe(data => {
       this.dataSource.data = data as any[];
@@ -349,27 +349,78 @@ var data={
       this.FlagRequestIdSelected = false;
       this.FlagMaterialConsumptionIdSelected=true;
     } 
-    // else if (this.ReportName == 'Sales Return Summary Report') {
-    //   this.FlagDoctorSelected = false;
-    //   this.FlagUserSelected = false;
 
-    // } else if (this.ReportName == 'Sales Return PatientWise Report') {
-    //   this.FlagDoctorSelected = false;
-    //   this.FlagUserSelected = false;
-    // } else if (this.ReportName == 'Sales Credit Report') {
-    //   this.FlagDoctorSelected = false;
-    //   this.FlagUserSelected = false;
 
-    // } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
-    //   this.FlagUserSelected = true;
-    //   this.FlagDoctorSelected = false;
 
-    // }
-    // else if (this.ReportName == 'Sales Cash Book Report') {
-    //   this.FlagDoctorSelected = true;
-    //   this.FlagUserSelected = false;
+    //IPMIS
+  if (this.ReportName == 'Date wise Admission Count') {
+      this.FlagDoctorSelected = false;
+      this.FlagUserSelected = false;
 
-    // }
+    } else if (this.ReportName == 'Month Wise Admission Count') {
+      this.FlagDoctorSelected = false;
+      this.FlagUserSelected = false;
+    } else if (this.ReportName == 'Date wise Dr wise Admission Count Detail') {
+      this.FlagDoctorSelected = false;
+      this.FlagUserSelected = false;
+
+    } else if (this.ReportName == 'Date wise Dr wise Admission Count Summary') {
+      this.FlagUserSelected = false;
+      this.FlagDoctorSelected = false;
+
+    }
+    else if (this.ReportName == 'Date wise Department Wise Admission Count Detail') {
+      this.FlagDoctorSelected = false;
+      this.FlagUserSelected = false;
+
+    }
+   else if (this.ReportName == 'Date wise Department Wise Admission Count Summary') {
+    this.FlagDoctorSelected = false;
+    this.FlagUserSelected = false;
+  } else if (this.ReportName == 'Doctor wise collection Detail') {
+    this.FlagDoctorSelected = false;
+    this.FlagUserSelected = false;
+
+  } else if (this.ReportName == 'Doctor wise collection Summary') {
+    this.FlagUserSelected = false;
+    this.FlagDoctorSelected = false;
+
+  }
+  else if (this.ReportName == 'Department wise collection Detail') {
+    this.FlagDoctorSelected = false;
+    this.FlagUserSelected = false;
+
+  }
+  else if (this.ReportName == 'Department wise collection Summary') {
+    this.FlagDoctorSelected = false;
+    this.FlagUserSelected = false;
+  } else if (this.ReportName == 'Company wise admission count Detail') {
+    this.FlagDoctorSelected = false;
+    this.FlagUserSelected = false;
+
+  } else if (this.ReportName == 'Company wise admission Summary') {
+    this.FlagUserSelected = false;
+    this.FlagDoctorSelected = false;
+
+  }
+  else if (this.ReportName == 'Company wise Bill detail Report') {
+    this.FlagDoctorSelected = false;
+    this.FlagUserSelected = false;
+
+  } else if (this.ReportName == 'Company Wise Bill summary report') {
+    this.FlagDoctorSelected = false;
+    this.FlagUserSelected = false;
+
+  } else if (this.ReportName == 'Company wise Credit Report Detail') {
+    this.FlagUserSelected = false;
+    this.FlagDoctorSelected = false;
+
+  }
+  else if (this.ReportName == 'Company wise Credit Report Summary') {
+    this.FlagDoctorSelected = false;
+    this.FlagUserSelected = false;
+
+  }
   }
 
 
@@ -502,6 +553,50 @@ var data={
       this.viewgetDischaregTypewisePdf();
     }
    
+
+    //IPMIS
+    if (this.ReportName == 'Date wise Admission Count') {
+      this.viewDatewiseAdmissioncountPdf();
+    }
+    else if (this.ReportName == 'Month Wise Admission Count') {
+      this.viewmonthwiseAdmissioncountPdf();
+    } else if (this.ReportName == 'Date wise Dr wise Admission Count Detail') {
+      this.viewDatewisedrwiseAdmissioncountPdf();
+    }
+    else if (this.ReportName == 'Date wise Dr wise Admission Count Summary') {
+      this.viewDatewisedrwiseAdmissioncountsummaryPdf();
+    } else if (this.ReportName == 'Date wise Department Wise Admission Count Detail') {
+      this.viewDatewisedeptwiseadmissioncountPdf();
+    }
+    else if (this.ReportName == 'Date wise Department Wise Admission Count Summary') {
+      this.viewDatewisedeptwiseadmissioncountsummaryPdf();
+    }
+    else if (this.ReportName == 'Doctor wise collection Detail') {
+      this.getDoctorwisecolldetailview();
+    } else if (this.ReportName == 'Doctor wise collection Summary') {
+      this.getDoctorwisecollsummaryview();
+    }
+    else if (this.ReportName == 'Department wise collection Detail') {
+      this.viewDeptwisecolldetailPdf();
+    }
+    else if (this.ReportName == 'Department wise collection Summary') {
+      this.viewDeptwisecollSummaryPdf();
+    } else if (this.ReportName == 'Company wise admission count Detail') {
+      this.viewCompanywiseAdmissioncountPdf();
+    }
+    else if (this.ReportName == 'Company wise admission Summary') {
+      this.viewCompanywiseAdmissioncountsummaryPdf();
+    } else if (this.ReportName == 'Company wise Bill detail Report') {
+      this.viewCompanywisebilldetailPdf();
+    }
+    else if (this.ReportName == 'Company Wise Bill summary report') {
+      this.viewCompanywisebillsummaryPdf();
+    } else if (this.ReportName == 'Company wise Credit Report Detail') {
+      this.viewCompanywisecreditPdf();
+    }
+    else if (this.ReportName == 'Company wise Credit Report Summary') {
+      this.viewCompanywisecreditsummaryPdf();
+    }
   }
 
 
@@ -698,7 +793,7 @@ viewgetIPAdvanceReportPdf() {
 
   viewgetCurrentadmittedReportPdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getAdmittedPatientListView(
       
@@ -729,7 +824,7 @@ viewgetIPAdvanceReportPdf() {
   
   getAdmissionlistcompanywiseview(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getAdmittedPatientListCompanywiseView(
       
@@ -758,7 +853,7 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetAdmlistcompanywisesummaryReportPdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getAdmittedPatientListCompanywisesummaryView(
       
@@ -786,6 +881,7 @@ viewgetIPAdvanceReportPdf() {
      },100);
   }
   getCurrentadmitwardwisechargsview(){
+    this.SpinLoading =true;
     setTimeout(() => {
       let DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0
       let  WardId=this._IPReportService.userForm.get('WardId').value || 0
@@ -815,7 +911,7 @@ viewgetIPAdvanceReportPdf() {
   }
   getDeptwisecountsummarypdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getDeptwisecountsummaryView(
       
@@ -844,7 +940,7 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetDoctorwisecountsummaryReportPdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getDoctwisecountsummaryView(
       
@@ -872,6 +968,7 @@ viewgetIPAdvanceReportPdf() {
      },100);
   }
   viewgetCurrRefdocAdmitlistReportPdf(){
+    this.SpinLoading =true;
     setTimeout(() => {
       let DoctorId=this._IPReportService.userForm.get('DoctorId').value || 0
       this.AdList=true;
@@ -898,7 +995,7 @@ viewgetIPAdvanceReportPdf() {
      },100);
   }
   viewgetDischargeTypewiseReportPdf(){
-    debugger
+    this.SpinLoading =true;
     let DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorID || 0
     let DischargeTypeId=0
     setTimeout(() => {
@@ -930,7 +1027,7 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetDisctypecompanywisecountPdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getDischargetypewisecompanycountView(
       
@@ -959,7 +1056,7 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetRefDoctorwiseReportPdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getRefdocwiseView(
       
@@ -988,7 +1085,7 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetDischargedetailReportPdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getDischargedetailView(
       
@@ -1017,7 +1114,7 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetDischareRptwithmarkstatusPdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getDischargedetailwithmarkView(
       
@@ -1046,7 +1143,7 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetDischargerptwithbillsummaryPdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getDischargedetailwithbillsummaryView(
       
@@ -1075,7 +1172,7 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetOPTOIPConwithserviceavaliedPdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getOptoIPconwithserviceavailedView(
       
@@ -1104,7 +1201,7 @@ viewgetIPAdvanceReportPdf() {
   }
   viewgetDischargetypecompanywisePdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getDischargetypecompanywiseView(
       
@@ -1134,7 +1231,7 @@ viewgetIPAdvanceReportPdf() {
 
   viewgetIpdcurAdmitwardwisechargesReportPdf(){
     setTimeout(() => {
-      
+      this.SpinLoading =true;
       this.AdList=true;
      this._IPReportService.getIpcurrAdmitwardwisedischargeView(
       
@@ -1196,9 +1293,7 @@ viewgetIPAdvanceReportPdf() {
     this.sIsLoading = 'loading-data';
    let DoctorId=0
    let DischargeTypeId=0
-
-
-     setTimeout(() => {
+setTimeout(() => {
        this.AdList = true;
        this._IPReportService.getDischargetypewiseReport(
         DoctorId,
@@ -1224,6 +1319,552 @@ viewgetIPAdvanceReportPdf() {
  
      }, 100);
    }
+
+
+//IPMIS
+
+
+viewDatewiseAdmissioncountPdf() {
+  this.SpinLoading =true;
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getDatewiseAdmissioncountView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Date Wise Admission Count Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+
+viewmonthwiseAdmissioncountPdf() {
+  // this.sIsLoading = 'loading-data';
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getMonthwiseAdmissioncountView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Month Wise Admission Count Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+viewDatewisedrwiseAdmissioncountPdf() {
+  // this.sIsLoading = 'loading-data';
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getdatedrwiseAdmissioncountView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Date Wise Doctor Wise Admission Count Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+
+viewDatewisedrwiseAdmissioncountsummaryPdf() {
+  // this.sIsLoading = 'loading-data';
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getdatedrwiseAdmissioncountsummaryView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Date Wise Doctor Wise Admission Count Summary Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+
+viewDatewisedeptwiseadmissioncountPdf() {
+  // this.sIsLoading = 'loading-data';
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getdatedrwisedeptwiseAdmissioncountdetailView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Date Wise Department Wise Admission Count Detail Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+
+getDoctorwisecolldetailview() {
+  // this.sIsLoading = 'loading-data';
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getdoctorwisecolldetailView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Doctor Wise Collection Detail Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+viewDatewisedeptwiseadmissioncountsummaryPdf() {
+  // this.sIsLoading = 'loading-data';
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getdatedrwisedeptwiseAdmissioncountsummaryView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Date Wise Department Wise Admission Count Summary Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+
+
+getDoctorwisecollsummaryview() {
+  // this.sIsLoading = 'loading-data';
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getDoctorwisecollsummaryView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Doctor Wise Collection Summary Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+viewDeptwisecolldetailPdf() {
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getDeptwisecolldetailView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Department Wise Collection Detail Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+viewDeptwisecollSummaryPdf() {
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getDeptwisecollsummaryView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Department Wise Collection Summary Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+viewCompanywiseAdmissioncountPdf() {
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getCompanywiseAdmissioncountView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Company Wise Admission Count Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+viewCompanywiseAdmissioncountsummaryPdf() {
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getCompanywiseAdmissioncountsummaryView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Company Wise Admission Count Summary Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+viewCompanywisebilldetailPdf() {
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getCompanywisebilldetailView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Company Wise Bill Detail Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+viewCompanywisebillsummaryPdf() {
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getCompanywisebillsummaryView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Company Wise Bill Summary Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+
+viewCompanywisecreditPdf() {
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getCompanywisecreditView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Company Wise Credit Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+viewCompanywisecreditsummaryPdf() {
+  
+  setTimeout(() => {
+    
+   this.AdList=true;
+  this._IPReportService.getCompanywisecreditsummaryView(
+   
+    this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+   
+    ).subscribe(res => {
+    const matDialog = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Company Wise Credit Summary Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+        this.AdList=false;
+        this.sIsLoading = ' ';
+      });
+  });
+ 
+  },100);
+
+}
+
+
+
+
+
+
 
 
 
