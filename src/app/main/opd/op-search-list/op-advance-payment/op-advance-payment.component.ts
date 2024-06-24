@@ -79,7 +79,8 @@ export class OPAdvancePaymentComponent implements OnInit {
   vCategory:any=''
   OPD_IPD_Id:any=''
   Cashflag:boolean=false;
-
+  RegNo:any;
+  DoctorName:any;
 
 
   //bANK filter
@@ -136,6 +137,9 @@ export class OPAdvancePaymentComponent implements OnInit {
       this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.billNo = parseInt(this.advanceData.advanceObj.BillId);
       this.PatientName = this.advanceData.advanceObj.PatientName;
+      this.RegNo = this.advanceData.advanceObj.UHIDNO;
+      this.DoctorName = this.advanceData.advanceObj.Doctorname;
+      this.BillDate = this.advanceData.advanceObj.Date;
     }
     if (this.advanceData.FromName == "IP-Bill") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);

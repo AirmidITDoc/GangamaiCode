@@ -951,29 +951,6 @@ ServiceList:any=[];
     return netAmt;
   }
 
-  getNetAmount() {
-    if (this.vDiscountAmount > 0) {
-      this.FinalAmountpay = parseInt(this.vTotalBillAmount) - parseInt(this.vDiscountAmount);
-      this.Ipbillform.get('FinalAmount').setValue(this.FinalAmountpay);
-      this.Ipbillform.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
-
-      this.Ipbillform.get('ConcessionId').reset();
-      this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
-      this.Ipbillform.get('ConcessionId').enable;
-      this.Consession = false;
-      this.ConShow = true;
-    }
-    if (this.vDiscountAmount <= 0) {
-      this.Ipbillform.get('ConcessionId').reset();
-      this.Ipbillform.get('ConcessionId').clearValidators();
-      this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-      this.Consession = true;
-      this.FinalAmountpay = this.vTotalBillAmount;
-      this.vNetBillAmount = parseInt(this.vTotalBillAmount) - parseInt(this.Adminamt);
-      this.ConShow = false;
-    }
-    console.log(this.ConShow)
-  }
 
   ServiceDiscDisable: boolean = false;
   // Adminchange($event) {
@@ -1112,6 +1089,47 @@ ServiceList:any=[];
       }
     }
   }
+  getNetAmount() {
+    let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value  || 0; 
+
+      // if(FinalDiscAmt > this.vNetBillAmount){
+      //   Swal.fire('Discount Amount Should not be grather than Net Amount');
+      //   this.vfDiscountAmount = '';
+      //   return
+      // }
+
+    //   if (FinalDiscAmt > 0 && FinalDiscAmt < this.vNetBillAmount) {
+    //     this.vPercentage = Math.round((finalnetAmt * parseInt(Percentage)) / 100).toFixed(2);
+    //     this.vNetBillAmount = Math.round(finalnetAmt - this.vfDiscountAmount).toFixed(2);
+    //     this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+    //     this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+    //     this.ConShow = true
+    //     this.Ipbillform.get('ConcessionId').reset();
+    //     this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+    //     this.Ipbillform.get('ConcessionId').enable;
+    //   }
+    // }
+    // if (this.vDiscountAmount > 0) {
+    //   this.FinalAmountpay = parseInt(this.vTotalBillAmount) - parseInt(this.vDiscountAmount);
+    //   this.Ipbillform.get('FinalAmount').setValue(this.FinalAmountpay);
+    //   this.Ipbillform.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
+    //   this.Ipbillform.get('ConcessionId').reset();
+    //   this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+    //   this.Ipbillform.get('ConcessionId').enable;
+    //   this.Consession = false;
+    //   this.ConShow = true;
+    // }
+    // if (this.vDiscountAmount <= 0) {
+    //   this.Ipbillform.get('ConcessionId').reset();
+    //   this.Ipbillform.get('ConcessionId').clearValidators();
+    //   this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+    //   this.Consession = true;
+    //   this.FinalAmountpay = this.vTotalBillAmount;
+    //   this.vNetBillAmount = parseInt(this.vTotalBillAmount) - parseInt(this.Adminamt);
+    //   this.ConShow = false;
+    // }
+    // console.log(this.ConShow)
+  }
 
   tableElementChecked(event, element) {
     if (event.checked) {
@@ -1125,6 +1143,7 @@ ServiceList:any=[];
   }
 
   getInterimData() {
+    debugger
     if (this.interimArray.length > 0) {
       let xx = {
         AdmissionID: this.selectedAdvanceObj.AdmissionID,
@@ -1159,11 +1178,11 @@ ServiceList:any=[];
           height: "500px",
           data: this.interimArray
         });
-        this.onClose();
+        
     }else{
       Swal.fire('Warring !', 'Please select check box ', 'warning');
     }
-
+    this.getChargesList();
   }
   // }
   onOk() {
