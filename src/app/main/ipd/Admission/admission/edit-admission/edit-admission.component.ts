@@ -190,6 +190,7 @@ export class EditAdmissionComponent implements OnInit {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.registerObj1 =  this.advanceDataStored.storage;
       this.IsMLC=this.registerObj1.IsMLC
+      this.AdmissionID=this.registerObj1.AdmissionID;
       console.log(this.registerObj1);
       if(this.registerObj1.CompanyId > 0)
         this.isCompanySelected=true
