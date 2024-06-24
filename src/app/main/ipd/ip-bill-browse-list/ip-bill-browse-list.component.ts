@@ -27,6 +27,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import { BrowseIpdPaymentReceipt } from '../browse-ipdpayment-receipt/ipd-paymentreceipt/ipd-paymentreceipt.component';
 import { RefundMaster } from '../Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 @Component({
   selector: 'app-ip-bill-browse-list',
@@ -76,21 +77,38 @@ export class IPBillBrowseListComponent implements OnInit {
 
 
   displayedColumns = [
-    'SelfOrCompany',
-    'InterimOrFinal',
-    'BalanceAmt',
+    // 'SelfOrCompany',
+    // 'InterimOrFinal',
+    // 'BalanceAmt',
+    'UserAction',
     'BillDate',
     'PBillNo',
     'RegNo',
     'PatientName',
+    'Age',
+    'MobileNo',
+    'DOA',
+    'DOD',
+    'IPDNo',
+    'DoctorName',
+    'RefDoctorName',
+    'TariffName',
+    'CompanyName',
+    'UnitName',
     'TotalAmt',
     'ConcessionAmt',
     'NetPayableAmt',
+    'BalanceAmt',
     'CashPay',
     'CardPay',
     'ChequePay',
     'OnlinePay',
     'AdvUsedPay',
+    'PayCount',
+    'RefundAmount',
+    // 'RefundCount',
+    'CashCounterName',
+    'UserName',
     'buttons',
   ];
 
@@ -146,7 +164,9 @@ export class IPBillBrowseListComponent implements OnInit {
     private santitized: DomSanitizer,
     private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,
-    private reportDownloadService: ExcelDownloadService) {
+    private reportDownloadService: ExcelDownloadService,
+    public _WhatsAppEmailService:WhatsAppEmailService
+  ) {
 
   }
 
@@ -374,6 +394,41 @@ console.log(PatientHeaderObj)
       });
     });
 
+  }
+
+  getWhatsappshareSales(Param) {
+    console.log(Param)
+    var m_data = {
+      "insertWhatsappsmsInfo": {
+        "mobileNumber": Param.MobileNo,
+        "smsString": '',
+        "isSent": 0,
+        "smsType": 'IPBill',
+        "smsFlag": 0,
+        "smsDate": this.currentDate,
+        "tranNo": Param.BillNo,
+        "PatientType": 0,//el.PatientType,
+        "templateId": 0,
+        "smSurl": '',
+        "filePath": '',
+        "smsOutGoingID": 0
+      }
+    }
+    console.log(m_data);
+    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+      }
+
+    });
+    // this.IsLoading = false;
+    // el.button.disbled = false;
   }
 
   onClear() {
