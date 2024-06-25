@@ -16,6 +16,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -48,6 +49,13 @@ export class DischargeSummaryComponent implements OnInit {
   DischargeSList = new DischargeSummary({});
   screenFromString = 'discharge-summary';
   dateTimeObj: any;
+  filteredOptionsItem:any;
+  noOptionFound:any;
+  ItemId:any;
+  isDoseSelected:boolean=false;
+  vDay:any;
+  vInstruction:any;
+  Chargelist:any=[];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -308,8 +316,7 @@ export class DischargeSummaryComponent implements OnInit {
   getOptionTextDose(option) {
     return option && option.DoseName ? option.DoseName : '';
   }
-  filteredOptionsItem:any;
-  noOptionFound:any;
+
   getSearchItemList() {   
       var m_data = {
         "ItemName": `${this.MedicineItemForm.get('ItemId').value}%`,
@@ -327,8 +334,7 @@ export class DischargeSummaryComponent implements OnInit {
         }
       });
     }
-    ItemId:any;
-    isDoseSelected:boolean=false;
+
     getOptionItemText(option) {
       this.ItemId = option.ItemID;
       if (!option) return '';
@@ -350,9 +356,7 @@ export class DischargeSummaryComponent implements OnInit {
         return this.doseList.filter(option => option.DoseName.toLowerCase().includes(filterValue));
       }
     }
-    vDay:any;
-    vInstruction:any;
-    Chargelist:any=[];
+ 
     onAdd() {
       if ((this.MedicineItemForm.get('ItemId').value == '' || this.MedicineItemForm.get('ItemId').value == null || this.MedicineItemForm.get('ItemId').value == undefined)) {
         this.toastr.warning('Please select Item', 'Warning !', {
@@ -392,6 +396,7 @@ export class DischargeSummaryComponent implements OnInit {
           ItemID:  this.MedicineItemForm.get('ItemId').value.ItemId || 0,
           ItemName: this.MedicineItemForm.get('ItemId').value.ItemName || '',
           DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
+          DoseId: this.MedicineItemForm.get('DoseId').value.DoseId || '',
           Day: this.vDay,
           Instruction: this.vInstruction || '' 
         });
@@ -452,10 +457,9 @@ export class DischargeSummaryComponent implements OnInit {
   lngAdmId: any = [];
   // ============================================================================
   getAdmissionInfo() {
-    let Query = "select Isnull(AdmissionId,0) as AdmId from T_DischargeSummary where AdmissionId=" + this.vAdmissionId + ""
+    let Query = "select Isnull(AdmissionId,0) as AdmId from DischargeSummary where AdmissionId=" + this.vAdmissionId + ""
     console.log(Query)
-    this._IpSearchListService.getchargesList(Query).subscribe(data => {
-     
+    this._IpSearchListService.getchargesList(Query).subscribe(data => { 
       this.lngAdmId = data;
       console.log(this.lngAdmId)
       if (this.lngAdmId.length > 0) {
@@ -489,34 +493,152 @@ export class DischargeSummaryComponent implements OnInit {
     this.DischargesumForm.reset();
     this._matDialog.closeAll();
   }
+OnSave(){
+  if(this.vAdmissionId){
+  let insertIPDDischargSummaryObj = {};
 
+  insertIPDDischargSummaryObj['dischargesummaryId'] = 0,
+  insertIPDDischargSummaryObj['admissionId'] =this.vAdmissionId || 0;
+  insertIPDDischargSummaryObj['dischargeId'] = this.vDischargeId,
+  insertIPDDischargSummaryObj['history'] = this.DischargesumForm.get("History").value || "",
+  insertIPDDischargSummaryObj['diagnosis'] = this.DischargesumForm.get("Diagnosis").value || "",
+  insertIPDDischargSummaryObj['investigation'] = this.DischargesumForm.get("Investigation").value || "",
+  insertIPDDischargSummaryObj['clinicalFinding'] = this.DischargesumForm.get("ClinicalFinding").value || "",
+  insertIPDDischargSummaryObj['opertiveNotes'] = this.DischargesumForm.get("OpertiveNotes").value || "",
+  insertIPDDischargSummaryObj['treatmentGiven'] =  this.DischargesumForm.get("TreatmentGiven").value || "",
+  insertIPDDischargSummaryObj['treatmentAdvisedAfterDischarge'] = this.DischargesumForm.get("TreatmentAdvisedAfterDischarge").value || "",
+  insertIPDDischargSummaryObj['followupdate'] = this.DischargesumForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
+  insertIPDDischargSummaryObj['remark'] = this.DischargesumForm.get("Remark").value || "",
+  insertIPDDischargSummaryObj['dischargeSummaryDate'] = this.dateTimeObj.date,//this.DischargesumForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
+  insertIPDDischargSummaryObj['opDate'] =  this.dateTimeObj.date,
+  insertIPDDischargSummaryObj['opTime'] =  this.dateTimeObj.date,
+  insertIPDDischargSummaryObj['dischargeDoctor1'] =this.DischargesumForm.get("DischargeDoctor1").value.DoctorID || 0,
+  insertIPDDischargSummaryObj['dischargeDoctor2'] = this.DischargesumForm.get("DischargeDoctor2").value.DoctorID || 0,
+  insertIPDDischargSummaryObj['dischargeDoctor3'] = this.DischargesumForm.get("DischargeDoctor3").value.DoctorID || 0,
+  insertIPDDischargSummaryObj['dischargeSummaryTime'] =this.dateTimeObj.time,
+  insertIPDDischargSummaryObj['doctorAssistantName'] = this.DischargesumForm.get("DoctorAssistantName").value || ""
+
+  let insertIPPrescriptionDischarge =[];
+  this.dsItemList.data.forEach(element =>{
+    let insertIPPrescriptionDischargeObj = {};
+    insertIPPrescriptionDischargeObj['opD_IPD_ID'] = this.vAdmissionId || 0;
+    insertIPPrescriptionDischargeObj['opD_IPD_Type'] = 1;
+    insertIPPrescriptionDischargeObj['date'] = this.dateTimeObj.date;
+    insertIPPrescriptionDischargeObj['pTime'] = this.dateTimeObj.time;
+    insertIPPrescriptionDischargeObj['classID'] = 0;
+    insertIPPrescriptionDischargeObj['genericId'] = 0;
+    insertIPPrescriptionDischargeObj['drugId'] = element.ItemID || 0;
+    insertIPPrescriptionDischargeObj['doseId'] = element.DoseId || 0;
+    insertIPPrescriptionDischargeObj['days'] = element.Day || 0;
+    insertIPPrescriptionDischargeObj['instructionId'] = 0;
+    insertIPPrescriptionDischargeObj['qtyPerDay'] = 0;
+    insertIPPrescriptionDischargeObj['totalQty'] = 0;
+    insertIPPrescriptionDischargeObj['instruction'] = element.Instruction || 0;
+    insertIPPrescriptionDischargeObj['remark'] =  0;
+    insertIPPrescriptionDischargeObj['isEnglishOrIsMarathi'] = 0;
+    insertIPPrescriptionDischargeObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
+    insertIPPrescriptionDischargeObj['createdBy'] = this.accountService.currentUserValue.user.id,
+    insertIPPrescriptionDischarge.push(insertIPPrescriptionDischargeObj);
+  });
+  let SubmitData={
+    'insertIPDDischargSummary':insertIPDDischargSummaryObj,
+    'insertIPPrescriptionDischarge':insertIPPrescriptionDischarge
+  }
+  console.log(SubmitData);
+  setTimeout(() => {
+    this._IpSearchListService.insertIPDDischargSummary(SubmitData).subscribe(response => {
+      console.log(response);
+      if (response) {
+        Swal.fire('Congratulations !', 'Discharge Summary Saved Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+            this.viewgetDischargesummaryPdf(this.vAdmissionId,);
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Discharge Summary not Saved', 'error');
+      }
+      this.isLoading = '';
+    });
+  }, 500);
+ }else{
+
+  let updateIPDDischargSummaryObj = {};
+
+  updateIPDDischargSummaryObj['dischargesummaryId'] = this.DischargesumForm.get("DischargesummaryId").value || "0", 
+  updateIPDDischargSummaryObj['dischargeId'] = this.vDischargeId,
+  updateIPDDischargSummaryObj['history'] = this.DischargesumForm.get("History").value || "",
+  updateIPDDischargSummaryObj['diagnosis'] = this.DischargesumForm.get("Diagnosis").value || "",
+  updateIPDDischargSummaryObj['investigation'] = this.DischargesumForm.get("Investigation").value || "",
+  updateIPDDischargSummaryObj['clinicalFinding'] = this.DischargesumForm.get("ClinicalFinding").value || "",
+  updateIPDDischargSummaryObj['opertiveNotes'] = this.DischargesumForm.get("OpertiveNotes").value || "",
+  updateIPDDischargSummaryObj['treatmentGiven'] =  this.DischargesumForm.get("TreatmentGiven").value || "",
+  updateIPDDischargSummaryObj['treatmentAdvisedAfterDischarge'] = this.DischargesumForm.get("TreatmentAdvisedAfterDischarge").value || "",
+  updateIPDDischargSummaryObj['followupdate'] = this.DischargesumForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
+  updateIPDDischargSummaryObj['remark'] = this.DischargesumForm.get("Remark").value || "",
+  updateIPDDischargSummaryObj['dischargeSummaryDate'] = this.dateTimeObj.date,//this.DischargesumForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
+  updateIPDDischargSummaryObj['opDate'] =  this.dateTimeObj.date,
+  updateIPDDischargSummaryObj['opTime'] =  this.dateTimeObj.date,
+  updateIPDDischargSummaryObj['dischargeDoctor1'] =this.DischargesumForm.get("DischargeDoctor1").value.DoctorID || 0,
+  updateIPDDischargSummaryObj['dischargeDoctor2'] = this.DischargesumForm.get("DischargeDoctor2").value.DoctorID || 0,
+  updateIPDDischargSummaryObj['dischargeDoctor3'] = this.DischargesumForm.get("DischargeDoctor3").value.DoctorID || 0,
+  updateIPDDischargSummaryObj['dischargeSummaryTime'] =this.dateTimeObj.time,
+  updateIPDDischargSummaryObj['doctorAssistantName'] = this.DischargesumForm.get("DoctorAssistantName").value || ""
+
+  let insertIPPrescriptionDischarge =[];
+  this.dsItemList.data.forEach(element =>{
+    let insertIPPrescriptionDischargeObj = {};
+    insertIPPrescriptionDischargeObj['opD_IPD_ID'] =  0;
+    insertIPPrescriptionDischargeObj['opD_IPD_Type'] = 1;
+    insertIPPrescriptionDischargeObj['date'] = this.dateTimeObj.date;
+    insertIPPrescriptionDischargeObj['pTime'] = this.dateTimeObj.time;
+    insertIPPrescriptionDischargeObj['classID'] = 0;
+    insertIPPrescriptionDischargeObj['genericId'] = 0;
+    insertIPPrescriptionDischargeObj['drugId'] = element.ItemID || 0;
+    insertIPPrescriptionDischargeObj['doseId'] = element.DoseId || 0;
+    insertIPPrescriptionDischargeObj['days'] = element.Day || 0;
+    insertIPPrescriptionDischargeObj['instructionId'] = 0;
+    insertIPPrescriptionDischargeObj['qtyPerDay'] = 0;
+    insertIPPrescriptionDischargeObj['totalQty'] = 0;
+    insertIPPrescriptionDischargeObj['instruction'] = element.Instruction || 0;
+    insertIPPrescriptionDischargeObj['remark'] =  0;
+    insertIPPrescriptionDischargeObj['isEnglishOrIsMarathi'] = 0;
+    insertIPPrescriptionDischargeObj['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
+    insertIPPrescriptionDischargeObj['createdBy'] = this.accountService.currentUserValue.user.id,
+    insertIPPrescriptionDischarge.push(insertIPPrescriptionDischargeObj);
+  });
+
+   
+  let deleteIPPrescriptionDischargeobj = {};
+  deleteIPPrescriptionDischargeobj['opD_IPD_ID'] = this.vAdmissionId || 0;
+
+  let SubmitData={
+    'insertIPDDischargSummary':updateIPDDischargSummaryObj,
+    'insertIPPrescriptionDischarge':insertIPPrescriptionDischarge,
+    'deleteIPPrescriptionDischarge':deleteIPPrescriptionDischargeobj
+  }
+  console.log(SubmitData);
+  setTimeout(() => {
+    this._IpSearchListService.updateIPDDischargSummary(SubmitData).subscribe(response => {
+      console.log(response);
+      if (response) {
+        Swal.fire('Congratulations !', 'Discharge Summary Updated Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+            this.viewgetDischargesummaryPdf(this.vAdmissionId,);
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Discharge Summary not Updated', 'error');
+      }
+      this.isLoading = '';
+    });
+  }, 500);
+  }
+}
   onSubmit() {
    debugger
-  //  if(this.DischargesumForm.get('DischargeDoctor1').value){
-  //   if(!this.Doctor1List.find(item => item.DoctorName ==  this.DischargesumForm.get('DischargeDoctor1').value.DoctorName)){
-  //     this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //  }
-   
-  //  if(this.DischargesumForm.get('DischargeDoctor2').value){
-  //   if(!this.Doctor2List.find(item => item.DoctorName ==  this.DischargesumForm.get('DischargeDoctor2').value.DoctorName)){
-  //     this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //  }
-  //  if(this.DischargesumForm.get('DischargeDoctor3').value){
-  //   if(!this.Doctor3List.find(item => item.DoctorName ==  this.DischargesumForm.get('DischargeDoctor3').value.DoctorName)){
-  //     this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //  }
+  
     this.submitted = true;
     this.isLoading = 'submit';
     // console.log(this.DischargeSList.DischargeSummaryId);
@@ -708,6 +830,7 @@ export class MedicineItemList {
   DoseName:any;
   Day: number;
   Instruction: any;
+  DoseId:any;
   /**
   * Constructor
   *

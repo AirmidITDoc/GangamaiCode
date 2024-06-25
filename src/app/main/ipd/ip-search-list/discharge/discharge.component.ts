@@ -112,6 +112,8 @@ export class DischargeComponent implements OnInit {
       if (this.registerObj) {
         const ddValue= this.DoctorNameList.filter(item => item.DoctorId ==  this.registerObj.DocNameID);
         console.log(ddValue)
+        // const checkDoc= ddValue.find(item => item.DoctorID ==  this.registerObj.DocNameID);
+        // console.log(ddValue)
         this._IpSearchListService.mySaveForm.get('DoctorID').setValue(ddValue[0]);
         this._IpSearchListService.mySaveForm.updateValueAndValidity();
       }
@@ -197,26 +199,25 @@ export class DischargeComponent implements OnInit {
     let ModeOfDischarge = 0
     if(this._IpSearchListService.mySaveForm.get('ModeId').value)
       ModeOfDischarge = this._IpSearchListService.mySaveForm.get('ModeId').value.ModeOfDischargeId;
-
+     
     if (!this.selectedAdvanceObj.IsDischarged) {
       var m_data = {
         "insertIPDDischarg": {
-          "DischargeId": 0,
-          "AdmissionId": this.selectedAdvanceObj.AdmissionID,
-          "DischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this._IpSearchListService.mySaveForm.get("DischargeDate").value,// this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "DischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this._IpSearchListService.mySaveForm.get("DischargeDate").value,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "DischargeTypeId": this._IpSearchListService.mySaveForm.get("DischargeTypeId").value.DischargeTypeId || 0,
-          "DischargedDocId": this._IpSearchListService.mySaveForm.get("DoctorID").value.DoctorID || 0,
-          "DischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
-          "Modeofdischarge": ModeOfDischarge ,
-          "UpdatedBy": this.accountService.currentUserValue.user.id,
-          "AddedBy": this.accountService.currentUserValue.user.id,
-        },
+          "dischargeId": 0,
+          "admissionId": this.selectedAdvanceObj.AdmissionID,
+          "dischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this._IpSearchListService.mySaveForm.get("DischargeDate").value,// this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "dischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this._IpSearchListService.mySaveForm.get("DischargeDate").value,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "dischargeTypeId": this._IpSearchListService.mySaveForm.get("DischargeTypeId").value.DischargeTypeId || 0,
+          "dischargedDocId": this._IpSearchListService.mySaveForm.get("DoctorID").value.DoctorID || 0,
+          "dischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
+          "modeOfDischargeId": ModeOfDischarge , 
+          "createdBy": this.accountService.currentUserValue.user.id,
+        }, 
         "updateAdmission": {
-          "AdmissionId": this.selectedAdvanceObj.AdmissionID,
-          "IsDischarged": 1,
-          "DischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value ,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "DischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "admissionID": this.selectedAdvanceObj.AdmissionID,
+          "isDischarged": 1,
+          "dischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value ,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "dischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',// this._IpSearchListService.mySaveForm.get("DischargeDate").value,//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
         },
         "dischargeBedRelease": {
           "bedId": this.selectedAdvanceObj.BedId,
@@ -226,8 +227,7 @@ export class DischargeComponent implements OnInit {
       this._IpSearchListService.DischargeInsert(m_data).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'Discharge save Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-
+            if (result.isConfirmed) { 
               this._matDialog.closeAll();
               console.log(response)
               this.viewgetCheckoutslipPdf(response)
@@ -258,10 +258,10 @@ export class DischargeComponent implements OnInit {
           "updatedBy": this.accountService.currentUserValue.user.id,
         },
         "updateAdmission": {
-          "AdmissionId": this.selectedAdvanceObj.AdmissionID,
-          "IsDischarged": 1,
-          "DischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "DischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "admissionID": this.selectedAdvanceObj.AdmissionID,
+          "isDischarged": 1,
+          "dischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "dischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
         }
       }
       console.log(m_data1);

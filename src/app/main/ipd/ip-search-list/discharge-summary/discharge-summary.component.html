@@ -205,7 +205,7 @@
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Radiology</mat-label>
                                                     <textarea matInput name="Radiology" formControlName="Radiology"
-                                                        [(ngModel)]="DischargeSList.Diagnosis" cols="300"
+                                                        [(ngModel)]="DischargeSList.Radiology" cols="300"
                                                         rows="8"></textarea>
                                                 </mat-form-field>
                                             </div>
@@ -644,7 +644,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="DischargesumForm.invalid"> Save </button>
+                <button type="button" class="btn btn-primary" (click)="OnSave()" [disabled]="DischargesumForm.invalid"> Save </button>
             </div>
         </div>
     </div>
