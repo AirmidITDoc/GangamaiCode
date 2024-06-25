@@ -261,7 +261,7 @@ export class IPBillingComponent implements OnInit {
     this.showTable = false;
 
   }
-
+ 
   ngOnInit(): void {
 
     this.AdmissionId = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
@@ -272,8 +272,7 @@ export class IPBillingComponent implements OnInit {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
       this.vClassId = this.selectedAdvanceObj.ClassId
-      this.ClassName = this.selectedAdvanceObj.ClassName
-
+      this.ClassName = this.selectedAdvanceObj.ClassName 
     }
 
     this.myControl = new FormControl();
@@ -364,11 +363,12 @@ export class IPBillingComponent implements OnInit {
   createBillForm() {
     this.Ipbillform = this.formBuilder.group({
       TotalAmt: [0],
-      Percentage: [Validators.pattern("^[0-9]*$")],
-      concessionAmt: [0],
+      Percentage: [''],
+      concessionAmt: [''],
       ConcessionId: 0,
       Remark: [''],
       GenerateBill: [1],
+      CreditBill:[''],
       FinalAmount: 0,
       CashCounterId: [''],
       IpCash: [''],
@@ -909,11 +909,12 @@ ServiceList:any=[];
     }
     return netAmt;
   }
- 
+ checkdiscAmt:any;
   getDiscountSum(element) {
     let netAmt;
     netAmt = element.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0);
     this.vDiscountAmount = netAmt;
+    this.checkdiscAmt = netAmt
     this.vfDiscountAmount = this.vDiscountAmount;
     // this.Ipbillform.get("concessionAmt").setValue(this.vDiscountAmount)
 
@@ -975,7 +976,7 @@ ServiceList:any=[];
     if(this.vAdminPer > 0 && this.vAdminPer < 100 ){
      this.vAdminAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(this.vAdminPer))/ 100).toFixed(2);
      let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
-     if(this.vDiscountAmount > 0){
+     if(this.checkdiscAmt > 0){
       let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
       let finalnetamt =(parseFloat(netamt) - parseFloat(this.vDiscountAmount)).toFixed(2);
       this.Ipbillform.get('FinalAmount').setValue(finalnetamt);
@@ -997,6 +998,7 @@ ServiceList:any=[];
       this.Ipbillform.get('AdminAmt').reset();
       this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
       this.CalFinalDisc();
+      
     }
     }
   }
@@ -1045,6 +1047,7 @@ ServiceList:any=[];
         this.Consession = true;
         this.ConShow = true;
       }
+     
     } else {
       let Percentage = this.Ipbillform.get('Percentage').value;
       if (this.Ipbillform.get('Percentage').value > 0 && Percentage < 100) {
@@ -1087,48 +1090,76 @@ ServiceList:any=[];
         this.Consession = true;
         this.ConShow = true;
       }
+      
     }
   }
-  getNetAmount() {
-    let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value  || 0; 
+  getDiscAmtCal() {
+    debugger
+    let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value || 0;
+ 
+    if (this.Ipbillform.get('AdminAmt').value > 0) {
+    
+     let  finalnetAmt = ((parseFloat(this.vNetBillAmount) + parseFloat(this.vAdminAmt))) || 0;
+     if (FinalDiscAmt > finalnetAmt) {
+      Swal.fire('Discount Amount Should not be grather than Net Amount');
+      this.vfDiscountAmount = '';
+      return
+    }
 
-      // if(FinalDiscAmt > this.vNetBillAmount){
-      //   Swal.fire('Discount Amount Should not be grather than Net Amount');
-      //   this.vfDiscountAmount = '';
-      //   return
-      // }
+      if (FinalDiscAmt > 0 ) {
+        this.vPercentage = ((FinalDiscAmt / finalnetAmt) * 100).toFixed(2);
+        this.vNetBillAmount = Math.round(finalnetAmt - FinalDiscAmt).toFixed(2);
+        //this.vNetBillAmount = FinalnetAmt;
+        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        this.Ipbillform.get('Percentage').setValue(this.vPercentage);
+        this.ConShow = true
+        this.Ipbillform.get('ConcessionId').reset();
+        this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+        this.Ipbillform.get('ConcessionId').enable;
+      }
 
-    //   if (FinalDiscAmt > 0 && FinalDiscAmt < this.vNetBillAmount) {
-    //     this.vPercentage = Math.round((finalnetAmt * parseInt(Percentage)) / 100).toFixed(2);
-    //     this.vNetBillAmount = Math.round(finalnetAmt - this.vfDiscountAmount).toFixed(2);
-    //     this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
-    //     this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
-    //     this.ConShow = true
-    //     this.Ipbillform.get('ConcessionId').reset();
-    //     this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
-    //     this.Ipbillform.get('ConcessionId').enable;
-    //   }
-    // }
-    // if (this.vDiscountAmount > 0) {
-    //   this.FinalAmountpay = parseInt(this.vTotalBillAmount) - parseInt(this.vDiscountAmount);
-    //   this.Ipbillform.get('FinalAmount').setValue(this.FinalAmountpay);
-    //   this.Ipbillform.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
-    //   this.Ipbillform.get('ConcessionId').reset();
-    //   this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
-    //   this.Ipbillform.get('ConcessionId').enable;
-    //   this.Consession = false;
-    //   this.ConShow = true;
-    // }
-    // if (this.vDiscountAmount <= 0) {
-    //   this.Ipbillform.get('ConcessionId').reset();
-    //   this.Ipbillform.get('ConcessionId').clearValidators();
-    //   this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-    //   this.Consession = true;
-    //   this.FinalAmountpay = this.vTotalBillAmount;
-    //   this.vNetBillAmount = parseInt(this.vTotalBillAmount) - parseInt(this.Adminamt);
-    //   this.ConShow = false;
-    // }
-    // console.log(this.ConShow)
+      else if (FinalDiscAmt <= 0) {
+
+        //this.vNetBillAmount = finalnetAmt;
+        this.Ipbillform.get('FinalAmount').setValue(finalnetAmt);
+        this.vDiscountAmount = '';
+        this.vPercentage = '';
+        this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+        this.Ipbillform.get('Percentage').setValue(this.vPercentage);
+        this.Ipbillform.get('ConcessionId').clearValidators();
+        this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+        this.Consession = false;
+        this.ConShow = false;
+      }
+     
+    } else {
+      if (FinalDiscAmt > this.vNetBillAmount) {
+        Swal.fire('Discount Amount Should not be grather than Net Amount');
+        this.vfDiscountAmount = '';
+        return
+      }
+      if (FinalDiscAmt > 0 ) {
+        this.vPercentage = (parseFloat(FinalDiscAmt) / parseFloat(this.vNetBillAmount) * 100).toFixed(2);
+        let FinalnetAmt = Math.round(this.vNetBillAmount - FinalDiscAmt).toFixed(2);
+        //this.vNetBillAmount = FinalnetAmt;
+        this.Ipbillform.get('FinalAmount').setValue(FinalnetAmt);
+        //this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+        this.ConShow = true
+        this.Ipbillform.get('ConcessionId').reset();
+        this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+        this.Ipbillform.get('ConcessionId').enable;
+      } 
+      else if (FinalDiscAmt < 0) {  
+        this.vNetBillAmount = this.vTotalBillAmount;
+        this.vDiscountAmount = '';
+        this.vPercentage = '';
+        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        this.Ipbillform.get('ConcessionId').clearValidators();
+        this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+        this.Consession = false;
+        this.ConShow = false;
+      } 
+    }
   }
 
   tableElementChecked(event, element) {
@@ -1145,14 +1176,14 @@ ServiceList:any=[];
   getInterimData() {
     debugger
     if (this.interimArray.length > 0) {
-      let xx = {
+      let m_data = {
         AdmissionID: this.selectedAdvanceObj.AdmissionID,
         BillNo: 0,
         BillDate: this.dateTimeObj.date,
         concessionReasonId: this.Ipbillform.get('ConcessionId').value || 0,
         tariffId: this.selectedAdvanceObj.TariffId,
         RemarkofBill: this.Ipbillform.get('Remark').value || '',
-        RegNo: this.selectedAdvanceObj.RegNo || 0,
+        RegNo:this.selectedAdvanceObj.RegNo,
         PatientName: this.selectedAdvanceObj.PatientName,
         Doctorname: this.selectedAdvanceObj.Doctorname,
         AdmDateTime: this.selectedAdvanceObj.AdmDateTime,
@@ -1168,15 +1199,15 @@ ServiceList:any=[];
         UnitId: this.selectedAdvanceObj.UnitId
       };
       // console.log(xx)
-      this.advanceDataStored.storage = new Bill(xx);
-      console.log('this.interimArray==', this.interimArray);
+      this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
+      console.log('this.interimArray==', this.interimArray,m_data);
       this._matDialog.open(InterimBillComponent,
         {
           maxWidth: "85vw",
           //maxHeight: "65vh",
           width: '100%',
           height: "500px",
-          data: this.interimArray
+          data: this.interimArray 
         });
         
     }else{

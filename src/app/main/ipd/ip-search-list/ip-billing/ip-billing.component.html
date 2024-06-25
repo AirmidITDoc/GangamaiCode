@@ -219,7 +219,7 @@
                                         <mat-form-field appearance="outline">
                                             <mat-label>Disc Amt</mat-label>
                                             <input matInput [(ngModel)]="b_disAmount" name="bDisAmount" #discamt
-                                                formControlName="discAmount" type="number" id="discAmount" readonly
+                                                formControlName="discAmount" type="number" id="discAmount"  
                                                 (keydown)="onEnterdiscamt($event)" (keyup)="calculatechargesDiscamt()">
                                         </mat-form-field>
                                     </div>
@@ -1258,14 +1258,14 @@
                                     <mat-form-field appearance="outline"  fxFlex="10%" *ngIf="ServiceDiscDisable">
                                         <mat-label>Disc %</mat-label>
                                         <input matInput placeholder="Percentage" formControlName="Percentage"
-                                           [(ngModel)]="vPercentage" autocomplete="off" #finaldisc onlyNumber maxlength="3"
+                                           [(ngModel)]="vPercentage" autocomplete="off" #finaldisc onlyNumber
                                             (keyup)="CalFinalDisc()"  (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Disc Amount</mat-label>
                                         <input matInput [(ngModel)]="vfDiscountAmount" name="vDiscountAmount"   
-                                            formControlName="concessionAmt" (keyup)="getNetAmount()">
+                                            formControlName="concessionAmt" (keyup)="getDiscAmtCal()">
                                     </mat-form-field>
 
                                     <mat-form-field *ngIf="ConShow" appearance="outline" fxFlex="10%">
@@ -1299,6 +1299,9 @@
                                         <mat-checkbox formControlName="GenerateBill" (checked)=true>
                                             Generate Bill
                                         </mat-checkbox>
+                                        <mat-checkbox formControlName="CreditBill" (checked)=true>
+                                           Credit Bill
+                                        </mat-checkbox>
 
                                         <!-- <div class="cash-container gap-12">
                                             <div class="net-amt-section">
@@ -1318,7 +1321,7 @@
                                     </div>
                                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
                                         <div class="button-row-group">
-                                            <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
+                                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                             <button class="btn btn-primary-outline" (click)="getInterimData()">Interim</button>
                                             <button class="btn btn-primary" (click)="onSave()" [disabled]="Ipbillform.invalid">Save</button>
                                     

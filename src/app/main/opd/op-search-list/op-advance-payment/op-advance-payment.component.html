@@ -59,10 +59,15 @@
                                 <span>:</span>
                                 <span class="patient-col-value">{{RegNo}}</span>
                             </div>
-                            <div class="patient-col">
+                            <div class="patient-col" *ngIf="OPD_IPD_Id">
                                 <span class="patient-col-key">OPD No</span>
                                 <span>:</span>
                                 <span class="patient-col-value">{{OPD_IPD_Id}}</span>
+                            </div>
+                            <div class="patient-col" *ngIf="!OPD_IPD_Id">
+                                <span class="patient-col-key">IPD No</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{IPDNo}}</span>
                             </div>
                             <div class="patient-col">
                                 <span class="patient-col-key ">Doctor Name</span>
@@ -86,9 +91,9 @@
                             </div>
                            
                             <div class="patient-col">
-                                <span class="patient-col-key">Net Pay Amount</span>
+                                <span class="patient-col-key" style="color: blue;">Bill Amount</span>
                                 <span>:</span>
-                                <span class="patient-col-value">{{netPayAmt}}</span>
+                                <span class="patient-col-value" style="color: blue;">{{netPayAmt | currency:'INR' }}</span>
                             </div>
                 
                 
