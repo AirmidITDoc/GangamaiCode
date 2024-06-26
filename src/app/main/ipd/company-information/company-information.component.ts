@@ -9,6 +9,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { AdvanceDataStored } from '../advance';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import Swal from 'sweetalert2';
+import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
 
 @Component({
   selector: 'app-company-information',
@@ -18,12 +19,12 @@ import Swal from 'sweetalert2';
   animations: fuseAnimations
 })
 export class CompanyInformationComponent implements OnInit {
-  companyFormGroup:FormGroup;
+  companyFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'discharge';
-  selectedAdvanceObj: AdvanceDetailObj;
-  registerObj1: AdvanceDetailObj;
-  AdmissionID:any;
+  selectedAdvanceObj: AdmissionPersonlModel;
+  registerObj1: AdmissionPersonlModel;
+  AdmissionID: any;
   constructor(
     public _AdmissionService: AdmissionService,
     public datePipe: DatePipe,
@@ -34,23 +35,28 @@ export class CompanyInformationComponent implements OnInit {
 
     public _matDialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
-  
-
-  ) { }
 
 
-  ngOnInit(): void {
-    this.companyFormGroup = this.createCompanyForm();
-     
+  ) {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
       this.registerObj1 = this.selectedAdvanceObj;
-      this.AdmissionID= this.registerObj1.AdmissionID
-      console.log(this.registerObj1);
-    
-  
-    }
+      this.AdmissionID = this.selectedAdvanceObj.AdmissionID
+      
+    } }
+
+
+  ngOnInit(): void {
+    this.companyFormGroup = this.createCompanyForm();
+
+    // if (this.advanceDataStored.storage) {
+    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
+    //   console.log(this.selectedAdvanceObj);
+    //   // this.registerObj1 = this.selectedAdvanceObj;
+    //   this.AdmissionID = this.selectedAdvanceObj.AdmissionID
+    //   console.log(this.registerObj1);
+    // }
     this.companyFormGroup = this.createCompanyForm();
   }
 
@@ -59,32 +65,32 @@ export class CompanyInformationComponent implements OnInit {
   createCompanyForm() {
 
     return this.formBuilder.group({
-      PolicyNo:[''],
-      MemberNo:[''],
-      ClaimNo:[''],
-      BillToTpa:'',
-      PAdvance:'',
-      EstimatAmt:'',
-      ApprovBYTpa:'',
-      InvestigationPaid:'',
-      AppHospitalAmt:'',
-      DisallowAmt:'',
-      NetAmtRefund:'',
-      PathAmt:'',
-      DiscByTpa:'',
-      RefundAmt:'',
-      RadiAmt:'',
-      DiscByManagement:'',
-      PharmacyAmt:'',
-      RecoverAmtbyPatient:'',
-      MedicalAmt:''     
-      
-      
+      PolicyNo: [''],
+      MemberNo: [''],
+      ClaimNo: [''],
+      BillToTpa: '',
+      PAdvance: '',
+      EstimatAmt: '',
+      ApprovBYTpa: '',
+      InvestigationPaid: '',
+      AppHospitalAmt: '',
+      DisallowAmt: '',
+      NetAmtRefund: '',
+      PathAmt: '',
+      DiscByTpa: '',
+      RefundAmt: '',
+      RadiAmt: '',
+      DiscByManagement: '',
+      PharmacyAmt: '',
+      RecoverAmtbyPatient: '',
+      MedicalAmt: ''
+
+
     });
 
   }
 
-  keyPressCharater(event){
+  keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
@@ -94,31 +100,31 @@ export class CompanyInformationComponent implements OnInit {
     }
   }
 
- 
-  Save(){
+
+  Save() {
     var m_data = {
-      "companyUpdate":{
-        "AdmissionId": this.AdmissionID,// this.companyFormGroup.get('AdmissionId').value || 0,
+      "companyUpdate": {
+        "AdmissionId": this.AdmissionID,
         "policyNo": this.companyFormGroup.get('PolicyNo').value || "",
         "claimNo": this.companyFormGroup.get('ClaimNo').value || "",
-         "estimatedAmount": this.companyFormGroup.get('EstimatAmt').value || 0,
-         "approvedAmount":this.companyFormGroup.get('ApprovBYTpa').value || 0,
-        "hosApreAmt":this.companyFormGroup.get('AppHospitalAmt').value || 0,
+        "estimatedAmount": this.companyFormGroup.get('EstimatAmt').value || 0,
+        "approvedAmount": this.companyFormGroup.get('ApprovBYTpa').value || 0,
+        "hosApreAmt": this.companyFormGroup.get('AppHospitalAmt').value || 0,
         "pathApreAmt": this.companyFormGroup.get('PathAmt').value || 0,
         "PharApreAmt": this.companyFormGroup.get('PharmacyAmt').value || 0,
-        "radiApreAmt": this.companyFormGroup.get('RadiAmt').value  || 0,
+        "radiApreAmt": this.companyFormGroup.get('RadiAmt').value || 0,
         "c_DisallowedAmt": this.companyFormGroup.get('DisallowAmt').value || 0,
         "compDiscount": this.companyFormGroup.get('DiscByTpa').value || 0,
         "hDiscAmt": this.companyFormGroup.get('DiscByManagement').value || 0,
         "c_OutsideInvestAmt": this.companyFormGroup.get('InvestigationPaid').value || 0,
-        "recoveredByPatient" : this.companyFormGroup.get('RecoverAmtbyPatient').value || 0,
-        "medicalApreAmt" :this.companyFormGroup.get('MedicalAmt').value.SubCompanyId || 0,
-        "C_FinalBillAmt": this.companyFormGroup.get('BillToTpa').value || 0,
-       
+        "recoveredByPatient": this.companyFormGroup.get('RecoverAmtbyPatient').value || 0,
+        "medicalApreAmt": this.companyFormGroup.get('MedicalAmt').value.SubCompanyId || 0,
+        "C_FinalBillAmt": this.companyFormGroup.get('BillToTpa').value || 0
+
       }
 
     }
-console.log(m_data)
+    console.log(m_data)
 
     this._AdmissionService.CompanyUpdate(m_data).subscribe(response => {
       if (response) {
@@ -141,7 +147,105 @@ console.log(m_data)
     this.dateTimeObj = dateTimeObj;
   }
 
-  onClose(){
-this.dialogRef.close();
+  onClose() {
+    this.dialogRef.close();
+  }
+}
+
+
+
+
+export class CompanyDetails {
+  PolicyNo: any;
+  MemberNo: any;
+  
+  AprovAmount
+  CompDOD
+  IsPharClearance
+  IPNumber
+  EstimatedAmount
+  ApprovedAmount
+  HosApreAmt
+  PathApreAmt
+  PharApreAmt
+  RadiApreAmt
+  PharDisc
+
+  ClaimNo: any;
+  CompBillNo: any;
+  CompBillDate: any;
+  CompDiscount: any;
+  CompDisDate: any;
+  C_BillNo: any;
+  C_FinalBillAmt: any;
+  C_DisallowedAmt: any;
+  HDiscAmt: any;
+  C_OutsideInvestAmt: any;
+  RecoveredByPatient: any;
+  H_ChargeAmt: any;
+  H_AdvAmt: any;
+  H_BillId: any;
+  H_BillDate: any;
+  H_BillNo: any;
+  H_TotalAmt: any;
+  H_DiscAmt: any;
+  H_NetAmt: any;
+  H_PaidAmt: any;
+  H_BalAmt: any;
+  CompanyId:any;
+  /**
+   * Constructor
+   *
+   * @param CompanyDetails
+   */
+
+  constructor(CompanyDetails) {
+    {
+      this.PolicyNo = CompanyDetails.PolicyNo || '';
+      this.MemberNo = CompanyDetails.MemberNo || '';
+
+      this.AprovAmount = CompanyDetails.AprovAmount || '';
+      this.CompDOD = CompanyDetails.CompDOD || '';
+      this.IsPharClearance = CompanyDetails.IsPharClearance || '';
+      this.IPNumber = CompanyDetails.IPNumber || '';
+      this.EstimatedAmount = CompanyDetails.EstimatedAmount || '';
+      this.ApprovedAmount = CompanyDetails.ApprovedAmount || '';
+      this.HosApreAmt = CompanyDetails.HosApreAmt || '';
+      this.PathApreAmt = CompanyDetails.PathApreAmt || '';
+      this.PharApreAmt = CompanyDetails.PharApreAmt || '';
+      this.RadiApreAmt = CompanyDetails.RadiApreAmt || '';
+      this.PharDisc = CompanyDetails.HDiscAmt || '';
+
+      this.ClaimNo = CompanyDetails.ClaimNo || '';
+      this.CompBillNo = CompanyDetails.CompBillNo || '';
+      this.CompBillDate = CompanyDetails.CompBillDate || '';
+      this.CompDiscount = CompanyDetails.CompDiscount || '';
+      this.CompDisDate = CompanyDetails.CompDisDate || '';
+      this.C_BillNo = CompanyDetails.C_BillNo || '';
+      this.C_FinalBillAmt = CompanyDetails.C_FinalBillAmt || '';
+      this.C_DisallowedAmt = CompanyDetails.C_DisallowedAmt || '';
+      this.HDiscAmt = CompanyDetails.HDiscAmt || '';
+      this.C_OutsideInvestAmt = CompanyDetails.C_OutsideInvestAmt || '';
+      this.RecoveredByPatient = CompanyDetails.RecoveredByPatient || '';
+      this.H_ChargeAmt = CompanyDetails.H_ChargeAmt || '';
+      this.H_AdvAmt = CompanyDetails.H_AdvAmt || '';
+      this.H_BillId = CompanyDetails.H_BillId || '';
+      this.H_BillDate = CompanyDetails.H_BillDate || '';
+      this.H_BillNo = CompanyDetails. H_BillNo || '';
+      this.H_TotalAmt = CompanyDetails. H_TotalAmt || '';
+      this.H_DiscAmt = CompanyDetails.H_DiscAmt || '';
+      this.H_NetAmt = CompanyDetails.H_NetAmt || '';
+      this.H_PaidAmt = CompanyDetails.H_PaidAmt || '';
+      this.H_BalAmt = CompanyDetails.H_BalAmt || '';
+      this.CompanyId = CompanyDetails.CompanyId || '';
+      // this.ReligionId = CompanyDetails.ReligionId || '';
+      // this.AreaId = CompanyDetails.AreaId || '';
+      // this.VillageId = CompanyDetails.VillageId || '';
+      // this.TalukaId = CompanyDetails.TalukaId || '';
+      // this.PatientWeight = CompanyDetails.PatientWeight || '';
+      // this.AreaName = CompanyDetails.AreaName || '';
+      // this.AadharCardNo = CompanyDetails.AadharCardNo || '';
+      // this.PanCardNo = CompanyDetails.PanCardNo || '';
+    }
   }
 }

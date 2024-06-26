@@ -137,12 +137,12 @@
 
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Policy No / Member No </mat-label>
-                                        <input name="PolicyNo" formControlName="PolicyNo" placeholder="PolicyNo"
+                                        <input name="PolicyNo" formControlName="PolicyNo" placeholder="PolicyNo" [(ngModel)]="registerObj1.PolicyNo"
                                             matInput>
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Claim No</mat-label>
-                                        <input name="ClaimNo" formControlName="ClaimNo" placeholder="ClaimNo" matInput>
+                                        <input name="ClaimNo" formControlName="ClaimNo" placeholder="ClaimNo" matInput [(ngModel)]="registerObj1.ClaimNo">
                                     </mat-form-field>
                                    
                                 </div>
@@ -151,19 +151,19 @@
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>EstimatAmt</mat-label>
                                         <input name="EstimatAmt" formControlName="EstimatAmt" placeholder="EstimatAmt" (keypress)="keyPressCharater($event)"
-                                            matInput>
+                                            matInput [(ngModel)]="registerObj1.EstimatedAmount">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Final Bill To TPA Scheme</mat-label>
                                         <input name="BillToTpa" formControlName="BillToTpa" placeholder="BillToTpa" (keypress)="keyPressCharater($event)"
-                                            matInput> 
+                                            matInput [(ngModel)]="registerObj1.C_FinalBillAmt"> 
                                     </mat-form-field>
                                  
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Investigation Paid</mat-label>
                                         <input name="InvestigationPaid" formControlName="InvestigationPaid" (keypress)="keyPressCharater($event)"
-                                            placeholder="InvestigationPaid" matInput>
+                                            placeholder="InvestigationPaid" matInput [(ngModel)]="registerObj1.C_OutsideInvestAmt">
                                     </mat-form-field>
 
                                 </div>
@@ -174,20 +174,20 @@
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Approved Hospital Amt</mat-label>
                                         <input name="AppHospitalAmt" formControlName="AppHospitalAmt" (keypress)="keyPressCharater($event)"
-                                            placeholder="AppHospitalAmt" matInput>
+                                            placeholder="AppHospitalAmt" matInput [(ngModel)]="registerObj1.HosApreAmt">
                                     </mat-form-field>
                                     
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Approv BY TPA Scheme</mat-label>
                                         <input name="ApprovBYTpa" formControlName="ApprovBYTpa" (keypress)="keyPressCharater($event)"
-                                            placeholder="ApprovBYTpa" matInput>
+                                            placeholder="ApprovBYTpa" matInput [(ngModel)]="registerObj1.ApprovedAmount">
                                     </mat-form-field>
 
 
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Refund Amt/Recovered From</mat-label>
                                         <input name="NetAmtRefund" formControlName="NetAmtRefund" (keypress)="keyPressCharater($event)"
-                                            placeholder="NetAmtRefund" matInput>
+                                            placeholder="NetAmtRefund" matInput [(ngModel)]="registerObj1.H_PaidAmt">
                                     </mat-form-field>
                                 </div>
 
@@ -195,17 +195,17 @@
                                     <!-- Line 3 -->
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Path Amt</mat-label>
-                                        <input name="PathAmt" formControlName="PathAmt" placeholder="PathAmt" matInput (keypress)="keyPressCharater($event)">
+                                        <input name="PathAmt" formControlName="PathAmt" placeholder="PathAmt" matInput (keypress)="keyPressCharater($event)" [(ngModel)]="registerObj1.PathApreAmt">
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Disallowed Amount By TPA</mat-label >
-                                        <input name="DisallowAmt" formControlName="DisallowAmt" (keypress)="keyPressCharater($event)"
+                                        <input name="DisallowAmt" formControlName="DisallowAmt" (keypress)="keyPressCharater($event)" [(ngModel)]="registerObj1.C_DisallowedAmt"
                                             placeholder="DisallowAmt" matInput>
                                     </mat-form-field>
                                  
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Refund Amount </mat-label>
-                                        <input name="RefundAmt" formControlName="RefundAmt" placeholder="RefundAmt" (keypress)="keyPressCharater($event)"
+                                        <input name="RefundAmt" formControlName="RefundAmt" placeholder="RefundAmt" (keypress)="keyPressCharater($event)" [(ngModel)]="registerObj1.H_PaidAmt"
                                             matInput>
                                     </mat-form-field>
                                 </div>
@@ -213,11 +213,11 @@
                                     <!-- Line 4 -->
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Radi Amt</mat-label>
-                                        <input name="RadiAmt" formControlName="RadiAmt" placeholder="RadiAmt" matInput (keypress)="keyPressCharater($event)">
+                                        <input name="RadiAmt" formControlName="RadiAmt" placeholder="RadiAmt" matInput (keypress)="keyPressCharater($event)" [(ngModel)]="registerObj1.RadiApreAmt">
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Discount By TPA</mat-label>
-                                        <input name="DiscByTpa" formControlName="DiscByTpa" placeholder="DiscByTpa" (keypress)="keyPressCharater($event)"
+                                        <input name="DiscByTpa" formControlName="DiscByTpa" placeholder="DiscByTpa" (keypress)="keyPressCharater($event)" [(ngModel)]="registerObj1.CompDiscount"
                                             matInput>
                                     </mat-form-field>
                                 
@@ -228,12 +228,12 @@
                                     <!-- Line 5 -->
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Pharmacy Amt</mat-label>
-                                        <input name="PharmacyAmt" formControlName="PharmacyAmt" (keypress)="keyPressCharater($event)"
+                                        <input name="PharmacyAmt" formControlName="PharmacyAmt" (keypress)="keyPressCharater($event)" [(ngModel)]="registerObj1.PharApreAmt"
                                             placeholder="PharmacyAmt" matInput>
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Disc As Per Management</mat-label>
-                                        <input name="DiscByManagement" formControlName="DiscByManagement" (keypress)="keyPressCharater($event)"
+                                        <input name="DiscByManagement" formControlName="DiscByManagement" (keypress)="keyPressCharater($event)" [(ngModel)]="registerObj1.H_DiscAmt"
                                             placeholder="DiscByManagement" matInput>
                                     </mat-form-field>
 
@@ -243,11 +243,11 @@
                                     <!-- Line 6 -->
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Medical Amt</mat-label>
-                                        <input name="MedicalAmt" formControlName="MedicalAmt" placeholder="MedicalAmt" matInput (keypress)="keyPressCharater($event)">
+                                        <input name="MedicalAmt" formControlName="MedicalAmt" placeholder="MedicalAmt" matInput (keypress)="keyPressCharater($event)" [(ngModel)]="registerObj1.H_NetAmt">
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Amt Recovered From Patient</mat-label>
-                                        <input name="RecoverAmtbyPatient" formControlName="RecoverAmtbyPatient" (keypress)="keyPressCharater($event)"
+                                        <input name="RecoverAmtbyPatient" formControlName="RecoverAmtbyPatient" (keypress)="keyPressCharater($event)" [(ngModel)]="registerObj1.RecoveredByPatient"
                                             placeholder="RecoverAmtbyPatient" matInput>
                                     </mat-form-field>
                                 </div>

@@ -214,7 +214,8 @@ export class AppointmentComponent implements OnInit {
   filteredOptionsDoctor: Observable<string[]>;
   filteredOptionsReligion: Observable<string[]>;
   filteredOptionsMstatus: Observable<string[]>;
-  filteredOptionsPatientType: Observable<string[]>;
+  // filteredOptionsPatientType: Observable<string[]>;
+  filteredOptionsPatientType:any;
   filteredOptionsTarrif: Observable<string[]>;
   isDoctorSelected: boolean = false;
   isCompanySelected: boolean = false;
@@ -382,7 +383,7 @@ export class AppointmentComponent implements OnInit {
 
     this.getPrefixList();
     this.getPatientTypeList();
-    this.getTariffList();
+    this.getTariffCombo();
     this.getAreaList();
     this.getMaritalStatusList();
     this.getReligionList();
@@ -417,6 +418,19 @@ export class AppointmentComponent implements OnInit {
     this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
       startWith(''),
       map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+    );
+
+
+       
+    this.filteredOptionsPatientType = this.VisitFormGroup.get('PatientTypeID').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterPtype(value)),
+
+    );
+    this.filteredOptionsTarrif = this.VisitFormGroup.get('TariffId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterTariffId(value)),
+
     );
   }
 
@@ -816,7 +830,7 @@ export class AppointmentComponent implements OnInit {
 
     this.getHospitalList1();
     this.getHospitalList();
-    this.getTariffList();
+    this.getTariffCombo();
     this.getPatientTypeList();
     this.getPrefixList();
     this.getDepartmentList();
@@ -880,24 +894,50 @@ export class AppointmentComponent implements OnInit {
     });
   }
 
+ 
+// reg fetch issue 
   // getPatientTypeList() {
   //   this._opappointmentService.getPatientTypeCombo().subscribe(data => {
   //     this.PatientTypeList = data;
-  //     this.VisitFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
-  //   })
+  //     this.optionsPatientType = this.PatientTypeList.slice();
+  //     this.filteredOptionsPatientType = this.VisitFormGroup.get('PatientTypeID').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterPatientType(value) : this.PatientTypeList.slice()),
+  //     );
+
+  //   });
+  //   this.VisitFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
   // }
+
+
+  
+  private _filterPtype(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
+      return this.PatientTypeList.filter(option => option.PatientType.toLowerCase().includes(filterValue));
+    }
+  }
 
   getPatientTypeList() {
     this._opappointmentService.getPatientTypeCombo().subscribe(data => {
       this.PatientTypeList = data;
-      this.optionsPatientType = this.PatientTypeList.slice();
-      this.filteredOptionsPatientType = this.VisitFormGroup.get('PatientTypeID').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterPatientType(value) : this.PatientTypeList.slice()),
-      );
-
+      this.VisitFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
     });
-    this.VisitFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
+  }
+
+  
+  private _filterTariffId(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();
+      return this.TariffList.filter(option => option.TariffName.toLowerCase().includes(filterValue));
+    }
+  }
+
+  getTariffCombo(){
+    this._opappointmentService.getTariffCombo().subscribe(data => {
+      this.TariffList = data;
+      this.VisitFormGroup.get('TariffId').setValue(this.TariffList[0]);
+    });
   }
 
 
@@ -1007,26 +1047,21 @@ export class AppointmentComponent implements OnInit {
     this._opappointmentService.getClassMasterCombo().subscribe(data => { this.ClassList = data; })
   }
 
+  
+  
+
   // getTariffList() {
   //   this._opappointmentService.getTariffCombo().subscribe(data => {
   //     this.TariffList = data;
-  //     this.VisitFormGroup.get('TariffId').setValue(this.TariffList[0]);
-  //   })
+  //     this.optionsTariff = this.TariffList.slice();
+  //     this.filteredOptionsTarrif = this.VisitFormGroup.get('TariffId').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterTariff(value) : this.TariffList.slice()),
+  //     );
+
+  //   });
+  //   this.VisitFormGroup.get('TariffId').setValue(this.TariffList[0]);
   // }
-
-
-  getTariffList() {
-    this._opappointmentService.getTariffCombo().subscribe(data => {
-      this.TariffList = data;
-      this.optionsTariff = this.TariffList.slice();
-      this.filteredOptionsTarrif = this.VisitFormGroup.get('TariffId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterTariff(value) : this.TariffList.slice()),
-      );
-
-    });
-    this.VisitFormGroup.get('TariffId').setValue(this.TariffList[0]);
-  }
 
   getAreaList() {
     this._opappointmentService.getAreaCombo().subscribe(data => {
@@ -2543,7 +2578,7 @@ export class AppointmentComponent implements OnInit {
 
     this.getHospitalList1();
     this.getHospitalList();
-    this.getTariffList();
+    this.getTariffCombo();
     this.getPatientTypeList();
     this.getPrefixList();
     this.getDepartmentList();

@@ -18,7 +18,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
-import { Admission } from '../Admission/admission/admission.component';
+import { Admission, AdmissionPersonlModel } from '../Admission/admission/admission.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component';
 import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
@@ -570,9 +570,9 @@ export class IPSearchListComponent implements OnInit {
       //   "ClassName": contact.ClassName,
       //   IsDischarged:contact.IsDischarged,
       // }
-      this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+      this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
       this._IpSearchListService.populateForm(contact);
-      //      this.getAdvanceList();
+     console.log(contact)
       const dialogRef = this._matDialog.open(BedTransferComponent,
         {
           maxWidth: "95vw",
@@ -582,7 +582,7 @@ export class IPSearchListComponent implements OnInit {
         console.log('The dialog was closed - Insert Action', result);
         this.getAdmittedPatientList();
       });
-    } else if (m == "Case Paper") {
+    } else if (m == "Medical CasePaper") {
       console.log(" This is for Case Paper pop : " + m);
       // let m_data = {
       //   "RegNo": contact.RegNo,
@@ -814,6 +814,45 @@ export class AdvanceDetailObj {
   DepartmentName:any;
   RefDocName:any;
   GenderName:any;
+
+
+  PolicyNo: any;
+  MemberNo: any;
+  
+  AprovAmount
+  CompDOD
+  IsPharClearance
+  IPNumber
+  EstimatedAmount
+  ApprovedAmount
+  HosApreAmt
+  PathApreAmt
+  PharApreAmt
+  RadiApreAmt
+  PharDisc
+
+  ClaimNo: any;
+  CompBillNo: any;
+  CompBillDate: any;
+  CompDiscount: any;
+  CompDisDate: any;
+  C_BillNo: any;
+  C_FinalBillAmt: any;
+  C_DisallowedAmt: any;
+  HDiscAmt: any;
+  C_OutsideInvestAmt: any;
+  RecoveredByPatient: any;
+  H_ChargeAmt: any;
+  H_AdvAmt: any;
+  H_BillId: any;
+  H_BillDate: any;
+  H_BillNo: any;
+  H_TotalAmt: any;
+  H_DiscAmt: any;
+  H_NetAmt: any;
+  H_PaidAmt: any;
+  H_BalAmt: any;
+  
   /**
   * Constructor
   *
@@ -862,6 +901,8 @@ export class AdvanceDetailObj {
       this.AgeDay= AdvanceDetailObj.AgeDay|| ''
       this.RefDocName=AdvanceDetailObj.RefDocName || ''
       this.GenderName =AdvanceDetailObj.GenderName ||''
+
+
     }
   }
 }
