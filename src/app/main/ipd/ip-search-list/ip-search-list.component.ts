@@ -461,6 +461,7 @@ export class IPSearchListComponent implements OnInit {
       } else { Swal.fire("Final Bill Already Generated") }
     }
     else if (m == "Discharge") {
+      console.log(contact);
       if (!contact.IsDischarged) {
        
       

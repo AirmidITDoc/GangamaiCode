@@ -28,10 +28,10 @@
                     <div fxlayout="row">
                         <div fxFlex.gt-sm="100%" fxLayoutGap="5px">
                             <mat-card>
-                                <div fxLayout="row" style="justify-content: space-between;">
+                                <div fxLayout="row" style="justify-content: space-between;padding-bottom: 10px;" >
                                  
                                 <div class="patient-col">
-                                    <span class="patient-col-key">Patient Name
+                                    <span class="patient-col-key"><b>Patient Name</b>
                                     </span>
                                     <span>:</span>
                                     <span
@@ -262,7 +262,7 @@
 
                                     <mat-form-field appearance="outline" fxFlex="10%">
                                         <mat-label>Disc Amt</mat-label>
-                                        <input matInput [(ngModel)]="b_disAmount" name="bDisAmount" readonly
+                                        <input matInput [(ngModel)]="b_disAmount" name="bDisAmount"  
                                             formControlName="concessionAmt" type="text" OnlyNumber id="discAmount"
                                             (keyup.enter)="setFocus('ConId')" (keyup)="calculatechargesDiscamt()">
                                     </mat-form-field>
