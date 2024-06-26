@@ -28,6 +28,16 @@
                     <div fxlayout="row">
                         <div fxFlex.gt-sm="100%" fxLayoutGap="5px">
                             <mat-card>
+                                <div fxLayout="row" style="justify-content: space-between;">
+                                 
+                                <div class="patient-col">
+                                    <span class="patient-col-key">Patient Name
+                                    </span>
+                                    <span>:</span>
+                                    <span
+                                        class="patient-col-value">{{selectedAdvanceObj.RegNo}}-{{selectedAdvanceObj.PatientName}}</span>
+                                </div>
+                              </div>
                                 <div matColumnDef="loading" [ngClass]="{'hide': !(isLoading == 'list-loading')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
@@ -297,7 +307,7 @@
                                 
                                 
                                     <div class="next-div button-row-group">
-                                        <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+                                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                         <button class="btn btn-primary" color="accent" (click)="onSave()">
                                             <span>Save</span>
                                         </button>

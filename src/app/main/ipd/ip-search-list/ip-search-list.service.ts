@@ -794,7 +794,7 @@ public updateIPDDischargSummary(employee)
   }
   
   public getDischargeSummary(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_T_DischargeSummary",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_T_DischargeSummary",employee)
   }
   
   public getDepartmentCombo() {

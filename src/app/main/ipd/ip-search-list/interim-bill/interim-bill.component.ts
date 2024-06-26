@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReportPrintObj } from '../../ip-bill-browse-list/ip-bill-browse-list.component';
 import { Subscription } from 'rxjs';
-import { ChargesList } from '../ip-search-list.component';
+import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { IPSearchListService } from '../ip-search-list.service';
 import { DatePipe } from '@angular/common';
@@ -47,7 +47,7 @@ export class InterimBillComponent implements OnInit {
   netPaybleAmt: any = 0;
   ConcessionId: any;
   BalanceAmt: any;
-  selectedAdvanceObj: Bill;
+  selectedAdvanceObj:AdvanceDetailObj;
   vPatientHeaderObj: Bill;
   reportPrintObj: ReportPrintObj;
   reportPrintObjList: ReportPrintObj[] = [];
@@ -116,7 +116,7 @@ export class InterimBillComponent implements OnInit {
         this.netAmount = this.netAmount + parseInt(element.NetAmount);
       });
 
-
+     
       if (this.advanceDataStored.storage) {
         this.selectedAdvanceObj = this.advanceDataStored.storage;
         console.log(this.selectedAdvanceObj)
@@ -124,7 +124,7 @@ export class InterimBillComponent implements OnInit {
       }
     }
   }
-
+  
   ngOnInit(): void {
     this.dataSource.data = [];
     this.dataSource.data = this.interimArray;
@@ -134,7 +134,7 @@ export class InterimBillComponent implements OnInit {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       // this.vPatientHeaderObj =this.advanceDataStored.storage;
       // this.ConcessionId=this.selectedAdvanceObj.concessionReasonId
-      // console.log(this.selectedAdvanceObj);
+       console.log(this.selectedAdvanceObj);
     }
 
     this.getCashCounterComboList();
@@ -268,9 +268,9 @@ export class InterimBillComponent implements OnInit {
       insertBillUpdateBillNo1obj['isSettled'] = 0,
       insertBillUpdateBillNo1obj['isPrinted'] = 1,
       insertBillUpdateBillNo1obj['isFree'] = 0,//this.advanceAmount;
-      insertBillUpdateBillNo1obj['companyId'] = this.selectedAdvanceObj.companyId || 0,
-      insertBillUpdateBillNo1obj['tariffId'] = this.selectedAdvanceObj.tariffId || 0,
-      insertBillUpdateBillNo1obj['unitId'] = this.selectedAdvanceObj.unitId || 0;
+      insertBillUpdateBillNo1obj['companyId'] = this.selectedAdvanceObj.CompanyId || 0,
+      insertBillUpdateBillNo1obj['tariffId'] = this.selectedAdvanceObj.TariffId || 0,
+      insertBillUpdateBillNo1obj['unitId'] = this.selectedAdvanceObj.UnitId || 0;
     insertBillUpdateBillNo1obj['interimOrFinal'] = 1,
       insertBillUpdateBillNo1obj['companyRefNo'] = 0;
     insertBillUpdateBillNo1obj['concessionAuthorizationName'] = 0;
@@ -385,9 +385,9 @@ export class InterimBillComponent implements OnInit {
       insertBillUpdateBillNo1obj['isSettled'] = 0,
       insertBillUpdateBillNo1obj['isPrinted'] = 1,
       insertBillUpdateBillNo1obj['isFree'] = 0,//this.advanceAmount;
-      insertBillUpdateBillNo1obj['companyId'] = this.selectedAdvanceObj.companyId || 0,
-      insertBillUpdateBillNo1obj['tariffId'] = this.selectedAdvanceObj.tariffId || 0,
-      insertBillUpdateBillNo1obj['unitId'] = this.selectedAdvanceObj.unitId || 0;
+      insertBillUpdateBillNo1obj['companyId'] = this.selectedAdvanceObj.CompanyId || 0,
+      insertBillUpdateBillNo1obj['tariffId'] = this.selectedAdvanceObj.TariffId || 0,
+      insertBillUpdateBillNo1obj['unitId'] = this.selectedAdvanceObj.UnitId || 0;
     insertBillUpdateBillNo1obj['interimOrFinal'] = 1,
       insertBillUpdateBillNo1obj['companyRefNo'] = 0;
     insertBillUpdateBillNo1obj['concessionAuthorizationName'] = 0;
@@ -535,7 +535,9 @@ export class InterimBillComponent implements OnInit {
       let PatientHeaderObj = {};
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
       PatientHeaderObj['Date'] = this.dateTimeObj.date;
-      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID || 0; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
+      PatientHeaderObj['UHIDNO'] =this.selectedAdvanceObj.RegNo;
+      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.Doctorname;
+      PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.IPDNo ; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
       PatientHeaderObj['NetPayAmount'] = this.netAmount;
 
       const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
@@ -602,9 +604,9 @@ export class InterimBillComponent implements OnInit {
     insertBillUpdateBillNo1obj['isSettled']=0,
     insertBillUpdateBillNo1obj['isPrinted'] = 1,
     insertBillUpdateBillNo1obj['isFree'] = 0,//this.advanceAmount;
-    insertBillUpdateBillNo1obj['companyId'] = this.selectedAdvanceObj.companyId || 0,
-    insertBillUpdateBillNo1obj['tariffId'] = this.selectedAdvanceObj.tariffId ||0,
-    insertBillUpdateBillNo1obj['unitId'] =this.selectedAdvanceObj.unitId || 0;
+    insertBillUpdateBillNo1obj['companyId'] = this.selectedAdvanceObj.CompanyId || 0,
+    insertBillUpdateBillNo1obj['tariffId'] = this.selectedAdvanceObj.TariffId ||0,
+    insertBillUpdateBillNo1obj['unitId'] =this.selectedAdvanceObj.UnitId || 0;
     insertBillUpdateBillNo1obj['interimOrFinal'] = 1,
     insertBillUpdateBillNo1obj['companyRefNo'] = 0;
     insertBillUpdateBillNo1obj['concessionAuthorizationName'] =0;
@@ -627,7 +629,7 @@ export class InterimBillComponent implements OnInit {
     let PatientHeaderObj = {};
     PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
-    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID || 0; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
+    PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.AdmissionID || 0; // this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
     PatientHeaderObj['NetPayAmount'] = this.netAmount;
 
      const interimBillCharge = new interimBill(interimBillChargesobj);
@@ -881,9 +883,15 @@ export class Bill {
   CashCounterId: any;
   CompDiscAmt: any;
   PatientName: any;
+  RegNo:any;
+  DoctorName:any;
+  IPDNo:any;
   constructor(Bill) {
     {
       this.AdmissionID = Bill.AdmissionID || 0;
+      this.RegNo = Bill.RegNo || 0;
+      this.IPDNo = Bill.IPDNo || 0;
+      this.DoctorName = Bill.DoctorName || '';
       this.billNo = Bill.billNo || 0;
       this.OPD_IPD_ID = Bill.OPD_IPD_ID || 0;
       this.totalAmt = Bill.totalAmt || 0;

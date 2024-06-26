@@ -32,7 +32,7 @@ export class OPAdvancePaymentComponent implements OnInit {
   balanceamt: any;
 
   paymentForm: FormGroup;
-  billNo: number;
+  billNo: number = 0;
   advanceData: any = {};
   now: Date;
   netPayAmt: number = 0;
@@ -79,7 +79,9 @@ export class OPAdvancePaymentComponent implements OnInit {
   vCategory:any=''
   OPD_IPD_Id:any=''
   Cashflag:boolean=false;
-
+  RegNo:any;
+  DoctorName:any;
+  IPDNo:any;
 
 
   //bANK filter
@@ -136,6 +138,9 @@ export class OPAdvancePaymentComponent implements OnInit {
       this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.billNo = parseInt(this.advanceData.advanceObj.BillId);
       this.PatientName = this.advanceData.advanceObj.PatientName;
+      this.RegNo = this.advanceData.advanceObj.UHIDNO;
+      this.DoctorName = this.advanceData.advanceObj.Doctorname;
+      this.BillDate = this.advanceData.advanceObj.Date;
     }
     if (this.advanceData.FromName == "IP-Bill") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
@@ -143,7 +148,10 @@ export class OPAdvancePaymentComponent implements OnInit {
       this.paidAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.billNo = parseInt(this.advanceData.advanceObj.BillId);
       this.PatientName = this.advanceData.advanceObj.PatientName;
+      this.RegNo = this.advanceData.advanceObj.UHIDNO;
       this.BillDate = this.advanceData.advanceObj.Date;
+      this.IPDNo = this.advanceData.advanceObj.IPDNo
+      this.DoctorName = this.advanceData.advanceObj.DoctorName;
 
     }
     if (this.advanceData.FromName == "Advance") {

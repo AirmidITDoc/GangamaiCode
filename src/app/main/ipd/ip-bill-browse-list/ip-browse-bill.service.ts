@@ -121,14 +121,14 @@ public getIPBILLBrowsedatewisePrint(BillNo) {
  }
 
  public getIpdRefundpaymentreceiptBrowseList(employee) {
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPDPaymentReceipt", employee)
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPPaymentList", employee)
 } 
 public getIpPaymentReceiptView(PaymentId){
   
   return this._httpClient.get("InPatient/view-IP-SettlementReceipt?PaymentId=" + PaymentId);
 }
 public getIpdRefundBillBrowseList(employee) {
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPRefundBillReceipt", employee)
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPRefundBillList", employee)
 } 
 public getRefundofbillview(RefundId){
   return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);

@@ -44,39 +44,62 @@
            </div>
           
         </div>-->
-
+        <div class=" center p-12" style="border-radius: 4px;">
     <!-- <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
         <div class="patient-info-container">
             <div class="patient-info-box"> -->
-                <div class="patient-info-title border-bottom pb-2">
-                    <span class="h1">Patient Information</span>
-                </div>
-                <div class="patient-info-box my-8">
-                    <div class="patient-info-row ">
-                        <div class="patient-col">
-                            <span class="patient-col-key ">Patient Name</span>
-                            <span>:</span>
-                            <span class="patient-col-value">{{PatientName}}</span>
-                        </div>
-                        <div class="patient-col">
-                            <span class="patient-col-key">BillNo</span>
-                            <span>:</span>
-                            <span class="patient-col-value">{{billNo}}</span>
-                        </div>
-                        <div class="patient-col">
-                            <span class="patient-col-key">IPDNo</span>
-                            <span>:</span>
-                            <span class="patient-col-value">{{OPD_IPD_Id}}</span>
-                        </div>
-                        <div class="patient-col">
-                            <span class="patient-col-key">Net Pay Amount</span>
-                            <span>:</span>
-                            <span class="patient-col-value">{{netPayAmt}}</span>
-                        </div>
-                     
-
+                <mat-card style="padding: 12px;">
+                    <div class="patient-info-title border-bottom pb-2">
+                        <span class="h1">Patient Information</span>
                     </div>
-                 </div>
+                    <div class="patient-info-box my-8">
+                        <div class="patient-info-row ">
+                            <div class="patient-col">
+                                <span class="patient-col-key ">UHID No</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{RegNo}}</span>
+                            </div>
+                            <div class="patient-col" *ngIf="OPD_IPD_Id">
+                                <span class="patient-col-key">OPD No</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{OPD_IPD_Id}}</span>
+                            </div>
+                            <div class="patient-col" *ngIf="!OPD_IPD_Id">
+                                <span class="patient-col-key">IPD No</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{IPDNo}}</span>
+                            </div>
+                            <div class="patient-col">
+                                <span class="patient-col-key ">Doctor Name</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{DoctorName}}</span>
+                            </div>
+                            <div class="patient-col">
+                                <span class="patient-col-key">Bill Date</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{BillDate}}</span>
+                            </div>
+                              <div class="patient-col">
+                                <span class="patient-col-key ">Patient Name</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{PatientName}}</span>
+                            </div>
+                            <div class="patient-col">
+                                <span class="patient-col-key">Bill No</span>
+                                <span>:</span>
+                                <span class="patient-col-value">{{billNo}}</span>
+                            </div>
+                           
+                            <div class="patient-col">
+                                <span class="patient-col-key" style="color: blue;">Bill Amount</span>
+                                <span>:</span>
+                                <span class="patient-col-value" style="color: blue;">{{netPayAmt | currency:'INR' }}</span>
+                            </div>
+                
+                
+                        </div>
+                    </div>
+                </mat-card>
           <!--  </div>
         </div>
     </div> -->
@@ -452,4 +475,5 @@
 
         </form>
     </div>
+</div>
 </div>

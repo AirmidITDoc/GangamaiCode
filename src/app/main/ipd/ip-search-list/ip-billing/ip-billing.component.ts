@@ -261,7 +261,7 @@ export class IPBillingComponent implements OnInit {
     this.showTable = false;
 
   }
-
+ 
   ngOnInit(): void {
 
     this.AdmissionId = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
@@ -272,8 +272,7 @@ export class IPBillingComponent implements OnInit {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
       this.vClassId = this.selectedAdvanceObj.ClassId
-      this.ClassName = this.selectedAdvanceObj.ClassName
-
+      this.ClassName = this.selectedAdvanceObj.ClassName 
     }
 
     this.myControl = new FormControl();
@@ -312,10 +311,27 @@ export class IPBillingComponent implements OnInit {
     if (this.selectedAdvanceObj.IsDischarged) {
       this.Ipbillform.get('GenerateBill').enable();
       this.Ipbillform.get('GenerateBill').setValue(true);
+      this.Ipbillform.get('CreditBill').enable();
+      this.Ipbillform.get('CreditBill').setValue(true);
     }
     else {
       this.Ipbillform.get('GenerateBill').disable();
       this.Ipbillform.get('GenerateBill').setValue(false);
+      this.Ipbillform.get('CreditBill').enable();
+      this.Ipbillform.get('CreditBill').setValue(true);
+    }
+    if (this.selectedAdvanceObj.CompanyName) {
+      this.Ipbillform.get('CreditBill').enable();
+      this.Ipbillform.get('CreditBill').setValue(true);
+    }
+    else {
+      if (this.selectedAdvanceObj.IsDischarged) { 
+        this.Ipbillform.get('CreditBill').enable();
+        this.Ipbillform.get('CreditBill').setValue(true);
+      }else{
+      this.Ipbillform.get('CreditBill').disable();
+      this.Ipbillform.get('CreditBill').setValue(false);
+    }
     }
     // console.log(this.vfDiscountAmount )
     // if (this.vDiscountAmount > 0) {
@@ -364,11 +380,12 @@ export class IPBillingComponent implements OnInit {
   createBillForm() {
     this.Ipbillform = this.formBuilder.group({
       TotalAmt: [0],
-      Percentage: [Validators.pattern("^[0-9]*$")],
-      concessionAmt: [0],
+      Percentage: [''],
+      concessionAmt: [''],
       ConcessionId: 0,
       Remark: [''],
       GenerateBill: [1],
+      CreditBill:[''],
       FinalAmount: 0,
       CashCounterId: [''],
       IpCash: [''],
@@ -909,11 +926,12 @@ ServiceList:any=[];
     }
     return netAmt;
   }
- 
+ checkdiscAmt:any;
   getDiscountSum(element) {
     let netAmt;
     netAmt = element.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0);
     this.vDiscountAmount = netAmt;
+    this.checkdiscAmt = netAmt
     this.vfDiscountAmount = this.vDiscountAmount;
     // this.Ipbillform.get("concessionAmt").setValue(this.vDiscountAmount)
 
@@ -951,29 +969,6 @@ ServiceList:any=[];
     return netAmt;
   }
 
-  getNetAmount() {
-    if (this.vDiscountAmount > 0) {
-      this.FinalAmountpay = parseInt(this.vTotalBillAmount) - parseInt(this.vDiscountAmount);
-      this.Ipbillform.get('FinalAmount').setValue(this.FinalAmountpay);
-      this.Ipbillform.get('ConcessionId').setValue(this.ConcessionReasonList[1]);
-
-      this.Ipbillform.get('ConcessionId').reset();
-      this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
-      this.Ipbillform.get('ConcessionId').enable;
-      this.Consession = false;
-      this.ConShow = true;
-    }
-    if (this.vDiscountAmount <= 0) {
-      this.Ipbillform.get('ConcessionId').reset();
-      this.Ipbillform.get('ConcessionId').clearValidators();
-      this.Ipbillform.get('ConcessionId').updateValueAndValidity();
-      this.Consession = true;
-      this.FinalAmountpay = this.vTotalBillAmount;
-      this.vNetBillAmount = parseInt(this.vTotalBillAmount) - parseInt(this.Adminamt);
-      this.ConShow = false;
-    }
-    console.log(this.ConShow)
-  }
 
   ServiceDiscDisable: boolean = false;
   // Adminchange($event) {
@@ -998,7 +993,7 @@ ServiceList:any=[];
     if(this.vAdminPer > 0 && this.vAdminPer < 100 ){
      this.vAdminAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(this.vAdminPer))/ 100).toFixed(2);
      let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
-     if(this.vDiscountAmount > 0){
+     if(this.checkdiscAmt > 0){
       let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
       let finalnetamt =(parseFloat(netamt) - parseFloat(this.vDiscountAmount)).toFixed(2);
       this.Ipbillform.get('FinalAmount').setValue(finalnetamt);
@@ -1020,6 +1015,7 @@ ServiceList:any=[];
       this.Ipbillform.get('AdminAmt').reset();
       this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
       this.CalFinalDisc();
+      
     }
     }
   }
@@ -1068,6 +1064,7 @@ ServiceList:any=[];
         this.Consession = true;
         this.ConShow = true;
       }
+     
     } else {
       let Percentage = this.Ipbillform.get('Percentage').value;
       if (this.Ipbillform.get('Percentage').value > 0 && Percentage < 100) {
@@ -1110,6 +1107,75 @@ ServiceList:any=[];
         this.Consession = true;
         this.ConShow = true;
       }
+      
+    }
+  }
+  getDiscAmtCal() {
+    debugger
+    let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value || 0;
+ 
+    if (this.Ipbillform.get('AdminAmt').value > 0) {
+    
+     let  finalnetAmt = ((parseFloat(this.vNetBillAmount) + parseFloat(this.vAdminAmt))) || 0;
+     if (FinalDiscAmt > finalnetAmt) {
+      Swal.fire('Discount Amount Should not be grather than Net Amount');
+      this.vfDiscountAmount = '';
+      return
+    }
+
+      if (FinalDiscAmt > 0 ) {
+        this.vPercentage = ((FinalDiscAmt / finalnetAmt) * 100).toFixed(2);
+        this.vNetBillAmount = Math.round(finalnetAmt - FinalDiscAmt).toFixed(2);
+        //this.vNetBillAmount = FinalnetAmt;
+        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        this.Ipbillform.get('Percentage').setValue(this.vPercentage);
+        this.ConShow = true
+        this.Ipbillform.get('ConcessionId').reset();
+        this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+        this.Ipbillform.get('ConcessionId').enable;
+      }
+
+      else if (FinalDiscAmt <= 0) {
+
+        //this.vNetBillAmount = finalnetAmt;
+        this.Ipbillform.get('FinalAmount').setValue(finalnetAmt);
+        this.vDiscountAmount = '';
+        this.vPercentage = '';
+        this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+        this.Ipbillform.get('Percentage').setValue(this.vPercentage);
+        this.Ipbillform.get('ConcessionId').clearValidators();
+        this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+        this.Consession = false;
+        this.ConShow = false;
+      }
+     
+    } else {
+      if (FinalDiscAmt > this.vNetBillAmount) {
+        Swal.fire('Discount Amount Should not be grather than Net Amount');
+        this.vfDiscountAmount = '';
+        return
+      }
+      if (FinalDiscAmt > 0 ) {
+        this.vPercentage = (parseFloat(FinalDiscAmt) / parseFloat(this.vNetBillAmount) * 100).toFixed(2);
+        let FinalnetAmt = Math.round(this.vNetBillAmount - FinalDiscAmt).toFixed(2);
+        //this.vNetBillAmount = FinalnetAmt;
+        this.Ipbillform.get('FinalAmount').setValue(FinalnetAmt);
+        //this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
+        this.ConShow = true
+        this.Ipbillform.get('ConcessionId').reset();
+        this.Ipbillform.get('ConcessionId').setValidators([Validators.required]);
+        this.Ipbillform.get('ConcessionId').enable;
+      } 
+      else if (FinalDiscAmt < 0) {  
+        this.vNetBillAmount = this.vTotalBillAmount;
+        this.vDiscountAmount = '';
+        this.vPercentage = '';
+        this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
+        this.Ipbillform.get('ConcessionId').clearValidators();
+        this.Ipbillform.get('ConcessionId').updateValueAndValidity();
+        this.Consession = false;
+        this.ConShow = false;
+      } 
     }
   }
 
@@ -1125,15 +1191,16 @@ ServiceList:any=[];
   }
 
   getInterimData() {
+    debugger
     if (this.interimArray.length > 0) {
-      let xx = {
+      let m_data = {
         AdmissionID: this.selectedAdvanceObj.AdmissionID,
         BillNo: 0,
         BillDate: this.dateTimeObj.date,
         concessionReasonId: this.Ipbillform.get('ConcessionId').value || 0,
         tariffId: this.selectedAdvanceObj.TariffId,
         RemarkofBill: this.Ipbillform.get('Remark').value || '',
-        RegNo: this.selectedAdvanceObj.RegNo || 0,
+        RegNo:this.selectedAdvanceObj.RegNo,
         PatientName: this.selectedAdvanceObj.PatientName,
         Doctorname: this.selectedAdvanceObj.Doctorname,
         AdmDateTime: this.selectedAdvanceObj.AdmDateTime,
@@ -1149,21 +1216,21 @@ ServiceList:any=[];
         UnitId: this.selectedAdvanceObj.UnitId
       };
       // console.log(xx)
-      this.advanceDataStored.storage = new Bill(xx);
-      console.log('this.interimArray==', this.interimArray);
+      this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
+      console.log('this.interimArray==', this.interimArray,m_data);
       this._matDialog.open(InterimBillComponent,
         {
           maxWidth: "85vw",
           //maxHeight: "65vh",
           width: '100%',
           height: "500px",
-          data: this.interimArray
+          data: this.interimArray 
         });
-        this.onClose();
+        
     }else{
       Swal.fire('Warring !', 'Please select check box ', 'warning');
     }
-
+    this.getChargesList();
   }
   // }
   onOk() {
@@ -1171,6 +1238,280 @@ ServiceList:any=[];
   }
   onClose() {
     this.dialogRef.close({ result: "cancel" });
+  }
+  SaveBill1() {
+
+debugger
+    let InterimOrFinal = 1;
+    if (this.dataSource.data.length > 0 && (this.vNetBillAmount > 0)) {
+      this.isLoading = 'submit';
+      if(this.Ipbillform.get('CreditBill').value || this.selectedAdvanceObj.CompanyId){
+        this.IPCreditBill();
+      }
+      else{
+      let PatientHeaderObj = {};
+      PatientHeaderObj['Date'] = this.dateTimeObj.date;
+      PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID; 
+      PatientHeaderObj['AdvanceAmount'] = this.Ipbillform.get('FinalAmount').value;
+      PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
+      PatientHeaderObj['Date'] = this.dateTimeObj.date;
+      PatientHeaderObj['PBillNo'] = 0;
+      PatientHeaderObj['BillTime'] = this.dateTimeObj.date;
+      PatientHeaderObj['RegID'] = this.selectedAdvanceObj.RegID, 
+
+        console.log('============================== Save IP Billing ===========');
+      //==============-======--==============Payment======================
+      // IPAdvancePaymentComponent
+      this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj);
+      const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
+        {
+          maxWidth: "85vw",
+          height: '840px',
+          width: '100%',
+          data: {
+            vPatientHeaderObj: PatientHeaderObj,
+            FromName: "IP-Bill",
+            advanceObj: PatientHeaderObj
+          }
+        });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // console.log('============================== Save IP Billing ===========');
+        console.log(result);
+        
+        // this.paidamt = result.PaidAmt;
+        this.flagSubmit = result.IsSubmitFlag
+
+        if (this.flagSubmit) {
+          this.paidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+          this.balanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+        }
+
+        else {
+
+          this.balanceamt = result.BalAmt;
+        } 
+        let InsertBillUpdateBillNoObj = {};
+        InsertBillUpdateBillNoObj['BillNo'] = 0; 
+        InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
+          InsertBillUpdateBillNoObj['TotalAmt'] = this.vBillTotalAmt || 0; 
+        InsertBillUpdateBillNoObj['ConcessionAmt'] = this.Ipbillform.get('concessionAmt').value || 0;
+        InsertBillUpdateBillNoObj['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
+        InsertBillUpdateBillNoObj['PaidAmt'] = this.paidamt,
+          InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt,// this.netPaybleAmt;
+          InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
+        InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 1;
+        InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+          InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;//this.totalAdvanceAmt;
+        InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
+        InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.ConcessionId;
+        InsertBillUpdateBillNoObj['IsSettled'] = 0;
+        InsertBillUpdateBillNoObj['IsPrinted'] = 1;
+        InsertBillUpdateBillNoObj['IsFree'] = 0;
+        InsertBillUpdateBillNoObj['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
+          InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
+          InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
+        InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
+        InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
+        InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = 0;
+        InsertBillUpdateBillNoObj['TaxPer'] = 0//this.Ipbillform.get('Percentage').value || 0,
+        InsertBillUpdateBillNoObj['TaxAmount'] = 0//this.Ipbillform.get('Amount').value || 0,
+        InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
+        InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''; 
+        let Billdetsarr = [];
+
+        this.dataSource.data.forEach((element) => {
+          let BillDetailsInsertObj = {};
+          BillDetailsInsertObj['BillNo'] = 0;
+          BillDetailsInsertObj['ChargesId'] = element.ChargesId;
+          Billdetsarr.push(BillDetailsInsertObj);
+        });
+
+        let Cal_DiscAmount_IPBillObj = {};
+        Cal_DiscAmount_IPBillObj['BillNo'] = 0;
+
+        let AdmissionIPBillingUpdateObj = {};
+        AdmissionIPBillingUpdateObj['AdmissionID'] = this.selectedAdvanceObj.AdmissionID;
+
+        const InsertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+        const Cal_DiscAmount_IPBill = new Cal_DiscAmount(Cal_DiscAmount_IPBillObj);
+        const AdmissionIPBillingUpdate = new AdmissionIPBilling(AdmissionIPBillingUpdateObj);
+        //
+        
+        let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+        UpdateAdvanceDetailarr1 = result.submitDataAdvancePay; 
+
+        // new
+        let UpdateBillBalAmtObj = {};
+        UpdateBillBalAmtObj['BillNo'] = 0;
+        UpdateBillBalAmtObj['BillBalAmount'] = this.balanceamt;
+
+
+        let UpdateAdvanceDetailarr = [];
+        if (result.submitDataAdvancePay.length > 0) {
+          result.submitDataAdvancePay.forEach((element) => {
+            let UpdateAdvanceDetailObj = {};
+            UpdateAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
+            UpdateAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
+            UpdateAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
+            UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
+          }); 
+        }
+        else {
+          let UpdateAdvanceDetailObj = {};
+          UpdateAdvanceDetailObj['AdvanceDetailID'] = 0,
+            UpdateAdvanceDetailObj['UsedAmount'] = 0,
+            UpdateAdvanceDetailObj['BalanceAmount'] = 0,
+            UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
+        }
+
+        let UpdateAdvanceHeaderObj = {};
+        if (result.submitDataAdvancePay.length > 0) {
+          UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceNo'],
+            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UpdateAdvanceDetailarr1[0]['AdvanceAmount'],
+            UpdateAdvanceHeaderObj['BalanceAmount'] = UpdateAdvanceDetailarr1[0]['BalanceAmount']
+        }
+        else {
+          UpdateAdvanceHeaderObj['AdvanceId'] = 0,
+            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
+            UpdateAdvanceHeaderObj['BalanceAmount'] = 0
+        }
+
+        if (this.flagSubmit == true) {
+          let submitData = {
+            "InsertBillUpdateBillNo": InsertBillUpdateBillNo,
+            "BillDetailsInsert": Billdetsarr,
+            "Cal_DiscAmount_IPBill": Cal_DiscAmount_IPBill,
+            "AdmissionIPBillingUpdate": AdmissionIPBillingUpdate,
+            "ipInsertPayment": result.submitDataPay.ipPaymentInsert,
+            "ipBillBalAmount": UpdateBillBalAmtObj,
+            "ipAdvanceDetailUpdate": UpdateAdvanceDetailarr,
+            "ipAdvanceHeaderUpdate": UpdateAdvanceHeaderObj
+
+          };
+          console.log(submitData)
+          this._IpSearchListService.InsertIPBilling(submitData).subscribe(response => {
+            if (response) {
+
+              Swal.fire('Bill successfully !', 'IP final bill generated successfully !', 'success').then((result) => {
+                if (result.isConfirmed) {
+
+                  this._matDialog.closeAll();
+                  this.viewgetBillReportPdf(response);
+                  // this.getPrint(response);
+                }
+              });
+            } else {
+              Swal.fire('Error !', 'IP Final Billing data not saved', 'error');
+            }
+            this.isLoading = '';
+          });
+        } 
+      }); 
+    }
+    }
+  }
+
+  IPCreditBill(){
+    debugger
+    if(this.Ipbillform.get('CreditBill').value){ 
+ 
+    let InterimOrFinal = 1;
+    let InsertBillUpdateBillNoObj = {};
+    InsertBillUpdateBillNoObj['BillNo'] = 0;
+    InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
+    InsertBillUpdateBillNoObj['totalAmt'] = this.vTotalAmount || 0;
+    InsertBillUpdateBillNoObj['ConcessionAmt'] = this.Ipbillform.get('concessionAmt').value || 0;
+    InsertBillUpdateBillNoObj['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
+    InsertBillUpdateBillNoObj['PaidAmt'] = 0;
+    InsertBillUpdateBillNoObj['BalanceAmt'] =  this.Ipbillform.get('FinalAmount').value || 0;
+    InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
+    InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 1;
+    InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+    InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;
+    InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
+    InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.Ipbillform.get('ConcessionId').value.ConcessionId || 0 ,//this.ConcessionId;
+    InsertBillUpdateBillNoObj['IsSettled'] = false;
+    InsertBillUpdateBillNoObj['IsPrinted'] = true;
+    InsertBillUpdateBillNoObj['IsFree'] = false;
+    InsertBillUpdateBillNoObj['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
+    InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
+    InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
+    InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
+    InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
+    InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = 0;
+    InsertBillUpdateBillNoObj['TaxPer'] = 0;
+    InsertBillUpdateBillNoObj['TaxAmount'] = 0;
+    InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
+    InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || '';
+    
+    //const InsertBillUpdateBillNo = new Bill(InsertBillUpdateBillNoObj);
+
+    let billDetailscreditInsert = [];
+    this.dataSource.data.forEach((element) => {
+      let BillDetailsInsertObj = {};
+      BillDetailsInsertObj['BillNo'] = 0;
+      BillDetailsInsertObj['ChargesId'] = element.ChargesId;
+      billDetailscreditInsert.push(BillDetailsInsertObj);
+    });
+
+    let Cal_DiscAmount_IPBillObj = {};
+    Cal_DiscAmount_IPBillObj['BillNo'] = 0;
+
+    //const cal_DiscAmount_IPBillcredit = new Bill(Cal_DiscAmount_IPBillObj);
+
+    let AdmissionIPBillingUpdateObj = {};
+    AdmissionIPBillingUpdateObj['AdmissionID'] = this.selectedAdvanceObj.AdmissionID;
+
+    //const admissionIPBillingcreditUpdate = new Bill(AdmissionIPBillingUpdateObj);
+
+    let ipBillBalAmountcreditObj = {};
+    ipBillBalAmountcreditObj['BillNo'] = 0;
+    ipBillBalAmountcreditObj['BillBalAmount'] = this.Ipbillform.get('FinalAmount').value || 0;
+
+    //const ipBillBalAmountcredit = new Bill(ipBillBalAmountcreditObj)
+
+    let ipAdvanceDetailUpdatecedit = []; 
+
+      let UpdateAdvanceDetailObj = {};
+      UpdateAdvanceDetailObj['AdvanceDetailID'] = 0,
+      UpdateAdvanceDetailObj['UsedAmount'] = 0,
+      UpdateAdvanceDetailObj['BalanceAmount'] = 0,
+      ipAdvanceDetailUpdatecedit.push(UpdateAdvanceDetailObj); 
+
+     let UpdateAdvanceHeaderObj = {}; 
+      UpdateAdvanceHeaderObj['AdvanceId'] = 0,
+      UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
+      UpdateAdvanceHeaderObj['BalanceAmount'] = 0
+
+      let submitData = {
+        "insertBillcreditUpdateBillNo": InsertBillUpdateBillNoObj,
+        "billDetailscreditInsert": billDetailscreditInsert,
+        "cal_DiscAmount_IPBillcredit": Cal_DiscAmount_IPBillObj,
+        "admissionIPBillingcreditUpdate": AdmissionIPBillingUpdateObj,
+        "ipBillBalAmountcredit": ipBillBalAmountcreditObj,
+        "ipAdvanceDetailUpdatecedit": ipAdvanceDetailUpdatecedit,
+        "ipAdvanceHeaderUpdatecredit": UpdateAdvanceHeaderObj
+      };
+      console.log(submitData);
+      this._IpSearchListService.InsertIPBillingCredit(submitData).subscribe(response => {
+        if (response) {
+          Swal.fire('Bill successfully !', 'IP final bill Credited successfully !', 'success').then((result) => {
+            if (result.isConfirmed) {
+              this._matDialog.closeAll();
+              this.viewgetBillReportPdf(response);
+            }
+          });
+        } else {
+          Swal.fire('Error !', 'IP Final Billing Credited data not saved', 'error');
+        }
+        this.isLoading = '';
+      }); 
+    }
+    else{
+      Swal.fire('check is a credit bill or not ')
+    }
   }
 
   SaveBill() {
@@ -1891,7 +2232,7 @@ debugger
   }
 
   onSave() {
-    
+    debugger
     if (!(this.vPercentage > 101)) {
       if (this.dataSource.data.length > 0) {
         if (this.Ipbillform.get('GenerateBill').value) {
@@ -1904,7 +2245,8 @@ debugger
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
 
-              this.SaveBill();
+             // this.SaveBill();
+             this.SaveBill1();
             }
           })
 
