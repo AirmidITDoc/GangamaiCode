@@ -156,7 +156,9 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
     this.getBrowseOPDBillsList();
     this.getBrowseOpdPaymentReceiptList();
     this.getBrowseOPDReturnList();
-    this.onClear();
+    this.onClearBill();
+    this.onClearpayment();
+    this.onClearrefund();
   }
 
 
@@ -267,12 +269,27 @@ console.log(contact)
   }
 
 
-  onClear() {
-    this._BrowseOPDBillsService.myFilterform.get('FirstName').reset('');
-    this._BrowseOPDBillsService.myFilterform.get('LastName').reset('');
-    this._BrowseOPDBillsService.myFilterform.get('RegNo').reset('');
-    this._BrowseOPDBillsService.myFilterform.get('PBillNo').reset('');
+  onClearBill() {
+    this._BrowseOPDBillsService.myFilterbillform.get('FirstName').reset('');
+    this._BrowseOPDBillsService.myFilterbillform.get('LastName').reset('');
+    this._BrowseOPDBillsService.myFilterbillform.get('RegNo').reset('');
+    this._BrowseOPDBillsService.myFilterbillform.get('PBillNo').reset('');
   }
+
+  onClearpayment() {
+    this._BrowseOPDBillsService.myFilterpayform.get('FirstName').reset('');
+    this._BrowseOPDBillsService.myFilterpayform.get('LastName').reset('');
+    this._BrowseOPDBillsService.myFilterpayform.get('RegNo').reset('');
+    this._BrowseOPDBillsService.myFilterpayform.get('PBillNo').reset('');
+  }
+
+  onClearrefund() {
+    this._BrowseOPDBillsService.myFilterrefundform.get('FirstName').reset('');
+    this._BrowseOPDBillsService.myFilterrefundform.get('LastName').reset('');
+    this._BrowseOPDBillsService.myFilterrefundform.get('RegNo').reset('');
+    this._BrowseOPDBillsService.myFilterrefundform.get('PBillNo').reset('');
+  }
+
   // sIsLoading: any = '';
   getWhatsappshareSales(Param) {
     console.log(Param)
@@ -311,14 +328,15 @@ console.log(contact)
 
   resultsLength = 0;
   getBrowseOPDBillsList() {
+    
     this.isLoadingStr = 'loading';
     var D_data = {
-      "F_Name": (this._BrowseOPDBillsService.myFilterform.get("FirstName").value).trim() + '%' || "%",
-      "L_Name": (this._BrowseOPDBillsService.myFilterform.get("LastName").value).trim() + '%' || "%",
-      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy"),
-      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy"),
-      "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0,
-      "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value || "%",
+      "F_Name": (this._BrowseOPDBillsService.myFilterbillform.get("FirstName").value).trim() + '%' || "%",
+      "L_Name": (this._BrowseOPDBillsService.myFilterbillform.get("LastName").value).trim() + '%' || "%",
+      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterbillform.get("start").value, "MM-dd-yyyy"),
+      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterbillform.get("end").value, "MM-dd-yyyy"),
+      "Reg_No": this._BrowseOPDBillsService.myFilterbillform.get("RegNo").value || 0,
+      "PBillNo": this._BrowseOPDBillsService.myFilterbillform.get("PBillNo").value || "%",
       Start:(this.paginator?.pageIndex??0),
       Length:(this.paginator?.pageSize??35),
     }
@@ -348,8 +366,8 @@ console.log(contact)
 
   viewgetOPDDailycollectionReportPdf() {
     this.sIsLoading == 'loading-data'
-    let start = this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    let end = this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    let start = this.datePipe.transform(this._BrowseOPDBillsService.myFilterbillform.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    let end = this.datePipe.transform(this._BrowseOPDBillsService.myFilterbillform.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
     setTimeout(() => {
       this.SpinLoading = true;
       //  this.AdList=true;
@@ -506,13 +524,13 @@ console.log(contact)
   getBrowseOpdPaymentReceiptList() {
     this.sIsLoading = 'loading-data';
     var D_data = {
-      "F_Name": this._BrowseOPDBillsService.myFilterform.get("FirstName").value + '%' || "%",
-      "L_Name": this._BrowseOPDBillsService.myFilterform.get("LastName").value + '%' || "%",
-      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0,
-      "PBillNo": this._BrowseOPDBillsService.myFilterform.get("PBillNo").value || 0,
-      "ReceiptNo": this._BrowseOPDBillsService.myFilterform.get("ReceiptNo").value || 0,
+      "F_Name": this._BrowseOPDBillsService.myFilterpayform.get("FirstName").value + '%' || "%",
+      "L_Name": this._BrowseOPDBillsService.myFilterpayform.get("LastName").value + '%' || "%",
+      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterpayform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterpayform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      "Reg_No": this._BrowseOPDBillsService.myFilterpayform.get("RegNo").value || 0,
+      "PBillNo": this._BrowseOPDBillsService.myFilterpayform.get("PBillNo").value || 0,
+      "ReceiptNo": this._BrowseOPDBillsService.myFilterpayform.get("ReceiptNo").value || 0,
       Start: (this.paginator?.pageIndex ?? 0),
       Length: (this.paginator?.pageSize ?? 35),
     }
@@ -566,11 +584,11 @@ PaymentId=Id.PaymentId
   getBrowseOPDReturnList() {
     this.sIsLoading = 'loading-data';
     var D_data = {
-      "F_Name": this._BrowseOPDBillsService.myFilterform.get("FirstName").value + '%' || '%',
-      "L_Name": this._BrowseOPDBillsService.myFilterform.get("LastName").value + '%' || '%',
-      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "Reg_No": this._BrowseOPDBillsService.myFilterform.get("RegNo").value || 0
+      "F_Name": this._BrowseOPDBillsService.myFilterrefundform.get("FirstName").value + '%' || '%',
+      "L_Name": this._BrowseOPDBillsService.myFilterrefundform.get("LastName").value + '%' || '%',
+      "From_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterrefundform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterrefundform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      "Reg_No": this._BrowseOPDBillsService.myFilterrefundform.get("RegNo").value || 0
 
     }
     console.log(D_data)

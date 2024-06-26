@@ -49,7 +49,7 @@
                             </div>
                             <div class="sidebar-body">
                                 <div class="sidebar-form">
-                                    <form [formGroup]="_IpBillBrowseListService.myFilterform" fusePerfectScrollbar>
+                                    <form [formGroup]="_IpBillBrowseListService.myFilterIpbillbrowseform" fusePerfectScrollbar>
                                         <div fxLayout="column" fxLayoutAlign="start none">
                                             <!-- Search fields -->
                                             <mat-form-field appearance="outline" fxFlex>
@@ -58,7 +58,7 @@
                                                     <input matStartDate formControlName="start"
                                                         placeholder="Start date">
                                                     <input matEndDate formControlName="end" placeholder="End date"
-                                                        (dateChange)="onShow($event)">
+                                                        (dateChange)="onShow_IpdBrowse()">
                                                 </mat-date-range-input>
                                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                 <mat-date-range-picker #picker></mat-date-range-picker>
@@ -66,25 +66,25 @@
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>PBillNo</mat-label>
-                                                <input name="PBillNo" formControlName="PBillNo" matInput>
+                                                <input name="PBillNo" formControlName="PBillNo" matInput (keyup)="onShow_IpdBrowse()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Reg No</mat-label>
                                                 <input name="RegNo" formControlName="RegNo" matInput
-                                                    (keyup)="onShow($event)">
+                                                    (keyup)="onShow_IpdBrowse()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>First Name</mat-label>
                                                 <input name="FirstName" formControlName="FirstName" matInput
-                                                    (keyup)="onShow($event)">
+                                                    (keyup)="onShow_IpdBrowse()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Last Name</mat-label>
                                                 <input name="LastName" formControlName="LastName" matInput
-                                                    (keyup)="onShow($event)">
+                                                    (keyup)="onShow_IpdBrowse()">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
@@ -94,14 +94,14 @@
                                                     [matAutocomplete]="autoCompany" required>
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
-                                                        (click)="_IpBillBrowseListService.myFilterform.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
+                                                        (click)="_IpBillBrowseListService.myFilterIpbillbrowseform.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
                                                     <mat-icon class="mat-icon-close"
-                                                        (click)="_IpBillBrowseListService.myFilterform.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
+                                                        (click)="_IpBillBrowseListService.myFilterIpbillbrowseform.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
                                                 </span>
                                                 <mat-autocomplete #autoCompany="matAutocomplete"
                                                     [displayWith]="getOptionTextCompany">
                                                     <mat-option *ngFor="let option of filteredOptionsCompany| async"
-                                                        [value]="option" (onSelectionChange)="onShow(option)">
+                                                        [value]="option" (onSelectionChange)="onShow_IpdBrowse()">
                                                         {{option.CompanyName}}
                                                     </mat-option>
                                                 </mat-autocomplete>
@@ -116,11 +116,11 @@
 
                                             <div class="action-buttons">
                                                 <button type="button" mat-raised-button class="clearbutton"
-                                                    matTooltip="close" (click)="onClear()">
+                                                    matTooltip="close" (click)="onClearbill()">
                                                     <mat-icon>close</mat-icon>
                                                 </button>
                                                 <button type="submit" mat-raised-button class="searchButton"
-                                                    (click)="onShow($event)" [disabled]="click" matTooltip="search">
+                                                    (click)="onShow_IpdBrowse()" [disabled]="click" matTooltip="search">
                                                     <mat-icon>search</mat-icon>
                                                 </button>
                                             </div>
@@ -409,7 +409,7 @@
                             </div>
                             <div class="sidebar-body">
                                 <div class="sidebar-form">
-                                    <form [formGroup]="_IpBillBrowseListService.myFilterform" fusePerfectScrollbar>
+                                    <form [formGroup]="_IpBillBrowseListService.myFilterIppaymentbrowseform" fusePerfectScrollbar>
                                         <div fxLayout="column" fxLayoutAlign="start none">
                                             <!-- Search fields -->
                                             <mat-form-field appearance="outline" fxFlex>
@@ -456,7 +456,7 @@
 
                                             <div class="action-buttons">
                                                 <button type="button" mat-raised-button class="clearbutton"
-                                                    matTooltip="close" (click)="onClear()">
+                                                    matTooltip="close" (click)="onClearpayment()">
                                                     <mat-icon>close</mat-icon>
                                                 </button>
                                                 <button type="button" mat-raised-button class="searchButton"
@@ -699,7 +699,7 @@
                             <!-- SIDEBAR CONTENT -->
                             <div>
                                 <div class="nav material2">
-                                    <form [formGroup]="_IpBillBrowseListService.myFilterform"
+                                    <form [formGroup]="_IpBillBrowseListService.myFilterIprefundbrowseform"
                                         style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
                                         <div fxLayout="column" fxLayoutAlign="start none">
                                             <br />
@@ -739,7 +739,7 @@
                                             </mat-form-field>
 
                                             <div style="margin-top: 10px;">
-                                                <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                                <button mat-raised-button (click)="onClearrefund()" class="clearbutton"
                                                     matTooltip="close">
                                                     <mat-icon class="cleariconbutton">close</mat-icon>
                                                 </button>&nbsp;

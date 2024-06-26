@@ -222,7 +222,7 @@ export class BedTransferComponent implements OnInit {
       this.BedClassList = data;
       this.Bedtransfer.get('ClassId').setValue(this.BedClassList[0]);
     })
-  }
+  } 
 
   onBedChange(value) {
     this.bedObj = value;

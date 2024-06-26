@@ -85,8 +85,8 @@ FlagBillNoSelected: boolean = false;
   ngOnInit(): void {
     
     if (this._ActRoute.url == "/reports/opreports") 
-      // this.Reportsection='OP Reports'
-    this.Reportsection=' OP MIS Reports'
+      this.Reportsection='OP Reports'
+    // this.Reportsection=' OP MIS Reports'
    
     // if (this._ActRoute.url == "/reports/ipreport") 
     //   this.Reportsection='IP Reports'

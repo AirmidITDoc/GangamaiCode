@@ -6,13 +6,21 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class IPBrowseBillService {
-  myFilterform: FormGroup;
+  myFilterIpbillbrowseform: FormGroup;
+  myFilterIppaymentbrowseform: FormGroup;
+  myFilterIprefundbrowseform: FormGroup;
+
   constructor(public _httpClient:HttpClient,
     private _formBuilder: FormBuilder) { 
-      this.myFilterform=this.filterForm_IpdBrowse();}
+      this.myFilterIpbillbrowseform=this.filterForm_IpdBrowse();
+      this.myFilterIppaymentbrowseform=this.filterForm_IpdpaymentBrowse();
+      this.myFilterIprefundbrowseform=this.filterForm_IpdrefundBrowse();
+    
+    
+    }
 
 
-filterForm_IpdBrowse(): FormGroup {
+    filterForm_IpdBrowse(): FormGroup {
   return this._formBuilder.group({
     PBillNo: [''],
     RegNo: [''],
@@ -26,6 +34,38 @@ filterForm_IpdBrowse(): FormGroup {
    
   });
 }
+
+
+filterForm_IpdpaymentBrowse(): FormGroup {
+  return this._formBuilder.group({
+    PBillNo: [''],
+    RegNo: [''],
+    FirstName: [''],
+    LastName: [''],
+    IsInterimOrFinal:['2'],
+    CompanyId:[''],
+    start: [(new Date()).toISOString()],
+    end: [(new Date()).toISOString()],
+    ReceiptNo:'',
+   
+  });
+}
+
+filterForm_IpdrefundBrowse(): FormGroup {
+  return this._formBuilder.group({
+    PBillNo: [''],
+    RegNo: [''],
+    FirstName: [''],
+    LastName: [''],
+    IsInterimOrFinal:['2'],
+    CompanyId:[''],
+    start: [(new Date()).toISOString()],
+    end: [(new Date()).toISOString()],
+    ReceiptNo:'',
+   
+  });
+}
+
 
 // public getIpBillBrowseList(employee) {
 //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowseIPDBill", employee)

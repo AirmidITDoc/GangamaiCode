@@ -177,7 +177,7 @@ export class IPBillBrowseListComponent implements OnInit {
     this._IpBillBrowseListService.getCompanyMasterCombo().subscribe(data => {
       this.companyList = data;
       this.optionsCompany = this.companyList.slice();
-      this.filteredOptionsCompany = this._IpBillBrowseListService.myFilterform.get('CompanyId').valueChanges.pipe(
+      this.filteredOptionsCompany = this._IpBillBrowseListService.myFilterIpbillbrowseform.get('CompanyId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterCompany(value) : this.companyList.slice()),
       );
@@ -376,15 +376,34 @@ console.log(PatientHeaderObj)
 
   }
 
-  onClear() {
+  onClearbill() {
 
-    this._IpBillBrowseListService.myFilterform.get('FirstName').reset();
-    this._IpBillBrowseListService.myFilterform.get('LastName').reset();
-    this._IpBillBrowseListService.myFilterform.get('RegNo').reset();
-    this._IpBillBrowseListService.myFilterform.get('PBillNo').reset();
-    this._IpBillBrowseListService.myFilterform.get('CompanyId').reset();
+    this._IpBillBrowseListService.myFilterIpbillbrowseform.get('FirstName').reset();
+    this._IpBillBrowseListService.myFilterIpbillbrowseform.get('LastName').reset();
+    this._IpBillBrowseListService.myFilterIpbillbrowseform.get('RegNo').reset();
+    this._IpBillBrowseListService.myFilterIpbillbrowseform.get('PBillNo').reset();
+    this._IpBillBrowseListService.myFilterIpbillbrowseform.get('CompanyId').reset();
   }
 
+  
+  onClearpayment() {
+
+    this._IpBillBrowseListService.myFilterIppaymentbrowseform.get('FirstName').reset();
+    this._IpBillBrowseListService.myFilterIppaymentbrowseform.get('LastName').reset();
+    this._IpBillBrowseListService.myFilterIppaymentbrowseform.get('RegNo').reset();
+    this._IpBillBrowseListService.myFilterIppaymentbrowseform.get('PBillNo').reset();
+    this._IpBillBrowseListService.myFilterIppaymentbrowseform.get('CompanyId').reset();
+  }
+
+  
+  onClearrefund() {
+
+    this._IpBillBrowseListService.myFilterIprefundbrowseform.get('FirstName').reset();
+    this._IpBillBrowseListService.myFilterIprefundbrowseform.get('LastName').reset();
+    this._IpBillBrowseListService.myFilterIprefundbrowseform.get('RegNo').reset();
+    this._IpBillBrowseListService.myFilterIprefundbrowseform.get('PBillNo').reset();
+    this._IpBillBrowseListService.myFilterIprefundbrowseform.get('CompanyId').reset();
+  }
   getViewbill(contact) {
 
     let xx = {
@@ -441,12 +460,12 @@ console.log(PatientHeaderObj)
   onShow_IpdBrowse() {
     this.sIsLoading = 'loading-data';
     var D_data = {
-      "F_Name": this._IpBillBrowseListService.myFilterform.get("FirstName").value + '%' || "%",
-      "L_Name": this._IpBillBrowseListService.myFilterform.get("LastName").value + '%' || "%",
-      "From_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-      "To_Dt ": this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "Reg_No": this._IpBillBrowseListService.myFilterform.get("RegNo").value || 0,
-      "PBillNo": this._IpBillBrowseListService.myFilterform.get("PBillNo").value + '%' || "%",
+      "F_Name": this._IpBillBrowseListService.myFilterIpbillbrowseform.get("FirstName").value + '%' || "%",
+      "L_Name": this._IpBillBrowseListService.myFilterIpbillbrowseform.get("LastName").value + '%' || "%",
+      "From_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterIpbillbrowseform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      "To_Dt ": this.datePipe.transform(this._IpBillBrowseListService.myFilterIpbillbrowseform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      "Reg_No": this._IpBillBrowseListService.myFilterIpbillbrowseform.get("RegNo").value || 0,
+      "PBillNo": this._IpBillBrowseListService.myFilterIpbillbrowseform.get("PBillNo").value + '%' || "%",
       "Start":(this.paginator?.pageIndex??0),
       "Length":(this.paginator?.pageSize??35)
       // "IsInterimOrFinal": 2,//this._ipbillBrowseService.myFilterform.get("IsInterimOrFinal").value || "0",
@@ -630,13 +649,13 @@ console.log(PatientHeaderObj)
     debugger;
     this.sIsLoading = 'loading-data';
     var D_data = {
-      "F_Name": this._IpBillBrowseListService.myFilterform.get("FirstName").value + '%' || "%",
-      "L_Name": this._IpBillBrowseListService.myFilterform.get("LastName").value + '%' || "%",
-      "From_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("start").value, "MM-dd-yyyy"), //"01/01/2018",
-      "To_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("end").value, "MM-dd-yyyy"), //"01/01/2020",
-      "Reg_No": this._IpBillBrowseListService.myFilterform.get("RegNo").value || 0,
-      "PBillNo": this._IpBillBrowseListService.myFilterform.get("PBillNo").value  || '%',
-      "ReceiptNo": this._IpBillBrowseListService.myFilterform.get("ReceiptNo").value || '%',
+      "F_Name": this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("FirstName").value + '%' || "%",
+      "L_Name": this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("LastName").value + '%' || "%",
+      "From_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("start").value, "MM-dd-yyyy"), //"01/01/2018",
+      "To_Dt": this.datePipe.transform(this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("end").value, "MM-dd-yyyy"), //"01/01/2020",
+      "Reg_No": this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("RegNo").value || 0,
+      "PBillNo": this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("PBillNo").value  || '%',
+      "ReceiptNo": this._IpBillBrowseListService.myFilterIppaymentbrowseform.get("ReceiptNo").value || '%',
   
     }
     console.log(D_data);
@@ -696,11 +715,11 @@ console.log(PatientHeaderObj)
     debugger
     this.sIsLoading = 'loading-data';
     var D_data= {
-      "F_Name":this._IpBillBrowseListService.myFilterform.get("FirstName").value + '%' || "%",
-      "L_Name":this._IpBillBrowseListService.myFilterform.get("LastName").value + '%' || "%",
-      "From_Dt" : this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
-      "To_Dt" : this.datePipe.transform(this._IpBillBrowseListService.myFilterform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
-      "Reg_No":this._IpBillBrowseListService.myFilterform.get("RegNo").value || 0,
+      "F_Name":this._IpBillBrowseListService.myFilterIprefundbrowseform.get("FirstName").value + '%' || "%",
+      "L_Name":this._IpBillBrowseListService.myFilterIprefundbrowseform.get("LastName").value + '%' || "%",
+      "From_Dt" : this.datePipe.transform(this._IpBillBrowseListService.myFilterIprefundbrowseform.get("start").value,"MM-dd-yyyy") || "01/01/1900",
+      "To_Dt" : this.datePipe.transform(this._IpBillBrowseListService.myFilterIprefundbrowseform.get("end").value,"MM-dd-yyyy") || "01/01/1900",
+      "Reg_No":this._IpBillBrowseListService.myFilterIprefundbrowseform.get("RegNo").value || 0,
       // "PBillNo":this._IPBrowseRefundofBillService.myFilterform.get("PBillNo").value || "0",
     }
   
