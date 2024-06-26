@@ -106,10 +106,17 @@ export class DischargeSummaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.advanceDataStored.storage) {
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      this.registerObj = this.advanceDataStored.storage;
+      this.vAdmissionId = this.selectedAdvanceObj.AdmissionID;
+      this.getDischargeSummaryData(this.registerObj)
+    }
+    
     this.DischargesumForm=this.showDischargeSummaryForm();
     this.MedicineItemForm = this.MedicineItemform();
     this.getAdmissionInfo();
-    this.getDischargeSummaryData();
+    //this.getDischargeSummaryData();
     this.getdischargeIdbyadmission();
     this.getDoseList();
 
@@ -134,72 +141,6 @@ export class DischargeSummaryComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  getdischargeIdbyadmission(){
-    let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
-    console.log(Query)
-    this._IpSearchListService.getDischargeId(Query).subscribe(data => {
-      this.registerObj = data[0];
-      console.log(this.registerObj);
-      this.vDischargeId=this.registerObj.DischargeId
-    });
-  }
-
-  // showDischargeSummaryForm(): FormGroup {
-  //   return this._formBuilder.group({
-  //     AdmissionId:'',
-  //     RegNo: '',
-  //     IPDNo: '',
-  //     FirstName: '',
-  //     PatientName: '',
-  //     MobileNo: '', 
-  //     DOA:'',
-  //     DOT:'',
-  //     BedNo:'',
-  //     DoctorId: '0',
-  //     DoctorID:'',
-  //     DoctorName: '',
-  //     WardId: '0',
-  //     RoomName: '',
-  //     // DischargesummaryId :'',
-  //     DischargeSummaryId:'', 
-  //     DischargeId :'',
-	//     History :'',
-  //     Diagnosis :'',
-  //     Investigation :'',
-  //     ClinicalFinding:'',
-  //     OpertiveNotes:'',
-  //     TreatmentGiven:'',
-  //     TreatmentAdvisedAfterDischarge:'',
-	//     Followupdate:[{ value:new Date() }],
-	//     Remark:'',
-	//     DischargeSummaryDate:'',
-	//     OPDate :'',
-	//     OPTime :'',
-	//     DischargeDoctor1 :'',
-	//     DischargeDoctor2 :'',
-	//     DischargeDoctor3 :'',
-	//     DischargeSummaryTime :'',
-	//     DoctorAssistantName :'',
-	//     ClaimNumber :'',
-	//     PreOthNumber:'',
-  //     AddedBy :'',
-	//     AddedByDate :'',
-	//     SurgeryProcDone :'',
-	//     ICD10CODE :'',
-	//     ClinicalConditionOnAdmisssion:'',
-	//     OtherConDrOpinions:'',
-	//     ConditionAtTheTimeOfDischarge :'',
-	//     PainManagementTechnique	:'',
-	//     LifeStyle :'',
-	//     WarningSymptoms	:'',
-	//     Radiology :'',
-	//     IsNormalOrDeath :'',
-  //     DoctorName1: '',
-
-  //     DoctorIdOne: '',
-  //     DoctorIdTwo: ''
-  //   });
-  // }
   isItemIdSelected:boolean=false;
   MedicineItemform(): FormGroup {
     return this._formBuilder.group({
@@ -457,26 +398,35 @@ export class DischargeSummaryComponent implements OnInit {
   lngAdmId: any = [];
   // ============================================================================
   getAdmissionInfo() {
-    let Query = "select Isnull(AdmissionId,0) as AdmId from DischargeSummary where AdmissionId=" + this.vAdmissionId + ""
+    // let Query = "select Isnull(AdmissionId,0) as AdmId from DischargeSummary where AdmissionId=" + this.vAdmissionId + ""
+    // console.log(Query)
+    // this._IpSearchListService.getchargesList(Query).subscribe(data => { 
+    //   this.lngAdmId = data;
+    //   console.log(this.lngAdmId)
+    //   if (this.lngAdmId.length > 0) {
+    //     this.getDischargeSummaryData();
+    //   }
+    //   else {
+    //     console.log('no-data found');
+    //   }
+    // },
+    //   (error) => {
+    //     this.isLoading = 'list-loaded';
+    //   });
+  }
+  getdischargeIdbyadmission(){
+    let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
     console.log(Query)
-    this._IpSearchListService.getchargesList(Query).subscribe(data => { 
-      this.lngAdmId = data;
-      console.log(this.lngAdmId)
-      if (this.lngAdmId.length > 0) {
-        this.getDischargeSummaryData();
-      }
-      else {
-        console.log('no-data found');
-      }
-    },
-      (error) => {
-        this.isLoading = 'list-loaded';
-      });
+    this._IpSearchListService.getDischargeId(Query).subscribe(data => {
+      this.registerObj = data[0];
+      console.log(this.registerObj);
+      this.vDischargeId=this.registerObj.DischargeId
+    });
   }
 
-  getDischargeSummaryData() {
+  getDischargeSummaryData(el) {
     var m_data2 = {
-      "AdmissionId": this.vAdmissionId || 0
+      "AdmissionId": el.AdmissionID 
     }
     console.log(m_data2)
     this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data: any) => {
@@ -502,13 +452,13 @@ OnSave(){
   insertIPDDischargSummaryObj['dischargeId'] = this.vDischargeId,
   insertIPDDischargSummaryObj['history'] = this.DischargesumForm.get("History").value || "",
   insertIPDDischargSummaryObj['diagnosis'] = this.DischargesumForm.get("Diagnosis").value || "",
-  insertIPDDischargSummaryObj['investigation'] = this.DischargesumForm.get("Investigation").value || "",
-  insertIPDDischargSummaryObj['clinicalFinding'] = this.DischargesumForm.get("ClinicalFinding").value || "",
-  insertIPDDischargSummaryObj['opertiveNotes'] = this.DischargesumForm.get("OpertiveNotes").value || "",
+  insertIPDDischargSummaryObj['investigation'] = this.DischargesumForm.get("SurgeryProcDone").value || "",
+  insertIPDDischargSummaryObj['clinicalFinding'] = this.DischargesumForm.get("ClinicalConditionOnAdmisssion").value || "",
+  insertIPDDischargSummaryObj['opertiveNotes'] = this.DischargesumForm.get("WarningSymptoms").value || "",
   insertIPDDischargSummaryObj['treatmentGiven'] =  this.DischargesumForm.get("TreatmentGiven").value || "",
   insertIPDDischargSummaryObj['treatmentAdvisedAfterDischarge'] = this.DischargesumForm.get("TreatmentAdvisedAfterDischarge").value || "",
   insertIPDDischargSummaryObj['followupdate'] = this.DischargesumForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
-  insertIPDDischargSummaryObj['remark'] = this.DischargesumForm.get("Remark").value || "",
+  insertIPDDischargSummaryObj['remark'] = this.DischargesumForm.get("ConditionAtTheTimeOfDischarge").value || "",
   insertIPDDischargSummaryObj['dischargeSummaryDate'] = this.dateTimeObj.date,//this.DischargesumForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
   insertIPDDischargSummaryObj['opDate'] =  this.dateTimeObj.date,
   insertIPDDischargSummaryObj['opTime'] =  this.dateTimeObj.date,
@@ -569,13 +519,13 @@ OnSave(){
   updateIPDDischargSummaryObj['dischargeId'] = this.vDischargeId,
   updateIPDDischargSummaryObj['history'] = this.DischargesumForm.get("History").value || "",
   updateIPDDischargSummaryObj['diagnosis'] = this.DischargesumForm.get("Diagnosis").value || "",
-  updateIPDDischargSummaryObj['investigation'] = this.DischargesumForm.get("Investigation").value || "",
-  updateIPDDischargSummaryObj['clinicalFinding'] = this.DischargesumForm.get("ClinicalFinding").value || "",
-  updateIPDDischargSummaryObj['opertiveNotes'] = this.DischargesumForm.get("OpertiveNotes").value || "",
+  updateIPDDischargSummaryObj['investigation'] = this.DischargesumForm.get("SurgeryProcDone").value || "",
+  updateIPDDischargSummaryObj['clinicalFinding'] = this.DischargesumForm.get("ClinicalConditionOnAdmisssion").value || "",
+  updateIPDDischargSummaryObj['opertiveNotes'] = this.DischargesumForm.get("WarningSymptoms").value || "",
   updateIPDDischargSummaryObj['treatmentGiven'] =  this.DischargesumForm.get("TreatmentGiven").value || "",
   updateIPDDischargSummaryObj['treatmentAdvisedAfterDischarge'] = this.DischargesumForm.get("TreatmentAdvisedAfterDischarge").value || "",
   updateIPDDischargSummaryObj['followupdate'] = this.DischargesumForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
-  updateIPDDischargSummaryObj['remark'] = this.DischargesumForm.get("Remark").value || "",
+  updateIPDDischargSummaryObj['remark'] = this.DischargesumForm.get("ConditionAtTheTimeOfDischarge").value || "",
   updateIPDDischargSummaryObj['dischargeSummaryDate'] = this.dateTimeObj.date,//this.DischargesumForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
   updateIPDDischargSummaryObj['opDate'] =  this.dateTimeObj.date,
   updateIPDDischargSummaryObj['opTime'] =  this.dateTimeObj.date,
