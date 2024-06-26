@@ -22,6 +22,7 @@ import { IpdAdvanceBrowseModel } from '../../browse-ipadvance/browse-ipadvance.c
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { debug } from 'console';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
+import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
 
 
 @Component({
@@ -66,7 +67,7 @@ export class IPAdvanceComponent implements OnInit {
   isLoadingStr: string = '';
   AdvFormGroup: FormGroup;
   isLoading: string = '';
-  selectedAdvanceObj: AdvanceDetailObj;
+  selectedAdvanceObj: AdmissionPersonlModel;
   screenFromString = 'advance';
   dateTimeObj: any;
   TotalAdvamt: any;

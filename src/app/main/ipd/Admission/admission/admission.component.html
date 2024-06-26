@@ -894,17 +894,7 @@
                         </div>
                         <mat-card>
                             <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
-                                <!-- <mat-form-field appearance="outline" fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Patient Type</mat-label>
-                                    <mat-select formControlName="PatientTypeID"
-                                        (selectionChange)="onChangePatient($event.value)" #ptype
-                                        (keydown)="onEnterptype($event)" required>
-                                        <mat-option *ngFor="let Doc of PatientTypeList" [value]="Doc">
-                                            {{Doc.PatientType}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field> -->
-
+                              
                                 <mat-form-field appearance="outline">
                                     <mat-label>Patient Type</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Patient Type"
@@ -926,14 +916,7 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Tariff Name</mat-label>
-                                    <mat-select formControlName="TariffId" #tariff (keydown)="onEnterptariff($event)">
-                                        <mat-option *ngFor="let Doc of TariffList" [value]="Doc">
-                                            {{Doc.TariffName}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field> -->
+                            
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Tariff Name</mat-label>
@@ -1010,8 +993,8 @@
                                         <mat-icon class="mat-icon-close"
                                             (click)="hospitalFormGroup.get('admittedDoctor1').setValue(''); isAdmittedDoctor1Selected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
-                                        <mat-option *ngFor="let option of filteredOptionsRefDoc | async"
+                                    <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextAdDoc1">
+                                        <mat-option *ngFor="let option of filteredOptionsDoc1 | async"
                                             [value]="option">
                                             {{option.DoctorName}}
                                         </mat-option>
@@ -1041,14 +1024,14 @@
                                     <mat-label>Ref Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Ref Doctor "
                                         matInput #refdoc (keydown)="onEnterrefdoc($event)" formControlName="refDoctorId"
-                                        [(ngModel)]="vrefDoctorId" [matAutocomplete]="autodoc2">
+                                        [(ngModel)]="vrefDoctorId" [matAutocomplete]="autorefdoc">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="hospitalFormGroup.get('refDoctorId').setValue(''); isRefDoctorSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
                                             (click)="hospitalFormGroup.get('refDoctorId').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #autodoc2="matAutocomplete" [displayWith]="getOptionTextRefDoc">
+                                    <mat-autocomplete #autorefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
                                         <mat-option *ngFor="let option of filteredOptionsRefrenceDoc | async"
                                             [value]="option">
                                             {{option.DoctorName}}

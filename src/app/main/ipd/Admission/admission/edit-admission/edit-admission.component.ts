@@ -91,6 +91,10 @@ export class EditAdmissionComponent implements OnInit {
   DoctorId: any = 0;
   AdList: boolean = false;
 
+  RefoptionsDoc: any[] = [];
+  optionsAdDoc1: any[] = [];
+  optionsAdDoc2: any[] = [];
+
   // optionsDep: any[] = [];
   // options = [];
   // optionsDoc: any[] = [];
@@ -129,7 +133,7 @@ export class EditAdmissionComponent implements OnInit {
   isTariffIdSelected: boolean = false;
   optionsPatientType: any[] = [];
   optionsTariff: any[] = [];
-  RefoptionsDoc: any[] = [];
+   optionsRefDoc: any[] = [];
 
   vRelativeName:any;
   vRelativeAddress:any;
@@ -331,15 +335,7 @@ export class EditAdmissionComponent implements OnInit {
   }
 
   
-  private _filteradmittedDoctor1(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.Doctor1List.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
-    }
-  }
-
-
-    
+     
   private _filterrefDoctorId(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
@@ -347,13 +343,7 @@ export class EditAdmissionComponent implements OnInit {
     }
   }
    
-  private _filteradmittedDoctor2(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.Doctor2List.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
-    }
-  }
-
+  
 
   private _filterRelationshipId(value: any): string[] {
     if (value) {
@@ -455,6 +445,9 @@ debugger
   }
 
   getOptionTextRefDoc(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
+  getOptionTextAdDoc1(option) {
     return option && option.DoctorName ? option.DoctorName : '';
   }
 
@@ -560,44 +553,107 @@ debugger
     });
   }
 
+  // getDoctor1List() {
+  //   this._AdmissionService.getDoctorMaster1Combo().subscribe(data => {
+  //     this.Doctor1List = data;
+  //     if (this.registerObj1) {
+  //       const ddValue = this.Doctor1List.filter(c => c.DoctorID == this.registerObj1.AdmittedDoctor1ID);
+  //       this.hospitalFormGroup.get('admittedDoctor1').setValue(ddValue[0]);
+  //       this.hospitalFormGroup.updateValueAndValidity();
+  //       return;
+  //     }
+  //   });
+  // }
+
+
+
+  // getDoctor2List() {
+  //   this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
+  //     this.Doctor2List = data;
+  //     if (this.registerObj1) {
+  //       const ddValue = this.Doctor2List.filter(c => c.DoctorID == this.registerObj1.AdmittedDoctor2ID);
+  //       this.hospitalFormGroup.get('admittedDoctor2').setValue(ddValue[0]);
+  //       this.hospitalFormGroup.updateValueAndValidity();
+  //       return;
+  //     }
+  //   });
+  // }
+
+  // getRefDoctorList() {
+  //   this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
+  //     this.RefDoctorList = data;
+  //     if (this.registerObj1) {
+  //       const ddValue = this.RefDoctorList.filter(c => c.DoctorID == this.registerObj1.RefDocNameId);
+  //       this.hospitalFormGroup.get('refDoctorId').setValue(ddValue[0]);
+  //       this.hospitalFormGroup.updateValueAndValidity();
+  //       return;
+  //     }
+  //   });
+  // }
   getDoctor1List() {
     this._AdmissionService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor1List = data;
-      if (this.registerObj1) {
-        const ddValue = this.Doctor1List.filter(c => c.DoctorID == this.registerObj1.AdmittedDoctor1ID);
-        this.hospitalFormGroup.get('admittedDoctor1').setValue(ddValue[0]);
-        this.hospitalFormGroup.updateValueAndValidity();
-        return;
-      }
+      this.optionsAdDoc1 = this.Doctor1List.slice();
+      this.filteredOptionsDoc1 = this.hospitalFormGroup.get('admittedDoctor1').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filteradmittedDoctor1(value) : this.Doctor1List.slice()),
+      );
     });
   }
+  
+  
 
+
+    private _filteradmittedDoctor1(value: any): string[] {
+      if (value) {
+        const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+        return this.optionsAdDoc1.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      }
+  
+    }
 
 
   getDoctor2List() {
     this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
       this.Doctor2List = data;
-      if (this.registerObj1) {
-        const ddValue = this.Doctor2List.filter(c => c.DoctorID == this.registerObj1.AdmittedDoctor2ID);
-        this.hospitalFormGroup.get('admittedDoctor2').setValue(ddValue[0]);
-        this.hospitalFormGroup.updateValueAndValidity();
-        return;
-      }
+      this.optionsAdDoc2 = this.Doctor2List.slice();
+      this.filteredOptionsDoc2 = this.hospitalFormGroup.get('admittedDoctor2').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filteradmittedDoctor2(value) : this.Doctor2List.slice()),
+      );
+
     });
   }
+
+  
+  private _filteradmittedDoctor2(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsAdDoc2.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
 
   getRefDoctorList() {
     this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
       this.RefDoctorList = data;
-      if (this.registerObj1) {
-        const ddValue = this.RefDoctorList.filter(c => c.DoctorID == this.registerObj1.RefDocNameId);
-        this.hospitalFormGroup.get('refDoctorId').setValue(ddValue[0]);
-        this.hospitalFormGroup.updateValueAndValidity();
-        return;
-      }
+      this.optionsRefDoc = this.RefDoctorList.slice();
+      this.filteredOptionsRefrenceDoc = this.hospitalFormGroup.get('refDoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterRefdoc(value) : this.RefDoctorList.slice()),
+      );
+
     });
   }
 
+  private _filterRefdoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsRefDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
 
 //new code
 

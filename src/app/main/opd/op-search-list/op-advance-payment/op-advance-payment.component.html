@@ -372,7 +372,7 @@
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
                                     required="required" value="987665868822">
                                 <mat-error class="error"
-                                    *ngIf="paymentForm.get('paytmMobileNoController').invalid && paymentForm.get('paytmMobileNoController').touched">10
+                                    *ngIf="paymentForm.get('paytmMobileNoController').invalid && paymentForm.get('paytmMobileNoController').touched">12
                                     digits Trans number is required</mat-error>
                             </mat-form-field>
                         </div>

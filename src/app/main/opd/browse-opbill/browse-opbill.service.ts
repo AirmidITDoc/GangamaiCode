@@ -7,17 +7,42 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class BrowseOPBillService {
 
-  myFilterform: FormGroup ;
+  myFilterbillform: FormGroup ;
+  myFilterpayform: FormGroup ;
+  myFilterrefundform: FormGroup ;
 
   constructor(
     public _httpClient:HttpClient,
     private _formBuilder: FormBuilder
   ) { 
-    this.myFilterform=this.filterForm();
+    this.myFilterbillform=this.myFilterbillbrowseform();
+    this.myFilterpayform=this.myFilterpaymentbrowseform();
+    this.myFilterrefundform=this.myFilterrefundbrowseform();
+
     
   }
 
-  filterForm(): FormGroup {
+
+  myFilterbillbrowseform(): FormGroup {
+    return this._formBuilder.group({
+     
+      FirstName: ['', [
+         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      LastName:['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+     ]],
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      PBillNo: '', 
+      RegNo: '',
+     ReceiptNo: '',
+    });
+  }
+
+
+
+  myFilterpaymentbrowseform(): FormGroup {
     return this._formBuilder.group({
      
       FirstName: ['', [
@@ -35,6 +60,22 @@ export class BrowseOPBillService {
   }
 
   
+  myFilterrefundbrowseform(): FormGroup {
+    return this._formBuilder.group({
+     
+      FirstName: ['', [
+         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      LastName:['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+     ]],
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      PBillNo: '', 
+      RegNo: '',
+     ReceiptNo: '',
+    });
+  }
 
   public getBrowseOPDBillsList(param) {
     return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_BrowseOPDBill", param) 

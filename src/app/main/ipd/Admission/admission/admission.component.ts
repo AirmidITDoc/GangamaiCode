@@ -9,7 +9,6 @@ import { DatePipe, Time } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AdmissionService } from './admission.service';
 import Swal from 'sweetalert2';
-import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component';
 import { EditAdmissionComponent } from './edit-admission/edit-admission.component';
 import { fuseAnimations } from '@fuse/animations';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -89,7 +88,7 @@ export class AdmissionComponent implements OnInit {
   isRelationshipSelected: boolean = false;
   isSearchdoctorSelected: boolean = false;
 
-  selectedAdvanceObj: AdvanceDetailObj;
+  selectedAdvanceObj: AdmissionPersonlModel;
   submitted = false;
   HospitalList: any = [];
   PatientTypeList: any = [];
@@ -173,6 +172,7 @@ export class AdmissionComponent implements OnInit {
   filteredOptionsDep: Observable<string[]>;
   filteredOptionsCity: Observable<string[]>;
   filteredOptionsDoc: Observable<string[]>;
+  filteredOptionsDoc1: Observable<string[]>;
   filteredOptionsRefDoc: Observable<string[]>;
   filteredOptionsWard: Observable<string[]>;
   filteredOptionsBed: Observable<string[]>;
@@ -196,7 +196,8 @@ export class AdmissionComponent implements OnInit {
   optionsPatientType: any[] = [];
   optionsTariff: any[] = [];
   RefoptionsDoc: any[] = [];
-
+  optionsAdDoc1: any[] = [];
+  optionsAdDoc2: any[] = [];
 
   Vtotalcount = 0;
   VNewcount = 0;
@@ -403,6 +404,8 @@ export class AdmissionComponent implements OnInit {
       const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
       return this.PatientTypeList.filter(option => option.PatientType.toLowerCase().includes(filterValue));
     }
+
+  
   }
 
   getPtypeCombo() {
@@ -674,21 +677,8 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-  private _filterRefdoc(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsRefDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
-    }
 
-  }
-
-  private _filterReferdoc(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.RefoptionsDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
-    }
-
-  }
+ 
   
   private _filterSearchdoc(value: any): string[] {
     if (value) {
@@ -699,15 +689,7 @@ export class AdmissionComponent implements OnInit {
   }
 
 
-  private _filterdoc2(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-      return this.optionsDoc2.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
-    }
-
-  }
-
-
+ 
   private _filterWard(value: any): string[] {
     if (value) {
       const filterValue = value && value.RoomName ? value.RoomName.toLowerCase() : value.toLowerCase();
@@ -898,6 +880,11 @@ export class AdmissionComponent implements OnInit {
   }
 
   getOptionTextRefDoc(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
+
+
+  getOptionTextAdDoc1(option) {
     return option && option.DoctorName ? option.DoctorName : '';
   }
 
@@ -1203,40 +1190,67 @@ export class AdmissionComponent implements OnInit {
   getDoctor1List() {
     this._AdmissionService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor1List = data;
-      this.optionsRefDoc = this.Doctor1List.slice();
-      this.filteredOptionsRefDoc = this.hospitalFormGroup.get('admittedDoctor1').valueChanges.pipe(
+      this.optionsAdDoc1 = this.Doctor1List.slice();
+      this.filteredOptionsDoc1 = this.hospitalFormGroup.get('admittedDoctor1').valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filterRefdoc(value) : this.Doctor1List.slice()),
+        map(value => value ? this._filteradmittedDoctor1(value) : this.Doctor1List.slice()),
       );
     });
   }
+  
+  
 
+
+    private _filteradmittedDoctor1(value: any): string[] {
+      if (value) {
+        const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+        return this.optionsAdDoc1.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+      }
+  
+    }
 
 
   getDoctor2List() {
     this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
       this.Doctor2List = data;
-      this.optionsDoc2 = this.Doctor2List.slice();
+      this.optionsAdDoc2 = this.Doctor2List.slice();
       this.filteredOptionsDoc2 = this.hospitalFormGroup.get('admittedDoctor2').valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filterRefdoc(value) : this.Doctor2List.slice()),
+        map(value => value ? this._filteradmittedDoctor2(value) : this.Doctor2List.slice()),
       );
 
     });
   }
+
+  
+  private _filteradmittedDoctor2(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsAdDoc2.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
+
 
   getRefDoctorList() {
     this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
       this.RefDoctorList = data;
-      this.RefoptionsDoc = this.RefDoctorList.slice();
+      this.optionsRefDoc = this.RefDoctorList.slice();
       this.filteredOptionsRefrenceDoc = this.hospitalFormGroup.get('refDoctorId').valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filterReferdoc(value) : this.RefDoctorList.slice()),
+        map(value => value ? this._filterRefdoc(value) : this.RefDoctorList.slice()),
       );
 
     });
   }
 
+  private _filterRefdoc(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsRefDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
+  }
 
 
   getWardList() {
@@ -2171,7 +2185,7 @@ this.getAdmittedPatientList_1()
 
   NewMLc(contact) {
     
-    this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+    this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
     this._AdmissionService.populateForm(contact);
     // contact.AdmissionID=53732;
     //  console.log(row)
@@ -2257,7 +2271,7 @@ this.getAdmittedPatientList_1()
 
       // };
 
-      this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+      this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
       this._AdmissionService.populateForm(contact);
       const dialogRef = this._matDialog.open(SubCompanyTPAInfoComponent,
         {
@@ -2778,7 +2792,7 @@ this.getAdmittedPatientList_1()
 
   EditRegistration(row) {
     
-    this.advanceDataStored.storage = new AdvanceDetailObj(row);
+    this.advanceDataStored.storage = new AdmissionPersonlModel(row);
     console.log(row)
     this._registrationService.populateFormpersonal(row);
     this.registerObj["RegId"]=row.RegID;
@@ -2816,7 +2830,7 @@ this.getAdmittedPatientList_1()
 
   getEditCompany(row) {
     
-    this.advanceDataStored.storage = new AdvanceDetailObj(row);
+    this.advanceDataStored.storage = new AdmissionPersonlModel(row);
     console.log(row)
     this._registrationService.populateFormpersonal(row);
     this.registerObj["RegId"]=row.RegID;
@@ -3095,6 +3109,7 @@ export class Bed {
 export class AdmissionPersonlModel {
   AadharCardNo: any;
   Address: any;
+  opD_IPD_Type:any;
   Age: Number;
   AgeDay: any;
   AgeMonth: any;
@@ -3150,6 +3165,8 @@ export class AdmissionPersonlModel {
   RefDoctorName: string;
   AdmittedDoctor2: any;
   AdmittedDoctor1: any;
+  RefDocName:any;
+  BedId:any;
   BedName: any;
   IPDNo: any;
   TariffName: any;
@@ -3163,12 +3180,12 @@ export class AdmissionPersonlModel {
   SubCompanyId: any;
   Aadharcardno: any;
   Pancardno: any;
-  RefDocName: any;
   RelativePhoneNo: any;
   DepartmentId:any;
   IsOpToIPconv:any;
   ClassName:any;
   IsBillGenerated:any;
+  RoomId:any;
   RoomName:any;
   Doctorname:any;
   AdmDateTime:any;
@@ -3176,8 +3193,49 @@ export class AdmissionPersonlModel {
   RefDocNameId:any;
   RefDocNameID:any;
   DocNameID:any;
+  
 RelativeAddress:any;
 IsSeniorCitizen:any;
+RegID:any;
+ClassId:any;
+WardId:any;
+PolicyNo: any;
+MemberNo: any;
+
+AprovAmount
+CompDOD
+IsPharClearance
+IPNumber
+EstimatedAmount
+ApprovedAmount
+HosApreAmt
+PathApreAmt
+PharApreAmt
+RadiApreAmt
+PharDisc
+
+ClaimNo: any;
+CompBillNo: any;
+CompBillDate: any;
+CompDiscount: any;
+CompDisDate: any;
+C_BillNo: any;
+C_FinalBillAmt: any;
+C_DisallowedAmt: any;
+HDiscAmt: any;
+C_OutsideInvestAmt: any;
+RecoveredByPatient: any;
+H_ChargeAmt: any;
+H_AdvAmt: any;
+H_BillId: any;
+H_BillDate: any;
+H_BillNo: any;
+H_TotalAmt: any;
+H_DiscAmt: any;
+H_NetAmt: any;
+H_PaidAmt: any;
+H_BalAmt: any;
+
   /**
 * Constructor
 *
@@ -3187,6 +3245,7 @@ IsSeniorCitizen:any;
     {
       this.Departmentid = AdmissionPersonl.Departmentid || 0;
       this.AadharCardNo = AdmissionPersonl.AadharCardNo || '';
+      this.opD_IPD_Type=AdmissionPersonl.opD_IPD_Type || 0
       this.Address = AdmissionPersonl.Address || '';
       this.Age = AdmissionPersonl.Age || '';
       this.AgeDay = AdmissionPersonl.AgeDay || '';
@@ -3227,6 +3286,7 @@ IsSeniorCitizen:any;
       this.VillageName = AdmissionPersonl.VillageName || '';
       this.AdmittedDoctor1ID = AdmissionPersonl.AdmittedDoctor1ID || 0;
       this.AdmittedDoctor2ID = AdmissionPersonl.AdmittedDoctor2ID || 0;
+      this.RefDocName=AdmissionPersonl.RefDocName || '';
       this.RelationshipId = AdmissionPersonl.RelationshipId || 0;
       this.AdmissionID = AdmissionPersonl.AdmissionID || 0;
       this.AdmissionDate = AdmissionPersonl.AdmissionDate || '';
@@ -3269,6 +3329,48 @@ IsSeniorCitizen:any;
       this.RefDocNameID=AdmissionPersonl.RefDocNameID || 0
       this.DocNameID=AdmissionPersonl.DocNameID || 0
       this.IsSeniorCitizen=AdmissionPersonl.IsSeniorCitizen || 0
+      this.BedId=AdmissionPersonl.BedId || 0;
+      this.RegID=AdmissionPersonl.RegID || 0;
+      this.ClassId=AdmissionPersonl.ClassId || 0
+      this.RoomId=AdmissionPersonl.RoomId || 0;
+      this.WardId =AdmissionPersonl.WardId ||0;
+      this.PolicyNo = AdmissionPersonl.PolicyNo || '';
+      this.MemberNo = AdmissionPersonl.MemberNo || '';
+
+      this.AprovAmount = AdmissionPersonl.AprovAmount || '';
+      this.CompDOD = AdmissionPersonl.CompDOD || '';
+      this.IsPharClearance = AdmissionPersonl.IsPharClearance || '';
+      this.IPNumber = AdmissionPersonl.IPNumber || '';
+      this.EstimatedAmount = AdmissionPersonl.EstimatedAmount || '';
+      this.ApprovedAmount = AdmissionPersonl.ApprovedAmount || '';
+      this.HosApreAmt = AdmissionPersonl.HosApreAmt || '';
+      this.PathApreAmt = AdmissionPersonl.PathApreAmt || '';
+      this.PharApreAmt = AdmissionPersonl.PharApreAmt || '';
+      this.RadiApreAmt = AdmissionPersonl.RadiApreAmt || '';
+      this.PharDisc = AdmissionPersonl.HDiscAmt || '';
+
+      this.ClaimNo = AdmissionPersonl.ClaimNo || '';
+      this.CompBillNo = AdmissionPersonl.CompBillNo || '';
+      this.CompBillDate = AdmissionPersonl.CompBillDate || '';
+      this.CompDiscount = AdmissionPersonl.CompDiscount || '';
+      this.CompDisDate = AdmissionPersonl.CompDisDate || '';
+      this.C_BillNo = AdmissionPersonl.C_BillNo || '';
+      this.C_FinalBillAmt = AdmissionPersonl.C_FinalBillAmt || '';
+      this.C_DisallowedAmt = AdmissionPersonl.C_DisallowedAmt || '';
+      this.HDiscAmt = AdmissionPersonl.HDiscAmt || '';
+      this.C_OutsideInvestAmt = AdmissionPersonl.C_OutsideInvestAmt || '';
+      this.RecoveredByPatient = AdmissionPersonl.RecoveredByPatient || '';
+      this.H_ChargeAmt = AdmissionPersonl.H_ChargeAmt || '';
+      this.H_AdvAmt = AdmissionPersonl.H_AdvAmt || '';
+      this.H_BillId = AdmissionPersonl.H_BillId || '';
+      this.H_BillDate = AdmissionPersonl.H_BillDate || '';
+      this.H_BillNo = AdmissionPersonl. H_BillNo || '';
+      this.H_TotalAmt = AdmissionPersonl. H_TotalAmt || '';
+      this.H_DiscAmt = AdmissionPersonl.H_DiscAmt || '';
+      this.H_NetAmt = AdmissionPersonl.H_NetAmt || '';
+      this.H_PaidAmt = AdmissionPersonl.H_PaidAmt || '';
+      this.H_BalAmt = AdmissionPersonl.H_BalAmt || '';
+      
     }
   }
 }
@@ -3301,13 +3403,13 @@ export class Editdetail {
       this.AdmissionDate = Editdetail.AdmissionDate || '';
       this.RegNo = Editdetail.RegNo || '';
       this.OPD_IPD_ID = Editdetail.OPD_IPD_ID || '';
-      //  this.AgeYear = AdvanceDetailObj.AgeYear || '';
-      //  this.ClassId = AdvanceDetailObj.ClassId || '';
-      //  this.ClassName = AdvanceDetailObj.ClassName || '';
-      //  this.TariffName = AdvanceDetailObj.TariffName || '';
-      //  this.TariffId = AdvanceDetailObj.TariffId || '';
-      //  this.IsDischarged =AdvanceDetailObj.IsDischarged || 0 ;
-      //  this.opD_IPD_Type = AdvanceDetailObj.opD_IPD_Type | 0;
+      //  this.AgeYear = AdmissionPersonl.AgeYear || '';
+      //  this.ClassId = AdmissionPersonl.ClassId || '';
+      //  this.ClassName = AdmissionPersonl.ClassName || '';
+      //  this.TariffName = AdmissionPersonl.TariffName || '';
+      //  this.TariffId = AdmissionPersonl.TariffId || '';
+      //  this.IsDischarged =AdmissionPersonl.IsDischarged || 0 ;
+      //  this.opD_IPD_Type = AdmissionPersonl.opD_IPD_Type | 0;
     }
   }
 }

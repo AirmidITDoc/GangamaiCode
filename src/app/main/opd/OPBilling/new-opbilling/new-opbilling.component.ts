@@ -328,7 +328,7 @@ export class NewOPBillingComponent implements OnInit {
       // });
     }
   }else{
-    Swal.fire('Please select patient ');
+    Swal.fire('Please select RegNo ');
   }
   }
 

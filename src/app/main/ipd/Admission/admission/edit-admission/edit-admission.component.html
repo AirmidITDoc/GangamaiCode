@@ -215,14 +215,14 @@
                             <mat-label>Admitted Doctor 1</mat-label>
                             <input matAutocompletePosition="below" type="text" placeholder="Select Admitted Doctor 1"
                                 matInput #admitdoc1 (keydown)="onEnteradmitdoc1($event)"
-                                formControlName="admittedDoctor1" [matAutocomplete]="autoRefdoc">
+                                formControlName="admittedDoctor1" [matAutocomplete]="autoAddoc1">
                             <span matSuffix style="display: flex;">
                                 <mat-icon class="mat-icon-close"
                                     (click)="hospitalFormGroup.get('admittedDoctor1').setValue(''); isAdmittedDoctor1Selected = false;">close</mat-icon>
                                 <mat-icon class="mat-icon-close"
                                     (click)="hospitalFormGroup.get('admittedDoctor1').setValue(''); isAdmittedDoctor1Selected = false;">search</mat-icon>
                             </span>
-                            <mat-autocomplete #autoRefdoc="matAutocomplete" [displayWith]="getOptionTextRefDoc">
+                            <mat-autocomplete #autoAddoc1="matAutocomplete" [displayWith]="getOptionTextRefDoc">
                                 <mat-option *ngFor="let option of filteredOptionsDoc1 | async" [value]="option">
                                     {{option.DoctorName}}
                                 </mat-option>

@@ -54,16 +54,16 @@
                             <!-- SIDEBAR CONTENT -->
                             <div class="nav material2">
             
-                                <form [formGroup]="_BrowseOPDBillsService.myFilterform">
+                                <form [formGroup]="_BrowseOPDBillsService.myFilterbillform">
                                     <div fxLayout="column" fxLayoutAlign="start none">
             
                                         <mat-form-field appearance="outline">
                                             <mat-label>Enter a date range</mat-label>
                                             <mat-date-range-input [rangePicker]="picker">
                                                 <input matStartDate formControlName="start" placeholder="Start date"
-                                                    (dateChange)="onShow($event)">
+                                                    (dateChange)="getBrowseOPDBillsList()">
                                                 <input matEndDate formControlName="end" placeholder="End date"
-                                                    (dateChange)="onShow($event)">
+                                                    (dateChange)="getBrowseOPDBillsList()">
                                             </mat-date-range-input>
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-date-range-picker #picker></mat-date-range-picker>
@@ -71,52 +71,35 @@
             
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Bill No</mat-label>
-                                            <input name="PBillNo" formControlName="PBillNo" matInput (keyup)="onShow($event)">
+                                            <input name="PBillNo" formControlName="PBillNo" matInput (keyup)="getBrowseOPDBillsList()">
                                         </mat-form-field>
             
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Reg No</mat-label>
-                                            <input name="RegNo" formControlName="RegNo" matInput (keyup)="onShow($event)">
+                                            <input name="RegNo" formControlName="RegNo" matInput (keyup)="getBrowseOPDBillsList()">
                                         </mat-form-field>
             
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>First Name</mat-label>
-                                            <input name="FirstName" formControlName="FirstName" matInput (keyup)="onShow($event)">
+                                            <input name="FirstName" formControlName="FirstName" matInput (keyup)="getBrowseOPDBillsList()">
                                         </mat-form-field>
             
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Last Name</mat-label>
-                                            <input name="LastName" formControlName="LastName" matInput (keyup)="onShow($event)">
+                                            <input name="LastName" formControlName="LastName" matInput (keyup)="getBrowseOPDBillsList()">
                                         </mat-form-field>
             
                                         <div style="margin-top: 10px;">
-                                            <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                            <button mat-raised-button (click)="onClearBill()" class="clearbutton"
                                                 matTooltip="close">
                                                 <mat-icon class="cleariconbutton">close</mat-icon>
                                             </button>&nbsp;
-                                            <button mat-raised-button class="searchButton" (click)="onShow($event)"
+                                            <button mat-raised-button class="searchButton" (click)="getBrowseOPDBillsList()"
                                                 matTooltip="search">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>
                                         </div>
-                                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-                                          
-                                            <button mat-raised-button style="width: 100px;"
-                                                (click)="viewgetOPDDailycollectionReportPdf()" matTooltip="Pdf">
-                                                <mat-icon class="searchiconbutton">book</mat-icon>
-                                            </button>
-<!--                                       
-            
-                                        <button (click)="exportOPBillReportExcel()" [disabled]="! (dataSource.data.length > 0)"
-                                            style="background-color: white;color: white;width: 45px;">
-                                            <img width="32" height="10px" src="assets/images/logos/xls.png">
-                                        </button>
-                                        <button mat-raised-button (click)="exportReportPdf()"
-                                            style="background-color: #8e67e0;color: white;">
-                                            <mat-icon style="margin-right: 15px;">cloud_download</mat-icon>Export Table(PDF)
-                                        </button>
-             -->
-                                         </div>
+                                       
                                         
                                         <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;">
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
@@ -150,6 +133,10 @@
                                                 <button type="button" mat-icon-button (click)="exportReportPdf()" [disabled]="dataSource.data.length ==0">
                                                     <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
                                                 </button>
+                                                <button mat-raised-button style="width: 100px;"
+                                                (click)="viewgetOPDDailycollectionReportPdf()" matTooltip="Pdf">
+                                                <mat-icon class="searchiconbutton">book</mat-icon>
+                                            </button>
                                             </div>
                                         </div>
                                     </div>
@@ -509,9 +496,9 @@
 
 
 
-        <mat-tab label="Sales Return List">
+        <mat-tab label="OP Payment List">
             <ng-template mat-tab-label>
-                Op Payment Receipt List
+                OP Payment Receipt List
              </ng-template>
              <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight fusePerfectScrollbar>
                 <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
@@ -546,7 +533,7 @@
                             <div class="sidebar-body">
                                 <div class="nav material2">
                                    
-                                <form [formGroup]="_BrowseOPDBillsService.myFilterform">
+                                <form [formGroup]="_BrowseOPDBillsService.myFilterpayform">
                                     <div fxLayout="column" fxLayoutAlign="start none">
             
                                         <mat-form-field appearance="outline">
@@ -554,7 +541,7 @@
                                             <mat-date-range-input [rangePicker]="picker">
                                                 <input matStartDate formControlName="start" placeholder="Start date">
                                                 <input matEndDate formControlName="end" placeholder="End date"
-                                                    (dateChange)="onShow($event)">
+                                                    (dateChange)="getBrowseOpdPaymentReceiptList()">
                                             </mat-date-range-input>
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-date-range-picker #picker></mat-date-range-picker>
@@ -562,37 +549,37 @@
             
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Reg No</mat-label>
-                                            <input name="RegNo" formControlName="RegNo" matInput>
+                                            <input name="RegNo" formControlName="RegNo" matInput (keyup)="getBrowseOpdPaymentReceiptList()">
                                         </mat-form-field>
             
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>First Name</mat-label>
-                                            <input name="FirstName" formControlName="FirstName" matInput>
+                                            <input name="FirstName" formControlName="FirstName" matInput (keyup)="getBrowseOpdPaymentReceiptList()">
                                         </mat-form-field>
             
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Last Name</mat-label>
-                                            <input name="LastName" formControlName="LastName" matInput>
+                                            <input name="LastName" formControlName="LastName" matInput (keyup)="getBrowseOpdPaymentReceiptList()">
                                         </mat-form-field>
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Receipt No</mat-label>
-                                            <input name="ReceiptNo" formControlName="ReceiptNo" matInput>
+                                            <input name="ReceiptNo" formControlName="ReceiptNo" matInput (keyup)="getBrowseOpdPaymentReceiptList()">
                                         </mat-form-field>
             
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Bill No</mat-label>
-                                            <input name="PBillNo" formControlName="PBillNo" matInput>
+                                            <input name="PBillNo" formControlName="PBillNo" matInput (keyup)="getBrowseOpdPaymentReceiptList()">
                                         </mat-form-field>
             
                                           <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
                                             Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
                                         </span> -->
                                         <div style="margin-top: 10px;">
-                                            <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                            <button mat-raised-button (click)="onClearpayment()" class="clearbutton"
                                                 matTooltip="close">
                                                 <mat-icon class="cleariconbutton">close</mat-icon>
                                             </button>&nbsp;
-                                            <button mat-raised-button class="searchButton" (click)="onShow($event)"
+                                            <button mat-raised-button class="searchButton" (click)="getBrowseOpdPaymentReceiptList()"
                                                 matTooltip="search">
                                                 <mat-icon class="searchiconbutton">search</mat-icon>
                                             </button>
@@ -624,7 +611,7 @@
             
                                                 <ng-container matColumnDef="RegNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        RegNo</mat-header-cell>
+                                                        UHID</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.RegNo}}
                                                     </mat-cell>
@@ -844,7 +831,7 @@
                             <!-- SIDEBAR CONTENT -->
                             <div class="sidebar-body">
                                 <div class="nav material2">
-                                    <form [formGroup]="_BrowseOPDBillsService.myFilterform" fusePerfectScrollbar>
+                                    <form [formGroup]="_BrowseOPDBillsService.myFilterrefundform" fusePerfectScrollbar>
                                         <div fxLayout="column" fxLayoutAlign="start none">
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Enter a date range</mat-label>
@@ -863,22 +850,22 @@
             
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Reg No</mat-label>
-                                                <input name="RegNo" formControlName="RegNo" matInput>
+                                                <input name="RegNo" formControlName="RegNo" matInput (keyup)="getBrowseOPDReturnList()">
                                             </mat-form-field>
             
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>First Name</mat-label>
-                                                <input name="FirstName" formControlName="FirstName" matInput>
+                                                <input name="FirstName" formControlName="FirstName" matInput  (keyup)="getBrowseOPDReturnList()">
                                             </mat-form-field>
             
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Last Name</mat-label>
-                                                <input name="LastName" formControlName="LastName" matInput>
+                                                <input name="LastName" formControlName="LastName" matInput  (keyup)="getBrowseOPDReturnList()">
                                             </mat-form-field>
             
                                             
                                             <div style="margin-top: 10px;">
-                                                <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                                <button mat-raised-button (click)="onClearrefund()" class="clearbutton"
                                                     matTooltip="close">
                                                     <mat-icon class="cleariconbutton">close</mat-icon>
                                                 </button>&nbsp;
@@ -937,7 +924,7 @@
                                                 
                                                 <ng-container matColumnDef="RegNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        RegNo </mat-header-cell>
+                                                        UHID </mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                         {{element.RegNo}} </mat-cell>
                                                 </ng-container>

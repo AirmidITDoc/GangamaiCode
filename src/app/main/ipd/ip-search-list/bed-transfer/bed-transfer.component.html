@@ -24,11 +24,11 @@
 
     <div style="padding:3px;">
         <div fxlayout="row">
-         
+
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                 <div fxFlex.gt-sm="100%" fxFlex>
                     <div fxlayout="row" fxLayoutGap="5px">
-                        <mat-card fxFlex.gt-sm="99%" fxFlex style="padding: 6px;">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
                             <div class="patient-info-sales my-8">
                                 <div class="sales-patient-info-title">
                                     <span style="font-weight: 700;">
@@ -36,8 +36,8 @@
                                     </span>
                                 </div>
                                 <hr>
-                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                    class="patient-info">
+                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                    fxLayoutAlign="space-between center" class="patient-info">
                                     <div class="patient-sub">
                                         <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                             fxLayoutAlign="space-between">
@@ -46,8 +46,7 @@
                                                     <span class="patient-col-key">UHID No
                                                     </span>
                                                     <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Patient Name
@@ -59,20 +58,23 @@
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Doctor Name</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Department</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
                                                 </div>
                                             </div>
                                             <div fxLayout="column" fxLayoutGap="10px">
-                                                
+
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">DOA | Time</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">IPD No</span>
@@ -83,39 +85,46 @@
                                                     <span class="patient-col-key">Age | Sex
                                                     </span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}} D | {{selectedAdvanceObj.GenderName}}</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
+                                                        D | {{selectedAdvanceObj.GenderName}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Ref-Doctor Name
                                                     </span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
                                                 </div>
-                                               
+
                                             </div>
                                             <div fxLayout="column" fxLayoutGap="10px">
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Ward | Bed Name
                                                     </span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.RoomName}} | {{selectedAdvanceObj.BedName}}</span>
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.RoomName}} 
+                                                        | {{selectedAdvanceObj.BedName}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Patient Type
                                                     </span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
                                                 </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Tarrif Name
                                                     </span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                    <span
+                                                        class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
                                                 </div>
-                                                <div class="patient-col" >
+                                                <div class="patient-col">
                                                     <span class="patient-col-key">Company Name</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.CompanyName}}</span>
+                                                    <span class="patient-col-value"
+                                                        style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -123,15 +132,15 @@
                                 </div>
                             </div>
                         </mat-card>
-                      
+
                     </div>
                 </div>
-               
+
             </div>
-            
+
             <!-- ================================ LABEL HEADER  -->
         </div>
-        <form [formGroup]="_IpSearchListService.bsaveForm">
+        <form [formGroup]="Bedtransfer">
 
             <div class="dialog-content-wrapper">
                 <!-- ================================ LABEL HEADER  -->
@@ -141,64 +150,65 @@
 
                         <div fxlayout="row" fxFlex="90%">
                             <h3 style="font-weight: bolder;">Bed Transfer</h3>
-                            <div>
-
-                                <mat-form-field appearance="outline" fxFlex>
+                            <div class="gap-8">
+                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Ward Name</mat-label>
-                                    <mat-select formControlName="RoomId" placeholder="Bank"
-                                        #singleSelect
-                                        (selectionChange)="OnChangeBedList($event.value)">
-                                        <mat-option>
-                                            <ngx-mat-select-search [formControl]="wardFilterCtrl"
-                                                [placeholderLabel]="'Search'"
-                                                [noEntriesFoundLabel]="'No matching found'">
-                                            </ngx-mat-select-search>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Ward"
+                                        matInput #ward (keydown)="onEnterward($event)" [(ngModel)]="vWardId"
+                                        formControlName="RoomId" [matAutocomplete]="autoWard"
+                                        required>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="Bedtransfer.get('RoomId').setValue(''); isWardSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close" ward
+                                            (click)="Bedtransfer.get('RoomId').setValue(''); isWardSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoWard="matAutocomplete" [displayWith]="getOptionTextWard">
+                                        <mat-option *ngFor="let option of filteredOptionsWard | async" [value]="option"
+                                            (onSelectionChange)="OnChangeBedList(option)">
+                                            {{option.RoomName}}
                                         </mat-option>
-                                        <mat-option *ngFor="let element of filteredWard | async"
-                                            [value]="element">
-                                            {{element.RoomName}}
-                                        </mat-option>
-                                    </mat-select>
+                                    </mat-autocomplete>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Bed Name</mat-label>
-                                    <mat-select formControlName="BedId" placeholder="Bank"
-                                        #singleSelect (selectionChange)="onBedChange($event.value)">
-                                        <mat-option>
-                                            <ngx-mat-select-search [formControl]="bedFilterCtrl"
-                                                [placeholderLabel]="'Search'"
-                                                [noEntriesFoundLabel]="'No matching found'">
-                                            </ngx-mat-select-search>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Bed" matInput  [(ngModel)]="vBedId"
+                                        #bed  formControlName="BedId"
+                                       [matAutocomplete]="autoBed" required>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="Bedtransfer.get('BedId').setValue(''); isBedSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="Bedtransfer.get('BedId').setValue(''); isBedSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoBed="matAutocomplete" [displayWith]="getOptionTextBed">
+                                        <mat-option *ngFor="let option of filteredOptionsBed | async" [value]="option"
+                                            (onSelectionChange)="onBedChange(option)">
+                                            {{option.BedName}}
                                         </mat-option>
-                                        <mat-option *ngFor="let element of filteredBed | async"
-                                            [value]="element">
-                                            {{element.BedName}}
-                                        </mat-option>
-                                    </mat-select>
+                                    </mat-autocomplete>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Class Name</mat-label>
-                                    <mat-select formControlName="ClassId">
+                                    <mat-select formControlName="ClassId" required #class  [(ngModel)]="vClassId">
                                         <mat-option></mat-option>
                                         <mat-option *ngFor="let m of BedClassList" [value]="m">
                                             {{m.ClassName}}
                                         </mat-option>
                                     </mat-select>
                                     <mat-error
-                                        *ngIf="_IpSearchListService.bsaveForm.get('ClassId').invalid && _IpSearchListService.bsaveForm.get('ClassId').touched">
-                                        <span
-                                            *ngIf="_IpSearchListService.bsaveForm.get('ClassId').hasError('required')">
+                                        *ngIf="Bedtransfer.get('ClassId').invalid && Bedtransfer.get('ClassId').touched">
+                                        <span *ngIf="Bedtransfer.get('ClassId').hasError('required')">
                                             Class Name is required
                                         </span>
                                     </mat-error>
                                 </mat-form-field>
 
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                    <textarea name="Remark" matInput rows="2" cols="5"
-                                        placeholder="Enter Remark" formControlName="Remark">
+                                    <textarea name="Remark" matInput rows="1" cols="5" placeholder="Enter Remark"
+                                        formControlName="Remark">
                                         </textarea>
                                 </mat-form-field>
 
@@ -207,27 +217,19 @@
                         </div>
 
                     </div>
-                </mat-card>
-                <br />
-                <!-- <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-                    <div class="button-row">
-                        <button mat-raised-button color="primary" type="submit"
-                            (click)="onBedtransfer()" [disabled]="_IpSearchListService.bsaveForm
-                            .invalid">Transfer</button>
-                        <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+
+                    <div class="modal-footer">
+                        <div class="footer-navigation-container">
+                            <div class="modal-footer-buttons">
+                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                <button class="btn btn-primary" (click)="onBedtransfer()"
+                                    [disabled]="_IpSearchListService.bsaveForm.invalid">Transfer</button>
+                            </div>
+                        </div>
 
                     </div>
-                </div> -->
-                
-                <div class="modal-footer">
-                    <div class="footer-navigation-container">
-                        <div class="modal-footer-buttons">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" (click)="onBedtransfer()" [disabled]="_IpSearchListService.bsaveForm.invalid">Transfer</button>
-                        </div>
-                    </div>
-            
-                </div>
+                </mat-card>
+
                 <!-- ================================ LABEL HEADER  -->
             </div>
         </form>

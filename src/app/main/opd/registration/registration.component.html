@@ -72,7 +72,12 @@
                                     required Enter only Digits</span>
                             </mat-form-field>
 
-                         
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>RegNo</mat-label>
+                                <input name="RegNo" formControlName="RegNo" matInput type="number" (keyup)="getregistrationList()">
+                                <span class="error" *ngIf="f.RegNo.invalid && f.RegNo.touched">RegNo is
+                                    required Enter only Digits</span>
+                            </mat-form-field>
                             <div style="margin-top: 10px;">
                                 <button mat-raised-button (click)="onClear()" class="clearbutton"
                                     matTooltip="close">
