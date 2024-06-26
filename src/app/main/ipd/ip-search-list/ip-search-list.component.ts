@@ -462,32 +462,8 @@ export class IPSearchListComponent implements OnInit {
     }
     else if (m == "Discharge") {
       if (!contact.IsDischarged) {
-        // let m_data = {
-        //   RegNo: contact.RegNo,
-        //   RegId: contact.RegID,
-        //   AdmissionID: contact.AdmissionID,
-        //   OPD_IPD_ID: contact.OPD_IPD_Id,
-        //   PatientName: contact.PatientName,
-        //   Doctorname: contact.Doctorname,
-        //   AdmDateTime: contact.AdmDateTime,
-        //   AgeYear: contact.AgeYear,
-        //   ClassId: contact.ClassId,
-        //   TariffName: contact.TariffName,
-        //   TariffId: contact.TariffId,
-        //   DoctorId: contact.DoctorId,
-        //   DOA: contact.DOA,
-        //   DOT: contact.DOT,
-        //   DoctorName: contact.DoctorName,
-        //   RoomName: contact.RoomName,
-        //   WardName: contact.RoomName,
-        //   BedNo: contact.BedName,
-        //   BedId: contact.BedId,
-        //   IPDNo: contact.IPDNo,
-        //   DocNameID: contact.DocNameID,
-        //   opD_IPD_Typec: contact.opD_IPD_Type,
-        //   CompanyName:contact.CompanyName,
-        //   IsDischarged:contact.IsDischarged,
-        // }
+       
+      
         this.advanceDataStored.storage = new AdvanceDetailObj(contact);
         this._IpSearchListService.populateForm(contact);
         const dialogRef = this._matDialog.open(DischargeComponent,
@@ -504,9 +480,8 @@ export class IPSearchListComponent implements OnInit {
           this.getAdmittedPatientList();
         });
       } else {
-
-
-        Swal.fire({
+        console.log(contact)
+      Swal.fire({
           title: 'Patient Already Discharged Do you Want to Edit',
           // showDenyButton: true,
           showCancelButton: true,
@@ -514,29 +489,14 @@ export class IPSearchListComponent implements OnInit {
 
         }).then((result) => {
 
-
           if (result.isConfirmed) {
-            let m_data = {
-              "RegNo": contact.RegNo,
-              "PatientName": contact.PatientName,
-              "AdmissionID": contact.AdmissionID,
-              "DOA": contact.DOA,
-              "DOT": contact.DOT,
-              "DoctorName": contact.DoctorName,
-              "RoomName": contact.RoomName,
-              "BedNo": contact.BedName,
-              "IPDNo": contact.IPDNo,
-              "DocNameID": contact.DocNameID,
-              "IsDischarged": contact.IsDischarged
-            }
+        
             this.advanceDataStored.storage = new AdvanceDetailObj(contact);
             this._IpSearchListService.populateForm(contact);
             const dialogRef = this._matDialog.open(DischargeComponent,
               {
-                maxWidth: "90vw",
-                maxHeight: "90vh",
-                height: '700px',
-                width: '1300px',
+                maxWidth: "85vw",
+                height: '400px',
               });
             dialogRef.afterClosed().subscribe(result => {
               console.log('The dialog was closed - Insert Action', result);
@@ -814,23 +774,11 @@ export class AdvanceDetailObj {
   DepartmentName:any;
   RefDocName:any;
   GenderName:any;
-
+  DocNameID:any;
 
   PolicyNo: any;
   MemberNo: any;
   
-  AprovAmount
-  CompDOD
-  IsPharClearance
-  IPNumber
-  EstimatedAmount
-  ApprovedAmount
-  HosApreAmt
-  PathApreAmt
-  PharApreAmt
-  RadiApreAmt
-  PharDisc
-
   ClaimNo: any;
   CompBillNo: any;
   CompBillDate: any;
@@ -901,7 +849,7 @@ export class AdvanceDetailObj {
       this.AgeDay= AdvanceDetailObj.AgeDay|| ''
       this.RefDocName=AdvanceDetailObj.RefDocName || ''
       this.GenderName =AdvanceDetailObj.GenderName ||''
-
+      this.DocNameID=AdvanceDetailObj.DocNameID | 0
 
     }
   }

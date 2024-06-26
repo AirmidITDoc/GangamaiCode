@@ -100,9 +100,11 @@ export class DischargeComponent implements OnInit {
 
   setdropdownvalue(){
     // debugger
-    // const toSelect = this.DoctorNameList.find(c => c.DoctorId == this.registerObj.DocNameID);
-    // this._IpSearchListService.mySaveForm.get('DoctorID').setValue(toSelect);
+    this.getDoctorNameList();
+    const toSelect = this.DoctorNameList.find(c => c.DoctorId == this.registerObj.DocNameID);
+    this._IpSearchListService.mySaveForm.get('DoctorID').setValue(toSelect);
   }
+
   getDoctorNameList() {
     debugger
     this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
@@ -110,7 +112,7 @@ export class DischargeComponent implements OnInit {
       console.log(this.DoctorNameList)
       
       if (this.registerObj) {
-        const ddValue= this.DoctorNameList.filter(item => item.DoctorId ==  this.registerObj.DocNameID);
+        const ddValue= this.DoctorNameList.filter(item => item.DoctorID ==  this.registerObj.DocNameID);
         console.log(ddValue)
         // const checkDoc= ddValue.find(item => item.DoctorID ==  this.registerObj.DocNameID);
         // console.log(ddValue)
