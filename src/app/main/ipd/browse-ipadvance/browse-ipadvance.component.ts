@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,6 +14,7 @@ import * as converter from 'number-to-words';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { BrowseIpdreturnadvanceReceipt } from '../ip-search-list/ip-refundof-advance/ip-refundof-advance.component';
+import { Xliff } from '@angular/compiler';
 @Component({
   selector: 'app-browse-ipadvance',
   templateUrl: './browse-ipadvance.component.html',
@@ -439,3 +440,4 @@ export class IpdAdvanceBrowseModel {
   }
 
 }
+
