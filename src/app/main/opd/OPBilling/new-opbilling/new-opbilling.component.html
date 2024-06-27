@@ -329,13 +329,12 @@
                                                 <mat-label>NetAmount</mat-label>
                                                 <input matInput [(ngModel)]="b_netAmount" name="b_netAmount" readonly type="text" onlyNumber
                                                     formControlName="netAmount" required (keyup)="addData()" #netamt>
-                                                <mat-error *ngIf="registeredForm.get('netAmount').invalid && registeredForm.get('netAmount').touched">
-                                                    NetAmount is required</mat-error>
+                                                <!-- <mat-error *ngIf="registeredForm.get('netAmount').invalid && registeredForm.get('netAmount').touched">
+                                                    NetAmount is required</mat-error> -->
                                             </mat-form-field> &nbsp;&nbsp;
                                 
-                                            <div matTooltip="Enter all data to enable this button!!" [matTooltipDisabled]="!registeredForm.invalid"
-                                                [matTooltipPosition]="'above'">
-                                                <button (click)="onAddCharges()" class="btn btn-primary btn-with-icon py-8" [disabled]="!add"
+                                            <div matTooltip="Enter all data to enable this button!!"  [matTooltipPosition]="'above'">
+                                                <button (click)="onAddCharges()" class="btn btn-primary btn-with-icon py-8"  
                                                     #addbutton>
                                                     <span class="btn-icon">
                                                         <mat-icon> add </mat-icon>
@@ -553,12 +552,12 @@
                                         </mat-form-field> -->
 
                                       
-                                        <mat-form-field appearance="outline" *ngIf="conflag">
+                                        <mat-form-field appearance="outline" *ngIf="conflag" fxFlex>
                                             <mat-label>Disc %</mat-label>
                                             <input matInput placeholder="Percentage" formControlName="concesDiscPer" 
                                                 [(ngModel)]="b_concessionDiscPer" autocomplete="off" #disper  id="Percentage"
-                                                (keyup)="calcDiscPersonTotal()"  type="text" onlyNumber maxlength="3" 
-                                                (keypress)="keyPressAlphanumeric($event)" [disabled]="v_ChargeDiscPer > 0">
+                                                (keyup)="calcDiscPersonTotal()"  type="text" onlyNumber  
+                                                (keypress)="keyPressCharater($event)" [disabled]="v_ChargeDiscPer > 0">
                                         </mat-form-field> 
                                       
 
@@ -566,8 +565,17 @@
                                             <mat-label>Disc Amt</mat-label>
                                             <input matInput [(ngModel)]="b_concessionamt" name="concessionAmt"
                                                 formControlName="concessionAmt"  type="text" onlyNumber
-                                              >
+                                                (keypress)="keyPressCharater($event)"   (keyup)="calcDiscAmtTotal()">
                                         </mat-form-field> 
+
+                                        <mat-form-field appearance="outline" fxFlex *ngIf="Consessionres">
+                                            <mat-label>Concession Reason Type</mat-label>
+                                            <mat-select formControlName="ConcessionId">
+                                                <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
+                                                    {{Doc.ConcessionReason}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
 
                                         <mat-form-field appearance="outline" class="Consession-field" fxFlex>
                                             <mat-label>Net Amount</mat-label>
@@ -578,14 +586,7 @@
                                                 FinalAmt is required</mat-error>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" fxFlex *ngIf="Consessionres">
-                                            <mat-label>Concession Reason Type</mat-label>
-                                            <mat-select formControlName="ConcessionId" [disabled]="Consession">
-                                                <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
-                                                    {{Doc.ConcessionReason}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
+                                       
 
                                         <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Remark</mat-label>
@@ -614,10 +615,11 @@
                                    </mat-radio-group>
 
                                    </div>
+                                   <!-- [disabled]="BillingForm.invalid" -->
                                     <div class="action-btns gap-8" fxLayout="row">
                                         <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
                                         <button class="btn btn-primary" (click)="onSaveOPBill2()"
-                                            [disabled]="BillingForm.invalid">Save</button>
+                                           >Save</button>
                                     </div>
                                 </div>
                             </div>

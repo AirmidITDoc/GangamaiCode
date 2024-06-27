@@ -1307,7 +1307,7 @@ debugger
         InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
         InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;//this.totalAdvanceAmt;
         InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
-        InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.ConcessionId;
+        InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.Ipbillform.get('ConcessionId').value.ConcessionId || 0
         InsertBillUpdateBillNoObj['IsSettled'] = 0;
         InsertBillUpdateBillNoObj['IsPrinted'] = 1;
         InsertBillUpdateBillNoObj['IsFree'] = 0;
@@ -1469,10 +1469,10 @@ debugger
     //const admissionIPBillingcreditUpdate = new Bill(AdmissionIPBillingUpdateObj);
 
     let ipBillBalAmountcreditObj = {};
-    let BillBalAmt = 0;
-    BillBalAmt = this.Ipbillform.get('FinalAmount').value
+    // let BillBalAmt = 0;
+    // BillBalAmt = this.Ipbillform.get('FinalAmount').value
     ipBillBalAmountcreditObj['BillNo'] = 0;
-    ipBillBalAmountcreditObj['BillBalAmount'] =BillBalAmt;
+    ipBillBalAmountcreditObj['BillBalAmount'] =parseFloat(this.Ipbillform.get('FinalAmount').value) || 0;
 
     //const ipBillBalAmountcredit = new Bill(ipBillBalAmountcreditObj)
 
@@ -1796,7 +1796,7 @@ debugger
       InsertDraftBillOb['AddedBy'] = this.accountService.currentUserValue.user.id,
       InsertDraftBillOb['TotalAdvanceAmount'] = 0;
       InsertDraftBillOb['BillTime'] = this.dateTimeObj.time;
-      InsertDraftBillOb['ConcessionReasonId'] = this.ConcessionId,
+      InsertDraftBillOb['ConcessionReasonId'] = this.Ipbillform.get('ConcessionId').value.ConcessionId || 0
       InsertDraftBillOb['IsSettled'] = 0;
       InsertDraftBillOb['IsPrinted'] = 0;
       InsertDraftBillOb['IsFree'] = 0;

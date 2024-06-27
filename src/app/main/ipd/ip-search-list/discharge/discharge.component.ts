@@ -62,7 +62,7 @@ export class DischargeComponent implements OnInit {
     this.getModeNameList();
 
     if (this.advanceDataStored.storage) {
-      debugger
+     // debugger
        this.selectedAdvanceObj = this.advanceDataStored.storage;
        this.registerObj =  this.advanceDataStored.storage;
        console.log(this.registerObj);
@@ -72,25 +72,23 @@ export class DischargeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.advanceDataStored.storage) { 
-      this.setdropdownvalue();
+      // this.setdropdownvalue();
+      this.getRtrvDischargelist()
     }
 
     this.filteredOptionsDisctype = this._IpSearchListService.mySaveForm.get('DischargeTypeId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterDischargeType(value)),
-    );
-    
+    ); 
     this.filteredOptionsDoctorname = this._IpSearchListService.mySaveForm.get('DoctorID').valueChanges.pipe(
       startWith(''),
       map(value => this._filterDoctorname(value)),
-    );
-
-
-
+    ); 
     this.filteredOptionsModename = this._IpSearchListService.mySaveForm.get('ModeId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterModeName(value)),
     );
+    
   }
 
 
@@ -98,24 +96,41 @@ export class DischargeComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  setdropdownvalue(){
-    // debugger
-    this.getDoctorNameList();
-    const toSelect = this.DoctorNameList.find(c => c.DoctorId == this.registerObj.DocNameID);
-    this._IpSearchListService.mySaveForm.get('DoctorID').setValue(toSelect);
+ 
+  RtrvDischargeList:any=[];
+  vComments:any;
+getRtrvDischargelist(){
+  let Query = "select DischargeId,DischargeTypeId,DischargedDocId,ModeOfDischargeid from Discharge where AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
+  console.log(Query)
+  this._IpSearchListService.getDischargeId(Query).subscribe(data => {
+    this.RtrvDischargeList = data ;
+    this.DischargeId = this.RtrvDischargeList[0].DischargeId || 0
+   // this.vComments = this.RtrvDischargeList.
+    this.Rtevdropdownvalue();
+    console.log(this.RtrvDischargeList); 
+  });
+}
+Rtevdropdownvalue(){
+  debugger
+  if(this.RtrvDischargeList[0].DischargeTypeId){
+     const toSelect = this.DischargeTypeList.find(c => c.DischargeTypeId == this.RtrvDischargeList[0].DischargeTypeId);
+     console.log(toSelect)
+     this._IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(toSelect);
   }
-
+  if(this.RtrvDischargeList[0].ModeOfDischargeid){
+    const toSelect = this.ModeNameList.find(c => c.ModeOfDischargeId == this.RtrvDischargeList[0].ModeOfDischargeid);
+    console.log(toSelect)
+    this._IpSearchListService.mySaveForm.get('ModeId').setValue(toSelect);
+ }
+}
   getDoctorNameList() {
-    debugger
     this._IpSearchListService.getDoctorMaster1Combo().subscribe(data => {
       this.DoctorNameList = data;
-      console.log(this.DoctorNameList)
+      //console.log(this.DoctorNameList)
       
       if (this.registerObj) {
         const ddValue= this.DoctorNameList.filter(item => item.DoctorID ==  this.registerObj.DocNameID);
-        console.log(ddValue)
-        // const checkDoc= ddValue.find(item => item.DoctorID ==  this.registerObj.DocNameID);
-        // console.log(ddValue)
+        //console.log(ddValue)
         this._IpSearchListService.mySaveForm.get('DoctorID').setValue(ddValue[0]);
         this._IpSearchListService.mySaveForm.updateValueAndValidity();
       }
@@ -132,7 +147,7 @@ export class DischargeComponent implements OnInit {
   getModeNameList() {
     this._IpSearchListService.getModenameListCombo().subscribe(data => {
       this.ModeNameList = data;
-      //console.log(this.ModeNameList)
+      console.log(this.ModeNameList)
     });
   }
   private _filterModeName(value: any): string[] {
@@ -202,7 +217,7 @@ export class DischargeComponent implements OnInit {
     if(this._IpSearchListService.mySaveForm.get('ModeId').value)
       ModeOfDischarge = this._IpSearchListService.mySaveForm.get('ModeId').value.ModeOfDischargeId;
      
-    if (!this.selectedAdvanceObj.IsDischarged) {
+    if (!this.DischargeId) {
       var m_data = {
         "insertIPDDischarg": {
           "dischargeId": 0,
@@ -242,28 +257,26 @@ export class DischargeComponent implements OnInit {
       });
     }
     else {
-      let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
-      this._IpSearchListService.getDischargeId(Query).subscribe(data => {
-        this.DischargeId = data[0];
-        console.log(this.DischargeId);
-      });
-
+      let ModeOfDischargeUpdate = 0
+      if(this._IpSearchListService.mySaveForm.get('ModeId').value)
+        ModeOfDischargeUpdate = this._IpSearchListService.mySaveForm.get('ModeId').value.ModeOfDischargeId;
+       
       var m_data1 = {
         "updateIPDDischarg": {
           "DischargeId": this.DischargeId,
-          "DischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "DischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "DischargeDate":this.dateTimeObj.date , // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "DischargeTime":this.dateTimeObj.time , //  this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
           "DischargeTypeId": this._IpSearchListService.mySaveForm.get("DischargeTypeId").value.DischargeTypeId || 0,
           "DischargedDocId": this._IpSearchListService.mySaveForm.get("DoctorID").value.DoctorID || 0,
           "DischargedRMOID": 0, // this._IpSearchListService.mySaveForm.get("DischargedRMOID").value,
-          "Modeofdischarge": ModeOfDischarge,
+          "Modeofdischarge": ModeOfDischargeUpdate,
           "updatedBy": this.accountService.currentUserValue.user.id,
         },
         "updateAdmission": {
-          "admissionID": this.selectedAdvanceObj.AdmissionID,
+          "admissionID": this.selectedAdvanceObj.AdmissionID || 0,
           "isDischarged": 1,
-          "dischargeDate": this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
-          "dischargeTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "dischargeDate":this.dateTimeObj.date ,// this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"yyyy-Mm-dd") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
+          "dischargeTime":this.dateTimeObj.time , // this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900',//this.datePipe.transform(this._IpSearchListService.mySaveForm.get("DischargeDate").value,"hh-mm-ss") || this.datePipe.transform(this.currentDate,'MM/dd/yyyy') || '01/01/1900',,
         }
       }
       console.log(m_data1);

@@ -288,8 +288,9 @@ constructor(public _httpClient:HttpClient,
      DischargeDate:[''],
      DischargeTime:'',
      Modeofdischarge:'',
-     DOT: '' ,
-     ModeId:''
+    // DOT: '' ,
+     ModeId:'',
+     Comments:['']
     });
   }
   refundAdvanceForm(): FormGroup {

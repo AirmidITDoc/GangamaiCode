@@ -357,7 +357,7 @@ export class InterimBillComponent implements OnInit {
   onSave() {
     debugger
     if (this.InterimFormGroup.get('discPer').value > 0 || this.InterimFormGroup.get('concessionAmt').value > 0) {
-      if(!this.InterimFormGroup.get('ConcessionId').value.ConcessionId){
+      if(!this.InterimFormGroup.get('ConcessionId').value){
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -381,7 +381,7 @@ export class InterimBillComponent implements OnInit {
       insertBillUpdateBillNo1obj['AddedBy'] = this.accountService.currentUserValue.user.id;
     insertBillUpdateBillNo1obj['totalAdvanceAmount'] = 0;
     insertBillUpdateBillNo1obj['billTime'] = this.dateTimeObj.date;
-    insertBillUpdateBillNo1obj['concessionReasonId'] = this.vConcessionId || 0,
+    insertBillUpdateBillNo1obj['concessionReasonId'] = this.InterimFormGroup.get('ConcessionId').value.ConcessionId || 0,
       insertBillUpdateBillNo1obj['isSettled'] = 0,
       insertBillUpdateBillNo1obj['isPrinted'] = 1,
       insertBillUpdateBillNo1obj['isFree'] = 0,//this.advanceAmount;
@@ -411,39 +411,40 @@ export class InterimBillComponent implements OnInit {
     const insertBillUpdateBillNo1 = new Bill(insertBillUpdateBillNo1obj);
 
     if (this.InterimFormGroup.get('paymode').value == 'cashpay') {
-
+      // let cashPayAmt = 0;
+      // cashPayAmt = this.InterimFormGroup.get('NetpayAmount').value;
       let Paymentobj = {};
       Paymentobj['BillNo'] = 0;
       Paymentobj['ReceiptNo'] = "";
       Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
-        Paymentobj['CashPayAmount'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
+      Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
+      Paymentobj['CashPayAmount'] = parseFloat( this.InterimFormGroup.get('NetpayAmount').value) || 0,
       Paymentobj['ChequePayAmount'] = 0;
       Paymentobj['ChequeNo'] = 0;
       Paymentobj['BankName'] = "";
       Paymentobj['ChequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        Paymentobj['CardPayAmount'] = 0;
+      Paymentobj['CardPayAmount'] = 0;
       Paymentobj['CardNo'] = 0;
       Paymentobj['CardBankName'] = "";
       Paymentobj['CardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        Paymentobj['AdvanceUsedAmount'] = 0;
+      Paymentobj['AdvanceUsedAmount'] = 0;
       Paymentobj['AdvanceId'] = 0;
       Paymentobj['RefundId'] = 0;
       Paymentobj['TransactionType'] = 0;
       Paymentobj['Remark'] = "Cashpayment";
       Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
-        Paymentobj['IsCancelled'] = 0;
+      Paymentobj['IsCancelled'] = 0;
       Paymentobj['IsCancelledBy'] = 0;
       Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        Paymentobj['CashCounterId'] = 0;
+      Paymentobj['CashCounterId'] = 0;
       Paymentobj['NEFTPayAmount'] = 0;
       Paymentobj['NEFTNo'] = 0;
       Paymentobj['NEFTBankMaster'] = "";
       Paymentobj['NEFTDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        Paymentobj['PayTMAmount'] = 0;
+      Paymentobj['PayTMAmount'] = 0;
       Paymentobj['PayTMTranNo'] = 0;
       Paymentobj['PayTMDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        Paymentobj['PaidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
+      Paymentobj['PaidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0;
       Paymentobj['BalanceAmt'] = 0;
 
 
