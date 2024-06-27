@@ -425,7 +425,10 @@ debugger
     netAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0);
     this.b_concessionamt = netAmt;
     this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
-    this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
+    if(netAmt > 0){
+      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
+    }
+    //
     if(this.b_concessionamt > 0){
       this.conflag=false
       this.Consessionres = true
