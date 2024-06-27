@@ -356,14 +356,14 @@ export class InterimBillComponent implements OnInit {
   // } 
   onSave() {
     debugger
-    if (this.formDiscPersc > 0 || this.b_disAmount > 0) {
-      if (!this.InterimFormGroup.get('ConcessionId').value) {
+    if (this.InterimFormGroup.get('discPer').value > 0 || this.InterimFormGroup.get('concessionAmt').value > 0) {
+      if(!this.InterimFormGroup.get('ConcessionId').value.ConcessionId){
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
-    }
+      }
     this.isLoading = 'submit';
     let interimBillChargesobj = {};
     interimBillChargesobj['chargesID'] = 0// this.ChargesId;
@@ -372,7 +372,7 @@ export class InterimBillComponent implements OnInit {
     insertBillUpdateBillNo1obj['billNo'] = 0;
     insertBillUpdateBillNo1obj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID;
     insertBillUpdateBillNo1obj['totalAmt'] = this.InterimFormGroup.get('TotalAmt').value //this.netAmount;
-    insertBillUpdateBillNo1obj['concessionAmt'] = this.InterimFormGroup.get('concessionAmt').value || this.b_disAmount,
+    insertBillUpdateBillNo1obj['concessionAmt'] = this.InterimFormGroup.get('concessionAmt').value || 0
       insertBillUpdateBillNo1obj['netPayableAmt'] = this.InterimFormGroup.get('NetpayAmount').value, // this.netAmount;
       insertBillUpdateBillNo1obj['paidAmt'] = this.InterimFormGroup.get('NetpayAmount').value || 0,//this.advanceAmount;
       insertBillUpdateBillNo1obj['balanceAmt'] = 0;

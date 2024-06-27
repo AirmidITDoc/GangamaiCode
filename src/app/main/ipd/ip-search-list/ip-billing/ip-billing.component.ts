@@ -1297,28 +1297,28 @@ debugger
         let InsertBillUpdateBillNoObj = {};
         InsertBillUpdateBillNoObj['BillNo'] = 0; 
         InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
-          InsertBillUpdateBillNoObj['TotalAmt'] = this.vBillTotalAmt || 0; 
+        InsertBillUpdateBillNoObj['TotalAmt'] = this.vBillTotalAmt || 0; 
         InsertBillUpdateBillNoObj['ConcessionAmt'] = this.Ipbillform.get('concessionAmt').value || 0;
         InsertBillUpdateBillNoObj['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
         InsertBillUpdateBillNoObj['PaidAmt'] = this.paidamt,
-          InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt,// this.netPaybleAmt;
-          InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
+        InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt,// this.netPaybleAmt;
+        InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
         InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 1;
         InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
-          InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;//this.totalAdvanceAmt;
+        InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0;//this.totalAdvanceAmt;
         InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.date;
         InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.ConcessionId;
         InsertBillUpdateBillNoObj['IsSettled'] = 0;
         InsertBillUpdateBillNoObj['IsPrinted'] = 1;
         InsertBillUpdateBillNoObj['IsFree'] = 0;
         InsertBillUpdateBillNoObj['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
-          InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
-          InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
+        InsertBillUpdateBillNoObj['TariffId'] = this.selectedAdvanceObj.TariffId || 0,
+        InsertBillUpdateBillNoObj['UnitId'] = this.selectedAdvanceObj.UnitId || 0;
         InsertBillUpdateBillNoObj['InterimOrFinal'] = 0;
         InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
         InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = 0;
-        InsertBillUpdateBillNoObj['TaxPer'] = 0//this.Ipbillform.get('Percentage').value || 0,
-        InsertBillUpdateBillNoObj['TaxAmount'] = 0//this.Ipbillform.get('Amount').value || 0,
+        InsertBillUpdateBillNoObj['TaxPer'] = this.Ipbillform.get('AdminPer').value || 0;
+        InsertBillUpdateBillNoObj['TaxAmount'] = this.Ipbillform.get('AdminAmt').value || 0;
         InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
         InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || ''; 
         let Billdetsarr = [];
@@ -1443,8 +1443,8 @@ debugger
     InsertBillUpdateBillNoObj['InterimOrFinal'] = InterimOrFinal;
     InsertBillUpdateBillNoObj['CompanyRefNo'] = 0;
     InsertBillUpdateBillNoObj['ConcessionAuthorizationName'] = 0;
-    InsertBillUpdateBillNoObj['TaxPer'] = 0;
-    InsertBillUpdateBillNoObj['TaxAmount'] = 0;
+    InsertBillUpdateBillNoObj['TaxPer'] = this.Ipbillform.get('AdminPer').value || 0;
+    InsertBillUpdateBillNoObj['TaxAmount'] = this.Ipbillform.get('AdminAmt').value || 0;
     InsertBillUpdateBillNoObj['DiscComments'] = this.Ipbillform.get('Remark').value || '';
     InsertBillUpdateBillNoObj['CompDiscAmt'] = 0//this.InterimFormGroup.get('Remark').value || '';
     
@@ -1786,7 +1786,7 @@ debugger
       let InsertDraftBillOb = {};
       InsertDraftBillOb['drbNo'] = 0;
       InsertDraftBillOb['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
-        InsertDraftBillOb['TotalAmt'] = this.vBillTotalAmt || 0;
+      InsertDraftBillOb['TotalAmt'] = this.vBillTotalAmt || 0;
       InsertDraftBillOb['ConcessionAmt'] =  this.vDiscountAmount || this.Ipbillform.get('concessionAmt').value || 0;
       InsertDraftBillOb['NetPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
       InsertDraftBillOb['PaidAmt'] = 0;
@@ -1794,20 +1794,20 @@ debugger
       InsertDraftBillOb['BillDate'] = this.dateTimeObj.date;
       InsertDraftBillOb['OPD_IPD_Type'] = 1;
       InsertDraftBillOb['AddedBy'] = this.accountService.currentUserValue.user.id,
-        InsertDraftBillOb['TotalAdvanceAmount'] = 0;
+      InsertDraftBillOb['TotalAdvanceAmount'] = 0;
       InsertDraftBillOb['BillTime'] = this.dateTimeObj.time;
       InsertDraftBillOb['ConcessionReasonId'] = this.ConcessionId,
-        InsertDraftBillOb['IsSettled'] = 0;
+      InsertDraftBillOb['IsSettled'] = 0;
       InsertDraftBillOb['IsPrinted'] = 0;
       InsertDraftBillOb['IsFree'] = 0;
       InsertDraftBillOb['CompanyId'] = this.selectedAdvanceObj.CompanyId || 0,
-        InsertDraftBillOb['TariffId'] = 3,//this.selectedAdvanceObj.TariffId || 0,
-        InsertDraftBillOb['UnitId'] = this.selectedAdvanceObj.UnitId || 0,
-        InsertDraftBillOb['InterimOrFinal'] = 0;
+      InsertDraftBillOb['TariffId'] = 3,//this.selectedAdvanceObj.TariffId || 0,
+      InsertDraftBillOb['UnitId'] = this.selectedAdvanceObj.UnitId || 0,
+      InsertDraftBillOb['InterimOrFinal'] = 0;
       InsertDraftBillOb['CompanyRefNo'] = 0;
       InsertDraftBillOb['ConcessionAuthorizationName'] = '';
-      InsertDraftBillOb['TaxPer'] = 0;
-      InsertDraftBillOb['TaxAmount'] = 0;
+      InsertDraftBillOb['TaxPer'] = this.Ipbillform.get('AdminPer').value || 0;
+      InsertDraftBillOb['TaxAmount'] = this.Ipbillform.get('AdminAmt').value || 0;
 
       let DraftBilldetsarr = [];
       this.dataSource.data.forEach((element) => {
@@ -2254,7 +2254,14 @@ debugger
 
   onSave() {
     debugger
-    if (!(this.vPercentage > 101)) {
+    if (this.Ipbillform.get('concessionAmt').value > 0 || this.Ipbillform.get('Percentage').value > 0) {
+      if(!this.Ipbillform.get('ConcessionId').value.ConcessionId){
+        this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
       if (this.dataSource.data.length > 0) {
         if (this.Ipbillform.get('GenerateBill').value) {
           Swal.fire({
@@ -2270,31 +2277,24 @@ debugger
              this.SaveBill1();
             }
           })
-
         }
         else {
-
           Swal.fire({
             title: 'Do you want to save the Draft Bill ',
-
             showCancelButton: true,
             confirmButtonText: 'OK',
 
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-
               this.onSaveDraft();
             }
-
           })
-
         }
-     
       } else {
         Swal.fire("Select Data For Save")
       }
-    }
+   
 
     //this.Ipbillform.get('GenerateBill').setValue(false);
   }
