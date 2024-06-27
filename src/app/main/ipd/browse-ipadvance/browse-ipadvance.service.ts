@@ -8,10 +8,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class BrowseIPAdvanceService {
 
   myFilterform: FormGroup;
+  myFilterrefundform: FormGroup;
 
   constructor(public _httpClient:HttpClient,
         private _formBuilder: FormBuilder) { 
           this.myFilterform=this.filterForm_IpdAdvance();
+          this.myFilterrefundform=this.filterForm_IpRefunddAdvance();
         }
 
   filterForm_IpdAdvance(): FormGroup {
@@ -24,6 +26,18 @@ export class BrowseIPAdvanceService {
       end: [(new Date()).toISOString()],
     });
   }
+
+  filterForm_IpRefunddAdvance(): FormGroup {
+    return this._formBuilder.group({
+      PBillNo: '',
+      RegNo: '',
+      FirstName: '',
+      LastName: '',
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+    });
+  }
+  
 
   public getIpdAdvanceBrowseList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowseIPAdvanceList", employee)

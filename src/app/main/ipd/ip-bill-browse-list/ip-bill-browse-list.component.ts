@@ -514,6 +514,7 @@ console.log(PatientHeaderObj)
 
   resultsLength = 0;
   onShow_IpdBrowse() {
+    debugger
     this.sIsLoading = 'loading-data';
     var D_data = {
       "F_Name": this._IpBillBrowseListService.myFilterIpbillbrowseform.get("FirstName").value + '%' || "%",
@@ -539,6 +540,17 @@ console.log(PatientHeaderObj)
       error => {
         this.sIsLoading = '';
       });
+  }
+
+   
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
 
   toggleSidebar(name): void {
@@ -666,13 +678,53 @@ console.log(PatientHeaderObj)
     }, 100);
   }
 
+ 
   exportBillDatewiseReportExcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['SelfOrCompany', 'InterimOrFinal', 'BalanceAmt', 'BillDate', 'PBillNo', 'RegID', 'PatientName', 'TotalAmt', 'ConcessionAmt', 'NetPayableAmt', 'CashPay', 'CardPay', 'ChequePay', 'NEFTPay', 'PayTMPay', 'AdvPay'];
+    let exportHeaders = ['BillDate', 'PBillNo', 'RegNo', 'PatientName', 'Age', 'MobileNo', 'DOA', 'DOD', 'IPDNo', 'DoctorName','RefDoctorName', 'TariffName', 'CompanyName', 'UnitName', 'TotalAmt', 'ConcessionAmt','NetPayableAmt',
+        'BalanceAmt', 'CashPay', 'CardPay', 'ChequePay', 'OnlinePay','AdvUsedPay', 'PayCount', 'RefundAmount','CashCounterName','UserName'];
     this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Ip Bill Datewise');
     this.dataSource.data = [];
     this.sIsLoading = '';
   }
+  exportBillDatewiseReportPdf() {
+    let actualData = [];
+    this.dataSource.data.forEach(e => {
+      var tempObj = [];
+      
+      tempObj.push(e.BillDate);
+      tempObj.push(e.PBillNo);
+      tempObj.push(e.RegNo);
+      tempObj.push(e.PatientName);
+      tempObj.push(e.MobileNo);
+      tempObj.push(e.DOA);
+      tempObj.push(e.DOD);
+      tempObj.push(e.IPDNo);
+      tempObj.push(e.DoctorName);
+      tempObj.push(e.RefDoctorName);
+      tempObj.push(e.TariffName);
+      tempObj.push(e.CompanyName);
+      tempObj.push(e.UnitName);
+      tempObj.push(e.TotalAmt);
+      tempObj.push(e.ConcessionAmt);
+      tempObj.push(e.NetPayableAmt);
+      tempObj.push(e.BalanceAmt);
+      tempObj.push(e.CashPay);
+      tempObj.push(e.CardPay);
+      tempObj.push(e.ChequePay);
+      tempObj.push(e.OnlinePay);
+      tempObj.push(e.AdvUsedPay);
+      tempObj.push(e.PayCount);
+      tempObj.push(e.RefundAmount);
+      tempObj.push(e.CashCounterName);
+      tempObj.push(e.UserName);
+    
+      actualData.push(tempObj);
+    });
+    let headers = [ ['BillDate', 'PBillNo', 'RegNo', 'PatientName', 'Age', 'MobileNo', 'DOA', 'DOD', 'IPDNo', 'DoctorName','RefDoctorName', 'TariffName', 'CompanyName', 'UnitName', 'TotalAmt', 'ConcessionAmt','NetPayableAmt','BalanceAmt', 'CashPay', 'CardPay', 'ChequePay', 'OnlinePay','AdvUsedPay', 'PayCount', 'RefundAmount','CashCounterName','UserName']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Bill');
+  }
+  
 
   exportReportPdf() {
     let actualData = [];
@@ -762,6 +814,42 @@ console.log(PatientHeaderObj)
     },100);
   
     this.chkprint=false;
+  }
+
+  
+  exportPaymentReportExcel() {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['RegNo', 'PatientName', 'PBillNo', 'TotalAmt', 'BalanceAmt', 'PaymentDate', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'AdvanceUsedAmount','PaidAmount', 
+      'NEFTPayAmount', 'PayTMAmount', 'Remark', 'UserName'];
+    this.reportDownloadService.getExportJsonData(this.dataSource2.data, exportHeaders, 'Ip Payment Datewise');
+    this.dataSource2.data = [];
+    this.sIsLoading = '';
+  }
+  exportPaymentReportPdf() {
+    let actualData = [];
+    this.dataSource2.data.forEach(e => {
+      var tempObj = [];
+      
+      tempObj.push(e.RegNo);
+      tempObj.push(e.PatientName);
+      tempObj.push(e.PBillNo);
+      tempObj.push(e.TotalAmt);
+      tempObj.push(e.BalanceAmt);
+      tempObj.push(e.PaymentDate);
+      tempObj.push(e.CashPayAmount);
+      tempObj.push(e.ChequePayAmount);
+      tempObj.push(e.CardPayAmount);
+      tempObj.push(e.AdvanceUsedAmount);
+      tempObj.push(e.PaidAmount);
+      tempObj.push(e.NEFTPayAmount);
+      tempObj.push(e.PayTMAmount);
+      tempObj.push(e.Remark);
+      tempObj.push(e.UserName);
+    actualData.push(tempObj);
+    });
+    let headers = [['RegNo', 'PatientName', 'PBillNo', 'TotalAmt', 'BalanceAmt', 'PaymentDate', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'AdvanceUsedAmount','PaidAmount', 
+      'NEFTPayAmount', 'PayTMAmount', 'Remark', 'UserName']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Payment');
   }
 
 
@@ -890,6 +978,26 @@ export class IpBillBrowseList {
   HospitalName: any;
   InterimOrFinal: boolean;
   DoctorName: any;
+  MobileNo: any;
+  DOA: any;
+  DOD: any;
+  RefDoctorName: any;
+  TariffName: any;
+  CompanyName: any;
+  UnitName: any;
+
+  BalanceAmt: any;
+  CashPay: any;
+  CardPay: any;
+  ChequePay: any;
+  OnlinePay: any;
+  AdvUsedPay: any;
+  PayCount: any;
+  RefundAmount: any;
+  // 'RefundCount',
+  CashCounterName: any;
+  
+
   /**
    * Constructor
    *
@@ -946,6 +1054,23 @@ export class IpBillBrowseList {
       this.GroupName = IpBillBrowseList.GroupName || 0;
       this.Hospitaladdress = IpBillBrowseList.Hospitaladdress || ';'
       this.HospitalName = IpBillBrowseList.HospitalName || '';
+
+
+      this. MobileNo = IpBillBrowseList. MobileNo || '';
+      this.DOA = IpBillBrowseList.DOA || '';
+      this.DOD = IpBillBrowseList.DOD || '';
+      this.RefDoctorName = IpBillBrowseList.RefDoctorName || '';
+      this.TariffName = IpBillBrowseList.TariffName || '';
+      this.CompanyName = IpBillBrowseList.CompanyName || '';
+      this.BalanceAmt = IpBillBrowseList.BalanceAmt || '';
+      this.CashPay = IpBillBrowseList.CashPay || '';
+      this.CardPay = IpBillBrowseList.CardPay || '';
+      this.ChequePay = IpBillBrowseList.ChequePay || 0;
+      this.OnlinePay = IpBillBrowseList.OnlinePay || 0;
+      this.AdvUsedPay = IpBillBrowseList.AdvUsedPay || 0;
+      this.PayCount = IpBillBrowseList.PayCount || ';'
+      this.RefundAmount = IpBillBrowseList.RefundAmount || '';
+      this.CashCounterName = IpBillBrowseList.CashCounterName || '';
     }
   }
 }

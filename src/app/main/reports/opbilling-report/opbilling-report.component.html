@@ -138,8 +138,38 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex *ngIf="FlagDoctorSelected">
+                                            <mat-label>Doctor Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Doctor" matInput formControlName="DoctorId"
+                                                [matAutocomplete]="autosearchDoctorReport2" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autosearchDoctorReport2="matAutocomplete"
+                                                [displayWith]="getOptionTextsearchDoctor">
+                                                <mat-option *ngFor="let option of filteredOptionsDoctorMode | async"
+                                                    [value]="option">
+                                                    {{option.DoctorName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" *ngIf="FlagBillNoSelected">
+                                            <mat-label>BillNo</mat-label>
+                                            <input name="BillNo" formControlName="BillNo" placeholder="BillNo" matInput>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" *ngIf="FlagRefundIdSelected">
+                                            <mat-label>Refund Id</mat-label>
+                                            <input name="RefundId" formControlName="RefundId" placeholder="RefundId"
+                                                matInput>
+                                        </mat-form-field>
+
                                     </div>
-                                    <div *ngIf="FlagDoctorSelected" style="margin-left: 20px;">
+                                    <!-- <div *ngIf="FlagDoctorSelected" style="margin-left: 20px;">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
@@ -159,24 +189,24 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
-                                    </div>
+                                    </div> -->
 
-                                    <div *ngIf="FlagBillNoSelected" style="margin-left: 20px;">
+                                    <!-- <div *ngIf="FlagBillNoSelected" style="margin-left: 20px;">
                                         <mat-form-field appearance="outline">
                                             <mat-label>BillNo</mat-label>
                                             <input name="BillNo" formControlName="BillNo" placeholder="BillNo" matInput>
                                         </mat-form-field>
 
-                                    </div>
+                                    </div> -->
 
-                                    <div *ngIf="FlagRefundIdSelected" style="margin-left: 20px;">
+                                    <!-- <div *ngIf="FlagRefundIdSelected" style="margin-left: 20px;">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Refund Id</mat-label>
                                             <input name="RefundId" formControlName="RefundId" placeholder="RefundId"
                                                 matInput>
                                         </mat-form-field>
 
-                                    </div>
+                                    </div> -->
 
 
                                     <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">

@@ -245,17 +245,48 @@ viewgetIPAdvanceReportPdf(contact) {
     this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Advance');
   }
 
+  exportIpadvancerefundReportExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['RegNo', 'RefundDate', 'PatientName', 'AdvanceAmount', 'AdvanceUsedAmount', 'BalanceAmount', 'RefundAmount', 'PaymentDate', 'CashPayAmount','ChequePayAmount', 'CardPayAmount','Remark','UserName'];
+    this.reportDownloadService.getExportJsonData(this.dataSource1.data, exportHeaders, 'Ip Refund Of Advance Datewise');
+    this.dataSource1.data = [];
+    this.sIsLoading = '';
+  }
+
+  exportadrefundReportPdf() {
+    let actualData = [];
+    this.dataSource1.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.RegNo);
+      tempObj.push(e.RefundDate);
+      tempObj.push(e.PatientName);
+      tempObj.push(e.AdvanceAmount);
+      tempObj.push(e.AdvanceUsedAmount);
+      tempObj.push(e.BalanceAmount);
+      tempObj.push(e.RefundAmount);
+      tempObj.push(e.PaymentDate);
+      tempObj.push(e.CashPayAmount);
+      tempObj.push(e.ChequePayAmount);
+      tempObj.push(e.CardPayAmount);
+      tempObj.push(e.Remark);
+      tempObj.push(e.UserName);
+      actualData.push(tempObj);
+    });
+    let headers = [['RegNo', 'RefundDate', 'PatientName', 'AdvanceAmount', 'AdvanceUsedAmount', 'BalanceAmount', 'RefundAmount', 'PaymentDate', 'CashPayAmount','ChequePayAmount', 'CardPayAmount','Remark','UserName']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Refund Of Advance');
+  }
+
   onClear(){}
 
   //refund
   GetIpdreturnAdvancepaymentreceipt() {
     this.sIsLoading = 'loading-data';
     var D_data = {
-      "F_Name": this._advanceService.myFilterform.get("FirstName").value + '%' || "%",
-      "L_Name": this._advanceService.myFilterform.get("LastName").value + '%' || "%",
-      "From_Dt": this.datePipe.transform(this._advanceService.myFilterform.get("start").value, "MM-dd-yyyy"), //"01/01/2018",
-      "To_Dt": this.datePipe.transform(this._advanceService.myFilterform.get("end").value, "MM-dd-yyyy"), //"01/01/2020",
-      "Reg_No": this._advanceService.myFilterform.get("RegNo").value || 0
+      "F_Name": this._advanceService.myFilterrefundform.get("FirstName").value + '%' || "%",
+      "L_Name": this._advanceService.myFilterrefundform.get("LastName").value + '%' || "%",
+      "From_Dt": this.datePipe.transform(this._advanceService.myFilterrefundform.get("start").value, "MM-dd-yyyy"), //"01/01/2018",
+      "To_Dt": this.datePipe.transform(this._advanceService.myFilterrefundform.get("end").value, "MM-dd-yyyy"), //"01/01/2020",
+      "Reg_No": this._advanceService.myFilterrefundform.get("RegNo").value || 0
     }
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
@@ -306,7 +337,15 @@ viewgetRefundofadvanceReportPdf(row) {
  
   },100);
 }
-
+keyPressCharater(event){
+  var inp = String.fromCharCode(event.keyCode);
+  if (/^\d*\.?\d*$/.test(inp)) {
+    return true;
+  } else {
+    event.preventDefault();
+    return false;
+  }
+}
 }
 
 export class IpdAdvanceBrowseModel {

@@ -210,8 +210,9 @@ export class BedTransferComponent implements OnInit {
 
   OnChangeBedList(wardObj) {
     debugger
-    this._IpSearchListService.getBedCombo(wardObj.WardId).subscribe(data => {
+    this._IpSearchListService.getBedCombo(wardObj.RoomId).subscribe(data => {
       this.BedList = data;
+      console.log(this.BedList)
       this.optionsBed = this.BedList.slice();
       this.filteredOptionsBed = this.Bedtransfer.get('BedId').valueChanges.pipe(
         startWith(''),
@@ -224,6 +225,8 @@ export class BedTransferComponent implements OnInit {
     })
   } 
 
+
+  
   onBedChange(value) {
     this.bedObj = value;
   }
@@ -289,19 +292,19 @@ export class BedTransferComponent implements OnInit {
   onBedtransfer() {
     debugger;
     if ((this.vWardId == '' || this.vWardId == null || this.vWardId == undefined)) {
-      this.toastr.warning('Please select valid Prefix ', 'Warning !', {
+      this.toastr.warning('Please select valid Ward ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
     if ((this.vBedId == '' || this.vBedId == null || this.vBedId == undefined)) {
-      this.toastr.warning('Please select valid City', 'Warning !', {
+      this.toastr.warning('Please select valid Bed', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
     if ((this.vClassId == '' || this.vClassId == null || this.vClassId == undefined)) {
-      this.toastr.warning('Please select PatientType', 'Warning !', {
+      this.toastr.warning('Please select Class', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
@@ -310,31 +313,31 @@ export class BedTransferComponent implements OnInit {
 
     var m_data = {
       "updateBedtransferSetFix": {
-        "bedId": this._IpSearchListService.bsaveForm.get("BedId").value.BedId,
+        "bedId": this.Bedtransfer.get("BedId").value.BedId,
       },
       "updateBedtransferSetFree": {
 
         "bedId": this.selectedAdvanceObj.BedId
       },
       "updateAdmissionBedtransfer": {
-        "admissionID": this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value,
-        "bedId": this._IpSearchListService.bsaveForm.get("BedId").value.BedId,
-        "wardId": this._IpSearchListService.bsaveForm.get("RoomId").value.RoomId,
-        "classId": this._IpSearchListService.bsaveForm.get("ClassId").value.ClassId
+        "admissionID": this.selectedAdvanceObj.AdmissionID,
+        "bedId": this.Bedtransfer.get("BedId").value.BedId,
+        "wardId": this.Bedtransfer.get("RoomId").value.RoomId,
+        "classId": this.Bedtransfer.get("ClassId").value.ClassId
       },
       "updateBedtransfer": {
-        "admissionID": this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value,
+        "admissionID": this.selectedAdvanceObj.AdmissionID,
         "fromDate": this.dateTimeObj.date,
-        "fromTime": this.dateTimeObj.date,
-        "fromWardID": this._IpSearchListService.myShowAdvanceForm.get("WardId").value,
-        "fromBedId": this._IpSearchListService.myShowAdvanceForm.get("BedId").value,
-        "fromClassId": this._IpSearchListService.myShowAdvanceForm.get("ClassId").value,
+        "fromTime": this.dateTimeObj.time,
+        "fromWardID": this.selectedAdvanceObj.WardId,
+        "fromBedId":this.selectedAdvanceObj.BedId,
+        "fromClassId":this.selectedAdvanceObj.ClassId,
         "toDate": this.dateTimeObj.date,
-        "toTime": this.dateTimeObj.date,
-        "toWardID": this._IpSearchListService.bsaveForm.get("RoomId").value.RoomId,
-        "toBedId": this._IpSearchListService.bsaveForm.get("BedId").value.BedId,
-        "toClassId": this._IpSearchListService.bsaveForm.get("ClassId").value.classId || this.selectedAdvanceObj.ClassId,
-        "remark": this._IpSearchListService.bsaveForm.get("Remark").value,
+        "toTime": this.dateTimeObj.time,
+        "toWardID": this.Bedtransfer.get("RoomId").value.RoomId,
+        "toBedId": this.Bedtransfer.get("BedId").value.BedId,
+        "toClassId": this.Bedtransfer.get("ClassId").value.classId || this.selectedAdvanceObj.ClassId,
+        "remark": this.Bedtransfer.get("Remark").value,
         "addedBy": this.accountService.currentUserValue.user.id,
         "isCancelled": false,
         "isCancelledBy": 1

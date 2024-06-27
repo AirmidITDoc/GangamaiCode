@@ -598,6 +598,9 @@ export class BrowseIpdreturnadvanceReceipt {
   AgeYear: number;
   IPDNo: any;
   NetPayableAmt: any;
+  RefundDate: any;
+AdvanceAmount: any;
+BalanceAmount: any;
   /**
    * Constructor
    *
@@ -645,6 +648,9 @@ export class BrowseIpdreturnadvanceReceipt {
       this.EmailId = BrowseIpdreturnadvanceReceipt.EmailId || '';
 
       this.NetPayableAmt = BrowseIpdreturnadvanceReceipt.NetPayableAmt || 0;
+      this.RefundDate = BrowseIpdreturnadvanceReceipt.RefundDate || '';
+      this.AdvanceAmount = BrowseIpdreturnadvanceReceipt.AdvanceAmount || 0;
+      this.BalanceAmount = BrowseIpdreturnadvanceReceipt.BalanceAmount || 0;
     }
 
   }

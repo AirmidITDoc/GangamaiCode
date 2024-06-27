@@ -168,8 +168,6 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
   vpaidamt: any = 0;
   vbalanceamt: any = 0;
   NewBillpayment(contact) {
-
-console.log(contact)
     let PatientHeaderObj = {};
 
     PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
@@ -328,8 +326,7 @@ console.log(contact)
 
   resultsLength = 0;
   getBrowseOPDBillsList() {
-    
-    this.isLoadingStr = 'loading';
+    // this.sIsLoading = 'loading-data';
     var D_data = {
       "F_Name": (this._BrowseOPDBillsService.myFilterbillform.get("FirstName").value).trim() + '%' || "%",
       "L_Name": (this._BrowseOPDBillsService.myFilterbillform.get("LastName").value).trim() + '%' || "%",
@@ -337,31 +334,23 @@ console.log(contact)
       "To_Dt": this.datePipe.transform(this._BrowseOPDBillsService.myFilterbillform.get("end").value, "MM-dd-yyyy"),
       "Reg_No": this._BrowseOPDBillsService.myFilterbillform.get("RegNo").value || 0,
       "PBillNo": this._BrowseOPDBillsService.myFilterbillform.get("PBillNo").value || "%",
-      Start:(this.paginator?.pageIndex??0),
-      Length:(this.paginator?.pageSize??35),
+      "Start":(this.paginator?.pageIndex??0),
+      "Length":(this.paginator?.pageSize??35)
     }
     
     console.log(D_data)
-    setTimeout(() => {
-      this.isLoadingStr = 'loading';
-      
+    debugger
       this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
-        this.dataSource.data = Visit as BrowseOPDBill[];
-        this.dataSource.data = Visit["Table1"]??[] as BrowseOPDBill[];
-        console.log(this.dataSource.data)
-        // this.dataSource.sort = this.sort;
-        this.resultsLength= Visit["Table"][0]["total_row"];
-
-        // this.dataSource.sort = this.sort;
-        // this.dataSource.paginator = this.paginator;
-        this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-      },
-        error => {
-          this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-        });
-    }, 1000);
-
-    // this.onClear();
+      this.dataSource.data = Visit as BrowseOPDBill[];
+      this.dataSource.data = Visit["Table1"]??[] as BrowseOPDBill[];
+      console.log(this.dataSource.data)
+      // this.resultsLength= Visit["Table"][0]["total_row"];
+      // this.sIsLoading = this.dataSource.data.length == 0 ? 'no-data' : '';
+      this.click = false;
+    },
+      error => {
+        this.sIsLoading = '';
+      });
   }
 
   viewgetOPDDailycollectionReportPdf() {
@@ -519,6 +508,40 @@ console.log(contact)
   }
 
 
+  exportoppaymentReportExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['PaymentDate', 'PBillNo', 'ReceiptNo', 'RegNo','PatientName', 'TotalAmt', 'BalanceAmt', 'PaidAmount', 'CashPayAmount', 'ChequePayAmount','CardPayAmount', 'NEFTPayAmount','PayTMAmount', 'AdvanceUsedAmount','UserName'];
+    this.reportDownloadService.getExportJsonData(this.dataSource1.data, exportHeaders, 'OP Payment');
+    this.dataSource1.data = [];
+    this.sIsLoading = '';
+  }
+
+  exportoppaymentReportPdf() {
+    let actualData = [];
+    this.dataSource1.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.PaymentDate);
+      tempObj.push(e.PBillNo);
+      tempObj.push(e.ReceiptNo);
+      tempObj.push(e.RegNo);
+      tempObj.push(e.PatientName);
+      tempObj.push(e.TotalAmt);
+      tempObj.push(e.BalanceAmt);
+      tempObj.push(e.PaidAmount);
+      tempObj.push(e.CashPayAmount);
+      tempObj.push(e.ChequePayAmount);
+      tempObj.push(e.CardPayAmount);
+      tempObj.push(e.NEFTPayAmount);
+      tempObj.push(e.PayTMAmount);
+      tempObj.push(e.AdvanceUsedAmount);
+      tempObj.push(e.UserName);
+      actualData.push(tempObj);
+    });
+    let headers = [['PaymentDate', 'PBillNo', 'ReceiptNo', 'RegNo','PatientName', 'TotalAmt', 'BalanceAmt', 'PaidAmount', 'CashPayAmount', 'ChequePayAmount','CardPayAmount', 'NEFTPayAmount','PayTMAmount', 'AdvanceUsedAmount','UserName']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'OP Payment');
+  }
+
+
   //payment
 
   getBrowseOpdPaymentReceiptList() {
@@ -579,6 +602,36 @@ PaymentId=Id.PaymentId
     }, 100);
   }
 
+  exportoprefundReportPdf(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['RefundDate', 'RefundNo', 'RegNo','PatientName', 'MobileNo', 'PatientType', 'TariffName', 'CompanyName', 'PaymentDate','RefundAmount', 'TotalAmt','PBillNo'];
+    this.reportDownloadService.getExportJsonData(this.dataSource2.data, exportHeaders, 'OP Refund Of Bill');
+    this.dataSource2.data = [];
+    this.sIsLoading = '';
+  }
+
+  exportoprefundReportExcel() {
+    let actualData = [];
+    this.dataSource2.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.RefundDate);
+      // tempObj.push(e.RefundNo);
+      // tempObj.push(e.RegNo);
+      // tempObj.push(e.PatientName);
+      // tempObj.push(e.MobileNo);
+      // tempObj.push(e.PatientType);
+      // tempObj.push(e.TariffName);
+      // tempObj.push(e.CompanyName);
+      // tempObj.push(e.PaymentDate);
+      // tempObj.push(e.RefundAmount);
+      // tempObj.push(e.TotalAmt);
+      // tempObj.push(e.PBillNo);
+   
+      actualData.push(tempObj);
+    });
+    let headers = [['RefundDate', 'RefundNo', 'RegNo','PatientName', 'MobileNo', 'PatientType', 'TariffName', 'CompanyName', 'PaymentDate','RefundAmount', 'TotalAmt','PBillNo']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'OP Refund Of Bill');
+  }
 
   //refund
   getBrowseOPDReturnList() {
@@ -639,7 +692,15 @@ PaymentId=Id.PaymentId
     },100);
   }
  
-
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 }
 
 export class ReportPrintObj {

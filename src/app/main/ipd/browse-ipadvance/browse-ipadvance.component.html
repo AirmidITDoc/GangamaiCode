@@ -70,7 +70,7 @@
             
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Reg No</mat-label>
-                                                <input name="RegNo" formControlName="RegNo" matInput (keyup)="onShow_IpdAdvance()">
+                                                <input name="RegNo" formControlName="RegNo" matInput (keyup)="onShow_IpdAdvance()" (keypress)="keyPressCharater($event)">
                                             </mat-form-field>
             
                                             <mat-form-field appearance="outline" fxFlex>
@@ -126,9 +126,7 @@
 
                             <div class="table-header">
                                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                                    <div class="table-header-title">
-                                        <!-- <span class="h3 font-weight-600">Lab Or Rad Details</span> -->
-                                    </div>
+                                 
                                     <div class="table-header-right">
                                         <div class="export-buttons">
                                             <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
@@ -424,25 +422,25 @@
                             <!-- SIDEBAR CONTENT -->
                             <div>
                                 <div class="nav material2">
-                                    <form [formGroup]="_advanceService.myFilterform"
+                                    <form [formGroup]="_advanceService.myFilterrefundform"
                                         style="padding: 6px 6px 5px 5px;" fusePerfectScrollbar>
                                         <div fxLayout="column" fxLayoutAlign="start none">
                                             <br />
                                             <mat-form-field appearance="outline" style="margin-left: 2%;">
                                                 <mat-label>Enter a date range</mat-label>
-                                                <mat-date-range-input [rangePicker]="picker">
+                                                <mat-date-range-input [rangePicker]="picker1">
                                                     <input matStartDate formControlName="start" placeholder="Start date"
                                                         (dateChange)="GetIpdreturnAdvancepaymentreceipt()">
                                                     <input matEndDate formControlName="end" placeholder="End date">
                                                 </mat-date-range-input>
-                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                                <mat-date-range-picker #picker></mat-date-range-picker>
+                                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #picker1></mat-date-range-picker>
                                             </mat-form-field>
             
             
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Reg No</mat-label>
-                                                <input name="RegNo" formControlName="RegNo" matInput
+                                                <input name="RegNo" formControlName="RegNo" matInput (keypress)="keyPressCharater($event)"
                                                     (keyup)="GetIpdreturnAdvancepaymentreceipt()">
                                             </mat-form-field>
             
@@ -482,7 +480,24 @@
                     <div class="center p-12 pb-56" fxFlexAlign="start center">
             
                         <div class="content-card" style="border-radius:4px; ">
-            
+                            <div class="table-header">
+                                <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                 
+                                    <div class="table-header-right">
+                                        <div class="export-buttons">
+                                            <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
+                                                <button type="button" mat-icon-button (click)="exportadrefundReportPdf()" [disabled]="dataSource1.data.length ==0">
+                                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                                                </button>
+        
+                                                <button type="button" mat-icon-button (click)="exportIpadvancerefundReportExcel()" [disabled]="dataSource1.data.length == 0">
+                                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
             
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                                 <div fxFlex.gt-sm="100%" fxFlex>

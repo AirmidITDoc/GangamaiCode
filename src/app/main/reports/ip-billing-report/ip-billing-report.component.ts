@@ -135,7 +135,7 @@ var data={
       this.FlagDoctorSelected = false;
       this.FlagAdvanceDetailIDSelected=false;
       this.FlagBillSelected=false;
-
+      this.FlagRefundIdSelected=false;
     } 
     if (this.ReportName == 'Credit Report') {
       this.FlagUserSelected = false;
@@ -148,24 +148,33 @@ var data={
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagRefundIdSelected=true;
-
+      this.FlagAdvanceDetailIDSelected=false;
+      this.FlagBillSelected=false;
     } else if (this.ReportName == 'Refund of Bill Report') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagRefundIdSelected=true;
+      this.FlagAdvanceDetailIDSelected=false;
+      this.FlagBillSelected=false;
     } 
     else if (this.ReportName == 'IP Daily Collection Report') {
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
-
+      this.FlagRefundIdSelected=true;
+      this.FlagAdvanceDetailIDSelected=false;
+      this.FlagBillSelected=false;
     } else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagRefundIdSelected=false;
+      this.FlagAdvanceDetailIDSelected=false;
+      this.FlagBillSelected=false;
     } else if (this.ReportName == 'IP Bill Generation Payment Due report') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
       this.FlagRefundIdSelected=false;
+      this.FlagAdvanceDetailIDSelected=false;
+      this.FlagBillSelected=false;
     } 
 
     

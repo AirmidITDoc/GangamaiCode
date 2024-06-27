@@ -37,7 +37,7 @@
                 </div>
                 <!-- / HEADER -->
                 <!-- SELECTED BAR -->
-                <!-- <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main> -->
+                <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
                 <!-- / SELECTED BAR -->
                 <!-- CONTENT -->
                 <div class="content">
@@ -66,12 +66,13 @@
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>PBillNo</mat-label>
-                                                <input name="PBillNo" formControlName="PBillNo" matInput (keyup)="onShow_IpdBrowse()">
+                                                <input name="PBillNo" formControlName="PBillNo" matInput (keyup)="onShow_IpdBrowse()"
+                                                (keypress)="keyPressCharater($event)">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Reg No</mat-label>
-                                                <input name="RegNo" formControlName="RegNo" matInput
+                                                <input name="RegNo" formControlName="RegNo" matInput  (keypress)="keyPressCharater($event)"
                                                     (keyup)="onShow_IpdBrowse()">
                                             </mat-form-field>
 
@@ -87,7 +88,7 @@
                                                     (keyup)="onShow_IpdBrowse()">
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Company Name</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
                                                     placeholder="Select Company" matInput formControlName="CompanyId"
@@ -105,7 +106,7 @@
                                                         {{option.CompanyName}}
                                                     </mat-option>
                                                 </mat-autocomplete>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
 
                                             <div class="sidebar-spinner mt-12" *ngIf="SpinLoading">
                                                 <span>
@@ -151,22 +152,23 @@
 
                             <div class="table-header">
                                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                                    <div class="table-header-title">
-                                        <!-- <span class="h3 font-weight-600">Lab Or Rad Details</span> -->
-                                    </div>
+                                 
                                     <div class="table-header-right">
                                         <div class="export-buttons">
                                             <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                                <button (click)="exportBillDatewiseReportExcel()"
-                                                    [disabled]="! (dataSource.data.length > 0)"
-                                                    style="background-color: white;color: white;width: 45px;margin-top: 10px;">
-                                                    <img width="32" height="10px" src="assets/images/logos/xls.png">
+                                                <button type="button" mat-icon-button (click)="exportBillDatewiseReportPdf()" [disabled]="dataSource.data.length ==0">
+                                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                                                </button>
+        
+                                                <button type="button" mat-icon-button (click)="exportBillDatewiseReportExcel()" [disabled]="dataSource.data.length == 0">
+                                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                           
                             <div class="table-wrapper">
                                 <div class="table-spinner">
                                     <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
@@ -583,14 +585,14 @@
                                             <!-- Search fields -->
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Enter a date range</mat-label>
-                                                <mat-date-range-input [rangePicker]="picker">
+                                                <mat-date-range-input [rangePicker]="picker1">
                                                     <input matStartDate formControlName="start" placeholder="Start date"
                                                         (dateChange)="onShow1($event)">
                                                     <input matEndDate formControlName="end" placeholder="End date"
                                                         (dateChange)="onShow1($event)">
                                                 </mat-date-range-input>
-                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                                <mat-date-range-picker #picker></mat-date-range-picker>
+                                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #picker1></mat-date-range-picker>
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
@@ -601,13 +603,13 @@
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Bill No</mat-label>
-                                                <input name="PBillNo" formControlName="PBillNo" matInput
+                                                <input name="PBillNo" formControlName="PBillNo" matInput  (keypress)="keyPressCharater($event)"
                                                     (keyup)="onShow1($event)">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Reg No</mat-label>
-                                                <input name="RegNo" formControlName="RegNo" matInput
+                                                <input name="RegNo" formControlName="RegNo" matInput  (keypress)="keyPressCharater($event)"
                                                     (keyup)="onShow1($event)">
                                             </mat-form-field>
 
@@ -648,7 +650,25 @@
                     <div class="center p-12">
 
                         <div class="content-card">
-
+                            <div class="table-header">
+                                <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                 
+                                    <div class="table-header-right">
+                                        <div class="export-buttons">
+                                            <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
+                                                <button type="button" mat-icon-button (click)="exportPaymentReportPdf()" [disabled]="dataSource2.data.length ==0">
+                                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                                                </button>
+        
+                                                <button type="button" mat-icon-button (click)="exportPaymentReportExcel()" [disabled]="dataSource2.data.length == 0">
+                                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
                             <div fxLayout="column">
 
                                 <div class="table-wrapper">
@@ -874,14 +894,14 @@
                                             <br />
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Enter a date range</mat-label>
-                                                <mat-date-range-input [rangePicker]="picker">
+                                                <mat-date-range-input [rangePicker]="picker2">
                                                     <input matStartDate formControlName="start" placeholder="Start date"
                                                         (dateChange)="getBrowseIPDRefundbillList()">
                                                     <input matEndDate formControlName="end" placeholder="End date"
                                                         (dateChange)="getBrowseIPDRefundbillList()">
                                                 </mat-date-range-input>
-                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                                <mat-date-range-picker #picker></mat-date-range-picker>
+                                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #picker2></mat-date-range-picker>
                                             </mat-form-field>
 
                                             <!-- <mat-form-field appearance="outline" fxFlex>
@@ -891,7 +911,7 @@
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Reg No</mat-label>
-                                                <input name="RegNo" formControlName="RegNo" matInput
+                                                <input name="RegNo" formControlName="RegNo" matInput  (keypress)="keyPressCharater($event)"
                                                     (keyup)="getBrowseIPDRefundbillList()">
                                             </mat-form-field>
 
@@ -933,31 +953,25 @@
                     <div class="center p-12 pb-56" fxFlexAlign="start center">
 
                         <div class="content-card" style="border-radius:4px; ">
+                        
                             <div class="table-header">
                                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                                    <div class="table-header-title">
-                                        <!-- <span class="h3 font-weight-600">Lab Or Rad Details</span> -->
-                                    </div>
+                                 
                                     <div class="table-header-right">
                                         <div class="export-buttons">
                                             <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-
-                                                <button (click)="exportIprefundofbillReportExcel()"
-                                                    [disabled]="! (dataSource3.data.length > 0)"
-                                                    style="background-color: white;color: white;width: 45px;">
-                                                    <img width="32" height="10px" src="assets/images/logos/xls.png">
-                                                </button>
-
-                                                <button type="button" mat-icon-button (click)="exportReportPdf()"
-                                                    [disabled]="dataSource3.data.length ==0">
+                                                <button type="button" mat-icon-button (click)="exportReportPdf()" [disabled]="dataSource3.data.length ==0">
                                                     <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                                                </button>
+        
+                                                <button type="button" mat-icon-button (click)="exportIprefundofbillReportExcel()" [disabled]="dataSource3.data.length == 0">
+                                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                                 <div fxFlex.gt-sm="100%" fxFlex>
 

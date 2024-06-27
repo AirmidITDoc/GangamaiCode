@@ -7,10 +7,10 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                    <!-- <div class="comman-date">
+                    <div class="comman-date">
                         <app-common-date [screenFrom]="screenFromString"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div> -->
+                    </div>
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                             <mat-icon>close</mat-icon>
@@ -103,7 +103,7 @@
                                                     <span class="patient-col-key">Ward | Bed Name
                                                     </span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{selectedAdvanceObj.RoomName}} 
+                                                    <span class="patient-col-value">{{selectedAdvanceObj.RoomName}}
                                                         | {{selectedAdvanceObj.BedName}}</span>
                                                 </div>
                                                 <div class="patient-col">
@@ -139,100 +139,99 @@
             </div>
 
             <!-- ================================ LABEL HEADER  -->
-        </div>
-        <form [formGroup]="Bedtransfer">
 
-            <div class="dialog-content-wrapper">
-                <!-- ================================ LABEL HEADER  -->
+            <form [formGroup]="Bedtransfer">
 
-                <mat-card>
-                    <div class="Bedtransfer">
+                <div class="dialog-content-wrapper">
+                    <!-- ================================ LABEL HEADER  -->
 
-                        <div fxlayout="row" fxFlex="90%">
-                            <h3 style="font-weight: bolder;">Bed Transfer</h3>
-                            <div class="gap-8">
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Ward Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Ward"
-                                        matInput #ward (keydown)="onEnterward($event)" [(ngModel)]="vWardId"
-                                        formControlName="RoomId" [matAutocomplete]="autoWard"
-                                        required>
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="Bedtransfer.get('RoomId').setValue(''); isWardSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close" ward
-                                            (click)="Bedtransfer.get('RoomId').setValue(''); isWardSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoWard="matAutocomplete" [displayWith]="getOptionTextWard">
-                                        <mat-option *ngFor="let option of filteredOptionsWard | async" [value]="option"
-                                            (onSelectionChange)="OnChangeBedList(option)">
-                                            {{option.RoomName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
+                    <mat-card>
+                        <div class="Bedtransfer">
 
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Bed Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Bed" matInput  [(ngModel)]="vBedId"
-                                        #bed  formControlName="BedId"
-                                       [matAutocomplete]="autoBed" required>
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="Bedtransfer.get('BedId').setValue(''); isBedSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="Bedtransfer.get('BedId').setValue(''); isBedSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoBed="matAutocomplete" [displayWith]="getOptionTextBed">
-                                        <mat-option *ngFor="let option of filteredOptionsBed | async" [value]="option"
-                                            (onSelectionChange)="onBedChange(option)">
-                                            {{option.BedName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-label>Class Name</mat-label>
-                                    <mat-select formControlName="ClassId" required #class  [(ngModel)]="vClassId">
-                                        <mat-option></mat-option>
-                                        <mat-option *ngFor="let m of BedClassList" [value]="m">
-                                            {{m.ClassName}}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error
-                                        *ngIf="Bedtransfer.get('ClassId').invalid && Bedtransfer.get('ClassId').touched">
-                                        <span *ngIf="Bedtransfer.get('ClassId').hasError('required')">
-                                            Class Name is required
+                            <div fxlayout="row" fxFlex="90%">
+                                <h3 style="font-weight: bolder;">Bed Transfer</h3>
+                                <div class="gap-8">
+                                    <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>Ward Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Ward"
+                                            matInput #ward (keydown)="onEnterward($event)" [(ngModel)]="vWardId"
+                                            formControlName="RoomId" [matAutocomplete]="autoWard" required>
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="Bedtransfer.get('RoomId').setValue(''); isWardSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close" ward
+                                                (click)="Bedtransfer.get('RoomId').setValue(''); isWardSelected = false;">search</mat-icon>
                                         </span>
-                                    </mat-error>
-                                </mat-form-field>
+                                        <mat-autocomplete #autoWard="matAutocomplete" [displayWith]="getOptionTextWard">
+                                            <mat-option *ngFor="let option of filteredOptionsWard | async"
+                                                [value]="option" (onSelectionChange)="OnChangeBedList(option)">
+                                                {{option.RoomName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
 
-                                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                    <textarea name="Remark" matInput rows="1" cols="5" placeholder="Enter Remark"
-                                        formControlName="Remark">
+                                    <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>Bed Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Bed"
+                                            matInput [(ngModel)]="vBedId" #bed formControlName="BedId"
+                                            [matAutocomplete]="autoBed" required>
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="Bedtransfer.get('BedId').setValue(''); isBedSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="Bedtransfer.get('BedId').setValue(''); isBedSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoBed="matAutocomplete" [displayWith]="getOptionTextBed">
+                                            <mat-option *ngFor="let option of filteredOptionsBed | async"
+                                                [value]="option" (onSelectionChange)="onBedChange(option)">
+                                                {{option.BedName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>Class Name</mat-label>
+                                        <mat-select formControlName="ClassId" required #class [(ngModel)]="vClassId">
+                                            <mat-option></mat-option>
+                                            <mat-option *ngFor="let m of BedClassList" [value]="m">
+                                                {{m.ClassName}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="Bedtransfer.get('ClassId').invalid && Bedtransfer.get('ClassId').touched">
+                                            <span *ngIf="Bedtransfer.get('ClassId').hasError('required')">
+                                                Class Name is required
+                                            </span>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                        <textarea name="Remark" matInput rows="1" cols="5" placeholder="Enter Remark"
+                                            formControlName="Remark">
                                         </textarea>
-                                </mat-form-field>
+                                    </mat-form-field>
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="footer-navigation-container">
-                            <div class="modal-footer-buttons">
-                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary" (click)="onBedtransfer()"
-                                    [disabled]="_IpSearchListService.bsaveForm.invalid">Transfer</button>
+                        <div class="modal-footer">
+                            <div class="footer-navigation-container">
+                                <div class="modal-footer-buttons">
+                                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                    <button class="btn btn-primary" (click)="onBedtransfer()"
+                                        [disabled]="Bedtransfer.invalid">Transfer</button>
+                                </div>
                             </div>
+
                         </div>
+                    </mat-card>
 
-                    </div>
-                </mat-card>
-
-                <!-- ================================ LABEL HEADER  -->
-            </div>
-        </form>
-
+                    <!-- ================================ LABEL HEADER  -->
+                </div>
+            </form>
+        </div>
     </div>
 </div>

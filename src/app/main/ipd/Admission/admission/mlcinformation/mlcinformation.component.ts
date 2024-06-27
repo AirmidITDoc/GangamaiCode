@@ -103,7 +103,7 @@ debugger
         this.MLCId=this.MlcObj.MLCId;
       
         this.Mlcno=this.MlcObj.MLCNo;
-        this.Mlcdate=this.MlcObj.ReportingDate;
+        this.Mlcdate=this.MlcObj.ReportingTime;
         this.AuthorityName=this.MlcObj.AuthorityName;
         this.ABuckleNo=this.MlcObj.BuckleNo;
         this.PoliceStation=this.MlcObj.PoliceStation;

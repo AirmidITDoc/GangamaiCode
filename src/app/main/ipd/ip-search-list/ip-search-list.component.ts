@@ -536,7 +536,7 @@ export class IPSearchListComponent implements OnInit {
      console.log(contact)
       const dialogRef = this._matDialog.open(BedTransferComponent,
         {
-          maxWidth: "95vw",
+          maxWidth: "85vw",
           maxHeight: "55vh", width: '100%', height: "100%"
         });
       dialogRef.afterClosed().subscribe(result => {

@@ -110,14 +110,14 @@
                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                     </mat-form-field>
 
-                                    
+
                                     <button mat-raised-button class="searchButton" matTooltip="Print"
                                         style="margin-left: 20px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 100px;"
                                         (click)="getPrint()">
                                         Show
                                     </button>
                                 </div>
-                                    <div fxLayout="row" fxLayoutAlign="start none">
+                                <div fxLayout="row" fxLayoutAlign="start none">
                                     <div *ngIf="FlagUserSelected" style="margin-left: 20px;">
                                         <mat-form-field appearance="outline" fxFlex="80%" fxFlex.xs="100%"
                                             fxFlex.sm="80%">
@@ -138,9 +138,9 @@
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
-                                    </div>
-                                    <div *ngIf="FlagDoctorSelected" style="margin-left: 20px;" fxFlex="40%">
-                                        <mat-form-field appearance="outline" fxFlex>
+
+
+                                        <mat-form-field appearance="outline" fxFlex *ngIf="FlagDoctorSelected">
                                             <mat-label>Doctor Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Doctor" matInput formControlName="DoctorId"
@@ -160,16 +160,56 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
-                                    <mat-form-field  appearance="outline" fxFlex *ngIf="FlagBillSelected" fxFlex="40%">
-                                             <input  matInput formControlName="BillNo" placeholder="Enter BillNo">
-                                    </mat-form-field >
+                                    <mat-form-field appearance="outline" *ngIf="FlagBillSelected" fxFlex="40%">
+                                        <input matInput formControlName="BillNo" placeholder="Enter BillNo">
+                                    </mat-form-field>
 
-                                    
-                                    <!-- <mat-form-field appearance="outline" fxFlex>
+                                    <mat-form-field appearance="outline" *ngIf="FlagRefundIdSelected"
+                                        fxFlex="40%">
+
+                                        <input matInput formControlName="RefundId" name="RefundId"
+                                            placeholder="Enter RefundId" fxFlex="40%">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline"  *ngIf="FlagAdvanceDetailIDSelected"
+                                        fxFlex="40%">
+
+                                        <input matInput formControlName="AdvanceDetailID"
+                                            placeholder="Enter AdvanceDetailID">
+                                    </mat-form-field>
+
+                                </div>
+                                <!-- <div *ngIf="FlagDoctorSelected" style="margin-left: 20px;" fxFlex="40%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Doctor Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Doctor" matInput formControlName="DoctorId"
+                                                [matAutocomplete]="autosearchDoctorReport" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IPBillingService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_IPBillingService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autosearchDoctorReport="matAutocomplete"
+                                                [displayWith]="getOptionTextsearchDoctor">
+                                                <mat-option *ngFor="let option of filteredOptionsDoctorMode | async"
+                                                    [value]="option">
+                                                    {{option.DoctorName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div> -->
+                                <!-- <mat-form-field  appearance="outline" fxFlex *ngIf="FlagBillSelected" fxFlex="40%">
+                                             <input  matInput formControlName="BillNo" placeholder="Enter BillNo">
+                                    </mat-form-field > -->
+
+
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Reg No</mat-label>
                                         <input name="RegNo" formControlName="RegNo" matInput>
                                     </mat-form-field> -->
-
+                                <!-- 
                                     <mat-form-field  appearance="outline" fxFlex  *ngIf="FlagRefundIdSelected" fxFlex="40%">
                                        
                                         <input  matInput formControlName="RefundId" name="RefundId" placeholder="Enter RefundId">
@@ -178,14 +218,14 @@
                                     <mat-form-field  appearance="outline" fxFlex  *ngIf="FlagAdvanceDetailIDSelected" fxFlex="40%">
                                        
                                         <input  matInput formControlName="AdvanceDetailID" placeholder="Enter AdvanceDetailID">
-                                    </mat-form-field >
+                                    </mat-form-field > -->
 
 
-                                    <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
+                                <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
                                     </span> -->
 
-                                    <!-- <button mat-raised-button class="searchButton" matTooltip="Print"
+                                <!-- <button mat-raised-button class="searchButton" matTooltip="Print"
                                         style="width: 400px;margin-left: 50px;background-color: rgb(3, 38, 59);border-radius: 16px;color: azure;width: 400px;"
                                         (click)="viewDailyCollectionPdf()"> Print New By Vimal
                                     </button>
@@ -196,7 +236,7 @@
                                     Print New Daily Collection Summary
                                 </button> -->
 
-                                </div>
+                                <!-- </div> -->
 
                             </form>
 
