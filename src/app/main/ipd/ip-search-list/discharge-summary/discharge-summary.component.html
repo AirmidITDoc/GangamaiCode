@@ -118,7 +118,7 @@
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Diagnosis</mat-label>
                                                     <textarea matInput name="Diagnosis" formControlName="Diagnosis"
-                                                        [(ngModel)]="DischargeSList.Diagnosis" cols="300"
+                                                        [(ngModel)]="vDiagnosis" cols="300"
                                                         rows="8"></textarea>
                                                 </mat-form-field>
                                             </div>
@@ -131,7 +131,7 @@
                                                     <mat-label>Clinical Condition OnAdmisssion</mat-label>
                                                     <textarea matInput name="ClinicalConditionOnAdmisssion"
                                                         formControlName="ClinicalConditionOnAdmisssion"
-                                                        [(ngModel)]="DischargeSList.ClinicalConditionOnAdmisssion"
+                                                        [(ngModel)]="vClinicalCondition"
                                                         cols="300" rows="8"></textarea>
                                                 </mat-form-field>
                                             </div>
@@ -162,7 +162,7 @@
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>SURGERY /PROCEDURE DONE</mat-label>
                                                         <textarea matInput name="SurgeryProcDone" formControlName="SurgeryProcDone"
-                                                            [(ngModel)]="DischargeSList.SurgeryProcDone" cols="300" rows="8"></textarea>
+                                                            [(ngModel)]="vSURGERYprocedure" cols="300" rows="8"></textarea>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
@@ -173,8 +173,8 @@
                                                 <div class="form-input">
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>SURGICAL FINDINGS</mat-label>
-                                                        <textarea matInput name="WarningSymptoms" formControlName="WarningSymptoms"
-                                                            [(ngModel)]="DischargeSList.WarningSymptoms" cols="300" rows="8"></textarea>
+                                                        <textarea matInput name="SurgicalFinding" formControlName="SurgicalFinding"
+                                                            [(ngModel)]="vSurgicalFinding" cols="300" rows="8"></textarea>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
@@ -193,7 +193,7 @@
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>PATHOLOGY</mat-label>
                                                     <textarea matInput name="Pathology" formControlName="Pathology"
-                                                        [(ngModel)]="DischargeSList.Pathology" cols="300"
+                                                        [(ngModel)]="vPathology" cols="300"
                                                         rows="8"></textarea>
                                                 </mat-form-field>
                                             </div>
@@ -205,7 +205,7 @@
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Radiology</mat-label>
                                                     <textarea matInput name="Radiology" formControlName="Radiology"
-                                                        [(ngModel)]="DischargeSList.Radiology" cols="300"
+                                                        [(ngModel)]="vRadiology" cols="300"
                                                         rows="8"></textarea>
                                                 </mat-form-field>
                                             </div>
@@ -224,7 +224,7 @@
                                                             <mat-label>Treatment Given</mat-label>
                                                             <textarea matInput name="TreatmentGiven"
                                                                 formControlName="TreatmentGiven"
-                                                                [(ngModel)]="DischargeSList.TreatmentGiven" cols="200"
+                                                                [(ngModel)]="vTreatmentGiven" cols="200"
                                                                 rows="8"></textarea>
                                                         </mat-form-field>
                                                     </div>
@@ -238,7 +238,7 @@
                                                             <mat-label>Treatment Adviced</mat-label>
                                                             <textarea matInput name="TreatmentAdvisedAfterDischarge"
                                                                 formControlName="TreatmentAdvisedAfterDischarge"
-                                                                [(ngModel)]="DischargeSList.TreatmentAdvisedAfterDischarge"
+                                                                [(ngModel)]="vTreatmentAdvisedAfterDischarge"
                                                                 cols="200" rows="8"></textarea>
                                                         </mat-form-field>
                                                     </div>
@@ -257,7 +257,7 @@
                                                     <mat-label>OTHER CON DR.OPINION</mat-label>
                                                     <textarea matInput name="OtherConDrOpinions"
                                                         formControlName="OtherConDrOpinions"
-                                                        [(ngModel)]="DischargeSList.OtherConDrOpinions" cols="300"
+                                                        [(ngModel)]="vOtherConDrOpinions" cols="300"
                                                         rows="8"></textarea>
                                                 </mat-form-field>
                                             </div>
@@ -267,10 +267,10 @@
                                             </div>
                                             <div class="form-input">
                                                 <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>OTHER CON DR.OPINION</mat-label>
+                                                    <mat-label>PAIN MANAGMENT TECHNIQUE</mat-label>
                                                     <textarea matInput name="PainManagementTechnique"
                                                         formControlName="PainManagementTechnique"
-                                                        [(ngModel)]="DischargeSList.PainManagementTechnique" cols="300"
+                                                        [(ngModel)]="vPainManagementTechnique" cols="300"
                                                         rows="8"></textarea>
                                                 </mat-form-field>
                                             </div>
@@ -317,7 +317,7 @@
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>LIFE STYLE</mat-label>
                                                             <textarea matInput name="LifeStyle" formControlName="LifeStyle"
-                                                                [(ngModel)]="DischargeSList.LifeStyle" cols="300"
+                                                                [(ngModel)]="vLifeStyle" cols="300"
                                                                 rows="6"></textarea>
                                                         </mat-form-field>
     
@@ -326,7 +326,7 @@
                                                             <mat-label>CONDITION AT THE TIME OF DISCHARGE</mat-label>
                                                             <textarea matInput name="ConditionAtTheTimeOfDischarge"
                                                                 formControlName="ConditionAtTheTimeOfDischarge"
-                                                                [(ngModel)]="DischargeSList.ConditionAtTheTimeOfDischarge"
+                                                                [(ngModel)]="vConditionofDischarge"
                                                                 cols="300" rows="6"></textarea>
                                                         </mat-form-field>
                                                     </div>

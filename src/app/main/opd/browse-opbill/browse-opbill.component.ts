@@ -22,6 +22,7 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { BrowseOpdPaymentReceipt } from '../browse-payment-list/browse-payment-list.component';
 import { RefundMaster } from '../browse-refund-list/browse-refund-list.component';
+import { OpPaymentVimalComponent } from '../op-search-list/op-payment-new-vimal/op-payment-vimal.component';
 
 
 
@@ -165,6 +166,27 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
+
+  openPaymentpopup(contact){
+    let PatientHeaderObj = {};
+    PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
+    PatientHeaderObj['PatientName'] = contact.PatientName;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.VisitId;
+    PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+    
+    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+      {
+        data: {
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "Phar-SalesPay"
+        }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
+  
   vpaidamt: any = 0;
   vbalanceamt: any = 0;
   NewBillpayment(contact) {

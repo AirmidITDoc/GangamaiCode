@@ -342,7 +342,7 @@ export class DischargeSummaryComponent implements OnInit {
           Instruction: this.vInstruction || '' 
         });
       this.dsItemList.data = this.Chargelist
-      console.log(this.dsItemList.data); 
+      //console.log(this.dsItemList.data); 
       }else{
         this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
@@ -414,59 +414,116 @@ export class DischargeSummaryComponent implements OnInit {
     //     this.isLoading = 'list-loaded';
     //   });
   }
+
   getdischargeIdbyadmission(){
     let Query = "Select DischargeId from Discharge where  AdmissionID=" + this.selectedAdvanceObj.AdmissionID + " ";
     console.log(Query)
     this._IpSearchListService.getDischargeId(Query).subscribe(data => {
       this.registerObj = data[0];
-      console.log(this.registerObj);
+     // console.log(this.registerObj);
       this.vDischargeId=this.registerObj.DischargeId
     });
   }
-
+RetrDischargeSumryList:any=[];
+vDiagnosis:any;
+vClinicalCondition:any;
+vSURGERYprocedure:any;
+warningSymptoms:any;
+vPathology:any;
+vRadiology:any;
+vTreatmentGiven:any;
+vTreatmentAdvisedAfterDischarge:any;
+vOtherConDrOpinions:any;
+vPainManagementTechnique:any;
+vLifeStyle:any;
+vConditionofDischarge:any;
+vSurgicalFinding:any;
   getDischargeSummaryData(el) {
+    debugger
     var m_data2 = {
       "AdmissionId": el.AdmissionID 
     }
     console.log(m_data2)
-    this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data: any) => {
-      if (data && data.length > 0) {
-        this.DischargeSList = data[0] as DischargeSummary;
-      } else {
-        this.DischargeSList = new DischargeSummary({});
-      }
+    this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
+      this.RetrDischargeSumryList = data as DischargeSummary;
+      console.log(this.RetrDischargeSumryList);
+      this.DischargeSummaryId = this.RetrDischargeSumryList[0].DischargeSummaryId
+      this.vDiagnosis = this.RetrDischargeSumryList[0].Diagnosis
+      this.vClinicalCondition = this.RetrDischargeSumryList[0].clinicalFinding
+      this.vSURGERYprocedure = this.RetrDischargeSumryList[0].Investigation
+      this.warningSymptoms = this.RetrDischargeSumryList[0].OpertiveNotes
+      this.vTreatmentGiven = this.RetrDischargeSumryList[0].TreatmentGiven
+      this.vTreatmentAdvisedAfterDischarge = this.RetrDischargeSumryList[0].TreatmentAdvisedAfterDischarge
+      this.vConditionofDischarge = this.RetrDischargeSumryList[0].Remark
+      this.getRetevDropdownvalue();
+      console.log(this.DischargeSummaryId)
     });
-    console.log( this.DischargeSList);
+    
+    // this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
+    //   if (data && data.length > 0) {
+    //     this.DischargeSList = data[0] as DischargeSummary;
+    //   } else {
+    //     this.DischargeSList = new DischargeSummary({});
+    //   }
+    // });
+    // console.log(this.DischargeSList);
   }
-
+  getRetevDropdownvalue(){
+    if(this.RetrDischargeSumryList[0].DischargeDoctor1){
+      const ddValue= this.Doctor1List.filter(item => item.DoctorID ==  this.RetrDischargeSumryList[0].DischargeDoctor1);
+      console.log(ddValue) 
+      this.DischargesumForm.get("DischargeDoctor1").setValue(ddValue[0]);
+    }
+    if(this.RetrDischargeSumryList[0].DischargeDoctor2){
+      const ddValue= this.Doctor2List.filter(item => item.DoctorID ==  this.RetrDischargeSumryList[0].DischargeDoctor2);
+      console.log(ddValue) 
+      this.DischargesumForm.get("DischargeDoctor2").setValue(ddValue[0]);
+    }
+    if(this.RetrDischargeSumryList[0].DischargeDoctor3){
+      const ddValue= this.Doctor3List.filter(item => item.DoctorID ==  this.RetrDischargeSumryList[0].DischargeDoctor3);
+      console.log(ddValue) 
+      this.DischargesumForm.get("DischargeDoctor3").setValue(ddValue[0]);
+    }
+  }
   onClose() {
     this.DischargesumForm.reset();
     this._matDialog.closeAll();
   }
 OnSave(){
-  if(this.vAdmissionId){
+  if(!this.DischargeSummaryId){
   let insertIPDDischargSummaryObj = {};
 
-  insertIPDDischargSummaryObj['dischargesummaryId'] = 0,
-  insertIPDDischargSummaryObj['admissionId'] =this.vAdmissionId || 0;
-  insertIPDDischargSummaryObj['dischargeId'] = this.vDischargeId,
-  insertIPDDischargSummaryObj['history'] = this.DischargesumForm.get("History").value || "",
-  insertIPDDischargSummaryObj['diagnosis'] = this.DischargesumForm.get("Diagnosis").value || "",
-  insertIPDDischargSummaryObj['investigation'] = this.DischargesumForm.get("SurgeryProcDone").value || "",
-  insertIPDDischargSummaryObj['clinicalFinding'] = this.DischargesumForm.get("ClinicalConditionOnAdmisssion").value || "",
-  insertIPDDischargSummaryObj['opertiveNotes'] = this.DischargesumForm.get("WarningSymptoms").value || "",
-  insertIPDDischargSummaryObj['treatmentGiven'] =  this.DischargesumForm.get("TreatmentGiven").value || "",
-  insertIPDDischargSummaryObj['treatmentAdvisedAfterDischarge'] = this.DischargesumForm.get("TreatmentAdvisedAfterDischarge").value || "",
-  insertIPDDischargSummaryObj['followupdate'] = this.DischargesumForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
-  insertIPDDischargSummaryObj['remark'] = this.DischargesumForm.get("ConditionAtTheTimeOfDischarge").value || "",
-  insertIPDDischargSummaryObj['dischargeSummaryDate'] = this.dateTimeObj.date,//this.DischargesumForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
-  insertIPDDischargSummaryObj['opDate'] =  this.dateTimeObj.date,
-  insertIPDDischargSummaryObj['opTime'] =  this.dateTimeObj.date,
-  insertIPDDischargSummaryObj['dischargeDoctor1'] =this.DischargesumForm.get("DischargeDoctor1").value.DoctorID || 0,
-  insertIPDDischargSummaryObj['dischargeDoctor2'] = this.DischargesumForm.get("DischargeDoctor2").value.DoctorID || 0,
-  insertIPDDischargSummaryObj['dischargeDoctor3'] = this.DischargesumForm.get("DischargeDoctor3").value.DoctorID || 0,
-  insertIPDDischargSummaryObj['dischargeSummaryTime'] =this.dateTimeObj.time,
-  insertIPDDischargSummaryObj['doctorAssistantName'] = this.DischargesumForm.get("DoctorAssistantName").value || ""
+  insertIPDDischargSummaryObj['DischargeSummaryId'] = 0,
+  insertIPDDischargSummaryObj['AdmissionId'] =this.vAdmissionId || 0;
+  insertIPDDischargSummaryObj['DischargeID'] = this.vDischargeId,
+  insertIPDDischargSummaryObj['History'] =  "",
+  insertIPDDischargSummaryObj['Diagnosis'] = this.DischargesumForm.get("Diagnosis").value || '',
+  insertIPDDischargSummaryObj['OTHER_CON_DR_OPINION'] = this.DischargesumForm.get("OtherConDrOpinions").value || '',
+  insertIPDDischargSummaryObj['PATHOLOGY'] = this.DischargesumForm.get("Pathology").value || '',
+  insertIPDDischargSummaryObj['Radiology'] = this.DischargesumForm.get("Radiology").value || '',
+  insertIPDDischargSummaryObj['PAIN_MANAGMENT_TECHNIQUE'] = this.DischargesumForm.get("PainManagementTechnique").value || '',
+  insertIPDDischargSummaryObj['LIFE_STYLE'] = this.DischargesumForm.get("LifeStyle").value || '',
+  insertIPDDischargSummaryObj['SURGERY_PROCEDURE'] = this.DischargesumForm.get("SurgeryProcDone").value || '',
+  insertIPDDischargSummaryObj['SURGICAL_FINDINGS'] = this.DischargesumForm.get("SurgicalFinding").value || '',
+  insertIPDDischargSummaryObj['Investigation'] = '',
+  insertIPDDischargSummaryObj['ClinicalFinding'] = this.DischargesumForm.get("ClinicalConditionOnAdmisssion").value || '',
+  insertIPDDischargSummaryObj['Condition_At_the_timeOfdischarge'] = this.DischargesumForm.get("ConditionAtTheTimeOfDischarge").value || '',
+  insertIPDDischargSummaryObj['TreatmentGiven'] =  this.DischargesumForm.get("TreatmentGiven").value || '',
+  insertIPDDischargSummaryObj['TreatmentAdvisedAfterDischarge'] = this.DischargesumForm.get("TreatmentAdvisedAfterDischarge").value || '',
+  insertIPDDischargSummaryObj['Followupdate'] = this.dateTimeObj.date,
+  insertIPDDischargSummaryObj['Remark'] =  ''
+  insertIPDDischargSummaryObj['DischargeSummaryDate'] = this.dateTimeObj.date,//this.DischargesumForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
+  insertIPDDischargSummaryObj['OpDate'] =  this.dateTimeObj.date,
+  insertIPDDischargSummaryObj['OPTime'] =  this.dateTimeObj.date,
+  insertIPDDischargSummaryObj['DischargeDoctor1'] =this.DischargesumForm.get("DischargeDoctor1").value.DoctorID || 0,
+  insertIPDDischargSummaryObj['DischargeDoctor2'] = this.DischargesumForm.get("DischargeDoctor2").value.DoctorID || 0,
+  insertIPDDischargSummaryObj['DischargeDoctor3'] = this.DischargesumForm.get("DischargeDoctor3").value.DoctorID || 0,
+  insertIPDDischargSummaryObj['DischargeSummaryTime'] =this.dateTimeObj.time,
+  insertIPDDischargSummaryObj['DoctorAssistantName'] = this.DischargesumForm.get("DoctorAssistantName").value || '',
+  insertIPDDischargSummaryObj['CreatedBy'] = this.accountService.currentUserValue.user.id,
+  insertIPDDischargSummaryObj['CreatedDate'] =  this.dateTimeObj.date,
+  insertIPDDischargSummaryObj['ModifiedBy'] = this.accountService.currentUserValue.user.id,
+  insertIPDDischargSummaryObj['ModifiedDate'] = this.dateTimeObj.date
 
   let insertIPPrescriptionDischarge =[];
   this.dsItemList.data.forEach(element =>{
@@ -514,31 +571,43 @@ OnSave(){
  }else{
 
   let updateIPDDischargSummaryObj = {};
+  updateIPDDischargSummaryObj['DischargeSummaryId'] = 0,
+  //updateIPDDischargSummaryObj['AdmissionId'] =this.vAdmissionId || 0;
+  updateIPDDischargSummaryObj['DischargeID'] = this.vDischargeId,
+  updateIPDDischargSummaryObj['History'] =  "",
+  updateIPDDischargSummaryObj['Diagnosis'] = this.DischargesumForm.get("Diagnosis").value || '',
+  updateIPDDischargSummaryObj['OTHER_CON_DR_OPINION'] = this.DischargesumForm.get("OtherConDrOpinions").value || '',
+  updateIPDDischargSummaryObj['PATHOLOGY'] = this.DischargesumForm.get("Pathology").value || '',
+  updateIPDDischargSummaryObj['Radiology'] = this.DischargesumForm.get("Radiology").value || '',
+  updateIPDDischargSummaryObj['PAIN_MANAGMENT_TECHNIQUE'] = this.DischargesumForm.get("PainManagementTechnique").value || '',
+  updateIPDDischargSummaryObj['LIFE_STYLE'] = this.DischargesumForm.get("LifeStyle").value || '',
+  updateIPDDischargSummaryObj['SURGERY_PROCEDURE'] = this.DischargesumForm.get("SurgeryProcDone").value || '',
+  updateIPDDischargSummaryObj['SURGICAL_FINDINGS'] = this.DischargesumForm.get("SurgicalFinding").value || '',
+  updateIPDDischargSummaryObj['Investigation'] = '',
+  updateIPDDischargSummaryObj['ClinicalFinding'] = this.DischargesumForm.get("ClinicalConditionOnAdmisssion").value || '',
+  updateIPDDischargSummaryObj['Condition_At_the_timeOfdischarge'] = this.DischargesumForm.get("ConditionAtTheTimeOfDischarge").value || '',
+  updateIPDDischargSummaryObj['TreatmentGiven'] =  this.DischargesumForm.get("TreatmentGiven").value || '',
+  updateIPDDischargSummaryObj['TreatmentAdvisedAfterDischarge'] = this.DischargesumForm.get("TreatmentAdvisedAfterDischarge").value || '',
+  updateIPDDischargSummaryObj['Followupdate'] = this.dateTimeObj.date,
+  updateIPDDischargSummaryObj['Remark'] =  ''
+  updateIPDDischargSummaryObj['DischargeSummaryDate'] = this.dateTimeObj.date,//this.DischargesumForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
+  updateIPDDischargSummaryObj['OpDate'] =  this.dateTimeObj.date,
+  updateIPDDischargSummaryObj['OPTime'] =  this.dateTimeObj.date,
+  updateIPDDischargSummaryObj['DischargeDoctor1'] =this.DischargesumForm.get("DischargeDoctor1").value.DoctorID || 0,
+  updateIPDDischargSummaryObj['DischargeDoctor2'] = this.DischargesumForm.get("DischargeDoctor2").value.DoctorID || 0,
+  updateIPDDischargSummaryObj['DischargeDoctor3'] = this.DischargesumForm.get("DischargeDoctor3").value.DoctorID || 0,
+  updateIPDDischargSummaryObj['DischargeSummaryTime'] =this.dateTimeObj.time,
+  updateIPDDischargSummaryObj['DoctorAssistantName'] = this.DischargesumForm.get("DoctorAssistantName").value || '',
+  updateIPDDischargSummaryObj['CreatedBy'] = this.accountService.currentUserValue.user.id,
+  updateIPDDischargSummaryObj['CreatedDate'] =  this.dateTimeObj.date,
+  updateIPDDischargSummaryObj['ModifiedBy'] = this.accountService.currentUserValue.user.id,
+  updateIPDDischargSummaryObj['ModifiedDate'] = this.dateTimeObj.date
 
-  updateIPDDischargSummaryObj['dischargesummaryId'] = this.DischargesumForm.get("DischargesummaryId").value || "0", 
-  updateIPDDischargSummaryObj['dischargeId'] = this.vDischargeId,
-  updateIPDDischargSummaryObj['history'] = this.DischargesumForm.get("History").value || "",
-  updateIPDDischargSummaryObj['diagnosis'] = this.DischargesumForm.get("Diagnosis").value || "",
-  updateIPDDischargSummaryObj['investigation'] = this.DischargesumForm.get("SurgeryProcDone").value || "",
-  updateIPDDischargSummaryObj['clinicalFinding'] = this.DischargesumForm.get("ClinicalConditionOnAdmisssion").value || "",
-  updateIPDDischargSummaryObj['opertiveNotes'] = this.DischargesumForm.get("WarningSymptoms").value || "",
-  updateIPDDischargSummaryObj['treatmentGiven'] =  this.DischargesumForm.get("TreatmentGiven").value || "",
-  updateIPDDischargSummaryObj['treatmentAdvisedAfterDischarge'] = this.DischargesumForm.get("TreatmentAdvisedAfterDischarge").value || "",
-  updateIPDDischargSummaryObj['followupdate'] = this.DischargesumForm.get("Followupdate").value || "2021-05-24T06:18:37.533Z",
-  updateIPDDischargSummaryObj['remark'] = this.DischargesumForm.get("ConditionAtTheTimeOfDischarge").value || "",
-  updateIPDDischargSummaryObj['dischargeSummaryDate'] = this.dateTimeObj.date,//this.DischargesumForm.get("OPDate").value || "2021-05-24T06:18:37.533Z",
-  updateIPDDischargSummaryObj['opDate'] =  this.dateTimeObj.date,
-  updateIPDDischargSummaryObj['opTime'] =  this.dateTimeObj.date,
-  updateIPDDischargSummaryObj['dischargeDoctor1'] =this.DischargesumForm.get("DischargeDoctor1").value.DoctorID || 0,
-  updateIPDDischargSummaryObj['dischargeDoctor2'] = this.DischargesumForm.get("DischargeDoctor2").value.DoctorID || 0,
-  updateIPDDischargSummaryObj['dischargeDoctor3'] = this.DischargesumForm.get("DischargeDoctor3").value.DoctorID || 0,
-  updateIPDDischargSummaryObj['dischargeSummaryTime'] =this.dateTimeObj.time,
-  updateIPDDischargSummaryObj['doctorAssistantName'] = this.DischargesumForm.get("DoctorAssistantName").value || ""
 
   let insertIPPrescriptionDischarge =[];
   this.dsItemList.data.forEach(element =>{
     let insertIPPrescriptionDischargeObj = {};
-    insertIPPrescriptionDischargeObj['opD_IPD_ID'] =  0;
+    insertIPPrescriptionDischargeObj['opD_IPD_ID'] =  this.vAdmissionId || 0;
     insertIPPrescriptionDischargeObj['opD_IPD_Type'] = 1;
     insertIPPrescriptionDischargeObj['date'] = this.dateTimeObj.date;
     insertIPPrescriptionDischargeObj['pTime'] = this.dateTimeObj.time;
@@ -563,9 +632,9 @@ OnSave(){
   deleteIPPrescriptionDischargeobj['opD_IPD_ID'] = this.vAdmissionId || 0;
 
   let SubmitData={
-    'insertIPDDischargSummary':updateIPDDischargSummaryObj,
+    'updateIPDDischargSummary':updateIPDDischargSummaryObj,
     'insertIPPrescriptionDischarge':insertIPPrescriptionDischarge,
-    'deleteIPPrescriptionDischarge':deleteIPPrescriptionDischargeobj
+    'deleteIPPrescriptionDischarg':deleteIPPrescriptionDischargeobj
   }
   console.log(SubmitData);
   setTimeout(() => {
