@@ -1359,17 +1359,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   onChangeDateofBirth(DateOfBirth) {
-    // if (DateOfBirth) {
-    //   const todayDate = new Date();
-    //   const dob = new Date(DateOfBirth);
-    //   const timeDiff = Math.abs(Date.now() - dob.getTime());
-    //   this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-    //   this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-    //   this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-    //   this.registerObj.DateofBirth = DateOfBirth;
-    //   this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
-    // }
-
+   
     if (DateOfBirth) {
       const todayDate = new Date();
       const dob = new Date(DateOfBirth);
@@ -1411,6 +1401,8 @@ export class AdmissionComponent implements OnInit {
         );
       })
   }
+
+
 
   OnChangeBedList(wardObj) {
     this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
@@ -2639,16 +2631,16 @@ this.getAdmittedPatientList_1()
 
 
 
-  public onEnterdeptdoc(event, value): void {
+  public onEnterdeptdoc(event): void {
     if (event.which === 13) {
-      if (value == undefined) {
-        this.toastr.warning('Please Enter Valid Doctor.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } else {
+      // if (value == undefined) {
+      //   this.toastr.warning('Please Enter Valid Doctor.', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   });
+      //   return;
+      // } else {
         this.admitdoc1.nativeElement.focus();
-      }
+      // }
     }
 
   }

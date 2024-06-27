@@ -962,7 +962,7 @@
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Doctor Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name"
-                                        matInput #deptdoc (keydown)="onEnterdeptdoc($event,vDoctorId.DoctorId)"
+                                        matInput #deptdoc (keydown)="onEnterdeptdoc($event)"
                                         formControlName="DoctorId" [(ngModel)]="vDoctorId"
                                         [matAutocomplete]="autoDoctor" required>
                                     <span matSuffix style="display: flex;">
