@@ -563,8 +563,8 @@
 
                                         <mat-form-field  appearance="outline" fxFlex>
                                             <mat-label>Disc Amt</mat-label>
-                                            <input matInput [(ngModel)]="b_concessionamt" name="concessionAmt"
-                                                formControlName="concessionAmt"  type="text" onlyNumber
+                                            <input matInput  name="concessionAmt"
+                                                formControlName="concessionAmt"  type="text" onlyNumber  autocomplete="off" 
                                                 (keypress)="keyPressCharater($event)"   (keyup)="calcDiscAmtTotal()">
                                         </mat-form-field> 
 

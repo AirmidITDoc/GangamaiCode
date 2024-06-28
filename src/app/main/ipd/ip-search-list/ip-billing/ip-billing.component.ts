@@ -1007,7 +1007,13 @@ ServiceList:any=[];
       //this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
      }
     }else{
-      if(this.vAdminPer < 0 && this.vAdminPer > 100 ){
+      if(this.vAdminPer < 0 && this.vAdminPer > 100 || this.vAdminPer == 0 || this.vAdminPer == ''){
+      this.Ipbillform.get('AdminPer').reset();
+      this.Ipbillform.get('AdminAmt').reset();
+      this.Ipbillform.get('FinalAmount').setValue(this.vTotalBillAmount);
+      this.CalFinalDisc();
+    }
+    if( this.vAdminPer > 100 ){
       this.toastr.warning('Please Enter Admin % less than 100 and Greater than 0.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });

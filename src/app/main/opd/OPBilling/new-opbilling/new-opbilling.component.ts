@@ -121,7 +121,7 @@ export class NewOPBillingComponent implements OnInit {
   ChargesDoctorname: any;
   finalAmt: any;
 
-  b_concessionDiscPer: any = 0;
+  b_concessionDiscPer: any;
   b_concessionamt: any;
 
   isLoading: String = '';
@@ -408,33 +408,32 @@ debugger
 
 
   }
-
+  vConcessionAmt:any;
   getNetAmtSum(element) {
     let netAmt;
     let netAmt1;
     netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
     this.b_TotalChargesAmount = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2);
-   // this.b_concessionamt  = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0).toFixed(2);
-   this.calcDiscPersonTotal();
+  // this.calcDiscPersonTotal();
     this.TotalnetPaybleAmt = netAmt;
     return netAmt
   }
-
+TotalDiscAmt:any;
   getDiscAmtSum(element) {
     let netAmt;
     netAmt = element.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0);
-    this.b_concessionamt = netAmt;
-    this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
-    if(netAmt > 0){
-      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
-    }
-    //
-    if(this.b_concessionamt > 0){
+    this.b_concessionamt = netAmt
+     this.vConcessionAmt = netAmt;
+    this.TotalDiscAmt =netAmt;
+    this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.TotalDiscAmt;
+   /// this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
+
+    if(this.TotalDiscAmt > 0){
       this.conflag=false
       this.Consessionres = true
     
     }
-    if(this.b_concessionamt ==0)
+    if(this.TotalDiscAmt ==0)
       this.conflag=true
 
     
@@ -447,9 +446,8 @@ debugger
     return value;
   }
   getTotalNetAmount() {
-    // this.b_concessionDiscPer = 0;
-    // this.b_concessionamt = 0;
-    this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.b_concessionamt;
+
+    this.TotalnetPaybleAmt = this.b_TotalChargesAmount - this.vConcessionAmt;
   }
 
   onSaveOPBill2() {
@@ -475,7 +473,7 @@ debugger
       this.saveclick = true;
       let disamt = this.BillingForm.get('concessionAmt').value;
 
-      if (this.b_concessionDiscPer > 0 || this.b_concessionamt > 0) {
+      if (this.b_concessionDiscPer > 0 || disamt > 0) {
         this.FinalAmt = this.TotalnetPaybleAmt;
         this.netPaybleAmt1 = this.TotalnetPaybleAmt;
       }
@@ -600,7 +598,7 @@ debugger
           }
           InsertBillUpdateBillNoObj['PaidAmt'] = result.submitDataPay.ipPaymentInsert.PaidAmt;
           if (this.b_concessionDiscPer > 0) {
-            this.FinalAmt = this.totalAmtOfNetAmt - this.b_concessionamt;
+            this.FinalAmt = this.totalAmtOfNetAmt - this.BillingForm.get('concessionAmt').value;
           } else {
             this.FinalAmt = this.TotalnetPaybleAmt;
           }
@@ -683,7 +681,7 @@ debugger
         Paymentobj['ReceiptNo'] = "";
         Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
         Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
-        Paymentobj['CashPayAmount'] = this.BillingForm.get('FinalAmt').value || 0;
+        Paymentobj['CashPayAmount'] = parseFloat(this.BillingForm.get('FinalAmt').value) || 0;
         Paymentobj['ChequePayAmount'] = 0;
         Paymentobj['ChequeNo'] = 0;
         Paymentobj['BankName'] = "";
@@ -750,7 +748,7 @@ debugger
     this.saveclick = true;
     let disamt = this.BillingForm.get('concessionAmt').value;
 
-    if (this.b_concessionDiscPer > 0 || this.b_concessionamt > 0) {
+    if (this.b_concessionDiscPer > 0 || disamt > 0) {
       this.FinalAmt = this.TotalnetPaybleAmt;
       this.netPaybleAmt1 = this.TotalnetPaybleAmt;
     }
@@ -766,7 +764,7 @@ debugger
     InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
     InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('TotallistAmount').value;
     InsertBillUpdateBillNoObj['ConcessionAmt'] = this.BillingForm.get('concessionAmt').value;
-    InsertBillUpdateBillNoObj['NetPayableAmt'] = this.BillingForm.get('FinalAmt').value;
+    InsertBillUpdateBillNoObj['NetPayableAmt'] = parseFloat(this.BillingForm.get('FinalAmt').value) || 0;
     InsertBillUpdateBillNoObj['PaidAmt'] = 0//this.BillingForm.get('FinalAmt').value;
     InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
     InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
@@ -846,7 +844,7 @@ debugger
 
 
     if (this.b_concessionDiscPer > 0) {
-      this.FinalAmt = this.totalAmtOfNetAmt - this.b_concessionamt;
+      this.FinalAmt = this.totalAmtOfNetAmt - disamt;
     } else {
       this.FinalAmt = this.TotalnetPaybleAmt;
     }
@@ -965,8 +963,17 @@ debugger
     this.isDoctor = false; 
     this.Servicename.nativeElement.focus();
     this.add = false;
+    this.finaldiscAmt();
   }
-
+  finalDisc1:any= 0;
+finaldiscAmt(){
+   this.vConcessionAmt += this.b_ChargeDisAmount;
+   this.finalDisc1 = this.vConcessionAmt ;
+   this.finalDisc1 =  this.finalDisc1 
+   this.BillingForm.get('concessionAmt').setValue(this.vConcessionAmt);
+   console.log(this.vConcessionAmt)
+   this.calcDiscPersonTotal();
+}
   getWhatsappshareSales(el, vmono) {
     
     var m_data = {
@@ -1052,25 +1059,15 @@ debugger
       this.b_netAmount = (parseFloat(this.b_totalAmount) - parseFloat(this.b_ChargeDisAmount)).toFixed(2);
       this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
       this.registeredForm.get('netAmount').setValue(this.b_netAmount);
-      //this.conflag = true;
-    
-      this.BillingForm.get('ConcessionId').reset();
-      this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
-      this.BillingForm.get('ConcessionId').enable();
       this.Consessionres = true;
-
     }
     else if ((this.v_ChargeDiscPer > 100) || (this.v_ChargeDiscPer < 0)) {
       Swal.fire("Enter Discount % Less than 100 & Greater > 0")
       // this.v_ChargeDiscPer=0;
       this.b_ChargeDisAmount = '';
       this.b_netAmount = this.b_totalAmount;
-     
       this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
       this.registeredForm.get('netAmount').setValue(this.b_netAmount);
-      this.BillingForm.get('ConcessionId').reset();
-      this.BillingForm.get('ConcessionId').clearValidators();
-      this.BillingForm.get('ConcessionId').updateValueAndValidity();
       this.Consessionres = false;
     }
 
@@ -1079,53 +1076,41 @@ debugger
       this.b_ChargeDisAmount = '';
       this.registeredForm.get('ChargeDiscAmount').setValue(this.b_ChargeDisAmount);
       this.registeredForm.get('netAmount').setValue(this.b_netAmount);
-     
-      this.BillingForm.get('ConcessionId').reset();
-      this.BillingForm.get('ConcessionId').clearValidators();
-      this.BillingForm.get('ConcessionId').updateValueAndValidity();
       this.Consessionres = false;
     }
   }
 
- 
+finaldisc=0;
  
   calcDiscPersonTotal() {
-// debugger
+
     let finaldiscPer = this.BillingForm.get('concesDiscPer').value || 0;
     let FinalNetAmount = this.TotalnetPaybleAmt;
     if (finaldiscPer > 0 && finaldiscPer < 101) {
 
-      let FinalDiscAmt =((parseFloat(this.b_TotalChargesAmount) * parseFloat(finaldiscPer)) / 100).toFixed(2); 
-      this.TotalnetPaybleAmt = Math.round(parseFloat(this.b_TotalChargesAmount) -  parseFloat(FinalDiscAmt)).toFixed(2) 
-      
-      this.BillingForm.get('ConcessionId').reset();
-      this.BillingForm.get('ConcessionId').setValidators([Validators.required]);
-      this.BillingForm.get('ConcessionId').enable();
+      let FinalDiscAmt =((parseFloat(this.b_TotalChargesAmount) * parseFloat(finaldiscPer)) / 100)
+      this.vConcessionAmt = FinalDiscAmt;
+      debugger
+      this.TotalnetPaybleAmt = Math.round(parseFloat(this.b_TotalChargesAmount) -  parseFloat(this.vConcessionAmt)).toFixed(2) 
+      this.finaldisc=FinalDiscAmt;
       this.Consessionres = true;
-      this.BillingForm.get('concessionAmt').setValue(FinalDiscAmt)
+      this.BillingForm.get('concessionAmt').setValue(this.finaldisc);
       this.BillingForm.get('FinalAmt').setValue(this.TotalnetPaybleAmt);
     }
     else if ((finaldiscPer > 100)) {
       Swal.fire("Concession % Less Than 100 & Greater Than 0");
-   
-      this.b_concessionamt = '';
+      this.Consessionres = false;
+      this.vConcessionAmt = '';
       this.TotalnetPaybleAmt = FinalNetAmount
       this.BillingForm.get('concesDiscPer').setValue('');
-      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
+      //this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
       this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
-      this.BillingForm.get('ConcessionId').reset();
-      this.BillingForm.get('ConcessionId').clearValidators();
-      this.Consessionres = false;
 
     } else if (finaldiscPer == 0 || this.BillingForm.get('concesDiscPer').value == null || finaldiscPer == '') {
-    
-      this.b_concessionamt = '';
-      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
-      this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
-      this.BillingForm.get('ConcessionId').reset();
-      this.BillingForm.get('ConcessionId').clearValidators();
-      this.BillingForm.get('ConcessionId').updateValueAndValidity();
       this.Consessionres = false;
+      this.vConcessionAmt = '';
+     // this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
+      this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
     }
   }
   calcDiscAmtTotal() {
@@ -1146,31 +1131,28 @@ debugger
     }
     else if ((finaldiscAmt > FinalNetAmount)) {
       Swal.fire("ConcessionAmt  Less Than NetAmount Greater Than 0");
-     
+      this.Consessionres = false;
       this.b_concessionDiscPer = '';
-      this.b_concessionamt = ''
       this.TotalnetPaybleAmt = FinalNetAmount
-      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt);
       this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer)
       this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
       this.BillingForm.get('ConcessionId').reset();
       this.BillingForm.get('ConcessionId').clearValidators();
-      this.Consessionres = false;
-
-    } else if (finaldiscAmt == 0 || finaldiscAmt == null || finaldiscAmt == '') {
      
+    } else if (finaldiscAmt == 0 || finaldiscAmt == null || finaldiscAmt == '') {
+      this.Consessionres = false;
       this.b_concessionDiscPer = '';
       this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer)
       this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
       this.BillingForm.get('ConcessionId').reset();
       this.BillingForm.get('ConcessionId').clearValidators();
       this.BillingForm.get('ConcessionId').updateValueAndValidity();
-      this.Consessionres = false;
+      
     }
 
   }
 
-
+  chkdelte:any;
   deleteTableRow(element) {
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
@@ -1179,7 +1161,16 @@ debugger
       this.dataSource.data = this.chargeslist;
     }
     Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
+    this.chkdelte = 1;
+    this.vConcessionAmt -= element.DiscAmt
+    this.BillingForm.get('concessionAmt').setValue(this.vConcessionAmt);
     this.calcDiscPersonTotal();
+    if(this.chkdelte == 1){
+      if( this.b_concessionDiscPer > 0){
+      let discamt= ((parseFloat(element.NetAmount) * parseFloat(this.b_concessionDiscPer)) / 100)
+      this.BillingForm.get('concessionAmt').setValue(discamt);
+      }
+    }
   }
 
 
@@ -1215,7 +1206,7 @@ debugger
     });
   }
 
-  getConcessionReasonList() {
+  getConcessionReasonList() { 
     this._oPSearhlistService.getConcessionCombo().subscribe(data => {
       this.ConcessionReasonList = data;
     })
@@ -1223,6 +1214,7 @@ debugger
   onClear() { 
     this.registeredForm.reset();
     this.BillingForm.reset();
+    this.searchFormGroup.reset();
     this.dataSource.data =[];
     this.chargeslist =[];
     this.RegNo = ''
@@ -1243,6 +1235,7 @@ debugger
   onClose() {
     this._matDialog.closeAll();
     this.registeredForm.reset();
+    this.searchFormGroup.reset();
     this.BillingForm.reset();
     this.dataSource.data =[];
     this.chargeslist =[];
