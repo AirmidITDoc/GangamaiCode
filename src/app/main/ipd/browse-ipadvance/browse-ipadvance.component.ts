@@ -310,6 +310,7 @@ viewgetIPAdvanceReportPdf(contact) {
 
   
 viewgetRefundofadvanceReportPdf(row) {
+  debugger
   setTimeout(() => {
     this.SpinLoading =true;
   //  this.AdList=true;

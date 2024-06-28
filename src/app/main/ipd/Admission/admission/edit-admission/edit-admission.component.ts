@@ -181,7 +181,7 @@ export class EditAdmissionComponent implements OnInit {
     this.getDepartmentList();
     this.getRelationshipList();
     
-    this.getDoctorList();
+   
     this.getDoctor1List();
     this.getDoctor2List();
     
@@ -196,10 +196,12 @@ export class EditAdmissionComponent implements OnInit {
       this.IsMLC=this.registerObj1.IsMLC
       this.AdmissionID=this.registerObj1.AdmissionID;
       console.log(this.registerObj1);
+      this.getDoctorList();
       if(this.registerObj1.CompanyId > 0)
         this.isCompanySelected=true
        }
-
+       if(this.registerObj1.RelatvieMobileNo)
+        this.registerObj1.RelatvieMobileNo= this.registerObj1.RelatvieMobileNo.trim();
   }
 
   ngOnInit(): void {
@@ -211,7 +213,7 @@ export class EditAdmissionComponent implements OnInit {
     if (this.advanceDataStored.storage) {
        this.vRelativeName= this.registerObj1.RelativeName
        this.vRelativeAddress= this.registerObj1.RelativeAddress
-       this.vRelatvieMobileNo= this.registerObj1.RelatvieMobileNo
+       
       this.setDropdownObjs();
     }
 
@@ -410,9 +412,7 @@ debugger
     const toSelect = this.DepartmentList.find(c => c.Departmentid == this.registerObj1.DepartmentId);
     this.hospitalFormGroup.get('Departmentid').setValue(toSelect);
 
-    const toSelect9 = this.DoctorList.find(c => c.DoctorID == this.registerObj1.DocNameID);
-    this.hospitalFormGroup.get('DoctorId').setValue(toSelect9);
-
+   
 
     const toSelect1 = this.Doctor1List.find(c => c.DoctorID == this.registerObj1.AdmittedDoctor1ID);
     this.hospitalFormGroup.get('admittedDoctor1').setValue(toSelect1);
@@ -900,11 +900,11 @@ getTariffCombo(){
         "AdmissionDate": this.dateTimeObj.date,// this.hospitalFormGroup.get('AdmissionDate').value || "2021-03-31",
         "AdmissionTime": this.dateTimeObj.time,//this.personalFormGroup.get('AppTime').value || "2021-03-31",
          "PatientTypeId": this.hospitalFormGroup.get('PatientTypeID').value.PatientTypeId || 0,
-         "HospitalId":0,
+         "HospitalId": this.registerObj1.HospitalId || 1,
         "CompanyId": this.CompanyId, //this.hospitalFormGroup.get('CompanyId').value.CompanyId || 0,
         "TariffId": this.hospitalFormGroup.get('TariffId').value.TariffId || 0,
         "DepartmentId": this.hospitalFormGroup.get('Departmentid').value.Departmentid || 0,
-        "AdmittedNameID": this.hospitalFormGroup.get('DoctorId').value.DoctorID  || 0,
+        "AdmittedNameID": this.hospitalFormGroup.get('DoctorId').value.DoctorId  || 0,
         "RelativeName": this.otherFormGroup.get('RelativeName').value || "",
         "RelativeAddress": this.otherFormGroup.get('RelativeAddress').value || "",
         "RelativePhoneNo": this.otherFormGroup.get('RelatvieMobileNo').value || "",

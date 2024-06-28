@@ -103,7 +103,7 @@ export class IPBillBrowseListComponent implements OnInit {
     'CardPay',
     'ChequePay',
     'OnlinePay',
-    'AdvUsedPay',
+    'AdvanceUsedAmount',
     'PayCount',
     'RefundAmount',
     // 'RefundCount',

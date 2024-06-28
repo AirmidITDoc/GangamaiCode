@@ -366,7 +366,7 @@
                                                         <span class="mat-header-text">Action</span>
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" class="w-260 gap-4">
-                                                        <button mat-icon-button matTooltip="Edit"
+                                                        <button mat-icon-button matTooltip="Edit" 
                                                             *ngIf="contact.IsCancelled==0" (click)="onEdit(contact)">
                                                             <mat-icon>edit</mat-icon>
                                                         </button>
@@ -403,11 +403,9 @@
                                                                 print</mat-icon>
                                                             <!-- <mat-icon>print</mat-icon> -->
                                                         </button>
-                                                        <button mat-icon-button matTooltip="Bill"
+                                                        <button mat-icon-button matTooltip="Bill"  *ngIf="contact.IsCancelled==0"
                                                             (click)="Billpayment(contact)">
-                                                            <!-- <mat-icon>payment</mat-icon> -->
-                                                            <mat-icon title="Clse Menu" *ngIf="contact.IsCancelled==0"
-                                                                [disabled]="contact.IsCancelled" class="disabled-icon">
+                                                            <mat-icon title="Clse Menu" [disabled]="contact.IsCancelled" class="disabled-icon">
                                                                 payment</mat-icon>
                                                         </button>
                                                         <button mat-icon-button matTooltip="CrossConsultation"
@@ -427,14 +425,14 @@
                                                                 src="assets/images/logos/WhatsApp.png">
                                                         </button>
                                                         <!-- *ngIf="contact.IsCancelled==0" -->
-                                                        <button mat-icon-button [matMenuTriggerFor]="moreMenu"
+                                                        <button mat-icon-button [matMenuTriggerFor]="moreMenu"  *ngIf="contact.IsCancelled==0"
                                                             aria-label="More" (click)="$event.stopPropagation();">
                                                             <mat-icon class="secondary-text">more_vert</mat-icon>
                                                         </button>
                                                         <mat-menu #moreMenu="matMenu">
                                                             <ng-container
                                                                 *ngFor="let m of menuActions, let n of menuActions">
-                                                                <button mat-menu-item aria-label="remove"
+                                                                <button mat-menu-item aria-label="remove"  *ngIf="contact.IsCancelled==0"
                                                                     (click)="getRecord(contact,m)">
                                                                     <span>{{m}}</span>
                                                                 </button>

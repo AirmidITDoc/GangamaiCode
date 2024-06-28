@@ -3149,7 +3149,7 @@ export class AdmissionPersonlModel {
   AdmissionTime: Date;
   RelativeName: String;
   DoctorId: number;
-  RelatvieMobileNo: number;
+  RelatvieMobileNo: any;
   MaritalStatusName: string;
   IsMLC: any;
   CompanyName: any;

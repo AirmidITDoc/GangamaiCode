@@ -98,7 +98,7 @@ export class IpReportComponent implements OnInit {
   bindReportData() {
     // let qry = "SELECT * FROM ReportConfigMaster WHERE IsActive=1 AND IsDeleted=0 AND ReportType=1";
 var data={
-  ReportSection:"IPD MIS REPORT"//"IP Reports"
+  ReportSection:"IP Reports"//"IP Reports"
 }
     this._IPReportService.getDataByQuery(data).subscribe(data => {
       this.dataSource.data = data as any[];

@@ -364,10 +364,10 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
     debugger
       this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
       this.dataSource.data = Visit as BrowseOPDBill[];
-      this.dataSource.data = Visit["Table1"]??[] as BrowseOPDBill[];
+      this.dataSource.data = Visit["Table1"] ?? [] as BrowseOPDBill[];
       console.log(this.dataSource.data)
-      // this.resultsLength= Visit["Table"][0]["total_row"];
-      // this.sIsLoading = this.dataSource.data.length == 0 ? 'no-data' : '';
+      this.resultsLength= Visit["Table"][0]["total_row"];
+      this.sIsLoading = this.dataSource.data.length == 0 ? 'no-data' : '';
       this.click = false;
     },
       error => {

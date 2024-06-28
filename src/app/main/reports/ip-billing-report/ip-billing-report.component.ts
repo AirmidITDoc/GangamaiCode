@@ -160,7 +160,7 @@ var data={
     else if (this.ReportName == 'IP Daily Collection Report') {
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
-      this.FlagRefundIdSelected=true;
+      this.FlagRefundIdSelected=false;
       this.FlagAdvanceDetailIDSelected=false;
       this.FlagBillSelected=false;
     } else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {

@@ -11,7 +11,6 @@ import { fuseAnimations } from '@fuse/animations';
 import { EditRegistrationComponent } from '../../registration/edit-registration/edit-registration.component';
 import { RegInsert } from '../../registration/registration.component';
 import { RegistrationService } from '../../registration/registration.service';
-import { NewAppointmentComponent } from '../../appointment/new-appointment/new-appointment.component';
 import { NewRegistrationComponent } from '../../registration/new-registration/new-registration.component';
 
 @Component({
@@ -223,119 +222,119 @@ export class SearchPageComponent implements OnInit {
     this._registrationService.populateFormpersonal(m_data);
     this.onClose();
     debugger;
-    if (this.data.registerObj.RegAppoint == 0) {
-      const dialogRef = this._matDialog.open(NewAppointmentComponent,
-        {
-          maxWidth: "95vw",
-          height: '800px',
-          width: '100%',
-          data: {
-            registerObj: m_data,
-          }
-        });
+    // if (this.data.registerObj.RegAppoint == 0) {
+    //   const dialogRef = this._matDialog.open(NewAppointmentComponent,
+    //     {
+    //       maxWidth: "95vw",
+    //       height: '800px',
+    //       width: '100%',
+    //       data: {
+    //         registerObj: m_data,
+    //       }
+    //     });
 
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        // this._SearchdialogService.getregisterList(this.D_data1).subscribe(reg=> {
-        //   this.dataArray = reg;
-        //   this.getregistrationList();
-        //   this.sIsLoading = '';
-        // },
-        // error => {
-        //   this.sIsLoading = '';
-        // });
-      });
-    } 
-    else {
+    //   dialogRef.afterClosed().subscribe(result => {
+    //     console.log('The dialog was closed - Insert Action', result);
+    //     // this._SearchdialogService.getregisterList(this.D_data1).subscribe(reg=> {
+    //     //   this.dataArray = reg;
+    //     //   this.getregistrationList();
+    //     //   this.sIsLoading = '';
+    //     // },
+    //     // error => {
+    //     //   this.sIsLoading = '';
+    //     // });
+    //   });
+    // } 
+    // else {
 
-      var D_data = {
-        RegId: row.RegId,
-      };
-      this._registrationService.getregisterListByRegId(D_data).subscribe((reg) => {
-        this.dataArray = reg;
-        console.log(this.dataArray);
-        var m_data = {
-          RegNo: this.dataArray[0].RegNo,
-          RegId: this.dataArray[0].RegId,
-          PrefixID: this.dataArray[0].PrefixId,
-          PrefixName: this.dataArray[0].PrefixName,
-          FirstName: this.dataArray[0].FirstName,
-          MiddleName: this.dataArray[0].MiddleName,
-          LastName: this.dataArray[0].LastName,
-          PatientName: this.dataArray[0].PatientName,
-          DateofBirth: this.dataArray[0].DateofBirth,
-          MaritalStatusId: this.dataArray[0].MaritalStatusId,
-          AadharCardNo: this.dataArray[0].AadharCardNo || 0,
-          Age: this.dataArray[0].Age.trim(),
-          AgeDay: this.dataArray[0].AgeDay,
-          AgeMonth: this.dataArray[0].AgeMonth,
-          AgeYear: this.dataArray[0].AgeYear,
-          Address: this.dataArray[0].Address,
-          AreaId: this.dataArray[0].AreaId,
-          City: this.dataArray[0].City,
-          CityId: this.dataArray[0].CityId,
-          StateId: this.dataArray[0].StateId,
-          CountryId: this.dataArray[0].CountryId,
-          PhoneNo: this.dataArray[0].PhoneNo,
-          MobileNo: this.dataArray[0].MobileNo,
-          GenderId: this.dataArray[0].GenderId,
-          GenderName: this.dataArray[0].GenderName,
-          ReligionId: this.dataArray[0].ReligionId,
-          IsCharity: 0,
-          PinNo: this.dataArray[0].PinNo,
-          RegDate: this.dataArray[0].RegDate,
-          RegNoWithPrefix: this.dataArray[0].RegNoWithPrefix,
-          RegTime: this.dataArray[0].RegTime,
-        };
-        this._registrationService.populateFormpersonal(m_data);
-        const dialogRef = this._matDialog.open(
-          EditRegistrationComponent,
-          {
-            maxWidth: "85vw",
-            height: "550px",
-            width: "100%",
-            data: {
-              registerObj: m_data,
-            },
-          }
-        );
-        dialogRef.afterClosed().subscribe((result) => {
-          console.log(
-            "The dialog was closed - Insert Action",
-            result
-          );
-          // this.getVisitList();
-        });
-      },
-        (error) => {
-          this.sIsLoading = "";
-        }
-      );
+    //   var D_data = {
+    //     RegId: row.RegId,
+    //   };
+    //   this._registrationService.getregisterListByRegId(D_data).subscribe((reg) => {
+    //     this.dataArray = reg;
+    //     console.log(this.dataArray);
+    //     var m_data = {
+    //       RegNo: this.dataArray[0].RegNo,
+    //       RegId: this.dataArray[0].RegId,
+    //       PrefixID: this.dataArray[0].PrefixId,
+    //       PrefixName: this.dataArray[0].PrefixName,
+    //       FirstName: this.dataArray[0].FirstName,
+    //       MiddleName: this.dataArray[0].MiddleName,
+    //       LastName: this.dataArray[0].LastName,
+    //       PatientName: this.dataArray[0].PatientName,
+    //       DateofBirth: this.dataArray[0].DateofBirth,
+    //       MaritalStatusId: this.dataArray[0].MaritalStatusId,
+    //       AadharCardNo: this.dataArray[0].AadharCardNo || 0,
+    //       Age: this.dataArray[0].Age.trim(),
+    //       AgeDay: this.dataArray[0].AgeDay,
+    //       AgeMonth: this.dataArray[0].AgeMonth,
+    //       AgeYear: this.dataArray[0].AgeYear,
+    //       Address: this.dataArray[0].Address,
+    //       AreaId: this.dataArray[0].AreaId,
+    //       City: this.dataArray[0].City,
+    //       CityId: this.dataArray[0].CityId,
+    //       StateId: this.dataArray[0].StateId,
+    //       CountryId: this.dataArray[0].CountryId,
+    //       PhoneNo: this.dataArray[0].PhoneNo,
+    //       MobileNo: this.dataArray[0].MobileNo,
+    //       GenderId: this.dataArray[0].GenderId,
+    //       GenderName: this.dataArray[0].GenderName,
+    //       ReligionId: this.dataArray[0].ReligionId,
+    //       IsCharity: 0,
+    //       PinNo: this.dataArray[0].PinNo,
+    //       RegDate: this.dataArray[0].RegDate,
+    //       RegNoWithPrefix: this.dataArray[0].RegNoWithPrefix,
+    //       RegTime: this.dataArray[0].RegTime,
+    //     };
+    //     this._registrationService.populateFormpersonal(m_data);
+    //     const dialogRef = this._matDialog.open(
+    //       EditRegistrationComponent,
+    //       {
+    //         maxWidth: "85vw",
+    //         height: "550px",
+    //         width: "100%",
+    //         data: {
+    //           registerObj: m_data,
+    //         },
+    //       }
+    //     );
+    //     dialogRef.afterClosed().subscribe((result) => {
+    //       console.log(
+    //         "The dialog was closed - Insert Action",
+    //         result
+    //       );
+    //       // this.getVisitList();
+    //     });
+    //   },
+    //     (error) => {
+    //       this.sIsLoading = "";
+    //     }
+    //   );
 
-      const dialogRef = this._matDialog.open(NewRegistrationComponent,
-        {
-          maxWidth: "85vw",
-          height: '550px',
-          width: '100%',
-          data: {
-            registerObj: m_data,
-          }
-        });
+    //   const dialogRef = this._matDialog.open(NewRegistrationComponent,
+    //     {
+    //       maxWidth: "85vw",
+    //       height: '550px',
+    //       width: '100%',
+    //       data: {
+    //         registerObj: m_data,
+    //       }
+    //     });
 
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        // this._SearchdialogService.getregisterList(this.D_data1).subscribe(reg=> {
-        //   this.dataArray = reg;
-        //   this.getregistrationList();
-        //   this.sIsLoading = '';
-        // },
-        // error => {
-        //   this.sIsLoading = '';
-        // });
-        this._matDialog.closeAll();
-      });
+    //   dialogRef.afterClosed().subscribe(result => {
+    //     console.log('The dialog was closed - Insert Action', result);
+    //     // this._SearchdialogService.getregisterList(this.D_data1).subscribe(reg=> {
+    //     //   this.dataArray = reg;
+    //     //   this.getregistrationList();
+    //     //   this.sIsLoading = '';
+    //     // },
+    //     // error => {
+    //     //   this.sIsLoading = '';
+    //     // });
+    //     this._matDialog.closeAll();
+    //   });
 
-    }
+    // }
   }
 
 }

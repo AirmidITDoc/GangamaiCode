@@ -86,7 +86,8 @@ FlagBillNoSelected: boolean = false;
     
     if (this._ActRoute.url == "/reports/opreports") 
       this.Reportsection='OP Reports'
-    // this.Reportsection='OP MIS Reports'
+    if (this._ActRoute.url == "/reports/opreports") 
+    this.Reportsection='OP MIS Reports'
    
     // if (this._ActRoute.url == "/reports/ipreport") 
     //   this.Reportsection='IP Reports'

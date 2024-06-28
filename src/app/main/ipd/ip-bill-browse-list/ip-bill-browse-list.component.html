@@ -184,7 +184,7 @@
                                             <mat-icon *ngIf="contact.PatientTypeId=='1'" matTooltip="Patient Category Self">account_box
                                             </mat-icon>
                                             
-                                            <mat-icon *ngIf="!contact.PatientTypeId=='1'" matTooltip="Patient Category other">business
+                                            <mat-icon *ngIf="contact.PatientTypeId !='1'" matTooltip="Patient Category other">business
                                             </mat-icon>
 
                                             <!-- <button mat-icon-button *ngIf="contact.CompanyName ==''" matTooltip="Self Patient">
@@ -391,11 +391,11 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AdvUsedPay">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>AdvUsedPay
+                                    <ng-container matColumnDef="AdvanceUsedAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>AdvUsedAmount
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                            <span> {{contact.AdvUsedPay | currency:'INR'}}</span>
+                                            <span> {{contact.AdvanceUsedAmount | currency:'INR'}}</span>
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="PayCount">

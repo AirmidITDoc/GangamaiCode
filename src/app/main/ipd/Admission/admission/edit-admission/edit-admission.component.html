@@ -338,12 +338,12 @@
                                 (keydown)="onEnterrelativeadd($event)">
                         </mat-form-field>
 
-
+                        <!-- [(ngModel)]="vRelatvieMobileNo" -->
                         <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-label>Relatvie MobileNo </mat-label>
                             <input name="RelatvieMobileNo" formControlName="RelatvieMobileNo"
                                 placeholder="Mobile Number" matInput #mobile (keydown)="onEnterrelativemobile($event)"
-                                [(ngModel)]="vRelatvieMobileNo" [(ngModel)]="registerObj.RelatvieMobileNo"
+                                 [(ngModel)]="registerObj1.RelatvieMobileNo"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                 type="number" value="9876658688" #relativemobile>
                             <mat-error class="error"

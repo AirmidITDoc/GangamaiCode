@@ -22,6 +22,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { MatSelect } from '@angular/material/select';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { OpPaymentVimalComponent } from '../../op-search-list/op-payment-new-vimal/op-payment-vimal.component';
 
 @Component({
   selector: 'app-new-opbilling',
@@ -572,7 +573,7 @@ TotalDiscAmt:any;
       PatientHeaderObj['NetPayAmount'] = this.BillingForm.get('FinalAmt').value;
 
       if (this.BillingForm.get('PaymentType').value == 'PayOption') {
-        const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
           {
             maxWidth: "80vw",
             height: '650px',

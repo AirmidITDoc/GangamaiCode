@@ -477,21 +477,22 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-4000"
-                                        *matHeaderRowDef="displayedColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                        class=" min-width-4000" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                                 
+                                <mat-header-row class="accent min-width-4000"
+                                *matHeaderRowDef="displayedColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-4000"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
 
-                                </mat-table>
-                               
-                                <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35"
-                                    [length]="resultsLength" showFirstLastButtons (page)="getBrowseOPDBillsList()">
-                                </mat-paginator>
+                        </mat-table>
+                        <mat-paginator [pageSizeOptions]="[35, 50, 75, 100]" [pageSize]="35"
+                            [length]="resultsLength" showFirstLastButtons (page)="getBrowseOPDBillsList()">
+                        </mat-paginator>
                             </div>
                         </div>
                     </div>
