@@ -1102,15 +1102,16 @@ finaldisc=0;
       Swal.fire("Concession % Less Than 100 & Greater Than 0");
       this.Consessionres = false;
       this.vConcessionAmt = '';
+      this.b_concessionDiscPer = '';
       this.TotalnetPaybleAmt = FinalNetAmount
-      this.BillingForm.get('concesDiscPer').setValue('');
-      //this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
+      this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer);
+      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
       this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
 
     } else if (finaldiscPer == 0 || this.BillingForm.get('concesDiscPer').value == null || finaldiscPer == '') {
       this.Consessionres = false;
       this.vConcessionAmt = '';
-     // this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
+      this.BillingForm.get('concessionAmt').setValue(this.b_concessionamt)
       this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
     }
   }
@@ -1134,16 +1135,18 @@ finaldisc=0;
       Swal.fire("ConcessionAmt  Less Than NetAmount Greater Than 0");
       this.Consessionres = false;
       this.b_concessionDiscPer = '';
+      this.vConcessionAmt = '';
       this.TotalnetPaybleAmt = FinalNetAmount
       this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer)
+      this.BillingForm.get('concessionAmt').setValue(this.vConcessionAmt)
       this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
       this.BillingForm.get('ConcessionId').reset();
       this.BillingForm.get('ConcessionId').clearValidators();
      
     } else if (finaldiscAmt == 0 || finaldiscAmt == null || finaldiscAmt == '') {
       this.Consessionres = false;
-      this.b_concessionDiscPer = '';
-      this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer)
+      this.b_concessionDiscPer = ''; 
+      this.BillingForm.get('concesDiscPer').setValue(this.b_concessionDiscPer) 
       this.BillingForm.get('FinalAmt').setValue(FinalNetAmount);
       this.BillingForm.get('ConcessionId').reset();
       this.BillingForm.get('ConcessionId').clearValidators();

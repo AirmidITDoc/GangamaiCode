@@ -300,11 +300,14 @@
                                 
                                     <mat-form-field appearance="outline" *ngIf="onlineflag" fxFlex="20%" style="margin-right: 530px;">
                                         <mat-label>UPI NO</mat-label>
-                                        <input matInput placeholder="UPI Number" formControlName="UPINO" [(ngModel)]="vUPINO" onlyNumber maxlength="12"
-                                            minlength="4"  type="text" Onlynumber
-                                            (keypress)="keyPressAlphanumeric($event)">
+                                        <input matInput placeholder="UPI Number" formControlName="UPINO" [(ngModel)]="vUPINO"  maxlength="12"
+                                            minlength="4"  type="text" Onlynumber  max="999999999999" min="100000000000" autocomplete="off"
+                                            (keypress)="keyPressAlphanumeric($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                            required="required" value="987665868822">
+                                            <mat-error class="error"
+                                            *ngIf="InterimFormGroup.get('UPINO').invalid && InterimFormGroup.get('UPINO').touched">12
+                                            digits upi number is required</mat-error>
                                     </mat-form-field>
-                                
                                 
                                     <div class="next-div button-row-group">
                                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>

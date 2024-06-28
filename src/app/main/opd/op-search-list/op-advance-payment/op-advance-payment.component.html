@@ -181,10 +181,16 @@
                         <div style="margin-right: 10px;">
                             <mat-form-field appearance="outline">
                                 <mat-label>Enter Card No</mat-label>
-                                <input matInput [(ngModel)]="cardNo" formControlName="cardNumberController">
-                                <mat-error class="error"
-                                    *ngIf="paymentForm.get('cardNumberController').invalid && paymentForm.get('cardNumberController').touched"></mat-error>
+                                <input matInput [(ngModel)]="cardNo" formControlName="cardNumberController"
+                                placeholder="Card Number" required 
+                                max="999999999999" min="100000000000" autocomplete="off" maxlength="12" minlength="4"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                required="required" value="987665868822">
+                            <mat-error class="error"
+                                *ngIf="paymentForm.get('cardNumberController').invalid && paymentForm.get('cardNumberController').touched">12
+                                digits Card number is required</mat-error>
                             </mat-form-field>
+ 
                         </div>
                         <div style="margin-right: 10px;width:200px;">
 
@@ -254,8 +260,14 @@
                         <div style="margin-right:10px;">
                             <mat-form-field appearance="outline">
                                 <mat-label>Enter Cheque No</mat-label>
-                                <input matInput [(ngModel)]="chequeNo" formControlName="chequeNumberController">
-                            </mat-form-field>
+                                <input matInput [(ngModel)]="chequeNo" formControlName="chequeNumberController" placeholder="Cheque Number"  
+                                required max="999999999999" min="100000000000" autocomplete="off" maxlength="12" minlength="4"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                required="required" value="987665868822">
+                            <mat-error class="error"
+                                *ngIf="paymentForm.get('chequeNumberController').invalid && paymentForm.get('chequeNumberController').touched">12
+                                digits cheque number is required</mat-error>
+                            </mat-form-field>   
                         </div>
                         <div style="margin-right: 10px; width:200px;">
 
@@ -308,8 +320,15 @@
                         <div style="margin-right: 10px;">
                             <mat-form-field appearance="outline">
                                 <mat-label>Enter NEFT No</mat-label>
-                                <input matInput [(ngModel)]="neftNo" formControlName="neftNumberController">
-                            </mat-form-field>
+                                <input matInput [(ngModel)]="neftNo" formControlName="neftNumberController"
+                                name="neftNumberController"   placeholder="NEFT No Number" required
+                                max="999999999999" min="100000000000" autocomplete="off" maxlength="12" minlength="4"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                    required="required" value="987665868822">
+                                    <mat-error class="error"
+                                    *ngIf="paymentForm.get('neftNumberController').invalid && paymentForm.get('neftNumberController').touched">12
+                                    digits neft number is required</mat-error>
+                            </mat-form-field> 
                         </div>
                         <div style="margin-right: 10px;width:200px;">
 

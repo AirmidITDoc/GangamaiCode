@@ -49,7 +49,8 @@
                                         <mat-icon class="mat-icon-close"
                                             (click)="Serviceform.get('ChargeClass').setValue(''); isClasselected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #autoclass="matAutocomplete" [displayWith]="getOptionTextclass">
+                                    <mat-autocomplete #autoclass="matAutocomplete" [displayWith]="getOptionTextclass"
+                                    (optionSelected)='getSelectedObjClass($event.option.value)'>
                                         <mat-option *ngFor="let option of filteredOptionsBillingClassName | async"
                                             [value]="option">
                                             {{option.ClassName}}
