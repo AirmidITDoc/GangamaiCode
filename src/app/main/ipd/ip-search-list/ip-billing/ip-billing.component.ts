@@ -310,29 +310,21 @@ export class IPBillingComponent implements OnInit {
 
     if (this.selectedAdvanceObj.IsDischarged) {
       this.Ipbillform.get('GenerateBill').enable();
-      this.Ipbillform.get('GenerateBill').setValue(true);
-      this.Ipbillform.get('CreditBill').enable();
-      this.Ipbillform.get('CreditBill').setValue(true);
+      this.Ipbillform.get('GenerateBill').setValue(true); 
     }
     else {
       this.Ipbillform.get('GenerateBill').disable();
-      this.Ipbillform.get('GenerateBill').setValue(false);
-      this.Ipbillform.get('CreditBill').enable();
-      this.Ipbillform.get('CreditBill').setValue(true);
+      this.Ipbillform.get('GenerateBill').setValue(false); 
     }
     if (this.selectedAdvanceObj.CompanyName) {
       this.Ipbillform.get('CreditBill').enable();
       this.Ipbillform.get('CreditBill').setValue(true);
     }
-    else {
-      if (this.selectedAdvanceObj.IsDischarged) { 
-        this.Ipbillform.get('CreditBill').enable();
-        this.Ipbillform.get('CreditBill').setValue(true);
-      }else{
+    else { 
       this.Ipbillform.get('CreditBill').disable();
       this.Ipbillform.get('CreditBill').setValue(false);
     }
-    }
+
     // console.log(this.vfDiscountAmount )
     // if (this.vDiscountAmount > 0) {
     //   this.admin = false;
@@ -496,7 +488,7 @@ ServiceList:any=[];
     var m_data = {
       SrvcName: `${this.Serviceform.get('SrvcName').value}%`,
       TariffId: this.selectedAdvanceObj.TariffId,
-      ClassId: this.selectedAdvanceObj.ClassId
+      ClassId: this.Serviceform.get('ChargeClass').value.ClassId || 0
     };
     if (this.Serviceform.get('SrvcName').value.length >= 1) {
       this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
@@ -534,9 +526,11 @@ ServiceList:any=[];
         return;
       }
     });
-
+     
   }
-
+  getSelectedObjClass(obj){
+    this.Serviceform.get('SrvcName').setValue('');
+  }
 
   private _filterclass(value: any): string[] {
     if (value) {
@@ -553,7 +547,9 @@ ServiceList:any=[];
   }
 
   getOptionTextclass(option) {
+
     return option && option.ClassName ? option.ClassName : '';
+
   }
 
   onScroll() {

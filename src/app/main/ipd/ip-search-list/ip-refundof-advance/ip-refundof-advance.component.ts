@@ -17,6 +17,8 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { RegInsert } from '../../Admission/admission/admission.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
+import { IpAdvancePaymentInsert } from '../ip-paymentwith-advance/ip-paymentwith-advance.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -72,6 +74,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<IPRefundofAdvance>();
 
+  dsrefundlist = new MatTableDataSource<IPRefundofAdvance>();
+
 
   displayedColumns1 = [
     'RefundDate',
@@ -114,6 +118,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,
+    public toastr: ToastrService,
     private dialogRef: MatDialogRef<IPRefundofAdvanceComponent>,
     private formBuilder: FormBuilder) {
     dialogRef.disableClose = true;
@@ -138,7 +143,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
-      this.vRegId =this.selectedAdvanceObj.RegId;
+      this.vRegId =this.selectedAdvanceObj.RegID;
       this.vOPIPId = this.selectedAdvanceObj.AdmissionID;
       this.PatientName = this.selectedAdvanceObj.PatientName;
       this.Doctorname = this.selectedAdvanceObj.Doctorname
@@ -146,10 +151,10 @@ export class IPRefundofAdvanceComponent implements OnInit {
       this.Age= this.selectedAdvanceObj.AgeYear
       this.CompanyName= this.selectedAdvanceObj.CompanyName
       this.RegNo= this.selectedAdvanceObj.RegNo
-      
+      this.getRefundofAdvanceListRegIdwise();
     }
    
-    this.getRefundofAdvanceListRegIdwise();
+   // this.getRefundofAdvanceListRegIdwise();
     this.getReturndetails();
   }
 
@@ -171,6 +176,9 @@ export class IPRefundofAdvanceComponent implements OnInit {
   getRefundSum(element) {
     let netAmt1;
     netAmt1 = element.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
+    let balAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
+    this.NewRefundAmount = netAmt1;
+    this.BalanceAdvance = balAmt ;
     return netAmt1;
     this.NewRefundAmount = netAmt1;
     console.log(this.NewRefundAmount);
@@ -201,13 +209,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.dataSource.data = [];
     this.registerObj = obj;
     this.PatientName = obj.FirstName + " " + obj.LastName;
-    this.RegId = obj.RegId;
+    // this.RegId = obj.RegID;
     this.RegNo = obj.RegNo;
     this.City = obj.City;
     this.CompanyName = obj.CompanyName;
     this.Tarrifname = obj.TariffName;
     this.Doctorname = obj.DoctorName;
-    this.vOPIPId = obj.AdmissionId;
+    this.vOPIPId = obj.AdmissionID;
     this.vRegId = obj.RegId;
     this.vTariffId = obj.TariffId;
     this.vClassId = obj.classId
@@ -225,28 +233,29 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
 
   getReturndetails() {
-    debugger
-    var m_data = {
-      "AdmissionId": this.vOPIPId
-    }
-    this.isLoading = 'list-loading';
-    this._IpSearchListService.getAdvReturndetails(m_data).subscribe(data => {
-      this.dataSource1.data = data as IPRefundofAdvance[];
-      console.log(this.dataSource1.data);
-    });
+    // debugger
+    // var m_data = {
+    //   "AdmissionId": this.vOPIPId
+    // }
+    // this.isLoading = 'list-loading';
+    // this._IpSearchListService.getAdvReturndetails(m_data).subscribe(data => {
+    //   this.dataSource1.data = data as IPRefundofAdvance[];
+    //   console.log(this.dataSource1.data);
+    // });
   }
 
   getRefundofAdvanceListRegIdwise() {
     var m_data = {
-      "RegID": this.vRegId
+      "RegID":this.vRegId
     }
+    console.log(m_data)
     this.isLoadingStr = 'loading';
-    this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(Visit => {
-      this.dataSource.data = Visit as IPRefundofAdvance[];
-      console.log(this.dataSource.data)
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
+    this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(data => {
+      this.dsrefundlist.data = data as IPRefundofAdvance[];
+      console.log(this.dsrefundlist.data)
+      this.dsrefundlist.sort = this.sort;
+      this.dsrefundlist.paginator = this.paginator;
+      this.isLoadingStr = this.dsrefundlist.data.length == 0 ? 'no-data' : '';
     });
   }
 
@@ -259,21 +268,34 @@ export class IPRefundofAdvanceComponent implements OnInit {
       return false;
     }
   }
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
   RefundAmt: any;
-  getCellCalculation(contact, RefundAmt) {
-    debugger
-    console.log(RefundAmt)
-    if (RefundAmt > contact.BalanceAmount) {
-      Swal.fire("Enter Refund Amount Less than Balance Amount ");
-    } else {
-      this.BalanceAmount = RefundAmt;
-      contact.BalanceAmount = contact.BalanceAmount - RefundAmt
-      this.NewRefundAmount = RefundAmt;
-      this.BalanceAdvance = contact.BalanceAmount - this.NewRefundAmount;
-    }
-
+  getCellCalculation(element, RefundAmt) {
+      if (RefundAmt > 0) {
+        if (parseFloat(RefundAmt) > parseFloat(element.BalanceAmount)) {
+          element.RefundAmt = ''; 
+          this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          element.RefundAmt = ''; 
+          return
+        }
+        element.BalanceAmount = ((element.NetBallAmt) - (RefundAmt));
+      } else {
+        element.BalanceAmount =  ((element.NetBallAmt) + (RefundAmt));
+        RefundAmt = '';
+      }
   }
+
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
