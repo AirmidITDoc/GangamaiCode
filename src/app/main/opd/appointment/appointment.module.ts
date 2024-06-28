@@ -18,7 +18,6 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { RouterModule, Routes } from "@angular/router";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { NewAppointmentComponent } from "./new-appointment/new-appointment.component";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatDividerModule } from "@angular/material/divider";
@@ -61,8 +60,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         AppointmentComponent,
-        NewAppointmentComponent,
-        EditConsultantDoctorComponent,
+         EditConsultantDoctorComponent,
         EditRefraneDoctorComponent,
         FeedbackComponent,
         PatientAppointmentComponent,

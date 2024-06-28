@@ -11,7 +11,6 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dial
 import { ActivatedRoute, Router } from "@angular/router";
 import { AppointmentSreviceService } from "./appointment-srevice.service";
 import Swal from "sweetalert2";
-import { NewAppointmentComponent } from "./new-appointment/new-appointment.component";
 import { fuseAnimations } from "@fuse/animations";
 import { NewRegistrationComponent } from "../registration/new-registration/new-registration.component";
 import { EditConsultantDoctorComponent } from "./edit-consultant-doctor/edit-consultant-doctor.component";
@@ -2199,23 +2198,23 @@ export class AppointmentComponent implements OnInit {
               RegTime: this.dataArray[0].RegTime,
             };
             this._registrationService.populateFormpersonal(m_data);
-            const dialogRef = this._matDialog.open(NewAppointmentComponent,
-              {
-                maxWidth: "85vw",
-                height: "80%",
-                width: "80%",
-                data: {
-                  registerObj: m_data,
-                },
-              }
-            );
-            dialogRef.afterClosed().subscribe((result) => {
-              console.log(
-                "The dialog was closed - Insert Action",
-                result
-              );
-              this.getVisitList();
-            });
+            // const dialogRef = this._matDialog.open(NewAppointmentComponent,
+            //   {
+            //     maxWidth: "85vw",
+            //     height: "80%",
+            //     width: "80%",
+            //     data: {
+            //       registerObj: m_data,
+            //     },
+            //   }
+            // );
+            // dialogRef.afterClosed().subscribe((result) => {
+            //   console.log(
+            //     "The dialog was closed - Insert Action",
+            //     result
+            //   );
+            //   this.getVisitList();
+            // });
           },
           (error) => {
             this.sIsLoading = "";
