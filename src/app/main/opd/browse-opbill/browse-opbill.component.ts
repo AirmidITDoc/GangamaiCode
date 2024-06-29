@@ -345,7 +345,7 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
     // this.IsLoading = false;
     // el.button.disbled = false;
   }
-
+  dsOPBrowseList = new MatTableDataSource<BrowseOPDBill>();
   resultsLength = 0;
   getBrowseOPDBillsList() {
     // this.sIsLoading = 'loading-data';
@@ -363,11 +363,11 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
     console.log(D_data)
     debugger
       this._BrowseOPDBillsService.getBrowseOPDBillsList(D_data).subscribe(Visit => {
-      this.dataSource.data = Visit as BrowseOPDBill[];
-      this.dataSource.data = Visit["Table1"] ?? [] as BrowseOPDBill[];
-      console.log(this.dataSource.data)
+      this.dsOPBrowseList.data = Visit as BrowseOPDBill[];
+      this.dsOPBrowseList.data = Visit["Table1"] ?? [] as BrowseOPDBill[];
+      console.log(this.dsOPBrowseList.data)
       this.resultsLength= Visit["Table"][0]["total_row"];
-      this.sIsLoading = this.dataSource.data.length == 0 ? 'no-data' : '';
+      this.sIsLoading = this.dsOPBrowseList.data.length == 0 ? 'no-data' : '';
       this.click = false;
     },
       error => {
@@ -406,9 +406,9 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
 
   ngOnChanges(changes: SimpleChanges) {
 
-    this.dataSource.data = changes.dataArray.currentValue as BrowseOPDBill[];
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    this.dsOPBrowseList.data = changes.dataArray.currentValue as BrowseOPDBill[];
+    this.dsOPBrowseList.sort = this.sort;
+    this.dsOPBrowseList.paginator = this.paginator;
   }
 
 
@@ -505,14 +505,14 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
   exportOPBillReportExcel(){
     this.sIsLoading == 'loading-data'
     let exportHeaders = ['BillDate', 'BillNo', 'RegNo', 'PatientName', 'TotalAmt', 'ConcessionAmt', 'NetPayableAmt', 'PaidAmount', 'BalanceAmt'];
-    this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'OP BILL');
-    this.dataSource.data = [];
+    this.reportDownloadService.getExportJsonData(this.dsOPBrowseList.data, exportHeaders, 'OP BILL');
+    this.dsOPBrowseList.data = [];
     this.sIsLoading = '';
   }
 
   exportReportPdf() {
     let actualData = [];
-    this.dataSource.data.forEach(e => {
+    this.dsOPBrowseList.data.forEach(e => {
       var tempObj = [];
       tempObj.push(e.BillDate);
       tempObj.push(e.BillNo);
@@ -672,9 +672,9 @@ PaymentId=Id.PaymentId
       console.log(D_data);
       this._BrowseOPDBillsService.getBrowseOPDReturnReceiptList(D_data).subscribe(Visit => {
         this.dataSource2.data = Visit as RefundMaster[];
-        console.log(this.dataSource.data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+        console.log(this.dataSource2.data);
+        this.dataSource2.sort = this.sort;
+        this.dataSource2.paginator = this.paginator;
         this.sIsLoading = '';
         this.click = false;
       },
