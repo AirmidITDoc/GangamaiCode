@@ -185,7 +185,7 @@
                                     </ng-container>
             
                                     <ng-container matColumnDef="RegNo" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>RegNo
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>UHID
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             <span> {{contact.RegNo}}</span>
@@ -249,7 +249,7 @@
                                     </ng-container>
             
                                     <ng-container matColumnDef="AdvanceNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Advance No
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>PBillNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             <span> {{contact.AdvanceNo }}</span>
@@ -512,7 +512,7 @@
                                             <mat-table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"
                                                 style="overflow:auto">
                                                 <ng-container matColumnDef="RegNo">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UHID
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.RegNo}}

@@ -65,9 +65,11 @@ export class BrowseIPAdvanceComponent implements OnInit {
   
   displayedColumns1 = [
     // 'checkbox',
+    
     'RegNo',
     'RefundDate',
     'PatientName',
+    
     'AdvanceAmount',
     'AdvanceUsedAmount',
     'BalanceAmount',

@@ -623,8 +623,8 @@ PaymentId=Id.PaymentId
 
     }, 100);
   }
-
-  exportoprefundReportPdf(){
+  
+  exportoprefundReportExcel(){
     this.sIsLoading == 'loading-data'
     let exportHeaders = ['RefundDate', 'RefundNo', 'RegNo','PatientName', 'MobileNo', 'PatientType', 'TariffName', 'CompanyName', 'PaymentDate','RefundAmount', 'TotalAmt','PBillNo'];
     this.reportDownloadService.getExportJsonData(this.dataSource2.data, exportHeaders, 'OP Refund Of Bill');
@@ -632,7 +632,7 @@ PaymentId=Id.PaymentId
     this.sIsLoading = '';
   }
 
-  exportoprefundReportExcel() {
+  exportoprefundReportPdf() {
     let actualData = [];
     this.dataSource2.data.forEach(e => {
       var tempObj = [];
