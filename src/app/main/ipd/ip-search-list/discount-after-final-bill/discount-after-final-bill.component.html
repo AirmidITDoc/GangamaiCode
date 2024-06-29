@@ -1,0 +1,167 @@
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+    <mat-card class="accent" style="height: 50px;width: 100%;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutALign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Discount After Final Bill
+            </span>
+
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
+                style="margin-left: 570px;">
+                <mat-icon>close</mat-icon>
+            </button> 
+        </div>
+    </mat-card>
+
+    <div class="content">
+        <div div class="center p-12 " fxFlexAlign="start center">
+            <div class="content-card" style="border-radius:4px;">
+                <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="10px">
+                
+                    <form [formGroup]="MyFrom" fxLayoutGap="10px">
+                        <div fxlayout="row">
+                            <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                <mat-card style="padding: 5px;">
+                                    <div class="patient-info-container">
+                                        <div class="patient-info-box">
+                                            <div class="patient-info-title border-bottom pb-2">
+                                                <span class="h1">Patient Information</span>
+                                            </div>
+                                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                fxLayoutAlign="space-between">
+                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key ">UHID No</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Patient Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Doctor Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key"> Department Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                                    </div>
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">DOA | Time</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{selectedAdvanceObj.DOA}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">IPDNo</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key ">Age | Sex</span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
+                                                            D | {{selectedAdvanceObj.GenderName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Ref-Dr.Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
+                                                    </div>
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Ward | Bed Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{selectedAdvanceObj.RoomName}} |
+                                                            {{selectedAdvanceObj.BedName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Patient Type</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Tariff Namee</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Company</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value"
+                                                            style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
+                        <div fxLayout="row" style="padding: 12px 12px 12px 4px;">
+                            <mat-card style="padding:10px;">
+                                <div fxLayout="row" fxLayoutGap="4px">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Total Amount</mat-label>
+                                        <input matInput name="TotalAmount" formControlName="TotalAmount" type="text" OnlyNumber
+                                            [(ngModel)]="vTotalAmount" required readonly >
+                                    </mat-form-field>
+                        
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Disc Amount</mat-label>
+                                        <input matInput name="DiscAmount" formControlName="DiscAmount" type="text" OnlyNumber
+                                            [(ngModel)]="vDiscAmount" required readonly>
+                                    </mat-form-field>
+                        
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Net Amount</mat-label>
+                                        <input matInput name="NetAmount" formControlName="NetAmount" type="text" OnlyNumber
+                                            [(ngModel)]="vNetamount" required readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="4px">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Final Discount%</mat-label>
+                                        <input matInput name="FinalDiscPer" formControlName="FinalDiscPer" type="text" OnlyNumber
+                                            [(ngModel)]="vFinalDiscPer" required (keypress)="keyPressCharater($event)" 
+                                            (keydown)="onEnterFinalDisc($event)" #FinalDiscPer (keyup)="CalcDiscPer()">
+                                    </mat-form-field>
+                        
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Final Disc Amount</mat-label>
+                                        <input matInput name="FinalDiscAmt" formControlName="FinalDiscAmt" type="text" OnlyNumber
+                                            [(ngModel)]="vFinalDiscAmt" required  (keypress)="keyPressCharater($event)"
+                                            (keydown)="onEnterFinalDiscAmt($event)" #FinalDiscAmt>
+                                    </mat-form-field>
+                        
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Final Net Amount</mat-label>
+                                        <input matInput name="FinalNetAmt" formControlName="FinalNetAmt" type="text" OnlyNumber
+                                            [(ngModel)]="vFinalNetAmt" required readonly>
+                                    </mat-form-field>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </form>
+                    <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 20px;">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary " (click)="OnSave()" #save>Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

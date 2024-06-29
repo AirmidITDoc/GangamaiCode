@@ -168,23 +168,63 @@ dataSource2 = new MatTableDataSource<RefundMaster>();
   }
 
   openPaymentpopup(contact){
+    console.log(contact)
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
+    PatientHeaderObj['RegNo'] = contact.RegNo;
     PatientHeaderObj['PatientName'] = contact.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = contact.VisitId;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
+    PatientHeaderObj['Age'] = contact.PatientAge;
+    PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
+    PatientHeaderObj['DoctorName'] = contact.DoctorName;
+    PatientHeaderObj['TariffName'] = contact.TariffName;
+    PatientHeaderObj['CompanyName'] = contact.CompanyName;
     PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+    
     
     const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
       {
+
+        maxWidth: "80vw",
+       // height: '600px',
+        width: '70%',
         data: {
           vPatientHeaderObj: PatientHeaderObj,
-          FromName: "Phar-SalesPay"
+          FromName: "OP-Bill"
         }
       });
 
-    dialogRef.afterClosed().subscribe(result => {
-
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result)
+        if (result.IsSubmitFlag == true) {
+          this.vpaidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+          this.vbalanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+          let updateBillobj = {};
+          updateBillobj['BillNo'] = contact.BillNo;
+          updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController || result.submitDataPay.ipPaymentInsert.BalanceAmt;//result.BalAmt;
+          const updateBill = new UpdateBill(updateBillobj);
+          let Data = {
+            "updateBill": updateBill,
+            "paymentCreditUpdate": result.submitDataPay.ipPaymentInsert
+          };
+          console.log(Data)
+          this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
+            if (response) {
+              Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
+                if (result.isConfirmed) {
+                  
+                  this.viewgetOPPayemntPdf(response,true)
+                  this._matDialog.closeAll();
+                  this.getBrowseOPDBillsList();
+                }
+              });
+            }
+            else {
+              Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+            }
+          });
+        }
+      });
   }
   
   vpaidamt: any = 0;

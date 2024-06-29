@@ -55,6 +55,7 @@ import { InterimBillComponent } from './interim-bill/interim-bill.component';
 import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
 import { IpPaymentwithAdvanceComponent } from './ip-paymentwith-advance/ip-paymentwith-advance.component';
 import { PrebillDetailsComponent } from './ip-billing/prebill-details/prebill-details.component';
+import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
 
 
 const routes: Routes = [
@@ -80,7 +81,8 @@ const routes: Routes = [
       InterimBillComponent,
       DischargeSummaryComponent,
       IpPaymentwithAdvanceComponent,
-      PrebillDetailsComponent
+      PrebillDetailsComponent,
+      DiscountAfterFinalBillComponent
     ],
     imports: [
         RouterModule.forChild(routes),

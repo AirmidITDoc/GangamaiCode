@@ -28,6 +28,7 @@ import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import { BrowseIpdPaymentReceipt } from '../browse-ipdpayment-receipt/ipd-paymentreceipt/ipd-paymentreceipt.component';
 import { RefundMaster } from '../Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { DiscountAfterFinalBillComponent } from '../ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
 
 @Component({
   selector: 'app-ip-bill-browse-list',
@@ -542,7 +543,20 @@ console.log(PatientHeaderObj)
       });
   }
 
-   
+  getFinalDisc(contact){
+    console.log(contact);
+    const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
+      {
+        maxWidth: "100%",
+        height: '70%',
+        width: '60%',
+        data: contact
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.onShow_IpdBrowse();
+    });
+  } 
   keyPressCharater(event){
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {

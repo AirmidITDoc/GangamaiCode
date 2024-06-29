@@ -165,6 +165,18 @@
                                 </mat-cell>
                             </ng-container>
 
+                            <!-- <ng-container matColumnDef="FinalDiscount" sticky>
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80" style="color: white;">
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-80">
+                                    <mat-icon *ngIf="contact.IsBillGenerated=='1'; else noMLC " matTooltip="Final Discount" (click)="getFinalDisc(contact)">money
+                                    </mat-icon>
+                                    <ng-template #noMLC>
+                                        <span>--</span>
+                                    </ng-template>
+                                </mat-cell>
+                            </ng-container> -->
+
                             <!-- <ng-container matColumnDef="IsMLC" sticky>
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80">IsMLC
                                 </mat-header-cell>
