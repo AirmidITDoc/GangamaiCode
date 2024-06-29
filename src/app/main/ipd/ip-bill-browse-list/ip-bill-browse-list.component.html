@@ -187,6 +187,9 @@
                                             <mat-icon *ngIf="contact.PatientTypeId !='1'" matTooltip="Patient Category other">business
                                             </mat-icon>
 
+                                            <mat-icon *ngIf="contact.BalanceAmt !=0 " matTooltip="Final Discount" (click)="getFinalDisc(contact)">money
+                                            </mat-icon>
+
                                             <!-- <button mat-icon-button *ngIf="contact.CompanyName ==''" matTooltip="Self Patient">
                                                 <mat-icon *ngIf="contact.CompanyName=='1' || contact.CompanyName=='2'" matTooltip="CompanyName"
                                                     class="pill green-600 s-16">circle</mat-icon>

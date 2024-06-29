@@ -32,27 +32,59 @@
                                     <span class="h2">Patient Information</span>
                                 </div>
                                 <div class="patient-info-box my-8">
-                                    <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                    <div class="patient-info-row row-gap-" fxLayout="row wrap" fxLayoutAlign="space-between">
+                                        <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key ">UHID No</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{advanceData.RegNo}}</span>
+                                        </div> -->
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key ">Patient Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.PatientName}}</span>
+                                            <span class="patient-col-value">{{advanceData.RegNo}}-{{advanceData.PatientName}}</span>
+                                        </div> 
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key ">Age</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{advanceData.Age}}</span>
                                         </div>
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key ">OPD | IPD No</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{advanceData.OPD_IPD_Id}}</span>
+                                        </div>
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key ">Doctor Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{advanceData.DoctorName}}</span>
+                                        </div>
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key ">Department Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{advanceData.DepartmentName}}</span>
+                                        </div> 
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key ">Company Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{advanceData.CompanyName}}</span>
+                                        </div>
+                                       
+                                         <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key ">TariffName</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{advanceData.TariffName}}</span>
+                                        </div> -->
+                                        <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key">Gender / Age</span>
                                             <span>:</span>
                                             <span class="patient-col-value">Male / 44</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        </div> -->
+                                        <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key">Gender</span>
                                             <span>:</span>
                                             <span class="patient-col-value">Male</span>
-                                        </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key">Patient Source</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">Hospital</span>
-                                        </div>
+                                        </div> -->
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -73,13 +105,20 @@
                                                 ₹ {{netPayAmt}}
                                             </span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <!-- <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key">Net Amount</span>
                                             <span>:</span>
                                             <span class="patient-col-value gap-4" fxLayout="row">
                                                 ₹ {{netPayAmt}}
                                             </span>
-                                        </div>
+                                        </div> -->
+                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key">Bill Date</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value gap-4" fxLayout="row">
+                                                {{Date}}
+                                            </span>
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
@@ -121,9 +160,12 @@
                                             <ng-container *ngIf="selectedPaymnet1 != 'cash'">
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Reference Number</mat-label>
-                                                    <input matInput formControlName="referenceNo1" required>
+                                                    <input matInput formControlName="referenceNo1"  placeholder="Card Number" required 
+                                                    max="999999999999" min="100000000000" autocomplete="off" maxlength="12" minlength="4" 
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                                    required="required" value="987665868822">
                                                     <div *ngIf="submitted && f.referenceNo1.errors" class="invalid-feedback">
-                                                        <div *ngIf="f.referenceNo1.errors.required">Reference Number is required</div>
+                                                        <div *ngIf="f.referenceNo1.errors.required">Reference No is required</div>
                                                     </div>
                                                 </mat-form-field>
 
@@ -206,9 +248,9 @@
 
                                             <ng-container matColumnDef="RefNo">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-80">Ref
+                                                    class="w-200">Ref
                                                 </mat-header-cell>
-                                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell class="w-200" *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.RefNo}}
                                                 </mat-cell>
                                             </ng-container>

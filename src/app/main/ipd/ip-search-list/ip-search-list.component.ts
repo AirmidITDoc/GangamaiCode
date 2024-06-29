@@ -71,8 +71,8 @@ export class IPSearchListComponent implements OnInit {
 
   displayedColumns = [
      'IsBillGenerated',
+     //'FinalDiscount',
     'IsMLC',
-   
     'RegNo',
     'PatientName',
     'DOA',
@@ -661,6 +661,8 @@ export class IPSearchListComponent implements OnInit {
       this._IpSearchListService.myFilterform.get('end').setValue('')
     }
   }
+
+ 
 }
 
 

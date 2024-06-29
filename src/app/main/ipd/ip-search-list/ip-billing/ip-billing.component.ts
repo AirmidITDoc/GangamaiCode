@@ -684,7 +684,17 @@ ServiceList:any=[];
 
 
   getSelectedObj(obj) {
-    
+    if (this.dataSource.data.length > 0) {
+      this.dataSource.data.forEach((element) => {
+        if (obj.ServiceId == element.ServiceId) {
+
+          Swal.fire('Selected Item already added in the list ');
+
+          this.onClearServiceAddList();
+          return;
+        }
+      });
+    }
     console.log(obj)
     this.SrvcName = obj.ServiceName;
     this.b_price = obj.Price;
