@@ -13,6 +13,8 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
  
  
 @Component({
@@ -48,7 +50,9 @@ export class NewRequestforlabComponent implements OnInit {
   vTariffId:any=0;
   vClassId:any=0;
   vAge:any=0;
- 
+  selectedAdvanceObj = new AdmissionPersonlModel({});
+
+  
   displayedServiceColumns: string[] = [
   'ServiceName',
     // 'Price'
@@ -79,8 +83,15 @@ export class NewRequestforlabComponent implements OnInit {
     private _matDialog:MatDialog,
     public _RequestforlabtestService: RequestforlabtestService, 
     public toastr: ToastrService,
+    private advanceDataStored: AdvanceDataStored,
     private _loggedService: AuthenticationService) { 
       this.date = new Date();
+      if (this.advanceDataStored.storage) {
+        debugger
+         this.selectedAdvanceObj = this.advanceDataStored.storage;
+         // this.PatientHeaderObj = this.advanceDataStored.storage;
+         console.log( this.selectedAdvanceObj)
+       }
     }
 
   ngOnInit(): void {
@@ -163,6 +174,8 @@ export class NewRequestforlabComponent implements OnInit {
     }
     else{
       this.registerObj = obj; 
+      this.selectedAdvanceObj=obj;
+      this.selectedAdvanceObj.PatientName= obj.FirstName + ' ' + obj.LastName;
       this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
       this.RegNo = obj.RegNo;
       this.vAdmissionID = obj.AdmissionID
@@ -235,7 +248,7 @@ export class NewRequestforlabComponent implements OnInit {
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "IP Prescription Viewer"
+              title: "IP Lab request Viewer"
             }
           });
         dialogRef.afterClosed().subscribe(result => {

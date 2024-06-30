@@ -10,6 +10,7 @@ import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-pre
 import { MatDialog } from '@angular/material/dialog';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-prescription-return',
@@ -46,10 +47,11 @@ export class PrescriptionReturnComponent implements OnInit {
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  sIsLoading: string = "";
   constructor(public _PrescriptionReturnService:PrescriptionReturnService,
     private _fuseSidebarService: FuseSidebarService,
     private dialog:MatDialog,
+    private reportDownloadService: ExcelDownloadService,
     public _matDialog:MatDialog,
     public datePipe: DatePipe,
     ) { }
@@ -74,6 +76,15 @@ export class PrescriptionReturnComponent implements OnInit {
       this.getPriscriptionretList();
     }
   }
+  keyPressCharater(event){
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
   getPriscriptionretList(){
     // debugger
@@ -81,7 +92,7 @@ export class PrescriptionReturnComponent implements OnInit {
       FromDate:this.datePipe.transform(this._PrescriptionReturnService.mySearchForm.get('startdate').value,"yyyy-dd-MM 00:00:00.000") || '01/2/2023',
       ToDate:this.datePipe.transform(this._PrescriptionReturnService.mySearchForm.get('enddate').value,"yyyy-dd-MM 00:00:00.000") || '01/2/2023',
       Reg_No: this._PrescriptionReturnService.mySearchForm.get('RegNo').value || 0,
-      Type :this.PType || 0
+      // Type :this.PType || 0
     }
     console.log(vdata)
     this._PrescriptionReturnService.getPriscriptionretList(vdata).subscribe(data =>{
@@ -116,7 +127,32 @@ export class PrescriptionReturnComponent implements OnInit {
         width: '70vw'
     })
   }
- 
+
+  exportReportPdf() {
+    let actualData = [];
+    this.dsprescritionretList.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.Date);
+      tempObj.push(e.RegNo);
+      tempObj.push(e.PatientName);
+      tempObj.push(e.Vst_Adm_Date);
+      tempObj.push(e.StoreName);
+      tempObj.push(e.IPMedID);
+     
+      actualData.push(tempObj);
+    });
+    let headers = [['Date', 'RegNo', 'PatientName', 'Vst_Adm_Date', 'StoreName', 'IPMedID']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Prescription Return List');
+  }
+
+  exportIpprescriptionReturnReportExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['Date', 'RegNo', 'PatientName', 'Vst_Adm_Date', 'StoreName', 'IPMedID'];
+    this.reportDownloadService.getExportJsonData(this.dsprescritionretList.data, exportHeaders, 'Ip prescription  Return List Datewise');
+    this.dsprescritionretList.data = [];
+    this.sIsLoading = '';
+  }
+
 
 
   viewgetIpprescriptionreturnReportPdf(row) {

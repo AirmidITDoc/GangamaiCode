@@ -9,12 +9,13 @@ import { Observable } from 'rxjs/internal/Observable';
 export class PrescriptionService {
 
   mysearchform: FormGroup;
-  
+  mypreretunForm: FormGroup;
   constructor(
     public _httpClient:HttpClient,
     private _formBuilder: FormBuilder
   ) { 
     this.mysearchform= this.SearchFilterFrom();
+    this.mypreretunForm=this.PrescriptionReturnFilterForm();
   }
 
   SearchFilterFrom(): FormGroup{
@@ -25,6 +26,18 @@ export class PrescriptionService {
       RegNo:''
     })  
   }
+
+  PrescriptionReturnFilterForm():FormGroup{
+    return this._formBuilder.group({
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      RegNo:'',
+      PrescriptionStatus:['Pending']
+    })
+  }
+
+
+
   public getPrintPrecriptionlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=rptIPDPrecriptionPrint",Param)
   }
@@ -66,9 +79,31 @@ export class PrescriptionService {
     return this._httpClient.post("InPatient/InsertIPPrescription", employee);
   }
    
-
+  public getDoseList() {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
+  }
 
   public getIpPrescriptionview(OP_IP_ID,PatientType){
     return this._httpClient.get("InPatient/view-IP_Prescription?OP_IP_ID=" + OP_IP_ID+"&PatientType="+PatientType);
   }
+
+
+  public getPriscriptionretList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPrescriptionReturnListFromWard",Param)
+  }
+
+  public getPreiscriptionretdetList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPrescReturnItemDet",Param)
+  }
+
+  public getBatchList(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemNameBatchPOP_IPPresRet",Param)
+  }
+
+  public getIpPrescriptionreturnview(PresReId){
+    return this._httpClient.get("InPatient/view-IP_PrescriptionReturn?PresReId=" + PresReId);
+  }
+  // public getItemlist(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPDrugName",Param)
+  // }
 }

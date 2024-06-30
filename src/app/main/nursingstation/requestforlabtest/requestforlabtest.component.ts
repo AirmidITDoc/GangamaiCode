@@ -11,6 +11,7 @@ import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab
 import { Subscription } from 'rxjs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-requestforlabtest',
@@ -46,7 +47,7 @@ export class RequestforlabtestComponent implements OnInit {
   
   hasSelectedContacts: boolean;
   SpinLoading:boolean=false;
-
+  sIsLoading: string = "";
   dsrequestList = new MatTableDataSource<RequestList>();
   dsrequestdetList=new MatTableDataSource<RequestdetList>();
 
@@ -58,8 +59,8 @@ export class RequestforlabtestComponent implements OnInit {
     public datePipe: DatePipe, 
     private _matDialog:MatDialog,
     private _fuseSidebarService: FuseSidebarService,
-    private dialog:MatDialog
-    
+    private dialog:MatDialog,
+    private reportDownloadService: ExcelDownloadService,
     ) { }
 
   ngOnInit(): void {
@@ -240,6 +241,31 @@ debugger
     
     popupWin.document.close();
   }
+
+ 
+  exportReportPdf() {
+    let actualData = [];
+    this.dsrequestList.data.forEach(e => {
+      var tempObj = [];
+      tempObj.push(e.RegNo);
+      tempObj.push(e.PatientName);
+      tempObj.push(e.WardName);
+      tempObj.push(e.RequestType);
+      tempObj.push(e.IsOnFileTest);
+     
+      actualData.push(tempObj);
+    });
+    let headers = [['RegNo','PatientName', 'WardName', 'RequestType', 'IsOnFileTest','IsCancelled']];
+    this.reportDownloadService.exportPdfDownload(headers, actualData, 'IP Lab request');
+  }
+
+  exportIpLabrequestReportExcel(){
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['RegNo','PatientName', 'WardName', 'RequestType', 'IsOnFileTest','IsCancelled'];
+    this.reportDownloadService.getExportJsonData(this.dsrequestList.data, exportHeaders, 'Ip Lab request List Datewise');
+    this.dsrequestList.data = [];
+    this.sIsLoading = '';
+  }
 }
 export class RequestList{
   RegNo :any;
@@ -260,6 +286,7 @@ export class RequestList{
   BillTime:any;
   ReqDate:any;
   RequestId:any;
+  IsOnFileTest:any;
 
   constructor(RequestList) {
     this.RegNo=RequestList.RegNo || 0;
@@ -271,6 +298,7 @@ export class RequestList{
     this.TariffName=RequestList.TariffName || '';
     this.CompanyName=RequestList.CompanyName || '';
     this.RequestId =RequestList.RequestId || 0
+    this.IsOnFileTest =RequestList.IsOnFileTest || 0
   }
 }
 
