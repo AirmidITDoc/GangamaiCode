@@ -684,20 +684,86 @@
                                                     </mat-cell>
                                                 </ng-container>
 
+                                                <ng-container matColumnDef="MobileNo">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>MobileNo
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.MobileNo}}
+                                                    </mat-cell>
+                                                </ng-container>
+            
+                                                <ng-container matColumnDef="VisitDate">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>VisitDate
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.VisitDate | date:'shortDate'}}
+                                                    </mat-cell>
+                                                </ng-container>
+            
+                                                <ng-container matColumnDef="DoctorName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-220">DoctorName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220">
+                                                        {{contact.DoctorName}}
+                                                    </mat-cell>
+                                                </ng-container>
+            
+                                                <ng-container matColumnDef="RefDoctorName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-220">RefDoctorName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220">
+                                                        {{contact.RefDoctorName || '--'}}
+                                                    </mat-cell>
+                                                </ng-container>
+            
+                                                <ng-container matColumnDef="HospitalName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-220">Unit Name
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220">
+                                                        {{contact.HospitalName}}
+                                                    </mat-cell>
+                                                </ng-container>
+            
+                                                <!-- <ng-container matColumnDef="PatientType">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientType
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.PatientType}}
+                                                    </mat-cell>
+                                                </ng-container>
+            
+                                                <ng-container matColumnDef="TariffName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TariffName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.TariffName}}
+                                                    </mat-cell>
+                                                </ng-container> -->
+            
+                                                <ng-container matColumnDef="CompanyName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-220">CompanyName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220">
+                                                        {{contact.CompanyName || '--'}}
+                                                    </mat-cell>
+                                                </ng-container>
+            
                                                 <ng-container matColumnDef="TotalAmt">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-md>Total
-                                                        Amount
+                                                        fxShow.gt-md>Bill Amount
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                        {{contact.TotalAmt | currency:"INR":"symbol"}}
+                                                        {{contact.BillAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="BalanceAmt">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-md>Bal
-                                                        Amount
+                                                        fxShow.gt-md>Bal Amount
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                         {{contact.BalanceAmt | currency:"INR":"symbol"}}
@@ -792,22 +858,22 @@
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="NEFTPayAmount">
+                                                <ng-container matColumnDef="OnlinePay">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-md>NEFTPayAmt
+                                                        fxShow.gt-md>OnlinePay
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                                        {{contact.NEFTPayAmount | currency:"INR":"symbol"}}
+                                                        {{contact.OnlinePay | currency:"INR":"symbol"}}
                                                     </mat-cell>
                                                 </ng-container>
-                                                <ng-container matColumnDef="PayTMAmount">
+                                                <!-- <ng-container matColumnDef="PayTMAmount">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                         fxShow.gt-md>PayTMAmount
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                                         {{contact.PayTMAmount | currency:"INR":"symbol"}}
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container> -->
                                                 <!-- stickyEnd -->
                                                 <ng-container matColumnDef="buttons" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef style="color: white;">Action
@@ -843,11 +909,11 @@
                                                     </mat-footer-cell>
                                                 </ng-container>
 
-                                                <mat-header-row class="accent min-width-2600"
+                                                <mat-header-row class="accent min-width-2900"
                                                     *matHeaderRowDef="displayedColumns1; sticky: true">
                                                 </mat-header-row>
                                                 <mat-row *matRowDef="let contact; columns: displayedColumns1;"
-                                                    class="contact" class="min-width-2600"
+                                                    class="contact" class="min-width-2900"
                                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                 <mat-footer-row *matFooterRowDef="['loading']"
                                                     [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -1038,6 +1104,33 @@
                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-md>
                                                         {{element.MobileNo || '--' }} </mat-cell>
                                                 </ng-container>
+                                                
+                                                <ng-container matColumnDef="DoctorName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-220">DoctorName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220">
+                                                        {{contact.DoctorName}}
+                                                    </mat-cell>
+                                                </ng-container>
+            
+                                                <ng-container matColumnDef="RefDoctorName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-220">RefDoctorName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220">
+                                                        {{contact.RefDoctorName || '--'}}
+                                                    </mat-cell>
+                                                </ng-container>
+            
+                                                <ng-container matColumnDef="HospitalName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-220">Unit Name
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220">
+                                                        {{contact.HospitalName}}
+                                                    </mat-cell>
+                                                </ng-container>
 
                                                 <ng-container matColumnDef="PatientType">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
@@ -1136,9 +1229,13 @@
                                                 <mat-footer-row *matFooterRowDef="['noData']"
                                                     [ngClass]="{'hide':!(dataSource2!=null && dataSource2.data.length==0)}"></mat-footer-row>
                                             </mat-table>
-                                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                            <mat-paginator [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="25"
+                                            showFirstLastButtons (page)="getBrowseOPDReturnList()">
+                                        </mat-paginator>
+
+                                            <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
                                                 showFirstLastButtons>
-                                            </mat-paginator>
+                                            </mat-paginator> -->
                                         </div>
                                     </div>
                                 </div>
